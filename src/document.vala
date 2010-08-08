@@ -340,6 +340,15 @@ public class Document : Gtk.SourceBuffer
         return ret;
     }
 
+    public bool is_tex_document ()
+    {
+        if (location == null)
+            return false;
+
+        string path = location.get_parse_name ();
+        return path.has_suffix (".tex");
+    }
+
 
     /***************
      *    SEARCH

@@ -119,7 +119,7 @@
       <description>DVI to PDF command ("%" is the filename without extension)</description>
     </key>
     <key name="command-dvips" type="s">
-      <default>'@COMMAND_DVIPS@ -o %.ps %.dvi'</default>
+      <default>'@COMMAND_DVIPS@ %.dvi'</default>
       <summary>DVI to PS command</summary>
       <description>DVI to PS command ("%" is the filename without extension)</description>
     </key>

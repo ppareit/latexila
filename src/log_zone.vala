@@ -24,7 +24,7 @@ public enum OutputMessageType
     OTHER, BADBOX, WARNING, ERROR
 }
 
-public enum OutputLineColumn
+enum OutputLineColumn
 {
     BASENAME,
     FILENAME,
@@ -95,7 +95,7 @@ public class LogZone : HPaned
                 current_log_store = (LogStore) output_model.child_model;
                 current_log_store.scroll_and_flush.connect (on_scroll_and_flush);
 
-                output_view.columns_autosize ();
+                output_view_columns_autosize ();
                 current_log_store.scroll_to_selected_row ();
                 set_previous_next_actions_sensitivity ();
             }
@@ -173,6 +173,11 @@ public class LogZone : HPaned
         notify["show-errors"].connect (on_show_property_changed);
         notify["show-warnings"].connect (on_show_property_changed);
         notify["show-badboxes"].connect (on_show_property_changed);
+    }
+
+    public void output_view_columns_autosize ()
+    {
+        output_view.columns_autosize ();
     }
 
     private bool filter_visible_func (TreeModel model, TreeIter iter)

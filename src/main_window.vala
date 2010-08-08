@@ -348,6 +348,7 @@ public class MainWindow : Window
     private Toolbar edit_toolbar;
     private VBox side_panel;
     private LogZone bottom_panel;
+    private ExternalCommands external_commands;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -455,45 +456,7 @@ public class MainWindow : Window
         log_zone.set_position (settings.get_int ("action-history-size"));
         show_or_hide_build_messages ();
 
-        /* TEST log zone */
-        // create a parent action
-        TreePath path;
-        LogStore log_store = log_zone.add_parent_action ("Quick-build 1", out path);
-        log_store.print_output_info ("Step 1: compile (latex)");
-        log_store.print_output_info ("Step 2: DVI to PDF");
-        log_store.print_output_info ("Step 3: view PDF");
-
-        // add a child action
-        log_store = log_zone.add_child_action ("Compile (latex)", path, 1, 3);
-        log_store.print_output_info ("$ latex doc.tex");
-        log_store.print_output_stats (0, 0, 0);
-        log_store.print_output_exit (0);
-
-        // add a simple action (first parent action is not finished)
-        log_store = log_zone.add_simple_action ("Compile (pdflatex)");
-        log_store.print_output_info ("$ pdflatex doc.tex");
-        log_store.print_output_info ("Info");
-        log_store.print_output_normal ("Normal");
-        log_store.print_output_message (null, null,
-            "message without filename, without line number, type: other",
-            OutputMessageType.OTHER);
-        log_store.print_output_message ("/home/seb/test/informatique.tex", 42,
-            "badbox", OutputMessageType.BADBOX);
-        log_store.print_output_message ("/home/seb/test/essai", null, "warning",
-            OutputMessageType.WARNING);
-        log_store.print_output_message ("/home/seb/test/test", 3, "error",
-            OutputMessageType.ERROR);
-        log_store.print_output_stats (42, 1337, 1);
-        log_store.print_output_exit (0);
-        log_store.print_output_exit (1);
-        log_store.print_output_exit (42, "exit message");
-
-        // add a child action to the first parent action
-        log_store = log_zone.add_child_action ("DVI to PDF", path, 2, 3);
-        log_store.print_output_info ("$ dvipdf doc.dvi");
-
-        log_store = log_zone.add_child_action ("View PDF", path, 3, 3);
-        log_store.print_output_info ("$ evince doc.pdf");
+        external_commands = new ExternalCommands (this, log_zone, statusbar);
 
         /* signal handlers */
 
@@ -1026,9 +989,7 @@ public class MainWindow : Window
             "EditCopy", "EditPaste", "EditDelete", "EditSelectAll", "EditComment",
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
-            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildCompileLatex",
-            "BuildViewDVI", "BuildCompilePdflatex", "BuildViewPDF", "BuildDVItoPDF",
-            "BuildDVItoPS", "BuildViewPS", "BuildBibtex", "BuildMakeindex", "BuildClean"
+            "SearchFind", "SearchReplace", "SearchGoToLine"
         };
 
         foreach (string file_action in file_actions)
@@ -1038,6 +999,7 @@ public class MainWindow : Window
         }
 
         latex_action_group.set_sensitive (sensitive);
+        set_build_actions_sensitivity (sensitive);
     }
 
     private void set_undo_sensitivity ()
@@ -1076,6 +1038,22 @@ public class MainWindow : Window
 
             int nb_pages = documents_panel.get_n_pages ();
             action_next.set_sensitive (current_page < nb_pages - 1);
+        }
+    }
+
+    public void set_build_actions_sensitivity (bool sensitive)
+    {
+        string[] build_actions =
+        {
+            "BuildCompileLatex", "BuildViewDVI", "BuildCompilePdflatex", "BuildViewPDF",
+            "BuildDVItoPDF", "BuildDVItoPS", "BuildViewPS", "BuildBibtex",
+            "BuildMakeindex", "BuildClean"
+        };
+
+        foreach (string build_action in build_actions)
+        {
+            Action action = action_group.get_action (build_action);
+            action.set_sensitive (sensitive);
         }
     }
 
@@ -1657,6 +1635,7 @@ public class MainWindow : Window
     public void on_build_view_dvi ()
     {
         return_if_fail (active_tab != null);
+        external_commands.view_current_document (_("View DVI"), "dvi");
     }
 
     public void on_build_pdflatex ()
@@ -1667,21 +1646,25 @@ public class MainWindow : Window
     public void on_build_view_pdf ()
     {
         return_if_fail (active_tab != null);
+        external_commands.view_current_document (_("View PDF"), "pdf");
     }
 
     public void on_build_dvi_to_pdf ()
     {
         return_if_fail (active_tab != null);
+        external_commands.convert_document (_("DVI to PDF"), "command-dvipdf");
     }
 
     public void on_build_dvi_to_ps ()
     {
         return_if_fail (active_tab != null);
+        external_commands.convert_document (_("DVI to PS"), "command-dvips");
     }
 
     public void on_build_view_ps ()
     {
         return_if_fail (active_tab != null);
+        external_commands.view_current_document (_("View PS"), "ps");
     }
 
     public void on_build_bibtex ()
