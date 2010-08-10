@@ -145,8 +145,7 @@ int main (string[] args)
         {
             var window_settings = new GLib.Settings ("org.gnome.latexila.state.window");
 
-            // TODO use settings.get_strv () when vapi is fixed upstream
-            string[] uris = window_settings.get_value ("documents").dup_strv ();
+            string[] uris = window_settings.get_strv ("documents");
             latexila.open_documents (uris);
         }
 

@@ -1485,9 +1485,7 @@ public class MainWindow : Window
         }
 
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-        // TODO use set_strv() when vapi is fixed upstream
-        //settings.set_strv ("documents", list_uris);
-        settings.set_value ("documents", new Variant.strv (list_uris));
+        settings.set_strv ("documents", list_uris);
 
         if (close_all_documents ())
         {
