@@ -1635,6 +1635,7 @@ public class MainWindow : Window
     public void on_build_latex ()
     {
         return_if_fail (active_tab != null);
+        new ExternalCommand.run_compilation (this, _("Compile (latex)"), "command-latex");
     }
 
     public void on_build_view_dvi ()
@@ -1646,6 +1647,8 @@ public class MainWindow : Window
     public void on_build_pdflatex ()
     {
         return_if_fail (active_tab != null);
+        new ExternalCommand.run_compilation (this, _("Compile (pdflatex)"),
+            "command-pdflatex");
     }
 
     public void on_build_view_pdf ()
@@ -1675,11 +1678,13 @@ public class MainWindow : Window
     public void on_build_bibtex ()
     {
         return_if_fail (active_tab != null);
+        new ExternalCommand.run_bibtex (this);
     }
 
     public void on_build_makeindex ()
     {
         return_if_fail (active_tab != null);
+        new ExternalCommand.run_makeindex (this);
     }
 
     public void on_build_clean ()

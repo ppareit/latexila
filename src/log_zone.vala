@@ -228,6 +228,7 @@ public class LogZone : HPaned
         return add_action_full (cmd, title, false, null, parent, step, nb_steps);
     }
 
+    // FIXME set_path is really usefull here?
     private LogStore add_action_full (ExternalCommand? cmd, string title, bool set_path,
         out TreePath? path_to_set, TreePath? parent, int? step, int? nb_steps)
     {

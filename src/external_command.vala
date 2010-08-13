@@ -40,7 +40,7 @@ public class ExternalCommand : GLib.Object
 
     private int? child_pid_exit_code = null;
     private Pid child_pid;
-    //private OutputStatus output_status = OutputStatus.GO_FETCHING;
+    private OutputStatus output_status = OutputStatus.GO_FETCHING;
 
     private ExternalCommand (MainWindow window)
     {
@@ -57,6 +57,21 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
+
+        log_store = log_zone.add_simple_action (this, title);
+
+        try
+        {
+            string command_line = settings.get_string (setting);
+            string[] command = process_command_line (command_line, true);
+
+            statusbar.push (context_id, _("Compilation in progress. Please wait..."));
+            msg_in_statusbar = true;
+            Utils.flush_queue ();
+
+            execute_with_output (command, get_working_directory ());
+        }
+        catch (Error e) {}
     }
 
     public ExternalCommand.view_current_document (MainWindow window, string title,
@@ -64,7 +79,6 @@ public class ExternalCommand : GLib.Object
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
-
         this (window);
 
         log_store = log_zone.add_simple_action (this, title);
@@ -89,7 +103,6 @@ public class ExternalCommand : GLib.Object
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
-
         this (window);
 
         log_store = log_zone.add_simple_action (this, title);
@@ -104,9 +117,7 @@ public class ExternalCommand : GLib.Object
             msg_in_statusbar = true;
             Utils.flush_queue ();
 
-            string working_directory =
-                window.active_document.location.get_parent ().get_path ();
-            execute_without_output (command, working_directory, msg);
+            execute_without_output (command, get_working_directory (), msg);
         }
         catch (Error e) {}
     }
@@ -116,6 +127,21 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
+
+        log_store = log_zone.add_simple_action (this, "BibTeX");
+
+        try
+        {
+            string command_line = settings.get_string ("command-bibtex");
+            string[] command = process_command_line (command_line, true);
+
+            statusbar.push (context_id, _("BibTeX is running. Please wait..."));
+            msg_in_statusbar = true;
+            Utils.flush_queue ();
+
+            execute_with_output (command, get_working_directory ());
+        }
+        catch (Error e) {}
     }
 
     public ExternalCommand.run_makeindex (MainWindow window)
@@ -123,6 +149,21 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
+
+        log_store = log_zone.add_simple_action (this, "MakeIndex");
+
+        try
+        {
+            string command_line = settings.get_string ("command-makeindex");
+            string[] command = process_command_line (command_line, true);
+
+            statusbar.push (context_id, _("MakeIndex is running. Please wait..."));
+            msg_in_statusbar = true;
+            Utils.flush_queue ();
+
+            execute_with_output (command, get_working_directory ());
+        }
+        catch (Error e) {}
     }
 
     public ExternalCommand.view_in_web_browser (MainWindow window, string title,
@@ -177,6 +218,13 @@ public class ExternalCommand : GLib.Object
         return command;
     }
 
+    private string get_working_directory ()
+    {
+        return_if_fail (window.active_tab != null);
+        return_if_fail (window.active_document.location != null);
+        return window.active_document.location.get_parent ().get_path ();
+    }
+
     private void execute_without_output (string[] command, string? working_directory,
         string msg)
     {
@@ -188,8 +236,12 @@ public class ExternalCommand : GLib.Object
 
             log_store.print_output_info (msg);
 
+            // we don't care about output status, but finish_execute () expects to have
+            // this value
+            output_status = OutputStatus.STOP_REQUEST;
+
             // we want to know the exit code
-            ChildWatch.add (child_pid, child_watch_func);
+            ChildWatch.add (child_pid, on_child_watch);
         }
         catch (SpawnError e)
         {
@@ -198,7 +250,119 @@ public class ExternalCommand : GLib.Object
         }
     }
 
-    private void child_watch_func (Pid pid, int status)
+    private void execute_with_output (string[] command, string? working_directory)
+    {
+        try
+        {
+            int output;
+
+            Process.spawn_async_with_pipes (working_directory, command, null,
+                SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH, on_spawn_setup,
+                out child_pid, null, out output);
+
+            // we want to know the exit code
+            ChildWatch.add (child_pid, on_child_watch);
+
+            // create the channel
+            IOChannel out_channel = new IOChannel.unix_new (output);
+            try
+            {
+                out_channel.set_encoding (null);
+            }
+            catch (IOChannelError e) {}
+
+            out_channel.add_watch (IOCondition.IN | IOCondition.HUP, on_watch_output);
+        }
+        catch (SpawnError e)
+        {
+            string exit_msg = _("execution failed: %s").printf (e.message);
+            log_store.print_output_exit (42, exit_msg);
+        }
+    }
+
+    private void on_spawn_setup ()
+    {
+        Posix.dup2 (Posix.STDOUT_FILENO, Posix.STDERR_FILENO);
+    }
+
+    private bool on_watch_output (IOChannel source, IOCondition condition)
+    {
+        switch (output_status)
+        {
+            case OutputStatus.GO_FETCHING:
+                break;
+
+            case OutputStatus.IS_FETCHING:
+                return false;
+
+            case OutputStatus.STOP_REQUEST:
+                //finish_execute ();
+                return false;
+        }
+
+        output_status = OutputStatus.IS_FETCHING;
+
+        if (IOCondition.IN in condition)
+        {
+            string line = null;
+            try
+            {
+                var gio_status = source.read_line (out line, null, null);
+                if (gio_status == IOStatus.NORMAL
+                    && output_status == OutputStatus.IS_FETCHING)
+                {
+                    string line_utf8 = null;
+                    if (line != null)
+                    {
+                        line_utf8 = line.locale_to_utf8 (-1, null, null);
+                        if (line_utf8 == null)
+                        {
+                            try
+                            {
+                                line_utf8 = convert (line, -1, "UTF-8", "ISO-8859-1");
+                            }
+                            catch (ConvertError e) {}
+                        }
+                    }
+
+                    // the line is not displayed if it contains bad characters
+                    if (line_utf8 != null)
+                    {
+                        // delete \n
+                        line_utf8 = line_utf8[0:-1];
+                        log_store.print_output_normal (line_utf8);
+                    }
+
+                    gio_status = source.read_line (out line, null, null);
+                }
+
+                if (gio_status == IOStatus.EOF)
+                {
+                    output_status = OutputStatus.STOP_REQUEST;
+                    //finish_execute ();
+                    return false;
+                }
+            }
+            catch (Error e)
+            {
+                stderr.printf ("Warning: IO channel error: %s\n", e.message);
+            }
+        }
+
+        if (IOCondition.HUP in condition)
+        {
+            output_status = OutputStatus.STOP_REQUEST;
+            //finish_execute ();
+            return false;
+        }
+
+        if (output_status == OutputStatus.IS_FETCHING)
+            output_status = OutputStatus.GO_FETCHING;
+
+        return true;
+    }
+
+    private void on_child_watch (Pid pid, int status)
     {
         Process.close_pid (pid);
         if (Process.if_exited (status))
@@ -211,7 +375,8 @@ public class ExternalCommand : GLib.Object
 
     private void finish_execute ()
     {
-        return_if_fail (child_pid_exit_code != null);
+        return_if_fail (child_pid_exit_code != null
+            && output_status == OutputStatus.STOP_REQUEST);
 
         if (child_pid_exit_code > -1)
             log_store.print_output_exit (child_pid_exit_code);
@@ -225,6 +390,7 @@ public class ExternalCommand : GLib.Object
 
     public void stop_execution ()
     {
+        output_status = OutputStatus.STOP_REQUEST;
         Posix.kill (child_pid, Posix.SIGTERM);
         //log_store.can_stop = false;
     }
