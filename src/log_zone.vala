@@ -211,33 +211,27 @@ public class LogZone : HPaned
         set_previous_next_actions_sensitivity ();
     }
 
-    public LogStore add_simple_action (ExternalCommand? cmd, string title)
-    {
-        return add_action_full (cmd, title, false, null, null, null, null);
-    }
-
-    public LogStore add_parent_action (ExternalCommand? cmd, string title,
-        out TreePath path)
-    {
-        return add_action_full (cmd, title, true, out path, null, null, null);
-    }
-
-    public LogStore add_child_action (ExternalCommand? cmd, string title, TreePath parent,
-        int step, int nb_steps)
-    {
-        return add_action_full (cmd, title, false, null, parent, step, nb_steps);
-    }
-
-    // FIXME set_path is really usefull here?
-    private LogStore add_action_full (ExternalCommand? cmd, string title, bool set_path,
-        out TreePath? path_to_set, TreePath? parent, int? step, int? nb_steps)
+    /* creates a new LogStore
+     *
+     * If we want to replace the LogStore later, we can get the TreePath and create a
+     * fork (with the same title). Then we use the set_log_store() method.
+     *
+     * If we want to add a quick-build action (an action that has several child actions),
+     * we create the parent action with set_path = true, and path_to_set.
+     * Then we create the childs by using the last third paramaters: parent, ...
+     */
+    public LogStore add_action (ExternalCommand? cmd,
+                                string title,
+                                bool set_path = false,
+                                out TreePath path_to_set = null,
+                                bool set_fork = false,
+                                out LogStore fork = null,
+                                TreePath? parent = null,
+                                int? step = null,
+                                int? nb_steps = null)
     {
         LogStore log_store = new LogStore (cmd);
-        log_store.notify["can-stop"].connect (() =>
-        {
-            if (current_log_store == log_store)
-                action_stop_exec.set_sensitive (log_store.can_stop);
-        });
+        log_store.notify["can-stop"].connect (on_can_stop_changed);
 
         TreeModelFilter filter = new TreeModelFilter (log_store, null);
         filter.set_visible_func (filter_visible_func);
@@ -250,6 +244,13 @@ public class LogZone : HPaned
             log_store_title = "%d. %s".printf (action_num, title);
 
         log_store.print_output_title (log_store_title);
+
+        if (set_fork)
+        {
+            fork = new LogStore (cmd);
+            fork.notify["can-stop"].connect (on_can_stop_changed);
+            fork.print_output_title (log_store_title);
+        }
 
         string history_title = log_store_title;
         if (parent != null)
@@ -265,6 +266,7 @@ public class LogZone : HPaned
         }
         else
             history_model.append (out iter, null);
+
         history_model.set (iter,
             HistoryActionColumn.TITLE, history_title,
             HistoryActionColumn.OUTPUT_STORE, filter,
@@ -297,6 +299,49 @@ public class LogZone : HPaned
             history_view.expand_to_path (parent);
         }
         return log_store;
+    }
+
+    public void set_log_store (TreePath path, LogStore store)
+    {
+        TreeModel history_model = history_view.get_model ();
+        TreeIter iter;
+        if (history_model.get_iter (out iter, path))
+        {
+            TreeModelFilter new_filter = new TreeModelFilter (store, null);
+            new_filter.set_visible_func (filter_visible_func);
+
+            TreeModelFilter old_filter;
+            history_model.get (iter,
+                HistoryActionColumn.OUTPUT_STORE, out old_filter,
+                -1);
+
+            TreeStore history_store = (TreeStore) history_model;
+            history_store.set (iter,
+                HistoryActionColumn.OUTPUT_STORE, new_filter,
+                -1);
+
+            // if we must replace the current log store
+            if (current_log_store == (LogStore) old_filter.child_model)
+            {
+                output_view.set_model (new_filter);
+
+                current_log_store = store;
+                current_log_store.scroll.connect (on_scroll);
+                action_stop_exec.set_sensitive (current_log_store.can_stop);
+
+                output_view_columns_autosize ();
+                set_previous_next_actions_sensitivity ();
+            }
+        }
+    }
+
+    private void on_can_stop_changed (GLib.Object o, ParamSpec p)
+    {
+        LogStore log_store = (LogStore) o;
+        if (current_log_store == log_store)
+        {
+            action_stop_exec.set_sensitive (log_store.can_stop);
+        }
     }
 
     private bool output_row_selection_func (TreeSelection selection, TreeModel filter,
@@ -361,6 +406,7 @@ public class LogZone : HPaned
     {
         return_if_fail (current_log_store.can_stop);
         current_log_store.stop_execution ();
+        action_stop_exec.set_sensitive (false);
     }
 }
 

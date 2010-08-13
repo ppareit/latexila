@@ -27,6 +27,10 @@ public class ExternalCommand : GLib.Object
     private Settings settings;
     private LogStore log_store;
 
+    private LogStore waiting_log_store;
+    private bool use_waiting_log_store = false;
+    private Gtk.TreePath tree_path;
+
     private static const string CMD_CHAR_1 = "%";
     private static const string CMD_CHAR_2 = "#";
     private static const string view_msg = _("Viewing in progress. Please wait...");
@@ -58,18 +62,24 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
 
-        log_store = log_zone.add_simple_action (this, title);
+
+        waiting_log_store = log_zone.add_action (this, title,
+            true, out tree_path,
+            true, out log_store);
+        use_waiting_log_store = true;
 
         try
         {
             string command_line = settings.get_string (setting);
             string[] command = process_command_line (command_line, true);
 
-            statusbar.push (context_id, _("Compilation in progress. Please wait..."));
+            string msg = _("Compilation in progress. Please wait...");
+
+            statusbar.push (context_id, msg);
             msg_in_statusbar = true;
             Utils.flush_queue ();
 
-            execute_with_output (command, get_working_directory ());
+            execute_with_output (command, get_working_directory (), msg);
         }
         catch (Error e) {}
     }
@@ -81,7 +91,7 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
 
-        log_store = log_zone.add_simple_action (this, title);
+        log_store = log_zone.add_action (this, title);
 
         try
         {
@@ -105,7 +115,7 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
 
-        log_store = log_zone.add_simple_action (this, title);
+        log_store = log_zone.add_action (this, title);
 
         try
         {
@@ -128,7 +138,7 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
 
-        log_store = log_zone.add_simple_action (this, "BibTeX");
+        log_store = log_zone.add_action (this, "BibTeX");
 
         try
         {
@@ -150,7 +160,7 @@ public class ExternalCommand : GLib.Object
         return_if_fail (window.active_document.is_tex_document ());
         this (window);
 
-        log_store = log_zone.add_simple_action (this, "MakeIndex");
+        log_store = log_zone.add_action (this, "MakeIndex");
 
         try
         {
@@ -200,7 +210,11 @@ public class ExternalCommand : GLib.Object
         }
 
         // print command line
-        log_store.print_output_info ("$ " + string.joinv (" ", command));
+        string msg = "$ " + string.joinv (" ", command);
+        log_store.print_output_info (msg);
+
+        if (use_waiting_log_store)
+            waiting_log_store.print_output_info (msg);
 
         // check if files exist
         foreach (string file_to_check in files_to_check)
@@ -250,7 +264,8 @@ public class ExternalCommand : GLib.Object
         }
     }
 
-    private void execute_with_output (string[] command, string? working_directory)
+    private void execute_with_output (string[] command, string? working_directory,
+        string? msg = null)
     {
         try
         {
@@ -259,6 +274,9 @@ public class ExternalCommand : GLib.Object
             Process.spawn_async_with_pipes (working_directory, command, null,
                 SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH, on_spawn_setup,
                 out child_pid, null, out output);
+
+            if (use_waiting_log_store && msg != null)
+                waiting_log_store.print_output_info (msg);
 
             // we want to know the exit code
             ChildWatch.add (child_pid, on_child_watch);
@@ -296,7 +314,6 @@ public class ExternalCommand : GLib.Object
                 return false;
 
             case OutputStatus.STOP_REQUEST:
-                //finish_execute ();
                 return false;
         }
 
@@ -333,13 +350,12 @@ public class ExternalCommand : GLib.Object
                         log_store.print_output_normal (line_utf8);
                     }
 
-                    gio_status = source.read_line (out line, null, null);
+                    //gio_status = source.read_line (out line, null, null);
                 }
 
                 if (gio_status == IOStatus.EOF)
                 {
                     output_status = OutputStatus.STOP_REQUEST;
-                    //finish_execute ();
                     return false;
                 }
             }
@@ -352,7 +368,6 @@ public class ExternalCommand : GLib.Object
         if (IOCondition.HUP in condition)
         {
             output_status = OutputStatus.STOP_REQUEST;
-            //finish_execute ();
             return false;
         }
 
@@ -378,6 +393,9 @@ public class ExternalCommand : GLib.Object
         return_if_fail (child_pid_exit_code != null
             && output_status == OutputStatus.STOP_REQUEST);
 
+        if (use_waiting_log_store)
+            log_zone.set_log_store (tree_path, log_store);
+
         if (child_pid_exit_code > -1)
             log_store.print_output_exit (child_pid_exit_code);
         else
@@ -390,8 +408,11 @@ public class ExternalCommand : GLib.Object
 
     public void stop_execution ()
     {
-        output_status = OutputStatus.STOP_REQUEST;
-        Posix.kill (child_pid, Posix.SIGTERM);
-        //log_store.can_stop = false;
+        if (output_status != OutputStatus.STOP_REQUEST)
+        {
+            output_status = OutputStatus.STOP_REQUEST;
+            Posix.kill (child_pid, Posix.SIGTERM);
+            //log_store.can_stop = false;
+        }
     }
 }
