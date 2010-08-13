@@ -87,13 +87,13 @@ public class LogZone : HPaned
                     -1);
 
                 // disconnect scroll signal from current model
-                current_log_store.scroll_and_flush.disconnect (on_scroll_and_flush);
+                current_log_store.scroll.disconnect (on_scroll);
 
                 output_model.refilter ();
                 output_view.set_model (output_model);
 
                 current_log_store = (LogStore) output_model.child_model;
-                current_log_store.scroll_and_flush.connect (on_scroll_and_flush);
+                current_log_store.scroll.connect (on_scroll);
 
                 output_view_columns_autosize ();
                 current_log_store.scroll_to_selected_row ();
@@ -316,7 +316,7 @@ public class LogZone : HPaned
         return false;
     }
 
-    private void on_scroll_and_flush (TreeIter iter)
+    private void on_scroll (TreeIter iter)
     {
         return_if_fail (output_view != null);
         TreeModelFilter filter = (TreeModelFilter) output_view.get_model ();
@@ -325,7 +325,6 @@ public class LogZone : HPaned
         {
             TreePath path = filter.get_path (filter_iter);
             output_view.scroll_to_cell (path, null, false, 0, 0);
-            Utils.flush_queue ();
         }
     }
 
@@ -360,7 +359,7 @@ public class LogStore : ListStore
     private TreeIter selected_row;
     private bool selected_row_valid = false;
 
-    public signal void scroll_and_flush (TreeIter iter);
+    public signal void scroll (TreeIter iter);
 
     struct MsgInfo
     {
@@ -406,7 +405,7 @@ public class LogStore : ListStore
             OutputLineColumn.WEIGHT, title ? WEIGHT_BOLD : WEIGHT_NORMAL,
             -1);
 
-        scroll_to_iter (iter);
+        scroll (iter);
     }
 
     public void print_output_stats (int nb_errors, int nb_warnings, int nb_badboxes)
@@ -453,8 +452,7 @@ public class LogStore : ListStore
                 -1);
         }
 
-        // force the scrolling and the flush
-        scroll_to_iter (iter, true);
+        scroll (iter);
     }
 
     public void print_output_message (string? filename, int? line_number, string msg,
@@ -499,7 +497,7 @@ public class LogStore : ListStore
             OutputLineColumn.WEIGHT, WEIGHT_NORMAL,
             -1);
 
-        scroll_to_iter (iter);
+        scroll (iter);
 
         // append to index
         MsgInfo index_info = { msg_type, iter };
@@ -520,26 +518,13 @@ public class LogStore : ListStore
             OutputLineColumn.WEIGHT, WEIGHT_NORMAL,
             -1);
 
-        scroll_to_iter (iter);
-    }
-
-    private void scroll_to_iter (TreeIter iter, bool force = false)
-    {
-        /* Flush the queue for the 50 first lines and then every 40 lines.
-	     * This is for the fluidity of the output, without that the lines do not
-	     * appear directly and it's ugly. But it is very slow, for a command that
-	     * execute for example in 10 seconds, it could take 250 seconds (!) if we
-	     * flush the queue at each line... But with commands that take 1
-	     * second or so there is not a big difference.
-	     */
-	    if (force || nb_lines < 50 || nb_lines % 40 == 0)
-	        scroll_and_flush (iter);
+        scroll (iter);
     }
 
     public void scroll_to_selected_row ()
     {
         if (selected_row_valid)
-            scroll_and_flush (selected_row);
+            scroll (selected_row);
     }
 
     public void select_row (TreeIter iter)

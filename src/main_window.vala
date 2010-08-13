@@ -348,7 +348,6 @@ public class MainWindow : Window
     private Toolbar edit_toolbar;
     private VBox side_panel;
     private LogZone bottom_panel;
-    private ExternalCommands external_commands;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -455,8 +454,6 @@ public class MainWindow : Window
             action_next_msg);
         log_zone.set_position (settings.get_int ("action-history-size"));
         show_or_hide_build_messages ();
-
-        external_commands = new ExternalCommands (this, log_zone, statusbar);
 
         /* signal handlers */
 
@@ -765,6 +762,16 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         action.set_active (show_badboxes);
+    }
+
+    public LogZone get_log_zone ()
+    {
+        return log_zone;
+    }
+
+    public CustomStatusbar get_statusbar ()
+    {
+        return statusbar;
     }
 
     public void open_document (File location)
@@ -1633,7 +1640,7 @@ public class MainWindow : Window
     public void on_build_view_dvi ()
     {
         return_if_fail (active_tab != null);
-        external_commands.view_current_document (_("View DVI"), "dvi");
+        new ExternalCommand.view_current_document (this, _("View DVI"), "dvi");
     }
 
     public void on_build_pdflatex ()
@@ -1644,25 +1651,25 @@ public class MainWindow : Window
     public void on_build_view_pdf ()
     {
         return_if_fail (active_tab != null);
-        external_commands.view_current_document (_("View PDF"), "pdf");
+        new ExternalCommand.view_current_document (this, _("View PDF"), "pdf");
     }
 
     public void on_build_dvi_to_pdf ()
     {
         return_if_fail (active_tab != null);
-        external_commands.convert_document (_("DVI to PDF"), "command-dvipdf");
+        new ExternalCommand.convert_document (this, _("DVI to PDF"), "command-dvipdf");
     }
 
     public void on_build_dvi_to_ps ()
     {
         return_if_fail (active_tab != null);
-        external_commands.convert_document (_("DVI to PS"), "command-dvips");
+        new ExternalCommand.convert_document (this, _("DVI to PS"), "command-dvips");
     }
 
     public void on_build_view_ps ()
     {
         return_if_fail (active_tab != null);
-        external_commands.view_current_document (_("View PS"), "ps");
+        new ExternalCommand.view_current_document (this, _("View PS"), "ps");
     }
 
     public void on_build_bibtex ()

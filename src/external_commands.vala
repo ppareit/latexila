@@ -17,104 +17,121 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class ExternalCommands : GLib.Object
+public class ExternalCommand : GLib.Object
 {
     private MainWindow window;
     private LogZone log_zone;
     private CustomStatusbar statusbar;
-    private uint statusbar_context_id;
+    private uint context_id;
+    private bool msg_in_statusbar = false;
     private Settings settings;
+    private LogStore log_store;
 
     private static const string CMD_CHAR_1 = "%";
     private static const string CMD_CHAR_2 = "#";
     private static const string view_msg = _("Viewing in progress. Please wait...");
 
-    public ExternalCommands (MainWindow window, LogZone log_zone,
-        CustomStatusbar statusbar)
+    enum OutputStatus
+    {
+        GO_FETCHING,
+        IS_FETCHING,
+        STOP_REQUEST
+    }
+
+    private int? child_pid_exit_code = null;
+    //private OutputStatus output_status = OutputStatus.GO_FETCHING;
+
+    private ExternalCommand (MainWindow window)
     {
         this.window = window;
-        this.log_zone = log_zone;
-        this.statusbar = statusbar;
-        statusbar_context_id = statusbar.get_context_id ("running-action");
+        log_zone = window.get_log_zone ();
+        statusbar = window.get_statusbar ();
+        context_id = statusbar.get_context_id ("running-action");
         settings = new Settings ("org.gnome.latexila.preferences.latex");
     }
 
-    public void run_compilation (string title, string command)
+    public ExternalCommand.run_compilation (MainWindow window, string title,
+        string setting)
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
+        this (window);
     }
 
-    public void view_current_document (string title, string doc_extension)
+    public ExternalCommand.view_current_document (MainWindow window, string title,
+        string doc_extension)
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
 
-        LogStore log_store = log_zone.add_simple_action (title);
+        this (window);
+
+        log_store = log_zone.add_simple_action (title);
 
         try
         {
             string command_line = "%s %s.%s".printf (settings.get_string ("command-view"),
                 CMD_CHAR_1, doc_extension);
-            string[] command = process_command_line (log_store, command_line, false);
-            ExecuteCommand exec = new ExecuteCommand.without_output (log_store, command,
-                null, view_msg);
-            exec.finished.connect (() => log_zone.output_view_columns_autosize ());
+            string[] command = process_command_line (command_line, false);
+            execute_without_output (command, null, view_msg);
         }
         catch (Error e) {}
     }
 
-    public void view_document (string title, File file)
+    public ExternalCommand.view_document (MainWindow window, string title, File file)
     {
+        this (window);
     }
 
-    public void convert_document (string title, string setting)
+    public ExternalCommand.convert_document (MainWindow window, string title,
+        string setting)
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
 
-        LogStore log_store = log_zone.add_simple_action (title);
+        this (window);
+
+        log_store = log_zone.add_simple_action (title);
 
         try
         {
             string command_line = settings.get_string (setting);
-            string[] command = process_command_line (log_store, command_line, false);
+            string[] command = process_command_line (command_line, false);
             string msg = _("Converting in progress. Please wait...");
 
-            statusbar.push (statusbar_context_id, msg);
+            statusbar.push (context_id, msg);
+            msg_in_statusbar = true;
             Utils.flush_queue ();
 
             string working_directory =
                 window.active_document.location.get_parent ().get_path ();
-            ExecuteCommand exec = new ExecuteCommand.without_output (log_store, command,
-                working_directory, msg);
-            exec.finished.connect (() =>
-            {
-                log_zone.output_view_columns_autosize ();
-                statusbar.pop (statusbar_context_id);
-            });
+            execute_without_output (command, working_directory, msg);
         }
         catch (Error e) {}
     }
 
-    public void run_bibtex ()
+    public ExternalCommand.run_bibtex (MainWindow window)
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
+        this (window);
     }
 
-    public void run_makeindex ()
+    public ExternalCommand.run_makeindex (MainWindow window)
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
+        this (window);
     }
 
-    public void view_in_web_browser (string title, File file)
+    public ExternalCommand.view_in_web_browser (MainWindow window, string title,
+        File file)
     {
+        this (window);
     }
 
-    private string[] process_command_line (LogStore log_store, string command_line,
-        bool basename) throws FileError
+    private string[] process_command_line (string command_line, bool basename)
+        throws FileError
     {
         return_if_fail (window.active_tab != null);
         return_if_fail (window.active_document.is_tex_document ());
@@ -158,27 +175,10 @@ public class ExternalCommands : GLib.Object
 
         return command;
     }
-}
 
-public class ExecuteCommand : GLib.Object
-{
-    enum OutputStatus
+    private void execute_without_output (string[] command, string? working_directory,
+        string msg)
     {
-        GO_FETCHING,
-        IS_FETCHING,
-        STOP_REQUEST
-    }
-
-    private LogStore log_store;
-    private int? child_pid_exit_code = null;
-    //private OutputStatus output_status = OutputStatus.GO_FETCHING;
-
-    public signal void finished ();
-
-    public ExecuteCommand.without_output (LogStore log_store, string[] command,
-        string? working_directory, string msg)
-    {
-        this.log_store = log_store;
         try
         {
             Pid child_pid;
@@ -218,6 +218,8 @@ public class ExecuteCommand : GLib.Object
         else
             log_store.print_output_exit (42, _("The child process exited abnormally"));
 
-        finished ();
+        log_zone.output_view_columns_autosize ();
+        if (msg_in_statusbar)
+            statusbar.pop (context_id);
     }
 }
