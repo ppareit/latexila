@@ -46,6 +46,7 @@ public class LogZone : HPaned
 
     private Action action_previous_msg;
     private Action action_next_msg;
+    private Action action_stop_exec;
 
     enum HistoryActionColumn
     {
@@ -58,10 +59,13 @@ public class LogZone : HPaned
     public bool show_warnings { get; set; }
     public bool show_badboxes { get; set; }
 
-    public LogZone (Toolbar log_toolbar, Action previous_msg, Action next_msg)
+    public LogZone (Toolbar log_toolbar, Action previous_msg, Action next_msg,
+        Action stop_exec)
     {
         action_previous_msg = previous_msg;
         action_next_msg = next_msg;
+        action_stop_exec = stop_exec;
+        stop_exec.set_sensitive (false);
 
         /* action history */
         TreeStore history_tree_store = new TreeStore (HistoryActionColumn.N_COLUMNS,
@@ -94,6 +98,7 @@ public class LogZone : HPaned
 
                 current_log_store = (LogStore) output_model.child_model;
                 current_log_store.scroll.connect (on_scroll);
+                action_stop_exec.set_sensitive (current_log_store.can_stop);
 
                 output_view_columns_autosize ();
                 current_log_store.scroll_to_selected_row ();
@@ -105,7 +110,7 @@ public class LogZone : HPaned
         add1 (sw);
 
         /* log details */
-        current_log_store = new LogStore ();
+        current_log_store = new LogStore (null);
         current_log_store.print_output_normal (_("Welcome to LaTeXila!"));
 
         TreeModelFilter output_filter = new TreeModelFilter (current_log_store, null);
@@ -206,26 +211,33 @@ public class LogZone : HPaned
         set_previous_next_actions_sensitivity ();
     }
 
-    public LogStore add_simple_action (string title)
+    public LogStore add_simple_action (ExternalCommand? cmd, string title)
     {
-        return add_action_full (title, false, null, null, null, null);
+        return add_action_full (cmd, title, false, null, null, null, null);
     }
 
-    public LogStore add_parent_action (string title, out TreePath path)
+    public LogStore add_parent_action (ExternalCommand? cmd, string title,
+        out TreePath path)
     {
-        return add_action_full (title, true, out path, null, null, null);
+        return add_action_full (cmd, title, true, out path, null, null, null);
     }
 
-    public LogStore add_child_action (string title, TreePath parent, int step,
-        int nb_steps)
+    public LogStore add_child_action (ExternalCommand? cmd, string title, TreePath parent,
+        int step, int nb_steps)
     {
-        return add_action_full (title, false, null, parent, step, nb_steps);
+        return add_action_full (cmd, title, false, null, parent, step, nb_steps);
     }
 
-    private LogStore add_action_full (string title, bool set_path,
+    private LogStore add_action_full (ExternalCommand? cmd, string title, bool set_path,
         out TreePath? path_to_set, TreePath? parent, int? step, int? nb_steps)
     {
-        LogStore log_store = new LogStore ();
+        LogStore log_store = new LogStore (cmd);
+        log_store.notify["can-stop"].connect (() =>
+        {
+            if (current_log_store == log_store)
+                action_stop_exec.set_sensitive (log_store.can_stop);
+        });
+
         TreeModelFilter filter = new TreeModelFilter (log_store, null);
         filter.set_visible_func (filter_visible_func);
 
@@ -343,6 +355,12 @@ public class LogZone : HPaned
         action_previous_msg.sensitive = can_prev;
         action_next_msg.sensitive = can_next;
     }
+
+    public void stop_execution ()
+    {
+        return_if_fail (current_log_store.can_stop);
+        current_log_store.stop_execution ();
+    }
 }
 
 public class LogStore : ListStore
@@ -359,6 +377,10 @@ public class LogStore : ListStore
     private TreeIter selected_row;
     private bool selected_row_valid = false;
 
+    // weak because cmd has also a reference to this
+    private weak ExternalCommand cmd;
+    public bool can_stop { get; set; }
+
     public signal void scroll (TreeIter iter);
 
     struct MsgInfo
@@ -369,7 +391,7 @@ public class LogStore : ListStore
 
     private MsgInfo[] index = {};
 
-    public LogStore ()
+    public LogStore (ExternalCommand? cmd)
     {
         Type[] types =
         {
@@ -384,6 +406,10 @@ public class LogStore : ListStore
         };
 
         set_column_types (types);
+
+        this.cmd = cmd;
+        if (cmd != null)
+            can_stop = true;
     }
 
     public void print_output_title (string title)
@@ -453,6 +479,7 @@ public class LogStore : ListStore
         }
 
         scroll (iter);
+        can_stop = false;
     }
 
     public void print_output_message (string? filename, int? line_number, string msg,
@@ -690,5 +717,12 @@ public class LogStore : ListStore
             can_next = true;
             break;
         }
+    }
+
+    public void stop_execution ()
+    {
+        return_if_fail (can_stop);
+        return_if_fail (cmd != null);
+        cmd.stop_execution ();
     }
 }

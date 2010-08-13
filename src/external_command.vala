@@ -39,6 +39,7 @@ public class ExternalCommand : GLib.Object
     }
 
     private int? child_pid_exit_code = null;
+    private Pid child_pid;
     //private OutputStatus output_status = OutputStatus.GO_FETCHING;
 
     private ExternalCommand (MainWindow window)
@@ -66,7 +67,7 @@ public class ExternalCommand : GLib.Object
 
         this (window);
 
-        log_store = log_zone.add_simple_action (title);
+        log_store = log_zone.add_simple_action (this, title);
 
         try
         {
@@ -91,12 +92,12 @@ public class ExternalCommand : GLib.Object
 
         this (window);
 
-        log_store = log_zone.add_simple_action (title);
+        log_store = log_zone.add_simple_action (this, title);
 
         try
         {
             string command_line = settings.get_string (setting);
-            string[] command = process_command_line (command_line, false);
+            string[] command = process_command_line (command_line, true);
             string msg = _("Converting in progress. Please wait...");
 
             statusbar.push (context_id, msg);
@@ -181,7 +182,6 @@ public class ExternalCommand : GLib.Object
     {
         try
         {
-            Pid child_pid;
             Process.spawn_async (working_directory, command, null,
                 SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH, null,
                 out child_pid);
@@ -221,5 +221,11 @@ public class ExternalCommand : GLib.Object
         log_zone.output_view_columns_autosize ();
         if (msg_in_statusbar)
             statusbar.pop (context_id);
+    }
+
+    public void stop_execution ()
+    {
+        Posix.kill (child_pid, Posix.SIGTERM);
+        //log_store.can_stop = false;
     }
 }

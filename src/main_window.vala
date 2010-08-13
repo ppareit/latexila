@@ -113,7 +113,7 @@ public class MainWindow : Window
 		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
 	        on_build_clean },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F9",
-            N_("Stop Execution"), null },
+            N_("Stop Execution"), on_build_stop_execution },
         { "BuildPreviousMessage", STOCK_GO_UP, N_("_Previous Message"), null,
             N_("Go to the previous build output message"), on_build_previous_msg },
         { "BuildNextMessage", STOCK_GO_DOWN, N_("_Next Message"), null,
@@ -347,7 +347,6 @@ public class MainWindow : Window
     private LogZone log_zone;
     private Toolbar edit_toolbar;
     private VBox side_panel;
-    private LogZone bottom_panel;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -450,8 +449,9 @@ public class MainWindow : Window
 
         Action action_previous_msg = action_group.get_action ("BuildPreviousMessage");
         Action action_next_msg = action_group.get_action ("BuildNextMessage");
-        bottom_panel = log_zone = new LogZone (log_toolbar, action_previous_msg,
-            action_next_msg);
+        Action action_stop_exec = action_group.get_action ("BuildStopExecution");
+        log_zone = new LogZone (log_toolbar, action_previous_msg, action_next_msg,
+            action_stop_exec);
         log_zone.set_position (settings.get_int ("action-history-size"));
         show_or_hide_build_messages ();
 
@@ -560,7 +560,7 @@ public class MainWindow : Window
 
         // when we resize the window, the bottom panel keeps the same height
         vpaned.pack1 (vbox_source_view, true, true);
-        vpaned.pack2 (bottom_panel, false, true);
+        vpaned.pack2 (log_zone, false, true);
 
         main_hpaned.add1 (side_panel);
         main_hpaned.add2 (vpaned);
@@ -1311,7 +1311,7 @@ public class MainWindow : Window
 
         settings_window.set_int ("side-panel-size", main_hpaned.get_position ());
         settings_window.set_int ("vertical-paned-position", vpaned.get_position ());
-        settings_window.set_int ("action-history-size", bottom_panel.get_position ());
+        settings_window.set_int ("action-history-size", log_zone.get_position ());
 
         /* ui preferences */
         GLib.Settings settings_ui =
@@ -1685,6 +1685,11 @@ public class MainWindow : Window
     public void on_build_clean ()
     {
         return_if_fail (active_tab != null);
+    }
+
+    public void on_build_stop_execution ()
+    {
+        log_zone.stop_execution ();
     }
 
     public void on_build_previous_msg ()
