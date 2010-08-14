@@ -1,6 +1,6 @@
 TODO
 
-- Document compilation output filter 
+- Build documents with rubber
 - File browser
 
 - choose the character encoding and the line ending type when saving a document

@@ -91,29 +91,10 @@ public class MainWindow : Window
 
         // Build
         { "Build", null, N_("_Build") },
-        { "BuildCompileLatex", "compile_latex", N_("_Compile (latex)"), "<Release>F5",
-            N_("Produce the document in DVI format"), on_build_latex },
-        { "BuildViewDVI", "view_dvi", N_("_View DVI"), "<Release>F6",
-            N_("View the DVI file"), on_build_view_dvi },
-        { "BuildCompilePdflatex", "compile_pdflatex", N_("C_ompile (pdflatex)"),
-            "<Release>F7", N_("Produce the document in PDF format"), on_build_pdflatex },
-		{ "BuildViewPDF", "view_pdf", N_("V_iew PDF"), "<Release>F8",
-		    N_("View the PDF file"), on_build_view_pdf },
-		{ "BuildDVItoPDF", "dvi_to_pdf", N_("_DVI to PDF"), null,
-		    N_("Convert the DVI document to the PDF format"), on_build_dvi_to_pdf },
-		{ "BuildDVItoPS", "dvi_to_ps", N_("DVI to _PS"), null,
-		    N_("Convert the DVI document to the PostScript format"), on_build_dvi_to_ps },
-		{ "BuildViewPS", "view_ps", N_("Vi_ew PS"), null,
-		    N_("View the PostScript file"), on_build_view_ps },
-		{ "BuildBibtex", null, "_BibTeX", null,
-		    N_("Run BibTeX on the current document"), on_build_bibtex },
-		{ "BuildMakeindex", null, "_MakeIndex", null,
-		    N_("Run MakeIndex on the current document"), on_build_makeindex },
 		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
-		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
-	        on_build_clean },
+		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"), null },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F9",
-            N_("Stop Execution"), on_build_stop_execution },
+            N_("Stop Execution"), null },
         { "BuildPreviousMessage", STOCK_GO_UP, N_("_Previous Message"), null,
             N_("Go to the previous build output message"), on_build_previous_msg },
         { "BuildNextMessage", STOCK_GO_DOWN, N_("_Next Message"), null,
@@ -344,7 +325,7 @@ public class MainWindow : Window
     private CustomStatusbar statusbar;
     private GotoLine goto_line;
     private SearchAndReplace search_and_replace;
-    private LogZone log_zone;
+    private BuildView build_view;
     private Toolbar edit_toolbar;
     private VBox side_panel;
     private HPaned main_hpaned;
@@ -447,12 +428,12 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
         side_panel = new Symbols (this);
 
+        /*
         Action action_previous_msg = action_group.get_action ("BuildPreviousMessage");
         Action action_next_msg = action_group.get_action ("BuildNextMessage");
         Action action_stop_exec = action_group.get_action ("BuildStopExecution");
-        log_zone = new LogZone (log_toolbar, action_previous_msg, action_next_msg,
-            action_stop_exec);
-        log_zone.set_position (settings.get_int ("action-history-size"));
+        */
+        build_view = new BuildView (log_toolbar);
         show_or_hide_build_messages ();
 
         /* signal handlers */
@@ -560,7 +541,7 @@ public class MainWindow : Window
 
         // when we resize the window, the bottom panel keeps the same height
         vpaned.pack1 (vbox_source_view, true, true);
-        vpaned.pack2 (log_zone, false, true);
+        vpaned.pack2 (build_view, false, true);
 
         main_hpaned.add1 (side_panel);
         main_hpaned.add2 (vpaned);
@@ -750,9 +731,9 @@ public class MainWindow : Window
         bool show_warnings = settings.get_boolean ("show-build-warnings");
         bool show_badboxes = settings.get_boolean ("show-build-badboxes");
 
-        log_zone.show_errors = show_errors;
-        log_zone.show_warnings = show_warnings;
-        log_zone.show_badboxes = show_badboxes;
+        build_view.show_errors = show_errors;
+        build_view.show_warnings = show_warnings;
+        build_view.show_badboxes = show_badboxes;
 
         ToggleAction action = (ToggleAction) action_group.get_action ("BuildShowErrors");
         action.set_active (show_errors);
@@ -764,9 +745,9 @@ public class MainWindow : Window
         action.set_active (show_badboxes);
     }
 
-    public LogZone get_log_zone ()
+    public BuildView get_build_view ()
     {
-        return log_zone;
+        return build_view;
     }
 
     public CustomStatusbar get_statusbar ()
@@ -1006,7 +987,6 @@ public class MainWindow : Window
         }
 
         latex_action_group.set_sensitive (sensitive);
-        set_build_actions_sensitivity (sensitive);
     }
 
     private void set_undo_sensitivity ()
@@ -1045,22 +1025,6 @@ public class MainWindow : Window
 
             int nb_pages = documents_panel.get_n_pages ();
             action_next.set_sensitive (current_page < nb_pages - 1);
-        }
-    }
-
-    public void set_build_actions_sensitivity (bool sensitive)
-    {
-        string[] build_actions =
-        {
-            "BuildCompileLatex", "BuildViewDVI", "BuildCompilePdflatex", "BuildViewPDF",
-            "BuildDVItoPDF", "BuildDVItoPS", "BuildViewPS", "BuildBibtex",
-            "BuildMakeindex", "BuildClean"
-        };
-
-        foreach (string build_action in build_actions)
-        {
-            Action action = action_group.get_action (build_action);
-            action.set_sensitive (sensitive);
         }
     }
 
@@ -1311,7 +1275,6 @@ public class MainWindow : Window
 
         settings_window.set_int ("side-panel-size", main_hpaned.get_position ());
         settings_window.set_int ("vertical-paned-position", vpaned.get_position ());
-        settings_window.set_int ("action-history-size", log_zone.get_position ());
 
         /* ui preferences */
         GLib.Settings settings_ui =
@@ -1632,94 +1595,29 @@ public class MainWindow : Window
 
     /* Build */
 
-    public void on_build_latex ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.run_compilation (this, _("Compile (latex)"), "command-latex");
-    }
-
-    public void on_build_view_dvi ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.view_current_document (this, _("View DVI"), "dvi");
-    }
-
-    public void on_build_pdflatex ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.run_compilation (this, _("Compile (pdflatex)"),
-            "command-pdflatex");
-    }
-
-    public void on_build_view_pdf ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.view_current_document (this, _("View PDF"), "pdf");
-    }
-
-    public void on_build_dvi_to_pdf ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.convert_document (this, _("DVI to PDF"), "command-dvipdf");
-    }
-
-    public void on_build_dvi_to_ps ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.convert_document (this, _("DVI to PS"), "command-dvips");
-    }
-
-    public void on_build_view_ps ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.view_current_document (this, _("View PS"), "ps");
-    }
-
-    public void on_build_bibtex ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.run_bibtex (this);
-    }
-
-    public void on_build_makeindex ()
-    {
-        return_if_fail (active_tab != null);
-        new ExternalCommand.run_makeindex (this);
-    }
-
-    public void on_build_clean ()
-    {
-        return_if_fail (active_tab != null);
-    }
-
-    public void on_build_stop_execution ()
-    {
-        log_zone.stop_execution ();
-    }
-
     public void on_build_previous_msg ()
     {
-        log_zone.go_to_message (false);
+        //build_view.go_to_message (false);
     }
 
     public void on_build_next_msg ()
     {
-        log_zone.go_to_message (true);
+        //build_view.go_to_message (true);
     }
 
     public void on_build_show_errors (Action action)
     {
-        log_zone.show_errors = ((ToggleAction) action).active;
+        build_view.show_errors = ((ToggleAction) action).active;
     }
 
     public void on_build_show_warnings (Action action)
     {
-        log_zone.show_warnings = ((ToggleAction) action).active;
+        build_view.show_warnings = ((ToggleAction) action).active;
     }
 
     public void on_build_show_badboxes (Action action)
     {
-        log_zone.show_badboxes = ((ToggleAction) action).active;
+        build_view.show_badboxes = ((ToggleAction) action).active;
     }
 
     /* Documents */
