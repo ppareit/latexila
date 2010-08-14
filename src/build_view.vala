@@ -19,95 +19,63 @@
 
 using Gtk;
 
+public enum PartitionState
+{
+    RUNNING,
+    SUCCEEDED,
+    FAILED,
+    ABORTED
+}
+
+public enum BuildMessageType
+{
+    ERROR, WARNING, BADBOX, OTHER
+}
+
+public struct BuildIssue
+{
+    public string message;
+    public BuildMessageType message_type;
+    public string? filename;
+    public int? start_line;
+    public int? end_line;
+}
+
 public class BuildView : HBox
 {
-    public bool show_errors { get; set; }
-    public bool show_warnings { get; set; }
-    public bool show_badboxes { get; set; }
-
     enum BuildInfo
     {
         ICON,
         MESSAGE,
-        BASENAME,
-        LINE,
         MESSAGE_TYPE,
+        BASENAME,
+        FILENAME,
         START_LINE,
         END_LINE,
-        FILENAME,
         N_COLUMNS
     }
 
-    enum BuildMessageType
-    {
-        ERROR, WARNING, BADBOX, OTHER
-    }
+    public bool show_errors { get; set; }
+    public bool show_warnings { get; set; }
+    public bool show_badboxes { get; set; }
+
+    private TreeStore store;
+    private TreeView view;
 
     public BuildView (Toolbar toolbar)
     {
-        TreeStore tree_store = new TreeStore (BuildInfo.N_COLUMNS,
+        store = new TreeStore (BuildInfo.N_COLUMNS,
             typeof (string),    // icon (stock-id)
             typeof (string),    // message
-            typeof (string),    // basename
-            typeof (string),    // line
             typeof (BuildMessageType),
-            typeof (int),       // start line
-            typeof (int),       // end line
-            typeof (string)     // filename
+            typeof (string),    // basename
+            typeof (string),    // filename
+            typeof (string),    // start line (string because must be displayed)
+            typeof (int)        // end line
         );
 
-        /* TEST tree_store */
-        TreeIter iter, parent;
-        tree_store.append (out parent, null);
-        tree_store.set (parent,
-            BuildInfo.ICON, STOCK_EXECUTE,
-            BuildInfo.MESSAGE, "<b>LaTeX → PDF</b>",
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
-            -1);
-
-        tree_store.append (out iter, parent);
-        tree_store.set (iter,
-            BuildInfo.ICON, STOCK_APPLY,
-            BuildInfo.MESSAGE, "rubber --inplace --maxerr -1 --short --force --warn all --pdf \"$filename\"",
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
-            -1);
-        TreeIter parent2 = iter;
-
-        tree_store.append (out iter, parent2);
-        tree_store.set (iter,
-            BuildInfo.ICON, "badbox",
-            BuildInfo.MESSAGE, "Overfull \\hbox",
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.BADBOX,
-            BuildInfo.BASENAME, "test.tex",
-            BuildInfo.FILENAME, "/home/seb/test.tex",
-            BuildInfo.LINE, "42",
-            -1);
-
-        tree_store.append (out iter, parent2);
-        tree_store.set (iter,
-            BuildInfo.ICON, STOCK_DIALOG_WARNING,
-            BuildInfo.MESSAGE, "Waring",
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.WARNING,
-            -1);
-
-        tree_store.append (out iter, parent2);
-        tree_store.set (iter,
-            BuildInfo.ICON, STOCK_DIALOG_ERROR,
-            BuildInfo.MESSAGE, "Label 'testlabel' multiply defined.",
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.ERROR,
-            BuildInfo.BASENAME, "test.tex",
-            BuildInfo.FILENAME, "/home/seb/test.tex",
-            -1);
-
-        tree_store.append (out iter, parent);
-        tree_store.set (iter,
-            BuildInfo.ICON, STOCK_EXECUTE,
-            BuildInfo.MESSAGE, "gnome-open \"$shortname.pdf\"",
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
-            -1);
-
         /* create tree view */
-        TreeView tree_view = new TreeView.with_model (tree_store);
+        view = new TreeView.with_model (store);
 
         TreeViewColumn column_job = new TreeViewColumn ();
         column_job.title = _("Job");
@@ -120,18 +88,111 @@ public class BuildView : HBox
         column_job.pack_start (renderer_text, true);
         column_job.add_attribute (renderer_text, "markup", BuildInfo.MESSAGE);
 
-        tree_view.append_column (column_job);
+        view.append_column (column_job);
 
-        tree_view.insert_column_with_attributes (-1, _("File"), new CellRendererText (),
+        view.insert_column_with_attributes (-1, _("File"), new CellRendererText (),
             "text", BuildInfo.BASENAME);
-        tree_view.insert_column_with_attributes (-1, _("Line"), new CellRendererText (),
-            "text", BuildInfo.LINE);
+        view.insert_column_with_attributes (-1, _("Line"), new CellRendererText (),
+            "text", BuildInfo.START_LINE);
 
-        tree_view.set_tooltip_column (BuildInfo.FILENAME);
+        view.set_tooltip_column (BuildInfo.FILENAME);
 
-        tree_view.expand_all ();
+        /* TEST store */
+        TreeIter root_partition =
+            add_partition ("<b>LaTeX → PDF</b>", PartitionState.RUNNING, null);
+        TreeIter rubber_partition =
+            add_partition ("rubber --inplace --maxerr -1 --short --force --warn all --pdf \"$filename\"",
+                PartitionState.SUCCEEDED, root_partition);
+        add_partition ("gnome-open \"$shortname.pdf\"", PartitionState.ABORTED,
+            root_partition);
 
-        pack_start (tree_view);
+        BuildIssue[] issues = new BuildIssue[3];
+        BuildIssue issue = { "Overfull \\hbox", BuildMessageType.BADBOX,
+            "/home/seb/test.tex", 42, 43 };
+        issues[0] = issue;
+        issue = { "Warning", BuildMessageType.WARNING, null, null, null };
+        issues[1] = issue;
+        issue = { "Label 'testlabel' multiply defined.", BuildMessageType.ERROR,
+            "/home/seb/test.tex", null, null };
+        issues[2] = issue;
+
+        append_issues (rubber_partition, issues);
+
+        pack_start (view);
         pack_start (toolbar, false, false);
+    }
+
+    public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent)
+    {
+        TreeIter iter;
+        store.append (out iter, parent);
+        store.set (iter,
+            BuildInfo.ICON, get_icon_from_state (state),
+            BuildInfo.MESSAGE, msg,
+            BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
+            -1);
+
+        return iter;
+    }
+
+    public void set_partition_state (TreeIter partition_id, PartitionState state)
+    {
+        store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state), -1);
+    }
+
+    public void append_issues (TreeIter partition_id, BuildIssue[] issues)
+    {
+        foreach (BuildIssue issue in issues)
+        {
+            TreeIter iter;
+            store.append (out iter, partition_id);
+            store.set (iter,
+                BuildInfo.ICON, get_icon_from_msg_type (issue.message_type),
+                BuildInfo.MESSAGE, issue.message,
+                BuildInfo.MESSAGE_TYPE, issue.message_type,
+                BuildInfo.BASENAME, issue.filename != null ?
+                    Path.get_basename (issue.filename) : null,
+                BuildInfo.FILENAME, issue.filename,
+                BuildInfo.START_LINE, issue.start_line != null ?
+                    issue.start_line.to_string () : null,
+                BuildInfo.END_LINE, issue.end_line,
+                -1);
+        }
+
+        view.expand_all ();
+    }
+
+    private string? get_icon_from_state (PartitionState state)
+    {
+        switch (state)
+        {
+            case PartitionState.RUNNING:
+                return STOCK_EXECUTE;
+            case PartitionState.SUCCEEDED:
+                return STOCK_APPLY;
+            case PartitionState.FAILED:
+                return STOCK_DIALOG_ERROR;
+            case PartitionState.ABORTED:
+                return STOCK_STOP;
+            default:
+                return_val_if_reached (null);
+        }
+    }
+
+    private string? get_icon_from_msg_type (BuildMessageType type)
+    {
+        switch (type)
+        {
+            case BuildMessageType.ERROR:
+                return STOCK_DIALOG_ERROR;
+            case BuildMessageType.WARNING:
+                return STOCK_DIALOG_WARNING;
+            case BuildMessageType.BADBOX:
+                return "badbox";
+            case BuildMessageType.OTHER:
+                return null;
+            default:
+                return_val_if_reached (null);
+        }
     }
 }
