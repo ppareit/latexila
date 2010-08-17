@@ -106,15 +106,27 @@ public class BuildView : HBox
         add_partition ("gnome-open \"$shortname.pdf\"", PartitionState.ABORTED,
             root_partition);
 
-        BuildIssue[] issues = new BuildIssue[3];
-        BuildIssue issue = { "Overfull \\hbox", BuildMessageType.BADBOX,
-            "/home/seb/test.tex", 42, 43 };
-        issues[0] = issue;
-        issue = { "Warning", BuildMessageType.WARNING, null, null, null };
-        issues[1] = issue;
-        issue = { "Label 'testlabel' multiply defined.", BuildMessageType.ERROR,
-            "/home/seb/test.tex", null, null };
-        issues[2] = issue;
+        BuildIssue[] issues =
+        {
+            BuildIssue ()
+            {
+                message = "Overfull \\hbox",
+                message_type = BuildMessageType.BADBOX,
+                filename = "/home/seb/test.tex",
+                start_line = 42, end_line = 43
+            },
+            BuildIssue ()
+            {
+                message = "Warning",
+                message_type = BuildMessageType.WARNING
+            },
+            BuildIssue ()
+            {
+                message = "Label 'testlabel' multiply defined.",
+                message_type = BuildMessageType.ERROR,
+                filename = "/home/seb/test.tex"
+            }
+        };
 
         append_issues (rubber_partition, issues);
 

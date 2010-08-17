@@ -27,13 +27,12 @@ public class Application : GLib.Object
 
     private const StockIcon[] stock_icons =
     {
-	    { Config.DATA_DIR + "/images/icons/compile_latex.png", "compile_latex" },
-	    { Config.DATA_DIR + "/images/icons/compile_pdflatex.png", "compile_pdflatex" },
+	    { Config.DATA_DIR + "/images/icons/compile_dvi.png", "compile_dvi" },
+	    { Config.DATA_DIR + "/images/icons/compile_pdf.png", "compile_pdf" },
+	    { Config.DATA_DIR + "/images/icons/compile_ps.png", "compile_ps" },
 	    { Config.DATA_DIR + "/images/icons/view_dvi.png", "view_dvi" },
 	    { Config.DATA_DIR + "/images/icons/view_pdf.png", "view_pdf" },
 	    { Config.DATA_DIR + "/images/icons/view_ps.png", "view_ps" },
-	    { Config.DATA_DIR + "/images/icons/dvi_to_pdf.png", "dvi_to_pdf" },
-	    { Config.DATA_DIR + "/images/icons/dvi_to_ps.png", "dvi_to_ps" },
 	    { Config.DATA_DIR + "/images/icons/textbf.png", "bold" },
 	    { Config.DATA_DIR + "/images/icons/textit.png", "italic" },
 	    { Config.DATA_DIR + "/images/icons/texttt.png", "typewriter" },
@@ -69,8 +68,6 @@ public class Application : GLib.Object
     private static Application instance = null;
     public unowned List<MainWindow> windows { get; private set; }
     public MainWindow active_window { get; private set; }
-
-    public AppSettings settings { get; private set; }
 
     /* Application is a singleton
      * We must use Application.get_default ()
@@ -119,7 +116,7 @@ public class Application : GLib.Object
 
         register_my_stock_icons ();
 
-        settings = new AppSettings ();
+        AppSettings.get_default ();
         create_window ();
     }
 

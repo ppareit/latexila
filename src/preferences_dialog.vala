@@ -145,7 +145,7 @@ public class PreferencesDialog : Dialog
 
             // default font checkbutton label
             var label = _("Use the system fixed width font (%s)")
-                .printf (Application.get_default ().settings.get_system_font ());
+                .printf (AppSettings.get_default ().get_system_font ());
             default_font_checkbutton.set_label (label);
 
             // pack notebook

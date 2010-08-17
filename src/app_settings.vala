@@ -17,15 +17,42 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+public struct BuildJob
+{
+    public bool must_succeed;
+    public string post_processor;
+    public string command;
+}
+
+public struct BuildTool
+{
+    public string description;
+    public string extensions;
+    public string label;
+    public string icon;
+    public unowned List<BuildJob?> jobs;
+}
+
 public class AppSettings : GLib.Settings
 {
+    private static AppSettings instance = null;
+
     private Settings editor;
     //private Settings desktop_interface;
 
-    public AppSettings ()
+    /* AppSettings is a singleton */
+    private AppSettings ()
     {
         Object (schema: "org.gnome.latexila");
         initialize ();
+        load_build_tools ();
+    }
+
+    public static AppSettings get_default ()
+    {
+        if (instance == null)
+            instance = new AppSettings ();
+        return instance;
     }
 
     private void initialize ()
@@ -131,5 +158,129 @@ public class AppSettings : GLib.Settings
     {
         foreach (var view in Application.get_default ().get_views ())
             view.set_font_from_string (font);
+    }
+
+
+    /*********************
+     *    BUILD TOOLS    *
+     *********************/
+
+    private BuildTool[] build_tools = {};
+    private BuildTool current_build_tool;
+    private BuildJob current_build_job;
+
+    public unowned BuildTool[] get_build_tools ()
+    {
+        return build_tools;
+    }
+
+    private void load_build_tools ()
+    {
+        try
+        {
+            File file = File.new_for_path (Config.DATA_DIR + "/build_tools.xml");
+            string contents;
+            file.load_contents (null, out contents);
+
+            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
+            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+        }
+        catch (GLib.Error e)
+        {
+            stderr.printf ("Warning: impossible to load build tools: %s\n", e.message);
+        }
+    }
+
+    public void print_build_tools ()
+    {
+        foreach (BuildTool build_tool in build_tools)
+            Utils.print_build_tool (build_tool);
+    }
+
+    private void parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "tools":
+                return;
+
+            case "tool":
+                current_build_tool = BuildTool ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "description":
+                            current_build_tool.description = attr_values[i];
+                            break;
+                        case "extensions":
+                            current_build_tool.extensions = attr_values[i];
+                            break;
+                        case "label":
+                            current_build_tool.label = attr_values[i];
+                            break;
+                        case "icon":
+                            current_build_tool.icon = attr_values[i];
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                break;
+
+            case "job":
+                current_build_job = BuildJob ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "mustSucceed":
+                            current_build_job.must_succeed = attr_values[i].to_bool ();
+                            break;
+                        case "postProcessor":
+                            current_build_job.post_processor = attr_values[i];
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private void parser_end (MarkupParseContext context, string name) throws MarkupError
+    {
+        switch (name)
+        {
+            case "tools":
+                return;
+
+            case "tool":
+                build_tools += current_build_tool;
+                break;
+
+            case "job":
+                current_build_tool.jobs.append (current_build_job);
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private void parser_text (MarkupParseContext context, string text, size_t text_len)
+        throws MarkupError
+    {
+        if (context.get_element () == "job")
+            current_build_job.command = text;
     }
 }

@@ -68,7 +68,9 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <menuitem action="SearchGoToLine" />
     </menu>
 
-    <menu action="Build">
+    <menu action="Build" name="BuildMenu">
+      <placeholder name="BuildToolsPlaceholder" />
+      <separator />
       <menuitem action="BuildClean" />
       <menuitem action="BuildStopExecution" />
       <separator />
@@ -235,6 +237,8 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <separator />
     <toolitem action="SearchFind" />
     <toolitem action="SearchReplace" />
+    <separator />
+    <placeholder name="BuildToolsPlaceholder2" />
   </toolbar>
 
   <toolbar name="EditToolbar">

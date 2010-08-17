@@ -3,6 +3,8 @@ install (FILES "org.gnome.latexila.gschema.xml"
 
 install (SCRIPT "cmake-compile-schemas")
 
+install (FILES build_tools.xml DESTINATION ${DATA_DIR})
+
 add_subdirectory ("templates")
 add_subdirectory ("images/app")
 add_subdirectory ("images/icons")

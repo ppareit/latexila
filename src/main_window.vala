@@ -93,7 +93,7 @@ public class MainWindow : Window
         { "Build", null, N_("_Build") },
 		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
 		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"), null },
-        { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F9",
+        { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
             N_("Stop Execution"), null },
         { "BuildPreviousMessage", STOCK_GO_UP, N_("_Previous Message"), null,
             N_("Go to the previous build output message"), on_build_previous_msg },
@@ -335,7 +335,9 @@ public class MainWindow : Window
     private ActionGroup action_group;
     private ActionGroup latex_action_group;
     private ActionGroup documents_list_action_group;
+    private ActionGroup build_tools_action_group;
     private uint documents_list_menu_ui_id;
+    private uint build_tools_menu_ui_id;
 
     // context id for the statusbar
     private uint tip_message_cid;
@@ -685,6 +687,11 @@ public class MainWindow : Window
         // list of open documents menu
         documents_list_action_group = new ActionGroup ("DocumentsListActions");
         ui_manager.insert_action_group (documents_list_action_group, 0);
+
+        // build tools
+        build_tools_action_group = new ActionGroup ("BuildToolsActions");
+        ui_manager.insert_action_group (build_tools_action_group, 0);
+        update_build_tools_menu ();
     }
 
     private void on_menu_item_select (Item proxy)
@@ -1313,6 +1320,58 @@ public class MainWindow : Window
         // we create a new tab with the same view, so we avoid headache with signals
         // the user see nothing, muahahaha
         new_window.create_tab_with_view (view);
+    }
+
+    public void update_build_tools_menu ()
+    {
+        return_if_fail (build_tools_action_group != null);
+
+        if (build_tools_menu_ui_id != 0)
+            ui_manager.remove_ui (build_tools_menu_ui_id);
+
+        foreach (Action action in build_tools_action_group.list_actions ())
+        {
+            action.activate.disconnect (build_tools_menu_activate);
+            build_tools_action_group.remove_action (action);
+        }
+
+        unowned BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
+
+        uint id = build_tools.length > 0 ? ui_manager.new_merge_id () : 0;
+
+        int i = 0;
+        foreach (BuildTool build_tool in build_tools)
+        {
+            string action_name = @"BuildTool_$i";
+            Action action = new Action (action_name, build_tool.label,
+                build_tool.description, build_tool.icon);
+
+            // F2 -> F11
+            // (F1 = help, F12 = stop execution)
+            string accel = i < 10 ? "<Release>F%d".printf (i + 2) : null;
+
+            build_tools_action_group.add_action_with_accel (action, accel);
+            action.activate.connect (build_tools_menu_activate);
+
+            ui_manager.add_ui (id, "/MainMenu/BuildMenu/BuildToolsPlaceholder",
+                action_name, action_name, UIManagerItemType.MENUITEM, false);
+            ui_manager.add_ui (id, "/MainToolbar/BuildToolsPlaceholder2",
+                action_name, action_name, UIManagerItemType.TOOLITEM, false);
+
+            i++;
+        }
+
+        build_tools_menu_ui_id = id;
+    }
+
+    private void build_tools_menu_activate (Action action)
+    {
+        string[] _name = action.name.split ("_");
+        int i = _name[1].to_int ();
+
+        unowned BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
+
+        Utils.print_build_tool (build_tools[i]);
     }
 
     private void update_documents_list_menu ()
