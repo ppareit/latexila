@@ -169,7 +169,7 @@ public class AppSettings : GLib.Settings
     private BuildTool current_build_tool;
     private BuildJob current_build_job;
 
-    public unowned BuildTool[] get_build_tools ()
+    public BuildTool[] get_build_tools ()
     {
         return build_tools;
     }

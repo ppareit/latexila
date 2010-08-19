@@ -82,6 +82,33 @@ namespace Utils
         }
     }
 
+    // get filename without extension
+    public string get_shortname (string path)
+    {
+        return path[0:get_extension_pos (path)];
+    }
+
+    // get file's extension (with the point)
+    public string get_extension (string path)
+    {
+        return path[get_extension_pos (path):path.length];
+    }
+
+    private long get_extension_pos (string path)
+    {
+        long l = path.length;
+
+        for (long i = l - 1 ; i >= 0 ; i--)
+        {
+            if (path[i] == '/')
+                return l;
+            else if (path[i] == '.')
+                return i;
+        }
+
+        return l;
+    }
+
     public const uint ALL_WORKSPACES = 0xffffff;
 
     /* Get the workspace the window is on

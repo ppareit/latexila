@@ -61,8 +61,10 @@ public class BuildView : HBox
 
     private TreeStore store;
     private TreeView view;
+    private Action stop_execution;
+    private BuildToolRunner? runner = null;
 
-    public BuildView (Toolbar toolbar)
+    public BuildView (Toolbar toolbar, Action stop_execution)
     {
         store = new TreeStore (BuildInfo.N_COLUMNS,
             typeof (string),    // icon (stock-id)
@@ -73,6 +75,8 @@ public class BuildView : HBox
             typeof (string),    // start line (string because must be displayed)
             typeof (int)        // end line
         );
+
+        this.stop_execution = stop_execution;
 
         /* create tree view */
         view = new TreeView.with_model (store);
@@ -134,6 +138,11 @@ public class BuildView : HBox
         pack_start (toolbar, false, false);
     }
 
+    public void clear ()
+    {
+        store.clear ();
+    }
+
     public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent)
     {
         TreeIter iter;
@@ -143,6 +152,8 @@ public class BuildView : HBox
             BuildInfo.MESSAGE, msg,
             BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
             -1);
+
+        view.expand_all ();
 
         return iter;
     }
@@ -206,5 +217,18 @@ public class BuildView : HBox
             default:
                 return_val_if_reached (null);
         }
+    }
+
+    public void set_can_abort (bool can_abort, BuildToolRunner? runner)
+    {
+        stop_execution.set_sensitive (can_abort);
+        if (runner != null)
+            this.runner = runner;
+    }
+
+    public void abort ()
+    {
+        return_if_fail (runner != null);
+        runner.abort ();
     }
 }

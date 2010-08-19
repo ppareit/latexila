@@ -94,7 +94,7 @@ public class MainWindow : Window
 		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
 		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"), null },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
-            N_("Stop Execution"), null },
+            N_("Stop Execution"), on_build_stop_execution },
         { "BuildPreviousMessage", STOCK_GO_UP, N_("_Previous Message"), null,
             N_("Go to the previous build output message"), on_build_previous_msg },
         { "BuildNextMessage", STOCK_GO_DOWN, N_("_Next Message"), null,
@@ -430,12 +430,10 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
         side_panel = new Symbols (this);
 
-        /*
-        Action action_previous_msg = action_group.get_action ("BuildPreviousMessage");
-        Action action_next_msg = action_group.get_action ("BuildNextMessage");
+//        Action action_previous_msg = action_group.get_action ("BuildPreviousMessage");
+//        Action action_next_msg = action_group.get_action ("BuildNextMessage");
         Action action_stop_exec = action_group.get_action ("BuildStopExecution");
-        */
-        build_view = new BuildView (log_toolbar);
+        build_view = new BuildView (log_toolbar, action_stop_exec);
         show_or_hide_build_messages ();
 
         /* signal handlers */
@@ -484,11 +482,13 @@ public class MainWindow : Window
             update_documents_list_menu ();
         });
 
+        // FIXME switch page is called 2 times...
         documents_panel.switch_page.connect ((pg, page_num) =>
         {
             set_undo_sensitivity ();
             set_redo_sensitivity ();
             update_next_prev_doc_sensitivity ();
+            update_build_tools_sensitivity ();
             my_set_title ();
             update_cursor_position_statusbar ();
 
@@ -994,6 +994,7 @@ public class MainWindow : Window
         }
 
         latex_action_group.set_sensitive (sensitive);
+        build_tools_action_group.set_sensitive (sensitive);
     }
 
     private void set_undo_sensitivity ()
@@ -1035,6 +1036,33 @@ public class MainWindow : Window
         }
     }
 
+    private void update_build_tools_sensitivity ()
+    {
+        if (active_tab == null || active_document.location == null)
+        {
+            build_tools_action_group.set_sensitive (false);
+            return;
+        }
+        // we must set the _action group_ sensitive and then set the sensitivity for each
+        // action of the action group
+        else
+            build_tools_action_group.set_sensitive (true);
+
+        string ext = Utils.get_extension (active_document.location.get_parse_name ());
+
+        BuildTool[] tools = AppSettings.get_default ().get_build_tools ();
+        int i = 0;
+        foreach (BuildTool tool in tools)
+        {
+            string[] extensions = tool.extensions.split (" ");
+            bool sensitive = tool.extensions.length == 0 || ext in extensions;
+
+            Action action = build_tools_action_group.get_action (@"BuildTool_$i");
+            action.set_sensitive (sensitive);
+            i++;
+        }
+    }
+
     private void selection_changed ()
     {
         if (active_tab != null)
@@ -1051,7 +1079,6 @@ public class MainWindow : Window
             }
         }
     }
-
 
     private void sync_name (DocumentTab tab)
     {
@@ -1335,7 +1362,7 @@ public class MainWindow : Window
             build_tools_action_group.remove_action (action);
         }
 
-        unowned BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
+        BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
 
         uint id = build_tools.length > 0 ? ui_manager.new_merge_id () : 0;
 
@@ -1366,12 +1393,18 @@ public class MainWindow : Window
 
     private void build_tools_menu_activate (Action action)
     {
+        return_if_fail (active_tab != null);
+        return_if_fail (active_document.location != null);
+
         string[] _name = action.name.split ("_");
         int i = _name[1].to_int ();
 
-        unowned BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
+        BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
+        BuildTool tool = build_tools[i];
 
-        Utils.print_build_tool (build_tools[i]);
+        Utils.print_build_tool (tool);
+
+        new BuildToolRunner (active_document.location, tool, build_view);
     }
 
     private void update_documents_list_menu ()
@@ -1653,6 +1686,11 @@ public class MainWindow : Window
     }
 
     /* Build */
+
+    public void on_build_stop_execution ()
+    {
+        build_view.abort ();
+    }
 
     public void on_build_previous_msg ()
     {

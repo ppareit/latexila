@@ -1,23 +1,23 @@
 <tools>
 	<tool description="Create a DVI from LaTeX source" extensions=".tex" label="LaTeX → DVI" icon="compile_dvi">
-		<job mustSucceed="true" postProcessor="RubberPostProcessor">rubber --inplace --maxerr -1 --short --force --warn all "$filename"</job>
-		<job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open "$shortname.dvi"</job>
+		<job mustSucceed="true" postProcessor="RubberPostProcessor">rubber --inplace --maxerr -1 --short --force --warn all $filename</job>
+		<job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open $shortname.dvi</job>
 	</tool>
 	<tool description="Create a PDF from LaTeX source" extensions=".tex" label="LaTeX → PDF" icon="compile_pdf">
-		<job mustSucceed="true" postProcessor="RubberPostProcessor">rubber --inplace --maxerr -1 --short --force --warn all --pdf "$filename"</job>
-		<job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open "$shortname.pdf"</job>
+		<job mustSucceed="true" postProcessor="RubberPostProcessor">rubber --inplace --maxerr -1 --short --force --warn all --pdf $filename</job>
+		<job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open $shortname.pdf</job>
 	</tool>
 	<tool description="Create a PostScript from LaTeX source" extensions=".tex" label="LaTeX → PS" icon="compile_ps">
-		<job mustSucceed="true" postProcessor="RubberPostProcessor">rubber --inplace --maxerr -1 --short --force --warn all --ps "$filename"</job>
-		<job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open "$shortname.ps"</job>
+		<job mustSucceed="true" postProcessor="RubberPostProcessor">rubber --inplace --maxerr -1 --short --force --warn all --ps $filename</job>
+		<job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open $shortname.ps</job>
 	</tool>
   <tool description="View the DVI file" extensions=".tex .dvi" label="View DVI" icon="view_dvi">
-    <job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open "$shortname.dvi"</job>
+    <job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open $shortname.dvi</job>
   </tool>
   <tool description="View the PDF file" extensions=".tex .pdf" label="View PDF" icon="view_pdf">
-    <job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open "$shortname.pdf"</job>
+    <job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open $shortname.pdf</job>
   </tool>
   <tool description="View the PostScript file" extensions=".tex .ps" label="View PS" icon="view_ps">
-    <job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open "$shortname.ps"</job>
+    <job mustSucceed="true" postProcessor="GenericPostProcessor">gnome-open $shortname.ps</job>
   </tool>
 </tools>
