@@ -101,40 +101,9 @@ public class BuildView : HBox
 
         view.set_tooltip_column (BuildInfo.FILENAME);
 
-        /* TEST store */
-        TreeIter root_partition =
-            add_partition ("<b>LaTeX → PDF</b>", PartitionState.RUNNING, null);
-        TreeIter rubber_partition =
-            add_partition ("rubber --inplace --maxerr -1 --short --force --warn all --pdf \"$filename\"",
-                PartitionState.SUCCEEDED, root_partition);
-        add_partition ("gnome-open \"$shortname.pdf\"", PartitionState.ABORTED,
-            root_partition);
-
-        BuildIssue[] issues =
-        {
-            BuildIssue ()
-            {
-                message = "Overfull \\hbox",
-                message_type = BuildMessageType.BADBOX,
-                filename = "/home/seb/test.tex",
-                start_line = 42, end_line = 43
-            },
-            BuildIssue ()
-            {
-                message = "Warning",
-                message_type = BuildMessageType.WARNING
-            },
-            BuildIssue ()
-            {
-                message = "Label 'testlabel' multiply defined.",
-                message_type = BuildMessageType.ERROR,
-                filename = "/home/seb/test.tex"
-            }
-        };
-
-        append_issues (rubber_partition, issues);
-
-        pack_start (view);
+        // with a scrollbar
+        var sw = Utils.add_scrollbar (view);
+        pack_start (sw);
         pack_start (toolbar, false, false);
     }
 

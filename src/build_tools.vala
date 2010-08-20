@@ -23,9 +23,10 @@ public abstract class BuildToolProcess : GLib.Object
 {
     private static const int POLL_INTERVAL = 250;
     private Pid? child_pid = null;
-    private uint[] handlers = new uint[3];
+    private uint[] handlers = {};
     private IOChannel out_channel;
     private IOChannel err_channel;
+    private bool read_output = true;
 
     protected void execute (string[] command, string? working_directory)
     {
@@ -37,18 +38,38 @@ public abstract class BuildToolProcess : GLib.Object
                 out child_pid, null, out std_out, out std_err);
 
             // we want to know the exit code
-            handlers[0] = ChildWatch.add (child_pid, _on_exit);
+            handlers += ChildWatch.add (child_pid, _on_exit);
 
             out_channel = new IOChannel.unix_new (std_out);
             err_channel = new IOChannel.unix_new (std_err);
             out_channel.set_flags (IOFlags.NONBLOCK);
             err_channel.set_flags (IOFlags.NONBLOCK);
 
-            handlers[1] = Timeout.add (POLL_INTERVAL, _on_stdout);
-            handlers[2] = Timeout.add (POLL_INTERVAL, _on_stderr);
+            handlers += Timeout.add (POLL_INTERVAL, _on_stdout);
+            handlers += Timeout.add (POLL_INTERVAL, _on_stderr);
         }
         catch (Error e)
         {
+            stderr.printf ("Warning: %s\n", e.message);
+        }
+    }
+
+    protected void execute_without_output (string[] command, string? working_directory)
+    {
+        read_output = false;
+
+        try
+        {
+            Process.spawn_async (working_directory, command, null,
+                SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH, null,
+                out child_pid);
+
+            // we want to know the exit code
+            handlers += ChildWatch.add (child_pid, _on_exit);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: %s\n", e.message);
         }
     }
 
@@ -66,6 +87,7 @@ public abstract class BuildToolProcess : GLib.Object
 
     private bool _on_stdout ()
     {
+        return_val_if_fail (read_output, false);
         try
         {
             string text;
@@ -80,6 +102,7 @@ public abstract class BuildToolProcess : GLib.Object
 
     private bool _on_stderr ()
     {
+        return_val_if_fail (read_output, false);
         try
         {
             string text;
@@ -98,8 +121,11 @@ public abstract class BuildToolProcess : GLib.Object
             Source.remove (handler);
 
         // read remaining output
-        _on_stdout ();
-        _on_stderr ();
+        if (read_output)
+        {
+            _on_stdout ();
+            _on_stderr ();
+        }
 
         on_exit (status);
     }
@@ -188,7 +214,10 @@ public class BuildToolRunner : BuildToolProcess
             }
         }
 
-        execute (command, directory);
+        if (current_job.post_processor == "GenericPostProcessor")
+            execute_without_output (command, directory);
+        else
+            execute (command, directory);
     }
 
     protected override void on_stdout (string text)
@@ -216,9 +245,10 @@ public class BuildToolRunner : BuildToolProcess
         switch (current_job.post_processor)
         {
             case "GenericPostProcessor":
-            // TODO rubber post processor
-            case "RubberPostProcessor":
                 post_processor = new GenericPostProcessor ();
+                break;
+            case "RubberPostProcessor":
+                post_processor = new RubberPostProcessor ();
                 break;
             default:
                 stderr.printf ("Warning: unknown post processor \"%s\". Use GenericPostProcessor.",
@@ -277,6 +307,91 @@ private class GenericPostProcessor : GLib.Object, PostProcessor
     {
         // empty
         BuildIssue[] issues = {};
+        return issues;
+    }
+
+    public string summary ()
+    {
+        return "";
+    }
+}
+
+private class RubberPostProcessor : GLib.Object, PostProcessor
+{
+    public bool successful { get; protected set; }
+    private static Regex? pattern = null;
+    private BuildIssue[] issues = {};
+
+    public RubberPostProcessor ()
+    {
+        if (pattern == null)
+        {
+            try
+            {
+                pattern = new Regex (
+                    "(?P<file>[a-zA-Z0-9./_-]+)(:(?P<line>[0-9\\-]+))?:(?P<text>.*)$",
+                    RegexCompileFlags.MULTILINE);
+            }
+            catch (RegexError e)
+            {
+                stderr.printf ("Warning in RubberPostProcessor: %s\n", e.message);
+            }
+        }
+    }
+
+    public void process (File file, string stdout, string stderr, int status)
+    {
+        successful = status == 0;
+        if (pattern == null)
+            return;
+
+        MatchInfo match_info;
+        pattern.match (stderr, 0, out match_info);
+        while (match_info.matches ())
+        {
+            BuildIssue issue = BuildIssue ();
+            string text = issue.message = match_info.fetch_named ("text");
+
+            // message type
+            // TODO add an option to rubber that writes which type of message it is
+            // e.g.: test.tex:5:box: Overfull blabla
+            // types of messages: box, ref, misc, error (see --warn option)
+
+            issue.message_type = BuildMessageType.ERROR;
+            if (text.contains ("Underfull") || text.contains ("Overfull"))
+                issue.message_type = BuildMessageType.BADBOX;
+
+            // line
+            issue.start_line = issue.end_line = null;
+            string line = match_info.fetch_named ("line");
+            if (line != null && line.length > 0)
+            {
+                string[] parts = line.split ("-");
+                issue.start_line = parts[0].to_int ();
+                if (parts.length > 1 && parts[1] != null && parts[1].length > 0)
+                    issue.end_line = parts[1].to_int ();
+            }
+
+            // filename
+            issue.filename = "%s/%s".printf (file.get_parent ().get_parse_name (),
+                match_info.fetch_named ("file"));
+
+            issues += issue;
+
+            try
+            {
+                match_info.next ();
+            }
+            catch (RegexError e)
+            {
+                stderr.printf ("Warning: RubberPostProcessor: %s\n", e.message);
+                break;
+            }
+        }
+    }
+
+    public BuildIssue[] get_issues ()
+    {
         return issues;
     }
 
