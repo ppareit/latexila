@@ -84,6 +84,12 @@
       <summary>Side panel is Visible</summary>
       <description>Whether the side panel at the left of editing windows should be visible.</description>
     </key>
+    <key name="bottom-panel-visible" type="b">
+      <default>true</default>
+      <summary>Bottom panel is Visible</summary>
+      <description>Whether the bottom panel containing the build view should be visible.</description>
+    </key>
+    <!--
     <key name="show-build-errors" type="b">
       <default>true</default>
       <summary>Show build output errors</summary>
@@ -96,6 +102,7 @@
       <default>true</default>
       <summary>Show build output badboxes</summary>
     </key>
+    -->
   </schema>
 
   <schema id="org.gnome.latexila.preferences.build" path="/apps/latexila/preferences/build/">

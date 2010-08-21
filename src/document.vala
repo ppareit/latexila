@@ -340,13 +340,13 @@ public class Document : Gtk.SourceBuffer
         return ret;
     }
 
-    public bool is_tex_document ()
+    public void select_lines (int start, int end)
     {
-        if (location == null)
-            return false;
-
-        string path = location.get_parse_name ();
-        return path.has_suffix (".tex");
+        TextIter start_iter, end_iter;
+        get_iter_at_line (out start_iter, start);
+        get_iter_at_line (out end_iter, end);
+        select_range (start_iter, end_iter);
+        tab.view.scroll_to_cursor ();
     }
 
 

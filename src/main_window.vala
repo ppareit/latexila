@@ -95,10 +95,6 @@ public class MainWindow : Window
 		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"), null },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
             N_("Stop Execution"), on_build_stop_execution },
-        { "BuildPreviousMessage", STOCK_GO_UP, N_("_Previous Message"), null,
-            N_("Go to the previous build output message"), on_build_previous_msg },
-        { "BuildNextMessage", STOCK_GO_DOWN, N_("_Next Message"), null,
-            N_("Go to the next build output message"), on_build_next_msg },
 
         // Documents
         { "Documents", null, N_("_Documents") },
@@ -309,15 +305,18 @@ public class MainWindow : Window
     {
         { "ViewSidePanel", null, N_("_Side panel"), null,
 		    N_("Show or hide the side panel"), on_show_side_panel },
+		{ "ViewBottomPanel", null, N_("_Bottom panel"), null,
+		    N_("Show or hide the bottom panel"), on_show_bottom_panel },
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
-		    N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
-
+		    N_("Show or hide the edit toolbar"), on_show_edit_toolbar }
+        /*
 		{ "BuildShowErrors", STOCK_DIALOG_ERROR, N_("Show _Errors"), null,
 		    N_("Show Errors"), on_build_show_errors },
 		{ "BuildShowWarnings", STOCK_DIALOG_WARNING, N_("Show _Warnings"), null,
 		    N_("Show Warnings"), on_build_show_warnings },
 		{ "BuildShowBadBoxes", "badbox", N_("Show _BadBoxes"), null,
 		    N_("Show BadBoxes"), on_build_show_badboxes }
+		*/
     };
 
     private string file_chooser_current_folder = Environment.get_home_dir ();
@@ -412,10 +411,10 @@ public class MainWindow : Window
         edit_toolbar = (Toolbar) ui_manager.get_widget ("/EditToolbar");
         edit_toolbar.set_style (ToolbarStyle.ICONS);
 
-        Toolbar log_toolbar = (Toolbar) ui_manager.get_widget ("/LogToolbar");
-        log_toolbar.set_style (ToolbarStyle.ICONS);
-        log_toolbar.set_icon_size (IconSize.MENU);
-        log_toolbar.set_orientation (Orientation.VERTICAL);
+        Toolbar build_toolbar = (Toolbar) ui_manager.get_widget ("/BuildToolbar");
+        build_toolbar.set_style (ToolbarStyle.ICONS);
+        build_toolbar.set_icon_size (IconSize.MENU);
+        build_toolbar.set_orientation (Orientation.VERTICAL);
 
         documents_panel = new DocumentsPanel ();
         documents_panel.right_click.connect ((event) =>
@@ -430,11 +429,12 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
         side_panel = new Symbols (this);
 
-//        Action action_previous_msg = action_group.get_action ("BuildPreviousMessage");
-//        Action action_next_msg = action_group.get_action ("BuildNextMessage");
         Action action_stop_exec = action_group.get_action ("BuildStopExecution");
-        build_view = new BuildView (log_toolbar, action_stop_exec);
-        show_or_hide_build_messages ();
+        ToggleAction action_view_bottom_panel =
+            (ToggleAction) action_group.get_action ("ViewBottomPanel");
+        build_view = new BuildView (this, build_toolbar, action_stop_exec,
+            action_view_bottom_panel);
+        //show_or_hide_build_messages ();
 
         /* signal handlers */
 
@@ -554,8 +554,7 @@ public class MainWindow : Window
         show_all ();
         goto_line.hide ();
         search_and_replace.hide ();
-        show_or_hide_edit_toolbar ();
-        show_or_hide_side_panel ();
+        show_or_hide_widgets ();
     }
 
     public List<Document> get_documents ()
@@ -707,9 +706,11 @@ public class MainWindow : Window
         statusbar.pop (tip_message_cid);
     }
 
-    private void show_or_hide_edit_toolbar ()
+    private void show_or_hide_widgets ()
     {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
+        /* edit toolbar */
         bool show = settings.get_boolean ("edit-toolbar-visible");
 
         if (! show)
@@ -717,20 +718,27 @@ public class MainWindow : Window
 
         ToggleAction action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
         action.set_active (show);
-    }
 
-    private void show_or_hide_side_panel ()
-    {
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-        bool show = settings.get_boolean ("side-panel-visible");
+        /* side panel */
+        show = settings.get_boolean ("side-panel-visible");
 
         if (! show)
             side_panel.hide ();
 
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewSidePanel");
+        action = (ToggleAction) action_group.get_action ("ViewSidePanel");
+        action.set_active (show);
+
+        /* bottom panel */
+        show = settings.get_boolean ("bottom-panel-visible");
+
+        if (! show)
+            build_view.hide ();
+
+        action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
         action.set_active (show);
     }
 
+    /*
     private void show_or_hide_build_messages ()
     {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
@@ -751,6 +759,7 @@ public class MainWindow : Window
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         action.set_active (show_badboxes);
     }
+    */
 
     public BuildView get_build_view ()
     {
@@ -762,7 +771,7 @@ public class MainWindow : Window
         return statusbar;
     }
 
-    public void open_document (File location)
+    public DocumentTab? open_document (File location)
     {
         /* check if the document is already opened */
         foreach (MainWindow w in Application.get_default ().windows)
@@ -775,7 +784,7 @@ public class MainWindow : Window
                     if (this == w)
                     {
                         active_tab = doc.tab;
-                        return;
+                        return doc.tab;
                     }
 
                     /* the document is already opened in another window */
@@ -795,12 +804,12 @@ public class MainWindow : Window
                         infobar.destroy ();
                         tab.view.grab_focus ();
                     });
-                    return;
+                    return tab;
                 }
             }
         }
 
-        create_tab_from_location (location, true);
+        return create_tab_from_location (location, true);
     }
 
     public DocumentTab? create_tab (bool jump_to)
@@ -1322,6 +1331,10 @@ public class MainWindow : Window
         action = (ToggleAction) action_group.get_action ("ViewSidePanel");
         settings_ui.set_boolean ("side-panel-visible", action.active);
 
+        action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
+        settings_ui.set_boolean ("bottom-panel-visible", action.active);
+
+        /*
         action = (ToggleAction) action_group.get_action ("BuildShowErrors");
         settings_ui.set_boolean ("show-build-errors", action.active);
 
@@ -1330,6 +1343,7 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         settings_ui.set_boolean ("show-build-badboxes", action.active);
+        */
 
         if (sync)
         {
@@ -1402,8 +1416,9 @@ public class MainWindow : Window
         BuildTool[] build_tools = AppSettings.get_default ().get_build_tools ();
         BuildTool tool = build_tools[i];
 
-        Utils.print_build_tool (tool);
+        //Utils.print_build_tool (tool);
 
+        build_view.show_all ();
         new BuildToolRunner (active_document.location, tool, build_view);
     }
 
@@ -1631,16 +1646,25 @@ public class MainWindow : Window
 
     public void on_show_side_panel (Action action)
     {
-        bool show = ((ToggleAction) action).active;
+        bool show = (action as ToggleAction).active;
         if (show)
             side_panel.show_all ();
         else
             side_panel.hide ();
     }
 
+    public void on_show_bottom_panel (Action action)
+    {
+        bool show = (action as ToggleAction).active;
+        if (show)
+            build_view.show_all ();
+        else
+            build_view.hide ();
+    }
+
     public void on_show_edit_toolbar (Action action)
     {
-        bool show = ((ToggleAction) action).active;
+        bool show = (action as ToggleAction).active;
         if (show)
             edit_toolbar.show_all ();
         else
@@ -1690,18 +1714,10 @@ public class MainWindow : Window
     public void on_build_stop_execution ()
     {
         build_view.abort ();
+        build_view.show_all ();
     }
 
-    public void on_build_previous_msg ()
-    {
-        //build_view.go_to_message (false);
-    }
-
-    public void on_build_next_msg ()
-    {
-        //build_view.go_to_message (true);
-    }
-
+    /*
     public void on_build_show_errors (Action action)
     {
         build_view.show_errors = ((ToggleAction) action).active;
@@ -1716,6 +1732,7 @@ public class MainWindow : Window
     {
         build_view.show_badboxes = ((ToggleAction) action).active;
     }
+    */
 
     /* Documents */
 

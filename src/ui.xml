@@ -54,6 +54,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
 
     <menu action="View">
       <menuitem action="ViewSidePanel" />
+      <menuitem action="ViewBottomPanel" />
       <menuitem action="ViewEditToolbar" />
       <separator />
       <menuitem action="ViewZoomIn" />
@@ -73,12 +74,12 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <separator />
       <menuitem action="BuildClean" />
       <menuitem action="BuildStopExecution" />
+      <!--
       <separator />
-      <menuitem action="BuildPreviousMessage" />
-      <menuitem action="BuildNextMessage" />
       <menuitem action="BuildShowErrors" />
       <menuitem action="BuildShowWarnings" />
       <menuitem action="BuildShowBadBoxes" />
+      -->
     </menu>
 
     <menu action="Latex">
@@ -345,13 +346,13 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </toolitem>
   </toolbar>
 
-  <toolbar name="LogToolbar">
+  <toolbar name="BuildToolbar">
     <toolitem action="BuildStopExecution" />
-    <toolitem action="BuildPreviousMessage" />
-    <toolitem action="BuildNextMessage" />
+    <!--
     <toolitem action="BuildShowErrors" />
     <toolitem action="BuildShowWarnings" />
     <toolitem action="BuildShowBadBoxes" />
+    -->
   </toolbar>
 
   <popup name="NotebookPopup">

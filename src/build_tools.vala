@@ -188,6 +188,7 @@ public class BuildToolRunner : BuildToolProcess
         if (job_num >= jobs.length ())
         {
             view.set_partition_state (root_partition, PartitionState.SUCCEEDED);
+            view.set_can_abort (false, null);
             return;
         }
 
@@ -291,7 +292,6 @@ private interface PostProcessor : GLib.Object
     public abstract bool successful { get; protected set; }
     public abstract void process (File file, string stdout, string stderr, int status);
     public abstract BuildIssue[] get_issues ();
-    public abstract string summary ();
 }
 
 private class GenericPostProcessor : GLib.Object, PostProcessor
@@ -308,11 +308,6 @@ private class GenericPostProcessor : GLib.Object, PostProcessor
         // empty
         BuildIssue[] issues = {};
         return issues;
-    }
-
-    public string summary ()
-    {
-        return "";
     }
 }
 
@@ -362,7 +357,7 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
                 issue.message_type = BuildMessageType.BADBOX;
 
             // line
-            issue.start_line = issue.end_line = null;
+            issue.start_line = issue.end_line = -1;
             string line = match_info.fetch_named ("line");
             if (line != null && line.length > 0)
             {
@@ -393,10 +388,5 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
     public BuildIssue[] get_issues ()
     {
         return issues;
-    }
-
-    public string summary ()
-    {
-        return "";
     }
 }
