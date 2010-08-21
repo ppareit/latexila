@@ -24,8 +24,11 @@ public class DocumentsPanel : Notebook
     public DocumentTab active_tab { get; private set; }
     public signal void right_click (Gdk.EventButton event);
 
-    public DocumentsPanel ()
+    private unowned MainWindow main_window;
+
+    public DocumentsPanel (MainWindow main_window)
     {
+        this.main_window = main_window;
         this.scrollable = true;
         switch_page.connect ((page, page_num) =>
         {
@@ -59,6 +62,13 @@ public class DocumentsPanel : Notebook
 
     public void remove_tab (DocumentTab tab)
     {
+        // automatic clean-up build files
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.build");
+        if (settings.get_boolean ("no-confirm-clean")
+            && settings.get_boolean ("automatic-clean"))
+            tab.document.clean_build_files (main_window);
+
         int pos = page_num (tab);
         remove_page (pos);
     }
@@ -70,7 +80,8 @@ public class DocumentsPanel : Notebook
             int n = get_current_page ();
             if (n == -1)
                 break;
-            remove_page (n);
+            DocumentTab tab = (DocumentTab) get_nth_page (n);
+            remove_tab (tab);
         }
     }
 }

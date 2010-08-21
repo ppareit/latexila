@@ -106,6 +106,21 @@
   </schema>
 
   <schema id="org.gnome.latexila.preferences.build" path="/apps/latexila/preferences/build/">
+    <key name="no-confirm-clean" type="b">
+      <default>false</default>
+      <summary>No confirmation clean-up</summary>
+      <description>No confirmation when cleaning-up</description>
+    </key>
+    <key name="automatic-clean" type="b">
+      <default>false</default>
+      <summary>Automatic clean-up</summary>
+      <description>Automatically clean-up files after close. no-confirm-clean must be true.</description>
+    </key>
+    <key name="clean-extensions" type="s">
+      <default>'.aux .blg .bbl .log .idx .ilg .ind .out .toc'</default>
+      <summary>File extensions for clean-up</summary>
+      <description>The file extensions for the clean-up are separated by spaces</description>
+    </key>
   </schema>
 
   <schema id="org.gnome.latexila.state" path="/apps/latexila/state/">

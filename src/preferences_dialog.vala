@@ -70,6 +70,12 @@ public class PreferencesDialog : Dialog
             var font_hbox = (Widget) builder.get_object ("font_hbox");
             var schemes_treeview = (TreeView) builder.get_object ("schemes_treeview");
 
+            var confirm_clean_up_checkbutton =
+                builder.get_object ("confirm_clean_up_checkbutton");
+            Widget auto_clean_up_checkbutton =
+                (Widget) builder.get_object ("auto_clean_up_checkbutton");
+            var clean_up_entry = builder.get_object ("clean_up_entry");
+
             // bind settings
             var settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
 
@@ -94,6 +100,15 @@ public class PreferencesDialog : Dialog
             settings.bind ("auto-save-interval", autosave_spinbutton, "value",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
             settings.bind ("reopen-files", reopen_checkbutton, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+
+            GLib.Settings build_settings =
+                new GLib.Settings ("org.gnome.latexila.preferences.build");
+            build_settings.bind ("no-confirm-clean", confirm_clean_up_checkbutton,
+                "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
+            build_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            build_settings.bind ("clean-extensions", clean_up_entry, "text",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
             // schemes treeview
@@ -147,6 +162,15 @@ public class PreferencesDialog : Dialog
             var label = _("Use the system fixed width font (%s)")
                 .printf (AppSettings.get_default ().get_system_font ());
             default_font_checkbutton.set_label (label);
+
+            // automatic clean-up sensitivity
+            bool no_confirm = build_settings.get_boolean ("no-confirm-clean");
+            auto_clean_up_checkbutton.set_sensitive (no_confirm);
+            build_settings.changed["no-confirm-clean"].connect ((setting, key) =>
+            {
+                bool val = setting.get_boolean (key);
+                auto_clean_up_checkbutton.set_sensitive (val);
+            });
 
             // pack notebook
             var content_area = (Box) get_content_area ();

@@ -1,7 +1,6 @@
 TODO
 
 - Build documents with rubber:
-	- clean build files (*.log, *.toc, *.aux, etc)
 	- view log (open $shortname.log read-only)
 	- modify/add/delete build tools with a GUI
 	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)

@@ -288,4 +288,10 @@ public class BuildView : HBox
         return_if_fail (runner != null);
         runner.abort ();
     }
+
+    public new void show ()
+    {
+        base.show ();
+        action_view_bottom_panel.active = true;
+    }
 }

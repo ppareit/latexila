@@ -82,13 +82,13 @@ namespace Utils
         }
     }
 
-    // get filename without extension
+    // get filename without extension (without the dot)
     public string get_shortname (string path)
     {
         return path[0:get_extension_pos (path)];
     }
 
-    // get file's extension (with the point)
+    // get file's extension (with the dot)
     public string get_extension (string path)
     {
         return path[get_extension_pos (path):path.length];
@@ -174,6 +174,19 @@ namespace Utils
             stdout.printf ("must succeed: %s\n", build_job.must_succeed.to_string ());
             stdout.printf ("post processor: %s\n", build_job.post_processor);
             stdout.printf ("command: %s\n\n", build_job.command);
+        }
+    }
+
+    public void delete_file (File file)
+    {
+        try
+        {
+            file.delete ();
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: delete file \"%s\" failed: %s\n",
+                file.get_parse_name (), e.message);
         }
     }
 }

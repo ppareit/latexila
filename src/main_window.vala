@@ -92,7 +92,8 @@ public class MainWindow : Window
         // Build
         { "Build", null, N_("_Build") },
 		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
-		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"), null },
+		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
+		    on_build_clean },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
             N_("Stop Execution"), on_build_stop_execution },
 
@@ -416,7 +417,7 @@ public class MainWindow : Window
         build_toolbar.set_icon_size (IconSize.MENU);
         build_toolbar.set_orientation (Orientation.VERTICAL);
 
-        documents_panel = new DocumentsPanel ();
+        documents_panel = new DocumentsPanel (this);
         documents_panel.right_click.connect ((event) =>
         {
             Menu popup_menu = (Menu) ui_manager.get_widget ("/NotebookPopup");
@@ -993,7 +994,7 @@ public class MainWindow : Window
             "EditCopy", "EditPaste", "EditDelete", "EditSelectAll", "EditComment",
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
-            "SearchFind", "SearchReplace", "SearchGoToLine"
+            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean"
         };
 
         foreach (string file_action in file_actions)
@@ -1047,15 +1048,20 @@ public class MainWindow : Window
 
     private void update_build_tools_sensitivity ()
     {
+        Action clean_action = action_group.get_action ("BuildClean");
         if (active_tab == null || active_document.location == null)
         {
             build_tools_action_group.set_sensitive (false);
+            clean_action.set_sensitive (false);
             return;
         }
         // we must set the _action group_ sensitive and then set the sensitivity for each
         // action of the action group
         else
+        {
             build_tools_action_group.set_sensitive (true);
+            clean_action.set_sensitive (active_document.is_tex_document ());
+        }
 
         string ext = Utils.get_extension (active_document.location.get_parse_name ());
 
@@ -1418,7 +1424,7 @@ public class MainWindow : Window
 
         //Utils.print_build_tool (tool);
 
-        build_view.show_all ();
+        build_view.show ();
         new BuildToolRunner (active_document.location, tool, build_view);
     }
 
@@ -1714,7 +1720,13 @@ public class MainWindow : Window
     public void on_build_stop_execution ()
     {
         build_view.abort ();
-        build_view.show_all ();
+        build_view.show ();
+    }
+
+    public void on_build_clean ()
+    {
+        return_if_fail (active_tab != null);
+        active_document.clean_build_files (this);
     }
 
     /*

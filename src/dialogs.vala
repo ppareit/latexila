@@ -19,20 +19,20 @@
 
 using Gtk;
 
-public class Dialogs : GLib.Object
+namespace Dialogs
 {
-    private enum UnsavedDocs
+    private enum UnsavedDocColumn
     {
-        SAVE_COLUMN,
-        NAME_COLUMN,
-        DOC_COLUMN, // a handy pointer to the document
+        SAVE,
+        NAME,
+        DOC, // a handy pointer to the document
         N_COLUMNS
     }
 
-    public static void
+    public void
     close_several_unsaved_documents (MainWindow window, List<Document> unsaved_docs)
     {
-        assert (unsaved_docs.length () >= 2);
+        return_if_fail (unsaved_docs.length () >= 2);
 
         var dialog = new Dialog.with_buttons (null,
             window,
@@ -84,7 +84,7 @@ public class Dialogs : GLib.Object
         treeview.headers_visible = false;
         treeview.enable_search = false;
 
-        var store = new ListStore (UnsavedDocs.N_COLUMNS, typeof (bool),
+        var store = new ListStore (UnsavedDocColumn.N_COLUMNS, typeof (bool),
             typeof (string), typeof (Document));
 
         // fill the list
@@ -93,9 +93,9 @@ public class Dialogs : GLib.Object
             TreeIter iter;
             store.append (out iter);
             store.set (iter,
-                UnsavedDocs.SAVE_COLUMN, true,
-                UnsavedDocs.NAME_COLUMN, doc.tab.label_text,
-                UnsavedDocs.DOC_COLUMN, doc,
+                UnsavedDocColumn.SAVE, true,
+                UnsavedDocColumn.NAME, doc.tab.label_text,
+                UnsavedDocColumn.DOC, doc,
                 -1);
         }
 
@@ -108,18 +108,18 @@ public class Dialogs : GLib.Object
             TreeIter iter;
             bool active;
             store.get_iter (out iter, path);
-            store.get (iter, UnsavedDocs.SAVE_COLUMN, out active, -1);
+            store.get (iter, UnsavedDocColumn.SAVE, out active, -1);
             // inverse the value
-            store.set (iter, UnsavedDocs.SAVE_COLUMN, ! active, -1);
+            store.set (iter, UnsavedDocColumn.SAVE, ! active, -1);
         });
 
         var column = new TreeViewColumn.with_attributes ("Save?", renderer1,
-            "active", UnsavedDocs.SAVE_COLUMN, null);
+            "active", UnsavedDocColumn.SAVE, null);
         treeview.append_column (column);
 
         var renderer2 = new CellRendererText ();
         column = new TreeViewColumn.with_attributes ("Name", renderer2,
-            "text", UnsavedDocs.NAME_COLUMN, null);
+            "text", UnsavedDocColumn.NAME, null);
         treeview.append_column (column);
 
         // with a scrollbar
@@ -161,8 +161,8 @@ public class Dialogs : GLib.Object
                 bool selected;
                 Document doc;
                 store.get (iter,
-                    UnsavedDocs.SAVE_COLUMN, out selected,
-                    UnsavedDocs.DOC_COLUMN, out doc,
+                    UnsavedDocColumn.SAVE, out selected,
+                    UnsavedDocColumn.DOC, out doc,
                     -1);
                 if (selected)
                     selected_docs.prepend (doc);
@@ -179,6 +179,140 @@ public class Dialogs : GLib.Object
             {
                 if (window.save_document (doc, false))
                     window.close_tab (doc.tab, true);
+            }
+        }
+
+        dialog.destroy ();
+    }
+
+    private enum CleanFileColumn
+    {
+        DELETE,
+        NAME,
+        N_COLUMNS
+    }
+
+    public void
+    confirm_clean_build_files (MainWindow window, File directory, string[] basenames)
+    {
+        return_if_fail (basenames.length > 0);
+
+        var dialog = new Dialog.with_buttons (null,
+            window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            STOCK_CANCEL, ResponseType.CANCEL,
+            STOCK_DELETE, ResponseType.ACCEPT,
+            null);
+
+        dialog.has_separator = false;
+
+        HBox hbox = new HBox (false, 12);
+        hbox.border_width = 5;
+        VBox content_area = (VBox) dialog.get_content_area ();
+        content_area.pack_start (hbox, true, true, 0);
+
+        /* image */
+        var image = new Image.from_stock (STOCK_DIALOG_WARNING, IconSize.DIALOG);
+        image.set_alignment ((float) 0.5, (float) 0.0);
+        hbox.pack_start (image, false, false, 0);
+
+        VBox vbox = new VBox (false, 12);
+        hbox.pack_start (vbox, true, true, 0);
+
+        /* primary label */
+        var primary_label = new Label (null);
+        primary_label.set_line_wrap (true);
+        primary_label.set_use_markup (true);
+        primary_label.set_alignment ((float) 0.0, (float) 0.5);
+        primary_label.set_selectable (true);
+        primary_label.set_markup ("<span weight=\"bold\" size=\"larger\">"
+            + _("Do you really want to delete these files?") + "</span>");
+
+        vbox.pack_start (primary_label, false, false, 0);
+
+        VBox vbox2 = new VBox (false, 8);
+        vbox.pack_start (vbox2, false, false);
+
+        var select_label = new Label (_("Select the files you want to delete:"));
+        select_label.set_line_wrap (true);
+        select_label.set_alignment ((float) 0.0, (float) 0.5);
+        vbox2.pack_start (select_label, false, false, 0);
+
+        /* files list with checkboxes */
+        TreeView treeview = new TreeView ();
+        treeview.set_size_request (260, 120);
+        treeview.headers_visible = false;
+        treeview.enable_search = false;
+
+        ListStore store = new ListStore (CleanFileColumn.N_COLUMNS, typeof (bool),
+            typeof (string));
+
+        // fill the list
+        foreach (string basename in basenames)
+        {
+            TreeIter iter;
+            store.append (out iter);
+            store.set (iter,
+                CleanFileColumn.DELETE, true,
+                CleanFileColumn.NAME, basename,
+                -1);
+        }
+
+        treeview.set_model (store);
+        var renderer1 = new CellRendererToggle ();
+
+        renderer1.toggled.connect ((path_str) =>
+        {
+            var path = new TreePath.from_string (path_str);
+            TreeIter iter;
+            bool active;
+            store.get_iter (out iter, path);
+            store.get (iter, CleanFileColumn.DELETE, out active, -1);
+            // inverse the value
+            store.set (iter, CleanFileColumn.DELETE, ! active, -1);
+        });
+
+        var column = new TreeViewColumn.with_attributes ("Delete?", renderer1,
+            "active", CleanFileColumn.DELETE, null);
+        treeview.append_column (column);
+
+        var renderer2 = new CellRendererText ();
+        column = new TreeViewColumn.with_attributes ("Name", renderer2,
+            "text", CleanFileColumn.NAME, null);
+        treeview.append_column (column);
+
+        // with a scrollbar
+        ScrolledWindow sw = (ScrolledWindow) Utils.add_scrollbar (treeview);
+        sw.set_shadow_type (ShadowType.IN);
+        vbox2.pack_start (sw, true, true, 0);
+
+        hbox.show_all ();
+
+        /* run */
+        if (dialog.run () == ResponseType.ACCEPT)
+        {
+            // get files to delete
+            string[] selected_files = {};
+            TreeIter iter;
+            bool valid = store.get_iter_first (out iter);
+            while (valid)
+            {
+                bool selected;
+                string basename;
+                store.get (iter,
+                    CleanFileColumn.DELETE, out selected,
+                    CleanFileColumn.NAME, out basename,
+                    -1);
+                if (selected)
+                    selected_files += basename;
+
+                valid = store.iter_next (ref iter);
+            }
+
+            foreach (string selected_file in selected_files)
+            {
+                File file = directory.get_child (selected_file);
+                Utils.delete_file (file);
             }
         }
 
