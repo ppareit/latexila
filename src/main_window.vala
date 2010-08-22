@@ -1167,7 +1167,11 @@ public class MainWindow : Window
             STOCK_SAVE, ResponseType.ACCEPT,
             null);
 
-        file_chooser.set_current_name (doc.tab.label_text);
+        if (doc.location == null)
+            file_chooser.set_current_name (doc.tab.label_text + ".tex");
+        else
+            file_chooser.set_current_name (doc.tab.label_text);
+
         if (this.file_chooser_current_folder != null)
             file_chooser.set_current_folder (this.file_chooser_current_folder);
 
