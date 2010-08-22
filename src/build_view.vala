@@ -74,6 +74,7 @@ public class BuildView : HBox
     {
         this.main_window = main_window;
         this.action_stop_execution = stop_execution;
+        stop_execution.set_sensitive (false);
         this.action_view_bottom_panel = view_bottom_panel;
 
         store = new TreeStore (BuildInfo.N_COLUMNS,

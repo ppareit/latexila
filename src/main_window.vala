@@ -329,7 +329,7 @@ public class MainWindow : Window
     private SearchAndReplace search_and_replace;
     private BuildView build_view;
     private Toolbar edit_toolbar;
-    private VBox side_panel;
+    private SidePanel side_panel;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -430,7 +430,10 @@ public class MainWindow : Window
         tip_message_cid = statusbar.get_context_id ("tip_message");
         goto_line = new GotoLine (this);
         search_and_replace = new SearchAndReplace (this);
-        side_panel = new Symbols (this);
+
+        ToggleAction action_view_side_panel =
+            (ToggleAction) action_group.get_action ("ViewSidePanel");
+        side_panel = new SidePanel (this, action_view_side_panel);
 
         Action action_stop_exec = action_group.get_action ("BuildStopExecution");
         ToggleAction action_view_bottom_panel =
@@ -1351,6 +1354,8 @@ public class MainWindow : Window
         action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
         settings_ui.set_boolean ("bottom-panel-visible", action.active);
 
+        settings_ui.set_int ("side-panel-component", side_panel.get_active_component ());
+
         /*
         action = (ToggleAction) action_group.get_action ("BuildShowErrors");
         settings_ui.set_boolean ("show-build-errors", action.active);
@@ -1665,7 +1670,7 @@ public class MainWindow : Window
     {
         bool show = (action as ToggleAction).active;
         if (show)
-            side_panel.show_all ();
+            side_panel.show ();
         else
             side_panel.hide ();
     }
