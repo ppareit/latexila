@@ -38,7 +38,7 @@ public void set_entry_error (Widget entry, bool error)
 
 public class GotoLine : HBox
 {
-    private MainWindow main_window;
+    private unowned MainWindow main_window;
     private Entry entry;
 
     public GotoLine (MainWindow main_window)
@@ -104,7 +104,7 @@ public class GotoLine : HBox
 
 public class SearchAndReplace : GLib.Object
 {
-    private MainWindow main_window;
+    private unowned MainWindow main_window;
     private Document working_document;
 
     public Widget search_and_replace;

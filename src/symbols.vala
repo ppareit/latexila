@@ -754,6 +754,7 @@ public class Symbols : VBox
     private static bool stores_initialized = false;
     private static ListStore categories_store;
     private static ListStore[] symbols_stores = new ListStore[7];
+    private unowned MainWindow main_window;
 
     public Symbols (MainWindow main_window)
     {
@@ -799,10 +800,11 @@ public class Symbols : VBox
             stores_initialized = true;
         }
 
-        create_icon_views (main_window);
+        this.main_window = main_window;
+        create_icon_views ();
     }
 
-    private void create_icon_views (MainWindow main_window)
+    private void create_icon_views ()
     {
         /* show the categories */
         IconView categories_view = new IconView.with_model (categories_store);

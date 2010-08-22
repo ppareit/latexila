@@ -62,11 +62,11 @@ public class BuildView : HBox
     public bool show_badboxes { get; set; }
     */
 
-    private MainWindow main_window;
+    private unowned MainWindow main_window;
     private TreeStore store;
     private TreeView view;
-    private Action action_stop_execution;
-    private ToggleAction action_view_bottom_panel;
+    private unowned Action action_stop_execution;
+    private unowned ToggleAction action_view_bottom_panel;
     private BuildToolRunner? runner = null;
 
     public BuildView (MainWindow main_window, Toolbar toolbar, Action stop_execution,
