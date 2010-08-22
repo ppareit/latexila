@@ -27,6 +27,7 @@ public class Document : Gtk.SourceBuffer
     public uint unsaved_document_n { get; set; }
     private bool backup_made = false;
     private string _etag;
+    private string? encoding = null;
 
     private TextTag found_tag;
     private TextTag found_tag_selected;
@@ -77,7 +78,16 @@ public class Document : Gtk.SourceBuffer
         {
             string text;
             location.load_contents (null, out text, null, out _etag);
-            set_contents (text);
+
+            if (text.validate ())
+                set_contents (text);
+
+            // convert to UTF-8
+            else
+            {
+                string utf8_text = to_utf8 (text);
+                set_contents (utf8_text);
+            }
 
             update_syntax_highlighting ();
 
@@ -95,8 +105,13 @@ public class Document : Gtk.SourceBuffer
 
     public void set_contents (string contents)
     {
+        // if last character is a new line, don't display it
+        string? contents2 = null;
+        if (contents[contents.length - 1] == '\n')
+            contents2 = contents[0:-1];
+
         begin_not_undoable_action ();
-        set_text (contents, -1);
+        set_text (contents2 ?? contents, -1);
         Utils.flush_queue ();
         set_modified (false);
         end_not_undoable_action ();
@@ -114,7 +129,11 @@ public class Document : Gtk.SourceBuffer
         // we use get_text () to exclude undisplayed text
         TextIter start, end;
         get_bounds (out start, out end);
-        var text = get_text (start, end, false);
+        string text = get_text (start, end, false);
+
+        // the last character must be \n
+        if (text[text.length - 1] != '\n')
+            text = @"$text\n";
 
         try
         {
@@ -123,6 +142,9 @@ public class Document : Gtk.SourceBuffer
                 && settings.get_boolean ("create-backup-copy");
 
             string? etag = check_file_changed_on_disk ? _etag : null;
+
+            if (encoding != null)
+                text = convert (text, (ssize_t) text.size (), encoding, "UTF-8");
 
             // Attention, the second parameter named "length" in the API is the size in
             // bytes, not the number of characters, so we must use text.size() and not
@@ -163,6 +185,26 @@ public class Document : Gtk.SourceBuffer
                 infobar.add_ok_button ();
             }
         }
+    }
+
+    private string to_utf8 (string text) throws ConvertError
+    {
+        foreach (string charset in Encodings.CHARSETS)
+        {
+            try
+            {
+                string utf8_text = convert (text, (ssize_t) text.size (), "UTF-8",
+                    charset);
+                encoding = charset;
+                return utf8_text;
+            }
+            catch (ConvertError e)
+            {
+                continue;
+            }
+        }
+        throw new GLib.ConvertError.FAILED (
+            _("Error trying to convert the document to UTF-8"));
     }
 
     private void update_syntax_highlighting ()

@@ -7,12 +7,12 @@ TODO
 
 - File browser
 
-- choose the character encoding and the line ending type when saving a document
 - most used symbols
-- quick build configurable buttons
 
 ==========================
 Not a priority:
+
+- choose the character encoding and the line ending type when saving a document
 
 - LaTeX menu:
 	- Texmaker has a nice menu => rearrange and add some items
