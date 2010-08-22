@@ -96,6 +96,8 @@ public class MainWindow : Window
 		    on_build_clean },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
             N_("Stop Execution"), on_build_stop_execution },
+        { "BuildViewLog", "view_log", N_("View _Log"), null,
+            N_("View Log"), on_build_view_log },
 
         // Documents
         { "Documents", null, N_("_Documents") },
@@ -994,7 +996,7 @@ public class MainWindow : Window
             "EditCopy", "EditPaste", "EditDelete", "EditSelectAll", "EditComment",
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
-            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean"
+            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean", "BuildViewLog"
         };
 
         foreach (string file_action in file_actions)
@@ -1049,10 +1051,13 @@ public class MainWindow : Window
     private void update_build_tools_sensitivity ()
     {
         Action clean_action = action_group.get_action ("BuildClean");
+        Action view_log_action = action_group.get_action ("BuildViewLog");
+
         if (active_tab == null || active_document.location == null)
         {
             build_tools_action_group.set_sensitive (false);
             clean_action.set_sensitive (false);
+            view_log_action.set_sensitive (false);
             return;
         }
         // we must set the _action group_ sensitive and then set the sensitivity for each
@@ -1060,7 +1065,9 @@ public class MainWindow : Window
         else
         {
             build_tools_action_group.set_sensitive (true);
-            clean_action.set_sensitive (active_document.is_tex_document ());
+            bool is_tex = active_document.is_tex_document ();
+            clean_action.set_sensitive (is_tex);
+            view_log_action.set_sensitive (is_tex);
         }
 
         string ext = Utils.get_extension (active_document.location.get_parse_name ());
@@ -1727,6 +1734,32 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         active_document.clean_build_files (this);
+    }
+
+    public void on_build_view_log ()
+    {
+        return_if_fail (active_tab != null);
+        return_if_fail (active_document.is_tex_document ());
+
+        File? directory = active_document.location.get_parent ();
+        if (directory == null)
+        {
+            stderr.printf ("Warning: impossible to view log\n");
+            return;
+        }
+
+        string basename = Utils.get_shortname (active_document.location.get_basename ())
+            + ".log";
+        File file = directory.get_child (basename);
+        DocumentTab? tab = open_document (file);
+
+        if (tab == null)
+        {
+            stderr.printf ("Warning: impossible to view log\n");
+            return;
+        }
+
+        tab.document.readonly = true;
     }
 
     /*

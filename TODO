@@ -1,18 +1,18 @@
 TODO
 
-- Build documents with rubber:
-	- view log (open $shortname.log read-only)
-	- modify/add/delete build tools with a GUI
-	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
+For 1.99
+========
 
 - File browser
 
+For 2.0 (try to do as much as possible)
+=======
+
 - most used symbols
 
-==========================
-Not a priority:
-
-- choose the character encoding and the line ending type when saving a document
+- Build documents with rubber:
+	- modify/add/delete build tools with a GUI
+	(-) show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
 
 - LaTeX menu:
 	- Texmaker has a nice menu => rearrange and add some items
@@ -25,3 +25,14 @@ Not a priority:
 - Search and replace:
 	- search selected text (if no \n)
 	- performance: "delete" min_nb_chars_for_incremental_search
+
+- Set main file:
+	- add a comment like this "% mainfile: mainfile.tex" in the first or last three lines of an included file
+	- execute a build tool on the main file
+
+(-) choose the character encoding and the line ending type when saving a document
+
+
+Legend:
+(-) less important
+
