@@ -8,6 +8,7 @@
     <child name="editor" schema="org.gnome.latexila.preferences.editor" />
     <child name="ui" schema="org.gnome.latexila.preferences.ui" />
     <child name="build" schema="org.gnome.latexila.preferences.build" />
+    <child name="file-browser" schema="org.gnome.latexila.preferences.file-browser" />
   </schema>
 
   <schema id="org.gnome.latexila.preferences.editor" path="/apps/latexila/preferences/editor/">
@@ -125,6 +126,29 @@
       <default>'.aux .blg .bbl .log .idx .ilg .ind .out .toc'</default>
       <summary>File extensions for clean-up</summary>
       <description>The file extensions for the clean-up are separated by spaces</description>
+    </key>
+  </schema>
+
+  <schema id="org.gnome.latexila.preferences.file-browser" path="/apps/latexila/preferences/file-browser/">
+    <key name="current-directory" type="s">
+      <default>''</default>
+      <summary>Current directory</summary>
+      <description>URI of the file browser current directory</description>
+    </key>
+    <key name="show-all-files" type="b">
+      <default>false</default>
+      <summary>Show all files</summary>
+      <description>Show all files except hidden files</description>
+    </key>
+    <key name="show-hidden-files" type="b">
+      <default>false</default>
+      <summary>Show hidden files</summary>
+      <description>Show hidden files (beginnig with a dot). show-all-files must be true.</description>
+    </key>
+    <key name="file-extensions" type="s">
+      <default>'.tex .bib .pdf .dvi .ps'</default>
+      <summary>File extensions</summary>
+      <description>Show only files with one of these extensions. show-all-files must be false. The extensions (with the dot) must be separated with one space</description>
     </key>
   </schema>
 

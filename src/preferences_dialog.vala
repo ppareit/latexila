@@ -76,6 +76,12 @@ public class PreferencesDialog : Dialog
                 (Widget) builder.get_object ("auto_clean_up_checkbutton");
             var clean_up_entry = builder.get_object ("clean_up_entry");
 
+            var file_browser_show_all = builder.get_object ("file_browser_show_all");
+            Widget file_browser_show_hidden =
+                (Widget) builder.get_object ("file_browser_show_hidden");
+            Widget file_browser_entry =
+                (Widget) builder.get_object ("file_browser_entry");
+
             // bind settings
             var settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
 
@@ -109,6 +115,15 @@ public class PreferencesDialog : Dialog
             build_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
             build_settings.bind ("clean-extensions", clean_up_entry, "text",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+
+            GLib.Settings fb_settings =
+                new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
+            fb_settings.bind ("show-all-files", file_browser_show_all, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            fb_settings.bind ("show-hidden-files", file_browser_show_hidden, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            fb_settings.bind ("file-extensions", file_browser_entry, "text",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
             // schemes treeview
@@ -170,6 +185,17 @@ public class PreferencesDialog : Dialog
             {
                 bool val = setting.get_boolean (key);
                 auto_clean_up_checkbutton.set_sensitive (val);
+            });
+
+            // file browser settings sensitivity
+            bool fb_show_all = fb_settings.get_boolean ("show-all-files");
+            file_browser_show_hidden.set_sensitive (fb_show_all);
+            file_browser_entry.set_sensitive (! fb_show_all);
+            fb_settings.changed["show-all-files"].connect ((setting, key) =>
+            {
+                bool val = setting.get_boolean (key);
+                file_browser_show_hidden.set_sensitive (val);
+                file_browser_entry.set_sensitive (! val);
             });
 
             // pack notebook

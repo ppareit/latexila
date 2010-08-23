@@ -132,7 +132,7 @@ public class SidePanel : VBox
                     components[0] = new Symbols (main_window);
                     break;
                 case 1:
-                    components[1] = new FileBrowser ();
+                    components[1] = new FileBrowser (main_window);
                     break;
             }
 

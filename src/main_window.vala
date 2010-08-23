@@ -478,6 +478,10 @@ public class MainWindow : Window
                 set_file_actions_sensitivity (false);
                 goto_line.hide ();
                 search_and_replace.hide ();
+
+                notify_property ("active-tab");
+                notify_property ("active-document");
+                notify_property ("active-view");
             }
 
             // actions for which there must be 2 documents minimum
