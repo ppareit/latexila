@@ -70,6 +70,8 @@ public class PreferencesDialog : Dialog
             var font_hbox = (Widget) builder.get_object ("font_hbox");
             var schemes_treeview = (TreeView) builder.get_object ("schemes_treeview");
 
+            var document_view_program = builder.get_object ("document_view_program");
+
             var confirm_clean_up_checkbutton =
                 builder.get_object ("confirm_clean_up_checkbutton");
             Widget auto_clean_up_checkbutton =
@@ -110,6 +112,8 @@ public class PreferencesDialog : Dialog
 
             GLib.Settings build_settings =
                 new GLib.Settings ("org.gnome.latexila.preferences.build");
+            build_settings.bind ("document-view-program", document_view_program, "text",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
             build_settings.bind ("no-confirm-clean", confirm_clean_up_checkbutton,
                 "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
             build_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",

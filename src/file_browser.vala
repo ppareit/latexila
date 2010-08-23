@@ -39,21 +39,23 @@ public class FileBrowser : VBox
     }
 
     private unowned MainWindow main_window;
+    private BuildView build_view;
     private ListStore parent_dir_store;
     private ListStore list_store;
     private ComboBox combo_box;
     private File current_directory;
     private Button parent_button;
 
-    public FileBrowser (MainWindow main_window)
+    public FileBrowser (MainWindow main_window, BuildView build_view)
     {
         GLib.Object (spacing: 3);
         this.main_window = main_window;
+        this.build_view = build_view;
+
         init_toolbar ();
         init_combo_box ();
         init_list ();
         fill_stores_with_dir (null);
-        show_all ();
     }
 
     private void init_toolbar ()
@@ -195,21 +197,47 @@ public class FileBrowser : VBox
         {
             TreeModel model = (TreeModel) list_store;
             TreeIter iter;
-            if (model.get_iter (out iter, path))
+            if (! model.get_iter (out iter, path))
+                return;
+
+            string basename;
+            bool is_dir;
+            model.get (iter,
+                FileColumn.NAME, out basename,
+                FileColumn.IS_DIR, out is_dir,
+                -1);
+
+            File file = current_directory.get_child (basename);
+
+            if (is_dir)
             {
-                string basename;
-                bool is_dir;
-                model.get (iter,
-                    FileColumn.NAME, out basename,
-                    FileColumn.IS_DIR, out is_dir,
-                    -1);
+                fill_stores_with_dir (file);
+                return;
+            }
 
-                File file = current_directory.get_child (basename);
+            AppSettings app_settings = AppSettings.get_default ();
+            string extension = Utils.get_extension (basename);
+            switch (extension)
+            {
+            // View DVI
+            case ".dvi":
+                new BuildToolRunner (file, app_settings.build_tool_view_dvi, build_view);
+                break;
 
-                if (is_dir)
-                    fill_stores_with_dir (file);
-                else
-                    main_window.open_document (file);
+            // View PDF
+            case ".pdf":
+                new BuildToolRunner (file, app_settings.build_tool_view_pdf, build_view);
+                break;
+
+            // View PS
+            case ".ps":
+                new BuildToolRunner (file, app_settings.build_tool_view_ps, build_view);
+                break;
+
+            // Open document
+            default:
+                main_window.open_document (file);
+                break;
             }
         });
     }

@@ -169,6 +169,14 @@ public class AppSettings : GLib.Settings
     private BuildTool current_build_tool;
     private BuildJob current_build_job;
 
+    public BuildTool build_tool_view_dvi { get; private set; }
+    public BuildTool build_tool_view_pdf { get; private set; }
+    public BuildTool build_tool_view_ps  { get; private set; }
+
+    private bool current_tool_is_view_dvi = false;
+    private bool current_tool_is_view_pdf = false;
+    private bool current_tool_is_view_ps  = false;
+
     public BuildTool[] get_build_tools ()
     {
         return build_tools;
@@ -223,6 +231,18 @@ public class AppSettings : GLib.Settings
                             break;
                         case "icon":
                             current_build_tool.icon = attr_values[i];
+                            switch (attr_values[i])
+                            {
+                                case "view_dvi":
+                                    current_tool_is_view_dvi = true;
+                                    break;
+                                case "view_pdf":
+                                    current_tool_is_view_pdf = true;
+                                    break;
+                                case "view_ps":
+                                    current_tool_is_view_ps = true;
+                                    break;
+                            }
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -265,6 +285,21 @@ public class AppSettings : GLib.Settings
 
             case "tool":
                 build_tools += current_build_tool;
+                if (current_tool_is_view_dvi)
+                {
+                    build_tool_view_dvi = current_build_tool;
+                    current_tool_is_view_dvi = false;
+                }
+                else if (current_tool_is_view_pdf)
+                {
+                    build_tool_view_pdf = current_build_tool;
+                    current_tool_is_view_pdf = false;
+                }
+                else if (current_tool_is_view_ps)
+                {
+                    build_tool_view_ps = current_build_tool;
+                    current_tool_is_view_ps = false;
+                }
                 break;
 
             case "job":

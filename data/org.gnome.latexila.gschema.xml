@@ -112,6 +112,11 @@
   </schema>
 
   <schema id="org.gnome.latexila.preferences.build" path="/apps/latexila/preferences/build/">
+    <key name="document-view-program" type="s">
+      <default>'gnome-open'</default>
+      <summary>Document view program</summary>
+      <description>Program for viewing documents (PDF, DVI, PS)</description>
+    </key>
     <key name="no-confirm-clean" type="b">
       <default>false</default>
       <summary>No confirmation clean-up</summary>

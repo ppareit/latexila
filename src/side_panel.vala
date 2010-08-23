@@ -24,18 +24,14 @@ public class SidePanel : VBox
     private unowned MainWindow main_window;
     private unowned ToggleAction action_view_side_panel;
 
-    private static const int NB_COMPONENTS = 2;
     private VBox[] components;
     private ComboBox combo_box;
+    private ListStore list_store;
 
     public SidePanel (MainWindow main_window, ToggleAction action_view_side_panel)
     {
         this.main_window = main_window;
         this.action_view_side_panel = action_view_side_panel;
-
-        components = new VBox[NB_COMPONENTS];
-        for (int i = 0 ; i < NB_COMPONENTS ; i++)
-            components[i] = null;
 
         HBox hbox = new HBox (false, 3);
         hbox.border_width = 3;
@@ -44,10 +40,27 @@ public class SidePanel : VBox
         combo_box = get_combo_box ();
         hbox.pack_start (combo_box);
         hbox.pack_start (get_close_button (), false, false);
+        show_all ();
+    }
 
+    public void add_component (string name, string stock_id, VBox component)
+    {
+        TreeIter iter;
+        list_store.append (out iter);
+        list_store.set (iter,
+            SidePanelColumn.PIXBUF, stock_id,
+            SidePanelColumn.NAME, name,
+            -1);
+
+        pack_start (component);
+        components += component;
+    }
+
+    public void restore_state ()
+    {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
         int num = settings.get_int ("side-panel-component");
-        num = num.clamp (0, NB_COMPONENTS - 1);
+        num = num.clamp (0, components.length - 1);
         combo_box.set_active (num);
     }
 
@@ -77,24 +90,10 @@ public class SidePanel : VBox
 
     private ComboBox get_combo_box ()
     {
-        ListStore list_store = new ListStore (SidePanelColumn.N_COLUMNS, typeof (string),
+        list_store = new ListStore (SidePanelColumn.N_COLUMNS, typeof (string),
             typeof (string));
 
-        TreeIter iter;
-        list_store.append (out iter);
-        list_store.set (iter,
-            SidePanelColumn.PIXBUF, "symbol_alpha",
-            SidePanelColumn.NAME, _("Symbols"),
-            -1);
-
-        list_store.append (out iter);
-        list_store.set (iter,
-            SidePanelColumn.PIXBUF, STOCK_OPEN,
-            SidePanelColumn.NAME, _("File Browser"),
-            -1);
-
         ComboBox combo_box = new ComboBox.with_model (list_store);
-        //combo_box.has_frame = false;
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         combo_box.pack_start (pixbuf_renderer, false);
@@ -107,37 +106,14 @@ public class SidePanel : VBox
 
         combo_box.changed.connect (() =>
         {
-            foreach (VBox? component in components)
-            {
-                if (component != null)
+            foreach (VBox component in components)
                     component.hide ();
-            }
 
             int i = combo_box.get_active ();
-            if (components[i] == null)
-                init_component (i);
             components[i].show_all ();
         });
 
         return combo_box;
-    }
-
-    private void init_component (int i)
-    {
-        if (components[i] == null)
-        {
-            switch (i)
-            {
-                case 0:
-                    components[0] = new Symbols (main_window);
-                    break;
-                case 1:
-                    components[1] = new FileBrowser (main_window);
-                    break;
-            }
-
-            pack_start (components[i]);
-        }
     }
 
     public int get_active_component ()

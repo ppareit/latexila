@@ -330,6 +330,7 @@ public class MainWindow : Window
     private BuildView build_view;
     private Toolbar edit_toolbar;
     private SidePanel side_panel;
+    private FileBrowser file_browser;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -431,16 +432,25 @@ public class MainWindow : Window
         goto_line = new GotoLine (this);
         search_and_replace = new SearchAndReplace (this);
 
-        ToggleAction action_view_side_panel =
-            (ToggleAction) action_group.get_action ("ViewSidePanel");
-        side_panel = new SidePanel (this, action_view_side_panel);
-
+        // build view
         Action action_stop_exec = action_group.get_action ("BuildStopExecution");
         ToggleAction action_view_bottom_panel =
             (ToggleAction) action_group.get_action ("ViewBottomPanel");
         build_view = new BuildView (this, build_toolbar, action_stop_exec,
             action_view_bottom_panel);
         //show_or_hide_build_messages ();
+
+        // side panel
+        ToggleAction action_view_side_panel =
+            (ToggleAction) action_group.get_action ("ViewSidePanel");
+        side_panel = new SidePanel (this, action_view_side_panel);
+
+        Symbols symbols = new Symbols (this);
+        side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
+
+        file_browser = new FileBrowser (this, build_view);
+        side_panel.add_component (_("File Browser"), STOCK_OPEN, file_browser);
+        side_panel.restore_state ();
 
         /* signal handlers */
 
@@ -527,10 +537,14 @@ public class MainWindow : Window
         set_documents_move_to_new_window_sensitivity (false);
 
         /* packing widgets */
-        var main_vbox = new VBox (false, 0);
+        VBox main_vbox = new VBox (false, 0);
         main_vbox.pack_start (menu, false, false, 0);
         main_vbox.pack_start (toolbar, false, false, 0);
         main_vbox.pack_start (edit_toolbar, false, false, 0);
+
+        main_vbox.show ();
+        menu.show ();
+        toolbar.show ();
 
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
@@ -538,18 +552,23 @@ public class MainWindow : Window
         main_hpaned = new HPaned ();
         main_hpaned.set_position (settings.get_int ("side-panel-size"));
         main_vbox.pack_start (main_hpaned);
+        main_hpaned.show ();
 
         // vbox source view: documents panel, goto line, search and replace
         VBox vbox_source_view = new VBox (false, 2);
         vbox_source_view.pack_start (documents_panel);
         vbox_source_view.pack_start (goto_line, false, false, 0);
-        vbox_source_view.pack_start (search_and_replace.search_and_replace, false, false);
+        vbox_source_view.pack_start (search_and_replace.get_widget (), false, false);
+
+        vbox_source_view.show ();
+        documents_panel.show ();
 
         // vertical pane
         // top: vbox source view
         // bottom: log zone
         vpaned = new VPaned ();
         vpaned.set_position (settings.get_int ("vertical-paned-position"));
+
 
         // when we resize the window, the bottom panel keeps the same height
         vpaned.pack1 (vbox_source_view, true, true);
@@ -558,12 +577,14 @@ public class MainWindow : Window
         main_hpaned.add1 (side_panel);
         main_hpaned.add2 (vpaned);
 
+        side_panel.show ();
+        vpaned.show ();
+
         main_vbox.pack_end (statusbar, false, false, 0);
+        statusbar.show ();
 
         add (main_vbox);
-        show_all ();
-        goto_line.hide ();
-        search_and_replace.hide ();
+        show ();
         show_or_hide_widgets ();
     }
 

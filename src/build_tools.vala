@@ -151,6 +151,7 @@ public class BuildToolRunner : BuildToolProcess
     private BuildView view;
     private TreeIter root_partition;
     private TreeIter[] job_partitions;
+    private string document_view_program;
 
     public BuildToolRunner (File file, BuildTool tool, BuildView view)
     {
@@ -178,6 +179,10 @@ public class BuildToolRunner : BuildToolProcess
             job_partitions += view.add_partition (job.command, PartitionState.RUNNING,
                 root_partition);
 
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.build");
+        document_view_program = settings.get_string ("document-view-program");
+
         view.set_can_abort (true, this);
         proceed ();
     }
@@ -198,7 +203,12 @@ public class BuildToolRunner : BuildToolProcess
         // replace placeholders
         for (int i = 0 ; i < command.length ; i++)
         {
-            if (command[i].contains ("$filename"))
+            if (command[i].contains ("$view"))
+            {
+                command[i] = command[i].replace ("$view", document_view_program);
+                continue;
+            }
+            else if (command[i].contains ("$filename"))
             {
                 command[i] = command[i].replace ("$filename", filename);
                 continue;

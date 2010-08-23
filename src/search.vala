@@ -107,7 +107,7 @@ public class SearchAndReplace : GLib.Object
     private unowned MainWindow main_window;
     private Document working_document;
 
-    public Widget search_and_replace;
+    public Widget widget;
 
     private Button button_arrow;
     private Arrow arrow;
@@ -153,9 +153,9 @@ public class SearchAndReplace : GLib.Object
             builder.add_from_file (path);
 
             /* get objects */
-            search_and_replace = (Widget) builder.get_object ("search_and_replace");
+            widget = (Widget) builder.get_object ("search_and_replace");
             // we unparent the main widget because the ui file contains a window
-            search_and_replace.unparent ();
+            widget.unparent ();
 
             button_arrow = (Button) builder.get_object ("button_arrow");
             arrow = (Arrow) builder.get_object ("arrow");
@@ -272,8 +272,15 @@ public class SearchAndReplace : GLib.Object
             stderr.printf ("Error search and replace: %s\n", e.message);
             var label = new Label (e.message);
             label.set_line_wrap (true);
-            search_and_replace = label;
+            widget = label;
         }
+
+        widget.hide ();
+    }
+
+    public Widget get_widget ()
+    {
+        return widget;
     }
 
     public void show_search ()
@@ -296,7 +303,7 @@ public class SearchAndReplace : GLib.Object
     {
         label_find_normal.hide ();
         label_find_error.hide ();
-        search_and_replace.show ();
+        widget.show ();
         entry_find.grab_focus ();
         set_replace_sensitivity ();
 
@@ -305,7 +312,7 @@ public class SearchAndReplace : GLib.Object
 
     public void hide ()
     {
-        search_and_replace.hide ();
+        widget.hide ();
         if (working_document != null)
             clear_search ();
 

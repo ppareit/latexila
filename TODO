@@ -3,7 +3,11 @@ TODO
 For 1.99
 ========
 
-- File browser
+- Refresh file browser after some events (compilation, etc)
+- Help (a web page) + web browser setting
+- BuildTools: replace command placeholders by values (for the display in the BuildView)
+- How to translate build_tools.xml?
+- Translation
 
 For 2.0 (try to do as much as possible)
 =======
