@@ -261,7 +261,7 @@
                   <object class="GtkEventBox" id="eventbox_label1">
                     <child>
                       <object class="GtkLabel" id="label_find_normal">
-                        <property name="label" translatable="yes">label</property>
+                        <property name="label">label</property>
                         <attributes>
                           <attribute name="foreground" value="#aaaaaaaaaaaa"/>
                           <attribute name="background" value="#ffffffffffff"/>
@@ -279,7 +279,7 @@
                   <object class="GtkEventBox" id="eventbox_label2">
                     <child>
                       <object class="GtkLabel" id="label_find_error">
-                        <property name="label" translatable="yes">label</property>
+                        <property name="label">label</property>
                         <attributes>
                           <attribute name="foreground" value="#ffffffffffff"/>
                           <attribute name="background" value="#cccc00000000"/>

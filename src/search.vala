@@ -208,11 +208,19 @@ public class SearchAndReplace : GLib.Object
             {
                 // search and replace -> search
                 if (search_and_replace_mode)
-                    show_search ();
+                {
+                    arrow.arrow_type = ArrowType.DOWN;
+                    frame_replace.hide ();
+                    hbox_replace.hide ();
+                }
 
                 // search -> search and replace
                 else
-                    show_search_and_replace ();
+                {
+                    arrow.arrow_type = ArrowType.UP;
+                    frame_replace.show ();
+                    hbox_replace.show ();
+                }
             });
 
             button_close.clicked.connect (hide);
@@ -286,24 +294,22 @@ public class SearchAndReplace : GLib.Object
     public void show_search ()
     {
         arrow.arrow_type = ArrowType.DOWN;
+        show ();
         frame_replace.hide ();
         hbox_replace.hide ();
-        show ();
     }
 
     public void show_search_and_replace ()
     {
         arrow.arrow_type = ArrowType.UP;
-        frame_replace.show ();
-        hbox_replace.show ();
         show ();
     }
 
     private void show ()
     {
+        widget.show_all ();
         label_find_normal.hide ();
         label_find_error.hide ();
-        widget.show ();
         entry_find.grab_focus ();
         set_replace_sensitivity ();
 

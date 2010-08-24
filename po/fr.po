@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-24 21:25+0200\n"
+"POT-Creation-Date: 2010-08-25 01:28+0200\n"
 "PO-Revision-Date: 2010-08-24 21:38+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: French\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/search.vala:377
+#: src/search.vala:383
 #, c-format
 msgid "%u matches"
 msgstr "%u correspondances"
 
-#: src/search.vala:371
+#: src/search.vala:377
 #, c-format
 msgid "%u of %u"
 msgstr "%u sur %u"
@@ -31,13 +31,12 @@ msgstr "%u sur %u"
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr "- Environnement LaTeX intégré pour GNOME"
 
-#: src/main_window.vala:1234
+#: src/main_window.vala:1239
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Un fichier nommé \"%s\" existe déjà. Voulez-vous le remplacer ?"
 
-#: src/main_window.vala:123
-#: src/main_window.vala:1922
+#: src/main_window.vala:123 src/main_window.vala:1927
 msgid "About LaTeXila"
 msgstr "À propos de LaTeXila"
 
@@ -118,8 +117,7 @@ msgstr "Centrer - \\begin{center}"
 msgid "Centered Formula - $$...$$"
 msgstr "Formule centrée - $$...$$"
 
-#: src/main_window.vala:641
-#: src/main_window.vala:642
+#: src/main_window.vala:641 src/main_window.vala:642
 msgid "Characters Sizes"
 msgstr "Taille des caractères"
 
@@ -129,7 +127,8 @@ msgstr "Choisissez une icône :"
 
 #: src/main_window.vala:95
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
-msgstr "Nettoyer les fichiers de construction (*.aux, *.log, *.out, *.toc, etc)"
+msgstr ""
+"Nettoyer les fichiers de construction (*.aux, *.log, *.out, *.toc, etc)"
 
 #: src/main_window.vala:94
 msgid "Cleanup Build _Files"
@@ -159,8 +158,7 @@ msgstr "Fermer le document"
 msgid "Close the current file"
 msgstr "Fermer le document courant"
 
-#: src/dialogs.vala:40
-#: src/main_window.vala:949
+#: src/dialogs.vala:40 src/main_window.vala:954
 msgid "Close without Saving"
 msgstr "Fermer sans enregistrer"
 
@@ -170,7 +168,8 @@ msgstr "Style de couleurs"
 
 #: src/main_window.vala:66
 msgid "Comment the selected lines (add the character \"%\")"
-msgstr "Mettre en commentaire les lignes sélectionnées (ajouter le caractère \"%\")"
+msgstr ""
+"Mettre en commentaire les lignes sélectionnées (ajouter le caractère \"%\")"
 
 #: src/main_window.vala:72
 msgid "Configure the application"
@@ -300,8 +299,7 @@ msgstr "_Graisse de police"
 msgid "File"
 msgstr "Fichier"
 
-#: src/file_browser.vala:366
-#: src/main_window.vala:454
+#: src/file_browser.vala:366 src/main_window.vala:454
 msgid "File Browser"
 msgstr "Navigateur de fichiers"
 
@@ -361,8 +359,7 @@ msgstr "Aller au dossier parent"
 msgid "Greek"
 msgstr "Grec"
 
-#: src/build_view.vala:124
-#: src/side_panel.vala:73
+#: src/build_view.vala:124 src/side_panel.vala:73
 msgid "Hide panel"
 msgstr "Cacher le panneau"
 
@@ -380,7 +377,9 @@ msgstr "Si vous n'enregistrez pas, tous vos changements seront perdu à jamais."
 
 #: src/document.vala:181
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "Si vous l'enregistrez, tout vos changements externes peuvent être perdu. Enregistrer malgré tout ?"
+msgstr ""
+"Si vous l'enregistrez, tout vos changements externes peuvent être perdu. "
+"Enregistrer malgré tout ?"
 
 #: src/document.vala:112
 #, c-format
@@ -407,13 +406,19 @@ msgstr "Italique - \\textit{}"
 msgid "Job"
 msgstr "Tâche"
 
-#: src/main_window.vala:1871
+#: src/main_window.vala:1876
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
-msgstr "LaTeXila est un environnement LaTeX intégré pour le bureau GNOME. À consommer avec modération."
+msgstr ""
+"LaTeXila est un environnement LaTeX intégré pour le bureau GNOME. À "
+"consommer avec modération."
 
 #: src/main_window.vala:833
-msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
-msgstr "LaTeXila a ouvert cette instance du fichier d'une manière non-éditable. Voulez-vous éditer malgré tout ?"
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr ""
+"LaTeXila a ouvert cette instance du fichier d'une manière non-éditable. "
+"Voulez-vous éditer malgré tout ?"
 
 #: src/main_window.vala:657
 msgid "Left Delimiters"
@@ -496,7 +501,7 @@ msgstr "Nouveau fichier"
 msgid "No confirmation when cleaning-up"
 msgstr "Pas de confirmation lors du nettoyage"
 
-#: src/search.vala:373
+#: src/search.vala:379
 msgid "Not found"
 msgstr "Pas trouvé"
 
@@ -512,11 +517,11 @@ msgstr "Série d'é_quations numérotées - \\begin{align}"
 msgid "Numbered Equation - \\begin{equation}"
 msgstr "Équation numérotée - \\begin{equation}"
 
-#: src/search.vala:375
+#: src/search.vala:381
 msgid "One match"
 msgstr "Une occurence"
 
-#: src/main_window.vala:1554
+#: src/main_window.vala:1559
 msgid "Open Files"
 msgstr "Ouvrir des fichiers"
 
@@ -524,12 +529,11 @@ msgstr "Ouvrir des fichiers"
 msgid "Open _Recent"
 msgstr "Ouvrir _récent"
 
-#: src/main_window.vala:35
-#: src/main_window.vala:1324
+#: src/main_window.vala:35 src/main_window.vala:1329
 msgid "Open a file"
 msgstr "Ouvre un fichier"
 
-#: src/main_window.vala:1325
+#: src/main_window.vala:1330
 msgid "Open a recently used file"
 msgstr "Ouvre un fichier récemment utilisé"
 
@@ -585,7 +589,7 @@ msgstr "Citation longue - \\begin{quotation}"
 msgid "Quote - \\begin{quote}"
 msgstr "Citation courte - \\begin{quote}"
 
-#: src/main_window.vala:1185
+#: src/main_window.vala:1190
 msgid "Read-Only"
 msgstr "Lecture seule"
 
@@ -593,8 +597,7 @@ msgstr "Lecture seule"
 msgid "Redo the last undone action"
 msgstr "Refait la dernière opération annulée"
 
-#: src/main_window.vala:646
-#: src/main_window.vala:647
+#: src/main_window.vala:646 src/main_window.vala:647
 msgid "References"
 msgstr "Références"
 
@@ -614,7 +617,7 @@ msgstr "Recharger"
 msgid "Reopen files on startup"
 msgstr "Réouvrir les fichiers au démarrage"
 
-#: src/main_window.vala:1239
+#: src/main_window.vala:1244
 msgid "Replace"
 msgstr "Remplacer"
 
@@ -649,7 +652,8 @@ msgstr "Romains - \\rmfamily"
 #: src/main.vala:75
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
-msgstr "Lancez '%s --help' pour voir la liste complète des options disponibles.\n"
+msgstr ""
+"Lancez '%s --help' pour voir la liste complète des options disponibles.\n"
 
 #: src/main_window.vala:228
 msgid "Sans Serif - \\sffamily"
@@ -659,7 +663,7 @@ msgstr "Linéaux (sans serif) - \\sffamily"
 msgid "Save Anyway"
 msgstr "Enregistrer malgré tout"
 
-#: src/main_window.vala:1199
+#: src/main_window.vala:1204
 msgid "Save File"
 msgstr "Enregistre le fichier"
 
@@ -667,7 +671,7 @@ msgstr "Enregistre le fichier"
 msgid "Save all open files"
 msgstr "Enregistre tous les fichiers ouverts"
 
-#: src/main_window.vala:946
+#: src/main_window.vala:951
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Enregistrer les changements de \"%s\" avant de le fermer ?"
@@ -692,8 +696,7 @@ msgstr "Recherche un texte et le remplace"
 msgid "Search for text"
 msgstr "Recherche un texte"
 
-#: src/main_window.vala:636
-#: src/main_window.vala:637
+#: src/main_window.vala:636 src/main_window.vala:637
 msgid "Sectioning"
 msgstr "Sections"
 
@@ -805,8 +808,11 @@ msgstr "Le fichier %s a été modifié depuis sa dernière lecture."
 
 #: src/dialogs.vala:67
 #, c-format
-msgid "There are %d documents with unsaved changes. Save changes before closing?"
-msgstr "Il y a %d documents avec des modifications non enregistrées. Voulez-vous enregistrer les modifications avant de fermer ?"
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+"Il y a %d documents avec des modifications non enregistrées. Voulez-vous "
+"enregistrer les modifications avant de fermer ?"
 
 #: src/main_window.vala:831
 #, c-format
@@ -850,7 +856,7 @@ msgstr "Utiliser la police système à chasse fixe (%s)"
 msgid "Verse - \\begin{verse}"
 msgstr "Poème - \\begin{verse}"
 
-#: src/main_window.vala:1865
+#: src/main_window.vala:1870
 msgid "View LaTeX Reference"
 msgstr "Visionner la référence LaTeX"
 
@@ -1150,11 +1156,6 @@ msgstr "build_tools-fr.xml"
 msgid "chapter"
 msgstr "Chapitre - \\chapter{}"
 
-#: src/search_and_replace.ui:264
-#: src/search_and_replace.ui:282
-msgid "label"
-msgstr "étiquette"
-
 #: src/main_window.vala:282
 msgid "left  }"
 msgstr "} à gauche"
@@ -1195,13 +1196,11 @@ msgstr "{ à gauche"
 msgid "letter-en.tex"
 msgstr "letter-fr.tex"
 
-#: src/preferences_dialog.vala:167
-#: src/preferences_dialog.vala:172
+#: src/preferences_dialog.vala:167 src/preferences_dialog.vala:172
 msgid "minute"
 msgstr "minute"
 
-#: src/preferences_dialog.vala:167
-#: src/preferences_dialog.vala:172
+#: src/preferences_dialog.vala:167 src/preferences_dialog.vala:172
 msgid "minutes"
 msgstr "minutes"
 
@@ -1285,7 +1284,7 @@ msgstr "Sous-section - \\subsection{}"
 msgid "subsubsection"
 msgstr "Sous-sous-section - \\subsubsection{}"
 
-#: src/main_window.vala:1923
+#: src/main_window.vala:1928
 msgid "translator-credits"
 msgstr "Sébastien Wilmet <sebastien.wilmet@gmail.com>"
 
@@ -1579,6 +1578,9 @@ msgstr "Sébastien Wilmet <sebastien.wilmet@gmail.com>"
 
 #~ msgid "failed: %s is not a *.tex file"
 #~ msgstr "échec : %s n'est pas un fichier *.tex"
+
+#~ msgid "label"
+#~ msgstr "étiquette"
 
 #~ msgid "latex command:"
 #~ msgstr "Commande latex :"

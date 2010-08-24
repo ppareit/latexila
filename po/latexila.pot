@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-08-24 21:25+0200\n"
+"POT-Creation-Date: 2010-08-25 01:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/search.vala:377
+#: src/search.vala:383
 #, c-format
 msgid "%u matches"
 msgstr ""
 
-#: src/search.vala:371
+#: src/search.vala:377
 #, c-format
 msgid "%u of %u"
 msgstr ""
@@ -31,12 +31,12 @@ msgstr ""
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr ""
 
-#: src/main_window.vala:1234
+#: src/main_window.vala:1239
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr ""
 
-#: src/main_window.vala:123 src/main_window.vala:1922
+#: src/main_window.vala:123 src/main_window.vala:1927
 msgid "About LaTeXila"
 msgstr ""
 
@@ -137,7 +137,7 @@ msgstr ""
 msgid "Close the current file"
 msgstr ""
 
-#: src/dialogs.vala:40 src/main_window.vala:949
+#: src/dialogs.vala:40 src/main_window.vala:954
 msgid "Close without Saving"
 msgstr ""
 
@@ -318,7 +318,7 @@ msgstr ""
 msgid "Job"
 msgstr ""
 
-#: src/main_window.vala:1871
+#: src/main_window.vala:1876
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
 msgstr ""
 
@@ -405,7 +405,7 @@ msgstr ""
 msgid "New file"
 msgstr ""
 
-#: src/search.vala:373
+#: src/search.vala:379
 msgid "Not found"
 msgstr ""
 
@@ -421,11 +421,11 @@ msgstr ""
 msgid "Numbered Equation - \\begin{equation}"
 msgstr ""
 
-#: src/search.vala:375
+#: src/search.vala:381
 msgid "One match"
 msgstr ""
 
-#: src/main_window.vala:1554
+#: src/main_window.vala:1559
 msgid "Open Files"
 msgstr ""
 
@@ -433,11 +433,11 @@ msgstr ""
 msgid "Open _Recent"
 msgstr ""
 
-#: src/main_window.vala:35 src/main_window.vala:1324
+#: src/main_window.vala:35 src/main_window.vala:1329
 msgid "Open a file"
 msgstr ""
 
-#: src/main_window.vala:1325
+#: src/main_window.vala:1330
 msgid "Open a recently used file"
 msgstr ""
 
@@ -481,7 +481,7 @@ msgstr ""
 msgid "Quote - \\begin{quote}"
 msgstr ""
 
-#: src/main_window.vala:1185
+#: src/main_window.vala:1190
 msgid "Read-Only"
 msgstr ""
 
@@ -501,7 +501,7 @@ msgstr ""
 msgid "Reload"
 msgstr ""
 
-#: src/main_window.vala:1239
+#: src/main_window.vala:1244
 msgid "Replace"
 msgstr ""
 
@@ -538,7 +538,7 @@ msgstr ""
 msgid "Save Anyway"
 msgstr ""
 
-#: src/main_window.vala:1199
+#: src/main_window.vala:1204
 msgid "Save File"
 msgstr ""
 
@@ -546,7 +546,7 @@ msgstr ""
 msgid "Save all open files"
 msgstr ""
 
-#: src/main_window.vala:946
+#: src/main_window.vala:951
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr ""
@@ -713,7 +713,7 @@ msgstr ""
 msgid "Verse - \\begin{verse}"
 msgstr ""
 
-#: src/main_window.vala:1865
+#: src/main_window.vala:1870
 msgid "View LaTeX Reference"
 msgstr ""
 
@@ -1137,7 +1137,7 @@ msgstr ""
 msgid "subsubsection"
 msgstr ""
 
-#: src/main_window.vala:1923
+#: src/main_window.vala:1928
 msgid "translator-credits"
 msgstr ""
 
@@ -1271,10 +1271,6 @@ msgstr ""
 
 #: src/search_and_replace.ui:250
 msgid "Search for"
-msgstr ""
-
-#: src/search_and_replace.ui:264 src/search_and_replace.ui:282
-msgid "label"
 msgstr ""
 
 #: src/search_and_replace.ui:319

@@ -138,6 +138,10 @@ public abstract class BuildToolProcess : GLib.Object
 
 public class BuildToolRunner : BuildToolProcess
 {
+    private BuildView view;
+    private bool compilation;
+    private string document_view_program;
+
     private File file;
     private string filename;
     private string shortname;
@@ -145,17 +149,20 @@ public class BuildToolRunner : BuildToolProcess
 
     private string stdout_text = "";
     private string stderr_text = "";
+
     private unowned List<BuildJob?> jobs;
     private int job_num = 0;
     private unowned BuildJob current_job;
-    private BuildView view;
+
+
     private TreeIter root_partition;
     private TreeIter[] job_partitions;
-    private string document_view_program;
 
     public BuildToolRunner (File file, BuildTool tool, BuildView view)
     {
         this.file = file;
+        this.compilation = tool.compilation;
+
         filename = file.get_parse_name ();
         shortname = Utils.get_shortname (filename);
         directory = file.get_parent ().get_parse_name ();
@@ -216,7 +223,11 @@ public class BuildToolRunner : BuildToolProcess
         {
             view.set_partition_state (root_partition, PartitionState.SUCCEEDED);
             view.set_can_abort (false, null);
-            view.exec_finished (file);
+
+            // refresh the file browser
+            // (we have no reference to a MainWindow, but "view" has one)
+            if (compilation)
+                view.exec_finished (file);
             return;
         }
 

@@ -30,6 +30,7 @@ public struct BuildTool
     public string extensions;
     public string label;
     public string icon;
+    public bool compilation;
     public unowned List<BuildJob?> jobs;
 }
 
@@ -222,6 +223,7 @@ public class AppSettings : GLib.Settings
 
             case "tool":
                 current_build_tool = BuildTool ();
+                current_build_tool.compilation = false;
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
@@ -236,8 +238,9 @@ public class AppSettings : GLib.Settings
                             current_build_tool.label = attr_values[i];
                             break;
                         case "icon":
-                            current_build_tool.icon = attr_values[i];
-                            switch (attr_values[i])
+                            string icon = attr_values[i];
+                            current_build_tool.icon = icon;
+                            switch (icon)
                             {
                                 case "view_dvi":
                                     current_tool_is_view_dvi = true;
@@ -249,6 +252,7 @@ public class AppSettings : GLib.Settings
                                     current_tool_is_view_ps = true;
                                     break;
                             }
+                            current_build_tool.compilation = icon.contains ("compile");
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (

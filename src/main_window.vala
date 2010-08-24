@@ -545,8 +545,8 @@ public class MainWindow : Window
         main_vbox.pack_start (edit_toolbar, false, false, 0);
 
         main_vbox.show ();
-        menu.show ();
-        toolbar.show ();
+        menu.show_all ();
+        toolbar.show_all ();
 
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
@@ -563,7 +563,7 @@ public class MainWindow : Window
         vbox_source_view.pack_start (search_and_replace.get_widget (), false, false);
 
         vbox_source_view.show ();
-        documents_panel.show ();
+        documents_panel.show_all ();
 
         // vertical pane
         // top: vbox source view
@@ -583,7 +583,7 @@ public class MainWindow : Window
         vpaned.show ();
 
         main_vbox.pack_end (statusbar, false, false, 0);
-        statusbar.show ();
+        statusbar.show_all ();
 
         add (main_vbox);
         show ();
@@ -911,7 +911,12 @@ public class MainWindow : Window
             selection_changed ();
         });
 
-        tab.document.notify["location"].connect (() => sync_name (tab));
+        tab.document.notify["location"].connect (() =>
+        {
+            sync_name (tab);
+            update_build_tools_sensitivity ();
+        });
+
         tab.document.modified_changed.connect (() => sync_name (tab));
         tab.document.notify["readonly"].connect (() => sync_name (tab));
         tab.document.cursor_moved.connect (update_cursor_position_statusbar);
@@ -1473,6 +1478,11 @@ public class MainWindow : Window
         //Utils.print_build_tool (tool);
 
         build_view.show ();
+
+        // save the document if it's a compilation (e.g. with rubber)
+        if (tool.compilation)
+            active_document.save ();
+
         new BuildToolRunner (active_document.location, tool, build_view);
     }
 
