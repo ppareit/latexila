@@ -28,6 +28,7 @@ public class Document : Gtk.SourceBuffer
     private bool backup_made = false;
     private string _etag;
     private string? encoding = null;
+    private bool _modified = false;
 
     private TextTag found_tag;
     private TextTag found_tag_selected;
@@ -54,7 +55,11 @@ public class Document : Gtk.SourceBuffer
             if (mark == get_insert ())
                 emit_cursor_moved ();
         });
-        changed.connect (emit_cursor_moved);
+        changed.connect (() =>
+        {
+            _modified = true;
+            emit_cursor_moved ();
+        });
 
         found_tag = new TextTag ("found");
         found_tag_selected = new TextTag ("found_selected");
@@ -68,6 +73,13 @@ public class Document : Gtk.SourceBuffer
         get_iter_at_line (out iter, 0);
         create_mark ("search_selected_start", iter, true);
         create_mark ("search_selected_end", iter, true);
+    }
+
+    public new bool get_modified ()
+    {
+        if (! _modified)
+            return false;
+        return base.get_modified ();
     }
 
     public void load (File location)
@@ -112,7 +124,10 @@ public class Document : Gtk.SourceBuffer
 
         begin_not_undoable_action ();
         set_text (contents2 ?? contents, -1);
-        Utils.flush_queue ();
+
+        // HACK sometimes set_text () has not finished when set_modified () is called,
+        // so we use another variable which has priority when it is set to false.
+        _modified = false;
         set_modified (false);
         end_not_undoable_action ();
 
