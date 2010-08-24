@@ -117,6 +117,8 @@ public class MainWindow : Window
 
         // Help
         { "Help", null, N_("_Help") },
+        { "HelpLatexReference", STOCK_HELP, N_("_LaTeX Reference"), "<Release>F1",
+            N_("The Kile LaTeX Reference"), on_help_latex_reference },
         { "HelpAbout", STOCK_ABOUT, null, null,
             N_("About LaTeXila"), on_about_dialog }
     };
@@ -1856,6 +1858,12 @@ public class MainWindow : Window
     }
 
     /* Help */
+
+    public void on_help_latex_reference ()
+    {
+        File file = File.new_for_path (Config.DATA_DIR + "/latexhelp.html");
+        new BuildToolRunner.web_browser (file, _("View LaTeX Reference"), build_view);
+    }
 
     public void on_about_dialog ()
     {

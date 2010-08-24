@@ -71,6 +71,7 @@ public class PreferencesDialog : Dialog
             var schemes_treeview = (TreeView) builder.get_object ("schemes_treeview");
 
             var document_view_program = builder.get_object ("document_view_program");
+            var web_browser = builder.get_object ("web_browser");
 
             var confirm_clean_up_checkbutton =
                 builder.get_object ("confirm_clean_up_checkbutton");
@@ -108,6 +109,9 @@ public class PreferencesDialog : Dialog
             settings.bind ("auto-save-interval", autosave_spinbutton, "value",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
             settings.bind ("reopen-files", reopen_checkbutton, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+
+            settings.bind ("web-browser", web_browser, "text",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
             GLib.Settings build_settings =

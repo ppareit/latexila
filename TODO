@@ -3,7 +3,6 @@ TODO
 For 1.99
 ========
 
-- Help (a web page) + web browser setting
 - BuildTools: replace command placeholders by values (for the display in the BuildView)
 - System fixed width font (gsettings)
 - How to translate build_tools.xml?
