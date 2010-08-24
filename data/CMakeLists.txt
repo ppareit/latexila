@@ -1,11 +1,10 @@
 install (FILES "org.gnome.latexila.gschema.xml"
 	DESTINATION "${CMAKE_INSTALL_PREFIX}/share/glib-2.0/schemas/")
-
 install (SCRIPT "cmake-compile-schemas")
 
-install (FILES "build_tools.xml" DESTINATION ${DATA_DIR})
 install (FILES "latexhelp.html" DESTINATION ${DATA_DIR})
 
+add_subdirectory ("build_tools")
 add_subdirectory ("templates")
 add_subdirectory ("images/app")
 add_subdirectory ("images/icons")

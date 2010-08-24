@@ -182,9 +182,13 @@ public class PreferencesDialog : Dialog
             });
 
             // default font checkbutton label
-            var label = _("Use the system fixed width font (%s)")
-                .printf (AppSettings.get_default ().get_system_font ());
-            default_font_checkbutton.set_label (label);
+            set_system_font_label (default_font_checkbutton);
+
+            AppSettings app_settings = AppSettings.get_default ();
+            app_settings.notify["system-font"].connect (() =>
+            {
+                set_system_font_label (default_font_checkbutton);
+            });
 
             // automatic clean-up sensitivity
             bool no_confirm = build_settings.get_boolean ("no-confirm-clean");
@@ -222,6 +226,14 @@ public class PreferencesDialog : Dialog
             content_area.pack_start (label_error, true, true, 0);
             content_area.show_all ();
         }
+    }
+
+    private void set_system_font_label (Button button)
+    {
+        AppSettings app_settings = AppSettings.get_default ();
+        string label = _("Use the system fixed width font (%s)")
+            .printf (app_settings.system_font);
+        button.set_label (label);
     }
 
     public static void show_me (MainWindow parent)

@@ -131,7 +131,7 @@ public class DocumentView : Gtk.SourceView
     {
         string font;
         if (editor_settings.get_boolean ("use-default-font"))
-            font = AppSettings.get_default ().get_system_font ();
+            font = AppSettings.get_default ().system_font;
         else
             font = editor_settings.get_string ("editor-font");
 

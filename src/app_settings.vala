@@ -38,7 +38,9 @@ public class AppSettings : GLib.Settings
     private static AppSettings instance = null;
 
     private Settings editor;
-    //private Settings desktop_interface;
+    private Settings desktop_interface;
+
+    public string system_font { get; private set; }
 
     /* AppSettings is a singleton */
     private AppSettings ()
@@ -59,12 +61,14 @@ public class AppSettings : GLib.Settings
     {
         Settings prefs = get_child ("preferences");
         editor = prefs.get_child ("editor");
-        //desktop_interface = new Settings ("org.gnome.Desktop.Interface");
+        desktop_interface = new Settings ("org.gnome.desktop.interface");
+
+        system_font = desktop_interface.get_string ("monospace-font-name");
 
         editor.changed["use-default-font"].connect ((setting, key) =>
         {
             var val = setting.get_boolean (key);
-            var font = val ? get_system_font () : editor.get_string ("editor-font");
+            var font = val ? system_font : editor.get_string ("editor-font");
             set_font (font);
         });
 
@@ -73,6 +77,13 @@ public class AppSettings : GLib.Settings
             if (editor.get_boolean ("use-default-font"))
                 return;
             set_font (setting.get_string (key));
+        });
+
+        desktop_interface.changed["monospace-font-name"].connect ((setting, key) =>
+        {
+            system_font = setting.get_string (key);
+            if (editor.get_boolean ("use-default-font"))
+                set_font (system_font);
         });
 
         editor.changed["scheme"].connect ((setting, key) =>
@@ -148,12 +159,6 @@ public class AppSettings : GLib.Settings
         });
     }
 
-    public string get_system_font ()
-    {
-        //return desktop_interface.get_string ("monospace-font-name");
-        return "Monospace 10";
-    }
-
     private void set_font (string font)
     {
         foreach (var view in Application.get_default ().get_views ())
@@ -186,7 +191,8 @@ public class AppSettings : GLib.Settings
     {
         try
         {
-            File file = File.new_for_path (Config.DATA_DIR + "/build_tools.xml");
+            File file = File.new_for_path (Config.DATA_DIR + "/build_tools/"
+                + _("build_tools-en.xml"));
             string contents;
             file.load_contents (null, out contents);
 
