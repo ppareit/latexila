@@ -160,6 +160,10 @@ public class BuildToolRunner : BuildToolProcess
         shortname = Utils.get_shortname (filename);
         directory = file.get_parent ().get_parse_name ();
 
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.build");
+        document_view_program = settings.get_string ("document-view-program");
+
         // verify if file extension is allowed for the build tool
         string[] extensions = tool.extensions.split (" ");
         if (tool.extensions.length > 0
@@ -176,12 +180,11 @@ public class BuildToolRunner : BuildToolProcess
             PartitionState.RUNNING, null);
 
         foreach (BuildJob job in jobs)
-            job_partitions += view.add_partition (job.command, PartitionState.RUNNING,
-                root_partition);
-
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.build");
-        document_view_program = settings.get_string ("document-view-program");
+        {
+            string[] command = get_command (job, true);
+            job_partitions += view.add_partition (string.joinv (" ", command),
+                PartitionState.RUNNING, root_partition);
+        }
 
         view.set_can_abort (true, this);
         proceed ();
@@ -218,7 +221,25 @@ public class BuildToolRunner : BuildToolProcess
         }
 
         current_job = jobs.nth_data (job_num);
-        string[] command = current_job.command.split (" ");
+        string[] command = get_command (current_job, false);
+
+        if (current_job.post_processor == "GenericPostProcessor")
+            execute_without_output (command, directory);
+        else
+            execute (command, directory);
+    }
+
+    private string[] get_command (BuildJob build_job, bool basename)
+    {
+        string base_filename = null;
+        string base_shortname = null;
+        if (basename)
+        {
+            base_filename = file.get_basename ();
+            base_shortname = Utils.get_shortname (base_filename);
+        }
+
+        string[] command = build_job.command.split (" ");
 
         // replace placeholders
         for (int i = 0 ; i < command.length ; i++)
@@ -228,27 +249,20 @@ public class BuildToolRunner : BuildToolProcess
                 command[i] = command[i].replace ("$view", document_view_program);
                 continue;
             }
-            else if (command[i].contains ("$filename"))
+            if (command[i].contains ("$filename"))
             {
-                command[i] = command[i].replace ("$filename", filename);
+                command[i] = command[i].replace ("$filename", base_filename ?? filename);
                 continue;
             }
-            else if (command[i].contains ("$shortname"))
+            if (command[i].contains ("$shortname"))
             {
-                command[i] = command[i].replace ("$shortname", shortname);
-                continue;
-            }
-            else if (command[i].contains ("$directory"))
-            {
-                command[i] = command[i].replace ("$directory", directory);
+                command[i] = command[i].replace ("$shortname",
+                    base_shortname ?? shortname);
                 continue;
             }
         }
 
-        if (current_job.post_processor == "GenericPostProcessor")
-            execute_without_output (command, directory);
-        else
-            execute (command, directory);
+        return command;
     }
 
     protected override void on_stdout (string text)
