@@ -45,17 +45,44 @@ public class FileBrowser : VBox
     private ComboBox combo_box;
     private File current_directory;
     private Button parent_button;
+    private GLib.Settings settings;
+    private uint timeout_id = 0;
 
-    public FileBrowser (MainWindow main_window, BuildView build_view)
+    public FileBrowser (MainWindow main_window)
     {
         GLib.Object (spacing: 3);
         this.main_window = main_window;
-        this.build_view = build_view;
+        this.build_view = main_window.get_build_view ();
 
         init_toolbar ();
         init_combo_box ();
         init_list ();
+        init_settings ();
+
         fill_stores_with_dir (null);
+    }
+
+    private void init_settings ()
+    {
+        settings = new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
+        settings.changed["show-all-files"].connect (refresh);
+        settings.changed["show-hidden-files"].connect (refresh);
+        settings.changed["file-extensions"].connect (() =>
+        {
+            // Since file-extensions is a text entry, we call refresh () only
+            // after 2 seconds. If the text has changed before the 2 seconds, we
+            // reinitialize the counter.
+            if (timeout_id != 0)
+                Source.remove (timeout_id);
+            timeout_id = Timeout.add_seconds (2, on_refresh);
+        });
+    }
+
+    private bool on_refresh ()
+    {
+        timeout_id = 0;
+        refresh ();
+        return false;
     }
 
     private void init_toolbar ()
@@ -247,11 +274,14 @@ public class FileBrowser : VBox
         fill_stores_with_dir (current_directory);
     }
 
+    public void refresh_if_in_dir (File dir)
+    {
+        if (dir.equal (current_directory))
+            refresh ();
+    }
+
     private void fill_stores_with_dir (File? dir)
     {
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
-
         list_store.clear ();
         parent_dir_store.clear ();
 

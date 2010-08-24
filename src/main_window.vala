@@ -448,7 +448,7 @@ public class MainWindow : Window
         Symbols symbols = new Symbols (this);
         side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
 
-        file_browser = new FileBrowser (this, build_view);
+        file_browser = new FileBrowser (this);
         side_panel.add_component (_("File Browser"), STOCK_OPEN, file_browser);
         side_panel.restore_state ();
 
@@ -800,6 +800,11 @@ public class MainWindow : Window
     public CustomStatusbar get_statusbar ()
     {
         return statusbar;
+    }
+
+    public FileBrowser get_file_browser ()
+    {
+        return file_browser;
     }
 
     public DocumentTab? open_document (File location)
@@ -1767,7 +1772,8 @@ public class MainWindow : Window
     public void on_build_clean ()
     {
         return_if_fail (active_tab != null);
-        active_document.clean_build_files (this);
+        if (active_document.clean_build_files (this))
+            file_browser.refresh_if_in_dir (active_document.location.get_parent ());
     }
 
     public void on_build_view_log ()

@@ -192,7 +192,7 @@ namespace Dialogs
         N_COLUMNS
     }
 
-    public void
+    public bool
     confirm_clean_build_files (MainWindow window, File directory, string[] basenames)
     {
         return_if_fail (basenames.length > 0);
@@ -289,6 +289,7 @@ namespace Dialogs
         hbox.show_all ();
 
         /* run */
+        bool ret = false;
         if (dialog.run () == ResponseType.ACCEPT)
         {
             // get files to delete
@@ -311,11 +312,13 @@ namespace Dialogs
 
             foreach (string selected_file in selected_files)
             {
+                ret = true;
                 File file = directory.get_child (selected_file);
                 Utils.delete_file (file);
             }
         }
 
         dialog.destroy ();
+        return ret;
     }
 }

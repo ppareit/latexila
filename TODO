@@ -3,7 +3,6 @@ TODO
 For 1.99
 ========
 
-- Refresh file browser after some events (compilation, etc)
 - Help (a web page) + web browser setting
 - BuildTools: replace command placeholders by values (for the display in the BuildView)
 - System fixed width font (gsettings)

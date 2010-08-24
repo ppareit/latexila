@@ -394,10 +394,12 @@ public class Document : Gtk.SourceBuffer
         return path.has_suffix (".tex");
     }
 
-    public void clean_build_files (MainWindow window)
+    public bool clean_build_files (MainWindow window)
     {
         if (location == null || ! is_tex_document ())
-            return;
+            return false;
+
+        bool ret = false;
 
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.build");
@@ -415,6 +417,7 @@ public class Document : Gtk.SourceBuffer
             File file = directory.get_child (basename);
             if (file.query_exists ())
             {
+                ret = true;
                 if (no_confirm)
                     Utils.delete_file (file);
                 else
@@ -422,8 +425,13 @@ public class Document : Gtk.SourceBuffer
             }
         }
 
-        if (! no_confirm && basenames.length > 0)
-            Dialogs.confirm_clean_build_files (window, directory, basenames);
+        if (no_confirm)
+            return ret;
+
+        else if (basenames.length > 0)
+            return Dialogs.confirm_clean_build_files (window, directory, basenames);
+
+        return false;
     }
 
     // If line is bigger than the number of lines of the document, the cursor is moved

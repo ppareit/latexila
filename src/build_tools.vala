@@ -194,6 +194,7 @@ public class BuildToolRunner : BuildToolProcess
         {
             view.set_partition_state (root_partition, PartitionState.SUCCEEDED);
             view.set_can_abort (false, null);
+            view.exec_finished (file);
             return;
         }
 

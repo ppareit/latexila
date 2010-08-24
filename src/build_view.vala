@@ -284,6 +284,13 @@ public class BuildView : HBox
             this.runner = runner;
     }
 
+    public void exec_finished (File file)
+    {
+        FileBrowser file_browser = main_window.get_file_browser ();
+        file_browser.refresh_if_in_dir (file.get_parent ());
+        this.runner = null;
+    }
+
     public void abort ()
     {
         return_if_fail (runner != null);
