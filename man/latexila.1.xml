@@ -1,0 +1,184 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook V5.0//EN" "http://docbook.org/xml/5.0/dtd/docbook.dtd" [
+
+<!--
+
+`xsltproc /usr/share/xml/docbook/stylesheet/docbook-xsl-ns/manpages/docbook.xsl \
+          latexila.1.xml'
+
+A manual page <package>.<section> will be generated. You may view the
+manual page with: man -l <package>.<section>'. A typical entry in a Makefile or
+Makefile.am is:
+
+DB2MAN = /usr/share/xml/docbook/stylesheet/docbook-xsl-ns/manpages/docbook.xsl
+XP     = xsltproc
+
+latexila.1: latexila.1.xml
+        $(XP) $(DB2MAN) $<
+
+The xsltproc binary is found in the xsltproc package. The XSL files are in
+docbook-xsl-ns. A description of the parameters you can use can be found in the
+docbook-xsl-doc-* packages.
+
+Validation can be done using: `xmllint -''-noout -''-valid manpage.xml`
+
+General documentation about man-pages and man-page-formatting:
+man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
+
+-->
+
+  <!ENTITY authorfirstname "Tanguy">
+  <!ENTITY authorsurname   "Ortolo">
+  <!ENTITY authorfullname  "&authorfirstname; &authorsurname;">
+  <!ENTITY authoremail     "tanguy+debian@ortolo.eu">
+  <!ENTITY mansection      "1">
+  <!ENTITY mansectitle     "User Commands">
+  <!ENTITY upcommand       "LATEXILA">
+  <!ENTITY command         "latexila">
+  <!ENTITY program         "LaTeXila">
+]>
+
+<article xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:lang="en">
+<title>User commands</title>
+<refentry xml:id="&command;">
+  <info>
+    <productname>&program;</productname>
+
+    <authorgroup>
+      <author>
+        <personname><firstname>&authorfirstname;</firstname><surname>&authorsurname;</surname></personname>
+        <contrib>Wrote this manpage for the Debian system.</contrib>
+        <address><email>&authoremail;</email></address>
+      </author>
+    </authorgroup>
+
+    <copyright>
+      <year>2010</year>
+      <holder>&authorfullname;</holder>
+    </copyright>
+
+    <legalnotice>
+      <para>This manual page was written for the Debian system
+        (and may be used by others).</para>
+      <para>Permission is granted to copy, distribute and/or modify this
+        document under the terms of the GNU General Public License,
+        Version 3 or (at your option) any later version published by
+        the Free Software Foundation.</para>
+      <para>On Debian systems, the complete text of the GNU General Public
+        License can be found in
+        <filename>/usr/share/common-licenses/GPL</filename>.</para>
+    </legalnotice>
+  </info>
+
+  <refmeta>
+    <refentrytitle>&upcommand;</refentrytitle>
+    <manvolnum>&mansection;</manvolnum>
+  </refmeta>
+
+  <refnamediv>
+    <refname>&command;</refname>
+    <refpurpose>Integrated LaTeX Environment for the GNOME desktop</refpurpose>
+  </refnamediv>
+
+  <refsynopsisdiv>
+    <cmdsynopsis>
+      <command>&command;</command>
+      <arg choice="opt"><replaceable>OPTIONS</replaceable></arg>
+      <arg choice="opt"><replaceable>FILES</replaceable></arg>
+    </cmdsynopsis>
+
+    <cmdsynopsis>
+      <command>&command;</command>
+      <group choice="req">
+        <arg choice="plain"><option>-h</option></arg>
+        <arg choice="plain"><option>--help</option></arg>
+        <arg choice="plain"><option>--help-all</option></arg>
+        <arg choice="plain"><option>--help-gtk</option></arg>
+      </group>
+    </cmdsynopsis>
+  </refsynopsisdiv>
+
+  <refsection xml:id="description"><info><title>DESCRIPTION</title></info>
+    <para>This manual page documents briefly the
+      <command>&command;</command> command. It was written for the Debian
+      distribution because the original program does not have a manual
+      page.</para>
+    <para><application>&program;</application> is an Integrated LaTeX Environment for
+      the GNOME desktop.</para>
+  </refsection>
+
+  <refsection xml:id="options"><info><title>OPTIONS</title></info>
+    <para>The program follows the usual GNU command line syntax,
+      with long options starting with two dashes (`-').  A summary of
+      options is included below.  For a complete description of options,
+      please use <command>&command; --help</command>.</para>
+    <variablelist>
+      <!-- Use the variablelist.term.separator and the
+           variablelist.term.break.after parameters to
+           control the term elements. -->
+      <varlistentry>
+        <term><option>-n</option></term>
+        <term><option>--new-document</option></term>
+        <listitem>
+          <para>Create a new document.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--new-window</option></term>
+        <listitem>
+          <para>Create a new top-level window in an existing instance of LaTeXila</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--display=DISPLAY</option></term>
+        <listitem>
+          <para>X display to use</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-h</option></term>
+        <term><option>--help</option></term>
+        <listitem>
+          <para>Show summary of common options.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--help-all</option></term>
+        <listitem>
+          <para>Show summary of all options.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>--help-gtk</option></term>
+        <listitem>
+          <para>Show summary of GTK+ options.</para>
+        </listitem>
+      </varlistentry>
+
+      <varlistentry>
+        <term><option>-V</option></term>
+        <term><option>--version</option></term>
+        <listitem>
+          <para>Display version information.</para>
+        </listitem>
+      </varlistentry>
+    </variablelist>
+  </refsection>
+
+  <refsection xml:id="notes"><info><title>NOTES</title></info>
+    <para>By default, when <application>&program;</application> is started it
+      reopens the files that were open last time it was used. This behaviour
+      can be disabled in the program's preferences.</para>
+  </refsection>
+
+  <refsection xml:id="bugs"><info><title>BUGS</title></info>
+    <para>The upstreams <acronym>BTS</acronym> can be found
+      at <uri xlink:href="http://sourceforge.net/tracker/?group_id=271323">http://sourceforge.net/tracker/?group_id=271323</uri>.</para>
+  </refsection>
+</refentry>
+</article>

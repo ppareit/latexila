@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is the development version of LaTeXila. 
+This is the version 1.99.0 of LaTeXila. 
 LaTeXila is an Integrated LaTeX Environment for the GNOME desktop.
 
 LaTeXila is released under the GNU General Public License (GPL) version 3 or
@@ -10,6 +10,10 @@ later, see the file "COPYING" for more information.
 The official web site is:
 
     http://latexila.sourceforge.net/
+
+See also:
+
+    http://github.com/swilmet/latexila
 
 
 Installation
@@ -21,6 +25,6 @@ See the file "INSTALL".
 Where to report bugs
 ====================
 
-Bugs should be reported to the Tracker on SourceForge:
+Bugs should be reported on GitHub:
 
-    http://sourceforge.net/tracker/?group_id=271323
+    http://github.com/swilmet/latexila/issues

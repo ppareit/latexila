@@ -1,5 +1,16 @@
-LaTeXila requires GTK+-2.16.x and GtkSourceView 2.4.x minimum.
-For the compilation, CMake 2.6.4 minimum is also required.
+Requirements
+============
+
+GLib >= 2.25.10
+gsettings-desktop-schemas
+Vala >= 0.9.5
+GTK+ >= 2.16.x
+GtkSourceView >= 2.4.x
+unique
+gdk-x11
+x11
+CMake >= 2.6.4
+gettext
 
 Simple install procedure
 ========================
