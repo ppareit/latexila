@@ -23,13 +23,6 @@ public class PreferencesDialog : Dialog
 {
     private static PreferencesDialog preferences_dialog = null;
 
-    private enum StyleSchemes
-    {
-        ID,
-        DESC,
-        N_COLUMNS
-    }
-
     private PreferencesDialog ()
     {
         add_button (STOCK_CLOSE, ResponseType.CLOSE);
@@ -72,6 +65,9 @@ public class PreferencesDialog : Dialog
 
             var document_view_program = builder.get_object ("document_view_program");
             var web_browser = builder.get_object ("web_browser");
+
+            TreeView build_tools_treeview =
+                (TreeView) builder.get_object ("build_tools_treeview");
 
             var confirm_clean_up_checkbutton =
                 builder.get_object ("confirm_clean_up_checkbutton");
@@ -136,7 +132,7 @@ public class PreferencesDialog : Dialog
 
             // schemes treeview
             var current_scheme_id = settings.get_string ("scheme");
-            initialize_schemes_treeview (schemes_treeview, current_scheme_id);
+            init_schemes_treeview (schemes_treeview, current_scheme_id);
             schemes_treeview.cursor_changed.connect ((treeview) =>
             {
                 TreePath tree_path;
@@ -210,6 +206,9 @@ public class PreferencesDialog : Dialog
                 file_browser_entry.set_sensitive (! val);
             });
 
+            // build tools
+            init_build_tools_treeview (build_tools_treeview);
+
             // pack notebook
             var content_area = (Box) get_content_area ();
             content_area.pack_start (notebook, true, true, 0);
@@ -256,7 +255,14 @@ public class PreferencesDialog : Dialog
         preferences_dialog.present ();
     }
 
-    private void initialize_schemes_treeview (TreeView treeview, string current_id)
+    private enum StyleSchemes
+    {
+        ID,
+        DESC,
+        N_COLUMNS
+    }
+
+    private void init_schemes_treeview (TreeView treeview, string current_id)
     {
         var list_store = new ListStore (StyleSchemes.N_COLUMNS, typeof (string),
             typeof (string));
@@ -287,6 +293,48 @@ public class PreferencesDialog : Dialog
 
             if (id == current_id)
                 select.select_iter (iter);
+        }
+    }
+
+    private enum BuildToolColumn
+    {
+        PIXBUF,
+        LABEL,
+        DESCRIPTION,
+        N_COLUMNS
+    }
+
+    private void init_build_tools_treeview (TreeView treeview)
+    {
+        ListStore list_store = new ListStore (BuildToolColumn.N_COLUMNS, typeof (string),
+            typeof (string), typeof (string));
+        treeview.set_model (list_store);
+
+        TreeViewColumn column = new TreeViewColumn ();
+        treeview.append_column (column);
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        column.pack_start (pixbuf_renderer, false);
+        column.set_attributes (pixbuf_renderer, "stock-id", BuildToolColumn.PIXBUF, null);
+
+        CellRendererText text_renderer = new CellRendererText ();
+        column.pack_start (text_renderer, true);
+        column.set_attributes (text_renderer, "text", BuildToolColumn.LABEL, null);
+
+        treeview.set_tooltip_column (BuildToolColumn.DESCRIPTION);
+        treeview.headers_visible = false;
+
+        /* fill list store */
+        unowned List<BuildTool?> tools = AppSettings.get_default ().get_build_tools ();
+        foreach (BuildTool tool in tools)
+        {
+            TreeIter iter;
+            list_store.append (out iter);
+            list_store.set (iter,
+                BuildToolColumn.PIXBUF, tool.icon,
+                BuildToolColumn.LABEL, tool.label,
+                BuildToolColumn.DESCRIPTION, tool.description,
+                -1);
         }
     }
 }

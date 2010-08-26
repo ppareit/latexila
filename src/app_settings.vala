@@ -171,7 +171,7 @@ public class AppSettings : GLib.Settings
      *    BUILD TOOLS    *
      *********************/
 
-    private BuildTool[] build_tools = {};
+    private List<BuildTool?> build_tools = null;
     private BuildTool current_build_tool;
     private BuildJob current_build_job;
 
@@ -183,7 +183,7 @@ public class AppSettings : GLib.Settings
     private bool current_tool_is_view_pdf = false;
     private bool current_tool_is_view_ps  = false;
 
-    public BuildTool[] get_build_tools ()
+    public unowned List<BuildTool?> get_build_tools ()
     {
         return build_tools;
     }
@@ -294,7 +294,7 @@ public class AppSettings : GLib.Settings
                 return;
 
             case "tool":
-                build_tools += current_build_tool;
+                build_tools.append (current_build_tool);
                 if (current_tool_is_view_dvi)
                 {
                     build_tool_view_dvi = current_build_tool;
