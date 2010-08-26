@@ -335,6 +335,13 @@ public class PreferencesDialog : Dialog
         select.set_mode (SelectionMode.SINGLE);
 
         /* fill list store */
+        update_build_tools_store ();
+    }
+
+    private void update_build_tools_store ()
+    {
+        build_tools_store.clear ();
+
         unowned LinkedList<BuildTool?> tools =
             AppSettings.get_default ().get_build_tools ();
         foreach (BuildTool tool in tools)
@@ -355,10 +362,22 @@ public class PreferencesDialog : Dialog
                                            Button bt_down,
                                            Button bt_properties)
     {
+
+        bt_new.clicked.connect (() =>
+        {
+            run_build_tool_dialog (-1);
+        });
+
+        bt_properties.clicked.connect (() =>
+        {
+            int num = get_selected_build_tool ();
+            run_build_tool_dialog (num);
+        });
+
         bt_delete.clicked.connect (() =>
         {
             TreeIter iter;
-            int i = get_selected_build_tool (out iter);
+            int i = get_selected_build_tool (true, out iter);
             if (i != -1)
             {
                 build_tools_store.remove (iter);
@@ -369,7 +388,7 @@ public class PreferencesDialog : Dialog
         bt_up.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = get_selected_build_tool (out iter1);
+            int i = get_selected_build_tool (true, out iter1);
             if (i != -1 && i > 0)
             {
                 iter2 = iter1;
@@ -384,7 +403,7 @@ public class PreferencesDialog : Dialog
         bt_down.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = get_selected_build_tool (out iter1);
+            int i = get_selected_build_tool (true, out iter1);
             if (i != -1)
             {
                 iter2 = iter1;
@@ -399,7 +418,7 @@ public class PreferencesDialog : Dialog
 
     // get indice of selected build tool in the treeview
     // returns -1 if no build tool is selected
-    private int get_selected_build_tool (out TreeIter iter = null)
+    private int get_selected_build_tool (bool set_iter = false, out TreeIter iter = null)
     {
         TreeSelection select = build_tools_view.get_selection ();
         GLib.List<TreePath> selected_rows = select.get_selected_rows (null);
@@ -407,8 +426,189 @@ public class PreferencesDialog : Dialog
             return -1;
 
         unowned TreePath path = selected_rows.nth_data (0);
-        build_tools_store.get_iter (out iter, path);
+        if (set_iter)
+            build_tools_store.get_iter (out iter, path);
         unowned int[] indices = path.get_indices ();
         return indices[0];
+    }
+
+    private void run_build_tool_dialog (int num)
+    {
+        BuildToolDialog.show_me (get_transient_for (), num);
+    }
+}
+
+private class BuildToolDialog : Dialog
+{
+    private static BuildToolDialog instance = null;
+
+    private Entry entry_label;
+    private Entry entry_desc;
+    private Entry entry_extensions;
+    private ComboBox combobox_icon;
+    private Entry entry_command;
+    private Button button_add;
+    private TreeView treeview_jobs;
+    private Button button_delete;
+    private Button button_up;
+    private Button button_down;
+
+    private ListStore icon_store;
+
+    struct IconColumn
+    {
+        public string stock_id;
+        public string label;
+    }
+
+    private const IconColumn[] icons =
+    {
+        { STOCK_EXECUTE, N_("Execute") },
+        { "compile_dvi", "LaTeX → DVI" },
+        { "compile_pdf", "LaTeX → PDF" },
+        { "compile_ps", "LaTeX → PS" },
+        { STOCK_CONVERT, N_("Convert") },
+        { STOCK_FILE, N_("View File") },
+        { "view_dvi", N_("View DVI") },
+        { "view_pdf", N_("View PDF") },
+        { "view_ps", N_("View PS") }
+    };
+
+    private BuildToolDialog ()
+    {
+        add_button (STOCK_CANCEL, ResponseType.CANCEL);
+        add_button (STOCK_OK, ResponseType.OK);
+        title = _("Build Tool");
+        has_separator = false;
+        destroy_with_parent = true;
+        border_width = 5;
+
+        response.connect (() => hide ());
+
+        try
+        {
+            string path = Path.build_filename (Config.DATA_DIR, "ui", "build_tool.ui");
+            Builder builder = new Builder ();
+            builder.add_from_file (path);
+
+            // get objects
+            VBox main_vbox = (VBox) builder.get_object ("main_vbox");
+            main_vbox.unparent ();
+
+            entry_label = (Entry) builder.get_object ("entry_label");
+            entry_desc = (Entry) builder.get_object ("entry_desc");
+            entry_extensions = (Entry) builder.get_object ("entry_extensions");
+            combobox_icon = (ComboBox) builder.get_object ("combobox_icon");
+            entry_command = (Entry) builder.get_object ("entry_command");
+            button_add = (Button) builder.get_object ("button_add");
+            treeview_jobs = (TreeView) builder.get_object ("treeview_jobs");
+            button_delete = (Button) builder.get_object ("button_delete");
+            button_up = (Button) builder.get_object ("button_up");
+            button_down = (Button) builder.get_object ("button_down");
+
+            // packing widget
+            var content_area = (Box) get_content_area ();
+            content_area.pack_start (main_vbox, true, true, 0);
+            content_area.show_all ();
+
+            init_icon_treeview ();
+            init_jobs_treeview ();
+        }
+        catch (Error e)
+        {
+            var message = "Error: %s".printf (e.message);
+            stderr.printf ("%s\n", message);
+
+            var label_error = new Label (message);
+            label_error.set_line_wrap (true);
+            var content_area = (Box) get_content_area ();
+            content_area.pack_start (label_error, true, true, 0);
+            content_area.show_all ();
+        }
+    }
+
+    public static bool show_me (Window parent, int num)
+    {
+        if (instance == null)
+        {
+            instance = new BuildToolDialog ();
+
+            // FIXME how to connect Widget.destroyed?
+            instance.destroy.connect (() =>
+            {
+                if (instance != null)
+                    instance = null;
+            });
+        }
+
+        if (parent != instance.get_transient_for ())
+            instance.set_transient_for (parent);
+
+        instance.present ();
+
+        if (num == -1)
+            instance.init_new_build_tool ();
+        else
+        {
+            unowned LinkedList<BuildTool?> tools =
+                AppSettings.get_default ().get_build_tools ();
+            instance.init_with_build_tool (tools.get (num));
+        }
+
+        return instance.run_me (num);
+    }
+
+    private void init_icon_treeview ()
+    {
+        icon_store = new ListStore (2, typeof (string), typeof (string));
+
+        // fill icon store
+        foreach (IconColumn icon in icons)
+        {
+            TreeIter iter;
+            icon_store.append (out iter);
+            icon_store.set (iter, 0, icon.stock_id, 1, _(icon.label), -1);
+        }
+
+        // init combobox
+        combobox_icon.set_model (icon_store);
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        combobox_icon.pack_start (pixbuf_renderer, false);
+        combobox_icon.set_attributes (pixbuf_renderer, "stock-id", 0, null);
+
+        CellRendererText text_renderer = new CellRendererText ();
+        combobox_icon.pack_start (text_renderer, true);
+        combobox_icon.set_attributes (text_renderer, "text", 1, null);
+    }
+
+    private void init_jobs_treeview ()
+    {
+    }
+
+    private void init_new_build_tool ()
+    {
+        combobox_icon.set_active (0);
+    }
+
+    private void init_with_build_tool (BuildTool tool)
+    {
+        // set icon
+        combobox_icon.set_active (0);
+        for (int i = 0 ; i < icons.length ; i++)
+        {
+            if (icons[i].stock_id == tool.icon)
+            {
+                combobox_icon.set_active (i);
+                break;
+            }
+        }
+    }
+
+    private bool run_me (int num)
+    {
+        if (run () == ResponseType.OK)
+            return true;
+        return false;
     }
 }

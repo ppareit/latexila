@@ -23,5 +23,4 @@ vala_precompile (
 add_executable (latexila ${VALA_C})
 install (TARGETS latexila DESTINATION "bin")
 
-file (GLOB UI "*.ui")
-install (FILES ui.xml ${UI} DESTINATION ${DATA_DIR}/ui)
+add_subdirectory (ui)
