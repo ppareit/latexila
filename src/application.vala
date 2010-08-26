@@ -205,7 +205,10 @@ public class Application : GLib.Object
         {
             windows.remove (window);
             if (windows.length () == 0)
+            {
+                AppSettings.get_default ().save_build_tools ();
                 Gtk.main_quit ();
+            }
             else if (window == active_window)
                 active_window = (MainWindow) windows.data;
         });

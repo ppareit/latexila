@@ -185,6 +185,8 @@ public class AppSettings : GLib.Settings
     private bool current_tool_is_view_pdf = false;
     private bool current_tool_is_view_ps  = false;
 
+    private bool build_tools_modified = false;
+
     public unowned LinkedList<BuildTool?> get_build_tools ()
     {
         return build_tools;
@@ -207,7 +209,6 @@ public class AppSettings : GLib.Settings
         BuildTool tool = build_tools.get (num1);
         build_tools.remove_at (num1);
         build_tools.insert (num2, tool);
-        //print_build_tools_summary ();
         update_all_build_tools_menu ();
     }
 
@@ -215,19 +216,21 @@ public class AppSettings : GLib.Settings
     {
         return_if_fail (num >= 0 && num < build_tools.size);
         build_tools.remove_at (num);
-        //print_build_tools_summary ();
         update_all_build_tools_menu ();
     }
 
+    /*
     private void print_build_tools_summary ()
     {
         stdout.printf ("\n=== build tools summary ===\n");
         foreach (BuildTool tool in build_tools)
             stdout.printf ("%s\n", tool.label);
     }
+    */
 
     private void update_all_build_tools_menu ()
     {
+        build_tools_modified = true;
         foreach (MainWindow window in Application.get_default ().windows)
             window.update_build_tools_menu ();
     }
@@ -236,8 +239,13 @@ public class AppSettings : GLib.Settings
     {
         try
         {
-            File file = File.new_for_path (Config.DATA_DIR + "/build_tools/"
-                + _("build_tools-en.xml"));
+            // try to load the user config file if it exists
+            // otherwise load the default config file
+            File file = get_user_config_build_tools_file ();
+            if (! file.query_exists ())
+                file = File.new_for_path (Config.DATA_DIR + "/build_tools/"
+                    + _("build_tools-en.xml"));
+
             string contents;
             file.load_contents (null, out contents);
 
@@ -367,5 +375,44 @@ public class AppSettings : GLib.Settings
     {
         if (context.get_element () == "job")
             current_build_job.command = text;
+    }
+
+    public void save_build_tools ()
+    {
+        if (! build_tools_modified)
+            return;
+
+        string content = "<tools>\n";
+        foreach (BuildTool tool in build_tools)
+        {
+            content += "  <tool description=\"%s\" extensions=\"%s\" label=\"%s\" icon=\"%s\">\n".printf (
+                tool.description, tool.extensions, tool.label, tool.icon);
+            foreach (BuildJob job in tool.jobs)
+            {
+                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">%s</job>\n".printf (
+                    job.must_succeed.to_string (), job.post_processor, job.command);
+            }
+            content += "  </tool>\n";
+        }
+        content += "</tools>\n";
+
+        try
+        {
+            File file = get_user_config_build_tools_file ();
+            // a backup is made
+            file.replace_contents (content, content.size (), null, true,
+                FileCreateFlags.NONE, null, null);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: impossible to save build tools: %s\n", e.message);
+        }
+    }
+
+    private File get_user_config_build_tools_file ()
+    {
+        string path = Path.build_filename (Environment.get_user_config_dir (),
+            "latexila", "build_tools.xml", null);
+        return File.new_for_path (path);
     }
 }
