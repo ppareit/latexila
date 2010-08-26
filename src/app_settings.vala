@@ -17,6 +17,8 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using Gee;
+
 public struct BuildJob
 {
     public bool must_succeed;
@@ -31,7 +33,7 @@ public struct BuildTool
     public string label;
     public string icon;
     public bool compilation;
-    public unowned List<BuildJob?> jobs;
+    public unowned GLib.List<BuildJob?> jobs;
 }
 
 public class AppSettings : GLib.Settings
@@ -171,7 +173,7 @@ public class AppSettings : GLib.Settings
      *    BUILD TOOLS    *
      *********************/
 
-    private List<BuildTool?> build_tools = null;
+    private LinkedList<BuildTool?> build_tools;
     private BuildTool current_build_tool;
     private BuildJob current_build_job;
 
@@ -183,9 +185,51 @@ public class AppSettings : GLib.Settings
     private bool current_tool_is_view_pdf = false;
     private bool current_tool_is_view_ps  = false;
 
-    public unowned List<BuildTool?> get_build_tools ()
+    public unowned LinkedList<BuildTool?> get_build_tools ()
     {
         return build_tools;
+    }
+
+    public void move_build_tool_up (int num)
+    {
+        return_if_fail (num > 0);
+        swap_build_tools (num, num - 1);
+    }
+
+    public void move_build_tool_down (int num)
+    {
+        return_if_fail (num < build_tools.size - 1);
+        swap_build_tools (num, num + 1);
+    }
+
+    private void swap_build_tools (int num1, int num2)
+    {
+        BuildTool tool = build_tools.get (num1);
+        build_tools.remove_at (num1);
+        build_tools.insert (num2, tool);
+        //print_build_tools_summary ();
+        update_all_build_tools_menu ();
+    }
+
+    public void delete_build_tool (int num)
+    {
+        return_if_fail (num >= 0 && num < build_tools.size);
+        build_tools.remove_at (num);
+        //print_build_tools_summary ();
+        update_all_build_tools_menu ();
+    }
+
+    private void print_build_tools_summary ()
+    {
+        stdout.printf ("\n=== build tools summary ===\n");
+        foreach (BuildTool tool in build_tools)
+            stdout.printf ("%s\n", tool.label);
+    }
+
+    private void update_all_build_tools_menu ()
+    {
+        foreach (MainWindow window in Application.get_default ().windows)
+            window.update_build_tools_menu ();
     }
 
     private void load_build_tools ()
@@ -197,6 +241,8 @@ public class AppSettings : GLib.Settings
             string contents;
             file.load_contents (null, out contents);
 
+            build_tools = new LinkedList<BuildTool?> ();
+
             MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
@@ -205,12 +251,6 @@ public class AppSettings : GLib.Settings
         {
             stderr.printf ("Warning: impossible to load build tools: %s\n", e.message);
         }
-    }
-
-    public void print_build_tools ()
-    {
-        foreach (BuildTool build_tool in build_tools)
-            Utils.print_build_tool (build_tool);
     }
 
     private void parser_start (MarkupParseContext context, string name,
@@ -294,7 +334,7 @@ public class AppSettings : GLib.Settings
                 return;
 
             case "tool":
-                build_tools.append (current_build_tool);
+                build_tools.add (current_build_tool);
                 if (current_tool_is_view_dvi)
                 {
                     build_tool_view_dvi = current_build_tool;

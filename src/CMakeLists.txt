@@ -7,15 +7,15 @@ vala_precompile (
 	PACKAGES
 		gtk+-2.0
 		gtksourceview-2.0
-		#gee-1.0
+		gee-1.0
 		unique-1.0
 		gdk-x11-2.0
 		x11
 		posix
 
 # for debugging
-#	OPTIONS
-#		--debug
+	OPTIONS
+		--debug
 	CUSTOM_VAPIS
 		${vapi_files}
 )

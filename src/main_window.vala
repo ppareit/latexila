@@ -1112,7 +1112,8 @@ public class MainWindow : Window
 
         string ext = Utils.get_extension (active_document.location.get_parse_name ());
 
-        unowned List<BuildTool?> tools = AppSettings.get_default ().get_build_tools ();
+        unowned Gee.LinkedList<BuildTool?> tools =
+            AppSettings.get_default ().get_build_tools ();
         int i = 0;
         foreach (BuildTool tool in tools)
         {
@@ -1435,10 +1436,10 @@ public class MainWindow : Window
             build_tools_action_group.remove_action (action);
         }
 
-        unowned List<BuildTool?> build_tools =
+        unowned Gee.LinkedList<BuildTool?> build_tools =
             AppSettings.get_default ().get_build_tools ();
 
-        uint id = build_tools.length () > 0 ? ui_manager.new_merge_id () : 0;
+        uint id = build_tools.size > 0 ? ui_manager.new_merge_id () : 0;
 
         int i = 0;
         foreach (BuildTool build_tool in build_tools)
@@ -1473,8 +1474,9 @@ public class MainWindow : Window
         string[] _name = action.name.split ("_");
         int i = _name[1].to_int ();
 
-        unowned List<BuildTool?> build_tools = AppSettings.get_default ().get_build_tools ();
-        BuildTool tool = build_tools.nth_data (i);
+        unowned Gee.LinkedList<BuildTool?> build_tools =
+            AppSettings.get_default ().get_build_tools ();
+        BuildTool tool = build_tools.get (i);
 
         //Utils.print_build_tool (tool);
 

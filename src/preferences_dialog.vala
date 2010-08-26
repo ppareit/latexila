@@ -18,10 +18,13 @@
  */
 
 using Gtk;
+using Gee;
 
 public class PreferencesDialog : Dialog
 {
     private static PreferencesDialog preferences_dialog = null;
+    private ListStore build_tools_store;
+    private TreeView build_tools_view;
 
     private PreferencesDialog ()
     {
@@ -66,8 +69,12 @@ public class PreferencesDialog : Dialog
             var document_view_program = builder.get_object ("document_view_program");
             var web_browser = builder.get_object ("web_browser");
 
-            TreeView build_tools_treeview =
-                (TreeView) builder.get_object ("build_tools_treeview");
+            build_tools_view = (TreeView) builder.get_object ("build_tools_treeview");
+            Button bt_new = (Button) builder.get_object ("build_tool_new");
+            Button bt_delete = (Button) builder.get_object ("build_tool_delete");
+            Button bt_up = (Button) builder.get_object ("build_tool_up");
+            Button bt_down = (Button) builder.get_object ("build_tool_down");
+            Button bt_properties = (Button) builder.get_object ("build_tool_properties");
 
             var confirm_clean_up_checkbutton =
                 builder.get_object ("confirm_clean_up_checkbutton");
@@ -207,7 +214,8 @@ public class PreferencesDialog : Dialog
             });
 
             // build tools
-            init_build_tools_treeview (build_tools_treeview);
+            init_build_tools_treeview ();
+            init_build_tools_buttons (bt_new, bt_delete, bt_up, bt_down, bt_properties);
 
             // pack notebook
             var content_area = (Box) get_content_area ();
@@ -304,14 +312,14 @@ public class PreferencesDialog : Dialog
         N_COLUMNS
     }
 
-    private void init_build_tools_treeview (TreeView treeview)
+    private void init_build_tools_treeview ()
     {
-        ListStore list_store = new ListStore (BuildToolColumn.N_COLUMNS, typeof (string),
+        build_tools_store = new ListStore (BuildToolColumn.N_COLUMNS, typeof (string),
             typeof (string), typeof (string));
-        treeview.set_model (list_store);
+        build_tools_view.set_model (build_tools_store);
 
         TreeViewColumn column = new TreeViewColumn ();
-        treeview.append_column (column);
+        build_tools_view.append_column (column);
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         column.pack_start (pixbuf_renderer, false);
@@ -321,20 +329,86 @@ public class PreferencesDialog : Dialog
         column.pack_start (text_renderer, true);
         column.set_attributes (text_renderer, "text", BuildToolColumn.LABEL, null);
 
-        treeview.set_tooltip_column (BuildToolColumn.DESCRIPTION);
-        treeview.headers_visible = false;
+        build_tools_view.set_tooltip_column (BuildToolColumn.DESCRIPTION);
+
+        var select = build_tools_view.get_selection ();
+        select.set_mode (SelectionMode.SINGLE);
 
         /* fill list store */
-        unowned List<BuildTool?> tools = AppSettings.get_default ().get_build_tools ();
+        unowned LinkedList<BuildTool?> tools =
+            AppSettings.get_default ().get_build_tools ();
         foreach (BuildTool tool in tools)
         {
             TreeIter iter;
-            list_store.append (out iter);
-            list_store.set (iter,
+            build_tools_store.append (out iter);
+            build_tools_store.set (iter,
                 BuildToolColumn.PIXBUF, tool.icon,
                 BuildToolColumn.LABEL, tool.label,
                 BuildToolColumn.DESCRIPTION, tool.description,
                 -1);
         }
+    }
+
+    private void init_build_tools_buttons (Button bt_new,
+                                           Button bt_delete,
+                                           Button bt_up,
+                                           Button bt_down,
+                                           Button bt_properties)
+    {
+        bt_delete.clicked.connect (() =>
+        {
+            TreeIter iter;
+            int i = get_selected_build_tool (out iter);
+            if (i != -1)
+            {
+                build_tools_store.remove (iter);
+                AppSettings.get_default ().delete_build_tool (i);
+            }
+        });
+
+        bt_up.clicked.connect (() =>
+        {
+            TreeIter iter1, iter2;
+            int i = get_selected_build_tool (out iter1);
+            if (i != -1 && i > 0)
+            {
+                iter2 = iter1;
+                if (Utils.tree_model_iter_prev (build_tools_store, ref iter2))
+                {
+                    build_tools_store.swap (iter1, iter2);
+                    AppSettings.get_default ().move_build_tool_up (i);
+                }
+            }
+        });
+
+        bt_down.clicked.connect (() =>
+        {
+            TreeIter iter1, iter2;
+            int i = get_selected_build_tool (out iter1);
+            if (i != -1)
+            {
+                iter2 = iter1;
+                if (build_tools_store.iter_next (ref iter2))
+                {
+                    build_tools_store.swap (iter1, iter2);
+                    AppSettings.get_default ().move_build_tool_down (i);
+                }
+            }
+        });
+    }
+
+    // get indice of selected build tool in the treeview
+    // returns -1 if no build tool is selected
+    private int get_selected_build_tool (out TreeIter iter = null)
+    {
+        TreeSelection select = build_tools_view.get_selection ();
+        GLib.List<TreePath> selected_rows = select.get_selected_rows (null);
+        if (selected_rows.length () == 0)
+            return -1;
+
+        unowned TreePath path = selected_rows.nth_data (0);
+        build_tools_store.get_iter (out iter, path);
+        unowned int[] indices = path.get_indices ();
+        return indices[0];
     }
 }

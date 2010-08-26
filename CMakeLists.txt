@@ -11,7 +11,7 @@ set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
 
 # for debugging
-#set (CMAKE_C_FLAGS "-ggdb")
+set (CMAKE_C_FLAGS "-ggdb")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
@@ -35,7 +35,7 @@ ensure_vala_version ("0.9.5" MINIMUM)
 find_package (PkgConfig)
 pkg_check_modules (GTK REQUIRED "gtk+-2.0 >= 2.16")
 pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-2.0 >= 2.4")
-#pkg_check_modules (GEE REQUIRED "gee-1.0")
+pkg_check_modules (GEE REQUIRED "gee-1.0")
 pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.25.10")
 pkg_check_modules (UNIQUE REQUIRED "unique-1.0")
 pkg_check_modules (GDK-X11 REQUIRED "gdk-x11-2.0")
@@ -44,7 +44,7 @@ pkg_check_modules (X11 REQUIRED "x11")
 add_definitions (
 	${GTK_CFLAGS}
 	${GTKSOURCEVIEW_CFLAGS}
-	#${GEE_CFLAGS}
+	${GEE_CFLAGS}
 	${GIO_CFLAGS}
 	${UNIQUE_CFLAGS}
 	${GDK-X11_CFLAGS}
@@ -54,7 +54,7 @@ add_definitions (
 link_libraries (
 	${GTK_LIBRARIES}
 	${GTKSOURCEVIEW_LIBRARIES}
-	#${GEE_LIBRARIES}
+	${GEE_LIBRARIES}
 	${GIO_LIBRARIES}
 	${UNIQUE_LIBRARIES}
 	${GDK-X11_LIBRARIES}

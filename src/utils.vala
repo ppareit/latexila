@@ -189,4 +189,15 @@ namespace Utils
                 file.get_parse_name (), e.message);
         }
     }
+
+    public bool tree_model_iter_prev (TreeModel model, ref TreeIter iter)
+    {
+        TreePath path = model.get_path (iter);
+        if (path.prev ())
+        {
+            bool ret = model.get_iter (out iter, path);
+            return ret;
+        }
+        return false;
+    }
 }
