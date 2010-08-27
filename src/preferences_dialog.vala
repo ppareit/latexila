@@ -418,23 +418,25 @@ public class PreferencesDialog : Dialog
 
     // get indice of selected build tool in the treeview
     // returns -1 if no build tool is selected
-    private int get_selected_build_tool (bool set_iter = false, out TreeIter iter = null)
+    private int get_selected_build_tool (bool set_iter = false,
+        out TreeIter iter_to_set = null)
     {
         TreeSelection select = build_tools_view.get_selection ();
-        GLib.List<TreePath> selected_rows = select.get_selected_rows (null);
-        if (selected_rows.length () == 0)
-            return -1;
-
-        unowned TreePath path = selected_rows.nth_data (0);
-        if (set_iter)
-            build_tools_store.get_iter (out iter, path);
-        unowned int[] indices = path.get_indices ();
-        return indices[0];
+        TreeIter iter;
+        if (select.get_selected (null, out iter))
+        {
+            if (set_iter)
+                iter_to_set = iter;
+            TreePath path = build_tools_store.get_path (iter);
+            return path.get_indices ()[0];
+        }
+        return -1;
     }
 
     private void run_build_tool_dialog (int num)
     {
-        BuildToolDialog.show_me (get_transient_for (), num);
+        if (BuildToolDialog.show_me (get_transient_for (), num))
+            update_build_tools_store ();
     }
 }
 
@@ -454,6 +456,7 @@ private class BuildToolDialog : Dialog
     private Button button_down;
 
     private ListStore icon_store;
+    private ListStore jobs_store;
 
     struct IconColumn
     {
@@ -473,6 +476,14 @@ private class BuildToolDialog : Dialog
         { "view_pdf", N_("View PDF") },
         { "view_ps", N_("View PS") }
     };
+
+    enum JobColumn
+    {
+        COMMAND,
+        MUST_SUCCEED,
+        POST_PROCESSOR,
+        N_COLUMNS
+    }
 
     private BuildToolDialog ()
     {
@@ -584,15 +595,88 @@ private class BuildToolDialog : Dialog
 
     private void init_jobs_treeview ()
     {
+        jobs_store = new ListStore (JobColumn.N_COLUMNS,
+            typeof (string),    // command
+            typeof (bool),      // must succeed
+            typeof (string)     // post processor
+            );
+
+        treeview_jobs.set_model (jobs_store);
+
+        /* post processor list store */
+
+        ListStore post_processor_store = new ListStore (1, typeof (string));
+        TreeIter iterpp;
+        post_processor_store.append (out iterpp);
+        post_processor_store.set (iterpp, 0, "generic", -1);
+        post_processor_store.append (out iterpp);
+        post_processor_store.set (iterpp, 0, "rubber", -1);
+
+        /* cell renderers */
+
+        CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.editable = true;
+        treeview_jobs.insert_column_with_attributes (-1, _("Commands"), text_renderer,
+            "text", JobColumn.COMMAND, null);
+
+        CellRendererToggle toggle_renderer = new CellRendererToggle ();
+        toggle_renderer.activatable = true;
+        treeview_jobs.insert_column_with_attributes (-1, _("Must Succeed"),
+            toggle_renderer, "active", JobColumn.MUST_SUCCEED, null);
+
+        CellRendererCombo combo_renderer = new CellRendererCombo ();
+        combo_renderer.editable = true;
+        combo_renderer.model = post_processor_store;
+        combo_renderer.text_column = 0;
+        combo_renderer.has_entry = false;
+        treeview_jobs.insert_column_with_attributes (-1, _("Post Processor"),
+            combo_renderer, "text", JobColumn.POST_PROCESSOR, null);
+
+        /* callbacks */
+
+        text_renderer.edited.connect ((path_string, new_text) =>
+        {
+            TreeIter iter;
+            jobs_store.get_iter_from_string (out iter, path_string);
+            jobs_store.set (iter, JobColumn.COMMAND, new_text, -1);
+        });
+
+        toggle_renderer.toggled.connect ((path_string) =>
+        {
+            TreeIter iter;
+            jobs_store.get_iter_from_string (out iter, path_string);
+            bool val;
+            TreeModel model = (TreeModel) jobs_store;
+            model.get (iter, JobColumn.MUST_SUCCEED, out val, -1);
+            jobs_store.set (iter, JobColumn.MUST_SUCCEED, ! val, -1);
+        });
+
+        combo_renderer.edited.connect ((path_string, new_text) =>
+        {
+            TreeIter iter;
+            jobs_store.get_iter_from_string (out iter, path_string);
+            jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text, -1);
+        });
     }
 
     private void init_new_build_tool ()
     {
+        entry_label.text = "";
+        entry_desc.text = "";
+        entry_extensions.text = ".tex";
         combobox_icon.set_active (0);
+        entry_command.text = "";
+        jobs_store.clear ();
+        treeview_jobs.columns_autosize ();
     }
 
     private void init_with_build_tool (BuildTool tool)
     {
+        entry_label.text = tool.label;
+        entry_desc.text = tool.description;
+        entry_extensions.text = tool.extensions;
+        entry_command.text = "";
+
         // set icon
         combobox_icon.set_active (0);
         for (int i = 0 ; i < icons.length ; i++)
@@ -603,6 +687,20 @@ private class BuildToolDialog : Dialog
                 break;
             }
         }
+
+        // jobs
+        jobs_store.clear ();
+        foreach (BuildJob job in tool.jobs)
+        {
+            TreeIter iter;
+            jobs_store.append (out iter);
+            jobs_store.set (iter,
+                JobColumn.COMMAND, job.command,
+                JobColumn.MUST_SUCCEED, job.must_succeed,
+                JobColumn.POST_PROCESSOR, job.post_processor,
+                -1);
+        }
+        treeview_jobs.columns_autosize ();
     }
 
     private bool run_me (int num)

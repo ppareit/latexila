@@ -207,7 +207,7 @@ public class BuildToolRunner : BuildToolProcess
         build_tool.label = label;
 
         BuildJob build_job = BuildJob ();
-        build_job.post_processor = "GenericPostProcessor";
+        build_job.post_processor = "generic";
         build_job.must_succeed = true;
         build_job.command = "%s $filename".printf (settings.get_string ("web-browser"));
 
@@ -234,7 +234,7 @@ public class BuildToolRunner : BuildToolProcess
         current_job = jobs.nth_data (job_num);
         string[] command = get_command (current_job, false);
 
-        if (current_job.post_processor == "GenericPostProcessor")
+        if (current_job.post_processor == "generic")
             execute_without_output (command, directory);
         else
             execute (command, directory);
@@ -300,14 +300,14 @@ public class BuildToolRunner : BuildToolProcess
         PostProcessor post_processor;
         switch (current_job.post_processor)
         {
-            case "GenericPostProcessor":
+            case "generic":
                 post_processor = new GenericPostProcessor ();
                 break;
-            case "RubberPostProcessor":
+            case "rubber":
                 post_processor = new RubberPostProcessor ();
                 break;
             default:
-                stderr.printf ("Warning: unknown post processor \"%s\". Use GenericPostProcessor.",
+                stderr.printf ("Warning: unknown post processor \"%s\". Use generic.",
                     current_job.post_processor);
                 post_processor = new GenericPostProcessor ();
                 break;
