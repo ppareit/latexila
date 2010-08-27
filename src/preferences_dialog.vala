@@ -370,14 +370,14 @@ public class PreferencesDialog : Dialog
 
         bt_properties.clicked.connect (() =>
         {
-            int num = get_selected_build_tool ();
+            int num = Utils.get_selected_row (build_tools_view);
             run_build_tool_dialog (num);
         });
 
         bt_delete.clicked.connect (() =>
         {
             TreeIter iter;
-            int i = get_selected_build_tool (true, out iter);
+            int i = Utils.get_selected_row (build_tools_view, true, out iter);
             if (i != -1)
             {
                 build_tools_store.remove (iter);
@@ -388,7 +388,7 @@ public class PreferencesDialog : Dialog
         bt_up.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = get_selected_build_tool (true, out iter1);
+            int i = Utils.get_selected_row (build_tools_view, true, out iter1);
             if (i != -1 && i > 0)
             {
                 iter2 = iter1;
@@ -403,7 +403,7 @@ public class PreferencesDialog : Dialog
         bt_down.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = get_selected_build_tool (true, out iter1);
+            int i = Utils.get_selected_row (build_tools_view, true, out iter1);
             if (i != -1)
             {
                 iter2 = iter1;
@@ -414,23 +414,6 @@ public class PreferencesDialog : Dialog
                 }
             }
         });
-    }
-
-    // get indice of selected build tool in the treeview
-    // returns -1 if no build tool is selected
-    private int get_selected_build_tool (bool set_iter = false,
-        out TreeIter iter_to_set = null)
-    {
-        TreeSelection select = build_tools_view.get_selection ();
-        TreeIter iter;
-        if (select.get_selected (null, out iter))
-        {
-            if (set_iter)
-                iter_to_set = iter;
-            TreePath path = build_tools_store.get_path (iter);
-            return path.get_indices ()[0];
-        }
-        return -1;
     }
 
     private void run_build_tool_dialog (int num)
@@ -494,8 +477,6 @@ private class BuildToolDialog : Dialog
         destroy_with_parent = true;
         border_width = 5;
 
-        response.connect (() => hide ());
-
         try
         {
             string path = Path.build_filename (Config.DATA_DIR, "ui", "build_tool.ui");
@@ -524,6 +505,7 @@ private class BuildToolDialog : Dialog
 
             init_icon_treeview ();
             init_jobs_treeview ();
+            init_actions ();
         }
         catch (Error e)
         {
@@ -556,16 +538,7 @@ private class BuildToolDialog : Dialog
             instance.set_transient_for (parent);
 
         instance.present ();
-
-        if (num == -1)
-            instance.init_new_build_tool ();
-        else
-        {
-            unowned LinkedList<BuildTool?> tools =
-                AppSettings.get_default ().get_build_tools ();
-            instance.init_with_build_tool (tools.get (num));
-        }
-
+        instance.init (num);
         return instance.run_me (num);
     }
 
@@ -659,15 +632,83 @@ private class BuildToolDialog : Dialog
         });
     }
 
+    private void init_actions ()
+    {
+        button_add.clicked.connect (() =>
+        {
+            if (entry_command.text.strip () == "")
+                return;
+
+            TreeIter iter;
+            jobs_store.append (out iter);
+            jobs_store.set (iter,
+                JobColumn.COMMAND, entry_command.text,
+                JobColumn.MUST_SUCCEED, true,
+                JobColumn.POST_PROCESSOR, "generic",
+                -1);
+            entry_command.text = "";
+        });
+
+        button_delete.clicked.connect (() =>
+        {
+            TreeIter iter;
+            int i = Utils.get_selected_row (treeview_jobs, true, out iter);
+            if (i != -1)
+                jobs_store.remove (iter);
+        });
+
+        button_up.clicked.connect (() =>
+        {
+            TreeIter iter1, iter2;
+            int i = Utils.get_selected_row (treeview_jobs, true, out iter1);
+            if (i != -1 && i > 0)
+            {
+                iter2 = iter1;
+                if (Utils.tree_model_iter_prev (jobs_store, ref iter2))
+                    jobs_store.swap (iter1, iter2);
+            }
+        });
+
+        button_down.clicked.connect (() =>
+        {
+            TreeIter iter1, iter2;
+            int i = Utils.get_selected_row (treeview_jobs, true, out iter1);
+            if (i != -1)
+            {
+                iter2 = iter1;
+                if (jobs_store.iter_next (ref iter2))
+                    jobs_store.swap (iter1, iter2);
+            }
+        });
+    }
+
+
+
+    private void init (int num)
+    {
+        entry_command.text = "";
+        jobs_store.clear ();
+        Utils.set_entry_error (entry_label, false);
+        Utils.set_entry_error (entry_command, false);
+
+        if (num == -1)
+            instance.init_new_build_tool ();
+        else
+        {
+            unowned LinkedList<BuildTool?> tools =
+                AppSettings.get_default ().get_build_tools ();
+            instance.init_with_build_tool (tools.get (num));
+        }
+
+        treeview_jobs.columns_autosize ();
+    }
+
     private void init_new_build_tool ()
     {
         entry_label.text = "";
         entry_desc.text = "";
         entry_extensions.text = ".tex";
         combobox_icon.set_active (0);
-        entry_command.text = "";
-        jobs_store.clear ();
-        treeview_jobs.columns_autosize ();
     }
 
     private void init_with_build_tool (BuildTool tool)
@@ -675,7 +716,6 @@ private class BuildToolDialog : Dialog
         entry_label.text = tool.label;
         entry_desc.text = tool.description;
         entry_extensions.text = tool.extensions;
-        entry_command.text = "";
 
         // set icon
         combobox_icon.set_active (0);
@@ -700,13 +740,43 @@ private class BuildToolDialog : Dialog
                 JobColumn.POST_PROCESSOR, job.post_processor,
                 -1);
         }
-        treeview_jobs.columns_autosize ();
     }
 
     private bool run_me (int num)
     {
-        if (run () == ResponseType.OK)
+        while (run () == ResponseType.OK)
+        {
+            /* check if the form is correctly filled */
+
+            bool ok = true;
+
+            // no label
+            if (entry_label.text.strip () == "")
+            {
+                Utils.set_entry_error (entry_label, true);
+                ok = false;
+            }
+            else
+                Utils.set_entry_error (entry_label, false);
+
+            // no job
+            TreeIter iter;
+            if (! jobs_store.get_iter_first (out iter))
+            {
+                Utils.set_entry_error (entry_command, true);
+                ok = false;
+            }
+            else
+                Utils.set_entry_error (entry_command, false);
+
+            if (! ok)
+                continue;
+
+            hide ();
             return true;
+        }
+
+        hide ();
         return false;
     }
 }

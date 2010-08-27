@@ -19,23 +19,6 @@
 
 using Gtk;
 
-public void set_entry_error (Widget entry, bool error)
-{
-    if (error)
-    {
-        Gdk.Color red, white;
-        Gdk.Color.parse ("#FF6666", out red);
-        Gdk.Color.parse ("white", out white);
-        entry.modify_base (StateType.NORMAL, red);
-        entry.modify_text (StateType.NORMAL, white);
-    }
-    else
-    {
-        entry.modify_base (StateType.NORMAL, null);
-        entry.modify_text (StateType.NORMAL, null);
-    }
-}
-
 public class GotoLine : HBox
 {
     private unowned MainWindow main_window;
@@ -70,7 +53,7 @@ public class GotoLine : HBox
     public new void show ()
     {
         entry.text = "";
-        base.show ();
+        show_all ();
         entry.grab_focus ();
     }
 
@@ -78,7 +61,7 @@ public class GotoLine : HBox
     {
         if (entry.text_length == 0)
         {
-            set_entry_error (entry, false);
+            Utils.set_entry_error (entry, false);
             return;
         }
 
@@ -90,14 +73,14 @@ public class GotoLine : HBox
             unichar c = text[i];
             if (! c.isdigit ())
             {
-                set_entry_error (entry, true);
+                Utils.set_entry_error (entry, true);
                 return;
             }
         }
 
         var line = text.to_int ();
         var error = ! main_window.active_document.goto_line (--line);
-        set_entry_error (entry, error);
+        Utils.set_entry_error (entry, error);
         main_window.active_view.scroll_to_cursor ();
     }
 }

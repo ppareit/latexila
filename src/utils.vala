@@ -200,4 +200,39 @@ namespace Utils
         }
         return false;
     }
+
+    public void set_entry_error (Widget entry, bool error)
+    {
+        if (error)
+        {
+            Gdk.Color red, white;
+            Gdk.Color.parse ("#FF6666", out red);
+            Gdk.Color.parse ("white", out white);
+            entry.modify_base (StateType.NORMAL, red);
+            entry.modify_text (StateType.NORMAL, white);
+        }
+        else
+        {
+            entry.modify_base (StateType.NORMAL, null);
+            entry.modify_text (StateType.NORMAL, null);
+        }
+    }
+
+    // get indice of selected row in the treeview
+    // returns -1 if no row is selected
+    public int get_selected_row (TreeView view, bool set_iter = false,
+        out TreeIter iter_to_set = null)
+    {
+        TreeSelection select = view.get_selection ();
+        TreeIter iter;
+        if (select.get_selected (null, out iter))
+        {
+            if (set_iter)
+                iter_to_set = iter;
+            TreeModel model = view.get_model ();
+            TreePath path = model.get_path (iter);
+            return path.get_indices ()[0];
+        }
+        return -1;
+    }
 }
