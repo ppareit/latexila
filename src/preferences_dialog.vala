@@ -438,7 +438,6 @@ private class BuildToolDialog : Dialog
     private Button button_up;
     private Button button_down;
 
-    private ListStore icon_store;
     private ListStore jobs_store;
 
     struct IconColumn
@@ -544,7 +543,7 @@ private class BuildToolDialog : Dialog
 
     private void init_icon_treeview ()
     {
-        icon_store = new ListStore (2, typeof (string), typeof (string));
+        ListStore icon_store = new ListStore (2, typeof (string), typeof (string));
 
         // fill icon store
         foreach (IconColumn icon in icons)
@@ -634,20 +633,8 @@ private class BuildToolDialog : Dialog
 
     private void init_actions ()
     {
-        button_add.clicked.connect (() =>
-        {
-            if (entry_command.text.strip () == "")
-                return;
-
-            TreeIter iter;
-            jobs_store.append (out iter);
-            jobs_store.set (iter,
-                JobColumn.COMMAND, entry_command.text,
-                JobColumn.MUST_SUCCEED, true,
-                JobColumn.POST_PROCESSOR, "generic",
-                -1);
-            entry_command.text = "";
-        });
+        button_add.clicked.connect (on_command_add);
+        entry_command.activate.connect (on_command_add);
 
         button_delete.clicked.connect (() =>
         {
@@ -682,7 +669,20 @@ private class BuildToolDialog : Dialog
         });
     }
 
+    private void on_command_add ()
+    {
+        if (entry_command.text.strip () == "")
+            return;
 
+        TreeIter iter;
+        jobs_store.append (out iter);
+        jobs_store.set (iter,
+            JobColumn.COMMAND, entry_command.text,
+            JobColumn.MUST_SUCCEED, true,
+            JobColumn.POST_PROCESSOR, "generic",
+            -1);
+        entry_command.text = "";
+    }
 
     private void init (int num)
     {
@@ -771,6 +771,43 @@ private class BuildToolDialog : Dialog
 
             if (! ok)
                 continue;
+
+            /* generate a new build tool */
+
+            BuildTool tool = BuildTool ();
+            tool.label = entry_label.text.strip ();
+            tool.description =
+                entry_desc.text.strip () == "" ? tool.label : entry_desc.text.strip ();
+            tool.extensions = entry_extensions.text.strip ();
+
+            combobox_icon.get_active_iter (out iter);
+            TreeModel model = combobox_icon.get_model ();
+            model.get (iter, 0, out tool.icon, -1);
+
+            model = treeview_jobs.get_model ();
+            bool valid = jobs_store.get_iter_first (out iter);
+            while (valid)
+            {
+                BuildJob job = BuildJob ();
+
+                string command;
+                model.get (iter,
+                    JobColumn.COMMAND, out command,
+                    JobColumn.MUST_SUCCEED, out job.must_succeed,
+                    JobColumn.POST_PROCESSOR, out job.post_processor,
+                    -1);
+
+                job.command = command.strip ();
+                tool.jobs.append (job);
+
+                valid = jobs_store.iter_next (ref iter);
+            }
+
+            /* update build tools settings */
+            if (num == -1)
+                AppSettings.get_default ().append_build_tool (tool);
+            else
+                AppSettings.get_default ().update_build_tool (num, tool);
 
             hide ();
             return true;

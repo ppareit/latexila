@@ -219,6 +219,50 @@ public class AppSettings : GLib.Settings
         update_all_build_tools_menu ();
     }
 
+    public void append_build_tool (BuildTool tool)
+    {
+        tool.compilation = is_compilation (tool.icon);
+        build_tools.add (tool);
+        update_all_build_tools_menu ();
+    }
+
+    public void update_build_tool (int num, BuildTool tool)
+    {
+        return_if_fail (num >= 0 && num < build_tools.size);
+        BuildTool current_tool = build_tools.get (num);
+        if (! is_build_tools_equal (current_tool, tool))
+        {
+            tool.compilation = is_compilation (tool.icon);
+            build_tools.remove_at (num);
+            build_tools.insert (num, tool);
+            update_all_build_tools_menu ();
+        }
+    }
+
+    private bool is_build_tools_equal (BuildTool tool1, BuildTool tool2)
+    {
+        if (tool1.label != tool2.label
+            || tool1.description != tool2.description
+            || tool1.extensions != tool2.extensions
+            || tool1.icon != tool2.icon
+            || tool1.jobs.length () != tool2.jobs.length ())
+            return false;
+
+        for (uint i = 0 ; i < tool1.jobs.length () ; i++)
+        {
+            BuildJob job1 = tool1.jobs.nth_data (i);
+            BuildJob job2 = tool2.jobs.nth_data (i);
+
+            if (job1.command != job2.command
+                || job1.must_succeed != job2.must_succeed
+                || job1.post_processor != job2.post_processor)
+                return false;
+            i++;
+        }
+
+        return true;
+    }
+
     /*
     private void print_build_tools_summary ()
     {
@@ -233,6 +277,15 @@ public class AppSettings : GLib.Settings
         build_tools_modified = true;
         foreach (MainWindow window in Application.get_default ().windows)
             window.update_build_tools_menu ();
+    }
+
+    private bool is_compilation (string icon)
+    {
+        // If it's a compilation, the file browser is refreshed after a build tool is
+        // executed.
+        return icon.contains ("compile")
+            || icon == Gtk.STOCK_EXECUTE
+            || icon == Gtk.STOCK_CONVERT;
     }
 
     private void load_build_tools ()
@@ -300,7 +353,7 @@ public class AppSettings : GLib.Settings
                                     current_tool_is_view_ps = true;
                                     break;
                             }
-                            current_build_tool.compilation = icon.contains ("compile");
+                            current_build_tool.compilation = is_compilation (icon);
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
