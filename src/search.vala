@@ -290,11 +290,21 @@ public class SearchAndReplace : GLib.Object
 
     private void show ()
     {
+        return_if_fail (main_window.active_tab != null);
+
         widget.show_all ();
         label_find_normal.hide ();
         label_find_error.hide ();
         entry_find.grab_focus ();
         set_replace_sensitivity ();
+
+        // if text is selected in the active document, and if this text contains no \n,
+        // search this text
+        TextIter start, end;
+        Document doc = main_window.active_document;
+        doc.get_selection_bounds (out start, out end);
+        if (start.get_line () == end.get_line ())
+            entry_find.text = doc.get_text (start, end, false);
 
         main_window.notify["active-document"].connect (active_document_changed);
     }
