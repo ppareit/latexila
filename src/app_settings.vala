@@ -36,12 +36,21 @@ public struct BuildTool
     public unowned GLib.List<BuildJob?> jobs;
 }
 
+public struct MostUsedSymbol
+{
+    public string id;
+    public string latex_command;
+    public string package_required;
+    public uint num;
+}
+
 public class AppSettings : GLib.Settings
 {
     private static AppSettings instance = null;
 
     private Settings editor;
     private Settings desktop_interface;
+    private uint timeout_id = 0;
 
     public string system_font { get; private set; }
 
@@ -51,6 +60,7 @@ public class AppSettings : GLib.Settings
         Object (schema: "org.gnome.latexila");
         initialize ();
         load_build_tools ();
+        load_most_used_symbols ();
     }
 
     public static AppSettings get_default ()
@@ -160,12 +170,221 @@ public class AppSettings : GLib.Settings
             foreach (var doc in Application.get_default ().get_documents ())
                 doc.tab.auto_save_interval = val;
         });
+
+        editor.changed["nb-most-used-symbols"].connect ((setting, key) =>
+        {
+            if (timeout_id != 0)
+                Source.remove (timeout_id);
+            timeout_id = Timeout.add_seconds (1, () =>
+            {
+                timeout_id = 0;
+                Symbols.reload_most_used_symbols ();
+                return false;
+            });
+        });
     }
 
     private void set_font (string font)
     {
         foreach (var view in Application.get_default ().get_views ())
             view.set_font_from_string (font);
+    }
+
+    /***************************
+     *    MOST USED SYMBOLS    *
+     ***************************/
+
+    private LinkedList<MostUsedSymbol?> most_used_symbols;
+    private bool mus_modified = false;
+
+    public Gee.List<MostUsedSymbol?>? get_most_used_symbols ()
+    {
+        int max = editor.get_int ("nb-most-used-symbols");
+        return most_used_symbols.slice (0, int.min (max, most_used_symbols.size));
+    }
+
+    public void add_symbol (string id, string command, string? package)
+    {
+        mus_modified = true;
+        int max = editor.get_int ("nb-most-used-symbols");
+
+        int i = 0;
+        foreach (MostUsedSymbol mus in most_used_symbols)
+        {
+            if (mus.id == id)
+            {
+                mus.num++;
+                // keep the list sorted
+                int new_i = sort_most_used_symbol (i, mus);
+                if (new_i != i && new_i < max)
+                {
+                    if (i >= max)
+                    {
+                        Symbols.remove_most_used_symbol (max - 1);
+                        Symbols.insert_most_used_symbol (new_i, mus);
+                    }
+                    else
+                        Symbols.swap_most_used_symbol (i, new_i);
+                }
+                return;
+            }
+            i++;
+        }
+
+        // not found, insert the new symbol
+        MostUsedSymbol new_symbol = MostUsedSymbol ();
+        new_symbol.id = id;
+        new_symbol.latex_command = command;
+        new_symbol.package_required = package;
+        new_symbol.num = 1;
+
+        most_used_symbols.add (new_symbol);
+
+        if (most_used_symbols.size <= max)
+            Symbols.insert_most_used_symbol (most_used_symbols.size - 1, new_symbol);
+    }
+
+    private int sort_most_used_symbol (int index, MostUsedSymbol mus)
+    {
+        if (index == 0)
+        {
+            most_used_symbols[index] = mus;
+            return 0;
+        }
+
+        int new_index;
+        for (new_index = index - 1 ; new_index >= 0 ; new_index--)
+        {
+            MostUsedSymbol symbol = most_used_symbols[new_index];
+            if (symbol.num >= mus.num)
+            {
+                new_index++;
+                break;
+            }
+        }
+
+        // if the for loop didn't break
+        if (new_index < 0)
+            new_index = 0;
+
+        if (new_index < index)
+        {
+            most_used_symbols.remove_at (index);
+            most_used_symbols.insert (new_index, mus);
+        }
+        else
+            most_used_symbols[index] = mus;
+
+        return new_index;
+    }
+
+    /*
+    private void print_most_used_symbols_summary ()
+    {
+        stdout.printf ("\n=== Most Used Symbols ===\n");
+        foreach (MostUsedSymbol symbol in most_used_symbols)
+            stdout.printf ("%s (%s) - %u\n", symbol.id, symbol.latex_command, symbol.num);
+    }
+    */
+
+    private void load_most_used_symbols ()
+    {
+        most_used_symbols = new LinkedList<MostUsedSymbol?> ();
+
+        File file = get_file_most_used_symbols ();
+        if (! file.query_exists ())
+            return;
+
+        try
+        {
+            string contents;
+            file.load_contents (null, out contents);
+
+            MarkupParser parser = { mus_parser_start, null, null, null, null };
+            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+        }
+        catch (GLib.Error e)
+        {
+            stderr.printf ("Warning: impossible to load most used symbols: %s\n",
+                e.message);
+        }
+    }
+
+    private void mus_parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "symbols":
+                return;
+
+            case "symbol":
+                MostUsedSymbol symbol = MostUsedSymbol ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "id":
+                            symbol.id = attr_values[i];
+                            break;
+                        case "command":
+                            symbol.latex_command = attr_values[i];
+                            break;
+                        case "package":
+                            symbol.package_required =
+                                attr_values[i] != "" ? attr_values[i] : null;
+                            break;
+                        case "num":
+                            symbol.num = (uint) attr_values[i].to_int ();
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                most_used_symbols.add (symbol);
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private File get_file_most_used_symbols ()
+    {
+        string path = Path.build_filename (Environment.get_user_data_dir (),
+            "latexila", "most_used_symbols.xml", null);
+        return File.new_for_path (path);
+    }
+
+    public void save_most_used_symbols ()
+    {
+        if (! mus_modified)
+            return;
+
+        string content = "<symbols>\n";
+        foreach (MostUsedSymbol symbol in most_used_symbols)
+        {
+            content += "  <symbol id=\"%s\" command=\"%s\" package=\"%s\" num=\"%u\" />\n".printf (
+                symbol.id, symbol.latex_command, symbol.package_required ?? "",
+                symbol.num);
+        }
+        content += "</symbols>\n";
+
+        try
+        {
+            File file = get_file_most_used_symbols ();
+            // a backup is made
+            file.replace_contents (content, content.size (), null, true,
+                FileCreateFlags.NONE, null, null);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: impossible to save most used symbols: %s\n",
+                e.message);
+        }
     }
 
 
@@ -281,8 +500,7 @@ public class AppSettings : GLib.Settings
 
     private bool is_compilation (string icon)
     {
-        // If it's a compilation, the file browser is refreshed after a build tool is
-        // executed.
+        // If it's a compilation, the file browser is refreshed after the execution.
         return icon.contains ("compile")
             || icon == Gtk.STOCK_EXECUTE
             || icon == Gtk.STOCK_CONVERT;

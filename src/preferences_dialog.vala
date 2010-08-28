@@ -68,6 +68,7 @@ public class PreferencesDialog : Dialog
 
             var document_view_program = builder.get_object ("document_view_program");
             var web_browser = builder.get_object ("web_browser");
+            var nb_most_used_symbols = builder.get_object ("nb_most_used_symbols");
 
             build_tools_view = (TreeView) builder.get_object ("build_tools_treeview");
             Button bt_new = (Button) builder.get_object ("build_tool_new");
@@ -115,6 +116,8 @@ public class PreferencesDialog : Dialog
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
             settings.bind ("web-browser", web_browser, "text",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            settings.bind ("nb-most-used-symbols", nb_most_used_symbols, "value",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
             GLib.Settings build_settings =

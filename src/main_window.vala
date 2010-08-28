@@ -332,6 +332,7 @@ public class MainWindow : Window
     private BuildView build_view;
     private Toolbar edit_toolbar;
     private SidePanel side_panel;
+    private Symbols symbols;
     private FileBrowser file_browser;
     private HPaned main_hpaned;
     private VPaned vpaned;
@@ -447,7 +448,7 @@ public class MainWindow : Window
             (ToggleAction) action_group.get_action ("ViewSidePanel");
         side_panel = new SidePanel (this, action_view_side_panel);
 
-        Symbols symbols = new Symbols (this);
+        symbols = new Symbols (this);
         side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
 
         file_browser = new FileBrowser (this);
@@ -802,6 +803,11 @@ public class MainWindow : Window
     public CustomStatusbar get_statusbar ()
     {
         return statusbar;
+    }
+
+    public Symbols get_symbols ()
+    {
+        return symbols;
     }
 
     public FileBrowser get_file_browser ()

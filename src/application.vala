@@ -206,7 +206,9 @@ public class Application : GLib.Object
             windows.remove (window);
             if (windows.length () == 0)
             {
-                AppSettings.get_default ().save_build_tools ();
+                AppSettings app_settings = AppSettings.get_default ();
+                app_settings.save_build_tools ();
+                app_settings.save_most_used_symbols ();
                 Gtk.main_quit ();
             }
             else if (window == active_window)

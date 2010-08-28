@@ -235,4 +235,11 @@ namespace Utils
         }
         return -1;
     }
+
+    public Gdk.Pixbuf get_pixbuf_from_stock (string stock_id, Gtk.IconSize size)
+    {
+        var w = new Gtk.Invisible ();
+        var pixbuf = w.render_icon (stock_id, size, "vala");
+        return pixbuf;
+    }
 }

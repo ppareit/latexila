@@ -6,8 +6,6 @@ For 2.0 (try to do as much as possible)
 - Search and replace:
 	- performance: "delete" min_nb_chars_for_incremental_search
 
-- most used symbols
-
 - LaTeX menu:
 	- Texmaker has a nice menu => rearrange and add some items
 

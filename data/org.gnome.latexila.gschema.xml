@@ -76,6 +76,10 @@
       <default>'gnome-open'</default>
       <summary>Web browser</summary>
     </key>
+    <key name="nb-most-used-symbols" type="i">
+      <default>15</default>
+      <summary>Number of most used symbols</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.latexila.preferences.ui" path="/apps/latexila/preferences/ui/">

@@ -21,35 +21,6 @@ using Gtk;
 
 public class Symbols : VBox
 {
-    struct SymbolInfo
-    {
-        public string filename;
-        public string latex_command;
-        public string package_required;
-    }
-
-    struct CategoryInfo
-    {
-        public string name;
-        public string icon;
-    }
-
-    enum SymbolColumn
-    {
-        PIXBUF,
-        COMMAND,
-        TOOLTIP,
-        N_COLUMNS
-    }
-
-    enum CategoryColumn
-    {
-        ICON,
-        NAME,
-        NUM,
-        N_COLUMNS
-    }
-
     private const CategoryInfo[] categories =
     {
         {N_("Greek"), Config.DATA_DIR + "/images/icons/symbol_greek.png"},
@@ -737,9 +708,40 @@ public class Symbols : VBox
         {Config.DATA_DIR + "/images/misc-text/135.png", "\\textdiv", "textcomp"}
     };
 
+    struct SymbolInfo
+    {
+        public string filename;
+        public string latex_command;
+        public string package_required;
+    }
+
+    struct CategoryInfo
+    {
+        public string name;
+        public string icon;
+    }
+
+    enum SymbolColumn
+    {
+        PIXBUF,
+        COMMAND,
+        TOOLTIP,
+        ID,
+        PACKAGE,
+        N_COLUMNS
+    }
+
+    enum CategoryColumn
+    {
+        ICON,
+        NAME,
+        N_COLUMNS
+    }
+
     private static bool stores_initialized = false;
     private static ListStore categories_store;
     private static ListStore[] symbols_stores = new ListStore[7];
+    private static ListStore mus_store;
     private unowned MainWindow main_window;
 
     public Symbols (MainWindow main_window)
@@ -748,9 +750,8 @@ public class Symbols : VBox
         {
             /* categories store */
             categories_store = new ListStore (CategoryColumn.N_COLUMNS,
-                typeof (Gdk.Pixbuf), typeof (string), typeof (int));
+                typeof (Gdk.Pixbuf), typeof (string));
 
-            int i = 0;
             foreach (CategoryInfo info in categories)
             {
                 try
@@ -761,7 +762,6 @@ public class Symbols : VBox
                     categories_store.set (iter,
                         CategoryColumn.ICON, pixbuf,
                         CategoryColumn.NAME, _(info.name),
-                        CategoryColumn.NUM, i,
                         -1);
                 }
                 catch (Error e)
@@ -770,9 +770,16 @@ public class Symbols : VBox
                         e.message);
                     continue;
                 }
-
-                i++;
             }
+
+            // mosed used symbols
+            var pixbuf = Utils.get_pixbuf_from_stock (STOCK_ABOUT, IconSize.MENU);
+            TreeIter iter;
+            categories_store.append (out iter);
+            categories_store.set (iter,
+                CategoryColumn.ICON, pixbuf,
+                CategoryColumn.NAME, _("Most Used"),
+                -1);
 
             /* symbols stores */
             symbols_stores[0] = get_symbol_store (symbols_greek);
@@ -782,6 +789,12 @@ public class Symbols : VBox
             symbols_stores[4] = get_symbol_store (symbols_delimiters);
             symbols_stores[5] = get_symbol_store (symbols_misc_math);
             symbols_stores[6] = get_symbol_store (symbols_misc_text);
+
+            symbols_stores[7] = mus_store = new ListStore (SymbolColumn.N_COLUMNS,
+                typeof (Gdk.Pixbuf), typeof (string), typeof (string), typeof (string),
+                typeof (string));
+
+            reload_most_used_symbols ();
 
             stores_initialized = true;
         }
@@ -821,14 +834,10 @@ public class Symbols : VBox
         {
             var selected_items = categories_view.get_selected_items ();
             TreePath path = selected_items.nth_data (0);
-            TreeModel model = (TreeModel) categories_store;
-            TreeIter iter = {};
 
-            if (path != null && model.get_iter (out iter, path))
+            if (path != null)
             {
-                int num;
-                model.get (iter, CategoryColumn.NUM, out num, -1);
-
+                int num = path.get_indices ()[0];
                 // change the model
                 symbol_view.set_model (symbols_stores[num]);
             }
@@ -853,8 +862,12 @@ public class Symbols : VBox
 
             if (path != null && model.get_iter (out iter, path))
             {
-                string latex_command;
-                model.get (iter, SymbolColumn.COMMAND, out latex_command, -1);
+                string latex_command, id, package;
+                model.get (iter,
+                    SymbolColumn.COMMAND, out latex_command,
+                    SymbolColumn.ID, out id,
+                    SymbolColumn.PACKAGE, out package,
+                    -1);
 
                 // insert the symbol in the current document
                 main_window.active_document.begin_user_action ();
@@ -862,6 +875,10 @@ public class Symbols : VBox
                 main_window.active_document.insert_at_cursor (" ", -1);
                 main_window.active_document.end_user_action ();
                 main_window.active_view.grab_focus ();
+
+                // insert to most used symbol
+                AppSettings.get_default ().add_symbol (id, latex_command,
+                    package != "" ? package : null);
             }
         });
     }
@@ -869,36 +886,116 @@ public class Symbols : VBox
     private ListStore get_symbol_store (SymbolInfo[] symbols)
     {
         ListStore symbol_store = new ListStore (SymbolColumn.N_COLUMNS,
-            typeof (Gdk.Pixbuf), typeof (string), typeof (string));
+            typeof (Gdk.Pixbuf),
+            typeof (string),    // command
+            typeof (string),    // tooltip
+            typeof (string),    // id
+            typeof (string)     // package
+            );
 
         foreach (SymbolInfo symbol in symbols)
+            insert_symbol (symbol_store, -1, symbol);
+
+        return symbol_store;
+    }
+
+    private static string get_symbol_id (string path)
+    {
+        long l = path.length;
+        bool second = false;
+
+        for (long i = l - 1 ; i >= 0 ; i--)
         {
-            try
+            if (path[i] == '/')
             {
-                var pixbuf = new Gdk.Pixbuf.from_file (symbol.filename);
-
-                // some characters ('<' for example) generate errors for the tooltip,
-		        // so we must escape it
-		        string tooltip = Markup.escape_text (symbol.latex_command);
-
-		        if (symbol.package_required != null)
-		            tooltip += " (package %s)".printf (symbol.package_required);
-
-                TreeIter iter;
-                symbol_store.append (out iter);
-                symbol_store.set (iter,
-                    SymbolColumn.PIXBUF, pixbuf,
-                    SymbolColumn.COMMAND, symbol.latex_command,
-                    SymbolColumn.TOOLTIP, tooltip,
-                    -1);
-            }
-            catch (Error e)
-            {
-                stderr.printf ("Warning: impossible to load the symbol: %s\n", e.message);
-                continue;
+                if (second)
+                    return path[i+1:l];
+                second = true;
             }
         }
 
-        return symbol_store;
+        return_val_if_reached ("no id");
+    }
+
+    public static void reload_most_used_symbols ()
+    {
+        Gee.List<MostUsedSymbol?> most_used_symbols =
+            AppSettings.get_default ().get_most_used_symbols ();
+
+        mus_store.clear ();
+
+        foreach (MostUsedSymbol mus in most_used_symbols)
+        {
+            var symbol = get_symbol_info_from_most_used (mus);
+            insert_symbol (mus_store, -1, symbol);
+        }
+    }
+
+    private static SymbolInfo get_symbol_info_from_most_used (MostUsedSymbol mus)
+    {
+        SymbolInfo symbol = SymbolInfo ();
+        symbol.filename = Config.DATA_DIR + "/images/" + mus.id;
+        symbol.latex_command = mus.latex_command;
+        symbol.package_required = mus.package_required;
+        return symbol;
+    }
+
+    private static void insert_symbol (ListStore symbol_store, int index,
+        SymbolInfo symbol)
+    {
+        try
+        {
+            var pixbuf = new Gdk.Pixbuf.from_file (symbol.filename);
+
+            // some characters ('<' for example) generate errors for the tooltip,
+	        // so we must escape it
+	        string tooltip = Markup.escape_text (symbol.latex_command);
+
+	        if (symbol.package_required != null)
+	            tooltip += " (package %s)".printf (symbol.package_required);
+
+            TreeIter iter;
+            if (index == -1)
+                symbol_store.append (out iter);
+            else
+                symbol_store.insert (out iter, index);
+            symbol_store.set (iter,
+                SymbolColumn.PIXBUF, pixbuf,
+                SymbolColumn.COMMAND, symbol.latex_command,
+                SymbolColumn.TOOLTIP, tooltip,
+                SymbolColumn.ID, get_symbol_id (symbol.filename),
+                SymbolColumn.PACKAGE, symbol.package_required ?? "",
+                -1);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: impossible to load the symbol: %s\n", e.message);
+        }
+    }
+
+    public static void insert_most_used_symbol (int index, MostUsedSymbol symbol)
+    {
+        insert_symbol (mus_store, index, get_symbol_info_from_most_used (symbol));
+    }
+
+    public static void remove_most_used_symbol (int index)
+    {
+        TreePath path = new TreePath.from_indices (index, -1);
+        TreeIter iter;
+        if (mus_store.get_iter (out iter, path))
+            mus_store.remove (iter);
+    }
+
+    public static void swap_most_used_symbol (int current_index, int new_index)
+    {
+        TreePath current_path = new TreePath.from_indices (current_index, -1);
+        TreePath new_path = new TreePath.from_indices (new_index, -1);
+
+        TreeIter current_iter = {};
+        TreeIter new_iter = {};
+
+        if (mus_store.get_iter (out current_iter, current_path)
+            && mus_store.get_iter (out new_iter, new_path))
+            mus_store.move_before (ref current_iter, new_iter);
     }
 }
