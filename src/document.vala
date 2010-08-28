@@ -769,7 +769,6 @@ public class Document : Gtk.SourceBuffer
     private void search_insert_text_before_handler (TextIter location)
     {
         // if text inserted in the middle of a current match, remove the tags
-
         if (location.has_tag (found_tag) || location.has_tag (found_tag_selected))
         {
             replace_found_tag_selected ();
