@@ -142,7 +142,7 @@ public class Document : Gtk.SourceBuffer
         return_if_fail (location != null);
 
         // if not modified, don't save
-        if (! get_modified ())
+        if (_modified && ! get_modified ())
             return;
 
         // we use get_text () to exclude undisplayed text
