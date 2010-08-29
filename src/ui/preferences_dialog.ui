@@ -239,7 +239,7 @@
                     <property name="spacing">6</property>
                     <child>
                       <object class="GtkCheckButton" id="default_font_checkbutton">
-                        <property name="label">_Use the system fixed width font (%s)</property>
+                        <property name="label" translatable="yes">_Use the system fixed width font (%s)</property>
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="receives_default">False</property>
@@ -688,7 +688,7 @@
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkCheckButton" id="auto_clean_up_checkbutton">
-                            <property name="label">Automatically clean-up files after close</property>
+                            <property name="label" translatable="yes">Automatically clean-up files after close</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
@@ -778,7 +778,7 @@
                         <property name="left_padding">12</property>
                         <child>
                           <object class="GtkCheckButton" id="file_browser_show_hidden">
-                            <property name="label">Show hidden files (beginning with a dot)</property>
+                            <property name="label" translatable="yes">Show hidden files (beginning with a dot)</property>
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="receives_default">False</property>
