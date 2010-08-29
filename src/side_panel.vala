@@ -110,7 +110,7 @@ public class SidePanel : VBox
                     component.hide ();
 
             int i = combo_box.get_active ();
-            components[i].show_all ();
+            components[i].show ();
         });
 
         return combo_box;

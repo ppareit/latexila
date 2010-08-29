@@ -58,6 +58,7 @@ public class FileBrowser : VBox
         init_combo_box ();
         init_list ();
         init_settings ();
+        show_all ();
 
         fill_stores_with_dir (null);
     }

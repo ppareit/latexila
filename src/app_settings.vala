@@ -203,6 +203,12 @@ public class AppSettings : GLib.Settings
         return most_used_symbols.slice (0, int.min (max, most_used_symbols.size));
     }
 
+    public void clear_most_used_symbols ()
+    {
+        mus_modified = true;
+        most_used_symbols.clear ();
+    }
+
     public void add_symbol (string id, string command, string? package)
     {
         mus_modified = true;
@@ -364,6 +370,15 @@ public class AppSettings : GLib.Settings
         if (! mus_modified)
             return;
 
+        File file = get_file_most_used_symbols ();
+
+        // if empty, delete the file
+        if (most_used_symbols.size == 0)
+        {
+            Utils.delete_file (file);
+            return;
+        }
+
         string content = "<symbols>\n";
         foreach (MostUsedSymbol symbol in most_used_symbols)
         {
@@ -375,9 +390,8 @@ public class AppSettings : GLib.Settings
 
         try
         {
-            File file = get_file_most_used_symbols ();
-            // a backup is made
-            file.replace_contents (content, content.size (), null, true,
+
+            file.replace_contents (content, content.size (), null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

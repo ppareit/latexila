@@ -3,9 +3,6 @@ TODO
 For 2.0 (try to do as much as possible)
 =======
 
-- Search and replace:
-	- performance: "delete" min_nb_chars_for_incremental_search
-
 - LaTeX menu:
 	- Texmaker has a nice menu => rearrange and add some items
 
@@ -14,6 +11,9 @@ For 2.0 (try to do as much as possible)
 	- execute a build tool on the main file
 
 - Auto-completion
+
+- Search and replace:
+	- optimize incremental search
 
 (-) Build documents with rubber:
 	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)

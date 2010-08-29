@@ -740,7 +740,7 @@ public class Symbols : VBox
 
     private static bool stores_initialized = false;
     private static ListStore categories_store;
-    private static ListStore[] symbols_stores = new ListStore[7];
+    private static ListStore[] symbols_stores = new ListStore[8];
     private static ListStore mus_store;
     private unowned MainWindow main_window;
 
@@ -816,6 +816,7 @@ public class Symbols : VBox
         categories_view.column_spacing = 0;
 
         pack_start (categories_view, false, false, 0);
+        categories_view.show ();
 
         /* show the symbols */
         IconView symbol_view = new IconView.with_model (symbols_stores[0]);
@@ -828,8 +829,19 @@ public class Symbols : VBox
 
         var sw = Utils.add_scrollbar (symbol_view);
         pack_start (sw);
+        sw.show_all ();
+
+        /* clear button (for most used symbols) */
+        Button button = new Button.from_stock (STOCK_CLEAR);
+        pack_start (button, false, false, 2);
 
         /* signals */
+        button.clicked.connect (() =>
+        {
+            mus_store.clear ();
+            AppSettings.get_default ().clear_most_used_symbols ();
+        });
+
         categories_view.selection_changed.connect (() =>
         {
             var selected_items = categories_view.get_selected_items ();
@@ -840,6 +852,11 @@ public class Symbols : VBox
                 int num = path.get_indices ()[0];
                 // change the model
                 symbol_view.set_model (symbols_stores[num]);
+
+                if (num == symbols_stores.length - 1)
+                    button.show ();
+                else
+                    button.hide ();
             }
         });
 
