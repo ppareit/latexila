@@ -26,119 +26,145 @@ public class LatexMenu : ActionGroup
         // LaTeX
         { "Latex", null, "_LaTeX" },
 
+        { "LatexDocumentClass", null, "\\documentclass", null,
+            N_("Document class - \\documentclass"), on_documentclass },
+        { "LatexUsepackage", null, "\\usepackage", null,
+            N_("Use package - \\usepackage"), on_usepackage },
+        { "LatexAMS", null, N_("AMS packages"), null,
+            N_("AMS packages"), on_ams_packages },
+        { "LatexAuthor", null, "\\author", null, N_("Author - \\author"), on_author },
+        { "LatexTitle", null, "\\title", null, N_("Title - \\title"), on_title },
+        { "LatexBeginDocument", null, "\\begin{document}", null,
+            N_("Content of the document - \\begin{document}"), on_begin_document },
+        { "LatexMakeTitle", null, "\\maketitle", null,
+            N_("Make title - \\maketitle"), on_maketitle },
+        { "LatexTableOfContents", null, "\\tableofcontents", null,
+            N_("Table of contents - \\tableofcontents"), on_tableofcontents },
+        { "LatexAbstract", null, "\\begin{abstract}", null,
+            N_("Abstract - \\begin{abstract}"), on_abstract },
+
         // LaTeX: Sectioning
 	    { "Sectioning", "sectioning-section", N_("_Sectioning") },
-	    { "SectioningPart", "sectioning-part", N_("_part"), null,
-		    N_("part"), on_sectioning_part },
-	    { "SectioningChapter", "sectioning-chapter", N_("_chapter"), null,
-		    N_("chapter"), on_sectioning_chapter },
-	    { "SectioningSection", "sectioning-section", N_("_section"), null,
-		    N_("section"), on_sectioning_section },
-	    { "SectioningSubsection", "sectioning-subsection", N_("s_ubsection"), null,
-		    N_("subsection"), on_sectioning_subsection },
-	    { "SectioningSubsubsection", "sectioning-subsubsection", N_("su_bsubsection"), null,
-		    N_("subsubsection"), on_sectioning_subsubsection },
-	    { "SectioningParagraph", "sectioning-paragraph", N_("p_aragraph"), null,
-		    N_("paragraph"), on_sectioning_paragraph },
-	    { "SectioningSubparagraph", "sectioning-paragraph", N_("subpa_ragraph"), null,
-		    N_("subparagraph"), on_sectioning_subparagraph },
+	    { "SectioningPart", "sectioning-part", "\\_part", null,
+		    N_("Part"), on_sectioning_part },
+	    { "SectioningChapter", "sectioning-chapter", "\\_chapter", null,
+		    N_("Chapter"), on_sectioning_chapter },
+	    { "SectioningSection", "sectioning-section", "\\_section", null,
+		    N_("Section"), on_sectioning_section },
+	    { "SectioningSubsection", "sectioning-subsection", "\\s_ubsection", null,
+		    N_("Sub-section"), on_sectioning_subsection },
+	    { "SectioningSubsubsection", "sectioning-subsubsection", "\\su_bsubsection",
+	        null, N_("Sub-sub-section"), on_sectioning_subsubsection },
+	    { "SectioningParagraph", "sectioning-paragraph", "\\p_aragraph", null,
+		    N_("Paragraph"), on_sectioning_paragraph },
+	    { "SectioningSubparagraph", "sectioning-paragraph", "\\subpa_ragraph", null,
+		    N_("Sub-paragraph"), on_sectioning_subparagraph },
 
         // LaTeX: References
 	    { "References", "references", N_("_References") },
-	    { "ReferencesLabel", null, "_label", null, "label", on_ref_label },
-	    { "ReferencesRef", null, "_ref", null, "ref", on_ref_ref },
-	    { "ReferencesPageref", null, "_pageref", null, "pageref", on_ref_pageref },
-	    { "ReferencesIndex", null, "_index", null, "index", on_ref_index },
-	    { "ReferencesFootnote", null, "_footnote", null, "footnote", on_ref_footnote },
-	    { "ReferencesCite", null, "_cite", null, "cite", on_ref_cite },
+	    { "ReferencesLabel", null, "\\_label", null,
+	        N_("Label"), on_ref_label },
+	    { "ReferencesRef", null, "\\_ref", null,
+	        N_("Reference to a label"), on_ref_ref },
+	    { "ReferencesPageref", null, "\\_pageref", null,
+	        N_("Page reference to a label"), on_ref_pageref },
+	    { "ReferencesIndex", null, "\\_index", null,
+	        N_("Add a word to the index"), on_ref_index },
+	    { "ReferencesFootnote", null, "\\_footnote", null,
+	        N_("Footnote"), on_ref_footnote },
+	    { "ReferencesCite", null, "\\_cite", null,
+	        N_("Reference to a bibliography item"), on_ref_cite },
 
         // LaTeX: Environments
-	    { "Environments", STOCK_JUSTIFY_CENTER, N_("_Environments") },
-	    { "EnvironmentCenter", STOCK_JUSTIFY_CENTER, N_("_Center - \\begin{center}"), null,
+	    { "Environments", STOCK_JUSTIFY_CENTER, "_Environments" },
+	    { "EnvironmentCenter", STOCK_JUSTIFY_CENTER, "\\begin{_center}", null,
 		    N_("Center - \\begin{center}"), on_env_center },
-	    { "EnvironmentLeft", STOCK_JUSTIFY_LEFT, N_("Align _Left - \\begin{flushleft}"), null,
+	    { "EnvironmentLeft", STOCK_JUSTIFY_LEFT, "\\begin{flush_left}", null,
 		    N_("Align Left - \\begin{flushleft}"), on_env_left },
-	    { "EnvironmentRight", STOCK_JUSTIFY_RIGHT, N_("Align _Right - \\begin{flushright}"), null,
+	    { "EnvironmentRight", STOCK_JUSTIFY_RIGHT, "\\begin{flush_right}", null,
 		    N_("Align Right - \\begin{flushright}"), on_env_right },
-	    { "EnvironmentMinipage", null, N_("_Minipage - \\begin{minipage}"), null,
+	    { "EnvironmentMinipage", null, "\\begin{_minipage}", null,
 		    N_("Minipage - \\begin{minipage}"), on_env_minipage },
-	    { "EnvironmentQuote", null, N_("_Quote - \\begin{quote}"), null,
+	    { "EnvironmentQuote", null, "\\begin{_quote}", null,
 		    N_("Quote - \\begin{quote}"), on_env_quote },
-	    { "EnvironmentQuotation", null, N_("Qu_otation - \\begin{quotation}"), null,
+	    { "EnvironmentQuotation", null, "\\begin{qu_otation}", null,
 		    N_("Quotation - \\begin{quotation}"), on_env_quotation },
-	    { "EnvironmentVerse", null, N_("_Verse - \\begin{verse}"), null,
+	    { "EnvironmentVerse", null, "\\begin{_verse}", null,
 		    N_("Verse - \\begin{verse}"), on_env_verse },
 
         // LaTeX: list environments
 	    { "ListEnvironments", "list-enumerate", N_("_List Environments") },
-	    { "ListEnvItemize", "list-itemize", N_("_Bulleted List - \\begin{itemize}"), null,
+	    { "ListEnvItemize", "list-itemize", "\\begin{_itemize}", null,
 		    N_("Bulleted List - \\begin{itemize}"), on_list_env_itemize },
-	    { "ListEnvEnumerate", "list-enumerate", N_("_Enumeration - \\begin{enumerate}"), null,
+	    { "ListEnvEnumerate", "list-enumerate", "\\begin{_enumerate}", null,
 		    N_("Enumeration - \\begin{enumerate}"), on_list_env_enumerate },
-	    { "ListEnvDescription", "list-description", N_("_Description - \\begin{description}"), null,
+	    { "ListEnvDescription", "list-description", "\\begin{_description}", null,
 		    N_("Description - \\begin{description}"), on_list_env_description },
-	    { "ListEnvItem", "list-item", "\\_item", null,
-		    "\\item", on_list_env_item },
+	    { "ListEnvItem", "list-item", "\\i_tem", null,
+		    N_("List item - \\item"), on_list_env_item },
 
         // LaTeX: character sizes
 	    { "CharacterSize", "character-size", N_("_Characters Sizes") },
 	    { "CharacterSizeTiny", null, "_tiny", null,
-		    "\\tiny", on_size_tiny },
+		    "tiny", on_size_tiny },
 	    { "CharacterSizeScriptsize", null, "_scriptsize", null,
-		    "\\scriptsize", on_size_scriptsize },
+		    "scriptsize", on_size_scriptsize },
 	    { "CharacterSizeFootnotesize", null, "_footnotesize", null,
-		    "\\footnotesize", on_size_footnotesize },
+		    "footnotesize", on_size_footnotesize },
 	    { "CharacterSizeSmall", null, "s_mall", null,
-		    "\\small", on_size_small },
+		    "small", on_size_small },
 	    { "CharacterSizeNormalsize", null, "_normalsize", null,
-		    "\\normalsize", on_size_normalsize },
+		    "normalsize", on_size_normalsize },
 	    { "CharacterSizelarge", null, "_large", null,
-		    "\\large", on_size_large },
+		    "large", on_size_large },
 	    { "CharacterSizeLarge", null, "L_arge", null,
-		    "\\Large", on_size_Large },
+		    "Large", on_size_Large },
 	    { "CharacterSizeLARGE", null, "LA_RGE", null,
-		    "\\LARGE", on_size_LARGE },
+		    "LARGE", on_size_LARGE },
 	    { "CharacterSizehuge", null, "_huge", null,
-		    "\\huge", on_size_huge },
+		    "huge", on_size_huge },
 	    { "CharacterSizeHuge", null, "H_uge", null,
-		    "\\Huge", on_size_Huge },
+		    "Huge", on_size_Huge },
 
         // LaTeX: font styles
 	    { "FontStyles", "bold", N_("_Font Styles") },
-	    { "Bold", "bold", N_("_Bold - \\textbf{}"), null,
+	    { "Bold", "bold", "\\text_bf{}", null,
 		    N_("Bold - \\textbf{}"), on_text_bold },
-	    { "Italic", "italic", N_("_Italic - \\textit{}"), null,
+	    { "Italic", "italic", "\\text_it{}", null,
 		    N_("Italic - \\textit{}"), on_text_italic },
-	    { "Typewriter", "typewriter", N_("_Typewriter - \\texttt{}"), null,
+	    { "Typewriter", "typewriter", "\\text_tt{}", null,
 		    N_("Typewriter - \\texttt{}"), on_text_typewriter },
-	    { "Underline", "underline", N_("_Underline - \\underline{}"), null,
+	    { "Underline", "underline", "\\_underline{}", null,
 		    N_("Underline - \\underline{}"), on_text_underline },
-	    { "Slanted", null, N_("_Slanted - \\textsl{}"), null,
+	    { "Slanted", null, "\\text_sl{}", null,
 		    N_("Slanted - \\textsl{}"), on_text_slanted },
-	    { "SmallCaps", null, N_("Small _Capitals - \\textsc{}"), null,
+	    { "SmallCaps", null, "\\texts_c{}", null,
 		    N_("Small Capitals - \\textsc{}"), on_text_small_caps },
-	    { "Emph", null, N_("_Emphasized - \\emph{}"), null,
+	    { "Emph", null, "\\_emph{}", null,
 		    N_("Emphasized - \\emph{}"), on_text_emph },
-	    { "FontFamily", null, N_("_Font Family"), null, null, null },
-	    { "FontFamilyRoman", null, N_("_Roman - \\rmfamily"), null,
+
+	    { "FontFamily", null, N_("_Font Family") },
+	    { "FontFamilyRoman", null, "\\_rmfamily", null,
 		    N_("Roman - \\rmfamily"), on_text_font_family_roman },
-	    { "FontFamilySansSerif", null, N_("_Sans Serif - \\sffamily"), null,
+	    { "FontFamilySansSerif", null, "\\_sffamily", null,
 		    N_("Sans Serif - \\sffamily"), on_text_font_family_sans_serif },
-	    { "FontFamilyMonospace", null, N_("_Monospace - \\ttfamily"), null,
+	    { "FontFamilyMonospace", null, "\\_ttfamily", null,
 		    N_("Monospace - \\ttfamily"), on_text_font_family_monospace },
-	    { "FontSeries", null, N_("F_ont Series"), null, null, null },
-	    { "FontSeriesMedium", null, N_("_Medium - \\mdseries"), null,
+
+	    { "FontSeries", null, N_("F_ont Series") },
+	    { "FontSeriesMedium", null, "\\_mdseries", null,
 		    N_("Medium - \\mdseries"), on_text_font_series_medium },
-	    { "FontSeriesBold", null, N_("_Bold - \\bfseries"), null,
+	    { "FontSeriesBold", null, "\\_bfseries", null,
 		    N_("Bold - \\bfseries"), on_text_font_series_bold },
-	    { "FontShape", null, N_("Fo_nt Shape"), null, null, null },
-	    { "FontShapeUpright", null, N_("_Upright - \\upshape"), null,
+
+	    { "FontShape", null, N_("Fo_nt Shape") },
+	    { "FontShapeUpright", null, "\\_upshape", null,
 		    N_("Upright - \\upshape"), on_text_font_shape_upright },
-	    { "FontShapeItalic", null, N_("_Italic - \\itshape"), null,
+	    { "FontShapeItalic", null, "\\_itshape", null,
 		    N_("Italic - \\itshape"), on_text_font_shape_italic },
-	    { "FontShapeSlanted", null, N_("_Slanted - \\slshape"), null,
+	    { "FontShapeSlanted", null, "\\_slshape", null,
 		    N_("Slanted - \\slshape"), on_text_font_shape_slanted },
-	    { "FontShapeSmallCaps", null, N_("Small _Capitals - \\scshape"), null,
+	    { "FontShapeSmallCaps", null, "\\s_cshape", null,
 		    N_("Small Capitals - \\scshape"), on_text_font_shape_small_caps },
 
         // LaTeX: math
@@ -250,12 +276,12 @@ public class LatexMenu : ActionGroup
     }
 
     private void text_buffer_insert (string text_before, string text_after,
-        string? text_if_no_selection)
+        string? text_if_no_selection = null)
     {
         return_if_fail (main_window.active_tab != null);
         Document active_document = main_window.active_document;
 
-	    // we do not use the insert and selection_bound marks because we don't
+	    // we don't use the insert and selection_bound marks because we don't
 	    // know the order. With gtk_text_buffer_get_selection_bounds, we are certain
 	    // that "start" points to the start of the selection, where we must insert
 	    // "text_before".
@@ -299,6 +325,54 @@ public class LatexMenu : ActionGroup
 	    }
 
         active_document.end_user_action ();
+    }
+
+    public void on_documentclass ()
+    {
+        text_buffer_insert ("\\documentclass{", "}");
+    }
+
+    public void on_usepackage ()
+    {
+        text_buffer_insert ("\\usepackage{", "}");
+    }
+
+    public void on_ams_packages ()
+    {
+        string packages = "\\usepackage{amsmath}\n"
+                        + "\\usepackage{amsfonts}\n"
+                        + "\\usepackage{amssymb}";
+        text_buffer_insert (packages, "");
+    }
+
+    public void on_author ()
+    {
+        text_buffer_insert ("\\author{", "}");
+    }
+
+    public void on_title ()
+    {
+        text_buffer_insert ("\\title{", "}");
+    }
+
+    public void on_begin_document ()
+    {
+        text_buffer_insert ("\\begin{document}\n", "\n\\end{document}");
+    }
+
+    public void on_maketitle ()
+    {
+        text_buffer_insert ("\\maketitle", "");
+    }
+
+    public void on_tableofcontents ()
+    {
+        text_buffer_insert ("\\tableofcontents", "");
+    }
+
+    public void on_abstract ()
+    {
+        text_buffer_insert ("\\begin{abstract}\n", "\n\\end{abstract}");
     }
 
     /* sectioning */

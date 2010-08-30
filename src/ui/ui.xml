@@ -84,17 +84,6 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </menu>
 
     <menu action="Latex">
-      <!--
-      <menuitem action="LatexDocumentClass" />
-      <menuitem action="LatexUsepackage" />
-      <menuitem action="LatexAMS" />
-      <menuitem action="LatexAuthor" />
-      <menuitem action="LatexTitle" />
-      <menuitem action="LatexBeginDocument" />
-      <menuitem action="LatexMakeTitle" />
-      <menuitem action="LatexTableOfContents" />
-      -->
-
       <menu action="Sectioning">
         <menuitem action="SectioningPart" />
         <menuitem action="SectioningChapter" />
@@ -177,6 +166,16 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
           <menuitem action="FontShapeSmallCaps" />
         </menu>
       </menu>
+
+      <menuitem action="LatexDocumentClass" />
+      <menuitem action="LatexUsepackage" />
+      <menuitem action="LatexAMS" />
+      <menuitem action="LatexAuthor" />
+      <menuitem action="LatexTitle" />
+      <menuitem action="LatexBeginDocument" />
+      <menuitem action="LatexMakeTitle" />
+      <menuitem action="LatexTableOfContents" />
+      <menuitem action="LatexAbstract" />
     </menu>
 
     <menu action="Math">
