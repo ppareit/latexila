@@ -28,7 +28,7 @@ public class Document : Gtk.SourceBuffer
     private bool backup_made = false;
     private string _etag;
     private string? encoding = null;
-    private bool _modified = false;
+    private bool new_file = true;
 
     private TextTag found_tag;
     private TextTag found_tag_selected;
@@ -57,7 +57,7 @@ public class Document : Gtk.SourceBuffer
         });
         changed.connect (() =>
         {
-            _modified = true;
+            new_file = false;
             emit_cursor_moved ();
         });
 
@@ -77,7 +77,7 @@ public class Document : Gtk.SourceBuffer
 
     public new bool get_modified ()
     {
-        if (! _modified)
+        if (new_file)
             return false;
         return base.get_modified ();
     }
@@ -124,10 +124,7 @@ public class Document : Gtk.SourceBuffer
 
         begin_not_undoable_action ();
         set_text (contents2 ?? contents, -1);
-
-        // HACK sometimes set_text () has not finished when set_modified () is called,
-        // so we use another variable which has priority when it is set to false.
-        _modified = false;
+        new_file = true;
         set_modified (false);
         end_not_undoable_action ();
 
@@ -142,7 +139,7 @@ public class Document : Gtk.SourceBuffer
         return_if_fail (location != null);
 
         // if not modified, don't save
-        if (_modified && ! get_modified ())
+        if (! new_file && ! get_modified ())
             return;
 
         // we use get_text () to exclude undisplayed text

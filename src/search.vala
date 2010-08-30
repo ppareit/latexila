@@ -107,7 +107,7 @@ public class SearchAndReplace : GLib.Object
     private unowned MainWindow main_window;
     private Document working_document;
 
-    public Widget widget;
+    private Widget widget;
 
     private Button button_arrow;
     private Arrow arrow;
