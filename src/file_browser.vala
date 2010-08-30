@@ -88,59 +88,65 @@ public class FileBrowser : VBox
 
     private void init_toolbar ()
     {
-        try
+        HBox hbox = new HBox (true, 0);
+        pack_start (hbox, false, false);
+
+        Button home_button = get_toolbar_button (STOCK_HOME);
+        parent_button = get_toolbar_button (STOCK_GO_UP);
+        Button jump_button = get_toolbar_button (STOCK_JUMP_TO);
+        Button refresh_button = get_toolbar_button (STOCK_REFRESH);
+
+        home_button.tooltip_text = _("Go to the home directory");
+        parent_button.tooltip_text = _("Go to the parent directory");
+        jump_button.tooltip_text = _("Go to the active document directory");
+        refresh_button.tooltip_text = _("Refresh");
+
+        hbox.pack_start (home_button);
+        hbox.pack_start (parent_button);
+        hbox.pack_start (jump_button);
+        hbox.pack_start (refresh_button);
+
+        home_button.clicked.connect (() =>
         {
-            string path = Path.build_filename (Config.DATA_DIR, "ui", "file_browser.ui");
-            Builder builder = new Builder ();
-            builder.add_from_file (path);
+            File home_dir = File.new_for_path (Environment.get_home_dir ());
+            fill_stores_with_dir (home_dir);
+        });
 
-            HBox hbox = (HBox) builder.get_object ("hbox");
-            // we unparent the main widget because the ui file contains a window
-            hbox.unparent ();
-            pack_start (hbox, false, false);
-
-            Button home_button = (Button) builder.get_object ("home_button");
-            parent_button = (Button) builder.get_object ("parent_button");
-            Button jump_button = (Button) builder.get_object ("jump_button");
-            Button refresh_button = (Button) builder.get_object ("refresh_button");
-
-            home_button.clicked.connect (() =>
-            {
-                File home_dir = File.new_for_path (Environment.get_home_dir ());
-                fill_stores_with_dir (home_dir);
-            });
-
-            parent_button.clicked.connect (() =>
-            {
-                File? parent = current_directory.get_parent ();
-                return_if_fail (parent != null);
-                fill_stores_with_dir (parent);
-            });
-
-            jump_button.clicked.connect (() =>
-            {
-                if (main_window.active_tab == null
-                    || main_window.active_document.location == null)
-                    return;
-                fill_stores_with_dir (main_window.active_document.location.get_parent ());
-            });
-
-            // jump button sensitivity
-            main_window.notify["active-document"].connect (() =>
-            {
-                if (main_window.active_tab == null
-                    || main_window.active_document.location == null)
-                    jump_button.set_sensitive (false);
-                else
-                    jump_button.set_sensitive (true);
-            });
-
-            refresh_button.clicked.connect (refresh);
-        }
-        catch (GLib.Error e)
+        parent_button.clicked.connect (() =>
         {
-            stderr.printf ("Error in file browser: %s\n", e.message);
-        }
+            File? parent = current_directory.get_parent ();
+            return_if_fail (parent != null);
+            fill_stores_with_dir (parent);
+        });
+
+        jump_button.clicked.connect (() =>
+        {
+            if (main_window.active_tab == null
+                || main_window.active_document.location == null)
+                return;
+            fill_stores_with_dir (main_window.active_document.location.get_parent ());
+        });
+
+        // jump button sensitivity
+        main_window.notify["active-document"].connect (() =>
+        {
+            if (main_window.active_tab == null
+                || main_window.active_document.location == null)
+                jump_button.set_sensitive (false);
+            else
+                jump_button.set_sensitive (true);
+        });
+
+        refresh_button.clicked.connect (refresh);
+    }
+
+    private Button get_toolbar_button (string stock_id)
+    {
+        Button button = new Button ();
+        Image image = new Image.from_stock (stock_id, IconSize.MENU);
+        button.add (image);
+        button.set_relief (ReliefStyle.NONE);
+        return button;
     }
 
     // list of parent directories
