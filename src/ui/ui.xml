@@ -84,6 +84,17 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </menu>
 
     <menu action="Latex">
+      <!--
+      <menuitem action="LatexDocumentClass" />
+      <menuitem action="LatexUsepackage" />
+      <menuitem action="LatexAMS" />
+      <menuitem action="LatexAuthor" />
+      <menuitem action="LatexTitle" />
+      <menuitem action="LatexBeginDocument" />
+      <menuitem action="LatexMakeTitle" />
+      <menuitem action="LatexTableOfContents" />
+      -->
+
       <menu action="Sectioning">
         <menuitem action="SectioningPart" />
         <menuitem action="SectioningChapter" />
@@ -166,45 +177,45 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
           <menuitem action="FontShapeSmallCaps" />
         </menu>
       </menu>
+    </menu>
 
-      <menu action="Math">
-        <menu action="MathEnvironments">
-          <menuitem action="MathEnvNormal" />
-          <menuitem action="MathEnvCentered" />
-          <menuitem action="MathEnvNumbered" />
-          <menuitem action="MathEnvArray" />
-          <menuitem action="MathEnvNumberedArray" />
-        </menu>
-        <separator />
-        <menuitem action="MathSuperscript" />
-        <menuitem action="MathSubscript" />
-        <separator />
-        <menuitem action="MathFrac" />
-        <menuitem action="MathSquareRoot" />
-        <menuitem action="MathNthRoot" />
-        <separator />
-        <menu action="MathLeftDelimiters">
-          <menuitem action="MathLeftDelimiter1" />
-          <menuitem action="MathLeftDelimiter2" />
-          <menuitem action="MathLeftDelimiter3" />
-          <menuitem action="MathLeftDelimiter4" />
-          <menuitem action="MathLeftDelimiter5" />
-          <menuitem action="MathLeftDelimiter6" />
-          <menuitem action="MathLeftDelimiter7" />
-          <menuitem action="MathLeftDelimiter8" />
-          <menuitem action="MathLeftDelimiter9" />
-        </menu>
-        <menu action="MathRightDelimiters">
-          <menuitem action="MathRightDelimiter1" />
-          <menuitem action="MathRightDelimiter2" />
-          <menuitem action="MathRightDelimiter3" />
-          <menuitem action="MathRightDelimiter4" />
-          <menuitem action="MathRightDelimiter5" />
-          <menuitem action="MathRightDelimiter6" />
-          <menuitem action="MathRightDelimiter7" />
-          <menuitem action="MathRightDelimiter8" />
-          <menuitem action="MathRightDelimiter9" />
-        </menu>
+    <menu action="Math">
+      <menu action="MathEnvironments">
+        <menuitem action="MathEnvNormal" />
+        <menuitem action="MathEnvCentered" />
+        <menuitem action="MathEnvNumbered" />
+        <menuitem action="MathEnvArray" />
+        <menuitem action="MathEnvNumberedArray" />
+      </menu>
+      <separator />
+      <menuitem action="MathSuperscript" />
+      <menuitem action="MathSubscript" />
+      <separator />
+      <menuitem action="MathFrac" />
+      <menuitem action="MathSquareRoot" />
+      <menuitem action="MathNthRoot" />
+      <separator />
+      <menu action="MathLeftDelimiters">
+        <menuitem action="MathLeftDelimiter1" />
+        <menuitem action="MathLeftDelimiter2" />
+        <menuitem action="MathLeftDelimiter3" />
+        <menuitem action="MathLeftDelimiter4" />
+        <menuitem action="MathLeftDelimiter5" />
+        <menuitem action="MathLeftDelimiter6" />
+        <menuitem action="MathLeftDelimiter7" />
+        <menuitem action="MathLeftDelimiter8" />
+        <menuitem action="MathLeftDelimiter9" />
+      </menu>
+      <menu action="MathRightDelimiters">
+        <menuitem action="MathRightDelimiter1" />
+        <menuitem action="MathRightDelimiter2" />
+        <menuitem action="MathRightDelimiter3" />
+        <menuitem action="MathRightDelimiter4" />
+        <menuitem action="MathRightDelimiter5" />
+        <menuitem action="MathRightDelimiter6" />
+        <menuitem action="MathRightDelimiter7" />
+        <menuitem action="MathRightDelimiter8" />
+        <menuitem action="MathRightDelimiter9" />
       </menu>
     </menu>
 
