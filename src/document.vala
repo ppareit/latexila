@@ -429,8 +429,9 @@ public class Document : Gtk.SourceBuffer
 
         bool no_confirm = settings.get_boolean ("no-confirm-clean");
 
-        File directory = location.get_parent ();
-        string shortname = Utils.get_shortname (location.get_basename ());
+        File mainfile = get_main_file ();
+        File directory = mainfile.get_parent ();
+        string shortname = Utils.get_shortname (mainfile.get_basename ());
         string[] basenames = {};
         foreach (string extension in extensions)
         {
@@ -474,6 +475,40 @@ public class Document : Gtk.SourceBuffer
 
         place_cursor (iter);
         return ret;
+    }
+
+    public File? get_main_file ()
+    {
+        if (location == null)
+            return null;
+
+        // Search a comment like "% mainfile: mainfile.tex" in the first or last three
+        // lines of the document.
+
+        string content;
+        TextIter iter1, iter2;
+        get_start_iter (out iter1);
+        get_iter_at_line (out iter2, 3);
+        content = get_text (iter1, iter2, false);
+
+        get_iter_at_line (out iter1, get_line_count () - 3);
+        get_end_iter (out iter2);
+        content += get_text (iter1, iter2, false);
+
+        string[] lines = content.split ("\n");
+        foreach (string line in lines)
+        {
+            string pattern = "% mainfile: ";
+            if (line.has_prefix (pattern))
+            {
+                string filename = line[pattern.length : line.length].strip ();
+                if (filename[0] == '/')
+                    return File.new_for_path (filename);
+                return location.get_parent ().get_child (filename);
+            }
+        }
+
+        return location;
     }
 
 

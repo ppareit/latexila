@@ -91,6 +91,9 @@ public class MainWindow : Window
 
         // Build
         { "Build", null, N_("_Build") },
+        { "BuildSetMainFile", null, N_("Set _Main File"), null,
+            N_("Set the main file, usefull if a document is splitted into several files"),
+            on_set_main_file },
 		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
 		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
 		    on_build_clean },
@@ -1149,7 +1152,7 @@ public class MainWindow : Window
         if (tool.compilation)
             active_document.save ();
 
-        new BuildToolRunner (active_document.location, tool, build_view);
+        new BuildToolRunner (active_document.get_main_file (), tool, build_view);
     }
 
     private void update_documents_list_menu ()
@@ -1562,6 +1565,21 @@ public class MainWindow : Window
 
     /* Build */
 
+    public void on_set_main_file ()
+    {
+        return_if_fail (active_tab != null);
+
+        Document doc = active_document;
+        TextIter iter;
+        doc.get_start_iter (out iter);
+        doc.insert (iter, "\n", -1);
+        doc.get_start_iter (out iter);
+        doc.insert (iter, "% mainfile: ", -1);
+        doc.select_range (iter, iter);
+
+        active_view.scroll_to_cursor ();
+    }
+
     public void on_build_stop_execution ()
     {
         build_view.abort ();
@@ -1572,7 +1590,8 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         if (active_document.clean_build_files (this))
-            file_browser.refresh_if_in_dir (active_document.location.get_parent ());
+            file_browser.refresh_if_in_dir (
+                active_document.get_main_file ().get_parent ());
     }
 
     public void on_build_view_log ()
@@ -1580,25 +1599,17 @@ public class MainWindow : Window
         return_if_fail (active_tab != null);
         return_if_fail (active_document.is_tex_document ());
 
-        File? directory = active_document.location.get_parent ();
-        if (directory == null)
-        {
-            stderr.printf ("Warning: impossible to view log\n");
-            return;
-        }
+        File mainfile = active_document.get_main_file ();
+        File directory = mainfile.get_parent ();
 
-        string basename = Utils.get_shortname (active_document.location.get_basename ())
-            + ".log";
+        string basename = Utils.get_shortname (mainfile.get_basename ()) + ".log";
         File file = directory.get_child (basename);
         DocumentTab? tab = open_document (file);
 
         if (tab == null)
-        {
             stderr.printf ("Warning: impossible to view log\n");
-            return;
-        }
-
-        tab.document.readonly = true;
+        else
+            tab.document.readonly = true;
     }
 
     /*

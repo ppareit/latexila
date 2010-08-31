@@ -70,6 +70,8 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </menu>
 
     <menu action="Build" name="BuildMenu">
+      <menuitem action="BuildSetMainFile" />
+      <separator />
       <placeholder name="BuildToolsPlaceholder" />
       <separator />
       <menuitem action="BuildClean" />

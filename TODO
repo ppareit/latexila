@@ -3,12 +3,8 @@ TODO
 For 2.0 (try to do as much as possible)
 =======
 
-- LaTeX menu:
-	- Texmaker has a nice menu => rearrange and add some items
-
-- Set main file:
-	- add a comment like this "% mainfile: mainfile.tex" in the first or last three lines of an included file
-	- execute a build tool on the main file
+- Math submenus:
+	- functions (remove symbols), font styles, accents, spaces (see TexMaker)
 
 - Auto-completion
 

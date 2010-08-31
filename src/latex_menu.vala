@@ -235,7 +235,8 @@ public class LatexMenu : ActionGroup
         { "LatexAbstract", null, "\\begin{abst_ract}", null,
             N_("Abstract - \\begin{abstract}"), on_abstract },
         { "LatexIncludeGraphics", null, "\\include_graphics", null,
-            N_("Include an image (graphicx package) - \\includegraphics"), on_include_graphics },
+            N_("Include an image (graphicx package) - \\includegraphics"),
+            on_include_graphics },
         { "LatexInput", null, "\\_input", null,
             N_("Include a file - \\input"), on_input },
 
