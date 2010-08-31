@@ -234,6 +234,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
         <menuitem action="MathEnvArray" />
         <menuitem action="MathEnvNumberedArray" />
       </menu>
+
       <separator />
       <menuitem action="MathSuperscript" />
       <menuitem action="MathSubscript" />
@@ -241,6 +242,41 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <menuitem action="MathFrac" />
       <menuitem action="MathSquareRoot" />
       <menuitem action="MathNthRoot" />
+      <separator />
+
+      <menu action="MathFunctions">
+        <menuitem action="MathFuncArccos" />
+        <menuitem action="MathFuncArcsin" />
+        <menuitem action="MathFuncArctan" />
+        <menuitem action="MathFuncCos" />
+        <menuitem action="MathFuncCosh" />
+        <menuitem action="MathFuncCot" />
+        <menuitem action="MathFuncCoth" />
+        <menuitem action="MathFuncCsc" />
+        <menuitem action="MathFuncDeg" />
+        <menuitem action="MathFuncDet" />
+        <menuitem action="MathFuncDim" />
+        <menuitem action="MathFuncExp" />
+        <menuitem action="MathFuncGcd" />
+        <menuitem action="MathFuncHom" />
+        <menuitem action="MathFuncInf" />
+        <menuitem action="MathFuncKer" />
+        <menuitem action="MathFuncLg" />
+        <menuitem action="MathFuncLim" />
+        <menuitem action="MathFuncLiminf" />
+        <menuitem action="MathFuncLimsup" />
+        <menuitem action="MathFuncLn" />
+        <menuitem action="MathFuncLog" />
+        <menuitem action="MathFuncMax" />
+        <menuitem action="MathFuncMin" />
+        <menuitem action="MathFuncSec" />
+        <menuitem action="MathFuncSin" />
+        <menuitem action="MathFuncSinh" />
+        <menuitem action="MathFuncSup" />
+        <menuitem action="MathFuncTan" />
+        <menuitem action="MathFuncTanh" />
+      </menu>
+
       <separator />
       <menu action="MathLeftDelimiters">
         <menuitem action="MathLeftDelimiter1" />

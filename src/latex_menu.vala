@@ -241,7 +241,11 @@ public class LatexMenu : ActionGroup
             N_("Include a file - \\input"), on_input },
 
         // LaTeX: math
+
 	    { "Math", null, N_("_Math") },
+
+        // Math Environments
+
 	    { "MathEnvironments", null, N_("_Math Environments") },
 	    { "MathEnvNormal", "math", N_("_Mathematical Environment - $...$"), null,
 		    N_("Mathematical Environment - $...$"), on_math_env_normal },
@@ -253,6 +257,7 @@ public class LatexMenu : ActionGroup
 		    N_("Array of Equations - \\begin{align*}"), on_math_env_array },
 	    { "MathEnvNumberedArray", "math-numbered-array", N_("Numbered Array of _Equations - \\begin{align}"), null,
 		    N_("Numbered Array of Equations - \\begin{align}"), on_math_env_numbered_array },
+
 	    { "MathSuperscript", "math-superscript", N_("_Superscript - ^{}"), null,
 		    N_("Superscript - ^{}"), on_math_superscript },
 	    { "MathSubscript", "math-subscript", N_("Su_bscript - __{}"), null,
@@ -263,6 +268,43 @@ public class LatexMenu : ActionGroup
 		    N_("Square Root - \\sqrt{}"), on_math_square_root },
 	    { "MathNthRoot", "math-nth-root", N_("_N-th Root - \\sqrt[]{}"), null,
 		    N_("N-th Root - \\sqrt[]{}"), on_math_nth_root },
+
+        // Math functions
+
+        { "MathFunctions", null, N_("Math _Functions") },
+        { "MathFuncArccos", null, "\\arccos", null, null, on_math_func_arccos },
+        { "MathFuncArcsin", null, "\\arcsin", null, null, on_math_func_arcsin },
+        { "MathFuncArctan", null, "\\arctan", null, null, on_math_func_arctan },
+        { "MathFuncCos", null, "\\cos", null, null, on_math_func_cos },
+        { "MathFuncCosh", null, "\\cosh", null, null, on_math_func_cosh },
+        { "MathFuncCot", null, "\\cot", null, null, on_math_func_cot },
+        { "MathFuncCoth", null, "\\coth", null, null, on_math_func_coth },
+        { "MathFuncCsc", null, "\\csc", null, null, on_math_func_csc },
+        { "MathFuncDeg", null, "\\deg", null, null, on_math_func_deg },
+        { "MathFuncDet", null, "\\det", null, null, on_math_func_det },
+        { "MathFuncDim", null, "\\dim", null, null, on_math_func_dim },
+        { "MathFuncExp", null, "\\exp", null, null, on_math_func_exp },
+        { "MathFuncGcd", null, "\\gcd", null, null, on_math_func_gcd },
+        { "MathFuncHom", null, "\\hom", null, null, on_math_func_hom },
+        { "MathFuncInf", null, "\\inf", null, null, on_math_func_inf },
+        { "MathFuncKer", null, "\\ker", null, null, on_math_func_ker },
+        { "MathFuncLg", null, "\\lg", null, null, on_math_func_lg },
+        { "MathFuncLim", null, "\\lim", null, null, on_math_func_lim },
+        { "MathFuncLiminf", null, "\\liminf", null, null, on_math_func_liminf },
+        { "MathFuncLimsup", null, "\\limsup", null, null, on_math_func_limsup },
+        { "MathFuncLn", null, "\\ln", null, null, on_math_func_ln },
+        { "MathFuncLog", null, "\\log", null, null, on_math_func_log },
+        { "MathFuncMax", null, "\\max", null, null, on_math_func_max },
+        { "MathFuncMin", null, "\\min", null, null, on_math_func_min },
+        { "MathFuncSec", null, "\\sec", null, null, on_math_func_sec },
+        { "MathFuncSin", null, "\\sin", null, null, on_math_func_sin },
+        { "MathFuncSinh", null, "\\sinh", null, null, on_math_func_sinh },
+        { "MathFuncSup", null, "\\sup", null, null, on_math_func_sup },
+        { "MathFuncTan", null, "\\tan", null, null, on_math_func_tan },
+        { "MathFuncTanh", null, "\\tanh", null, null, on_math_func_tanh },
+
+        // Left Delimiters
+
 	    { "MathLeftDelimiters", "delimiters-left", N_("_Left Delimiters") },
 	    { "MathLeftDelimiter1", null, N_("left ("), null,
 		    null, on_math_left_delimiter_1 },
@@ -282,6 +324,9 @@ public class LatexMenu : ActionGroup
 		    null, on_math_left_delimiter_8 },
 	    { "MathLeftDelimiter9", null, N_("left ."), null,
 		    null, on_math_left_delimiter_9 },
+
+        // Right Delimiters
+
 	    { "MathRightDelimiters", "delimiters-right", N_("Right _Delimiters") },
 	    { "MathRightDelimiter1", null, N_("right )"), null,
 		    null, on_math_right_delimiter_1 },
@@ -958,6 +1003,160 @@ public class LatexMenu : ActionGroup
     {
         text_buffer_insert ("\\sqrt[]{", "}");
     }
+
+    /* Math Functions */
+
+    public void on_math_func_arccos ()
+    {
+        text_buffer_insert ("\\arccos ", "");
+    }
+
+    public void on_math_func_arcsin ()
+    {
+        text_buffer_insert ("\\arcsin ", "");
+    }
+
+    public void on_math_func_arctan ()
+    {
+        text_buffer_insert ("\\arctan ", "");
+    }
+
+    public void on_math_func_cos ()
+    {
+        text_buffer_insert ("\\cos ", "");
+    }
+
+    public void on_math_func_cosh ()
+    {
+        text_buffer_insert ("\\cosh ", "");
+    }
+
+    public void on_math_func_cot ()
+    {
+        text_buffer_insert ("\\cot ", "");
+    }
+
+    public void on_math_func_coth ()
+    {
+        text_buffer_insert ("\\coth ", "");
+    }
+
+    public void on_math_func_csc ()
+    {
+        text_buffer_insert ("\\csc ", "");
+    }
+
+    public void on_math_func_deg ()
+    {
+        text_buffer_insert ("\\deg ", "");
+    }
+
+    public void on_math_func_det ()
+    {
+        text_buffer_insert ("\\det ", "");
+    }
+
+    public void on_math_func_dim ()
+    {
+        text_buffer_insert ("\\dim ", "");
+    }
+
+    public void on_math_func_exp ()
+    {
+        text_buffer_insert ("\\exp ", "");
+    }
+
+    public void on_math_func_gcd ()
+    {
+        text_buffer_insert ("\\gcd ", "");
+    }
+
+    public void on_math_func_hom ()
+    {
+        text_buffer_insert ("\\hom ", "");
+    }
+
+    public void on_math_func_inf ()
+    {
+        text_buffer_insert ("\\inf ", "");
+    }
+
+    public void on_math_func_ker ()
+    {
+        text_buffer_insert ("\\ker ", "");
+    }
+
+    public void on_math_func_lg ()
+    {
+        text_buffer_insert ("\\lg ", "");
+    }
+
+    public void on_math_func_lim ()
+    {
+        text_buffer_insert ("\\lim ", "");
+    }
+
+    public void on_math_func_liminf ()
+    {
+        text_buffer_insert ("\\liminf ", "");
+    }
+
+    public void on_math_func_limsup ()
+    {
+        text_buffer_insert ("\\limsup ", "");
+    }
+
+    public void on_math_func_ln ()
+    {
+        text_buffer_insert ("\\ln ", "");
+    }
+
+    public void on_math_func_log ()
+    {
+        text_buffer_insert ("\\log ", "");
+    }
+
+    public void on_math_func_max ()
+    {
+        text_buffer_insert ("\\max ", "");
+    }
+
+    public void on_math_func_min ()
+    {
+        text_buffer_insert ("\\min ", "");
+    }
+
+    public void on_math_func_sec ()
+    {
+        text_buffer_insert ("\\sec ", "");
+    }
+
+    public void on_math_func_sin ()
+    {
+        text_buffer_insert ("\\sin ", "");
+    }
+
+    public void on_math_func_sinh ()
+    {
+        text_buffer_insert ("\\sinh ", "");
+    }
+
+    public void on_math_func_sup ()
+    {
+        text_buffer_insert ("\\sup ", "");
+    }
+
+    public void on_math_func_tan ()
+    {
+        text_buffer_insert ("\\tan ", "");
+    }
+
+    public void on_math_func_tanh ()
+    {
+        text_buffer_insert ("\\tanh ", "");
+    }
+
+    /* Left Delimiters */
 
     public void on_math_left_delimiter_1 ()
     {
