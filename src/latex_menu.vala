@@ -26,21 +26,21 @@ public class LatexMenu : ActionGroup
         // LaTeX
         { "Latex", null, "_LaTeX" },
 
-        { "LatexDocumentClass", null, "\\documentclass", null,
+        { "LatexDocumentClass", null, "\\_documentclass", null,
             N_("Document class - \\documentclass"), on_documentclass },
-        { "LatexUsepackage", null, "\\usepackage", null,
+        { "LatexUsepackage", null, "\\_usepackage", null,
             N_("Use package - \\usepackage"), on_usepackage },
-        { "LatexAMS", null, N_("AMS packages"), null,
+        { "LatexAMS", null, N_("_AMS packages"), null,
             N_("AMS packages"), on_ams_packages },
-        { "LatexAuthor", null, "\\author", null, N_("Author - \\author"), on_author },
-        { "LatexTitle", null, "\\title", null, N_("Title - \\title"), on_title },
-        { "LatexBeginDocument", null, "\\begin{document}", null,
+        { "LatexAuthor", null, "\\au_thor", null, N_("Author - \\author"), on_author },
+        { "LatexTitle", null, "\\t_itle", null, N_("Title - \\title"), on_title },
+        { "LatexBeginDocument", null, "\\begin{d_ocument}", null,
             N_("Content of the document - \\begin{document}"), on_begin_document },
-        { "LatexMakeTitle", null, "\\maketitle", null,
+        { "LatexMakeTitle", null, "\\_maketitle", null,
             N_("Make title - \\maketitle"), on_maketitle },
-        { "LatexTableOfContents", null, "\\tableofcontents", null,
+        { "LatexTableOfContents", null, "\\tableof_contents", null,
             N_("Table of contents - \\tableofcontents"), on_tableofcontents },
-        { "LatexAbstract", null, "\\begin{abstract}", null,
+        { "LatexAbstract", null, "\\begin{abst_ract}", null,
             N_("Abstract - \\begin{abstract}"), on_abstract },
 
         // LaTeX: Sectioning
@@ -77,20 +77,28 @@ public class LatexMenu : ActionGroup
 
         // LaTeX: Environments
 	    { "Environments", STOCK_JUSTIFY_CENTER, "_Environments" },
-	    { "EnvironmentCenter", STOCK_JUSTIFY_CENTER, "\\begin{_center}", null,
+	    { "EnvCenter", STOCK_JUSTIFY_CENTER, "\\begin{_center}", null,
 		    N_("Center - \\begin{center}"), on_env_center },
-	    { "EnvironmentLeft", STOCK_JUSTIFY_LEFT, "\\begin{flush_left}", null,
+	    { "EnvLeft", STOCK_JUSTIFY_LEFT, "\\begin{flush_left}", null,
 		    N_("Align Left - \\begin{flushleft}"), on_env_left },
-	    { "EnvironmentRight", STOCK_JUSTIFY_RIGHT, "\\begin{flush_right}", null,
+	    { "EnvRight", STOCK_JUSTIFY_RIGHT, "\\begin{flush_right}", null,
 		    N_("Align Right - \\begin{flushright}"), on_env_right },
-	    { "EnvironmentMinipage", null, "\\begin{_minipage}", null,
-		    N_("Minipage - \\begin{minipage}"), on_env_minipage },
-	    { "EnvironmentQuote", null, "\\begin{_quote}", null,
+		{ "EnvFigure", null, "\\begin{_figure}", null,
+		    N_("Figure - \\begin{figure}"), on_env_figure },
+		{ "EnvTable", null, "\\begin{_table}", null,
+		    N_("Table - \\begin{table}"), on_env_table },
+		{ "EnvQuote", null, "\\begin{_quote}", null,
 		    N_("Quote - \\begin{quote}"), on_env_quote },
-	    { "EnvironmentQuotation", null, "\\begin{qu_otation}", null,
+	    { "EnvQuotation", null, "\\begin{qu_otation}", null,
 		    N_("Quotation - \\begin{quotation}"), on_env_quotation },
-	    { "EnvironmentVerse", null, "\\begin{_verse}", null,
+	    { "EnvVerse", null, "\\begin{_verse}", null,
 		    N_("Verse - \\begin{verse}"), on_env_verse },
+		{ "EnvVerbatim", null, "\\begin{ver_batim}", null,
+		    N_("Verbatim - \\begin{verbatim}"), on_env_verbatim },
+	    { "EnvMinipage", null, "\\begin{_minipage}", null,
+		    N_("Minipage - \\begin{minipage}"), on_env_minipage },
+		{ "EnvTitlepage", null, "\\begin{titlepage}", null,
+		    N_("Title page - \\begin{titlepage}"), on_env_titlepage },
 
         // LaTeX: list environments
 	    { "ListEnvironments", "list-enumerate", N_("_List Environments") },
@@ -100,6 +108,8 @@ public class LatexMenu : ActionGroup
 		    N_("Enumeration - \\begin{enumerate}"), on_list_env_enumerate },
 	    { "ListEnvDescription", "list-description", "\\begin{_description}", null,
 		    N_("Description - \\begin{description}"), on_list_env_description },
+		{ "ListEnvList", null, "\\begin{_list}", null,
+		    N_("Custom list - \\begin{list}"), on_list_env_list },
 	    { "ListEnvItem", "list-item", "\\i_tem", null,
 		    N_("List item - \\item"), on_list_env_item },
 
@@ -128,20 +138,22 @@ public class LatexMenu : ActionGroup
 
         // LaTeX: font styles
 	    { "FontStyles", "bold", N_("_Font Styles") },
-	    { "Bold", "bold", "\\text_bf{}", null,
-		    N_("Bold - \\textbf{}"), on_text_bold },
-	    { "Italic", "italic", "\\text_it{}", null,
-		    N_("Italic - \\textit{}"), on_text_italic },
-	    { "Typewriter", "typewriter", "\\text_tt{}", null,
-		    N_("Typewriter - \\texttt{}"), on_text_typewriter },
-	    { "Underline", "underline", "\\_underline{}", null,
-		    N_("Underline - \\underline{}"), on_text_underline },
-	    { "Slanted", null, "\\text_sl{}", null,
-		    N_("Slanted - \\textsl{}"), on_text_slanted },
-	    { "SmallCaps", null, "\\texts_c{}", null,
-		    N_("Small Capitals - \\textsc{}"), on_text_small_caps },
-	    { "Emph", null, "\\_emph{}", null,
-		    N_("Emphasized - \\emph{}"), on_text_emph },
+	    { "Bold", "bold", "\\text_bf", null,
+		    N_("Bold - \\textbf"), on_text_bold },
+	    { "Italic", "italic", "\\text_it", null,
+		    N_("Italic - \\textit"), on_text_italic },
+	    { "Typewriter", "typewriter", "\\text_tt", null,
+		    N_("Typewriter - \\texttt"), on_text_typewriter },
+		{ "Slanted", null, "\\text_sl", null,
+		    N_("Slanted - \\textsl"), on_text_slanted },
+	    { "SmallCaps", null, "\\texts_c", null,
+		    N_("Small Capitals - \\textsc"), on_text_small_caps },
+		{ "SansSerif", null, "\\texts_f", null,
+		    N_("Sans Serif - \\textsf"), on_text_sans_serif },
+		{ "Emph", null, "\\_emph", null,
+		    N_("Emphasized - \\emph"), on_text_emph },
+	    { "Underline", "underline", "\\_underline", null,
+		    N_("Underline - \\underline"), on_text_underline },
 
 	    { "FontFamily", null, N_("_Font Family") },
 	    { "FontFamilyRoman", null, "\\_rmfamily", null,
@@ -327,6 +339,25 @@ public class LatexMenu : ActionGroup
         active_document.end_user_action ();
     }
 
+    private string get_indentation ()
+    {
+        DocumentView view = main_window.active_view;
+        if (view.insert_spaces_instead_of_tabs)
+            return string.nfill (view.tab_width, ' ');
+        return "\t";
+    }
+
+    private void insert_character_style (string style)
+    {
+        return_if_fail (main_window.active_tab != null);
+
+        if (main_window.active_document.get_selection_type ()
+            == SelectionType.MULTIPLE_LINES)
+            text_buffer_insert (@"\\begin{$style}\n", @"\n\\end{$style}");
+        else
+            text_buffer_insert (@"{\\$style ", "}", @"\\$style ");
+    }
+
     public void on_documentclass ()
     {
         text_buffer_insert ("\\documentclass{", "}");
@@ -375,409 +406,442 @@ public class LatexMenu : ActionGroup
         text_buffer_insert ("\\begin{abstract}\n", "\n\\end{abstract}");
     }
 
-    /* sectioning */
+    /* Sectioning */
 
     public void on_sectioning_part ()
     {
-        text_buffer_insert ("\\part{", "}", null);
+        text_buffer_insert ("\\part{", "}");
     }
 
     public void on_sectioning_chapter ()
     {
-        text_buffer_insert ("\\chapter{", "}", null);
+        text_buffer_insert ("\\chapter{", "}");
     }
 
     public void on_sectioning_section ()
     {
-        text_buffer_insert ("\\section{", "}", null);
+        text_buffer_insert ("\\section{", "}");
     }
 
     public void on_sectioning_subsection ()
     {
-        text_buffer_insert ("\\subsection{", "}", null);
+        text_buffer_insert ("\\subsection{", "}");
     }
 
     public void on_sectioning_subsubsection ()
     {
-        text_buffer_insert ("\\subsubsection{", "}", null);
+        text_buffer_insert ("\\subsubsection{", "}");
     }
 
     public void on_sectioning_paragraph ()
     {
-        text_buffer_insert ("\\paragraph{", "}", null);
+        text_buffer_insert ("\\paragraph{", "}");
     }
 
     public void on_sectioning_subparagraph ()
     {
-        text_buffer_insert ("\\subparagraph{", "}", null);
+        text_buffer_insert ("\\subparagraph{", "}");
     }
 
     /* References */
 
     public void on_ref_label ()
     {
-        text_buffer_insert ("\\label{", "} ", null);
+        text_buffer_insert ("\\label{", "} ");
     }
 
     public void on_ref_ref ()
     {
-        text_buffer_insert ("\\ref{", "} ", null);
+        text_buffer_insert ("\\ref{", "} ");
     }
 
     public void on_ref_pageref ()
     {
-        text_buffer_insert ("\\pageref{", "} ", null);
+        text_buffer_insert ("\\pageref{", "} ");
     }
 
     public void on_ref_index ()
     {
-        text_buffer_insert ("\\index{", "} ", null);
+        text_buffer_insert ("\\index{", "} ");
     }
 
     public void on_ref_footnote ()
     {
-        text_buffer_insert ("\\footnote{", "} ", null);
+        text_buffer_insert ("\\footnote{", "} ");
     }
 
     public void on_ref_cite ()
     {
-        text_buffer_insert ("\\cite{", "} ", null);
+        text_buffer_insert ("\\cite{", "} ");
     }
 
-    /* environments */
+    /* Environments */
 
     public void on_env_center ()
     {
-        text_buffer_insert ("\\begin{center}\n", "\n\\end{center}", null);
+        text_buffer_insert ("\\begin{center}\n", "\n\\end{center}");
     }
 
     public void on_env_left ()
     {
-        text_buffer_insert ("\\begin{flushleft}\n", "\n\\end{flushleft}", null);
+        text_buffer_insert ("\\begin{flushleft}\n", "\n\\end{flushleft}");
     }
 
     public void on_env_right ()
     {
-        text_buffer_insert ("\\begin{flushright}\n", "\n\\end{flushright}", null);
+        text_buffer_insert ("\\begin{flushright}\n", "\n\\end{flushright}");
     }
 
-    public void on_env_minipage ()
+    public void on_env_figure ()
     {
-        text_buffer_insert ("\\begin{minipage}\n", "\n\\end{minipage}", null);
+        text_buffer_insert ("\\begin{figure}\n", "\n\\caption{}\n\\end{figure}");
+    }
+
+    public void on_env_table ()
+    {
+        text_buffer_insert ("\\begin{table}\n", "\n\\caption{}\n\\end{table}");
     }
 
     public void on_env_quote ()
     {
-        text_buffer_insert ("\\begin{quote}\n", "\n\\end{quote}", null);
+        text_buffer_insert ("\\begin{quote}\n", "\n\\end{quote}");
     }
 
     public void on_env_quotation ()
     {
-        text_buffer_insert ("\\begin{quotation}\n", "\n\\end{quotation}", null);
+        text_buffer_insert ("\\begin{quotation}\n", "\n\\end{quotation}");
     }
 
     public void on_env_verse ()
     {
-        text_buffer_insert ("\\begin{verse}\n", "\n\\end{verse}", null);
+        text_buffer_insert ("\\begin{verse}\n", "\n\\end{verse}");
+    }
+
+    public void on_env_verbatim ()
+    {
+        text_buffer_insert ("\\begin{verbatim}\n", "\n\\end{verbatim}");
+    }
+
+    public void on_env_minipage ()
+    {
+        text_buffer_insert ("\\begin{minipage}\n", "\n\\end{minipage}");
+    }
+
+    public void on_env_titlepage ()
+    {
+        text_buffer_insert ("\\begin{titlepage}\n", "\n\\end{titlepage}");
     }
 
     /* List Environments */
 
     public void on_list_env_itemize ()
     {
-        text_buffer_insert ("\\begin{itemize}\n  \\item ", "\n\\end{itemize}",
-                null);
+        string indent = get_indentation ();
+        text_buffer_insert (@"\\begin{itemize}\n$indent\\item ", "\n\\end{itemize}");
     }
 
     public void on_list_env_enumerate ()
     {
-        text_buffer_insert ("\\begin{enumerate}\n  \\item ", "\n\\end{enumerate}",
-                null);
+        string indent = get_indentation ();
+        text_buffer_insert (@"\\begin{enumerate}\n$indent\\item ", "\n\\end{enumerate}");
     }
 
     public void on_list_env_description ()
     {
-        text_buffer_insert ("\\begin{description}\n  \\item[",
-                "] \n\\end{description}", null);
+        string indent = get_indentation ();
+        text_buffer_insert (@"\\begin{description}\n$indent\\item[",
+                "] \n\\end{description}");
+    }
+
+    public void on_list_env_list ()
+    {
+        string indent = get_indentation ();
+        text_buffer_insert ("\\begin{list}{", @"}{}\n$indent\\item \n\\end{list}");
     }
 
     public void on_list_env_item ()
     {
-        text_buffer_insert ("\\item ", "", null);
+        text_buffer_insert ("\\item ", "");
     }
-
 
     /* Characters sizes */
 
     public void on_size_tiny ()
     {
-        text_buffer_insert ("{\\tiny ", "}", "\\tiny ");
+        insert_character_style ("tiny");
     }
 
     public void on_size_scriptsize ()
     {
-        text_buffer_insert ("{\\scriptsize ", "}", "\\scriptsize ");
+        insert_character_style ("scriptsize");
     }
 
     public void on_size_footnotesize ()
     {
-        text_buffer_insert ("{\\footnotesize ", "}", "\\footnotesize ");
+        insert_character_style ("footnotesize");
     }
 
     public void on_size_small ()
     {
-        text_buffer_insert ("{\\small ", "}", "\\small ");
+        insert_character_style ("small");
     }
 
     public void on_size_normalsize ()
     {
-        text_buffer_insert ("{\\normalsize ", "}", "\\normalsize ");
+        insert_character_style ("normalsize");
     }
 
     public void on_size_large ()
     {
-        text_buffer_insert ("{\\large ", "}", "\\large ");
+        insert_character_style ("large");
     }
 
     public void on_size_Large ()
     {
-        text_buffer_insert ("{\\Large ", "}", "\\Large ");
+        insert_character_style ("Large");
     }
 
     public void on_size_LARGE ()
     {
-        text_buffer_insert ("{\\LARGE ", "}", "\\LARGE ");
+        insert_character_style ("LARGE");
     }
 
     public void on_size_huge ()
     {
-        text_buffer_insert ("{\\huge ", "}", "\\huge ");
+        insert_character_style ("huge");
     }
 
     public void on_size_Huge ()
     {
-        text_buffer_insert ("{\\Huge ", "}", "\\Huge ");
+        insert_character_style ("Huge");
     }
 
     /* Font styles */
 
     public void on_text_bold ()
     {
-        text_buffer_insert ("\\textbf{", "}", null);
+        text_buffer_insert ("\\textbf{", "}");
     }
 
     public void on_text_italic ()
     {
-        text_buffer_insert ("\\textit{", "}", null);
+        text_buffer_insert ("\\textit{", "}");
     }
 
     public void on_text_typewriter ()
     {
-        text_buffer_insert ("\\texttt{", "}", null);
-    }
-
-    public void on_text_underline ()
-    {
-        text_buffer_insert ("\\underline{", "}", null);
+        text_buffer_insert ("\\texttt{", "}");
     }
 
     public void on_text_slanted ()
     {
-        text_buffer_insert ("\\textsl{", "}", null);
+        text_buffer_insert ("\\textsl{", "}");
     }
 
     public void on_text_small_caps ()
     {
-        text_buffer_insert ("\\textsc{", "}", null);
+        text_buffer_insert ("\\textsc{", "}");
+    }
+
+    public void on_text_sans_serif ()
+    {
+        text_buffer_insert ("\\textsf{", "}");
     }
 
     public void on_text_emph ()
     {
-        text_buffer_insert ("\\emph{", "}", null);
+        text_buffer_insert ("\\emph{", "}");
+    }
+
+    public void on_text_underline ()
+    {
+        text_buffer_insert ("\\underline{", "}");
     }
 
     public void on_text_font_family_roman ()
     {
-        text_buffer_insert ("{\\rmfamily ", "}", "\\rmfamily ");
+        insert_character_style ("rmfamily");
     }
 
     public void on_text_font_family_sans_serif ()
     {
-        text_buffer_insert ("{\\sffamily ", "}", "\\sffamily ");
+        insert_character_style ("sffamily");
     }
 
     public void on_text_font_family_monospace ()
     {
-        text_buffer_insert ("{\\ttfamily ", "}", "\\ttfamily ");
+        insert_character_style ("ttfamily");
     }
 
     public void on_text_font_series_medium ()
     {
-        text_buffer_insert ("{\\mdseries ", "}", "\\mdseries ");
+        insert_character_style ("mdseries");
     }
 
     public void on_text_font_series_bold ()
     {
-        text_buffer_insert ("{\\bfseries ", "}", "\\bfseries ");
+        insert_character_style ("bfseries");
     }
 
     public void on_text_font_shape_upright ()
     {
-        text_buffer_insert ("{\\upshape ", "}", "\\upshape ");
+        insert_character_style ("upshape");
     }
 
     public void on_text_font_shape_italic ()
     {
-        text_buffer_insert ("{\\itshape ", "}", "\\itshape ");
+        insert_character_style ("itshape");
     }
 
     public void on_text_font_shape_slanted ()
     {
-        text_buffer_insert ("{\\slshape ", "}", "\\slshape ");
+        insert_character_style ("slshape");
     }
 
     public void on_text_font_shape_small_caps ()
     {
-        text_buffer_insert ("{\\scshape ", "}", "\\scshape ");
+        insert_character_style ("scshape");
     }
+
+    /* Math environments */
 
     public void on_math_env_normal ()
     {
-        text_buffer_insert ("$ ", " $", null);
+        text_buffer_insert ("$ ", " $");
     }
 
     public void on_math_env_centered ()
     {
-        text_buffer_insert ("$$ ", " $$", null);
+        text_buffer_insert ("$$ ", " $$");
     }
 
     public void on_math_env_numbered ()
     {
-        text_buffer_insert ("\\begin{equation}\n", "\n\\end{equation}", null);
+        text_buffer_insert ("\\begin{equation}\n", "\n\\end{equation}");
     }
 
     public void on_math_env_array ()
     {
-        text_buffer_insert ("\\begin{align*}\n", "\n\\end{align*}", null);
+        text_buffer_insert ("\\begin{align*}\n", "\n\\end{align*}");
     }
 
     public void on_math_env_numbered_array ()
     {
-        text_buffer_insert ("\\begin{align}\n", "\n\\end{align}", null);
+        text_buffer_insert ("\\begin{align}\n", "\n\\end{align}");
     }
 
     public void on_math_superscript ()
     {
-        text_buffer_insert ("^{", "}", null);
+        text_buffer_insert ("^{", "}");
     }
 
     public void on_math_subscript ()
     {
-        text_buffer_insert ("_{", "}", null);
+        text_buffer_insert ("_{", "}");
     }
 
     public void on_math_frac ()
     {
-        text_buffer_insert ("\\frac{", "}{}", null);
+        text_buffer_insert ("\\frac{", "}{}");
     }
 
     public void on_math_square_root ()
     {
-        text_buffer_insert ("\\sqrt{", "}", null);
+        text_buffer_insert ("\\sqrt{", "}");
     }
 
     public void on_math_nth_root ()
     {
-        text_buffer_insert ("\\sqrt[]{", "}", null);
+        text_buffer_insert ("\\sqrt[]{", "}");
     }
 
     public void on_math_left_delimiter_1 ()
     {
-        text_buffer_insert ("\\left( ", "", null);
+        text_buffer_insert ("\\left( ", "");
     }
 
     public void on_math_left_delimiter_2 ()
     {
-        text_buffer_insert ("\\left[ ", "", null);
+        text_buffer_insert ("\\left[ ", "");
     }
 
     public void on_math_left_delimiter_3 ()
     {
-        text_buffer_insert ("\\left\\lbrace ", "", null);
+        text_buffer_insert ("\\left\\lbrace ", "");
     }
 
     public void on_math_left_delimiter_4 ()
     {
-        text_buffer_insert ("\\left\\langle ", "", null);
+        text_buffer_insert ("\\left\\langle ", "");
     }
 
     public void on_math_left_delimiter_5 ()
     {
-        text_buffer_insert ("\\left) ", "", null);
+        text_buffer_insert ("\\left) ", "");
     }
 
     public void on_math_left_delimiter_6 ()
     {
-        text_buffer_insert ("\\left] ", "", null);
+        text_buffer_insert ("\\left] ", "");
     }
 
     public void on_math_left_delimiter_7 ()
     {
-        text_buffer_insert ("\\left\\rbrace ", "", null);
+        text_buffer_insert ("\\left\\rbrace ", "");
     }
 
     public void on_math_left_delimiter_8 ()
     {
-        text_buffer_insert ("\\left\\rangle ", "", null);
+        text_buffer_insert ("\\left\\rangle ", "");
     }
 
     public void on_math_left_delimiter_9 ()
     {
-        text_buffer_insert ("\\left. ", "", null);
+        text_buffer_insert ("\\left. ", "");
     }
 
     public void on_math_right_delimiter_1 ()
     {
-        text_buffer_insert ("\\right( ", "", null);
+        text_buffer_insert ("\\right( ", "");
     }
 
     public void on_math_right_delimiter_2 ()
     {
-        text_buffer_insert ("\\right[ ", "", null);
+        text_buffer_insert ("\\right[ ", "");
     }
 
     public void on_math_right_delimiter_3 ()
     {
-        text_buffer_insert ("\\right\\rbrace ", "", null);
+        text_buffer_insert ("\\right\\rbrace ", "");
     }
 
     public void on_math_right_delimiter_4 ()
     {
-        text_buffer_insert ("\\right\\rangle ", "", null);
+        text_buffer_insert ("\\right\\rangle ", "");
     }
 
     public void on_math_right_delimiter_5 ()
     {
-        text_buffer_insert ("\\right) ", "", null);
+        text_buffer_insert ("\\right) ", "");
     }
 
     public void on_math_right_delimiter_6 ()
     {
-        text_buffer_insert ("\\right] ", "", null);
+        text_buffer_insert ("\\right] ", "");
     }
 
     public void on_math_right_delimiter_7 ()
     {
-        text_buffer_insert ("\\right\\lbrace ", "", null);
+        text_buffer_insert ("\\right\\lbrace ", "");
     }
 
     public void on_math_right_delimiter_8 ()
     {
-        text_buffer_insert ("\\right\\langle ", "", null);
+        text_buffer_insert ("\\right\\langle ", "");
     }
 
     public void on_math_right_delimiter_9 ()
     {
-        text_buffer_insert ("\\right. ", "", null);
+        text_buffer_insert ("\\right. ", "");
     }
 }

@@ -19,6 +19,13 @@
 
 using Gtk;
 
+public enum SelectionType
+{
+    NO_SELECTION,
+    ONE_LINE,
+    MULTIPLE_LINES
+}
+
 public class Document : Gtk.SourceBuffer
 {
     public File location { get; set; }
@@ -384,6 +391,19 @@ public class Document : Gtk.SourceBuffer
         get_iter_at_line (out end_iter, end);
         select_range (start_iter, end_iter);
         tab.view.scroll_to_cursor ();
+    }
+
+    public SelectionType get_selection_type ()
+    {
+        if (! has_selection)
+            return SelectionType.NO_SELECTION;
+
+        TextIter start, end;
+        get_selection_bounds (out start, out end);
+        if (start.get_line () == end.get_line ())
+            return SelectionType.ONE_LINE;
+
+        return SelectionType.MULTIPLE_LINES;
     }
 
     public bool is_tex_document ()

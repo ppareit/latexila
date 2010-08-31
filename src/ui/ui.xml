@@ -107,21 +107,27 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       </menu>
 
       <menu action="Environments">
-        <menuitem action="EnvironmentCenter" />
-        <menuitem action="EnvironmentLeft" />
-        <menuitem action="EnvironmentRight" />
+        <menuitem action="EnvCenter" />
+        <menuitem action="EnvLeft" />
+        <menuitem action="EnvRight" />
         <separator />
-        <menuitem action="EnvironmentMinipage" />
+        <menuitem action="EnvFigure" />
+        <menuitem action="EnvTable" />
         <separator />
-        <menuitem action="EnvironmentQuote" />
-        <menuitem action="EnvironmentQuotation" />
-        <menuitem action="EnvironmentVerse" />
+        <menuitem action="EnvQuote" />
+        <menuitem action="EnvQuotation" />
+        <menuitem action="EnvVerse" />
+        <menuitem action="EnvVerbatim" />
+        <separator />
+        <menuitem action="EnvMinipage" />
+        <menuitem action="EnvTitlepage" />
       </menu>
 
       <menu action="ListEnvironments">
         <menuitem action="ListEnvItemize" />
         <menuitem action="ListEnvEnumerate" />
         <menuitem action="ListEnvDescription" />
+        <menuitem action="ListEnvList" />
         <separator />
         <menuitem action="ListEnvItem" />
       </menu>
@@ -145,6 +151,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
         <menuitem action="Typewriter" />
         <menuitem action="Slanted" />
         <menuitem action="SmallCaps" />
+        <menuitem action="SansSerif" />
         <separator />
         <menuitem action="Emph" />
         <separator />
@@ -303,7 +310,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
 
     <separator />
 
-    <toolitem action="EnvironmentCenter" />
+    <toolitem action="EnvCenter" />
 
     <separator />
 
