@@ -26,23 +26,6 @@ public class LatexMenu : ActionGroup
         // LaTeX
         { "Latex", null, "_LaTeX" },
 
-        { "LatexDocumentClass", null, "\\_documentclass", null,
-            N_("Document class - \\documentclass"), on_documentclass },
-        { "LatexUsepackage", null, "\\_usepackage", null,
-            N_("Use package - \\usepackage"), on_usepackage },
-        { "LatexAMS", null, N_("_AMS packages"), null,
-            N_("AMS packages"), on_ams_packages },
-        { "LatexAuthor", null, "\\au_thor", null, N_("Author - \\author"), on_author },
-        { "LatexTitle", null, "\\t_itle", null, N_("Title - \\title"), on_title },
-        { "LatexBeginDocument", null, "\\begin{d_ocument}", null,
-            N_("Content of the document - \\begin{document}"), on_begin_document },
-        { "LatexMakeTitle", null, "\\_maketitle", null,
-            N_("Make title - \\maketitle"), on_maketitle },
-        { "LatexTableOfContents", null, "\\tableof_contents", null,
-            N_("Table of contents - \\tableofcontents"), on_tableofcontents },
-        { "LatexAbstract", null, "\\begin{abst_ract}", null,
-            N_("Abstract - \\begin{abstract}"), on_abstract },
-
         // LaTeX: Sectioning
 	    { "Sectioning", "sectioning-section", N_("_Sectioning") },
 	    { "SectioningPart", "sectioning-part", "\\_part", null,
@@ -178,6 +161,83 @@ public class LatexMenu : ActionGroup
 		    N_("Slanted - \\slshape"), on_text_font_shape_slanted },
 	    { "FontShapeSmallCaps", null, "\\s_cshape", null,
 		    N_("Small Capitals - \\scshape"), on_text_font_shape_small_caps },
+
+		// Tabular
+
+		{ "Tabular", null, N_("_Tabular") },
+		{ "TabularTabbing", null, "\\begin{ta_bbing}", null,
+		    N_("Tabbing - \\begin{tabbing}"), on_tabular_tabbing },
+		{ "TabularTabular", null, "\\begin{_tabular}", null,
+		    N_("Tabular - \\begin{tabular}"), on_tabular_tabular },
+		{ "TabularMulticolumn", null, "\\_multicolumn", null,
+		    N_("Multicolumn - \\multicolumn"), on_tabular_multicolumn },
+		{ "TabularHline", null, "\\_hline", null,
+		    N_("Horizontal line - \\hline"), on_tabular_hline },
+		{ "TabularVline", null, "\\_vline", null,
+		    N_("Vertical line - \\vline"), on_tabular_vline },
+		{ "TabularCline", null, "\\_cline", null,
+		    N_("Horizontal line (columns specified) - \\cline"), on_tabular_cline },
+
+		// Spacing
+
+		{ "Spacing", null, N_("_Spacing") },
+		{ "SpacingNewLine", null, N_("New _Line"), null,
+		    N_("New Line - \\\\"), on_spacing_new_line },
+		{ "SpacingNewPage", null, "\\new_page", null,
+		    N_("New page - \\newpage"), on_spacing_new_page },
+		{ "SpacingLineBreak", null, "\\l_inebreak", null,
+		    N_("Line break - \\linebreak"), on_spacing_line_break },
+		{ "SpacingPageBreak", null, "\\p_agebreak", null,
+		    N_("Page break - \\pagebreak"), on_spacing_page_break },
+		{ "SpacingBigSkip", null, "\\_bigskip", null,
+		    N_("Big skip - \\bigskip"), on_spacing_bigskip },
+		{ "SpacingMedSkip", null, "\\_medskip", null,
+		    N_("Medium skip - \\medskip"), on_spacing_medskip },
+		{ "SpacingHSpace", null, "\\_hspace", null,
+		    N_("Horizontal space - \\hspace"), on_spacing_hspace },
+		{ "SpacingVSpace", null, "\\_vspace", null,
+		    N_("Vertical space - \\vspace"), on_spacing_vspace },
+		{ "SpacingNoIndent", null, "\\_noindent", null,
+		    N_("No paragraph indentation - \\noindent"), on_spacing_noindent },
+
+		// International accents
+
+		{ "Accents", null, N_("International _Accents") },
+		{ "Accent0", "accent0", "\\'", null, N_("Acute accent - \\'"), on_accent0 },
+		{ "Accent1", "accent1", "\\`", null, N_("Grave accent - \\`"), on_accent1 },
+		{ "Accent2", "accent2", "\\^", null, N_("Circumflex accent - \\^"), on_accent2 },
+		{ "Accent3", "accent3", "\\\"", null, N_("Trema - \\\""), on_accent3 },
+		{ "Accent4", "accent4", "\\~", null, N_("Tilde - \\~"), on_accent4 },
+		{ "Accent5", "accent5", "\\=", null, N_("Macron - \\="), on_accent5 },
+		{ "Accent6", "accent6", "\\.", null, N_("Dot - \\."), on_accent6 },
+		{ "Accent7", "accent7", "\\v", null, N_("Caron - \\v"), on_accent7 },
+		{ "Accent8", "accent8", "\\u", null, N_("Breve - \\u"), on_accent8 },
+		{ "Accent9", "accent9", "\\H", null,
+		    N_("Double acute accent - \\H"), on_accent9 },
+
+		// Others
+
+        { "LatexMisc", null, N_("_Misc") },
+		{ "LatexDocumentClass", null, "\\_documentclass", null,
+            N_("Document class - \\documentclass"), on_documentclass },
+        { "LatexUsepackage", null, "\\_usepackage", null,
+            N_("Use package - \\usepackage"), on_usepackage },
+        { "LatexAMS", null, N_("_AMS packages"), null,
+            N_("AMS packages"), on_ams_packages },
+        { "LatexAuthor", null, "\\au_thor", null, N_("Author - \\author"), on_author },
+        { "LatexTitle", null, "\\t_itle", null, N_("Title - \\title"), on_title },
+        { "LatexBeginDocument", null, "\\begin{d_ocument}", null,
+            N_("Content of the document - \\begin{document}"), on_begin_document },
+        { "LatexMakeTitle", null, "\\_maketitle", null,
+            N_("Make title - \\maketitle"), on_maketitle },
+        { "LatexTableOfContents", null, "\\tableof_contents", null,
+            N_("Table of contents - \\tableofcontents"), on_tableofcontents },
+        { "LatexAbstract", null, "\\begin{abst_ract}", null,
+            N_("Abstract - \\begin{abstract}"), on_abstract },
+        { "LatexIncludeGraphics", null, "\\include_graphics", null,
+            N_("Include an image (graphicx package) - \\includegraphics"), on_include_graphics },
+        { "LatexInput", null, "\\_input", null,
+            N_("Include a file - \\input"), on_input },
 
         // LaTeX: math
 	    { "Math", null, N_("_Math") },
@@ -356,54 +416,6 @@ public class LatexMenu : ActionGroup
             text_buffer_insert (@"\\begin{$style}\n", @"\n\\end{$style}");
         else
             text_buffer_insert (@"{\\$style ", "}", @"\\$style ");
-    }
-
-    public void on_documentclass ()
-    {
-        text_buffer_insert ("\\documentclass{", "}");
-    }
-
-    public void on_usepackage ()
-    {
-        text_buffer_insert ("\\usepackage{", "}");
-    }
-
-    public void on_ams_packages ()
-    {
-        string packages = "\\usepackage{amsmath}\n"
-                        + "\\usepackage{amsfonts}\n"
-                        + "\\usepackage{amssymb}";
-        text_buffer_insert (packages, "");
-    }
-
-    public void on_author ()
-    {
-        text_buffer_insert ("\\author{", "}");
-    }
-
-    public void on_title ()
-    {
-        text_buffer_insert ("\\title{", "}");
-    }
-
-    public void on_begin_document ()
-    {
-        text_buffer_insert ("\\begin{document}\n", "\n\\end{document}");
-    }
-
-    public void on_maketitle ()
-    {
-        text_buffer_insert ("\\maketitle", "");
-    }
-
-    public void on_tableofcontents ()
-    {
-        text_buffer_insert ("\\tableofcontents", "");
-    }
-
-    public void on_abstract ()
-    {
-        text_buffer_insert ("\\begin{abstract}\n", "\n\\end{abstract}");
     }
 
     /* Sectioning */
@@ -701,6 +713,197 @@ public class LatexMenu : ActionGroup
     public void on_text_font_shape_small_caps ()
     {
         insert_character_style ("scshape");
+    }
+
+    /* Tabular */
+
+    public void on_tabular_tabbing ()
+    {
+        text_buffer_insert ("\\begin{tabbing}\n", "\n\\end{tabbing}");
+    }
+
+    public void on_tabular_tabular ()
+    {
+        text_buffer_insert ("\\begin{tabular}\n", "\n\\end{tabular}");
+    }
+
+    public void on_tabular_multicolumn ()
+    {
+        text_buffer_insert ("\\multicolumn{}{}{", "}");
+    }
+
+    public void on_tabular_hline ()
+    {
+        text_buffer_insert ("\\hline ", "");
+    }
+
+    public void on_tabular_vline ()
+    {
+        text_buffer_insert ("\\vline ", "");
+    }
+
+    public void on_tabular_cline ()
+    {
+        text_buffer_insert ("\\cline{", "-}");
+    }
+
+    /* Spacing */
+
+    public void on_spacing_new_line ()
+    {
+        text_buffer_insert ("\\\\\n", "");
+    }
+
+    public void on_spacing_new_page ()
+    {
+        text_buffer_insert ("\\newpage\n", "");
+    }
+
+    public void on_spacing_line_break ()
+    {
+        text_buffer_insert ("\\linebreak\n", "");
+    }
+
+    public void on_spacing_page_break ()
+    {
+        text_buffer_insert ("\\pagebreak\n", "");
+    }
+
+    public void on_spacing_bigskip ()
+    {
+        text_buffer_insert ("\\bigskip ", "");
+    }
+
+    public void on_spacing_medskip ()
+    {
+        text_buffer_insert ("\\medskip ", "");
+    }
+
+    public void on_spacing_hspace ()
+    {
+        text_buffer_insert ("\\hspace{", "}");
+    }
+
+    public void on_spacing_vspace ()
+    {
+        text_buffer_insert ("\\vspace{", "}");
+    }
+
+    public void on_spacing_noindent ()
+    {
+        text_buffer_insert ("\\noindent ", "");
+    }
+
+    /* International accents */
+
+    public void on_accent0 ()
+    {
+        text_buffer_insert ("\\'{", "}");
+    }
+
+    public void on_accent1 ()
+    {
+        text_buffer_insert ("\\`{", "}");
+    }
+
+    public void on_accent2 ()
+    {
+        text_buffer_insert ("\\^{", "}");
+    }
+
+    public void on_accent3 ()
+    {
+        text_buffer_insert ("\\\"{", "}");
+    }
+
+    public void on_accent4 ()
+    {
+        text_buffer_insert ("\\~{", "}");
+    }
+
+    public void on_accent5 ()
+    {
+        text_buffer_insert ("\\={", "}");
+    }
+
+    public void on_accent6 ()
+    {
+        text_buffer_insert ("\\.{", "}");
+    }
+
+    public void on_accent7 ()
+    {
+        text_buffer_insert ("\\v{", "}");
+    }
+
+    public void on_accent8 ()
+    {
+        text_buffer_insert ("\\u{", "}");
+    }
+
+    public void on_accent9 ()
+    {
+        text_buffer_insert ("\\H{", "}");
+    }
+
+    /* Others */
+
+    public void on_documentclass ()
+    {
+        text_buffer_insert ("\\documentclass{", "}");
+    }
+
+    public void on_usepackage ()
+    {
+        text_buffer_insert ("\\usepackage{", "}");
+    }
+
+    public void on_ams_packages ()
+    {
+        string packages = "\\usepackage{amsmath}\n"
+                        + "\\usepackage{amsfonts}\n"
+                        + "\\usepackage{amssymb}";
+        text_buffer_insert (packages, "");
+    }
+
+    public void on_author ()
+    {
+        text_buffer_insert ("\\author{", "}");
+    }
+
+    public void on_title ()
+    {
+        text_buffer_insert ("\\title{", "}");
+    }
+
+    public void on_begin_document ()
+    {
+        text_buffer_insert ("\\begin{document}\n", "\n\\end{document}");
+    }
+
+    public void on_maketitle ()
+    {
+        text_buffer_insert ("\\maketitle", "");
+    }
+
+    public void on_tableofcontents ()
+    {
+        text_buffer_insert ("\\tableofcontents", "");
+    }
+
+    public void on_abstract ()
+    {
+        text_buffer_insert ("\\begin{abstract}\n", "\n\\end{abstract}");
+    }
+
+    public void on_include_graphics ()
+    {
+        text_buffer_insert ("\\includegraphics{", "}");
+    }
+
+    public void on_input ()
+    {
+        text_buffer_insert ("\\input{", "}");
     }
 
     /* Math environments */

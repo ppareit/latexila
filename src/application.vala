@@ -63,7 +63,17 @@ public class Application : GLib.Object
 	    { Config.DATA_DIR + "/images/icons/delimiters-right.png", "delimiters-right" },
 	    { Config.DATA_DIR + "/images/icons/badbox.png", "badbox" },
 	    { Config.DATA_DIR + "/images/icons/logviewer.png", "view_log" },
-	    { Config.DATA_DIR + "/images/greek/01.png", "symbol_alpha" }
+	    { Config.DATA_DIR + "/images/greek/01.png", "symbol_alpha" },
+	    { Config.DATA_DIR + "/images/icons/accent0.png", "accent0" },
+	    { Config.DATA_DIR + "/images/icons/accent1.png", "accent1" },
+	    { Config.DATA_DIR + "/images/icons/accent2.png", "accent2" },
+	    { Config.DATA_DIR + "/images/icons/accent3.png", "accent3" },
+	    { Config.DATA_DIR + "/images/icons/accent4.png", "accent4" },
+	    { Config.DATA_DIR + "/images/icons/accent5.png", "accent5" },
+	    { Config.DATA_DIR + "/images/icons/accent6.png", "accent6" },
+	    { Config.DATA_DIR + "/images/icons/accent7.png", "accent7" },
+	    { Config.DATA_DIR + "/images/icons/accent8.png", "accent8" },
+	    { Config.DATA_DIR + "/images/icons/accent9.png", "accent9" }
     };
 
     public static int NEW_WINDOW = 1;

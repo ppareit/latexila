@@ -174,15 +174,54 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
         </menu>
       </menu>
 
-      <menuitem action="LatexDocumentClass" />
-      <menuitem action="LatexUsepackage" />
-      <menuitem action="LatexAMS" />
-      <menuitem action="LatexAuthor" />
-      <menuitem action="LatexTitle" />
-      <menuitem action="LatexBeginDocument" />
-      <menuitem action="LatexMakeTitle" />
-      <menuitem action="LatexTableOfContents" />
-      <menuitem action="LatexAbstract" />
+      <menu action="Tabular">
+        <menuitem action="TabularTabbing" />
+        <menuitem action="TabularTabular" />
+        <menuitem action="TabularMulticolumn" />
+        <menuitem action="TabularHline" />
+        <menuitem action="TabularVline" />
+        <menuitem action="TabularCline" />
+      </menu>
+
+      <menu action="Spacing">
+        <menuitem action="SpacingNewLine" />
+        <menuitem action="SpacingNewPage" />
+        <menuitem action="SpacingLineBreak" />
+        <menuitem action="SpacingPageBreak" />
+        <menuitem action="SpacingBigSkip" />
+        <menuitem action="SpacingMedSkip" />
+        <menuitem action="SpacingHSpace" />
+        <menuitem action="SpacingVSpace" />
+        <menuitem action="SpacingNoIndent" />
+      </menu>
+
+      <menu action="Accents">
+        <menuitem action="Accent0" />
+        <menuitem action="Accent1" />
+        <menuitem action="Accent2" />
+        <menuitem action="Accent3" />
+        <menuitem action="Accent4" />
+        <menuitem action="Accent5" />
+        <menuitem action="Accent6" />
+        <menuitem action="Accent7" />
+        <menuitem action="Accent8" />
+        <menuitem action="Accent9" />
+      </menu>
+
+      <menu action="LatexMisc">
+        <menuitem action="LatexDocumentClass" />
+        <menuitem action="LatexUsepackage" />
+        <menuitem action="LatexAMS" />
+        <menuitem action="LatexAuthor" />
+        <menuitem action="LatexTitle" />
+        <menuitem action="LatexBeginDocument" />
+        <menuitem action="LatexMakeTitle" />
+        <menuitem action="LatexTableOfContents" />
+        <menuitem action="LatexAbstract" />
+        <separator />
+        <menuitem action="LatexIncludeGraphics" />
+        <menuitem action="LatexInput" />
+      </menu>
     </menu>
 
     <menu action="Math">
