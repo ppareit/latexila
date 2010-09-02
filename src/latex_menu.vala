@@ -303,6 +303,55 @@ public class LatexMenu : ActionGroup
         { "MathFuncTan", null, "\\tan", null, null, on_math_func_tan },
         { "MathFuncTanh", null, "\\tanh", null, null, on_math_func_tanh },
 
+        // Math Font Styles
+
+        { "MathFontStyles", null, N_("Math Font _Styles") },
+        { "MathFSrm", null, "\\math_rm", null,
+            N_("Roman - \\mathrm"), on_math_font_style_rm },
+        { "MathFSit", "italic", "\\math_it", null,
+            N_("Italic - \\mathit"), on_math_font_style_it },
+        { "MathFSbf", "bold", "\\math_bf", null,
+            N_("Bold - \\mathbf"), on_math_font_style_bf },
+        { "MathFSsf", null, "\\math_sf", null,
+            N_("Sans Serif - \\mathsf"), on_math_font_style_sf },
+        { "MathFStt", "typewriter", "\\math_tt", null,
+            N_("Typewriter - \\mathtt"), on_math_font_style_tt },
+        { "MathFScal", null, "\\math_cal", null,
+            N_("Calligraphic - \\mathcal"), on_math_font_style_cal },
+        { "MathFSbb", "blackboard", "\\_mathbb", null,
+            N_("Blackboard (uppercase only)  - \\mathbb (amsfonts package)"),
+            on_math_font_style_bb },
+        { "MathFSfrak", null, "\\math_frak", null,
+            N_("Euler Fraktur - \\mathfrak (amsfonts package)"),
+            on_math_font_style_frak },
+
+        // Math Accents
+
+        { "MathAccents", null, N_("Math _Accents") },
+        { "MathAccentAcute", null, "\\_acute", null, null, on_math_accent_acute },
+        { "MathAccentGrave", null, "\\_grave", null, null, on_math_accent_grave },
+        { "MathAccentTilde", null, "\\_tilde", null, null, on_math_accent_tilde },
+        { "MathAccentBar", null, "\\_bar", null, null, on_math_accent_bar },
+        { "MathAccentVec", null, "\\_vec", null, null, on_math_accent_vec },
+        { "MathAccentHat", null, "\\_hat", null, null, on_math_accent_hat },
+        { "MathAccentCheck", null, "\\_check", null, null, on_math_accent_check },
+        { "MathAccentBreve", null, "\\b_reve", null, null, on_math_accent_breve },
+        { "MathAccentDot", null, "\\_dot", null, null, on_math_accent_dot },
+        { "MathAccentDdot", null, "\\dd_ot", null, null, on_math_accent_ddot },
+        { "MathAccentRing", null, "\\_mathring", null, null, on_math_accent_ring },
+
+        // Math Spaces
+
+        { "MathSpaces", null, N_("Math _Spaces") },
+        { "MathSpaceSmall", null, N_("_Small"), null,
+            N_("Small - \\,"), on_math_space_small },
+        { "MathSpaceMedium", null, N_("_Medium"), null,
+            N_("Medium - \\:"), on_math_space_medium },
+        { "MathSpaceLarge", null, N_("_Large"), null,
+            N_("Large - \\;"), on_math_space_large },
+        { "MathSpaceQuad", null, "\\_quad", null, null, on_math_space_quad },
+        { "MathSpaceQquad", null, "\\qqu_ad", null, null, on_math_space_qquad },
+
         // Left Delimiters
 
 	    { "MathLeftDelimiters", "delimiters-left", N_("_Left Delimiters") },
@@ -1154,6 +1203,132 @@ public class LatexMenu : ActionGroup
     public void on_math_func_tanh ()
     {
         text_buffer_insert ("\\tanh ", "");
+    }
+
+    /* Math Font Styles */
+
+    public void on_math_font_style_rm ()
+    {
+        text_buffer_insert ("\\mathrm{", "}");
+    }
+
+    public void on_math_font_style_it ()
+    {
+        text_buffer_insert ("\\mathit{", "}");
+    }
+
+    public void on_math_font_style_bf ()
+    {
+        text_buffer_insert ("\\mathbf{", "}");
+    }
+
+    public void on_math_font_style_sf ()
+    {
+        text_buffer_insert ("\\mathsf{", "}");
+    }
+
+    public void on_math_font_style_tt ()
+    {
+        text_buffer_insert ("\\mathtt{", "}");
+    }
+
+    public void on_math_font_style_cal ()
+    {
+        text_buffer_insert ("\\mathcal{", "}");
+    }
+
+    public void on_math_font_style_bb ()
+    {
+        text_buffer_insert ("\\mathbb{", "}");
+    }
+
+    public void on_math_font_style_frak ()
+    {
+        text_buffer_insert ("\\mathfrak{", "}");
+    }
+
+    /* Math Accents */
+
+    public void on_math_accent_acute ()
+    {
+        text_buffer_insert ("\\acute{", "}");
+    }
+
+    public void on_math_accent_grave ()
+    {
+        text_buffer_insert ("\\grave{", "}");
+    }
+
+    public void on_math_accent_tilde ()
+    {
+        text_buffer_insert ("\\tilde{", "}");
+    }
+
+    public void on_math_accent_bar ()
+    {
+        text_buffer_insert ("\\bar{", "}");
+    }
+
+    public void on_math_accent_vec ()
+    {
+        text_buffer_insert ("\\vec{", "}");
+    }
+
+    public void on_math_accent_hat ()
+    {
+        text_buffer_insert ("\\hat{", "}");
+    }
+
+    public void on_math_accent_check ()
+    {
+        text_buffer_insert ("\\check{", "}");
+    }
+
+    public void on_math_accent_breve ()
+    {
+        text_buffer_insert ("\\breve{", "}");
+    }
+
+    public void on_math_accent_dot ()
+    {
+        text_buffer_insert ("\\dot{", "}");
+    }
+
+    public void on_math_accent_ddot ()
+    {
+        text_buffer_insert ("\\ddot{", "}");
+    }
+
+    public void on_math_accent_ring ()
+    {
+        text_buffer_insert ("\\mathring{", "}");
+    }
+
+    /* Math Spaces */
+
+    public void on_math_space_small ()
+    {
+        text_buffer_insert ("\\, ", "");
+    }
+
+    public void on_math_space_medium ()
+    {
+        text_buffer_insert ("\\: ", "");
+    }
+
+    public void on_math_space_large ()
+    {
+        text_buffer_insert ("\\; ", "");
+    }
+
+    public void on_math_space_quad ()
+    {
+        text_buffer_insert ("\\quad ", "");
+    }
+
+    public void on_math_space_qquad ()
+    {
+        text_buffer_insert ("\\qquad ", "");
     }
 
     /* Left Delimiters */

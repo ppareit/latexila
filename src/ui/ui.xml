@@ -277,7 +277,39 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
         <menuitem action="MathFuncTanh" />
       </menu>
 
-      <separator />
+      <menu action="MathFontStyles">
+        <menuitem action="MathFSrm" />
+        <menuitem action="MathFSit" />
+        <menuitem action="MathFSbf" />
+        <menuitem action="MathFSsf" />
+        <menuitem action="MathFStt" />
+        <menuitem action="MathFScal" />
+        <menuitem action="MathFSbb" />
+        <menuitem action="MathFSfrak" />
+      </menu>
+
+      <menu action="MathAccents">
+        <menuitem action="MathAccentAcute" />
+        <menuitem action="MathAccentGrave" />
+        <menuitem action="MathAccentTilde" />
+        <menuitem action="MathAccentBar" />
+        <menuitem action="MathAccentVec" />
+        <menuitem action="MathAccentHat" />
+        <menuitem action="MathAccentCheck" />
+        <menuitem action="MathAccentBreve" />
+        <menuitem action="MathAccentDot" />
+        <menuitem action="MathAccentDdot" />
+        <menuitem action="MathAccentRing" />
+      </menu>
+
+      <menu action="MathSpaces">
+        <menuitem action="MathSpaceSmall" />
+        <menuitem action="MathSpaceMedium" />
+        <menuitem action="MathSpaceLarge" />
+        <menuitem action="MathSpaceQuad" />
+        <menuitem action="MathSpaceQquad" />
+      </menu>
+
       <menu action="MathLeftDelimiters">
         <menuitem action="MathLeftDelimiter1" />
         <menuitem action="MathLeftDelimiter2" />

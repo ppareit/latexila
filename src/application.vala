@@ -37,6 +37,7 @@ public class Application : GLib.Object
 	    { Config.DATA_DIR + "/images/icons/textit.png", "italic" },
 	    { Config.DATA_DIR + "/images/icons/texttt.png", "typewriter" },
 	    { Config.DATA_DIR + "/images/icons/underline.png", "underline" },
+	    { Config.DATA_DIR + "/images/misc-math/set-R.png", "blackboard" },
 	    { Config.DATA_DIR + "/images/icons/sectioning-part.png", "sectioning-part" },
 	    { Config.DATA_DIR + "/images/icons/sectioning-chapter.png", "sectioning-chapter" },
 	    { Config.DATA_DIR + "/images/icons/sectioning-section.png", "sectioning-section" },
