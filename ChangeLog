@@ -1,0 +1,103 @@
+ChangeLog LaTeXila
+
+==============================
+* Release 1.99.1 (Sep 2, 2010)
+==============================
+
+- Bug fix: critical messages with several windows
+- Bug fix: save a new document on disk
+- ChangeLog updated
+
+===============================
+* Release 1.99.0 (Aug 25, 2010)
+===============================
+
+- Rewrite in Vala
+- One instance of LaTeXila can manage several windows
+- Thanks to unique, a new file is opened in an existing window if it's in the
+same workspace
+- Better search and replace, inspired from MonoDevelop
+- Build Tools: Rubber is used for documents compilation
+- French translation updated
+- Spanish translation added
+
+============================
+* Release 0.2 (Feb 20, 2010)
+============================
+
+- New logo and icon (Eric Forgeot)
+- User-friendly output for the compilation:
+	* The output is filtered: only errors, warnings and badboxes are
+	showed.
+	* For a message, the file and the line is extracted, so the user can
+	click on a message to go directly to the right file and line.
+	* Statistics: how much errors/warnings/badboxes
+	* Buttons for the navigation between the errors/warnings/badboxes
+	* Options in the preferences: show all output,
+	-interaction=nonstopmode
+
+- Stop the execution of an external command
+- Clean-up build files
+- File browser: combobox with all parent directories
+- Create a backup copy of files before saving (e.g. filename~)
+- Autosave files every X minutes
+- New default template: beamer presentation
+- Create personnal templates: choose an icon
+- French translation updated
+
+
+============================
+* Release 0.1 (Dec 28, 2009)
+============================
+
+- File browser integrated
+- BibTeX and MakeIndex support
+- Templates:
+	* 4 default templates (article, report, book and letter)
+	* possibility to create and delete personnal templates
+
+- Tools: Indent/Unindent, Comment/Uncomment selected lines
+- Search: Goto Line
+- Documents menu: Save/Close all, Previous/Next document
+- Documentation: LaTeX reference from Kile
+- Edit toolbar and the LaTeX menu: math stuff
+- More preferences:
+	* Style scheme support (GtkSourceView)
+	* Remember the files opened at exit and reopen them on startup
+	* Clean-up auxiliaries files after close
+	* Indentation (tab width; spaces instead of tabs)
+	* Highlighting (current line; brackets matching)
+	* Show the two toolbars on the same line
+
+- Undo/redo: check if the buffer is saved
+- Find/Replace: under the source view instead of a dialog
+- Some icons updated
+- French translation updated
+
+
+==============================
+* Release 0.0.2 (Oct 17, 2009)
+==============================
+
+- Symbol tables: Greek letters, arrows, relations, operators,
+delimiters, misc math, misc text (661 symbols)
+- Edit toolbar and the LaTeX menu: sectioning, references,
+environments, list environments, characters sizes and font styles
+- Possibility to reorder the document tabs
+- Command line options: --new-document, --version and --help
+- A lot of little improvements
+- Bug corrections
+- Nicer display of output commands when compiling or converting a
+document (the output is showed progressivly line per line)
+- Log zone: keep only the five last actions
+- French translation updated
+
+
+==============================
+* Release 0.0.1 (Sept 2, 2009)
+==============================
+
+- Syntaxic color
+- Buttons to compile, convert and view the document
+- All common things found in a text editor...
+- French translation
