@@ -16,7 +16,7 @@ ChangeLog LaTeXila
 - One instance of LaTeXila can manage several windows
 - Thanks to unique, a new file is opened in an existing window if it's in the
 same workspace
-- Better search and replace, inspired from MonoDevelop
+- Better search and replace, inspired by MonoDevelop
 - Build Tools: Rubber is used for documents compilation
 - French translation updated
 - Spanish translation added
@@ -86,7 +86,7 @@ environments, list environments, characters sizes and font styles
 - Possibility to reorder the document tabs
 - Command line options: --new-document, --version and --help
 - A lot of little improvements
-- Bug corrections
+- Bug fixes
 - Nicer display of output commands when compiling or converting a
 document (the output is showed progressivly line per line)
 - Log zone: keep only the five last actions
