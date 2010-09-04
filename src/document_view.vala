@@ -55,6 +55,20 @@ public class DocumentView : Gtk.SourceView
         doc.highlight_matching_brackets =
             editor_settings.get_boolean ("bracket-matching");
         doc.set_style_scheme_from_string (editor_settings.get_string ("scheme"));
+
+        // completion
+        SourceCompletion completion = get_completion ();
+        try
+        {
+            completion.add_provider (CompletionProvider.get_default ());
+            completion.show_icons = false;
+            completion.remember_info_visibility = true;
+            completion.show_headers = false;
+        }
+        catch (GLib.Error e)
+        {
+            stderr.printf ("Error completion: %s\n", e.message);
+        }
     }
 
     public void scroll_to_cursor (double margin = 0.25)

@@ -3,6 +3,7 @@ install (FILES "org.gnome.latexila.gschema.xml"
 install (SCRIPT "cmake-compile-schemas")
 
 install (FILES "latexhelp.html" DESTINATION ${DATA_DIR})
+install (FILES "completion.xml" DESTINATION ${DATA_DIR})
 install (FILES "latexila.desktop" DESTINATION share/applications)
 
 add_subdirectory ("build_tools")
