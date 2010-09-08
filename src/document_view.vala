@@ -57,13 +57,14 @@ public class DocumentView : Gtk.SourceView
         doc.set_style_scheme_from_string (editor_settings.get_string ("scheme"));
 
         // completion
-        SourceCompletion completion = get_completion ();
         try
         {
             completion.add_provider (CompletionProvider.get_default ());
             completion.show_icons = false;
             completion.remember_info_visibility = true;
-            completion.show_headers = false;
+
+            // Gtk-CRITICAL with that, see bug #629055
+            //completion.show_headers = false;
         }
         catch (GLib.Error e)
         {

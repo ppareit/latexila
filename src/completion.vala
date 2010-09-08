@@ -40,6 +40,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private CompletionCommand current_command;
     private CompletionArgument current_arg;
 
+    private bool show_all_proposals = false;
+
     private CompletionProvider ()
     {
         try
@@ -174,7 +176,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return info;
     }
 
-    private string get_match_text (TextIter iter)
+    private string get_latex_command_at_iter (TextIter iter)
     {
         int line = iter.get_line ();
         TextBuffer doc = iter.get_buffer ();
@@ -215,31 +217,70 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         TextIter iter = {};
         context.get_iter (iter);
-        string text = get_match_text (iter);
+        string cmd = get_latex_command_at_iter (iter);
 
-        if (text == "")
-            context.add_proposals (this, proposals, true);
+        // clear
+        if (! show_all_proposals && cmd == "")
+        {
+            List<SourceCompletionItem> empty_proposals = null;
+            context.add_proposals ((SourceCompletionProvider) this, empty_proposals,
+                true);
+            return;
+        }
+
+        // show all proposals
+        if (show_all_proposals || cmd == "\\")
+            context.add_proposals ((SourceCompletionProvider) this, proposals, true);
+
+        // filter proposals
         else
         {
-            List<SourceCompletionItem> proposals_filtered = null;
+            List<SourceCompletionItem> filtered_proposals = null;
             foreach (SourceCompletionItem item in proposals)
             {
-                if (item.text.has_prefix (text))
-                    proposals_filtered.prepend (item);
+                if (item.text.has_prefix (cmd))
+                    filtered_proposals.prepend (item);
             }
-            proposals_filtered.reverse ();
-            context.add_proposals (this, proposals_filtered, true);
+
+            // no match, show a message so the completion widget doesn't disappear
+            if (filtered_proposals == null)
+            {
+                var dummy_proposal = new SourceCompletionItem (_("No matching proposal"),
+                    "", null, null);
+                filtered_proposals.prepend (dummy_proposal);
+            }
+
+            // Since we have prepend items we must reverse the list to keep the proposals
+            // in ascending order.
+            else
+                filtered_proposals.reverse ();
+
+            context.add_proposals ((SourceCompletionProvider) this, filtered_proposals,
+                true);
         }
+
+        show_all_proposals = false;
     }
 
     public SourceCompletionActivation get_activation ()
     {
-        return SourceCompletionActivation.USER_REQUESTED;
+        return SourceCompletionActivation.USER_REQUESTED |
+            SourceCompletionActivation.INTERACTIVE;
     }
 
     public bool match (SourceCompletionContext context)
     {
-        return true;
+        TextIter iter = {};
+        context.get_iter (iter);
+        string cmd = get_latex_command_at_iter (iter);
+
+        if (context.activation == SourceCompletionActivation.USER_REQUESTED)
+        {
+            show_all_proposals = cmd == "";
+            return true;
+        }
+
+        return cmd.length >= 3;
     }
 
     public unowned Gtk.Widget? get_info_widget (SourceCompletionProposal proposal)
@@ -259,9 +300,13 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
     {
-        string match = get_match_text (iter);
+        string cmd = get_latex_command_at_iter (iter);
         string text = proposal.get_text ();
-        string text_to_insert = text[match.length:text.length];
+
+        if (text == null || text == "")
+            return true;
+
+        string text_to_insert = text[cmd.length:text.length];
 
         TextBuffer doc = iter.get_buffer ();
         doc.begin_user_action ();
