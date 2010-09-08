@@ -3,7 +3,10 @@ TODO
 For 2.0 (try to do as much as possible)
 =======
 
-- Auto-completion
+- Auto-completion:
+	- parameters completion
+	- complete placeholders (e.g. \ref, \cite, ...)
+	- close environment (\begin{env} => \end{env})
 
 - Search and replace:
 	- optimize incremental search

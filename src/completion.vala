@@ -36,6 +36,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private static CompletionProvider instance = null;
     private List<SourceCompletionItem> proposals;
+    private GLib.Settings settings;
 
     private CompletionCommand current_command;
     private CompletionArgument current_arg;
@@ -44,6 +45,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private CompletionProvider ()
     {
+        settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
+
         try
         {
             File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
@@ -220,7 +223,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string cmd = get_latex_command_at_iter (iter);
 
         // clear
-        if (! show_all_proposals && cmd == "")
+        if ((! show_all_proposals && cmd == "") ||
+            (context.activation == SourceCompletionActivation.INTERACTIVE
+             && ! settings.get_boolean ("interactive-completion")))
         {
             List<SourceCompletionItem> empty_proposals = null;
             context.add_proposals ((SourceCompletionProvider) this, empty_proposals,
@@ -264,8 +269,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public SourceCompletionActivation get_activation ()
     {
-        return SourceCompletionActivation.USER_REQUESTED |
-            SourceCompletionActivation.INTERACTIVE;
+        SourceCompletionActivation ret = SourceCompletionActivation.USER_REQUESTED;
+
+        if (settings.get_boolean ("interactive-completion"))
+            ret |= SourceCompletionActivation.INTERACTIVE;
+
+        return ret;
     }
 
     public bool match (SourceCompletionContext context)
@@ -280,7 +289,13 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             return true;
         }
 
-        return cmd.length >= 3;
+        if (! settings.get_boolean ("interactive-completion"))
+            return false;
+
+        int min_nb_chars = settings.get_int ("interactive-completion-num");
+        min_nb_chars = min_nb_chars.clamp (0, 8);
+
+        return cmd.length > min_nb_chars;
     }
 
     public unowned Gtk.Widget? get_info_widget (SourceCompletionProposal proposal)

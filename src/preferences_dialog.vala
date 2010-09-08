@@ -66,6 +66,13 @@ public class PreferencesDialog : Dialog
             var font_hbox = (Widget) builder.get_object ("font_hbox");
             var schemes_treeview = (TreeView) builder.get_object ("schemes_treeview");
 
+
+            var interactive_comp_checkbutton =
+                builder.get_object ("interactive_comp_checkbutton");
+            Widget interactive_comp_spinbutton =
+                (Widget) builder.get_object ("interactive_comp_spinbutton");
+            Label interactive_comp_label =
+                (Label) builder.get_object ("interactive_comp_label");
             var document_view_program = builder.get_object ("document_view_program");
             var web_browser = builder.get_object ("web_browser");
             var nb_most_used_symbols = builder.get_object ("nb_most_used_symbols");
@@ -120,15 +127,20 @@ public class PreferencesDialog : Dialog
             settings.bind ("nb-most-used-symbols", nb_most_used_symbols, "value",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
-            GLib.Settings build_settings =
-                new GLib.Settings ("org.gnome.latexila.preferences.build");
-            build_settings.bind ("document-view-program", document_view_program, "text",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
-            build_settings.bind ("no-confirm-clean", confirm_clean_up_checkbutton,
+            GLib.Settings latex_settings =
+                new GLib.Settings ("org.gnome.latexila.preferences.latex");
+            latex_settings.bind ("interactive-completion", interactive_comp_checkbutton,
                 "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
-            build_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",
+            latex_settings.bind ("interactive-completion-num",
+                interactive_comp_spinbutton, "value",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
-            build_settings.bind ("clean-extensions", clean_up_entry, "text",
+            latex_settings.bind ("document-view-program", document_view_program, "text",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            latex_settings.bind ("no-confirm-clean", confirm_clean_up_checkbutton,
+                "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
+            latex_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            latex_settings.bind ("clean-extensions", clean_up_entry, "text",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
 
             GLib.Settings fb_settings =
@@ -178,6 +190,27 @@ public class PreferencesDialog : Dialog
                 autosave_label.label = val > 1 ? _("minutes") : _("minute");
             });
 
+            // interactive completion spinbutton sensitivity
+            bool interactive_comp_enabled =
+                latex_settings.get_boolean ("interactive-completion");
+            interactive_comp_spinbutton.set_sensitive (interactive_comp_enabled);
+            latex_settings.changed["interactive-completion"].connect ((setting, key) =>
+            {
+                bool val = setting.get_boolean (key);
+                interactive_comp_spinbutton.set_sensitive (val);
+            });
+
+            // interactive completion label
+            int min_nb_chars = latex_settings.get_int ("interactive-completion-num");
+            interactive_comp_label.label =
+                min_nb_chars > 1 ? _("characters") : _("character");
+            latex_settings.changed["interactive-completion-num"].connect (
+                (setting, key) =>
+            {
+                int val = setting.get_int (key);
+                interactive_comp_label.label = val > 1 ? _("characters") : _("character");
+            });
+
             // font hbox sensitivity
             var use_default_font = settings.get_boolean ("use-default-font");
             font_hbox.set_sensitive (! use_default_font);
@@ -197,9 +230,9 @@ public class PreferencesDialog : Dialog
             });
 
             // automatic clean-up sensitivity
-            bool no_confirm = build_settings.get_boolean ("no-confirm-clean");
+            bool no_confirm = latex_settings.get_boolean ("no-confirm-clean");
             auto_clean_up_checkbutton.set_sensitive (no_confirm);
-            build_settings.changed["no-confirm-clean"].connect ((setting, key) =>
+            latex_settings.changed["no-confirm-clean"].connect ((setting, key) =>
             {
                 bool val = setting.get_boolean (key);
                 auto_clean_up_checkbutton.set_sensitive (val);

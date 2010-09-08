@@ -168,7 +168,7 @@ public class BuildToolRunner : BuildToolProcess
         directory = file.get_parent ().get_parse_name ();
 
         GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.build");
+            new GLib.Settings ("org.gnome.latexila.preferences.latex");
         document_view_program = settings.get_string ("document-view-program");
 
         // verify if file extension is allowed for the build tool

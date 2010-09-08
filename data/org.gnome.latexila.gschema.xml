@@ -7,7 +7,7 @@
   <schema id="org.gnome.latexila.preferences" path="/apps/latexila/preferences/">
     <child name="editor" schema="org.gnome.latexila.preferences.editor" />
     <child name="ui" schema="org.gnome.latexila.preferences.ui" />
-    <child name="build" schema="org.gnome.latexila.preferences.build" />
+    <child name="latex" schema="org.gnome.latexila.preferences.latex" />
     <child name="file-browser" schema="org.gnome.latexila.preferences.file-browser" />
   </schema>
 
@@ -119,7 +119,17 @@
     -->
   </schema>
 
-  <schema id="org.gnome.latexila.preferences.build" path="/apps/latexila/preferences/build/">
+  <schema id="org.gnome.latexila.preferences.latex" path="/apps/latexila/preferences/latex/">
+    <key name="interactive-completion" type="b">
+      <default>true</default>
+      <summary>Interactive completion</summary>
+      <description>Automatically show commands proposals</description>
+    </key>
+    <key name="interactive-completion-num" type="i">
+      <default>2</default>
+      <summary>Interactive completion min chars</summary>
+      <description>Minimum number of characters after '\' for interactive completion</description>
+    </key>
     <key name="document-view-program" type="s">
       <default>'gnome-open'</default>
       <summary>Document view program</summary>

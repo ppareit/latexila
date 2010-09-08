@@ -423,7 +423,7 @@ public class Document : Gtk.SourceBuffer
         bool ret = false;
 
         GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.build");
+            new GLib.Settings ("org.gnome.latexila.preferences.latex");
         string exts = settings.get_string ("clean-extensions");
         string[] extensions = exts.split (" ");
 

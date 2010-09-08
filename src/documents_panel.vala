@@ -64,7 +64,7 @@ public class DocumentsPanel : Notebook
     {
         // automatic clean-up build files
         GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.build");
+            new GLib.Settings ("org.gnome.latexila.preferences.latex");
         if (settings.get_boolean ("no-confirm-clean")
             && settings.get_boolean ("automatic-clean"))
             tab.document.clean_build_files (main_window);

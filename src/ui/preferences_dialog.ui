@@ -379,13 +379,16 @@
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
-          <object class="GtkHBox" id="hbox3">
+          <object class="GtkHBox" id="hbox8">
             <property name="visible">True</property>
             <property name="spacing">5</property>
             <child>
-              <object class="GtkLabel" id="label7">
+              <object class="GtkCheckButton" id="interactive_comp_checkbutton">
+                <property name="label" translatable="yes">Interactive completion after</property>
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Program for viewing documents:</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">False</property>
+                <property name="draw_indicator">True</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -394,12 +397,28 @@
               </packing>
             </child>
             <child>
-              <object class="GtkEntry" id="document_view_program">
+              <object class="GtkSpinButton" id="interactive_comp_spinbutton">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
+                <property name="tooltip_text" translatable="yes">Number of characters after '\'</property>
+                <property name="invisible_char">&#x25CF;</property>
+                <property name="adjustment">adjustment4</property>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel" id="interactive_comp_label">
+                <property name="visible">True</property>
+                <property name="label">characters</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
               </packing>
             </child>
           </object>
@@ -439,6 +458,38 @@
                     <property name="orientation">vertical</property>
                     <property name="spacing">5</property>
                     <child>
+                      <object class="GtkHBox" id="hbox3">
+                        <property name="visible">True</property>
+                        <property name="spacing">5</property>
+                        <child>
+                          <object class="GtkLabel" id="label7">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">Program for viewing documents:</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="document_view_program">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">&#x25CF;</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
                       <object class="GtkScrolledWindow" id="scrolledwindow2">
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
@@ -454,7 +505,7 @@
                         </child>
                       </object>
                       <packing>
-                        <property name="position">0</property>
+                        <property name="position">1</property>
                       </packing>
                     </child>
                     <child>
@@ -525,7 +576,7 @@
                       <packing>
                         <property name="expand">False</property>
                         <property name="fill">False</property>
-                        <property name="position">1</property>
+                        <property name="position">2</property>
                       </packing>
                     </child>
                   </object>
@@ -839,6 +890,11 @@
     <property name="value">15</property>
     <property name="lower">1</property>
     <property name="upper">50</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkAdjustment" id="adjustment4">
+    <property name="value">2</property>
+    <property name="upper">8</property>
     <property name="step_increment">1</property>
   </object>
 </interface>
