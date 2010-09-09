@@ -8,13 +8,13 @@ For 2.0 (try to do as much as possible)
 	- complete placeholders (e.g. \ref, \cite, ...)
 	- close environment (\begin{env} => \end{env})
 
-- Search and replace:
-	- optimize incremental search
-
 - Forward and backward search with SyncTeX
 
 - Icons in LaTeX and Math menus
 	- is there a script to generate LaTeX icons automatically?
+
+(-) Search and replace:
+	- optimize incremental search
 
 (-) Build documents with rubber:
 	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)

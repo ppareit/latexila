@@ -32,10 +32,25 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         string label;
         bool optional;
+        CompletionChoice[] choices;
+    }
+
+    struct CompletionChoice
+    {
+        string name;
+        string? package;
+    }
+
+    struct CompletionCommandArgs
+    {
+        List<SourceCompletionItem>*[] args;
+        List<SourceCompletionItem>*[] optional_args;
     }
 
     private static CompletionProvider instance = null;
     private List<SourceCompletionItem> proposals;
+    private Gee.HashMap<string, CompletionCommandArgs?> args_proposals;
+
     private GLib.Settings settings;
 
     private CompletionCommand current_command;
@@ -46,6 +61,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private CompletionProvider ()
     {
         settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
+        args_proposals = new Gee.HashMap<string, CompletionCommandArgs?> ();
 
         try
         {
@@ -58,6 +74,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
             proposals.sort ((CompareFunc) compare_proposals);
+
+//            print_command_args (args_proposals["\\TextField"]);
+//            print_command_args (args_proposals["\\pagenumbering"]);
+//            print_command_args (args_proposals["\\addcontentsline"]);
         }
         catch (GLib.Error e)
         {
@@ -65,6 +85,26 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 e.message);
         }
     }
+
+    /*
+    private void print_command_args (CompletionCommandArgs cmd_args)
+    {
+        stdout.printf ("\n=== COMMAND ARGS ===\n");
+        foreach (unowned List<SourceCompletionItem> items in cmd_args.optional_args)
+        {
+            stdout.printf ("= optional arg =\n");
+            foreach (SourceCompletionItem item in items)
+                stdout.printf ("%s\n", item.label);
+        }
+
+        foreach (unowned List<SourceCompletionItem> items in cmd_args.args)
+        {
+            stdout.printf ("= normal arg =\n");
+            foreach (SourceCompletionItem item in items)
+                stdout.printf ("%s\n", item.label);
+        }
+    }
+    */
 
     public static CompletionProvider get_default ()
     {
@@ -123,6 +163,25 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 break;
 
             case "choice":
+                CompletionChoice choice = CompletionChoice ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "name":
+                            choice.name = attr_values[i];
+                            break;
+                        case "package":
+                            choice.package = attr_values[i];
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown choice attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                current_arg.choices += choice;
+                break;
+
             case "placeholder":
             case "component":
                 break;
@@ -143,12 +202,57 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                     null,
                     get_command_info (current_command));
                 proposals.append (item);
+                fill_args_proposals (current_command);
                 break;
 
             case "argument":
                 current_command.args += current_arg;
                 break;
         }
+    }
+
+    private void fill_args_proposals (CompletionCommand cmd)
+    {
+        if (cmd.args.length == 0)
+            return;
+
+        CompletionCommandArgs cmd_args = CompletionCommandArgs ();
+//        cmd_args.args = {};
+//        cmd_args.optional_args = {};
+
+        string info = get_command_info (cmd);
+
+        foreach (CompletionArgument arg in cmd.args)
+        {
+            List<SourceCompletionItem> *items = null;
+
+            foreach (CompletionChoice choice in arg.choices)
+            {
+                string info2 = null;
+                if (choice.package != null)
+                    info2 = info + "\nPackage: " + choice.package;
+
+                SourceCompletionItem item = new SourceCompletionItem (choice.name,
+                    choice.name, null, info2 ?? info);
+                items->prepend (item);
+            }
+
+            if (items == null)
+            {
+                SourceCompletionItem item = new SourceCompletionItem (arg.label, "",
+                    null, info);
+                items->prepend (item);
+            }
+            else
+                items->sort ((CompareFunc) compare_proposals);
+
+            if (arg.optional)
+                cmd_args.optional_args += items;
+            else
+                cmd_args.args += items;
+        }
+
+        args_proposals[cmd.name] = cmd_args;
     }
 
     private string get_command_text (CompletionCommand cmd)
