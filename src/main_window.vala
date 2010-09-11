@@ -1572,9 +1572,10 @@ public class MainWindow : Window
         Document doc = active_document;
         TextIter iter;
         doc.get_start_iter (out iter);
-        doc.insert (iter, "\n", -1);
-        doc.get_start_iter (out iter);
-        doc.insert (iter, "% mainfile: ", -1);
+        doc.begin_user_action ();
+        doc.insert (iter, "% mainfile: \n", -1);
+        doc.end_user_action ();
+        iter.backward_char ();
         doc.select_range (iter, iter);
 
         active_view.scroll_to_cursor ();

@@ -497,9 +497,7 @@ public class LatexMenu : ActionGroup
     private string get_indentation ()
     {
         DocumentView view = main_window.active_view;
-        if (view.insert_spaces_instead_of_tabs)
-            return string.nfill (view.tab_width, ' ');
-        return "\t";
+        return Utils.get_indentation_style (view);
     }
 
     private void insert_character_style (string style)

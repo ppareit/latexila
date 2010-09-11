@@ -58,12 +58,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private bool show_all_proposals = false;
 
-//    private bool    _in_param = false;
-//    private string  _in_param_cmd_name;
-//    private int     _param_num;
-//    private bool    _param_is_optional;
-//    private string  _param_contents;
-
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
@@ -271,11 +265,37 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
     {
-        string? cmd = get_latex_command_at_iter (iter);
         string text = proposal.get_text ();
-
         if (text == null || text == "")
             return true;
+
+        string? cmd = get_latex_command_at_iter (iter);
+
+        // if it's an argument choice
+        if (cmd == null && text[0] != '\\')
+        {
+            string cmd_name = null;
+            string param_contents = null;
+
+            bool in_param = in_latex_command_parameter (iter, out cmd_name, null, null,
+                out param_contents);
+
+            if (in_param)
+            {
+                activate_proposal_argument_choice (proposal, iter, cmd_name,
+                    param_contents);
+                return true;
+            }
+        }
+
+        activate_proposal_command_name (proposal, iter, cmd);
+        return true;
+    }
+
+    private void activate_proposal_command_name (SourceCompletionProposal proposal,
+        TextIter iter, string? cmd)
+    {
+        string text = proposal.get_text ();
 
         long index_start = cmd != null ? cmd.length : 0;
         string text_to_insert = text[index_start : text.length];
@@ -285,7 +305,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         doc.insert (iter, text_to_insert, -1);
         doc.end_user_action ();
 
-        // how to place the cursor?
+        // where to place the cursor?
         int i;
         for (i = 0 ; i < text_to_insert.length ; i++)
         {
@@ -298,8 +318,81 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             if (iter.backward_chars ((int) text_to_insert.length - i - 1))
                 doc.place_cursor (iter);
         }
+    }
 
-        return true;
+    private void activate_proposal_argument_choice (SourceCompletionProposal proposal,
+        TextIter iter, string cmd_name, string? param_contents)
+    {
+        string text = proposal.get_text ();
+
+        long index_start = param_contents != null ? param_contents.length : 0;
+        string text_to_insert = text[index_start : text.length];
+
+        TextBuffer doc = iter.get_buffer ();
+        doc.begin_user_action ();
+        doc.insert (iter, text_to_insert, -1);
+
+        // close environment: \begin{env} => \end{env}
+        if (cmd_name == "\\begin")
+            close_environment (text, iter);
+
+        // TODO place cursor
+        else
+        {
+        }
+
+        doc.end_user_action ();
+    }
+
+    private void close_environment (string env_name, TextIter iter)
+    {
+        // two cases are supported here:
+        // - \begin{env[iter]} : the iter is between the end of env_name and '}'
+        //                       (spaces can be present between iter and '}')
+        // - \begin{env[iter]  : the iter is at the end of env_name, but the '}' has not
+        //                       been inserted (the user has written "\begin{" without
+        //                       auto-completion)
+
+        /* check if '}' is present */
+
+        // get text between iter and end of line
+        int line = iter.get_line ();
+        TextBuffer doc = iter.get_buffer ();
+        TextIter end_iter;
+        doc.get_iter_at_line (out end_iter, line + 1);
+        string text = doc.get_text (iter, end_iter, false);
+
+        bool found = false;
+        long i;
+        for (i = 0 ; i < text.length ; i++)
+        {
+            if (text[i] == '}')
+            {
+                found = true;
+                break;
+            }
+            if (text[i].isspace ())
+                continue;
+            break;
+        }
+
+        if (! found)
+            doc.insert (iter, "}", -1);
+        else
+            iter.forward_chars ((int) i + 1);
+
+        /* close environment */
+
+        Document document = (Document) doc;
+        var view = document.tab.view;
+        string indent = Utils.get_indentation_style (view);
+
+        doc.insert (iter, @"\n$indent", -1);
+        TextMark cursor_pos = doc.create_mark (null, iter, true);
+        doc.insert (iter, "\n\\end{" + env_name + "}", -1);
+
+        doc.get_iter_at_mark (out iter, cursor_pos);
+        doc.place_cursor (iter);
     }
 
     private void parser_start (MarkupParseContext context, string name,

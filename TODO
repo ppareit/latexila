@@ -5,12 +5,16 @@ For 2.0 (try to do as much as possible)
 
 - Auto-completion:
 	- complete placeholders (e.g. \ref, \cite, ...)
-	- close environment (\begin{env} => \end{env})
 
-- Forward and backward search with SyncTeX
+- Manage projects
+	- the user only gives the project root directory
+	- the *.tex main file is determined (see Kile sources)
+	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 
 - Icons in LaTeX and Math menus
 	- is there a script to generate LaTeX icons automatically?
+
+- Forward and backward search with SyncTeX
 
 (-) Search and replace:
 	- optimize incremental search

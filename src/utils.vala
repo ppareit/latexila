@@ -242,4 +242,11 @@ namespace Utils
         var pixbuf = w.render_icon (stock_id, size, "vala");
         return pixbuf;
     }
+
+    public string get_indentation_style (SourceView view)
+    {
+        if (view.insert_spaces_instead_of_tabs)
+            return string.nfill (view.tab_width, ' ');
+        return "\t";
+    }
 }
