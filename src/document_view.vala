@@ -60,7 +60,7 @@ public class DocumentView : Gtk.SourceView
         try
         {
             completion.add_provider (CompletionProvider.get_default ());
-            completion.show_icons = false;
+            //completion.show_icons = false;
             completion.remember_info_visibility = true;
 
             // Gtk-CRITICAL with that, see bug #629055

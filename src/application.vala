@@ -74,7 +74,9 @@ public class Application : GLib.Object
 	    { Config.DATA_DIR + "/images/icons/accent6.png", "accent6" },
 	    { Config.DATA_DIR + "/images/icons/accent7.png", "accent7" },
 	    { Config.DATA_DIR + "/images/icons/accent8.png", "accent8" },
-	    { Config.DATA_DIR + "/images/icons/accent9.png", "accent9" }
+	    { Config.DATA_DIR + "/images/icons/accent9.png", "accent9" },
+	    { Config.DATA_DIR + "/images/icons/completion_choice.png", "completion_choice" },
+	    { Config.DATA_DIR + "/images/icons/completion_cmd.png", "completion_cmd" }
     };
 
     public static int NEW_WINDOW = 1;

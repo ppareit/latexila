@@ -4,12 +4,22 @@ For 2.0 (try to do as much as possible)
 =======
 
 - Auto-completion:
+	- show tooltips for parameters without choice
+	- show details by default
 	- complete placeholders (e.g. \ref, \cite, ...)
 
-- Manage projects
+- Manage projects:
 	- the user only gives the project root directory
 	- the *.tex main file is determined (see Kile sources)
 	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
+
+- Build Tools:
+	- warn the user if a command doesn't exist (e.g. if rubber is not installed)
+
+- Preferences:
+	- confirmation dialog when deleting a build tool
+	- build tools: reset button
+	- reset all preferences button
 
 - Icons in LaTeX and Math menus
 	- is there a script to generate LaTeX icons automatically?

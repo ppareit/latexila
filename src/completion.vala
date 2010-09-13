@@ -58,11 +58,22 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private bool show_all_proposals = false;
 
+    private Gdk.Pixbuf icon_normal_cmd;
+    private Gdk.Pixbuf icon_normal_choice;
+    private Gdk.Pixbuf icon_package_required;
+
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
         settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
         args_proposals = new Gee.HashMap<string, CompletionCommandArgs?> ();
+
+        // icons
+        icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
+        icon_normal_choice = Utils.get_pixbuf_from_stock ("completion_choice",
+            IconSize.MENU);
+        icon_package_required = Utils.get_pixbuf_from_stock (STOCK_DIALOG_WARNING,
+            IconSize.MENU);
 
         try
         {
@@ -242,7 +253,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         // no match, show a message so the completion widget doesn't disappear
-        if (filtered_proposals == null)
+        if (filtered_proposals == null && ! in_param)
         {
             var dummy_proposal = new SourceCompletionItem (_("No matching proposal"),
                 "", null, null);
@@ -479,9 +490,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         switch (name)
         {
             case "command":
+                Gdk.Pixbuf pixbuf = current_command.package != null
+                    ? icon_package_required : icon_normal_cmd;
                 var item = new SourceCompletionItem (current_command.name,
                     get_command_text (current_command),
-                    null,
+                    pixbuf,
                     get_command_info (current_command));
                 proposals.append (item);
                 fill_args_proposals (current_command);
@@ -509,11 +522,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             foreach (CompletionChoice choice in arg.choices)
             {
                 string info2 = null;
+                Gdk.Pixbuf pixbuf;
                 if (choice.package != null)
+                {
                     info2 = info + "\nPackage: " + choice.package;
+                    pixbuf = icon_package_required;
+                }
+                else
+                    pixbuf = icon_normal_choice;
 
-                SourceCompletionItem item = new SourceCompletionItem (choice.name,
-                    choice.name, null, info2 ?? info);
+                SourceCompletionItem item = new SourceCompletionItem (
+                    choice.name, choice.name, pixbuf, info2 ?? info);
                 items->prepend (item);
             }
 
