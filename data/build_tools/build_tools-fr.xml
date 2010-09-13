@@ -1,14 +1,14 @@
 <tools>
   <tool description="Créer un fichier DVI à partir des sources LaTeX" extensions=".tex" label="LaTeX → DVI" icon="compile_dvi">
-    <job mustSucceed="true" postProcessor="rubber">rubber --inplace --maxerr -1 --short --force --warn all $filename</job>
+    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all $filename</job>
     <job mustSucceed="true" postProcessor="generic">$view $shortname.dvi</job>
   </tool>
   <tool description="Créer un fichier PDF à partir des sources LaTeX" extensions=".tex" label="LaTeX → PDF" icon="compile_pdf">
-    <job mustSucceed="true" postProcessor="rubber">rubber --inplace --maxerr -1 --short --force --warn all --pdf $filename</job>
+    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --pdf $filename</job>
     <job mustSucceed="true" postProcessor="generic">$view $shortname.pdf</job>
   </tool>
   <tool description="Créer un fichier PostScript à partir des sources LaTeX" extensions=".tex" label="LaTeX → PS" icon="compile_ps">
-    <job mustSucceed="true" postProcessor="rubber">rubber --inplace --maxerr -1 --short --force --warn all --ps $filename</job>
+    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --ps $filename</job>
     <job mustSucceed="true" postProcessor="generic">$view $shortname.ps</job>
   </tool>
   <tool description="Voir le fichier DVI" extensions=".tex .dvi" label="Voir DVI" icon="view_dvi">

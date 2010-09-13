@@ -28,7 +28,7 @@ public abstract class BuildToolProcess : GLib.Object
     private IOChannel err_channel;
     private bool read_output = true;
 
-    protected void execute (string[] command, string? working_directory)
+    protected void execute (string[] command, string? working_directory) throws Error
     {
         try
         {
@@ -50,11 +50,12 @@ public abstract class BuildToolProcess : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: %s\n", e.message);
+            throw e;
         }
     }
 
     protected void execute_without_output (string[] command, string? working_directory)
+        throws Error
     {
         read_output = false;
 
@@ -69,7 +70,7 @@ public abstract class BuildToolProcess : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: %s\n", e.message);
+            throw e;
         }
     }
 
@@ -234,10 +235,27 @@ public class BuildToolRunner : BuildToolProcess
         current_job = jobs.nth_data (job_num);
         string[] command = get_command (current_job, false);
 
-        if (current_job.post_processor == "generic")
-            execute_without_output (command, directory);
-        else
-            execute (command, directory);
+        try
+        {
+            if (current_job.post_processor == "generic")
+                execute_without_output (command, directory);
+            else
+                execute (command, directory);
+        }
+        catch (Error e)
+        {
+            view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
+            view.add_partition (e.message, PartitionState.FAILED,
+                job_partitions[job_num]);
+
+            if (current_job.must_succeed)
+                failed ();
+            else
+            {
+                job_num++;
+                proceed ();
+            }
+        }
     }
 
     private string[] get_command (BuildJob build_job, bool basename)
@@ -326,19 +344,22 @@ public class BuildToolRunner : BuildToolProcess
         {
             view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
             if (current_job.must_succeed)
-            {
-                view.set_partition_state (root_partition, PartitionState.FAILED);
-                for (int i = job_num + 1 ; i < job_partitions.length ; i++)
-                    view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
-
-                view.set_can_abort (false, null);
-            }
+                failed ();
             else
             {
                 job_num++;
                 proceed ();
             }
         }
+    }
+
+    private void failed ()
+    {
+        view.set_partition_state (root_partition, PartitionState.FAILED);
+        for (int i = job_num + 1 ; i < job_partitions.length ; i++)
+            view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
+
+        view.set_can_abort (false, null);
     }
 }
 
