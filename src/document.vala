@@ -141,12 +141,12 @@ public class Document : Gtk.SourceBuffer
         place_cursor (iter);
     }
 
-    public void save (bool check_file_changed_on_disk = true)
+    public void save (bool check_file_changed_on_disk = true, bool force = false)
     {
         return_if_fail (location != null);
 
         // if not modified, don't save
-        if (! new_file && ! get_modified ())
+        if (! force && ! new_file && ! get_modified ())
             return;
 
         // we use get_text () to exclude undisplayed text

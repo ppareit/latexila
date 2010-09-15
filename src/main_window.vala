@@ -930,7 +930,8 @@ public class MainWindow : Window
 
         if (doc.location != null)
         {
-            doc.save (false);
+            // force saving
+            doc.save (false, true);
             return true;
         }
         return false;
