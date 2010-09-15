@@ -472,6 +472,15 @@ public class AppSettings : GLib.Settings
         }
     }
 
+    public void reset_all_build_tools ()
+    {
+        File file = get_user_config_build_tools_file ();
+        if (file.query_exists ())
+            Utils.delete_file (file);
+        load_build_tools ();
+        update_all_build_tools_menu ();
+    }
+
     private bool is_build_tools_equal (BuildTool tool1, BuildTool tool2)
     {
         if (tool1.label != tool2.label

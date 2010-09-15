@@ -83,6 +83,7 @@ public class PreferencesDialog : Dialog
             Button bt_up = (Button) builder.get_object ("build_tool_up");
             Button bt_down = (Button) builder.get_object ("build_tool_down");
             Button bt_properties = (Button) builder.get_object ("build_tool_properties");
+            Button bt_reset = (Button) builder.get_object ("build_tool_reset");
 
             var confirm_clean_up_checkbutton =
                 builder.get_object ("confirm_clean_up_checkbutton");
@@ -251,7 +252,8 @@ public class PreferencesDialog : Dialog
 
             // build tools
             init_build_tools_treeview ();
-            init_build_tools_buttons (bt_new, bt_delete, bt_up, bt_down, bt_properties);
+            init_build_tools_buttons (bt_new, bt_delete, bt_up, bt_down, bt_properties,
+                bt_reset);
 
             // pack notebook
             var content_area = (Box) get_content_area ();
@@ -396,7 +398,8 @@ public class PreferencesDialog : Dialog
                                            Button bt_delete,
                                            Button bt_up,
                                            Button bt_down,
-                                           Button bt_properties)
+                                           Button bt_properties,
+                                           Button bt_reset)
     {
 
         bt_new.clicked.connect (() =>
@@ -466,6 +469,29 @@ public class PreferencesDialog : Dialog
                     AppSettings.get_default ().move_build_tool_down (i);
                 }
             }
+        });
+
+        bt_reset.clicked.connect (() =>
+        {
+            Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
+                MessageType.QUESTION, ButtonsType.NONE,
+                _("Do you really want to reset all build tools?"));
+
+            dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+
+            Button button = new Button.with_label (_("Reset All"));
+            Image image = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
+            button.set_image (image);
+            button.show_all ();
+            dialog.add_action_widget (button, ResponseType.YES);
+
+            if (dialog.run () == ResponseType.YES)
+            {
+                AppSettings.get_default ().reset_all_build_tools ();
+                update_build_tools_store ();
+            }
+
+            dialog.destroy ();
         });
     }
 
