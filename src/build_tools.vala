@@ -30,6 +30,12 @@ public abstract class BuildToolProcess : GLib.Object
 
     protected void execute (string[] command, string? working_directory) throws Error
     {
+        stdout.printf ("\nexecute ()\n");
+        stdout.printf ("working dir: %s\n", working_directory);
+        stdout.printf ("COMMAND:\n");
+        foreach (string cmd in command)
+            stdout.printf ("%s\n", cmd);
+
         try
         {
             int std_out, std_err;

@@ -14,7 +14,6 @@ For 2.0 (try to do as much as possible)
 	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 
 - Preferences:
-	- confirmation dialog when deleting a build tool
 	- build tools: reset button
 	- reset all preferences button
 
@@ -28,6 +27,7 @@ For 2.0 (try to do as much as possible)
 
 (-) Build documents with rubber:
 	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
+	- rubber doesn't support filenames with spaces: fix that
 
 (-) Edit toolbar:
 	- create a custom MenuToolButton:

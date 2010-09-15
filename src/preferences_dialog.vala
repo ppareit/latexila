@@ -416,8 +416,25 @@ public class PreferencesDialog : Dialog
             int i = Utils.get_selected_row (build_tools_view, true, out iter);
             if (i != -1)
             {
-                build_tools_store.remove (iter);
-                AppSettings.get_default ().delete_build_tool (i);
+                string label;
+                TreeModel model = (TreeModel) build_tools_store;
+                model.get (iter, BuildToolColumn.LABEL, out label, -1);
+
+                Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
+                    MessageType.QUESTION, ButtonsType.NONE,
+                    _("Do you really want to delete the build tool \"%s\"?"),
+                    label);
+
+                dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
+                    STOCK_DELETE, ResponseType.YES);
+
+                if (dialog.run () == ResponseType.YES)
+                {
+                    build_tools_store.remove (iter);
+                    AppSettings.get_default ().delete_build_tool (i);
+                }
+
+                dialog.destroy ();
             }
         });
 
