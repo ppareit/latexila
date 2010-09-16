@@ -28,13 +28,51 @@ public class PreferencesDialog : Dialog
 
     private PreferencesDialog ()
     {
+        Button reset_button = new Button.with_label (_("Reset All"));
+        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.MENU);
+        reset_button.set_image (image);
+        reset_button.show_all ();
+        add_action_widget (reset_button, ResponseType.APPLY);
+
         add_button (STOCK_CLOSE, ResponseType.CLOSE);
         title = _("Preferences");
         has_separator = false;
         destroy_with_parent = true;
         border_width = 5;
 
-        response.connect (() => hide ());
+        response.connect ((response_id) =>
+        {
+            if (response_id == ResponseType.CLOSE)
+            {
+                hide ();
+                return;
+            }
+
+            /* reset all */
+            Dialog dialog = get_reset_all_confirm_dialog (
+                _("Do you really want to reset all preferences?"));
+            int resp = dialog.run ();
+            dialog.destroy ();
+            if (resp != ResponseType.YES)
+                return;
+
+            string[] settings_str =
+            {
+                "org.gnome.latexila.preferences.editor",
+                "org.gnome.latexila.preferences.latex",
+                "org.gnome.latexila.preferences.file-browser"
+            };
+
+            foreach (string setting_str in settings_str)
+            {
+                GLib.Settings settings = new GLib.Settings (setting_str);
+                string[] keys = settings.list_keys ();
+                foreach (string key in keys)
+                    settings.reset (key);
+            }
+
+            // build tools are NOT reset, since there is another button for that
+        });
 
         var path = Path.build_filename (Config.DATA_DIR, "ui", "preferences_dialog.ui");
 
@@ -169,6 +207,29 @@ public class PreferencesDialog : Dialog
                 model.get (iter, StyleSchemes.ID, out id, -1);
 
                 settings.set_string ("scheme", id);
+            });
+
+            // select style scheme on change
+            settings.changed["scheme"].connect ((setting, key) =>
+            {
+                string val = setting.get_string (key);
+
+                TreeModel model = schemes_treeview.model;
+                TreeIter iter;
+                bool valid = model.get_iter_first (out iter);
+
+                while (valid)
+                {
+                    string scheme;
+                    model.get (iter, StyleSchemes.ID, out scheme, -1);
+                    if (scheme == val)
+                    {
+                        TreeSelection select = schemes_treeview.get_selection ();
+                        select.select_iter (iter);
+                        return;
+                    }
+                    valid = model.iter_next (ref iter);
+                }
             });
 
             // autosave spinbutton sensitivity
@@ -310,7 +371,7 @@ public class PreferencesDialog : Dialog
 
     private void init_schemes_treeview (TreeView treeview, string current_id)
     {
-        var list_store = new ListStore (StyleSchemes.N_COLUMNS, typeof (string),
+        ListStore list_store = new ListStore (StyleSchemes.N_COLUMNS, typeof (string),
             typeof (string));
         list_store.set_sort_column_id (StyleSchemes.ID, SortType.ASCENDING);
         treeview.set_model (list_store);
@@ -473,17 +534,8 @@ public class PreferencesDialog : Dialog
 
         bt_reset.clicked.connect (() =>
         {
-            Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
-                MessageType.QUESTION, ButtonsType.NONE,
+            Dialog dialog = get_reset_all_confirm_dialog (
                 _("Do you really want to reset all build tools?"));
-
-            dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
-
-            Button button = new Button.with_label (_("Reset All"));
-            Image image = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
-            button.set_image (image);
-            button.show_all ();
-            dialog.add_action_widget (button, ResponseType.YES);
 
             if (dialog.run () == ResponseType.YES)
             {
@@ -493,6 +545,22 @@ public class PreferencesDialog : Dialog
 
             dialog.destroy ();
         });
+    }
+
+    private Dialog get_reset_all_confirm_dialog (string msg)
+    {
+        Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
+            MessageType.QUESTION, ButtonsType.NONE, msg);
+
+        dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+
+        Button button = new Button.with_label (_("Reset All"));
+        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
+        button.set_image (image);
+        button.show_all ();
+        dialog.add_action_widget (button, ResponseType.YES);
+
+        return dialog;
     }
 
     private void run_build_tool_dialog (int num)
