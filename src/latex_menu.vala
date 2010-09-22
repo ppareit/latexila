@@ -127,7 +127,7 @@ public class LatexMenu : ActionGroup
 		    N_("Italic - \\textit"), on_text_italic },
 	    { "Typewriter", "typewriter", "\\text_tt", null,
 		    N_("Typewriter - \\texttt"), on_text_typewriter },
-		{ "Slanted", null, "\\text_sl", null,
+		{ "Slanted", "slanted", "\\text_sl", null,
 		    N_("Slanted - \\textsl"), on_text_slanted },
 	    { "SmallCaps", null, "\\texts_c", null,
 		    N_("Small Capitals - \\textsc"), on_text_small_caps },

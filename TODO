@@ -13,11 +13,8 @@ For 2.0 (try to do as much as possible)
 	- the *.tex main file is determined (see Kile sources)
 	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 
-- Preferences:
-	- reset all preferences button
-
 - Icons in LaTeX and Math menus
-	- is there a script to generate LaTeX icons automatically?
+	- generate icons with the script
 
 - Forward and backward search with SyncTeX
 

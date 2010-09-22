@@ -1,0 +1,22 @@
+<symbols>
+  <documentclass args="12pt" />
+
+  <!--
+  <preamble additional="\usepackage{...}" />
+  -->
+
+  <!--
+  <convert extent="24x24" />
+  -->
+  <convert extent="120%" />
+
+  <symbol command="\varTheta" math="true" package="amsmath" />
+  <symbol command="\Theta" math="true" />
+
+  <!--
+  name, math and package are optional
+  the name, if given, will be the filename (+ .png)
+  if the name is not given, the first symbol will be 1.png, the second 2.png, etc
+  <symbol command="..." name="filename" math="true" package="..." />
+  -->
+</symbols>
