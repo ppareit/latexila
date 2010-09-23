@@ -2,7 +2,7 @@
 
 # 1st parameter: directory where the symbols are stored
 # 2nd parameter: name of the symbol (without the extension)
-# 3rd parameter: e.g. "24x24", or "120%" to add a border, ...
+# 3rd parameter: e.g. "24x24", or "120%" to add more space, ...
 
 cd $1
 latex symbol.tex

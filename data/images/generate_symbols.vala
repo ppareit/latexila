@@ -33,6 +33,7 @@ private class GenerateSymbols : Object
     private string documentclass_args = null;
     private string preamble_additional = null;
     private string convert_extent = null;
+    private string document_size = null;
     private Symbol[] symbols = {};
 
     private string directory;
@@ -151,6 +152,21 @@ private class GenerateSymbols : Object
                 symbols += symbol;
                 break;
 
+            case "document":
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "size":
+                            document_size = attr_values[i];
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                break;
+
             default:
                 throw new MarkupError.UNKNOWN_ELEMENT (
                     "unknown element \"" + name + "\"");
@@ -185,10 +201,16 @@ private class GenerateSymbols : Object
 
         doc += "\\begin{document}\n";
 
+        if (document_size != null)
+            doc += "\\begin{" + document_size + "}\n";
+
         if (symbol.math)
             doc += "\\ensuremath{%s}\n".printf (symbol.command);
         else
             doc += symbol.command + "\n";
+
+        if (document_size != null)
+            doc += "\\end{" + document_size + "}\n";
 
         doc += "\\end{document}\n";
 

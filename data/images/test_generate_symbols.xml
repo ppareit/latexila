@@ -10,6 +10,11 @@
   -->
   <convert extent="120%" />
 
+  <!--
+  add \begin{$size} ... \end{$size}
+  <document size="scriptsize" />
+  -->
+
   <symbol command="\varTheta" math="true" package="amsmath" />
   <symbol command="\Theta" math="true" />
 
