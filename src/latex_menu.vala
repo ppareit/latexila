@@ -129,9 +129,9 @@ public class LatexMenu : ActionGroup
 		    N_("Typewriter - \\texttt"), on_text_typewriter },
 		{ "Slanted", "slanted", "\\text_sl", null,
 		    N_("Slanted - \\textsl"), on_text_slanted },
-	    { "SmallCaps", null, "\\texts_c", null,
+	    { "SmallCaps", "small_caps", "\\texts_c", null,
 		    N_("Small Capitals - \\textsc"), on_text_small_caps },
-		{ "SansSerif", null, "\\texts_f", null,
+		{ "SansSerif", "sans_serif", "\\texts_f", null,
 		    N_("Sans Serif - \\textsf"), on_text_sans_serif },
 		{ "Emph", null, "\\_emph", null,
 		    N_("Emphasized - \\emph"), on_text_emph },
@@ -139,27 +139,27 @@ public class LatexMenu : ActionGroup
 		    N_("Underline - \\underline"), on_text_underline },
 
 	    { "FontFamily", null, N_("_Font Family") },
-	    { "FontFamilyRoman", null, "\\_rmfamily", null,
+	    { "FontFamilyRoman", "roman", "\\_rmfamily", null,
 		    N_("Roman - \\rmfamily"), on_text_font_family_roman },
-	    { "FontFamilySansSerif", null, "\\_sffamily", null,
+	    { "FontFamilySansSerif", "sans_serif", "\\_sffamily", null,
 		    N_("Sans Serif - \\sffamily"), on_text_font_family_sans_serif },
-	    { "FontFamilyMonospace", null, "\\_ttfamily", null,
+	    { "FontFamilyMonospace", "typewriter", "\\_ttfamily", null,
 		    N_("Monospace - \\ttfamily"), on_text_font_family_monospace },
 
 	    { "FontSeries", null, N_("F_ont Series") },
-	    { "FontSeriesMedium", null, "\\_mdseries", null,
+	    { "FontSeriesMedium", "roman", "\\_mdseries", null,
 		    N_("Medium - \\mdseries"), on_text_font_series_medium },
-	    { "FontSeriesBold", null, "\\_bfseries", null,
+	    { "FontSeriesBold", "bold", "\\_bfseries", null,
 		    N_("Bold - \\bfseries"), on_text_font_series_bold },
 
 	    { "FontShape", null, N_("Fo_nt Shape") },
-	    { "FontShapeUpright", null, "\\_upshape", null,
+	    { "FontShapeUpright", "roman", "\\_upshape", null,
 		    N_("Upright - \\upshape"), on_text_font_shape_upright },
-	    { "FontShapeItalic", null, "\\_itshape", null,
+	    { "FontShapeItalic", "italic", "\\_itshape", null,
 		    N_("Italic - \\itshape"), on_text_font_shape_italic },
-	    { "FontShapeSlanted", null, "\\_slshape", null,
+	    { "FontShapeSlanted", "slanted", "\\_slshape", null,
 		    N_("Slanted - \\slshape"), on_text_font_shape_slanted },
-	    { "FontShapeSmallCaps", null, "\\s_cshape", null,
+	    { "FontShapeSmallCaps", "small_caps", "\\s_cshape", null,
 		    N_("Small Capitals - \\scshape"), on_text_font_shape_small_caps },
 
 		// Tabular
@@ -214,6 +214,13 @@ public class LatexMenu : ActionGroup
 		{ "Accent8", "accent8", "\\u", null, N_("Breve - \\u"), on_accent8 },
 		{ "Accent9", "accent9", "\\H", null,
 		    N_("Double acute accent - \\H"), on_accent9 },
+		// TODO complete desc (accents names)
+		{ "Accent10", "accent10", "\\c", null, null, on_accent10 },
+		{ "Accent11", "accent11", "\\k", null, null, on_accent11 },
+		{ "Accent12", "accent12", "\\d", null, null, on_accent12 },
+		{ "Accent13", "accent13", "\\b", null, null, on_accent13 },
+		{ "Accent14", "accent14", "\\r", null, null, on_accent14 },
+		{ "Accent15", "accent15", "\\t", null, null, on_accent15 },
 
 		// Others
 
@@ -306,39 +313,45 @@ public class LatexMenu : ActionGroup
         // Math Font Styles
 
         { "MathFontStyles", null, N_("Math Font _Styles") },
-        { "MathFSrm", null, "\\math_rm", null,
+        { "MathFSrm", "roman", "\\math_rm", null,
             N_("Roman - \\mathrm"), on_math_font_style_rm },
         { "MathFSit", "italic", "\\math_it", null,
             N_("Italic - \\mathit"), on_math_font_style_it },
         { "MathFSbf", "bold", "\\math_bf", null,
             N_("Bold - \\mathbf"), on_math_font_style_bf },
-        { "MathFSsf", null, "\\math_sf", null,
+        { "MathFSsf", "sans_serif", "\\math_sf", null,
             N_("Sans Serif - \\mathsf"), on_math_font_style_sf },
         { "MathFStt", "typewriter", "\\math_tt", null,
             N_("Typewriter - \\mathtt"), on_math_font_style_tt },
-        { "MathFScal", null, "\\math_cal", null,
+        { "MathFScal", "mathcal", "\\math_cal", null,
             N_("Calligraphic - \\mathcal"), on_math_font_style_cal },
         { "MathFSbb", "blackboard", "\\_mathbb", null,
             N_("Blackboard (uppercase only)  - \\mathbb (amsfonts package)"),
             on_math_font_style_bb },
-        { "MathFSfrak", null, "\\math_frak", null,
+        { "MathFSfrak", "mathfrak", "\\math_frak", null,
             N_("Euler Fraktur - \\mathfrak (amsfonts package)"),
             on_math_font_style_frak },
 
         // Math Accents
 
         { "MathAccents", null, N_("Math _Accents") },
-        { "MathAccentAcute", null, "\\_acute", null, null, on_math_accent_acute },
-        { "MathAccentGrave", null, "\\_grave", null, null, on_math_accent_grave },
-        { "MathAccentTilde", null, "\\_tilde", null, null, on_math_accent_tilde },
-        { "MathAccentBar", null, "\\_bar", null, null, on_math_accent_bar },
-        { "MathAccentVec", null, "\\_vec", null, null, on_math_accent_vec },
-        { "MathAccentHat", null, "\\_hat", null, null, on_math_accent_hat },
-        { "MathAccentCheck", null, "\\_check", null, null, on_math_accent_check },
-        { "MathAccentBreve", null, "\\b_reve", null, null, on_math_accent_breve },
-        { "MathAccentDot", null, "\\_dot", null, null, on_math_accent_dot },
-        { "MathAccentDdot", null, "\\dd_ot", null, null, on_math_accent_ddot },
-        { "MathAccentRing", null, "\\_mathring", null, null, on_math_accent_ring },
+        { "MathAccentAcute", "mathaccent0", "\\_acute", null,
+            null, on_math_accent_acute },
+        { "MathAccentGrave", "mathaccent1", "\\_grave", null,
+        null, on_math_accent_grave },
+        { "MathAccentTilde", "mathaccent2", "\\_tilde", null,
+            null, on_math_accent_tilde },
+        { "MathAccentBar", "mathaccent3", "\\_bar", null, null, on_math_accent_bar },
+        { "MathAccentVec", "mathaccent4", "\\_vec", null, null, on_math_accent_vec },
+        { "MathAccentHat", "mathaccent5", "\\_hat", null, null, on_math_accent_hat },
+        { "MathAccentCheck", "mathaccent6", "\\_check", null,
+            null, on_math_accent_check },
+        { "MathAccentBreve", "mathaccent7", "\\b_reve", null,
+            null, on_math_accent_breve },
+        { "MathAccentDot", "mathaccent8", "\\_dot", null, null, on_math_accent_dot },
+        { "MathAccentDdot", "mathaccent9", "\\dd_ot", null, null, on_math_accent_ddot },
+        { "MathAccentRing", "mathaccent10", "\\_mathring", null,
+            null, on_math_accent_ring },
 
         // Math Spaces
 
@@ -938,6 +951,36 @@ public class LatexMenu : ActionGroup
     {
         text_buffer_insert ("\\H{", "}");
     }
+
+	public void on_accent10 ()
+	{
+	    text_buffer_insert ("\\c{", "}");
+	}
+
+	public void on_accent11 ()
+	{
+	    text_buffer_insert ("\\k{", "}");
+	}
+
+	public void on_accent12 ()
+	{
+	    text_buffer_insert ("\\d{", "}");
+	}
+
+	public void on_accent13 ()
+	{
+	    text_buffer_insert ("\\b{", "}");
+	}
+
+	public void on_accent14 ()
+	{
+	    text_buffer_insert ("\\r{", "}");
+	}
+
+	public void on_accent15 ()
+	{
+	    text_buffer_insert ("\\t{", "}");
+	}
 
     /* Others */
 

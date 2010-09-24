@@ -13,9 +13,6 @@ For 2.0 (try to do as much as possible)
 	- the *.tex main file is determined (see Kile sources)
 	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 
-- Icons in LaTeX and Math menus
-	- generate icons with the script
-
 - Forward and backward search with SyncTeX
 
 (-) Search and replace:
@@ -23,7 +20,7 @@ For 2.0 (try to do as much as possible)
 
 (-) Build documents with rubber:
 	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
-	- rubber doesn't support filenames with spaces: fix that
+	- rubber doesn't support filenames with spaces: fix that (or maybe I have a too old version of texlive?)
 
 (-) Edit toolbar:
 	- create a custom MenuToolButton:

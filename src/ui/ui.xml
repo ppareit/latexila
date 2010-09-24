@@ -208,6 +208,12 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
         <menuitem action="Accent7" />
         <menuitem action="Accent8" />
         <menuitem action="Accent9" />
+        <menuitem action="Accent10" />
+        <menuitem action="Accent11" />
+        <menuitem action="Accent12" />
+        <menuitem action="Accent13" />
+        <menuitem action="Accent14" />
+        <menuitem action="Accent15" />
       </menu>
 
       <menu action="LatexMisc">
