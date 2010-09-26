@@ -4,7 +4,6 @@ For 2.0 (try to do as much as possible)
 =======
 
 - Auto-completion:
-	- show tooltips for parameters without choice
 	- show details by default
 	- complete placeholders (e.g. \ref, \cite, ...)
 

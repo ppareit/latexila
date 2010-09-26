@@ -59,12 +59,18 @@ public class DocumentView : Gtk.SourceView
         // completion
         try
         {
-            completion.add_provider (CompletionProvider.get_default ());
+            CompletionProvider provider = CompletionProvider.get_default ();
+            completion.add_provider (provider);
             //completion.show_icons = false;
             completion.remember_info_visibility = true;
 
             // Gtk-CRITICAL with that, see bug #629055
             //completion.show_headers = false;
+
+            buffer.notify["cursor-position"].connect (() =>
+            {
+                provider.hide_calltip_window (true);
+            });
         }
         catch (GLib.Error e)
         {

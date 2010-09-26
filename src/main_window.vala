@@ -356,6 +356,23 @@ public class MainWindow : Window
             update_documents_list_menu ();
         });
 
+        // hide completion calltip
+        notify["active-tab"].connect (() =>
+        {
+            CompletionProvider provider = CompletionProvider.get_default ();
+            provider.hide_calltip_window ();
+        });
+
+        // hide completion calltip
+        focus_out_event.connect (() =>
+        {
+            CompletionProvider provider = CompletionProvider.get_default ();
+            provider.hide_calltip_window ();
+
+            // propagate the event further
+            return false;
+        });
+
         set_file_actions_sensitivity (false);
         set_documents_move_to_new_window_sensitivity (false);
 

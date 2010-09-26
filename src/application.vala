@@ -233,6 +233,7 @@ public class Application : GLib.Object
 
         var window = new MainWindow ();
         active_window = window;
+        notify_property ("active-window");
 
         if (screen != null)
             window.set_screen (screen);
@@ -248,12 +249,16 @@ public class Application : GLib.Object
                 Gtk.main_quit ();
             }
             else if (window == active_window)
+            {
                 active_window = (MainWindow) windows.data;
+                notify_property ("active-window");
+            }
         });
 
         window.focus_in_event.connect (() =>
         {
             active_window = window;
+            notify_property ("active-window");
             return false;
         });
 

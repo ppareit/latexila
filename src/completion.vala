@@ -62,6 +62,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private Gdk.Pixbuf icon_normal_choice;
     private Gdk.Pixbuf icon_package_required;
 
+    private SourceCompletionInfo calltip_window = null;
+    private Label calltip_window_label = null;
+    private uint timeout_id = 0;
+
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
@@ -106,7 +110,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return "LaTeX";
     }
 
-    public unowned Gdk.Pixbuf get_icon ()
+    public unowned Gdk.Pixbuf? get_icon ()
     {
         return null;
     }
@@ -244,6 +248,20 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             proposals_to_filter = proposals;
             prefix = cmd;
         }
+
+        // show calltip?
+        if (in_param && proposals_to_filter.length () == 1)
+        {
+            SourceCompletionItem item = proposals_to_filter.nth_data (0);
+            if (item.text == "")
+            {
+                clear_context (context);
+                show_calltip_info (item.info);
+                return;
+            }
+        }
+
+        hide_calltip_window ();
 
         List<SourceCompletionItem> filtered_proposals = null;
         foreach (SourceCompletionItem item in proposals_to_filter)
@@ -404,6 +422,53 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         doc.get_iter_at_mark (out iter, cursor_pos);
         doc.place_cursor (iter);
+    }
+
+    private void init_calltip_window ()
+    {
+        Application app = Application.get_default ();
+        calltip_window = new SourceCompletionInfo ();
+        calltip_window.set_transient_for (app.active_window);
+        calltip_window.set_sizing (800, 200, true, true);
+        calltip_window_label = new Label (null);
+        calltip_window.set_widget (calltip_window_label);
+
+        app.notify["active-window"].connect (() => hide_calltip_window ());
+    }
+
+    private void show_calltip_info (string markup)
+    {
+        if (calltip_window == null)
+            init_calltip_window ();
+
+        if (timeout_id != 0)
+            Source.remove (timeout_id);
+
+        calltip_window_label.set_markup (markup);
+        MainWindow win = Application.get_default ().active_window;
+        calltip_window.set_transient_for (win);
+        calltip_window.move_to_iter (win.active_view);
+        calltip_window.show_all ();
+    }
+
+    public void hide_calltip_window (bool timeout = false)
+    {
+        if (calltip_window == null)
+            return;
+
+        if (timeout)
+        {
+            if (timeout_id != 0)
+                Source.remove (timeout_id);
+            timeout_id = Timeout.add_seconds (1, () =>
+            {
+                timeout_id = 0;
+                calltip_window.hide ();
+                return false;
+            });
+        }
+        else
+            calltip_window.hide ();
     }
 
     private void parser_start (MarkupParseContext context, string name,
