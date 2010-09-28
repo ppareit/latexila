@@ -418,10 +418,28 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (timeout_id != 0)
             Source.remove (timeout_id);
 
-        calltip_window_label.set_markup (markup);
         MainWindow win = Application.get_default ().active_window;
+
+        // calltip at a fixed place (after the '{' or '[' of the current arg)
+        TextIter pos;
+        TextBuffer buffer = win.active_view.buffer;
+        buffer.get_iter_at_mark (out pos, buffer.get_insert ());
+        string text = get_text_line_at_iter (pos);
+        for (long i = text.length - 1 ; i >= 0 ; i--)
+        {
+            if (text[i] == '[' || text[i] == '{')
+            {
+                if (char_is_escaped (text, i))
+                    continue;
+                pos.backward_chars ((int) (text.length - 1 - i));
+                break;
+            }
+        }
+
+        calltip_window_label.set_markup (markup);
+
         calltip_window.set_transient_for (win);
-        calltip_window.move_to_iter (win.active_view);
+        calltip_window.move_to_iter (win.active_view, pos);
         calltip_window.show_all ();
     }
 

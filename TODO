@@ -6,7 +6,6 @@ For 2.0 (try to do as much as possible)
 - Auto-completion:
 	- show tooltip when no choice available:
 		- improve in_latex_command_argument () (so the tooltip is displayed even with strange characters inside it)
-		- tooltip at a fixed place (e.g. the "{" or "[" of the current parameter)
 	- show details by default
 	- complete placeholders (e.g. \ref, \cite, ...)
 
