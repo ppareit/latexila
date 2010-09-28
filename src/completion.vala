@@ -41,15 +41,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string? package;
     }
 
-    struct CompletionCommandArgs
-    {
-        List<SourceCompletionItem>*[] args;
-        List<SourceCompletionItem>*[] optional_args;
-    }
-
     private static CompletionProvider instance = null;
     private List<SourceCompletionItem> proposals;
-    private Gee.HashMap<string, CompletionCommandArgs?> args_proposals;
+    private Gee.HashMap<string, CompletionCommand?> commands;
 
     private GLib.Settings settings;
 
@@ -70,7 +64,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private CompletionProvider ()
     {
         settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        args_proposals = new Gee.HashMap<string, CompletionCommandArgs?> ();
+        commands = new Gee.HashMap<string, CompletionCommand?> ();
 
         // icons
         icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
@@ -152,7 +146,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public bool match (SourceCompletionContext context)
     {
-        bool in_param = false;
+        bool in_argument = false;
         show_all_proposals = false;
 
         TextIter iter = {};
@@ -160,11 +154,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string? cmd = get_latex_command_at_iter (iter);
 
         if (cmd == null)
-            in_param = in_latex_command_parameter (iter);
+            in_argument = in_latex_command_argument (iter);
 
         if (context.activation == SourceCompletionActivation.USER_REQUESTED)
         {
-            show_all_proposals = cmd == null && ! in_param;
+            show_all_proposals = cmd == null && ! in_argument;
             return true;
         }
 
@@ -172,8 +166,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             return false;
 
         // The minimum number of characters for interactive completion is not taken into
-        // account for parameters.
-        if (in_param)
+        // account for arguments.
+        if (in_argument)
             return true;
 
         int min_nb_chars = settings.get_int ("interactive-completion-num");
@@ -188,21 +182,20 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         context.get_iter (iter);
         string? cmd = get_latex_command_at_iter (iter);
 
-        bool in_param = false;
+        bool in_argument = false;
         string cmd_name = null;
-        int param_num = 0;
-        bool param_is_optional = false;
-        string param_contents = null;
+        Gee.ArrayList<bool> arguments = new Gee.ArrayList<bool> ();
+        string argument_contents = null;
 
         if (cmd == null)
-            in_param = in_latex_command_parameter (iter, out cmd_name, out param_num,
-                out param_is_optional, out param_contents);
+            in_argument = in_latex_command_argument (iter, out cmd_name, out arguments,
+                out argument_contents);
 
         // clear
-        if ((! show_all_proposals && cmd == null && ! in_param)
+        if ((! show_all_proposals && cmd == null && ! in_argument)
             || (context.activation == SourceCompletionActivation.INTERACTIVE
                 && ! settings.get_boolean ("interactive-completion"))
-            || (in_param && ! args_proposals.has_key (cmd_name)))
+            || (in_argument && ! commands.has_key (cmd_name)))
         {
             clear_context (context);
             return;
@@ -219,29 +212,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // filter proposals
         unowned List<SourceCompletionItem> proposals_to_filter = null;
         string prefix;
-        if (in_param)
+        if (in_argument && commands.has_key (cmd_name))
         {
-            CompletionCommandArgs tmp = args_proposals[cmd_name];
-            if (param_is_optional)
-            {
-                if (param_num > tmp.optional_args.length)
-                {
-                    clear_context (context);
-                    return;
-                }
-                proposals_to_filter = tmp.optional_args[param_num - 1];
-            }
-            else
-            {
-                if (param_num > tmp.args.length)
-                {
-                    clear_context (context);
-                    return;
-                }
-                proposals_to_filter = tmp.args[param_num - 1];
-            }
-
-            prefix = param_contents ?? "";
+            proposals_to_filter = get_argument_proposals (commands[cmd_name], arguments);
+            prefix = argument_contents ?? "";
         }
         else
         {
@@ -250,15 +224,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         // show calltip?
-        if (in_param && proposals_to_filter.length () == 1)
+        if (in_argument && proposals_to_filter == null)
         {
-            SourceCompletionItem item = proposals_to_filter.nth_data (0);
-            if (item.text == "")
+            clear_context (context);
+            CompletionCommand command = commands[cmd_name];
+            int num = get_argument_num (command.args, arguments);
+            if (num != -1)
             {
-                clear_context (context);
-                show_calltip_info (item.info);
-                return;
+                string info = get_command_info (command, num);
+                show_calltip_info (info);
             }
+            return;
         }
 
         hide_calltip_window ();
@@ -271,7 +247,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         // no match, show a message so the completion widget doesn't disappear
-        if (filtered_proposals == null && ! in_param)
+        if (filtered_proposals == null && ! in_argument)
         {
             var dummy_proposal = new SourceCompletionItem (_("No matching proposal"),
                 "", null, null);
@@ -304,15 +280,15 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (cmd == null && text[0] != '\\')
         {
             string cmd_name = null;
-            string param_contents = null;
+            string argument_contents = null;
 
-            bool in_param = in_latex_command_parameter (iter, out cmd_name, null, null,
-                out param_contents);
+            bool in_argument = in_latex_command_argument (iter, out cmd_name, null,
+                out argument_contents);
 
-            if (in_param)
+            if (in_argument)
             {
                 activate_proposal_argument_choice (proposal, iter, cmd_name,
-                    param_contents);
+                    argument_contents);
                 return true;
             }
         }
@@ -350,11 +326,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     }
 
     private void activate_proposal_argument_choice (SourceCompletionProposal proposal,
-        TextIter iter, string cmd_name, string? param_contents)
+        TextIter iter, string cmd_name, string? argument_contents)
     {
         string text = proposal.get_text ();
 
-        long index_start = param_contents != null ? param_contents.length : 0;
+        long index_start = argument_contents != null ? argument_contents.length : 0;
         string text_to_insert = text[index_start : text.length];
 
         TextBuffer doc = iter.get_buffer ();
@@ -365,7 +341,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (cmd_name == "\\begin")
             close_environment (text, iter);
 
-        // TODO place cursor
+        // TODO place cursor, go to next argument, if any
         else
         {
         }
@@ -432,8 +408,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         calltip_window.set_sizing (800, 200, true, true);
         calltip_window_label = new Label (null);
         calltip_window.set_widget (calltip_window_label);
-
-        app.notify["active-window"].connect (() => hide_calltip_window ());
     }
 
     private void show_calltip_info (string markup)
@@ -561,8 +535,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                     get_command_text (current_command),
                     pixbuf,
                     get_command_info (current_command));
+
                 proposals.append (item);
-                fill_args_proposals (current_command);
+
+                // we don't need to store commands that have no argument
+                if (current_command.args.length > 0)
+                    commands[current_command.name] = current_command;
                 break;
 
             case "argument":
@@ -571,52 +549,72 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
     }
 
-    private void fill_args_proposals (CompletionCommand cmd)
+    private unowned List<SourceCompletionItem>? get_argument_proposals (
+        CompletionCommand cmd, Gee.ArrayList<bool> arguments)
     {
         if (cmd.args.length == 0)
-            return;
-
-        CompletionCommandArgs cmd_args = CompletionCommandArgs ();
+            return null;
 
         string info = get_command_info (cmd);
 
-        foreach (CompletionArgument arg in cmd.args)
+        int num = get_argument_num (cmd.args, arguments);
+        if (num == -1)
+            return null;
+
+        CompletionArgument arg = cmd.args[num - 1];
+        unowned List<SourceCompletionItem> items = null;
+
+        foreach (CompletionChoice choice in arg.choices)
         {
-            List<SourceCompletionItem> *items = null;
-
-            foreach (CompletionChoice choice in arg.choices)
+            string info2 = null;
+            Gdk.Pixbuf pixbuf;
+            if (choice.package != null)
             {
-                string info2 = null;
-                Gdk.Pixbuf pixbuf;
-                if (choice.package != null)
-                {
-                    info2 = info + "\nPackage: " + choice.package;
-                    pixbuf = icon_package_required;
-                }
-                else
-                    pixbuf = icon_normal_choice;
-
-                SourceCompletionItem item = new SourceCompletionItem (
-                    choice.name, choice.name, pixbuf, info2 ?? info);
-                items->prepend (item);
-            }
-
-            if (items == null)
-            {
-                SourceCompletionItem item = new SourceCompletionItem (arg.label, "",
-                    null, info);
-                items->prepend (item);
+                info2 = info + "\nPackage: " + choice.package;
+                pixbuf = icon_package_required;
             }
             else
-                items->sort ((CompareFunc) compare_proposals);
+                pixbuf = icon_normal_choice;
 
-            if (arg.optional)
-                cmd_args.optional_args += items;
-            else
-                cmd_args.args += items;
+            SourceCompletionItem item = new SourceCompletionItem (
+                choice.name, choice.name, pixbuf, info2 ?? info);
+            items.prepend (item);
         }
 
-        args_proposals[cmd.name] = cmd_args;
+        if (items == null)
+            return null;
+
+        items.sort ((CompareFunc) compare_proposals);
+        return items;
+    }
+
+    private int get_argument_num (CompletionArgument[] all_args,
+        Gee.ArrayList<bool> args)
+    {
+        return_val_if_fail (args.size <= all_args.length, -1);
+
+        int num = 0;
+        foreach (bool arg in args)
+        {
+            while (true)
+            {
+                if (num >= all_args.length)
+                    return -1;
+
+                if (all_args[num].optional == arg)
+                    break;
+
+                // missing non-optional argument
+                else if (! all_args[num].optional)
+                    return -1;
+
+                num++;
+            }
+            num++;
+        }
+
+        // first = 1
+        return num;
     }
 
     private string get_command_text (CompletionCommand cmd)
@@ -630,15 +628,23 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return text_to_insert;
     }
 
-    private string get_command_info (CompletionCommand cmd)
+    private string get_command_info (CompletionCommand cmd, int num = -1)
     {
         string info = cmd.name;
+        int i = 1;
         foreach (CompletionArgument arg in cmd.args)
         {
+            if (num == i)
+                info += "<b>";
+
             if (arg.optional)
                 info += "[" + arg.label + "]";
             else
                 info += "{" + arg.label + "}";
+
+            if (num == i)
+                info += "</b>";
+            i++;
         }
 
         if (cmd.package != null)
@@ -686,66 +692,76 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return null;
     }
 
-    private bool in_latex_command_parameter (TextIter iter,
-                                             out string cmd_name = null,
-                                             out int param_num = null,
-                                             out bool param_is_optional = null,
-                                             out string param_contents = null)
+    /* Are we in a latex command argument?
+     * If yes, we also want to know:
+     *     - the command name
+     *     - the arguments: true if optional
+     *       The last argument is the one where we are.
+     *       We use an ArrayList because a dynamic array as an out param is not supported.
+     *     - the current argument contents
+     * Returns true if iter is in a latex command argument.
+     */
+    private bool in_latex_command_argument (TextIter iter,
+                                            out string cmd_name = null,
+                                            out Gee.ArrayList<bool> arguments = null,
+                                            out string argument_contents = null)
     {
         string text = get_text_line_at_iter (iter);
 
-        bool fetch_param_contents = true;
-        long index_start_param_contents = -1;
-        bool in_other_param = false;
-        char other_param_opening_bracket = '{';
-        bool _param_is_optional = false;
+        bool fetch_argument_contents = true;
+        long index_start_argument_contents = -1;
+        bool in_other_argument = false;
+        char other_argument_opening_bracket = '{';
+
+        if (&arguments != null)
+            arguments = new Gee.ArrayList<bool> ();
 
         for (long i = text.length - 1 ; i >= 0 ; i--)
         {
-            if (fetch_param_contents)
+            if (fetch_argument_contents)
             {
-                // valid param content
+                // valid argument content
                 if (text[i].isalpha () || text[i] == '*')
                 {
-                    index_start_param_contents = i;
+                    index_start_argument_contents = i;
                     continue;
                 }
 
-                // maybe the end of param content
+                // maybe the end of argument content
                 if (text[i] == '{' || text[i] == '[')
                 {
-                    // invalid param content
+                    // invalid argument content
                     if (char_is_escaped (text, i))
                         return false;
 
-                    // OK, param contents fetched
-                    _param_is_optional = text[i] == '[';
+                    // OK, argument contents fetched
 
-                    if (&param_is_optional != null)
-                        param_is_optional = _param_is_optional;
-                    if (&param_num != null)
-                        param_num = 1;
-                    if (&param_contents != null && index_start_param_contents != -1)
-                        param_contents = text[index_start_param_contents : text.length];
-                    fetch_param_contents = false;
+                    if (&arguments != null)
+                        arguments.insert (0, text[i] == '[');
+
+                    if (&argument_contents != null && index_start_argument_contents != -1)
+                        argument_contents =
+                            text[index_start_argument_contents : text.length];
+
+                    fetch_argument_contents = false;
                     continue;
                 }
 
-                // We are not in a parameter,
-                // or the parameter contents has no matching proposal
+                // We are not in an argument,
+                // or the argument contents has no matching proposal
                 return false;
             }
 
-            else if (in_other_param)
+            else if (in_other_argument)
             {
-                if (text[i] == other_param_opening_bracket)
-                    in_other_param = char_is_escaped (text, i);
+                if (text[i] == other_argument_opening_bracket)
+                    in_other_argument = char_is_escaped (text, i);
                 continue;
             }
 
-            // Maybe between two parameters,
-            // or between the first parameter and the command name,
-            // or we were not in a latex command parameter.
+            // Maybe between two arguments,
+            // or between the first argument and the command name,
+            // or we were not in a latex command argument.
             else
             {
                 if (text[i].isspace ())
@@ -760,17 +776,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                     return tmp != null;
                 }
 
-                // maybe the end of another parameter
+                // maybe the end of another argument
                 if (text[i] == '}' || text[i] == ']')
                 {
                     if (char_is_escaped (text, i))
                         return false;
 
-                    in_other_param = true;
-                    other_param_opening_bracket = text[i] == '}' ? '{' : '[';
+                    in_other_argument = true;
+                    other_argument_opening_bracket = text[i] == '}' ? '{' : '[';
 
-                    if (_param_is_optional == (text[i] == ']') && &param_num != null)
-                        param_num++;
+                    if (&arguments != null)
+                        arguments.insert (0, text[i] == ']');
                     continue;
                 }
 
@@ -802,7 +818,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private void clear_context (SourceCompletionContext context)
     {
-        // the second parameter can not be null so we use a variable...
+        // the second argument can not be null so we use a variable...
         // the vapi should be fixed
         List<SourceCompletionItem> empty_proposals = null;
         context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
