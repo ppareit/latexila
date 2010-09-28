@@ -186,10 +186,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string cmd_name = null;
         Gee.ArrayList<bool> arguments = new Gee.ArrayList<bool> ();
         string argument_contents = null;
+        bool valid_arg_contents = false;
 
         if (cmd == null)
             in_argument = in_latex_command_argument (iter, out cmd_name, out arguments,
-                out argument_contents);
+                out argument_contents, out valid_arg_contents);
 
         // clear
         if ((! show_all_proposals && cmd == null && ! in_argument)
@@ -211,16 +212,18 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         // filter proposals
         unowned List<SourceCompletionItem> proposals_to_filter = null;
-        string prefix;
-        if (in_argument && commands.has_key (cmd_name))
-        {
-            proposals_to_filter = get_argument_proposals (commands[cmd_name], arguments);
-            prefix = argument_contents ?? "";
-        }
-        else
+        string prefix = null;
+        // try to complete a command
+        if (! in_argument)
         {
             proposals_to_filter = proposals;
             prefix = cmd;
+        }
+        // try to complete a command argument choice
+        else if (valid_arg_contents && commands.has_key (cmd_name))
+        {
+            proposals_to_filter = get_argument_proposals (commands[cmd_name], arguments);
+            prefix = argument_contents ?? "";
         }
 
         // show calltip?
@@ -247,7 +250,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         // no match, show a message so the completion widget doesn't disappear
-        if (filtered_proposals == null && ! in_argument)
+        if (filtered_proposals == null)
         {
             var dummy_proposal = new SourceCompletionItem (_("No matching proposal"),
                 "", null, null);
@@ -722,7 +725,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private bool in_latex_command_argument (TextIter iter,
                                             out string cmd_name = null,
                                             out Gee.ArrayList<bool> arguments = null,
-                                            out string argument_contents = null)
+                                            out string argument_contents = null,
+                                            out bool valid_arg_contents = null)
     {
         string text = get_text_line_at_iter (iter);
 
@@ -734,26 +738,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (&arguments != null)
             arguments = new Gee.ArrayList<bool> ();
 
+        if (&valid_arg_contents != null)
+            valid_arg_contents = true;
+
         for (long i = text.length - 1 ; i >= 0 ; i--)
         {
             if (fetch_argument_contents)
             {
-                // valid argument content
-                if (text[i].isalpha () || text[i] == '*')
+                // end of argument content
+                if ((text[i] == '{' || text[i] == '[') && ! char_is_escaped (text, i))
                 {
-                    index_start_argument_contents = i;
-                    continue;
-                }
-
-                // maybe the end of argument content
-                if (text[i] == '{' || text[i] == '[')
-                {
-                    // invalid argument content
-                    if (char_is_escaped (text, i))
-                        return false;
-
-                    // OK, argument contents fetched
-
                     if (&arguments != null)
                         arguments.insert (0, text[i] == '[');
 
@@ -761,13 +755,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                         argument_contents =
                             text[index_start_argument_contents : text.length];
 
+                    // argument contents fetched
                     fetch_argument_contents = false;
                     continue;
                 }
 
-                // We are not in an argument,
-                // or the argument contents has no matching proposal
-                return false;
+                // invalid argument content (no choice available)
+                if (&valid_arg_contents != null && ! text[i].isalpha () && text[i] != '*')
+                    valid_arg_contents = false;
+
+                index_start_argument_contents = i;
             }
 
             else if (in_other_argument)
