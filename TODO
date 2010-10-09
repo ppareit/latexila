@@ -4,29 +4,28 @@ For 2.0 (try to do as much as possible)
 =======
 
 - Auto-completion:
-	- show details by default
-	- complete placeholders (e.g. \ref, \cite, ...)
+	(-) show details by default
+	(-) complete placeholders (e.g. \ref, \cite, ...)
 
 - Manage projects:
 	- the user gives only the project root directory
 	- the *.tex main file is determined (see Kile sources)
-	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
+	- list of projects
+	- delete a project from LaTeXila (the project files are not deleted)
+	(-) completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 
 - Forward and backward search with SyncTeX
 
-(-) Search and replace:
-	- optimize incremental search
-
 (-) Build documents with rubber:
 	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
-	- rubber doesn't support filenames with spaces: fix that (or maybe I have a too old version of texlive?)
+	- rubber doesn't support filenames with spaces: fix that
 
 (-) Edit toolbar:
 	- create a custom MenuToolButton:
 	  Now the icon does nothing when we click it, we must always click first on the arrow and then select the item.
 	  It would be better if the icon is the last item used (and we can click on it).
 
-(-) choose the character encoding and the line ending type when saving a document
+(-) Choose the character encoding and the line ending type when saving a document
 
 Legend:
 (-) less important

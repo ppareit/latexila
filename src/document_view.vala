@@ -69,7 +69,7 @@ public class DocumentView : Gtk.SourceView
 
             buffer.notify["cursor-position"].connect (() =>
             {
-                provider.hide_calltip_window (true);
+                provider.hide_calltip_window ();
             });
         }
         catch (GLib.Error e)

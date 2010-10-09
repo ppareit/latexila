@@ -58,7 +58,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private SourceCompletionInfo calltip_window = null;
     private Label calltip_window_label = null;
-    private uint timeout_id = 0;
 
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
@@ -162,13 +161,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             return true;
         }
 
-        if (! settings.get_boolean ("interactive-completion"))
+        // calltips are displayed only on user request
+        if (! settings.get_boolean ("interactive-completion") || in_argument)
             return false;
-
-        // The minimum number of characters for interactive completion is not taken into
-        // account for arguments.
-        if (in_argument)
-            return true;
 
         int min_nb_chars = settings.get_int ("interactive-completion-num");
         min_nb_chars = min_nb_chars.clamp (0, 8);
@@ -418,9 +413,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (calltip_window == null)
             init_calltip_window ();
 
-        if (timeout_id != 0)
-            Source.remove (timeout_id);
-
         MainWindow win = Application.get_default ().active_window;
 
         // calltip at a fixed place (after the '{' or '[' of the current arg)
@@ -446,24 +438,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         calltip_window.show_all ();
     }
 
-    public void hide_calltip_window (bool timeout = false)
+    public void hide_calltip_window ()
     {
         if (calltip_window == null)
             return;
 
-        if (timeout)
-        {
-            if (timeout_id != 0)
-                Source.remove (timeout_id);
-            timeout_id = Timeout.add_seconds (1, () =>
-            {
-                timeout_id = 0;
-                calltip_window.hide ();
-                return false;
-            });
-        }
-        else
-            calltip_window.hide ();
+        calltip_window.hide ();
     }
 
     private void parser_start (MarkupParseContext context, string name,
