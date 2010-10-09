@@ -19,7 +19,7 @@
 
 using Gtk;
 
-public class LatexMenu : ActionGroup
+public class LatexMenu : Gtk.ActionGroup
 {
     private const ActionEntry[] latex_action_entries =
     {
@@ -447,9 +447,9 @@ public class LatexMenu : ActionGroup
         add_action (math_right_del);
     }
 
-    private Action get_menu_tool_action (string name, string? label, string? stock_id)
+    private Gtk.Action get_menu_tool_action (string name, string? label, string? stock_id)
     {
-        Action action = new MenuToolAction (name, label, label, stock_id);
+        Gtk.Action action = new MenuToolAction (name, label, label, stock_id);
         Activatable menu_tool_button = (Activatable) new MenuToolButton (null, null);
         menu_tool_button.set_related_action (action);
         return action;

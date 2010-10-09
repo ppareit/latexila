@@ -158,10 +158,10 @@ public class MainWindow : Window
     private VPaned vpaned;
 
     private UIManager ui_manager;
-    private ActionGroup action_group;
-    private ActionGroup latex_action_group;
-    private ActionGroup documents_list_action_group;
-    private ActionGroup build_tools_action_group;
+    private Gtk.ActionGroup action_group;
+    private Gtk.ActionGroup latex_action_group;
+    private Gtk.ActionGroup documents_list_action_group;
+    private Gtk.ActionGroup build_tools_action_group;
     private uint documents_list_menu_ui_id;
     private uint build_tools_menu_ui_id;
 
@@ -256,7 +256,7 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
 
         // build view
-        Action action_stop_exec = action_group.get_action ("BuildStopExecution");
+        Gtk.Action action_stop_exec = action_group.get_action ("BuildStopExecution");
         ToggleAction action_view_bottom_panel =
             (ToggleAction) action_group.get_action ("ViewBottomPanel");
         build_view = new BuildView (this, build_toolbar, action_stop_exec,
@@ -466,11 +466,11 @@ public class MainWindow : Window
     private void initialize_menubar_and_toolbar ()
     {
         // recent documents
-        Action recent_action = new RecentAction ("FileOpenRecent", _("Open _Recent"),
+        Gtk.Action recent_action = new RecentAction ("FileOpenRecent", _("Open _Recent"),
             _("Open recently used files"), "");
         configure_recent_chooser ((RecentChooser) recent_action);
 
-        action_group = new ActionGroup ("ActionGroup");
+        action_group = new Gtk.ActionGroup ("ActionGroup");
         action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
         action_group.add_actions (action_entries, this);
         action_group.add_action (recent_action);
@@ -516,18 +516,18 @@ public class MainWindow : Window
         });
 
         // list of open documents menu
-        documents_list_action_group = new ActionGroup ("DocumentsListActions");
+        documents_list_action_group = new Gtk.ActionGroup ("DocumentsListActions");
         ui_manager.insert_action_group (documents_list_action_group, 0);
 
         // build tools
-        build_tools_action_group = new ActionGroup ("BuildToolsActions");
+        build_tools_action_group = new Gtk.ActionGroup ("BuildToolsActions");
         ui_manager.insert_action_group (build_tools_action_group, 0);
         update_build_tools_menu ();
     }
 
     private void on_menu_item_select (Item proxy)
     {
-        Action action = ((MenuItem) proxy).get_related_action ();
+        Gtk.Action action = ((MenuItem) proxy).get_related_action ();
         return_if_fail (action != null);
         if (action.tooltip != null)
             statusbar.push (tip_message_cid, action.tooltip);
@@ -834,7 +834,7 @@ public class MainWindow : Window
         // sync the item in the documents list menu
         int page_num = documents_panel.page_num (tab);
         string action_name = "Tab_%d".printf (page_num);
-        Action action = documents_list_action_group.get_action (action_name);
+        Gtk.Action action = documents_list_action_group.get_action (action_name);
         return_if_fail (action != null);
         action.label = tab.get_name ().replace ("_", "__");
         action.tooltip = tab.get_menu_tip ();
@@ -1014,7 +1014,7 @@ public class MainWindow : Window
         open_button.set_tooltip_text (_("Open a file"));
         open_button.set_arrow_tooltip_text (_("Open a recently used file"));
 
-        Action action = action_group.get_action ("FileOpen");
+        Gtk.Action action = action_group.get_action ("FileOpen");
         open_button.set_related_action (action);
 
         toolbar.insert (open_button, 1);
@@ -1114,7 +1114,7 @@ public class MainWindow : Window
         if (build_tools_menu_ui_id != 0)
             ui_manager.remove_ui (build_tools_menu_ui_id);
 
-        foreach (Action action in build_tools_action_group.list_actions ())
+        foreach (Gtk.Action action in build_tools_action_group.list_actions ())
         {
             action.activate.disconnect (build_tools_menu_activate);
             build_tools_action_group.remove_action (action);
@@ -1129,7 +1129,7 @@ public class MainWindow : Window
         foreach (BuildTool build_tool in build_tools)
         {
             string action_name = @"BuildTool_$i";
-            Action action = new Action (action_name, build_tool.label,
+            Gtk.Action action = new Gtk.Action (action_name, build_tool.label,
                 build_tool.description, build_tool.icon);
 
             // F2 -> F11
@@ -1150,7 +1150,7 @@ public class MainWindow : Window
         build_tools_menu_ui_id = id;
     }
 
-    private void build_tools_menu_activate (Action action)
+    private void build_tools_menu_activate (Gtk.Action action)
     {
         return_if_fail (active_tab != null);
         return_if_fail (active_document.location != null);
@@ -1180,7 +1180,7 @@ public class MainWindow : Window
         if (documents_list_menu_ui_id != 0)
             ui_manager.remove_ui (documents_list_menu_ui_id);
 
-        foreach (Action action in documents_list_action_group.list_actions ())
+        foreach (Gtk.Action action in documents_list_action_group.list_actions ())
         {
             action.activate.disconnect (documents_list_menu_activate);
             documents_list_action_group.remove_action (action);
@@ -1220,7 +1220,7 @@ public class MainWindow : Window
         documents_list_menu_ui_id = id;
     }
 
-    private void documents_list_menu_activate (Action action)
+    private void documents_list_menu_activate (Gtk.Action action)
     {
         RadioAction radio_action = (RadioAction) action;
         if (! radio_action.get_active ())
@@ -1248,7 +1248,7 @@ public class MainWindow : Window
 
         foreach (string file_action in file_actions)
         {
-            Action action = action_group.get_action (file_action);
+            Gtk.Action action = action_group.get_action (file_action);
             action.set_sensitive (sensitive);
         }
 
@@ -1260,7 +1260,7 @@ public class MainWindow : Window
     {
         if (active_tab != null)
         {
-            Action action = action_group.get_action ("EditUndo");
+            Gtk.Action action = action_group.get_action ("EditUndo");
             action.set_sensitive (active_document.can_undo);
         }
     }
@@ -1269,14 +1269,14 @@ public class MainWindow : Window
     {
         if (active_tab != null)
         {
-            Action action = action_group.get_action ("EditRedo");
+            Gtk.Action action = action_group.get_action ("EditRedo");
             action.set_sensitive (active_document.can_redo);
         }
     }
 
     private void set_documents_move_to_new_window_sensitivity (bool sensitive)
     {
-        Action action = action_group.get_action ("DocumentsMoveToNewWindow");
+        Gtk.Action action = action_group.get_action ("DocumentsMoveToNewWindow");
         action.set_sensitive (sensitive);
     }
 
@@ -1284,8 +1284,8 @@ public class MainWindow : Window
     {
         if (active_tab != null)
         {
-            Action action_previous = action_group.get_action ("DocumentsPrevious");
-            Action action_next = action_group.get_action ("DocumentsNext");
+            Gtk.Action action_previous = action_group.get_action ("DocumentsPrevious");
+            Gtk.Action action_next = action_group.get_action ("DocumentsNext");
 
             int current_page = documents_panel.page_num (active_tab);
             action_previous.set_sensitive (current_page > 0);
@@ -1297,8 +1297,8 @@ public class MainWindow : Window
 
     private void update_build_tools_sensitivity ()
     {
-        Action clean_action = action_group.get_action ("BuildClean");
-        Action view_log_action = action_group.get_action ("BuildViewLog");
+        Gtk.Action clean_action = action_group.get_action ("BuildClean");
+        Gtk.Action view_log_action = action_group.get_action ("BuildViewLog");
 
         if (active_tab == null || active_document.location == null)
         {
@@ -1327,7 +1327,7 @@ public class MainWindow : Window
             string[] extensions = tool.extensions.split (" ");
             bool sensitive = tool.extensions.length == 0 || ext in extensions;
 
-            Action action = build_tools_action_group.get_action (@"BuildTool_$i");
+            Gtk.Action action = build_tools_action_group.get_action (@"BuildTool_$i");
             action.set_sensitive (sensitive);
             i++;
         }
@@ -1344,7 +1344,7 @@ public class MainWindow : Window
 
             foreach (string selection_action in selection_actions)
             {
-                Action action = action_group.get_action (selection_action);
+                Gtk.Action action = action_group.get_action (selection_action);
                 action.set_sensitive (has_selection);
             }
         }
@@ -1516,7 +1516,7 @@ public class MainWindow : Window
 
     /* View */
 
-    public void on_show_side_panel (Action action)
+    public void on_show_side_panel (Gtk.Action action)
     {
         bool show = (action as ToggleAction).active;
         if (show)
@@ -1525,7 +1525,7 @@ public class MainWindow : Window
             side_panel.hide ();
     }
 
-    public void on_show_bottom_panel (Action action)
+    public void on_show_bottom_panel (Gtk.Action action)
     {
         bool show = (action as ToggleAction).active;
         if (show)
@@ -1534,7 +1534,7 @@ public class MainWindow : Window
             build_view.hide ();
     }
 
-    public void on_show_edit_toolbar (Action action)
+    public void on_show_edit_toolbar (Gtk.Action action)
     {
         bool show = (action as ToggleAction).active;
         if (show)
@@ -1632,17 +1632,17 @@ public class MainWindow : Window
     }
 
     /*
-    public void on_build_show_errors (Action action)
+    public void on_build_show_errors (Gtk.Action action)
     {
         build_view.show_errors = ((ToggleAction) action).active;
     }
 
-    public void on_build_show_warnings (Action action)
+    public void on_build_show_warnings (Gtk.Action action)
     {
         build_view.show_warnings = ((ToggleAction) action).active;
     }
 
-    public void on_build_show_badboxes (Action action)
+    public void on_build_show_badboxes (Gtk.Action action)
     {
         build_view.show_badboxes = ((ToggleAction) action).active;
     }

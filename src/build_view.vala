@@ -65,11 +65,11 @@ public class BuildView : HBox
     private unowned MainWindow main_window;
     private TreeStore store;
     private TreeView view;
-    private unowned Action action_stop_execution;
+    private unowned Gtk.Action action_stop_execution;
     private unowned ToggleAction action_view_bottom_panel;
     private BuildToolRunner? runner = null;
 
-    public BuildView (MainWindow main_window, Toolbar toolbar, Action stop_execution,
+    public BuildView (MainWindow main_window, Toolbar toolbar, Gtk.Action stop_execution,
         ToggleAction view_bottom_panel)
     {
         this.main_window = main_window;

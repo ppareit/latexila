@@ -8,7 +8,7 @@ For 2.0 (try to do as much as possible)
 	- complete placeholders (e.g. \ref, \cite, ...)
 
 - Manage projects:
-	- the user only gives the project root directory
+	- the user gives only the project root directory
 	- the *.tex main file is determined (see Kile sources)
 	- completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 

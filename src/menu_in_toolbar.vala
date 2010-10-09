@@ -25,7 +25,7 @@ public class MyMenuToolButton : MenuToolButton
 }
 */
 
-public class MenuToolAction : Action
+public class MenuToolAction : Gtk.Action
 {
     public MenuToolAction (string name, string? label, string? tooltip, string? stock_id)
     {
