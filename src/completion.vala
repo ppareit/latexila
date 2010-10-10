@@ -146,6 +146,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     public bool match (SourceCompletionContext context)
     {
         bool in_argument = false;
+        bool valid_arg_contents = false;
         show_all_proposals = false;
 
         TextIter iter = {};
@@ -153,7 +154,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string? cmd = get_latex_command_at_iter (iter);
 
         if (cmd == null)
-            in_argument = in_latex_command_argument (iter);
+            in_argument = in_latex_command_argument (iter, null, null, null,
+                out valid_arg_contents);
 
         if (context.activation == SourceCompletionActivation.USER_REQUESTED)
         {
@@ -161,9 +163,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             return true;
         }
 
-        // calltips are displayed only on user request
-        if (! settings.get_boolean ("interactive-completion") || in_argument)
+        if (! settings.get_boolean ("interactive-completion")
+            || (in_argument && ! valid_arg_contents))
             return false;
+
+        if (in_argument && valid_arg_contents)
+            return true;
 
         int min_nb_chars = settings.get_int ("interactive-completion-num");
         min_nb_chars = min_nb_chars.clamp (0, 8);
@@ -225,6 +230,14 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (in_argument && proposals_to_filter == null)
         {
             clear_context (context);
+
+            // show calltip only on user request
+            if (context.activation == SourceCompletionActivation.INTERACTIVE)
+            {
+                hide_calltip_window ();
+                return;
+            }
+
             CompletionCommand command = commands[cmd_name];
             int num = get_argument_num (command.args, arguments);
             if (num != -1)
@@ -700,6 +713,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
      *       The last argument is the one where we are.
      *       We use an ArrayList because a dynamic array as an out param is not supported.
      *     - the current argument contents
+     *     - if the argument contents is valid, i.e. if some choices could exist.
+     *       Valid chars are letters and '*'. If the argument contents contains other char
+     *       it is considered as not valid because no choice contain such chars.
      * Returns true if iter is in a latex command argument.
      */
     private bool in_latex_command_argument (TextIter iter,
