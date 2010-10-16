@@ -1,11 +1,11 @@
 Requirements
 ============
 
-GLib >= 2.25.10
+GLib >= 2.26
 gsettings-desktop-schemas
-Vala >= 0.9.5
-GTK+ >= 2.16.x
-GtkSourceView >= 2.4.x
+Vala >= 0.10.0
+GTK+ >= 2.16
+GtkSourceView >= 2.10
 unique
 gdk-x11
 x11

@@ -4,6 +4,9 @@ For 2.0 (try to do as much as possible)
 =======
 
 - Auto-completion:
+	- there are critical messages, try to avoid them
+	- sometimes a segfault occurs, when typing entirely a command following with "{"
+	  See https://bugzilla.gnome.org/show_bug.cgi?id=618004
 	(-) show details by default
 	(-) complete placeholders (e.g. \ref, \cite, ...)
 
@@ -16,9 +19,10 @@ For 2.0 (try to do as much as possible)
 
 - Forward and backward search with SyncTeX
 
-(-) Build documents with rubber:
-	- show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
+- Build documents with rubber:
 	- rubber doesn't support filenames with spaces: fix that
+	  See https://bugs.launchpad.net/rubber/+bug/639983
+	(-) show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
 
 (-) Edit toolbar:
 	- create a custom MenuToolButton:
