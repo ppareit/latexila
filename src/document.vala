@@ -166,8 +166,13 @@ public class Document : Gtk.SourceBuffer
 
             string? etag = check_file_changed_on_disk ? _etag : null;
 
+            // if encoding specified, convert to this encoding
             if (encoding != null)
                 text = convert (text, (ssize_t) text.size (), encoding, "UTF-8");
+
+            // else, convert to the system default encoding
+            else
+                text = Filename.from_utf8 (text, (ssize_t) text.size (), null, null);
 
             // check if parent directories exist, if not, create it
             File parent = location.get_parent ();
