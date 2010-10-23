@@ -374,6 +374,11 @@ public class Templates : GLib.Object
             nb_personnal_templates - 1));
         try
         {
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
             file.replace_contents (contents, contents.size (), null, false,
                 FileCreateFlags.NONE, null, null);
         }
@@ -421,10 +426,14 @@ public class Templates : GLib.Object
             key_file.set_string_list (Config.APP_NAME, "names", names);
             key_file.set_string_list (Config.APP_NAME, "icons", icons);
 
-            DirUtils.create_with_parents (rc_dir, (int) Posix.S_IRWXU);
             string key_file_data = key_file.to_data ();
-
             File file = File.new_for_path (rc_file);
+
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
             file.replace_contents (key_file_data, key_file_data.size (), null, false,
                 FileCreateFlags.NONE, null, null);
         }
@@ -453,6 +462,11 @@ public class Templates : GLib.Object
             File file = File.new_for_path ("%s/%d.tex".printf (rc_dir, i));
             try
             {
+                // check if parent directories exist, if not, create it
+                File parent = file.get_parent ();
+                if (parent != null && ! parent.query_exists ())
+                    parent.make_directory_with_parents ();
+
                 file.replace_contents (contents, contents.size (), null, false,
                     FileCreateFlags.NONE, null, null);
             }

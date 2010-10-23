@@ -390,6 +390,10 @@ public class AppSettings : GLib.Settings
 
         try
         {
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
 
             file.replace_contents (content, content.size (), null, false,
                 FileCreateFlags.NONE, null, null);
@@ -693,6 +697,12 @@ public class AppSettings : GLib.Settings
         try
         {
             File file = get_user_config_build_tools_file ();
+
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
             // a backup is made
             file.replace_contents (content, content.size (), null, true,
                 FileCreateFlags.NONE, null, null);

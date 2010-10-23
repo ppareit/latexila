@@ -169,6 +169,11 @@ public class Document : Gtk.SourceBuffer
             if (encoding != null)
                 text = convert (text, (ssize_t) text.size (), encoding, "UTF-8");
 
+            // check if parent directories exist, if not, create it
+            File parent = location.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
             // Attention, the second parameter named "length" in the API is the size in
             // bytes, not the number of characters, so we must use text.size() and not
             // text.length.
