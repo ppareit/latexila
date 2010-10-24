@@ -397,15 +397,34 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         else
             iter.forward_chars ((int) i + 1);
 
+        /* get current indentation */
+
+        // for example ("X" are spaces to take into account):
+        // some text
+        // \begin{figure}
+        // XX\begin{center[enter]
+
+        TextIter start_iter;
+        doc.get_iter_at_line (out start_iter, line);
+        text = doc.get_text (start_iter, iter, false);
+        string current_indent = "";
+        for (i = 0 ; i < text.length ; i++)
+        {
+            if (text[i].isspace ())
+                current_indent += text[i].to_string ();
+            else
+                break;
+        }
+
         /* close environment */
 
         Document document = (Document) doc;
         var view = document.tab.view;
         string indent = Utils.get_indentation_style (view);
 
-        doc.insert (iter, @"\n$indent", -1);
+        doc.insert (iter, @"\n$current_indent$indent", -1);
         TextMark cursor_pos = doc.create_mark (null, iter, true);
-        doc.insert (iter, "\n\\end{" + env_name + "}", -1);
+        doc.insert (iter, @"\n$current_indent\\end{" + env_name + "}", -1);
 
         doc.get_iter_at_mark (out iter, cursor_pos);
         doc.place_cursor (iter);

@@ -7,6 +7,7 @@ For 2.0 (try to do as much as possible)
 	- there are critical messages, try to avoid them
 	- sometimes a segfault occurs, when typing entirely a command following with "{"
 	  See https://bugzilla.gnome.org/show_bug.cgi?id=618004
+	  does it still occur?
 	(-) show details by default
 	(-) complete placeholders (e.g. \ref, \cite, ...)
 
@@ -15,6 +16,7 @@ For 2.0 (try to do as much as possible)
 	- the *.tex main file is determined (see Kile sources)
 	- list of projects
 	- delete a project from LaTeXila (the project files are not deleted)
+	- when we compile a document, save all the files opened belonging to the current project
 	(-) completion of placeholders: take into account all *.tex, *.bib, ... files of the project
 
 - Forward and backward search with SyncTeX
