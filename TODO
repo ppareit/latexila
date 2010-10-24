@@ -1,15 +1,13 @@
 TODO
 
-For 2.0 (try to do as much as possible)
-=======
+LaTeXila 2.0
+============
 
 - Auto-completion:
 	- there are critical messages, try to avoid them
 	- sometimes a segfault occurs, when typing entirely a command following with "{"
 	  See https://bugzilla.gnome.org/show_bug.cgi?id=618004
 	  does it still occur?
-	(-) show details by default
-	(-) complete placeholders (e.g. \ref, \cite, ...)
 
 - Manage projects:
 	- the user gives only the project root directory
@@ -17,21 +15,30 @@ For 2.0 (try to do as much as possible)
 	- list of projects
 	- delete a project from LaTeXila (the project files are not deleted)
 	- when we compile a document, save all the files opened belonging to the current project
-	(-) completion of placeholders: take into account all *.tex, *.bib, ... files of the project
+
+- Rubber doesn't support filenames with spaces: fix that
+  See https://bugs.launchpad.net/rubber/+bug/639983
+
+- Translation
+
+
+LaTeXila 2.2 or later
+=====================
+See also the Roadmap:
+	http://latexila.sourceforge.net/#roadmap
+
+- Auto-completion:
+	- show details by default
+	- complete placeholders (\ref, \cite, ...)
+	  (take into account all *.tex, *.bib, etc files of the project)
 
 - Forward and backward search with SyncTeX
 
-- Build documents with rubber:
-	- rubber doesn't support filenames with spaces: fix that
-	  See https://bugs.launchpad.net/rubber/+bug/639983
-	(-) show errors/warnings/badboxes (improve rubber: add an option that tells which type of message it is)
+- Document compilation:
+	- show a different icon for errors/warnings/badboxes
+	  improve rubber: add an option that tells which type of message it is
 
-(-) Edit toolbar:
+- Edit toolbar:
 	- create a custom MenuToolButton:
-	  Now the icon does nothing when we click it, we must always click first on the arrow and then select the item.
+	  Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.
 	  It would be better if the icon is the last item used (and we can click on it).
-
-(-) Choose the character encoding and the line ending type when saving a document
-
-Legend:
-(-) less important
