@@ -353,6 +353,12 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       </placeholder>
     </menu>
 
+    <menu action="Projects">
+      <menuitem action="ProjectsNew" />
+      <menuitem action="ProjectsConfigCurrent" />
+      <menuitem action="ProjectsManage" />
+    </menu>
+
     <menu action="Help">
       <menuitem action="HelpLatexReference" />
       <menuitem action="HelpAbout" />

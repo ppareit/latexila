@@ -141,6 +141,8 @@ public class DocumentTab : VBox
             update_label_tooltip ();
         });
 
+        document.notify["project-id"].connect (update_label_tooltip);
+
         document.notify["unsaved-document-n"].connect (update_label_text);
 
         document.modified_changed.connect ((s) =>
@@ -215,9 +217,26 @@ public class DocumentTab : VBox
     private void update_label_tooltip ()
     {
         if (document.location == null)
-            _label.tooltip_text = "";
+            _label.tooltip_markup = "";
         else
-            _label.tooltip_text = document.get_uri_for_display ();
+        {
+            _label.tooltip_markup = document.get_uri_for_display ();
+
+            if (document.project_id != -1)
+            {
+                Project? project =
+                    AppSettings.get_default ().get_project (document.project_id);
+                if (project == null)
+                    return;
+
+                if (project.main_file.equal (document.location))
+                    _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
+                else
+                    _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
+                        + Utils.replace_home_dir_with_tilde (
+                            project.main_file.get_parse_name ());
+            }
+        }
     }
 
     public string get_name ()

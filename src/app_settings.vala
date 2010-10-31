@@ -44,6 +44,12 @@ public struct MostUsedSymbol
     public uint num;
 }
 
+public struct Project
+{
+    public File directory;
+    public File main_file;
+}
+
 public class AppSettings : GLib.Settings
 {
     private static AppSettings instance = null;
@@ -61,6 +67,7 @@ public class AppSettings : GLib.Settings
         initialize ();
         load_build_tools ();
         load_most_used_symbols ();
+        load_projects ();
     }
 
     public static AppSettings get_default ()
@@ -718,5 +725,193 @@ public class AppSettings : GLib.Settings
         string path = Path.build_filename (Environment.get_user_config_dir (),
             "latexila", "build_tools.xml", null);
         return File.new_for_path (path);
+    }
+
+
+    /******************
+     *    PROJECTS    *
+     ******************/
+
+    private LinkedList<Project?> projects;
+    private bool projects_modified = false;
+
+    public Project? get_project (int id)
+    {
+        return_val_if_fail (id >= 0 && id < projects.size, null);
+        return projects[id];
+    }
+
+    public unowned LinkedList<Project?> get_projects ()
+    {
+        return projects;
+    }
+
+    // returns true if project successfully added
+    public bool add_project (Project new_project)
+    {
+        foreach (Project project in projects)
+        {
+            if (projects_conflict (project.directory, new_project.directory))
+                return false;
+        }
+
+        projects.add (new_project);
+        projects_modified = true;
+        return true;
+    }
+
+    public void project_change_main_file (int num, File new_main_file)
+    {
+        return_if_fail (num >= 0 && num < projects.size);
+        Project project = projects[num];
+        project.main_file = new_main_file;
+        projects_modified = true;
+    }
+
+    public void update_all_documents ()
+    {
+        string[] projects_uri = {};
+        foreach (Project project in projects)
+            projects_uri += project.directory.get_uri ();
+
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            string doc_uri = doc.location.get_uri ();
+            for (int i = 0 ; i < projects_uri.length ; i++)
+            {
+                if (doc_uri.has_prefix (projects_uri[i]))
+                {
+                    doc.project_id = i;
+                    break;
+                }
+            }
+        }
+    }
+
+    private void load_projects ()
+    {
+        projects = new LinkedList<Project?> ();
+
+        File file = get_file_projects ();
+        if (! file.query_exists ())
+            return;
+
+        try
+        {
+            string contents;
+            file.load_contents (null, out contents);
+
+            MarkupParser parser = { projects_parser_start, null, null, null, null };
+            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+        }
+        catch (GLib.Error e)
+        {
+            stderr.printf ("Warning: impossible to load projects: %s\n",
+                e.message);
+        }
+
+        print_projects ();
+    }
+
+    private void projects_parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "projects":
+                return;
+
+            case "project":
+                Project project = Project ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "directory":
+                            project.directory = File.new_for_uri (attr_values[i]);
+                            break;
+                        case "main_file":
+                            project.main_file = File.new_for_uri (attr_values[i]);
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                projects.add (project);
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private File get_file_projects ()
+    {
+        string path = Path.build_filename (Environment.get_user_data_dir (),
+            "latexila", "projects.xml", null);
+        return File.new_for_path (path);
+    }
+
+    public void save_projects ()
+    {
+        if (! projects_modified)
+            return;
+
+        File file = get_file_projects ();
+
+        // if empty, delete the file
+        if (projects.size == 0)
+        {
+            Utils.delete_file (file);
+            return;
+        }
+
+        string content = "<projects>\n";
+        foreach (Project project in projects)
+        {
+            content += "  <project directory=\"%s\" main_file=\"%s\" />\n".printf (
+                project.directory.get_uri (), project.main_file.get_uri ());
+        }
+        content += "</projects>\n";
+
+        try
+        {
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
+            file.replace_contents (content, content.size (), null, false,
+                FileCreateFlags.NONE, null, null);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: impossible to save projects: %s\n",
+                e.message);
+        }
+    }
+
+    // returns true if dir1 is a subdirectory of dir2, or inversely
+    private bool projects_conflict (File dir1, File dir2)
+    {
+        string uri1 = dir1.get_uri ();
+        string uri2 = dir2.get_uri ();
+
+        return uri1.has_prefix (uri2) || uri2.has_prefix (uri1);
+    }
+
+    private void print_projects ()
+    {
+        stdout.printf ("\n=== PROJECTS ===\n");
+        foreach (Project project in projects)
+        {
+            stdout.printf ("\n= PROJECT =\n");
+            stdout.printf ("directory: %s\n", project.directory.get_parse_name ());
+            stdout.printf ("main file: %s\n", project.main_file.get_parse_name ());
+        }
     }
 }

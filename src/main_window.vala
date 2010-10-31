@@ -62,10 +62,10 @@ public class MainWindow : Window
             N_("Delete the selected text"), on_edit_delete },
         { "EditSelectAll", STOCK_SELECT_ALL, null, "<Control>A",
             N_("Select the entire document"), on_edit_select_all },
-        { "EditComment", null, N_("_Comment"), "<Control>D",
+        { "EditComment", null, N_("_Comment"), "<Control>M",
             N_("Comment the selected lines (add the character \"%\")"),
             on_edit_comment },
-        { "EditUncomment", null, N_("_Uncomment"), "<Shift><Control>D",
+        { "EditUncomment", null, N_("_Uncomment"), "<Shift><Control>M",
             N_("Uncomment the selected lines (remove the character \"%\")"),
             on_edit_uncomment },
         { "EditPreferences", STOCK_PREFERENCES, null, null,
@@ -117,6 +117,16 @@ public class MainWindow : Window
         { "DocumentsMoveToNewWindow", null, N_("_Move to New Window"), null,
             N_("Move the current document to a new window"),
             on_documents_move_to_new_window },
+
+        // Projects
+        { "Projects", null, N_("_Projects") },
+        { "ProjectsNew", STOCK_NEW, N_("_New Project"), null,
+            N_("Create a new project"), on_projects_new },
+        { "ProjectsConfigCurrent", STOCK_PROPERTIES, N_("_Configure Current Project"),
+            null, N_("Change the main file of the current project"),
+            on_projects_config_current },
+        { "ProjectsManage", STOCK_PREFERENCES, N_("_Manage Projects"), null,
+            N_("Manage Projects"), on_projects_manage },
 
         // Help
         { "Help", null, N_("_Help") },
@@ -1682,6 +1692,20 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         move_tab_to_new_window (active_tab);
+    }
+
+    /* Projects */
+
+    public void on_projects_new ()
+    {
+    }
+
+    public void on_projects_config_current ()
+    {
+    }
+
+    public void on_projects_manage ()
+    {
     }
 
     /* Help */

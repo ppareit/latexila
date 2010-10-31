@@ -32,6 +32,7 @@ public class Document : Gtk.SourceBuffer
     public bool readonly { get; set; default = false; }
     public DocumentTab tab;
     public uint unsaved_document_n { get; set; }
+    public int project_id { get; set; default = -1; }
     private bool backup_made = false;
     private string _etag;
     private string? encoding = null;
@@ -56,7 +57,11 @@ public class Document : Gtk.SourceBuffer
         var lm = Gtk.SourceLanguageManager.get_default ();
         set_language (lm.get_language ("latex"));
 
-        notify["location"].connect (update_syntax_highlighting);
+        notify["location"].connect (() =>
+        {
+            update_syntax_highlighting ();
+            update_project_id ();
+        });
         mark_set.connect ((location, mark) =>
         {
             if (mark == get_insert ())
@@ -254,6 +259,23 @@ public class Document : Gtk.SourceBuffer
 
         var lang = lm.guess_language (location.get_parse_name (), content_type);
         set_language (lang);
+    }
+
+    private void update_project_id ()
+    {
+        unowned Gee.LinkedList<Project?> projects =
+            AppSettings.get_default ().get_projects ();
+
+        string doc_uri = location.get_uri ();
+        for (int i = 0 ; i < projects.size ; i++)
+        {
+            string project_uri = projects[i].directory.get_uri ();
+            if (doc_uri.has_prefix (project_uri))
+            {
+                project_id = i;
+                return;
+            }
+        }
     }
 
     public string get_uri_for_display ()
