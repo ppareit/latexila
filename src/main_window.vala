@@ -355,6 +355,11 @@ public class MainWindow : Window
             if (action != null)
                 action.set_active (true);
 
+            /* configure current project: sensitivity */
+            Gtk.Action action2 = action_group.get_action ("ProjectsConfigCurrent");
+            action2.set_sensitive (active_tab != null
+                && active_document.project_id != -1);
+
             notify_property ("active-tab");
             notify_property ("active-document");
             notify_property ("active-view");
@@ -418,7 +423,6 @@ public class MainWindow : Window
         // bottom: log zone
         vpaned = new VPaned ();
         vpaned.set_position (settings.get_int ("vertical-paned-position"));
-
 
         // when we resize the window, the bottom panel keeps the same height
         vpaned.pack1 (vbox_source_view, true, true);
@@ -1253,7 +1257,8 @@ public class MainWindow : Window
             "EditCopy", "EditPaste", "EditDelete", "EditSelectAll", "EditComment",
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
-            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean", "BuildViewLog"
+            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean", "BuildViewLog",
+            "ProjectsConfigCurrent"
         };
 
         foreach (string file_action in file_actions)
@@ -1703,6 +1708,7 @@ public class MainWindow : Window
 
     public void on_projects_config_current ()
     {
+        Projects.configure_current_project (this);
     }
 
     public void on_projects_manage ()

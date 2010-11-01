@@ -776,8 +776,23 @@ public class AppSettings : GLib.Settings
     {
         return_if_fail (num >= 0 && num < projects.size);
         Project project = projects[num];
+
+        if (new_main_file.equal (project.main_file))
+            return;
+
+        return_if_fail (new_main_file.has_prefix (project.directory));
+
         project.main_file = new_main_file;
+        projects[num] = project;
         projects_modified = true;
+
+        // refresh docs
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            if (doc.project_id == num)
+                doc.project_id = num;
+        }
     }
 
     public void update_all_documents ()

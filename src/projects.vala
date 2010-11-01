@@ -89,17 +89,8 @@ public class Projects : GLib.Object
                 continue;
 
             // main file not in directory
-            if (! main_file.has_prefix (directory))
-            {
-                Dialog error_dialog = new MessageDialog (dialog,
-                    DialogFlags.DESTROY_WITH_PARENT,
-                    MessageType.ERROR,
-                    ButtonsType.OK,
-                    _("The Main File is not in the directory."));
-                error_dialog.run ();
-                error_dialog.destroy ();
+            if (! main_file_is_in_directory (dialog, main_file, directory))
                 continue;
-            }
 
             // try to add the project
             Project project = Project ();
@@ -120,5 +111,84 @@ public class Projects : GLib.Object
         }
 
         dialog.destroy ();
+    }
+
+    public static void configure_current_project (MainWindow main_window)
+    {
+        Document? doc = main_window.active_document;
+        return_if_fail (doc != null || doc.project_id != -1);
+
+        Project? project = AppSettings.get_default ().get_project (doc.project_id);
+        return_if_fail (project != null);
+
+        Dialog dialog = new Dialog.with_buttons (_("Configure Current Project"),
+            main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            STOCK_CANCEL, ResponseType.CANCEL,
+            STOCK_OK, ResponseType.OK,
+            null);
+
+        /* create dialog widgets */
+        VBox content_area = (VBox) dialog.get_content_area ();
+
+        Label location = new Label (_("Location of the current project: %s").printf (
+            Utils.replace_home_dir_with_tilde (project.directory.get_parse_name ())));
+        location.set_line_wrap (true);
+
+        content_area.pack_start (location, false, false, 6);
+
+        HBox hbox = new HBox (false, 6);
+        content_area.pack_start (hbox);
+
+        Label label = new Label (_("Main File:"));
+        hbox.pack_start (label, false, false);
+
+        FileChooserButton file_chooser_button = new FileChooserButton (_("Main File"),
+            FileChooserAction.OPEN);
+        hbox.pack_start (file_chooser_button);
+
+        content_area.show_all ();
+
+        try
+        {
+            file_chooser_button.set_file (project.main_file);
+        }
+        catch (Error e) {}
+
+        /* run */
+        while (dialog.run () == ResponseType.OK)
+        {
+            File? main_file = file_chooser_button.get_file ();
+
+            if (main_file == null)
+                continue;
+
+            // main file not in directory
+            if (! main_file_is_in_directory (dialog, main_file, project.directory))
+                continue;
+
+            AppSettings.get_default ().project_change_main_file (doc.project_id,
+                main_file);
+            break;
+        }
+
+        dialog.destroy ();
+    }
+
+    private static bool main_file_is_in_directory (Window window, File main_file,
+        File directory)
+    {
+        if (main_file.has_prefix (directory))
+            return true;
+
+        Dialog error_dialog = new MessageDialog (window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            MessageType.ERROR,
+            ButtonsType.OK,
+            _("The Main File is not in the directory."));
+
+        error_dialog.run ();
+        error_dialog.destroy ();
+        return false;
     }
 }

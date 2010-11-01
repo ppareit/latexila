@@ -12,7 +12,7 @@ LaTeXila 2.0
 - Manage projects:
 	x create new project
 	- try to find the main file
-	- configure current project (change the main file)
+	x configure current project (change the main file)
 	- manage projects (change main file, delete, clear all)
 	- document compilation:
 		- save all the files opened belonging to the current project
