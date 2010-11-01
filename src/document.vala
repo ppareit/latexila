@@ -512,33 +512,14 @@ public class Document : Gtk.SourceBuffer
         if (location == null)
             return null;
 
-        // Search a comment like "% mainfile: mainfile.tex" in the first or last three
-        // lines of the document.
+        if (project_id == -1)
+            return location;
 
-        string content;
-        TextIter iter1, iter2;
-        get_start_iter (out iter1);
-        get_iter_at_line (out iter2, 3);
-        content = get_text (iter1, iter2, false);
+        Project? project = AppSettings.get_default ().get_project (project_id);
+        if (project == null)
+            return location;
 
-        get_iter_at_line (out iter1, get_line_count () - 3);
-        get_end_iter (out iter2);
-        content += get_text (iter1, iter2, false);
-
-        string[] lines = content.split ("\n");
-        foreach (string line in lines)
-        {
-            string pattern = "% mainfile: ";
-            if (line.has_prefix (pattern))
-            {
-                string filename = line[pattern.length : line.length].strip ();
-                if (filename[0] == '/')
-                    return File.new_for_path (filename);
-                return location.get_parent ().get_child (filename);
-            }
-        }
-
-        return location;
+        return project.main_file;
     }
 
 

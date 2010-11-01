@@ -14,9 +14,9 @@ LaTeXila 2.0
 	- try to find the main file
 	x configure current project (change the main file)
 	- manage projects (change main file, delete, clear all)
-	- document compilation:
-		- save all the files opened belonging to the current project
-		- run the compilation on the main file
+	x document compilation:
+		x save all the files opened belonging to the current project
+		x run the compilation on the main file
 
 - Rubber doesn't support filenames with spaces: fix that
   See https://bugs.launchpad.net/rubber/+bug/639983

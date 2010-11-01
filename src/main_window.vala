@@ -91,9 +91,6 @@ public class MainWindow : Window
 
         // Build
         { "Build", null, N_("_Build") },
-        { "BuildSetMainFile", null, N_("Set _Main File"), null,
-            N_("Set the main file, usefull if a document is splitted into several files"),
-            on_set_main_file },
 		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
 		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
 		    on_build_clean },
@@ -1182,7 +1179,23 @@ public class MainWindow : Window
 
         // save the document if it's a compilation (e.g. with rubber)
         if (tool.compilation)
-            active_document.save ();
+        {
+            int num = active_document.project_id;
+
+            if (num == -1)
+                active_document.save ();
+
+            // save all the documents belonging to the project
+            else
+            {
+                List<Document> docs = Application.get_default ().get_documents ();
+                foreach (Document doc in docs)
+                {
+                    if (doc.project_id == num)
+                        doc.save ();
+                }
+            }
+        }
 
         new BuildToolRunner (active_document.get_main_file (), tool, build_view);
     }
@@ -1597,22 +1610,6 @@ public class MainWindow : Window
     }
 
     /* Build */
-
-    public void on_set_main_file ()
-    {
-        return_if_fail (active_tab != null);
-
-        Document doc = active_document;
-        TextIter iter;
-        doc.get_start_iter (out iter);
-        doc.begin_user_action ();
-        doc.insert (iter, "% mainfile: \n", -1);
-        doc.end_user_action ();
-        iter.backward_char ();
-        doc.select_range (iter, iter);
-
-        active_view.scroll_to_cursor ();
-    }
 
     public void on_build_stop_execution ()
     {
