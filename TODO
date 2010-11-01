@@ -10,11 +10,13 @@ LaTeXila 2.0
 	  does it still occur?
 
 - Manage projects:
-	- the user gives only the project root directory
-	- the *.tex main file is determined (see Kile sources)
-	- list of projects
-	- delete a project from LaTeXila (the project files are not deleted)
-	- when we compile a document, save all the files opened belonging to the current project
+	x create new project
+	- try to find the main file
+	- configure current project (change the main file)
+	- manage projects (change main file, delete, clear all)
+	- document compilation:
+		- save all the files opened belonging to the current project
+		- run the compilation on the main file
 
 - Rubber doesn't support filenames with spaces: fix that
   See https://bugs.launchpad.net/rubber/+bug/639983

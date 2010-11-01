@@ -232,6 +232,7 @@ public class DocumentTab : VBox
                 if (project.main_file.equal (document.location))
                     _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
                 else
+                    // TODO relative path instead of absolute
                     _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
                         + Utils.replace_home_dir_with_tilde (
                             project.main_file.get_parse_name ());

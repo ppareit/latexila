@@ -266,11 +266,9 @@ public class Document : Gtk.SourceBuffer
         unowned Gee.LinkedList<Project?> projects =
             AppSettings.get_default ().get_projects ();
 
-        string doc_uri = location.get_uri ();
         for (int i = 0 ; i < projects.size ; i++)
         {
-            string project_uri = projects[i].directory.get_uri ();
-            if (doc_uri.has_prefix (project_uri))
+            if (location.has_prefix (projects[i].directory))
             {
                 project_id = i;
                 return;

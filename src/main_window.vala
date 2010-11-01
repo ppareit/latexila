@@ -1698,6 +1698,7 @@ public class MainWindow : Window
 
     public void on_projects_new ()
     {
+        Projects.new_project (this);
     }
 
     public void on_projects_config_current ()

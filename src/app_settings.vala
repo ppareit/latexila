@@ -757,6 +757,18 @@ public class AppSettings : GLib.Settings
 
         projects.add (new_project);
         projects_modified = true;
+
+        // find if some opened documents are belonging to the new project
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            if (doc.project_id != -1)
+                continue;
+
+            if (doc.location.has_prefix (new_project.directory))
+                doc.project_id = projects.size - 1;
+        }
+
         return true;
     }
 
@@ -770,17 +782,12 @@ public class AppSettings : GLib.Settings
 
     public void update_all_documents ()
     {
-        string[] projects_uri = {};
-        foreach (Project project in projects)
-            projects_uri += project.directory.get_uri ();
-
         GLib.List<Document> docs = Application.get_default ().get_documents ();
         foreach (Document doc in docs)
         {
-            string doc_uri = doc.location.get_uri ();
-            for (int i = 0 ; i < projects_uri.length ; i++)
+            for (int i = 0 ; i < projects.size ; i++)
             {
-                if (doc_uri.has_prefix (projects_uri[i]))
+                if (doc.location.has_prefix (projects[i].directory))
                 {
                     doc.project_id = i;
                     break;
@@ -898,10 +905,7 @@ public class AppSettings : GLib.Settings
     // returns true if dir1 is a subdirectory of dir2, or inversely
     private bool projects_conflict (File dir1, File dir2)
     {
-        string uri1 = dir1.get_uri ();
-        string uri2 = dir2.get_uri ();
-
-        return uri1.has_prefix (uri2) || uri2.has_prefix (uri1);
+        return dir1.has_prefix (dir2) || dir2.has_prefix (dir1);
     }
 
     private void print_projects ()
