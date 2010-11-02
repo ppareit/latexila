@@ -1710,6 +1710,7 @@ public class MainWindow : Window
 
     public void on_projects_manage ()
     {
+        Projects.manage_projects (this);
     }
 
     /* Help */

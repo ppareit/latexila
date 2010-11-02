@@ -175,6 +175,87 @@ public class Projects : GLib.Object
         dialog.destroy ();
     }
 
+    private static enum ProjectColumn
+    {
+        DIRECTORY,
+        MAIN_FILE,
+        N_COLUMNS
+    }
+
+    public static void manage_projects (MainWindow main_window)
+    {
+        Dialog dialog = new Dialog.with_buttons (_("Manage Projects"),
+            main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            STOCK_CLOSE, ResponseType.OK,
+            null);
+
+        VBox content_area = (VBox) dialog.get_content_area ();
+
+        /* treeview */
+        ListStore model = new ListStore (ProjectColumn.N_COLUMNS, typeof (string),
+            typeof (string));
+        fill_model (model);
+
+        TreeView treeview = new TreeView.with_model (model);
+        treeview.set_size_request (400, 150);
+        treeview.rules_hint = true;
+
+        // column directory
+        TreeViewColumn column = new TreeViewColumn ();
+        treeview.append_column (column);
+        column.title = _("Directory");
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        pixbuf_renderer.stock_id = STOCK_DIRECTORY;
+        column.pack_start (pixbuf_renderer, false);
+
+        CellRendererText text_renderer = new CellRendererText ();
+        column.pack_start (text_renderer, true);
+        column.set_attributes (text_renderer, "text", ProjectColumn.DIRECTORY, null);
+
+        // column main file
+        column = new TreeViewColumn ();
+        treeview.append_column (column);
+        column.title = _("Main File");
+
+        pixbuf_renderer = new CellRendererPixbuf ();
+        pixbuf_renderer.stock_id = STOCK_FILE;
+        column.pack_start (pixbuf_renderer, false);
+
+        text_renderer = new CellRendererText ();
+        column.pack_start (text_renderer, true);
+        column.set_attributes (text_renderer, "text", ProjectColumn.MAIN_FILE, null);
+
+        // selection
+        TreeSelection select = treeview.get_selection ();
+        select.set_mode (SelectionMode.SINGLE);
+
+        // with scrollbar
+        var sw = Utils.add_scrollbar (treeview);
+        content_area.pack_start (sw);
+
+        /* buttons */
+        HBox hbox = new HBox (false, 5);
+        content_area.pack_start (hbox, false, false, 5);
+
+        Button edit_button = new Button.from_stock (STOCK_EDIT);
+        Button delete_button = new Button.from_stock (STOCK_DELETE);
+
+        Button clear_all_button = new Button.with_label (_("Clear All"));
+        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.MENU);
+        clear_all_button.set_image (image);
+
+        hbox.pack_start (edit_button);
+        hbox.pack_start (delete_button);
+        hbox.pack_start (clear_all_button);
+
+        content_area.show_all ();
+
+        dialog.run ();
+        dialog.destroy ();
+    }
+
     private static bool main_file_is_in_directory (Window window, File main_file,
         File directory)
     {
@@ -190,5 +271,30 @@ public class Projects : GLib.Object
         error_dialog.run ();
         error_dialog.destroy ();
         return false;
+    }
+
+    private static void fill_model (ListStore model)
+    {
+        unowned Gee.LinkedList<Project?> projects =
+            AppSettings.get_default ().get_projects ();
+
+        foreach (Project project in projects)
+        {
+            string uri_directory = project.directory.get_parse_name ();
+            string uri_main_file = project.main_file.get_parse_name ();
+
+            string dir = Utils.replace_home_dir_with_tilde (uri_directory) + "/";
+
+            // relative path
+            string main_file =
+                uri_main_file[uri_directory.length + 1 : uri_main_file.length];
+
+            TreeIter iter;
+            model.append (out iter);
+            model.set (iter,
+                ProjectColumn.DIRECTORY, dir,
+                ProjectColumn.MAIN_FILE, main_file,
+                -1);
+        }
     }
 }
