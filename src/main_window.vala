@@ -1705,7 +1705,9 @@ public class MainWindow : Window
 
     public void on_projects_config_current ()
     {
-        Projects.configure_current_project (this);
+        return_if_fail (active_tab != null);
+        return_if_fail (active_document.project_id != -1);
+        Projects.configure_project (this, active_document.project_id);
     }
 
     public void on_projects_manage ()

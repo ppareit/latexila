@@ -10,13 +10,7 @@ LaTeXila 2.0
 	  does it still occur?
 
 - Manage projects:
-	x create new project
 	- try to find the main file
-	x configure current project (change the main file)
-	- manage projects (change main file, delete, clear all)
-	x document compilation:
-		x save all the files opened belonging to the current project
-		x run the compilation on the main file
 
 - Rubber doesn't support filenames with spaces: fix that
   See https://bugs.launchpad.net/rubber/+bug/639983

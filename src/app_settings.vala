@@ -772,13 +772,14 @@ public class AppSettings : GLib.Settings
         return true;
     }
 
-    public void project_change_main_file (int num, File new_main_file)
+    // returns true if main file changed
+    public bool project_change_main_file (int num, File new_main_file)
     {
-        return_if_fail (num >= 0 && num < projects.size);
+        return_val_if_fail (num >= 0 && num < projects.size, false);
         Project project = projects[num];
 
         if (new_main_file.equal (project.main_file))
-            return;
+            return false;
 
         return_if_fail (new_main_file.has_prefix (project.directory));
 
@@ -793,6 +794,30 @@ public class AppSettings : GLib.Settings
             if (doc.project_id == num)
                 doc.project_id = num;
         }
+
+        return true;
+    }
+
+    public void delete_project (int num)
+    {
+        return_if_fail (num >= 0 && num < projects.size);
+        projects.remove_at (num);
+
+        // refresh docs
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            if (doc.project_id == num)
+                doc.project_id = -1;
+            else if (doc.project_id > num)
+                doc.project_id--;
+        }
+    }
+
+    public void clear_all_projects ()
+    {
+        projects.clear ();
+        update_all_documents ();
     }
 
     public void update_all_documents ()
@@ -800,6 +825,8 @@ public class AppSettings : GLib.Settings
         GLib.List<Document> docs = Application.get_default ().get_documents ();
         foreach (Document doc in docs)
         {
+            doc.project_id = -1;
+
             for (int i = 0 ; i < projects.size ; i++)
             {
                 if (doc.location.has_prefix (projects[i].directory))
@@ -833,8 +860,6 @@ public class AppSettings : GLib.Settings
             stderr.printf ("Warning: impossible to load projects: %s\n",
                 e.message);
         }
-
-        print_projects ();
     }
 
     private void projects_parser_start (MarkupParseContext context, string name,
@@ -920,17 +945,17 @@ public class AppSettings : GLib.Settings
     // returns true if dir1 is a subdirectory of dir2, or inversely
     private bool projects_conflict (File dir1, File dir2)
     {
-        return dir1.has_prefix (dir2) || dir2.has_prefix (dir1);
+        return dir1.has_prefix (dir2) || dir2.has_prefix (dir1) || dir1.equal (dir2);
     }
 
-    private void print_projects ()
-    {
-        stdout.printf ("\n=== PROJECTS ===\n");
-        foreach (Project project in projects)
-        {
-            stdout.printf ("\n= PROJECT =\n");
-            stdout.printf ("directory: %s\n", project.directory.get_parse_name ());
-            stdout.printf ("main file: %s\n", project.main_file.get_parse_name ());
-        }
-    }
+//    private void print_projects ()
+//    {
+//        stdout.printf ("\n=== PROJECTS ===\n");
+//        foreach (Project project in projects)
+//        {
+//            stdout.printf ("\n= PROJECT =\n");
+//            stdout.printf ("directory: %s\n", project.directory.get_parse_name ());
+//            stdout.printf ("main file: %s\n", project.main_file.get_parse_name ());
+//        }
+//    }
 }

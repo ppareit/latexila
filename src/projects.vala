@@ -113,15 +113,13 @@ public class Projects : GLib.Object
         dialog.destroy ();
     }
 
-    public static void configure_current_project (MainWindow main_window)
+    // returns true if configuration changed
+    public static bool configure_project (Window main_window, int project_id)
     {
-        Document? doc = main_window.active_document;
-        return_if_fail (doc != null || doc.project_id != -1);
+        Project? project = AppSettings.get_default ().get_project (project_id);
+        return_val_if_fail (project != null, false);
 
-        Project? project = AppSettings.get_default ().get_project (doc.project_id);
-        return_if_fail (project != null);
-
-        Dialog dialog = new Dialog.with_buttons (_("Configure Current Project"),
+        Dialog dialog = new Dialog.with_buttons (_("Configure Project"),
             main_window,
             DialogFlags.DESTROY_WITH_PARENT,
             STOCK_CANCEL, ResponseType.CANCEL,
@@ -131,8 +129,9 @@ public class Projects : GLib.Object
         /* create dialog widgets */
         VBox content_area = (VBox) dialog.get_content_area ();
 
-        Label location = new Label (_("Location of the current project: %s").printf (
-            Utils.replace_home_dir_with_tilde (project.directory.get_parse_name ())));
+        Label location = new Label (_("Location of the project: %s").printf (
+            Utils.replace_home_dir_with_tilde (project.directory.get_parse_name ())
+            + "/"));
         location.set_line_wrap (true);
 
         content_area.pack_start (location, false, false, 6);
@@ -156,6 +155,7 @@ public class Projects : GLib.Object
         catch (Error e) {}
 
         /* run */
+        bool ret = false;
         while (dialog.run () == ResponseType.OK)
         {
             File? main_file = file_chooser_button.get_file ();
@@ -167,12 +167,13 @@ public class Projects : GLib.Object
             if (! main_file_is_in_directory (dialog, main_file, project.directory))
                 continue;
 
-            AppSettings.get_default ().project_change_main_file (doc.project_id,
+            ret = AppSettings.get_default ().project_change_main_file (project_id,
                 main_file);
             break;
         }
 
         dialog.destroy ();
+        return ret;
     }
 
     private static enum ProjectColumn
@@ -193,11 +194,11 @@ public class Projects : GLib.Object
         VBox content_area = (VBox) dialog.get_content_area ();
 
         /* treeview */
-        ListStore model = new ListStore (ProjectColumn.N_COLUMNS, typeof (string),
+        ListStore store = new ListStore (ProjectColumn.N_COLUMNS, typeof (string),
             typeof (string));
-        fill_model (model);
+        update_model (store);
 
-        TreeView treeview = new TreeView.with_model (model);
+        TreeView treeview = new TreeView.with_model (store);
         treeview.set_size_request (400, 150);
         treeview.rules_hint = true;
 
@@ -239,7 +240,7 @@ public class Projects : GLib.Object
         HBox hbox = new HBox (false, 5);
         content_area.pack_start (hbox, false, false, 5);
 
-        Button edit_button = new Button.from_stock (STOCK_EDIT);
+        Button edit_button = new Button.from_stock (STOCK_PROPERTIES);
         Button delete_button = new Button.from_stock (STOCK_DELETE);
 
         Button clear_all_button = new Button.with_label (_("Clear All"));
@@ -251,6 +252,68 @@ public class Projects : GLib.Object
         hbox.pack_start (clear_all_button);
 
         content_area.show_all ();
+
+        /* callbacks */
+        edit_button.clicked.connect (() =>
+        {
+            int i = Utils.get_selected_row (treeview);
+            if (i != -1 && configure_project (dialog, i))
+                update_model (store);
+        });
+
+        delete_button.clicked.connect (() =>
+        {
+            TreeIter iter;
+            int i = Utils.get_selected_row (treeview, out iter);
+            if (i == -1)
+                return;
+
+            string directory;
+            TreeModel model = (TreeModel) store;
+            model.get (iter, ProjectColumn.DIRECTORY, out directory, -1);
+
+            Dialog delete_dialog = new MessageDialog (dialog,
+                DialogFlags.DESTROY_WITH_PARENT,
+                MessageType.QUESTION, ButtonsType.NONE,
+                _("Do you really want to delete the project \"%s\"?"),
+                directory);
+
+            delete_dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
+                STOCK_DELETE, ResponseType.YES);
+
+            if (delete_dialog.run () == ResponseType.YES)
+            {
+                store.remove (iter);
+                AppSettings.get_default ().delete_project (i);
+            }
+
+            delete_dialog.destroy ();
+        });
+
+        clear_all_button.clicked.connect (() =>
+        {
+            Dialog clear_dialog = new MessageDialog (dialog,
+                DialogFlags.DESTROY_WITH_PARENT,
+                MessageType.QUESTION,
+                ButtonsType.NONE,
+                _("Do you really want to clear all projects?"));
+
+            clear_dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+
+            Button button = new Button.with_label (_("Clear All"));
+            Image img = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
+            button.set_image (img);
+            button.show_all ();
+            clear_dialog.add_action_widget (button, ResponseType.YES);
+
+            if (clear_dialog.run () == ResponseType.YES)
+            {
+                AppSettings.get_default ().clear_all_projects ();
+                store.clear ();
+            }
+
+            clear_dialog.destroy ();
+        });
 
         dialog.run ();
         dialog.destroy ();
@@ -273,8 +336,10 @@ public class Projects : GLib.Object
         return false;
     }
 
-    private static void fill_model (ListStore model)
+    private static void update_model (ListStore model)
     {
+        model.clear ();
+
         unowned Gee.LinkedList<Project?> projects =
             AppSettings.get_default ().get_projects ();
 

@@ -477,35 +477,35 @@ public class PreferencesDialog : Dialog
         bt_delete.clicked.connect (() =>
         {
             TreeIter iter;
-            int i = Utils.get_selected_row (build_tools_view, true, out iter);
-            if (i != -1)
+            int i = Utils.get_selected_row (build_tools_view, out iter);
+            if (i == -1)
+                return;
+
+            string label;
+            TreeModel model = (TreeModel) build_tools_store;
+            model.get (iter, BuildToolColumn.LABEL, out label, -1);
+
+            Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
+                MessageType.QUESTION, ButtonsType.NONE,
+                _("Do you really want to delete the build tool \"%s\"?"),
+                label);
+
+            dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
+                STOCK_DELETE, ResponseType.YES);
+
+            if (dialog.run () == ResponseType.YES)
             {
-                string label;
-                TreeModel model = (TreeModel) build_tools_store;
-                model.get (iter, BuildToolColumn.LABEL, out label, -1);
-
-                Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
-                    MessageType.QUESTION, ButtonsType.NONE,
-                    _("Do you really want to delete the build tool \"%s\"?"),
-                    label);
-
-                dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
-                    STOCK_DELETE, ResponseType.YES);
-
-                if (dialog.run () == ResponseType.YES)
-                {
-                    build_tools_store.remove (iter);
-                    AppSettings.get_default ().delete_build_tool (i);
-                }
-
-                dialog.destroy ();
+                build_tools_store.remove (iter);
+                AppSettings.get_default ().delete_build_tool (i);
             }
+
+            dialog.destroy ();
         });
 
         bt_up.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (build_tools_view, true, out iter1);
+            int i = Utils.get_selected_row (build_tools_view, out iter1);
             if (i != -1 && i > 0)
             {
                 iter2 = iter1;
@@ -520,7 +520,7 @@ public class PreferencesDialog : Dialog
         bt_down.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (build_tools_view, true, out iter1);
+            int i = Utils.get_selected_row (build_tools_view, out iter1);
             if (i != -1)
             {
                 iter2 = iter1;
@@ -786,7 +786,7 @@ private class BuildToolDialog : Dialog
         button_delete.clicked.connect (() =>
         {
             TreeIter iter;
-            int i = Utils.get_selected_row (treeview_jobs, true, out iter);
+            int i = Utils.get_selected_row (treeview_jobs, out iter);
             if (i != -1)
                 jobs_store.remove (iter);
         });
@@ -794,7 +794,7 @@ private class BuildToolDialog : Dialog
         button_up.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (treeview_jobs, true, out iter1);
+            int i = Utils.get_selected_row (treeview_jobs, out iter1);
             if (i != -1 && i > 0)
             {
                 iter2 = iter1;
@@ -806,7 +806,7 @@ private class BuildToolDialog : Dialog
         button_down.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (treeview_jobs, true, out iter1);
+            int i = Utils.get_selected_row (treeview_jobs, out iter1);
             if (i != -1)
             {
                 iter2 = iter1;

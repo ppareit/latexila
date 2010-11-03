@@ -220,14 +220,13 @@ namespace Utils
 
     // get indice of selected row in the treeview
     // returns -1 if no row is selected
-    public int get_selected_row (TreeView view, bool set_iter = false,
-        out TreeIter iter_to_set = null)
+    public int get_selected_row (TreeView view, out TreeIter iter_to_set = null)
     {
         TreeSelection select = view.get_selection ();
         TreeIter iter;
         if (select.get_selected (null, out iter))
         {
-            if (set_iter)
+            if (&iter_to_set != null)
                 iter_to_set = iter;
             TreeModel model = view.get_model ();
             TreePath path = model.get_path (iter);
