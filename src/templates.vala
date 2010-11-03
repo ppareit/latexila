@@ -119,29 +119,24 @@ public class Templates : GLib.Object
 
         dialog.set_default_size (400, 330);
 
-        Box content_area = (Box) dialog.get_content_area ();
+        Box content_area1 = (Box) dialog.get_content_area ();
+        VBox content_area = new VBox (false, 18);
+        content_area.set_border_width (10);
+        content_area1.pack_start (content_area);
 
         /* icon view for the default templates */
         IconView icon_view_default_templates = create_icon_view (default_store);
-
-        // with a scrollbar (without that there is a problem for resizing the
-	    // dialog, we can make it bigger but not smaller...)
-	    Widget scrollbar = Utils.add_scrollbar (icon_view_default_templates);
-
-	    // with a frame
-	    var frame = new Frame (_("Default templates"));
-	    frame.add (scrollbar);
-
-	    content_area.pack_start (frame, true, true, 10);
+        Widget component = get_dialog_new_component (_("Default templates"),
+            icon_view_default_templates);
+        content_area.pack_start (component);
 
 	    /* icon view for the personnal templates */
 	    IconView icon_view_personnal_templates = create_icon_view (personnal_store);
-	    scrollbar = Utils.add_scrollbar (icon_view_personnal_templates);
-	    frame = new Frame (_("Your personnal templates"));
-	    frame.add (scrollbar);
-	    content_area.pack_start (frame, true, true, 10);
+	    component = get_dialog_new_component (_("Your personnal templates"),
+	        icon_view_personnal_templates);
+	    content_area.pack_start (component);
 
-	    content_area.show_all ();
+	    content_area1.show_all ();
 
 	    icon_view_default_templates.selection_changed.connect (() =>
 	    {
@@ -181,6 +176,31 @@ public class Templates : GLib.Object
 	    }
 
 	    dialog.destroy ();
+    }
+
+    private Widget get_dialog_new_component (string title, Widget widget)
+    {
+        // title in bold at the left
+        // widget is below, with a left margin, with scrollbars
+
+        VBox vbox = new VBox (false, 6);
+
+        Label label = new Label (null);
+        label.set_markup ("<b>" + title + "</b>");
+        label.xalign = (float) 0.0;
+        vbox.pack_start (label, false, false);
+
+        Alignment alignment = new Alignment ((float) 0.5, (float) 0.5, (float) 1.0,
+            (float) 1.0);
+        alignment.left_padding = 12;
+        vbox.pack_start (alignment);
+
+        // with a scrollbar (without that there is a problem for resizing the
+	    // dialog, we can make it bigger but not smaller...)
+	    Widget scrollbar = Utils.add_scrollbar (widget);
+        alignment.add (scrollbar);
+
+        return vbox;
     }
 
     public void show_dialog_create (MainWindow parent)
