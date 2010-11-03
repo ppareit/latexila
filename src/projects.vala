@@ -97,7 +97,8 @@ public class Projects : GLib.Object
             project.directory = directory;
             project.main_file = main_file;
 
-            if (AppSettings.get_default ().add_project (project))
+            File conflict;
+            if (AppSettings.get_default ().add_project (project, out conflict))
                 break;
 
             // conflict with another project
@@ -105,7 +106,8 @@ public class Projects : GLib.Object
                 DialogFlags.DESTROY_WITH_PARENT,
                 MessageType.ERROR,
                 ButtonsType.OK,
-                _("There is a conflict with another project."));
+                _("There is a conflict with the project \"%s\"."),
+                Utils.replace_home_dir_with_tilde (conflict.get_parse_name ()) + "/");
             error_dialog.run ();
             error_dialog.destroy ();
         }

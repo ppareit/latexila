@@ -9,9 +9,6 @@ LaTeXila 2.0
 	  See https://bugzilla.gnome.org/show_bug.cgi?id=618004
 	  does it still occur?
 
-- Manage projects:
-	- try to find the main file
-
 - Rubber doesn't support filenames with spaces: fix that
   See https://bugs.launchpad.net/rubber/+bug/639983
 

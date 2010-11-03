@@ -747,12 +747,15 @@ public class AppSettings : GLib.Settings
     }
 
     // returns true if project successfully added
-    public bool add_project (Project new_project)
+    public bool add_project (Project new_project, out File conflict)
     {
         foreach (Project project in projects)
         {
             if (projects_conflict (project.directory, new_project.directory))
+            {
+                conflict = project.directory;
                 return false;
+            }
         }
 
         projects.add (new_project);
