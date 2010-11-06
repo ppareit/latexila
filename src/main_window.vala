@@ -1271,7 +1271,7 @@ public class MainWindow : Window
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
             "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean", "BuildViewLog",
-            "ProjectsConfigCurrent"
+            "ProjectsConfigCurrent", "FileCreateTemplate"
         };
 
         foreach (string file_action in file_actions)
@@ -1441,7 +1441,6 @@ public class MainWindow : Window
 
     public void on_delete_template ()
     {
-        return_if_fail (active_tab != null);
         Templates.get_default ().show_dialog_delete (this);
     }
 

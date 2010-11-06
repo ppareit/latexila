@@ -117,7 +117,7 @@ public class Templates : GLib.Object
             STOCK_CANCEL, ResponseType.REJECT,
             null);
 
-        dialog.set_default_size (400, 330);
+        dialog.set_default_size (400, 340);
 
         Box content_area1 = (Box) dialog.get_content_area ();
         VBox content_area = new VBox (false, 18);
@@ -126,13 +126,13 @@ public class Templates : GLib.Object
 
         /* icon view for the default templates */
         IconView icon_view_default_templates = create_icon_view (default_store);
-        Widget component = get_dialog_new_component (_("Default templates"),
+        Widget component = get_dialog_component (_("Default templates"),
             icon_view_default_templates);
         content_area.pack_start (component);
 
 	    /* icon view for the personnal templates */
 	    IconView icon_view_personnal_templates = create_icon_view (personnal_store);
-	    component = get_dialog_new_component (_("Your personnal templates"),
+	    component = get_dialog_component (_("Your personnal templates"),
 	        icon_view_personnal_templates);
 	    content_area.pack_start (component);
 
@@ -178,7 +178,7 @@ public class Templates : GLib.Object
 	    dialog.destroy ();
     }
 
-    private Widget get_dialog_new_component (string title, Widget widget)
+    private Widget get_dialog_component (string title, Widget widget)
     {
         // title in bold at the left
         // widget is below, with a left margin, with scrollbars
@@ -285,10 +285,8 @@ public class Templates : GLib.Object
         /* icon view for the personnal templates */
         IconView icon_view = create_icon_view (personnal_store);
         icon_view.set_selection_mode (SelectionMode.MULTIPLE);
-        var sw = Utils.add_scrollbar (icon_view);
-        var frame = new Frame (_("Personnal templates"));
-        frame.add (sw);
-        content_area.pack_start (frame, true, true, 10);
+        Widget component = get_dialog_component (_("Personnal templates"), icon_view);
+        content_area.pack_start (component, true, true, 10);
         content_area.show_all ();
 
         int nb_personnal_templates_before = nb_personnal_templates;
