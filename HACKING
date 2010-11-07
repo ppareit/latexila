@@ -38,7 +38,7 @@ Translations
 How to generate latexila.pot?
 
 $ xgettext -k_ -kN_ -d latexila -s -o po/sources.pot src/*.vala
-$ xgettext -o po/glade.pot --language=Glade --omit-header src/*.ui
+$ xgettext -o po/glade.pot --language=Glade --omit-header src/ui/*.ui
 $ cd po/ ; msgcat -o latexila.pot --use-first sources.pot glade.pot
 
 How to create a new *.po for a new language?
