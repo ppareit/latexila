@@ -146,7 +146,7 @@
       <description>Automatically clean-up files after close. no-confirm-clean must be true.</description>
     </key>
     <key name="clean-extensions" type="s">
-      <default>'.aux .blg .bbl .log .idx .ilg .ind .out .toc'</default>
+      <default>'.aux .blg .bbl .idx .ilg .ind .log .nav .out .snm .toc'</default>
       <summary>File extensions for clean-up</summary>
       <description>The file extensions for the clean-up are separated by spaces</description>
     </key>
