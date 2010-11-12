@@ -229,14 +229,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // show calltip?
         if (in_argument && proposals_to_filter == null)
         {
-            clear_context (context);
-
             // show calltip only on user request
+            // Attention, clear the context before comparing the activation is not a
+            // really good idea... ;)
             if (context.activation == SourceCompletionActivation.INTERACTIVE)
             {
+                clear_context (context);
                 hide_calltip_window ();
                 return;
             }
+
+            clear_context (context);
 
             CompletionCommand command = commands[cmd_name];
             int num = get_argument_num (command.args, arguments);
