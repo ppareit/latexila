@@ -790,13 +790,30 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="usepackage">
 		<argument label="Options" type="optional" />
 		<argument label="Package">
+			<choice name="amsfonts" />
+			<choice name="amsmath" />
+			<choice name="amssymb" />
 			<choice name="babel" />
-			<choice name="url" />
 			<choice name="color" />
-			<choice name="listings" />
-			<choice name="inputenc" />
+			<choice name="colortbl" />
+			<choice name="fancyhdr" />
+			<choice name="gchords" />
+			<choice name="geometry" />
 			<choice name="graphicx" />
 			<choice name="graphics" />
+			<choice name="hyperref" />
+			<choice name="inputenc" />
+			<choice name="latexsym" />
+			<choice name="listings" />
+			<choice name="makeidx" />
+			<choice name="moreverb" />
+			<choice name="multicol" />
+			<choice name="multirow" />
+			<choice name="pdfpages" />
+			<choice name="tabularx" />
+			<choice name="units" />
+			<choice name="url" />
+			<choice name="xcolor" />
 		</argument>
 	</command>
 
@@ -848,6 +865,22 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Key">
 			<placeholder key="Bibitems" />
 		</argument>
+	</command>
+
+	<!-- index -->
+
+	<command name="makeindex" package="makeidx" />
+
+	<command name="printindex" package="makeidx" />
+
+	<command name="index" package="makeidx">
+		<argument label="Word" />
+	</command>
+
+	<command name="makeglossary" package="makeidx" />
+
+	<command name="glossary" package="makeidx">
+		<argument label="Entry" />
 	</command>
 
 	<!-- referencing -->
