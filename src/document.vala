@@ -94,6 +94,20 @@ public class Document : Gtk.SourceBuffer
         return base.get_modified ();
     }
 
+    public new void insert (TextIter iter, string text, int len)
+    {
+        CompletionProvider provider = CompletionProvider.get_default ();
+        provider.locked = true;
+        base.insert (iter, text, len);
+
+        // HACK: wait one second before delocking completion
+        Timeout.add_seconds (1, () =>
+        {
+            provider.locked = false;
+            return false;
+        });
+    }
+
     public void load (File location)
     {
         this.location = location;

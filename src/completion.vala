@@ -63,6 +63,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     // character is typed (and also just after match () was called).
     private bool first_populate = true;
 
+    // useful when text is inserted by the program, not the user
+    public bool locked = false;
+
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
@@ -151,6 +154,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         first_populate = true;
 
+        if (locked)
+            return false;
+
         bool in_argument = false;
         bool valid_arg_contents = false;
         show_all_proposals = false;
@@ -190,6 +196,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public void populate (SourceCompletionContext context)
     {
+        if (locked)
+            return;
+
         TextIter iter = {};
         context.get_iter (iter);
         string? cmd = get_latex_command_at_iter (iter);
