@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: latexila 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-13 18:20+0100\n"
-"PO-Revision-Date: 2010-11-07 10:00-0300\n"
+"PO-Revision-Date: 2010-11-13 14:40-0300\n"
 "Last-Translator: Matias De la Puente <mfpuente.ar@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -1003,7 +1003,8 @@ msgstr "Roman - \\rmfamily"
 
 #: src/build_tools.vala:257
 msgid "Rubber may not support filenames with spaces (even in a directory)"
-msgstr ""
+msgstr "Puede que Rubber no soporte nombres de archivos con espacios (incluso "
+"en un directorio)"
 
 #: src/main.vala:75
 #, c-format
