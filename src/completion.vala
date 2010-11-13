@@ -157,6 +157,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         TextIter iter = {};
         context.get_iter (iter);
+
+        // if text selected, NO completion
+        TextBuffer buf = iter.get_buffer ();
+        if (buf.has_selection)
+            return false;
+
         string? cmd = get_latex_command_at_iter (iter);
 
         if (cmd == null)
