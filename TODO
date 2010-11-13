@@ -3,16 +3,8 @@ TODO
 LaTeXila 2.0
 ============
 
-- Auto-completion:
-	- there are critical messages, try to avoid them
-	- sometimes a segfault occurs, when typing entirely a command following with "{"
-	  See https://bugzilla.gnome.org/show_bug.cgi?id=618004
-	  does it still occur?
-
 - Rubber doesn't support filenames with spaces: fix that
   See https://bugs.launchpad.net/rubber/+bug/639983
-
-- Translation
 
 
 LaTeXila 2.2 or later

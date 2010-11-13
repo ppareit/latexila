@@ -59,6 +59,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private SourceCompletionInfo calltip_window = null;
     private Label calltip_window_label = null;
 
+    // HACK: match () is called one time and then populate () is called each time a new
+    // character is typed (and also just after match () was called).
+    private bool first_populate = true;
+
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
@@ -145,6 +149,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public bool match (SourceCompletionContext context)
     {
+        first_populate = true;
+
         bool in_argument = false;
         bool valid_arg_contents = false;
         show_all_proposals = false;
@@ -199,6 +205,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             || (in_argument && ! commands.has_key (cmd_name)))
         {
             clear_context (context);
+            first_populate = false;
             return;
         }
 
@@ -207,6 +214,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         {
             show_all_proposals = false;
             context.add_proposals ((SourceCompletionProvider) this, proposals, true);
+            first_populate = false;
             return;
         }
 
@@ -239,16 +247,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 return;
             }
 
-            clear_context (context);
-
-            CompletionCommand command = commands[cmd_name];
-            int num = get_argument_num (command.args, arguments);
-            if (num != -1)
+            if (first_populate)
             {
-                string info = get_command_info (command, num);
-                show_calltip_info (info);
+                CompletionCommand command = commands[cmd_name];
+                int num = get_argument_num (command.args, arguments);
+                if (num != -1)
+                {
+                    string info = get_command_info (command, num);
+                    show_calltip_info (info);
+                }
+                return;
             }
-            return;
         }
 
         hide_calltip_window ();
@@ -280,6 +289,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         context.add_proposals ((SourceCompletionProvider) this, filtered_proposals,
             true);
+
+        first_populate = false;
     }
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
@@ -853,6 +864,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         // the second argument can not be null so we use a variable...
         // the vapi should be fixed
+
+        // FIXME: maybe this method is not sure, because sometimes segfault occur,
+        // but it's really difficult to diagnose...
+        // see bug #618004
         List<SourceCompletionItem> empty_proposals = null;
         context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
     }
