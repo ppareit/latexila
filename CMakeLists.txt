@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.6.4)
 project ("latexila" C)
 
 set (APP_NAME "LaTeXila")
-set (APP_VERSION "1.99.1")
+set (APP_VERSION "2.0.0")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
@@ -11,7 +11,7 @@ set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
 
 # for debugging
-set (CMAKE_C_FLAGS "-ggdb")
+#set (CMAKE_C_FLAGS "-ggdb")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
@@ -31,6 +31,7 @@ include (ValaPrecompile)
 include (ValaVersion)
 find_package (Vala REQUIRED)
 ensure_vala_version ("0.10.0" MINIMUM)
+ensure_vala_version ("0.10.99" MAXIMUM)
 
 find_package (PkgConfig)
 pkg_check_modules (GTK REQUIRED "gtk+-2.0 >= 2.16")

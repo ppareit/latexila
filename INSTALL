@@ -1,9 +1,9 @@
 Requirements
 ============
 
-GLib >= 2.26
+GLib >= 2.26 (GIO is part of GLib)
 gsettings-desktop-schemas
-Vala >= 0.10.0
+Vala 0.10.x (not above)
 GTK+ >= 2.16
 GtkSourceView >= 2.10
 unique
@@ -34,6 +34,6 @@ $ xargs rm < install_manifest.txt
 Configuration
 =============
 
-* Change the install directory
+* Change the install directory (by default /usr/local/)
 	run cmake with this option:
 	-DCMAKE_INSTALL_PREFIX=/path/to/install/directory/

@@ -1,4 +1,19 @@
-ChangeLog LaTeXila
+LaTeXila NEWS
+
+==============================
+* Release 2.0.0 (Nov 13, 2010)
+==============================
+
+- LaTeX commands auto-completion
+- Manage build tools with a GUI
+- Most used symbols
+- Manage projects easily
+- More items in LaTeX menu
+- A new Math menu
+- Some symbols and icons regenerated (with a new script)
+- Reset all preferences button
+- French and Spanish translations updated
+- Some other little improvements and bug fixes
 
 ==============================
 * Release 1.99.1 (Sep 2, 2010)
