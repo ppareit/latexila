@@ -257,6 +257,21 @@ public class SearchAndReplace : GLib.Object
                 set_search_text ();
                 working_document.replace_all (entry_replace.text);
             });
+
+            // TAB in find => go to replace
+            entry_find.key_press_event.connect ((event) =>
+            {
+                // See GDK_KEY_Tab in gdk/gdkkeysyms.h (not available in Vala)
+                if (event.keyval == 0xff09)
+                {
+                    show_search_and_replace ();
+                    entry_replace.grab_focus ();
+                    return true;
+                }
+
+                // propagate the event further
+                return false;
+            });
         }
         catch (Error e)
         {
