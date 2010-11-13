@@ -245,8 +245,24 @@ public class BuildToolRunner : BuildToolProcess
         {
             if (current_job.post_processor == "generic")
                 execute_without_output (command, directory);
+
+            // rubber
             else
+            {
+                // Attention, rubber doesn't support filenames with spaces, warn the user
+                if (filename.contains (" "))
+                {
+                    BuildIssue[] issues = new BuildIssue[1];
+                    BuildIssue issue = BuildIssue ();
+                    issue.message = _("Rubber may not support filenames with spaces (even in a directory)");
+                    issue.message_type = BuildMessageType.WARNING;
+                    issue.filename = filename;
+                    issues[0] = issue;
+
+                    view.append_issues (job_partitions[job_num], issues);
+                }
                 execute (command, directory);
+            }
         }
         catch (Error e)
         {

@@ -37,15 +37,13 @@ Translations
 
 How to generate latexila.pot?
 
-$ xgettext -k_ -kN_ -d latexila -s -o po/sources.pot src/*.vala
-$ xgettext -o po/glade.pot --language=Glade --omit-header src/ui/*.ui
-$ cd po/ ; msgcat -o latexila.pot --use-first sources.pot glade.pot
-
-How to create a new *.po for a new language?
-
-$ cd po/ ; msginit -l xx -o xx.po -i latexila.pot
+    $ ./update_pot.sh
 
 How to update the *.po files with latexila.pot file?
 
-$ cd build/ ; cmake ../
-$ make
+    $ cd build/ ; cmake ../
+    $ make
+
+How to create a new *.po for a new language?
+
+    $ cd po/ ; msginit -l xx -o xx.po -i latexila.pot

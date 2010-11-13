@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-07 16:39+0100\n"
-"PO-Revision-Date: 2010-11-10 00:19+0100\n"
+"POT-Creation-Date: 2010-11-13 18:20+0100\n"
+"PO-Revision-Date: 2010-11-13 18:21+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: French\n"
 "Language: \n"
@@ -82,7 +82,7 @@ msgstr "Aligner à droite - \\begin{flushright}"
 msgid "All"
 msgstr "Tout"
 
-#: src/latex_menu.vala:264
+#: src/latex_menu.vala:265
 msgid "Array of Equations - \\begin{align*}"
 msgstr "Série d'équations - \\begin{align*}"
 
@@ -110,7 +110,7 @@ msgstr "Enregistrer automatiquement toutes les"
 msgid "Big skip - \\bigskip"
 msgstr "Grand saut - \\bigskip"
 
-#: src/latex_menu.vala:329
+#: src/latex_menu.vala:331
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
 msgstr "Blackboard (majuscules uniquement) - \\mathbb (package amsfonts)"
 
@@ -118,7 +118,7 @@ msgstr "Blackboard (majuscules uniquement) - \\mathbb (package amsfonts)"
 msgid "Bold - \\bfseries"
 msgstr "Gras - \\bfseries"
 
-#: src/latex_menu.vala:321
+#: src/latex_menu.vala:323
 msgid "Bold - \\mathbf"
 msgstr "Gras - \\mathbf"
 
@@ -146,7 +146,7 @@ msgstr "Outils de construction"
 msgid "Bulleted List - \\begin{itemize}"
 msgstr "Liste avec tirets - \\begin{itemize}"
 
-#: src/latex_menu.vala:327
+#: src/latex_menu.vala:329
 msgid "Calligraphic - \\mathcal"
 msgstr "Calligraphique - \\mathcal"
 
@@ -174,7 +174,7 @@ msgstr "Changer le fichier principal du projet courant"
 msgid "Chapter"
 msgstr "Chapitre"
 
-#: src/latex_menu.vala:426
+#: src/latex_menu.vala:428
 msgid "Characters Sizes"
 msgstr "Taille des caractères"
 
@@ -427,7 +427,7 @@ msgstr "Énumération - \\begin{enumerate}"
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Erreur en essayant de convertir le document en UTF-8"
 
-#: src/latex_menu.vala:332
+#: src/latex_menu.vala:334
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Euler Fraktur - \\mathfrak (package amsfonts)"
 
@@ -496,7 +496,7 @@ msgstr "Police et couleurs"
 msgid "Footnote"
 msgstr "Note de bas de page"
 
-#: src/latex_menu.vala:273
+#: src/latex_menu.vala:275
 msgid "Fraction - \\frac{}{}"
 msgstr "Fraction - \\frac{}{}"
 
@@ -598,7 +598,7 @@ msgstr "_Accents internationaux"
 msgid "Italic - \\itshape"
 msgstr "Italique - \\itshape"
 
-#: src/latex_menu.vala:319
+#: src/latex_menu.vala:321
 msgid "Italic - \\mathit"
 msgstr "Italique - \\mathit"
 
@@ -626,11 +626,11 @@ msgstr "LaTeXila a ouvert cette instance du fichier d'une manière non-éditable
 msgid "Label"
 msgstr "Label"
 
-#: src/latex_menu.vala:364
+#: src/latex_menu.vala:366
 msgid "Large - \\;"
 msgstr "Large - \\;"
 
-#: src/latex_menu.vala:436
+#: src/latex_menu.vala:438
 msgid "Left Delimiters"
 msgstr "Délimiteurs gauches"
 
@@ -690,23 +690,23 @@ msgstr "Afficher le titre - \\maketitle"
 msgid "Manage Projects"
 msgstr "Gestion des projets"
 
-#: src/latex_menu.vala:433
+#: src/latex_menu.vala:435
 msgid "Math Environments"
 msgstr "Environnements mathématiques"
 
-#: src/latex_menu.vala:315
+#: src/latex_menu.vala:317
 msgid "Math Font _Styles"
 msgstr "_Styles de police mathématique"
 
-#: src/latex_menu.vala:337
+#: src/latex_menu.vala:339
 msgid "Math _Accents"
 msgstr "_Accents mathématiques"
 
-#: src/latex_menu.vala:281
+#: src/latex_menu.vala:283
 msgid "Math _Functions"
 msgstr "_Fonctions mathématiques"
 
-#: src/latex_menu.vala:358
+#: src/latex_menu.vala:360
 msgid "Math _Spaces"
 msgstr "_Espaces mathématiques"
 
@@ -714,7 +714,7 @@ msgstr "_Espaces mathématiques"
 msgid "Mathematical Environment - $...$"
 msgstr "Environnement mathématique - $...$"
 
-#: src/latex_menu.vala:362
+#: src/latex_menu.vala:364
 msgid "Medium - \\:"
 msgstr "Moyen - \\:"
 
@@ -758,7 +758,7 @@ msgstr "Multi-colonne - \\multicolumn"
 msgid "Must Succeed"
 msgstr "Doit réussir"
 
-#: src/latex_menu.vala:277
+#: src/latex_menu.vala:279
 msgid "N-th Root - \\sqrt[]{}"
 msgstr "Racine Nième - \\sqrt[]{}"
 
@@ -806,7 +806,7 @@ msgstr ""
 msgid "No confirmation when cleaning-up"
 msgstr "Pas de confirmation lors du nettoyage"
 
-#: src/completion.vala:263
+#: src/completion.vala:275
 msgid "No matching proposal"
 msgstr "Pas de proposition correspondante"
 
@@ -830,15 +830,15 @@ msgstr "Nombre de caractères après '\\'"
 msgid "Number of most used symbols:"
 msgstr "Nombre de symboles les plus utilisés :"
 
-#: src/latex_menu.vala:266
+#: src/latex_menu.vala:268
 msgid "Numbered Array of Equations - \\begin{align}"
 msgstr "Série d'équations numérotées - \\begin{align}"
 
-#: src/latex_menu.vala:265
+#: src/latex_menu.vala:267
 msgid "Numbered Array of _Equations - \\begin{align}"
 msgstr "Série d'é_quations numérotées - \\begin{align}"
 
-#: src/latex_menu.vala:262
+#: src/latex_menu.vala:263
 msgid "Numbered Equation - \\begin{equation}"
 msgstr "Équation numérotée - \\begin{equation}"
 
@@ -951,7 +951,7 @@ msgstr "Référence bibliographique"
 msgid "Reference to a label"
 msgstr "Référence vers un label"
 
-#: src/latex_menu.vala:429
+#: src/latex_menu.vala:431
 msgid "References"
 msgstr "Références"
 
@@ -1000,15 +1000,15 @@ msgstr "Réinitialiser tout"
 msgid "Reset the size of the font"
 msgstr "Rétabli la taille de la police"
 
-#: src/latex_menu.vala:439
+#: src/latex_menu.vala:441
 msgid "Right Delimiters"
 msgstr "Délimiteurs droits"
 
-#: src/latex_menu.vala:392
+#: src/latex_menu.vala:394
 msgid "Right _Delimiters"
 msgstr "Délimiteurs _droits"
 
-#: src/latex_menu.vala:317
+#: src/latex_menu.vala:319
 msgid "Roman - \\mathrm"
 msgstr "Romain - \\mathrm"
 
@@ -1016,12 +1016,16 @@ msgstr "Romain - \\mathrm"
 msgid "Roman - \\rmfamily"
 msgstr "Romains - \\rmfamily"
 
+#: src/build_tools.vala:257
+msgid "Rubber may not support filenames with spaces (even in a directory)"
+msgstr "Rubber peut ne pas supporter des noms de fichiers avec des espaces (même dans un répertoire)"
+
 #: src/main.vala:75
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
 msgstr "Lancez '%s --help' pour voir la liste complète des options disponibles.\n"
 
-#: src/latex_menu.vala:323
+#: src/latex_menu.vala:325
 msgid "Sans Serif - \\mathsf"
 msgstr "Linéaux (sans serif) - \\mathsf"
 
@@ -1074,7 +1078,7 @@ msgstr "Recherche un texte"
 msgid "Section"
 msgstr "Section"
 
-#: src/latex_menu.vala:423
+#: src/latex_menu.vala:425
 msgid "Sectioning"
 msgstr "Sections"
 
@@ -1126,7 +1130,7 @@ msgstr "Penché - \\slshape"
 msgid "Slanted - \\textsl"
 msgstr "Penché - \\textsl"
 
-#: src/latex_menu.vala:360
+#: src/latex_menu.vala:362
 msgid "Small - \\,"
 msgstr "Petit - \\,"
 
@@ -1138,11 +1142,11 @@ msgstr "Petites capitales - \\scshape"
 msgid "Small Capitals - \\textsc"
 msgstr "Petites capitales - \\textsc"
 
-#: src/latex_menu.vala:275
+#: src/latex_menu.vala:277
 msgid "Square Root - \\sqrt{}"
 msgstr "Racine carrée - \\sqrt{}"
 
-#: src/latex_menu.vala:274
+#: src/latex_menu.vala:276
 msgid "Square _Root - \\sqrt{}"
 msgstr "_Racine carrée - \\sqrt{}"
 
@@ -1150,7 +1154,7 @@ msgstr "_Racine carrée - \\sqrt{}"
 msgid "Stop Execution"
 msgstr "Arrêter l'exécution"
 
-#: src/latex_menu.vala:270
+#: src/latex_menu.vala:272
 msgid "Su_bscript - __{}"
 msgstr "_Indice - _{}"
 
@@ -1166,11 +1170,11 @@ msgstr "Sous-section"
 msgid "Sub-sub-section"
 msgstr "Sous-sous-section"
 
-#: src/latex_menu.vala:271
+#: src/latex_menu.vala:273
 msgid "Subscript - _{}"
 msgstr "Indice - _{}"
 
-#: src/latex_menu.vala:269
+#: src/latex_menu.vala:271
 msgid "Superscript - ^{}"
 msgstr "Exposant - ^{}"
 
@@ -1267,7 +1271,7 @@ msgstr "Basculer entre le mode de recherche et de remplacement"
 msgid "Trema - \\\""
 msgstr "Tréma - \\\""
 
-#: src/latex_menu.vala:325
+#: src/latex_menu.vala:327
 msgid "Typewriter - \\mathtt"
 msgstr "Machine à écrire - \\mathtt"
 
@@ -1372,7 +1376,7 @@ msgstr "_Réduire le zoom"
 msgid "_AMS packages"
 msgstr "Packages _AMS"
 
-#: src/latex_menu.vala:263
+#: src/latex_menu.vala:264
 msgid "_Array of Equations - \\begin{align*}"
 msgstr "_Série d'équations - \\begin{align*}"
 
@@ -1432,7 +1436,7 @@ msgstr "_Famille de police"
 msgid "_Font Styles"
 msgstr "_Styles de police"
 
-#: src/latex_menu.vala:272
+#: src/latex_menu.vala:274
 msgid "_Fraction - \\frac{}{}"
 msgstr "_Fraction - \\frac{}{}"
 
@@ -1448,11 +1452,11 @@ msgstr "Aid_e"
 msgid "_LaTeX Reference"
 msgstr "_Référence LaTeX"
 
-#: src/latex_menu.vala:363
+#: src/latex_menu.vala:365
 msgid "_Large"
 msgstr "_Large"
 
-#: src/latex_menu.vala:370
+#: src/latex_menu.vala:372
 msgid "_Left Delimiters"
 msgstr "Délimiteurs _gauches"
 
@@ -1476,7 +1480,7 @@ msgstr "Environnements _mathématiques"
 msgid "_Mathematical Environment - $...$"
 msgstr "Environnement _mathématique - $...$"
 
-#: src/latex_menu.vala:361
+#: src/latex_menu.vala:363
 msgid "_Medium"
 msgstr "_Moyen"
 
@@ -1488,7 +1492,7 @@ msgstr "_Divers"
 msgid "_Move to New Window"
 msgstr "_Déplacer vers nouvelle fenêtre"
 
-#: src/latex_menu.vala:276
+#: src/latex_menu.vala:278
 msgid "_N-th Root - \\sqrt[]{}"
 msgstr "Racine _Nième - \\sqrt[]{}"
 
@@ -1500,7 +1504,7 @@ msgstr "_Nouveau projet"
 msgid "_Next Document"
 msgstr "Document _suivant"
 
-#: src/latex_menu.vala:261
+#: src/latex_menu.vala:262
 msgid "_Numbered Equation - \\begin{equation}"
 msgstr "É_quation numérotée - \\begin{equation}"
 
@@ -1536,7 +1540,7 @@ msgstr "_Sections"
 msgid "_Side panel"
 msgstr "Panneau _latéral"
 
-#: src/latex_menu.vala:359
+#: src/latex_menu.vala:361
 msgid "_Small"
 msgstr "_Petit"
 
@@ -1548,7 +1552,7 @@ msgstr "_Espaces"
 msgid "_Stop Execution"
 msgstr "_Arrêter l'exécution"
 
-#: src/latex_menu.vala:268
+#: src/latex_menu.vala:270
 msgid "_Superscript - ^{}"
 msgstr "_Exposant - ^{}"
 
@@ -1594,39 +1598,39 @@ msgstr "caractère"
 msgid "characters"
 msgstr "caractères"
 
-#: src/latex_menu.vala:383
+#: src/latex_menu.vala:385
 msgid "left  }"
 msgstr "} à gauche"
 
-#: src/latex_menu.vala:371
+#: src/latex_menu.vala:373
 msgid "left ("
 msgstr "( à gauche"
 
-#: src/latex_menu.vala:379
+#: src/latex_menu.vala:381
 msgid "left )"
 msgstr ") à gauche"
 
-#: src/latex_menu.vala:387
+#: src/latex_menu.vala:389
 msgid "left ."
 msgstr ". à gauche"
 
-#: src/latex_menu.vala:377
+#: src/latex_menu.vala:379
 msgid "left <"
 msgstr "< à gauche"
 
-#: src/latex_menu.vala:385
+#: src/latex_menu.vala:387
 msgid "left >"
 msgstr "> à gauche"
 
-#: src/latex_menu.vala:373
+#: src/latex_menu.vala:375
 msgid "left ["
 msgstr "[ à gauche"
 
-#: src/latex_menu.vala:381
+#: src/latex_menu.vala:383
 msgid "left ]"
 msgstr "] à gauche"
 
-#: src/latex_menu.vala:375
+#: src/latex_menu.vala:377
 msgid "left { "
 msgstr "{ à gauche"
 
@@ -1648,39 +1652,39 @@ msgstr "minutes"
 msgid "report-en.tex"
 msgstr "report-fr.tex"
 
-#: src/latex_menu.vala:397
+#: src/latex_menu.vala:399
 msgid "right  }"
 msgstr "} à droite"
 
-#: src/latex_menu.vala:401
+#: src/latex_menu.vala:403
 msgid "right ("
 msgstr "( à droite"
 
-#: src/latex_menu.vala:393
+#: src/latex_menu.vala:395
 msgid "right )"
 msgstr ") à droite"
 
-#: src/latex_menu.vala:409
+#: src/latex_menu.vala:411
 msgid "right ."
 msgstr ". à droite"
 
-#: src/latex_menu.vala:407
+#: src/latex_menu.vala:409
 msgid "right <"
 msgstr "< à droite"
 
-#: src/latex_menu.vala:399
+#: src/latex_menu.vala:401
 msgid "right >"
 msgstr "> à droite"
 
-#: src/latex_menu.vala:403
+#: src/latex_menu.vala:405
 msgid "right ["
 msgstr "[ à droite"
 
-#: src/latex_menu.vala:395
+#: src/latex_menu.vala:397
 msgid "right ]"
 msgstr "] à droite"
 
-#: src/latex_menu.vala:405
+#: src/latex_menu.vala:407
 msgid "right { "
 msgstr "{ à droite"
 

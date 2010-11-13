@@ -1,8 +1,5 @@
 TODO
 
-LaTeXila 2.0
-============
-
 - Rubber doesn't support filenames with spaces: fix that
   See https://bugs.launchpad.net/rubber/+bug/639983
 
