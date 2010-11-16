@@ -12,6 +12,7 @@ set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 
 # for debugging
 #set (CMAKE_C_FLAGS "-ggdb")
+set (CMAKE_C_FLAGS "-O2")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
