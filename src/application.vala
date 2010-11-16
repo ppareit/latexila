@@ -130,11 +130,11 @@ public class Application : GLib.Object
         /* application icons */
         string[] filenames =
         {
-            Config.ICONS_DIR + "/16x16/latexila.png",
-            Config.ICONS_DIR + "/22x22/latexila.png",
-            Config.ICONS_DIR + "/24x24/latexila.png",
-            Config.ICONS_DIR + "/32x32/latexila.png",
-            Config.ICONS_DIR + "/48x48/latexila.png"
+            Config.ICONS_DIR + "/16x16/apps/latexila.png",
+            Config.ICONS_DIR + "/22x22/apps/latexila.png",
+            Config.ICONS_DIR + "/24x24/apps/latexila.png",
+            Config.ICONS_DIR + "/32x32/apps/latexila.png",
+            Config.ICONS_DIR + "/48x48/apps/latexila.png"
         };
 
         List<Gdk.Pixbuf> list = null;
