@@ -433,17 +433,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // \begin{figure}
         // XX\begin{center[enter]
 
-        TextIter start_iter;
-        doc.get_iter_at_line (out start_iter, line);
-        text = doc.get_text (start_iter, iter, false);
-        string current_indent = "";
-        for (i = 0 ; i < text.length ; i++)
-        {
-            if (text[i].isspace ())
-                current_indent += text[i].to_string ();
-            else
-                break;
-        }
+        string current_indent = Utils.get_current_indentation (doc, line);
 
         /* close environment */
 

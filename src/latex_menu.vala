@@ -471,6 +471,22 @@ public class LatexMenu : Gtk.ActionGroup
 	    TextIter start, end;
         bool text_selected = active_document.get_selection_bounds (out start, out end);
 
+        // take into account the current indentation
+        string? text_before2 = null;
+        string? text_after2 = null;
+
+        if (text_before.contains ("\n") || text_after.contains ("\n"))
+        {
+            string current_indent = Utils.get_current_indentation (active_document,
+                start.get_line ());
+
+            if (current_indent != "")
+            {
+                text_before2 = text_before.replace ("\n", @"\n$current_indent");
+                text_after2 = text_after.replace ("\n", @"\n$current_indent");
+            }
+        }
+
         active_document.begin_user_action ();
 
 	    // insert around the selected text
@@ -478,9 +494,9 @@ public class LatexMenu : Gtk.ActionGroup
 	    if (text_selected)
 	    {
 	        TextMark mark_end = active_document.create_mark (null, end, false);
-            active_document.insert (start, text_before, -1);
+            active_document.insert (start, text_before2 ?? text_before, -1);
             active_document.get_iter_at_mark (out end, mark_end);
-            active_document.insert (end, text_after, -1);
+            active_document.insert (end, text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out end, mark_end);
 		    active_document.select_range (end, end);
@@ -494,13 +510,13 @@ public class LatexMenu : Gtk.ActionGroup
 	    // move the cursor between the 2 texts inserted
 	    else
 	    {
-	        active_document.insert_at_cursor (text_before, -1);
+	        active_document.insert_at_cursor (text_before2 ?? text_before, -1);
 
 		    TextIter between;
 		    active_document.get_iter_at_mark (out between, active_document.get_insert ());
 		    TextMark mark = active_document.create_mark (null, between, true);
 
-            active_document.insert_at_cursor (text_after, -1);
+            active_document.insert_at_cursor (text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out between, mark);
 		    active_document.select_range (between, between);
