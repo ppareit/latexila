@@ -477,8 +477,8 @@ public class LatexMenu : Gtk.ActionGroup
 
         if (text_before.contains ("\n") || text_after.contains ("\n"))
         {
-            string current_indent = Utils.get_current_indentation (active_document,
-                start.get_line ());
+            string current_indent =
+                active_document.get_current_indentation (start.get_line ());
 
             if (current_indent != "")
             {
@@ -527,8 +527,7 @@ public class LatexMenu : Gtk.ActionGroup
 
     private string get_indentation ()
     {
-        DocumentView view = main_window.active_view;
-        return Utils.get_indentation_style (view);
+        return main_window.active_view.get_indentation_style ();
     }
 
     private void insert_character_style (string style)

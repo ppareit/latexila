@@ -86,8 +86,9 @@ public class PreferencesDialog : Dialog
             var display_line_nb_checkbutton =
                 builder.get_object ("display_line_nb_checkbutton");
             var tab_width_spinbutton = builder.get_object ("tab_width_spinbutton");
-            var insert_spaces_checkbutton =
-                builder.get_object ("insert_spaces_checkbutton");
+            Widget insert_spaces_checkbutton =
+                (Widget) builder.get_object ("insert_spaces_checkbutton");
+            Widget forget_no_tabs = (Widget) builder.get_object ("forget_no_tabs");
             var hl_current_line_checkbutton =
                 builder.get_object ("hl_current_line_checkbutton");
             var bracket_matching_checkbutton =
@@ -149,6 +150,8 @@ public class PreferencesDialog : Dialog
             settings.bind ("tabs-size", tab_width_spinbutton, "value",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
             settings.bind ("insert-spaces", insert_spaces_checkbutton, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            settings.bind ("forget-no-tabs", forget_no_tabs, "active",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
             settings.bind ("display-line-numbers", display_line_nb_checkbutton, "active",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
@@ -238,14 +241,11 @@ public class PreferencesDialog : Dialog
                 }
             });
 
+            // forget no tabs sensitivity
+            set_sensitivity (settings, "insert-spaces", forget_no_tabs);
+
             // autosave spinbutton sensitivity
-            var auto_save_enabled = settings.get_boolean ("auto-save");
-            autosave_spinbutton.set_sensitive (auto_save_enabled);
-            settings.changed["auto-save"].connect ((setting, key) =>
-            {
-                var val = setting.get_boolean (key);
-                autosave_spinbutton.set_sensitive (val);
-            });
+            set_sensitivity (settings, "auto-save", autosave_spinbutton);
 
             // autosave label
             uint interval;
@@ -259,14 +259,8 @@ public class PreferencesDialog : Dialog
             });
 
             // interactive completion spinbutton sensitivity
-            bool interactive_comp_enabled =
-                latex_settings.get_boolean ("interactive-completion");
-            interactive_comp_spinbutton.set_sensitive (interactive_comp_enabled);
-            latex_settings.changed["interactive-completion"].connect ((setting, key) =>
-            {
-                bool val = setting.get_boolean (key);
-                interactive_comp_spinbutton.set_sensitive (val);
-            });
+            set_sensitivity (latex_settings, "interactive-completion",
+                interactive_comp_spinbutton);
 
             // interactive completion label
             int min_nb_chars = latex_settings.get_int ("interactive-completion-num");
@@ -280,13 +274,7 @@ public class PreferencesDialog : Dialog
             });
 
             // font hbox sensitivity
-            var use_default_font = settings.get_boolean ("use-default-font");
-            font_hbox.set_sensitive (! use_default_font);
-            settings.changed["use-default-font"].connect ((setting, key) =>
-            {
-                var val = setting.get_boolean (key);
-                font_hbox.set_sensitive (! val);
-            });
+            set_sensitivity (settings, "use-default-font", font_hbox, false);
 
             // default font checkbutton label
             set_system_font_label (default_font_checkbutton);
@@ -298,24 +286,12 @@ public class PreferencesDialog : Dialog
             });
 
             // automatic clean-up sensitivity
-            bool no_confirm = latex_settings.get_boolean ("no-confirm-clean");
-            auto_clean_up_checkbutton.set_sensitive (no_confirm);
-            latex_settings.changed["no-confirm-clean"].connect ((setting, key) =>
-            {
-                bool val = setting.get_boolean (key);
-                auto_clean_up_checkbutton.set_sensitive (val);
-            });
+            set_sensitivity (latex_settings, "no-confirm-clean",
+                auto_clean_up_checkbutton);
 
             // file browser settings sensitivity
-            bool fb_show_all = fb_settings.get_boolean ("show-all-files");
-            vbox_file_browser_show_all.set_sensitive (fb_show_all);
-            file_browser_entry.set_sensitive (! fb_show_all);
-            fb_settings.changed["show-all-files"].connect ((setting, key) =>
-            {
-                bool val = setting.get_boolean (key);
-                vbox_file_browser_show_all.set_sensitive (val);
-                file_browser_entry.set_sensitive (! val);
-            });
+            set_sensitivity (fb_settings, "show-all-files", vbox_file_browser_show_all);
+            set_sensitivity (fb_settings, "show-all-files", file_browser_entry, false);
 
             // build tools
             init_build_tools_treeview ();
@@ -338,6 +314,19 @@ public class PreferencesDialog : Dialog
             content_area.pack_start (label_error, true, true, 0);
             content_area.show_all ();
         }
+    }
+
+    private void set_sensitivity (GLib.Settings settings, string key, Widget widget,
+        bool must_be_enabled = true)
+    {
+        bool val = settings.get_boolean (key);
+        widget.set_sensitive (must_be_enabled ? val : ! val);
+
+        settings.changed[key].connect ((setting, k) =>
+        {
+            bool v = setting.get_boolean (k);
+            widget.set_sensitive (must_be_enabled ? v : ! v);
+        });
     }
 
     private void set_system_font_label (Button button)

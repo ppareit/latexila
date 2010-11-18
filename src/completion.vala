@@ -402,7 +402,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         // get text between iter and end of line
         int line = iter.get_line ();
-        TextBuffer doc = iter.get_buffer ();
+        Document doc = (Document) iter.get_buffer ();
         TextIter end_iter;
         doc.get_iter_at_line (out end_iter, line + 1);
         string text = doc.get_text (iter, end_iter, false);
@@ -433,13 +433,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // \begin{figure}
         // XX\begin{center[enter]
 
-        string current_indent = Utils.get_current_indentation (doc, line);
+        string current_indent = doc.get_current_indentation (line);
 
         /* close environment */
 
         Document document = (Document) doc;
-        var view = document.tab.view;
-        string indent = Utils.get_indentation_style (view);
+        string indent = document.tab.view.get_indentation_style ();
 
         doc.insert (iter, @"\n$current_indent$indent", -1);
         TextMark cursor_pos = doc.create_mark (null, iter, true);

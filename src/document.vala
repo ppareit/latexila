@@ -536,6 +536,26 @@ public class Document : Gtk.SourceBuffer
         return project.main_file;
     }
 
+    public string get_current_indentation (int line)
+    {
+        TextIter start_iter, end_iter;
+        get_iter_at_line (out start_iter, line);
+        get_iter_at_line (out end_iter, line + 1);
+
+        string text = get_text (start_iter, end_iter, false);
+
+        string current_indent = "";
+        for (long i = 0 ; i < text.length ; i++)
+        {
+            if (text[i] == ' ' || text[i] == '\t')
+                current_indent += text[i].to_string ();
+            else
+                break;
+        }
+
+        return current_indent;
+    }
+
 
     /***************
      *    SEARCH

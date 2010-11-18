@@ -57,6 +57,11 @@
       <summary>Insert spaces</summary>
       <description>Whether LaTeXila should insert spaces instead of tabs.</description>
     </key>
+    <key name="forget-no-tabs" type="b">
+      <default>true</default>
+      <summary>Forget no tabulations</summary>
+      <description>Forget you are not using tabulations.</description>
+    </key>
     <key name="display-line-numbers" type="b">
       <default>false</default>
       <summary>Display Line Numbers</summary>

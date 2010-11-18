@@ -241,31 +241,4 @@ namespace Utils
         var pixbuf = w.render_icon (stock_id, size, "vala");
         return pixbuf;
     }
-
-    public string get_indentation_style (SourceView view)
-    {
-        if (view.insert_spaces_instead_of_tabs)
-            return string.nfill (view.tab_width, ' ');
-        return "\t";
-    }
-
-    public string get_current_indentation (TextBuffer doc, int line)
-    {
-        TextIter start_iter, end_iter;
-        doc.get_iter_at_line (out start_iter, line);
-        doc.get_iter_at_line (out end_iter, line + 1);
-
-        string text = doc.get_text (start_iter, end_iter, false);
-
-        string current_indent = "";
-        for (long i = 0 ; i < text.length ; i++)
-        {
-            if (text[i] == ' ' || text[i] == '\t')
-                current_indent += text[i].to_string ();
-            else
-                break;
-        }
-
-        return current_indent;
-    }
 }
