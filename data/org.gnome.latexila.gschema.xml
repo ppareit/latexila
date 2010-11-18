@@ -159,9 +159,14 @@
       <description>URI of the file browser current directory</description>
     </key>
     <key name="show-all-files" type="b">
-      <default>false</default>
+      <default>true</default>
       <summary>Show all files</summary>
       <description>Show all files except hidden files</description>
+    </key>
+    <key name="show-all-files-except" type="b">
+      <default>true</default>
+      <summary>Show all files except clean-up</summary>
+      <description>Show all files except those for clean-up (see preferences.latex.clean-extensions)</description>
     </key>
     <key name="show-hidden-files" type="b">
       <default>false</default>

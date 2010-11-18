@@ -130,6 +130,10 @@ public class PreferencesDialog : Dialog
             var clean_up_entry = builder.get_object ("clean_up_entry");
 
             var file_browser_show_all = builder.get_object ("file_browser_show_all");
+            Widget vbox_file_browser_show_all =
+                (Widget) builder.get_object ("vbox_file_browser_show_all");
+            Widget file_browser_except =
+                (Widget) builder.get_object ("file_browser_except");
             Widget file_browser_show_hidden =
                 (Widget) builder.get_object ("file_browser_show_hidden");
             Widget file_browser_entry =
@@ -185,6 +189,8 @@ public class PreferencesDialog : Dialog
             GLib.Settings fb_settings =
                 new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
             fb_settings.bind ("show-all-files", file_browser_show_all, "active",
+                SettingsBindFlags.GET | SettingsBindFlags.SET);
+            fb_settings.bind ("show-all-files-except", file_browser_except, "active",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
             fb_settings.bind ("show-hidden-files", file_browser_show_hidden, "active",
                 SettingsBindFlags.GET | SettingsBindFlags.SET);
@@ -302,12 +308,12 @@ public class PreferencesDialog : Dialog
 
             // file browser settings sensitivity
             bool fb_show_all = fb_settings.get_boolean ("show-all-files");
-            file_browser_show_hidden.set_sensitive (fb_show_all);
+            vbox_file_browser_show_all.set_sensitive (fb_show_all);
             file_browser_entry.set_sensitive (! fb_show_all);
             fb_settings.changed["show-all-files"].connect ((setting, key) =>
             {
                 bool val = setting.get_boolean (key);
-                file_browser_show_hidden.set_sensitive (val);
+                vbox_file_browser_show_all.set_sensitive (val);
                 file_browser_entry.set_sensitive (! val);
             });
 

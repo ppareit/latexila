@@ -46,6 +46,7 @@ public class FileBrowser : VBox
     private File current_directory;
     private Button parent_button;
     private GLib.Settings settings;
+    private GLib.Settings latex_settings;
     private uint timeout_id = 0;
 
     public FileBrowser (MainWindow main_window)
@@ -67,23 +68,27 @@ public class FileBrowser : VBox
     {
         settings = new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
         settings.changed["show-all-files"].connect (refresh);
+        settings.changed["show-all-files-except"].connect (refresh);
         settings.changed["show-hidden-files"].connect (refresh);
-        settings.changed["file-extensions"].connect (() =>
-        {
-            // Since file-extensions is a text entry, we call refresh () only
-            // after 2 seconds. If the text has changed before the 2 seconds, we
-            // reinitialize the counter.
-            if (timeout_id != 0)
-                Source.remove (timeout_id);
-            timeout_id = Timeout.add_seconds (2, on_refresh);
-        });
+        settings.changed["file-extensions"].connect (on_refresh);
+
+        latex_settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
+        latex_settings.changed["clean-extensions"].connect (on_refresh);
     }
 
-    private bool on_refresh ()
+    private void on_refresh ()
     {
-        timeout_id = 0;
-        refresh ();
-        return false;
+        // Call refresh () only after 2 seconds.
+        // If the text has changed before the 2 seconds, we reinitialize the counter.
+        if (timeout_id != 0)
+            Source.remove (timeout_id);
+
+        timeout_id = Timeout.add_seconds (2, () =>
+        {
+            timeout_id = 0;
+            refresh ();
+            return false;
+        });
     }
 
     private void init_toolbar ()
@@ -313,9 +318,14 @@ public class FileBrowser : VBox
                 "standard::type,standard::display-name", FileQueryInfoFlags.NONE);
 
             bool show_all = settings.get_boolean ("show-all-files");
+            bool show_all_except = settings.get_boolean ("show-all-files-except");
             bool show_hidden = show_all && settings.get_boolean ("show-hidden-files");
+
             string exts = settings.get_string ("file-extensions");
             string[] extensions = exts.split (" ");
+
+            exts = latex_settings.get_string ("clean-extensions");
+            string[] clean_extensions = exts.split (" ");
 
             for (FileInfo? info = enumerator.next_file () ;
                  info != null ;
@@ -333,7 +343,9 @@ public class FileBrowser : VBox
                 }
 
                 string extension = Utils.get_extension (basename);
-                if (show_all || extension in extensions)
+                if ((show_all && ! show_all_except)
+                    || (show_all && ! (extension in clean_extensions))
+                    || extension in extensions)
                 {
                     string pixbuf;
                     switch (extension)
