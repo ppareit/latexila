@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: latexila 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-19 01:59+0100\n"
-"PO-Revision-Date: 2010-11-13 14:40-0300\n"
+"PO-Revision-Date: 2010-11-19 08:00-0300\n"
 "Last-Translator: Matias De la Puente <mfpuente.ar@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -428,7 +428,7 @@ msgstr "Euler Fraktur - \\mathfrak (amsfonts package)"
 
 #: src/ui/preferences_dialog.ui:856
 msgid "Except those for clean-up"
-msgstr ""
+msgstr "Excepto aquellos para limpieza"
 
 #: src/preferences_dialog.vala:593
 msgid "Execute"
@@ -497,7 +497,7 @@ msgstr "Nota al pie"
 
 #: src/ui/preferences_dialog.ui:94
 msgid "Forget you are not using tabulations"
-msgstr ""
+msgstr "Olvidar de que no está usando tabulaciones"
 
 #: src/latex_menu.vala:275
 msgid "Fraction - \\frac{}{}"
@@ -1100,9 +1100,8 @@ msgid "Show hidden files (beginning with a dot)"
 msgstr "Mostrar archivos ocultos (empezando con un punto)"
 
 #: src/ui/preferences_dialog.ui:893
-#, fuzzy
 msgid "Show only files with these extensions"
-msgstr "Mostrar solo los archivos con una de estas extensiones"
+msgstr "Mostrar solo los archivos con estas extensiones"
 
 #: src/main_window.vala:141
 msgid "Show or hide the bottom panel"
