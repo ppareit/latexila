@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-13 18:20+0100\n"
-"PO-Revision-Date: 2010-11-13 18:21+0100\n"
+"POT-Creation-Date: 2010-11-19 01:59+0100\n"
+"PO-Revision-Date: 2010-11-19 02:02+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: French\n"
 "Language: \n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/search.vala:378
+#: src/search.vala:393
 #, c-format
 msgid "%u matches"
 msgstr "%u correspondances"
 
-#: src/search.vala:372
+#: src/search.vala:387
 #, c-format
 msgid "%u of %u"
 msgstr "%u sur %u"
@@ -98,11 +98,11 @@ msgstr "Article"
 msgid "Author - \\author"
 msgstr "Auteur - \\author"
 
-#: src/ui/preferences_dialog.ui:746
+#: src/ui/preferences_dialog.ui:764
 msgid "Automatically clean-up files after close"
 msgstr "Nettoyer automatiquement les fichiers après fermeture"
 
-#: src/ui/preferences_dialog.ui:139
+#: src/ui/preferences_dialog.ui:157
 msgid "Autosave files every"
 msgstr "Enregistrer automatiquement toutes les"
 
@@ -134,11 +134,11 @@ msgstr "Livre"
 msgid "Breve - \\u"
 msgstr "Brève - \\u"
 
-#: src/preferences_dialog.vala:621
+#: src/preferences_dialog.vala:616
 msgid "Build Tool"
 msgstr "Outil de construction"
 
-#: src/ui/preferences_dialog.ui:436
+#: src/ui/preferences_dialog.ui:454
 msgid "Build Tools"
 msgstr "Outils de construction"
 
@@ -228,11 +228,11 @@ msgstr "Fermer le document courant"
 msgid "Close without Saving"
 msgstr "Fermer sans enregistrer"
 
-#: src/ui/preferences_dialog.ui:315
+#: src/ui/preferences_dialog.ui:333
 msgid "Color Scheme"
 msgstr "Style de couleurs"
 
-#: src/preferences_dialog.vala:738
+#: src/preferences_dialog.vala:733
 msgid "Commands"
 msgstr "Commandes"
 
@@ -252,7 +252,7 @@ msgstr "Configure l'application"
 msgid "Content of the document - \\begin{document}"
 msgstr "Contenu du document - \\begin{document}"
 
-#: src/preferences_dialog.vala:602
+#: src/preferences_dialog.vala:597
 msgid "Convert"
 msgstr "Convertir"
 
@@ -264,7 +264,7 @@ msgstr "Copie la sélection"
 msgid "Create _Template From Document..."
 msgstr "Créer un _modèle à partir du document..."
 
-#: src/ui/preferences_dialog.ui:121
+#: src/ui/preferences_dialog.ui:139
 msgid "Create a backup copy of files before saving"
 msgstr "Créer une copie de sauvegarde des fichiers avant l'enregistrement"
 
@@ -333,7 +333,7 @@ msgstr "Répertoire"
 msgid "Directory:"
 msgstr "Répertoire :"
 
-#: src/ui/preferences_dialog.ui:31
+#: src/ui/preferences_dialog.ui:28
 msgid "Display line numbers"
 msgstr "Afficher les numéros de ligne"
 
@@ -341,7 +341,7 @@ msgstr "Afficher les numéros de ligne"
 msgid "Do you really want to clear all projects?"
 msgstr "Êtes-vous sûr d'effacer tous les projets ?"
 
-#: src/preferences_dialog.vala:490
+#: src/preferences_dialog.vala:485
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer l'outil de construction \"%s\" ?"
@@ -355,7 +355,7 @@ msgstr "Êtes-vous sûr de vouloir supprimer le projet \"%s\" ?"
 msgid "Do you really want to delete these files?"
 msgstr "Êtes-vous sûr de vouloir supprimer ces fichiers ?"
 
-#: src/preferences_dialog.vala:538
+#: src/preferences_dialog.vala:533
 msgid "Do you really want to reset all build tools?"
 msgstr "Êtes-vous sûr de vouloir réinitialiser tous les outils de construction ?"
 
@@ -379,7 +379,7 @@ msgstr "Classe de document - \\documentclass"
 msgid "Don't Edit"
 msgstr "Ne pas éditer"
 
-#: src/document.vala:209
+#: src/document.vala:223
 msgid "Don't Save"
 msgstr "Ne pas enregistrer"
 
@@ -395,11 +395,11 @@ msgstr "Double accent aigu - \\H"
 msgid "Edit Anyway"
 msgstr "Éditer malgré tout"
 
-#: src/ui/preferences_dialog.ui:201
+#: src/ui/preferences_dialog.ui:219
 msgid "Editor"
 msgstr "Éditeur"
 
-#: src/ui/preferences_dialog.ui:262
+#: src/ui/preferences_dialog.ui:280
 msgid "Editor _font: "
 msgstr "Police de l'éditeur : "
 
@@ -423,7 +423,7 @@ msgstr "Mots entiers seulement"
 msgid "Enumeration - \\begin{enumerate}"
 msgstr "Énumération - \\begin{enumerate}"
 
-#: src/document.vala:245
+#: src/document.vala:259
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Erreur en essayant de convertir le document en UTF-8"
 
@@ -431,7 +431,11 @@ msgstr "Erreur en essayant de convertir le document en UTF-8"
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Euler Fraktur - \\mathfrak (package amsfonts)"
 
-#: src/preferences_dialog.vala:598
+#: src/ui/preferences_dialog.ui:856
+msgid "Except those for clean-up"
+msgstr "Excepté ceux pour le nettoyage"
+
+#: src/preferences_dialog.vala:593
 msgid "Execute"
 msgstr "Exécuter"
 
@@ -451,16 +455,16 @@ msgstr "Figure - \\begin{figure}"
 msgid "File"
 msgstr "Fichier"
 
-#: src/file_browser.vala:373
+#: src/file_browser.vala:385
 #: src/main_window.vala:282
 msgid "File Browser"
 msgstr "Navigateur de fichiers"
 
-#: src/ui/preferences_dialog.ui:707
+#: src/ui/preferences_dialog.ui:725
 msgid "File Clean-Up"
 msgstr "Nettoyage des fichiers"
 
-#: src/file_browser.vala:403
+#: src/file_browser.vala:415
 msgid "File System"
 msgstr "Système de fichiers"
 
@@ -484,17 +488,21 @@ msgstr "Recherche précédente"
 msgid "Fo_nt Shape"
 msgstr "_Forme de police"
 
-#: src/ui/preferences_dialog.ui:220
+#: src/ui/preferences_dialog.ui:238
 msgid "Font"
 msgstr "Police"
 
-#: src/ui/preferences_dialog.ui:366
+#: src/ui/preferences_dialog.ui:384
 msgid "Font & Colors"
 msgstr "Police et couleurs"
 
 #: src/latex_menu.vala:57
 msgid "Footnote"
 msgstr "Note de bas de page"
+
+#: src/ui/preferences_dialog.ui:94
+msgid "Forget you are not using tabulations"
+msgstr "Oublier le fait que vous n'utilisez pas de tabulations"
 
 #: src/latex_menu.vala:275
 msgid "Fraction - \\frac{}{}"
@@ -508,15 +516,15 @@ msgstr "Aller à la ligne :"
 msgid "Go to a specific line"
 msgstr "Aller à une certaine ligne"
 
-#: src/file_browser.vala:101
+#: src/file_browser.vala:106
 msgid "Go to the active document directory"
 msgstr "Aller au répertoire du document actif"
 
-#: src/file_browser.vala:99
+#: src/file_browser.vala:104
 msgid "Go to the home directory"
 msgstr "Aller au dossier home de l'utilisateur"
 
-#: src/file_browser.vala:100
+#: src/file_browser.vala:105
 msgid "Go to the parent directory"
 msgstr "Aller au dossier parent"
 
@@ -533,11 +541,11 @@ msgstr "Grec"
 msgid "Hide panel"
 msgstr "Cacher le panneau"
 
-#: src/ui/preferences_dialog.ui:93
+#: src/ui/preferences_dialog.ui:111
 msgid "Highlight current line"
 msgstr "Surligner la ligne actuelle"
 
-#: src/ui/preferences_dialog.ui:107
+#: src/ui/preferences_dialog.ui:125
 msgid "Highlight matching brackets"
 msgstr "Surligner les parenthèses correspondantes"
 
@@ -561,16 +569,16 @@ msgstr "Icône"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Si vous n'enregistrez pas, tous vos changements seront perdu à jamais."
 
-#: src/document.vala:204
+#: src/document.vala:218
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "Si vous l'enregistrez, tout vos changements externes peuvent être perdu. Enregistrer malgré tout ?"
 
-#: src/document.vala:124
+#: src/document.vala:138
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Impossible de charger le fichier '%s'."
 
-#: src/document.vala:221
+#: src/document.vala:235
 msgid "Impossible to save the file."
 msgstr "Impossible d'enregistrer le fichier."
 
@@ -582,11 +590,11 @@ msgstr "Inclure un fichier - \\input"
 msgid "Include an image (graphicx package) - \\includegraphics"
 msgstr "Inclure une image (package graphicx) - \\includegraphics"
 
-#: src/ui/preferences_dialog.ui:79
+#: src/ui/preferences_dialog.ui:76
 msgid "Insert spaces instead of tabs"
 msgstr "Insérer des espaces au lieu de tabulations"
 
-#: src/ui/preferences_dialog.ui:384
+#: src/ui/preferences_dialog.ui:402
 msgid "Interactive completion after"
 msgstr "Complétion interactive après"
 
@@ -754,7 +762,7 @@ msgstr "Déplacer le document courant dans une nouvelle fenêtre"
 msgid "Multicolumn - \\multicolumn"
 msgstr "Multi-colonne - \\multicolumn"
 
-#: src/preferences_dialog.vala:743
+#: src/preferences_dialog.vala:738
 msgid "Must Succeed"
 msgstr "Doit réussir"
 
@@ -802,11 +810,11 @@ msgstr ""
 "Nouvelle page - \\n"
 "ewpage"
 
-#: src/ui/preferences_dialog.ui:728
+#: src/ui/preferences_dialog.ui:746
 msgid "No confirmation when cleaning-up"
 msgstr "Pas de confirmation lors du nettoyage"
 
-#: src/completion.vala:275
+#: src/completion.vala:290
 msgid "No matching proposal"
 msgstr "Pas de proposition correspondante"
 
@@ -818,15 +826,15 @@ msgstr ""
 "Pas d'alinéa - \\n"
 "oindent"
 
-#: src/search.vala:374
+#: src/search.vala:389
 msgid "Not found"
 msgstr "Pas trouvé"
 
-#: src/ui/preferences_dialog.ui:400
+#: src/ui/preferences_dialog.ui:418
 msgid "Number of characters after '\\'"
 msgstr "Nombre de caractères après '\\'"
 
-#: src/ui/preferences_dialog.ui:667
+#: src/ui/preferences_dialog.ui:685
 msgid "Number of most used symbols:"
 msgstr "Nombre de symboles les plus utilisés :"
 
@@ -842,7 +850,7 @@ msgstr "Série d'é_quations numérotées - \\begin{align}"
 msgid "Numbered Equation - \\begin{equation}"
 msgstr "Équation numérotée - \\begin{equation}"
 
-#: src/search.vala:376
+#: src/search.vala:391
 msgid "One match"
 msgstr "Une occurence"
 
@@ -871,7 +879,7 @@ msgstr "Ouvre un fichier récemment utilisé"
 msgid "Operators"
 msgstr "Opérateurs"
 
-#: src/ui/preferences_dialog.ui:883
+#: src/ui/preferences_dialog.ui:924
 msgid "Other"
 msgstr "Autre"
 
@@ -899,7 +907,7 @@ msgstr "Colle le contenu du presse-papiers"
 msgid "Personnal templates"
 msgstr "Modèles personnels"
 
-#: src/ui/preferences_dialog.ui:278
+#: src/ui/preferences_dialog.ui:296
 msgid "Pick the editor font"
 msgstr "Choisissez la police de l'éditeur"
 
@@ -907,7 +915,7 @@ msgstr "Choisissez la police de l'éditeur"
 msgid "Placeholders:"
 msgstr "Variables :"
 
-#: src/preferences_dialog.vala:751
+#: src/preferences_dialog.vala:746
 msgid "Post Processor"
 msgstr "Post processeur"
 
@@ -919,7 +927,7 @@ msgstr "Préférences"
 msgid "Presentation"
 msgstr "Présentation"
 
-#: src/ui/preferences_dialog.ui:462
+#: src/ui/preferences_dialog.ui:480
 msgid "Program for viewing documents:"
 msgstr "Programme pour visionner les documents :"
 
@@ -955,7 +963,7 @@ msgstr "Référence vers un label"
 msgid "References"
 msgstr "Références"
 
-#: src/file_browser.vala:102
+#: src/file_browser.vala:107
 msgid "Refresh"
 msgstr "Actualiser"
 
@@ -967,7 +975,7 @@ msgstr "Relations"
 msgid "Reload"
 msgstr "Recharger"
 
-#: src/ui/preferences_dialog.ui:184
+#: src/ui/preferences_dialog.ui:202
 msgid "Reopen files on startup"
 msgstr "Réouvrir les fichiers au démarrage"
 
@@ -987,12 +995,12 @@ msgstr "Remplacer par"
 msgid "Report"
 msgstr "Rapport"
 
-#: src/ui/preferences_dialog.ui:572
+#: src/ui/preferences_dialog.ui:590
 msgid "Reset"
 msgstr "Réinitialiser"
 
 #: src/preferences_dialog.vala:31
-#: src/preferences_dialog.vala:557
+#: src/preferences_dialog.vala:552
 msgid "Reset All"
 msgstr "Réinitialiser tout"
 
@@ -1037,7 +1045,7 @@ msgstr "Linéaux (sans serif) - \\sffamily"
 msgid "Sans Serif - \\textsf"
 msgstr "Linéaux (sans serif) - \\textsf"
 
-#: src/document.vala:207
+#: src/document.vala:221
 msgid "Save Anyway"
 msgstr "Enregistrer malgré tout"
 
@@ -1094,13 +1102,17 @@ msgstr "Sélectionne le document entier"
 msgid "Select the files you want to delete:"
 msgstr "Sélectionnez les fichiers que vous voulez supprimer :"
 
-#: src/ui/preferences_dialog.ui:816
+#: src/ui/preferences_dialog.ui:834
 msgid "Show all files"
 msgstr "Afficher tous les fichiers"
 
-#: src/ui/preferences_dialog.ui:834
+#: src/ui/preferences_dialog.ui:869
 msgid "Show hidden files (beginning with a dot)"
 msgstr "Afficher les fichiers cachés (commençant par un point)"
+
+#: src/ui/preferences_dialog.ui:893
+msgid "Show only files with these extensions"
+msgstr "N'afficher les fichiers qu'avec ces extensions"
 
 #: src/main_window.vala:141
 msgid "Show or hide the bottom panel"
@@ -1182,7 +1194,7 @@ msgstr "Exposant - ^{}"
 msgid "Symbols"
 msgstr "Symboles"
 
-#: src/ui/preferences_dialog.ui:50
+#: src/ui/preferences_dialog.ui:47
 msgid "Tab width:"
 msgstr "Largeur de tabulation :"
 
@@ -1223,7 +1235,7 @@ msgstr "Le nom du fichier du document courant sans son extension"
 msgid "The file %s changed on disk."
 msgstr "Le fichier %s a été modifié sur le disque"
 
-#: src/document.vala:202
+#: src/document.vala:216
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Le fichier %s a été modifié depuis sa dernière lecture."
@@ -1291,7 +1303,7 @@ msgstr "Souligner - \\underline"
 msgid "Undo the last action"
 msgstr "Annule la dernière action"
 
-#: src/document.vala:297
+#: src/document.vala:311
 msgid "Unsaved Document"
 msgstr "Document non enregistré"
 
@@ -1303,7 +1315,7 @@ msgstr "Droits - \\upshape"
 msgid "Use package - \\usepackage"
 msgstr "Utiliser un package - \\usepackage"
 
-#: src/preferences_dialog.vala:340
+#: src/preferences_dialog.vala:335
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr "Utiliser la police système à chasse fixe (%s)"
@@ -1324,11 +1336,11 @@ msgstr "Ligne verticale - \\vline"
 msgid "Vertical space - \\vspace"
 msgstr "Espace verticale - \\vspace"
 
-#: src/preferences_dialog.vala:604
+#: src/preferences_dialog.vala:599
 msgid "View DVI"
 msgstr "Visionner DVI"
 
-#: src/preferences_dialog.vala:603
+#: src/preferences_dialog.vala:598
 msgid "View File"
 msgstr "Visionner le fichier"
 
@@ -1340,11 +1352,11 @@ msgstr "Visionner la référence LaTeX"
 msgid "View Log"
 msgstr "Afficher le Log"
 
-#: src/preferences_dialog.vala:605
+#: src/preferences_dialog.vala:600
 msgid "View PDF"
 msgstr "Visionner PDF"
 
-#: src/preferences_dialog.vala:606
+#: src/preferences_dialog.vala:601
 msgid "View PS"
 msgstr "Visionner PS"
 
@@ -1352,7 +1364,7 @@ msgstr "Visionner PS"
 msgid "View _Log"
 msgstr "Afficher le _Log"
 
-#: src/ui/preferences_dialog.ui:633
+#: src/ui/preferences_dialog.ui:651
 msgid "Web browser:"
 msgstr "Navigateur web :"
 
@@ -1564,7 +1576,7 @@ msgstr "_Tableaux"
 msgid "_Uncomment"
 msgstr "_Décommenter"
 
-#: src/ui/preferences_dialog.ui:241
+#: src/ui/preferences_dialog.ui:259
 msgid "_Use the system fixed width font (%s)"
 msgstr "_Utiliser la police système à chasse fixe (%s)"
 
@@ -1638,13 +1650,13 @@ msgstr "{ à gauche"
 msgid "letter-en.tex"
 msgstr "letter-fr.tex"
 
-#: src/preferences_dialog.vala:247
-#: src/preferences_dialog.vala:252
+#: src/preferences_dialog.vala:253
+#: src/preferences_dialog.vala:258
 msgid "minute"
 msgstr "minute"
 
-#: src/preferences_dialog.vala:247
-#: src/preferences_dialog.vala:252
+#: src/preferences_dialog.vala:253
+#: src/preferences_dialog.vala:258
 msgid "minutes"
 msgstr "minutes"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-13 18:20+0100\n"
+"POT-Creation-Date: 2010-11-19 01:59+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/search.vala:378
+#: src/search.vala:393
 #, c-format
 msgid "%u matches"
 msgstr ""
 
-#: src/search.vala:372
+#: src/search.vala:387
 #, c-format
 msgid "%u of %u"
 msgstr ""
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Breve - \\u"
 msgstr ""
 
-#: src/preferences_dialog.vala:621
+#: src/preferences_dialog.vala:616
 msgid "Build Tool"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "Close without Saving"
 msgstr ""
 
-#: src/preferences_dialog.vala:738
+#: src/preferences_dialog.vala:733
 msgid "Commands"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Content of the document - \\begin{document}"
 msgstr ""
 
-#: src/preferences_dialog.vala:602
+#: src/preferences_dialog.vala:597
 msgid "Convert"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Do you really want to clear all projects?"
 msgstr ""
 
-#: src/preferences_dialog.vala:490
+#: src/preferences_dialog.vala:485
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
 msgstr ""
@@ -307,7 +307,7 @@ msgstr ""
 msgid "Do you really want to delete these files?"
 msgstr ""
 
-#: src/preferences_dialog.vala:538
+#: src/preferences_dialog.vala:533
 msgid "Do you really want to reset all build tools?"
 msgstr ""
 
@@ -331,7 +331,7 @@ msgstr ""
 msgid "Don't Edit"
 msgstr ""
 
-#: src/document.vala:209
+#: src/document.vala:223
 msgid "Don't Save"
 msgstr ""
 
@@ -367,7 +367,7 @@ msgstr ""
 msgid "Enumeration - \\begin{enumerate}"
 msgstr ""
 
-#: src/document.vala:245
+#: src/document.vala:259
 msgid "Error trying to convert the document to UTF-8"
 msgstr ""
 
@@ -375,7 +375,7 @@ msgstr ""
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr ""
 
-#: src/preferences_dialog.vala:598
+#: src/preferences_dialog.vala:593
 msgid "Execute"
 msgstr ""
 
@@ -391,11 +391,11 @@ msgstr ""
 msgid "File"
 msgstr ""
 
-#: src/file_browser.vala:373 src/main_window.vala:282
+#: src/file_browser.vala:385 src/main_window.vala:282
 msgid "File Browser"
 msgstr ""
 
-#: src/file_browser.vala:403
+#: src/file_browser.vala:415
 msgid "File System"
 msgstr ""
 
@@ -419,15 +419,15 @@ msgstr ""
 msgid "Go to a specific line"
 msgstr ""
 
-#: src/file_browser.vala:101
+#: src/file_browser.vala:106
 msgid "Go to the active document directory"
 msgstr ""
 
-#: src/file_browser.vala:99
+#: src/file_browser.vala:104
 msgid "Go to the home directory"
 msgstr ""
 
-#: src/file_browser.vala:100
+#: src/file_browser.vala:105
 msgid "Go to the parent directory"
 msgstr ""
 
@@ -459,16 +459,16 @@ msgstr ""
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr ""
 
-#: src/document.vala:204
+#: src/document.vala:218
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 
-#: src/document.vala:124
+#: src/document.vala:138
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr ""
 
-#: src/document.vala:221
+#: src/document.vala:235
 msgid "Impossible to save the file."
 msgstr ""
 
@@ -637,7 +637,7 @@ msgstr ""
 msgid "Multicolumn - \\multicolumn"
 msgstr ""
 
-#: src/preferences_dialog.vala:743
+#: src/preferences_dialog.vala:738
 msgid "Must Succeed"
 msgstr ""
 
@@ -681,7 +681,7 @@ msgstr ""
 msgid "New page - \\newpage"
 msgstr ""
 
-#: src/completion.vala:275
+#: src/completion.vala:290
 msgid "No matching proposal"
 msgstr ""
 
@@ -689,7 +689,7 @@ msgstr ""
 msgid "No paragraph indentation - \\noindent"
 msgstr ""
 
-#: src/search.vala:374
+#: src/search.vala:389
 msgid "Not found"
 msgstr ""
 
@@ -705,7 +705,7 @@ msgstr ""
 msgid "Numbered Equation - \\begin{equation}"
 msgstr ""
 
-#: src/search.vala:376
+#: src/search.vala:391
 msgid "One match"
 msgstr ""
 
@@ -757,7 +757,7 @@ msgstr ""
 msgid "Personnal templates"
 msgstr ""
 
-#: src/preferences_dialog.vala:751
+#: src/preferences_dialog.vala:746
 msgid "Post Processor"
 msgstr ""
 
@@ -801,7 +801,7 @@ msgstr ""
 msgid "References"
 msgstr ""
 
-#: src/file_browser.vala:102
+#: src/file_browser.vala:107
 msgid "Refresh"
 msgstr ""
 
@@ -821,7 +821,7 @@ msgstr ""
 msgid "Report"
 msgstr ""
 
-#: src/preferences_dialog.vala:31 src/preferences_dialog.vala:557
+#: src/preferences_dialog.vala:31 src/preferences_dialog.vala:552
 msgid "Reset All"
 msgstr ""
 
@@ -866,7 +866,7 @@ msgstr ""
 msgid "Sans Serif - \\textsf"
 msgstr ""
 
-#: src/document.vala:207
+#: src/document.vala:221
 msgid "Save Anyway"
 msgstr ""
 
@@ -1028,7 +1028,7 @@ msgstr ""
 msgid "The file %s changed on disk."
 msgstr ""
 
-#: src/document.vala:202
+#: src/document.vala:216
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr ""
@@ -1085,7 +1085,7 @@ msgstr ""
 msgid "Undo the last action"
 msgstr ""
 
-#: src/document.vala:297
+#: src/document.vala:311
 msgid "Unsaved Document"
 msgstr ""
 
@@ -1097,7 +1097,7 @@ msgstr ""
 msgid "Use package - \\usepackage"
 msgstr ""
 
-#: src/preferences_dialog.vala:340
+#: src/preferences_dialog.vala:335
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr ""
@@ -1118,11 +1118,11 @@ msgstr ""
 msgid "Vertical space - \\vspace"
 msgstr ""
 
-#: src/preferences_dialog.vala:604
+#: src/preferences_dialog.vala:599
 msgid "View DVI"
 msgstr ""
 
-#: src/preferences_dialog.vala:603
+#: src/preferences_dialog.vala:598
 msgid "View File"
 msgstr ""
 
@@ -1134,11 +1134,11 @@ msgstr ""
 msgid "View Log"
 msgstr ""
 
-#: src/preferences_dialog.vala:605
+#: src/preferences_dialog.vala:600
 msgid "View PDF"
 msgstr ""
 
-#: src/preferences_dialog.vala:606
+#: src/preferences_dialog.vala:601
 msgid "View PS"
 msgstr ""
 
@@ -1418,11 +1418,11 @@ msgstr ""
 msgid "letter-en.tex"
 msgstr ""
 
-#: src/preferences_dialog.vala:247 src/preferences_dialog.vala:252
+#: src/preferences_dialog.vala:253 src/preferences_dialog.vala:258
 msgid "minute"
 msgstr ""
 
-#: src/preferences_dialog.vala:247 src/preferences_dialog.vala:252
+#: src/preferences_dialog.vala:253 src/preferences_dialog.vala:258
 msgid "minutes"
 msgstr ""
 
@@ -1514,115 +1514,127 @@ msgid ""
 "Its value can be changed in the preferences dialog."
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:31
+#: src/ui/preferences_dialog.ui:28
 msgid "Display line numbers"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:50
+#: src/ui/preferences_dialog.ui:47
 msgid "Tab width:"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:79
+#: src/ui/preferences_dialog.ui:76
 msgid "Insert spaces instead of tabs"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:93
+#: src/ui/preferences_dialog.ui:94
+msgid "Forget you are not using tabulations"
+msgstr ""
+
+#: src/ui/preferences_dialog.ui:111
 msgid "Highlight current line"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:107
+#: src/ui/preferences_dialog.ui:125
 msgid "Highlight matching brackets"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:121
+#: src/ui/preferences_dialog.ui:139
 msgid "Create a backup copy of files before saving"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:139
+#: src/ui/preferences_dialog.ui:157
 msgid "Autosave files every"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:184
+#: src/ui/preferences_dialog.ui:202
 msgid "Reopen files on startup"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:201
+#: src/ui/preferences_dialog.ui:219
 msgid "Editor"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:220
+#: src/ui/preferences_dialog.ui:238
 msgid "Font"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:241
+#: src/ui/preferences_dialog.ui:259
 msgid "_Use the system fixed width font (%s)"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:262
+#: src/ui/preferences_dialog.ui:280
 msgid "Editor _font: "
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:278
+#: src/ui/preferences_dialog.ui:296
 msgid "Pick the editor font"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:315
+#: src/ui/preferences_dialog.ui:333
 msgid "Color Scheme"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:366
+#: src/ui/preferences_dialog.ui:384
 msgid "Font & Colors"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:384
+#: src/ui/preferences_dialog.ui:402
 msgid "Interactive completion after"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:400
+#: src/ui/preferences_dialog.ui:418
 msgid "Number of characters after '\\'"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:436
+#: src/ui/preferences_dialog.ui:454
 msgid "Build Tools"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:462
+#: src/ui/preferences_dialog.ui:480
 msgid "Program for viewing documents:"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:572
+#: src/ui/preferences_dialog.ui:590
 msgid "Reset"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:633
+#: src/ui/preferences_dialog.ui:651
 msgid "Web browser:"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:667
+#: src/ui/preferences_dialog.ui:685
 msgid "Number of most used symbols:"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:707
+#: src/ui/preferences_dialog.ui:725
 msgid "File Clean-Up"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:728
+#: src/ui/preferences_dialog.ui:746
 msgid "No confirmation when cleaning-up"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:746
+#: src/ui/preferences_dialog.ui:764
 msgid "Automatically clean-up files after close"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:816
+#: src/ui/preferences_dialog.ui:834
 msgid "Show all files"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:834
+#: src/ui/preferences_dialog.ui:856
+msgid "Except those for clean-up"
+msgstr ""
+
+#: src/ui/preferences_dialog.ui:869
 msgid "Show hidden files (beginning with a dot)"
 msgstr ""
 
-#: src/ui/preferences_dialog.ui:883
+#: src/ui/preferences_dialog.ui:893
+msgid "Show only files with these extensions"
+msgstr ""
+
+#: src/ui/preferences_dialog.ui:924
 msgid "Other"
 msgstr ""
 
