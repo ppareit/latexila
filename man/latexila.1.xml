@@ -99,17 +99,14 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
   </refsynopsisdiv>
 
   <refsection xml:id="description"><info><title>DESCRIPTION</title></info>
-    <para>This manual page documents briefly the
-      <command>&command;</command> command. It was written for the Debian
-      distribution because the original program does not have a manual
-      page.</para>
+    <para>This manual page documents briefly the <command>&command;</command> command.</para>
     <para><application>&program;</application> is an Integrated LaTeX Environment for
       the GNOME desktop.</para>
   </refsection>
 
   <refsection xml:id="options"><info><title>OPTIONS</title></info>
     <para>The program follows the usual GNU command line syntax,
-      with long options starting with two dashes (`-').  A summary of
+      with long options starting with two dashes.  A summary of
       options is included below.  For a complete description of options,
       please use <command>&command; --help</command>.</para>
     <variablelist>
@@ -173,12 +170,12 @@ man(1), man(7), http://www.tldp.org/HOWTO/Man-Page/
   <refsection xml:id="notes"><info><title>NOTES</title></info>
     <para>By default, when <application>&program;</application> is started it
       reopens the files that were open last time it was used. This behaviour
-      can be disabled in the program's preferences.</para>
+      can be disabled in the program preferences.</para>
   </refsection>
 
   <refsection xml:id="bugs"><info><title>BUGS</title></info>
-    <para>The upstreams <acronym>BTS</acronym> can be found
-      at <uri xlink:href="http://sourceforge.net/tracker/?group_id=271323">http://sourceforge.net/tracker/?group_id=271323</uri>.</para>
+    <para>The upstream <acronym>BTS</acronym> can be found
+      at <uri xlink:href="http://github.com/swilmet/latexila/issues">http://github.com/swilmet/latexila/issues</uri>.</para>
   </refsection>
 </refentry>
 </article>
