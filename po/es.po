@@ -4,7 +4,7 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: latexila 2.0.0\n"
+"Project-Id-Version: latexila 2.0.1\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2010-11-21 01:23+0100\n"
 "PO-Revision-Date: 2010-11-21 01:27+0100\n"
