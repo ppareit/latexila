@@ -256,8 +256,8 @@ public class LatexMenu : Gtk.ActionGroup
 	    { "MathEnvironments", null, N_("_Math Environments") },
 	    { "MathEnvNormal", "math", N_("_Mathematical Environment - $...$"),
 	        "<Alt><Shift>M", N_("Mathematical Environment - $...$"), on_math_env_normal },
-	    { "MathEnvCentered", "math-centered", N_("_Centered Formula - $$...$$"),
-	        "<Alt><Shift>E", N_("Centered Formula - $$...$$"), on_math_env_centered },
+	    { "MathEnvCentered", "math-centered", N_("_Centered Formula - \\[...\\]"),
+	        "<Alt><Shift>E", N_("Centered Formula - \\[...\\]"), on_math_env_centered },
 	    { "MathEnvNumbered", "math-numbered",
 	        N_("_Numbered Equation - \\begin{equation}"), null,
 		    N_("Numbered Equation - \\begin{equation}"), on_math_env_numbered },
@@ -265,7 +265,8 @@ public class LatexMenu : Gtk.ActionGroup
 		    N_("Array of Equations - \\begin{align*}"), on_math_env_array },
 	    { "MathEnvNumberedArray", "math-numbered-array",
 	        N_("Numbered Array of _Equations - \\begin{align}"), null,
-		    N_("Numbered Array of Equations - \\begin{align}"), on_math_env_numbered_array },
+		    N_("Numbered Array of Equations - \\begin{align}"),
+		    on_math_env_numbered_array },
 
 	    { "MathSuperscript", "math-superscript", N_("_Superscript - ^{}"), null,
 		    N_("Superscript - ^{}"), on_math_superscript },
@@ -1068,7 +1069,7 @@ public class LatexMenu : Gtk.ActionGroup
 
     public void on_math_env_centered ()
     {
-        text_buffer_insert ("$$ ", " $$");
+        text_buffer_insert ("\\[ ", " \\]");
     }
 
     public void on_math_env_numbered ()

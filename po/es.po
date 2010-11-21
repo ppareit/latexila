@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-19 01:59+0100\n"
-"PO-Revision-Date: 2010-11-19 08:00-0300\n"
-"Last-Translator: Matias De la Puente <mfpuente.ar@gmail.com>\n"
+"POT-Creation-Date: 2010-11-21 01:23+0100\n"
+"PO-Revision-Date: 2010-11-21 01:27+0100\n"
+"Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
@@ -39,7 +39,8 @@ msgstr "Un archivo llamado \"%s\" ya existe. ¿Desea reemplazarlo?"
 msgid "AMS packages"
 msgstr "Paquetes AMS"
 
-#: src/main_window.vala:133 src/main_window.vala:1779
+#: src/main_window.vala:133
+#: src/main_window.vala:1779
 msgid "About LaTeXila"
 msgstr "Acerca de LaTeXila"
 
@@ -108,7 +109,7 @@ msgstr "Autoguardar archivos cada"
 msgid "Big skip - \\bigskip"
 msgstr "Gran salto - \\bigskip"
 
-#: src/latex_menu.vala:331
+#: src/latex_menu.vala:332
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
 msgstr "Respaldo (sólo en mayúsculas) - \\mathbb (amsfonts package)"
 
@@ -116,7 +117,7 @@ msgstr "Respaldo (sólo en mayúsculas) - \\mathbb (amsfonts package)"
 msgid "Bold - \\bfseries"
 msgstr "Negrita - \\bfseries"
 
-#: src/latex_menu.vala:323
+#: src/latex_menu.vala:324
 msgid "Bold - \\mathbf"
 msgstr "Negrita - \\mathbf"
 
@@ -144,7 +145,7 @@ msgstr "Herramientas de construcción"
 msgid "Bulleted List - \\begin{itemize}"
 msgstr "Viñetas - \\begin{itemize}"
 
-#: src/latex_menu.vala:329
+#: src/latex_menu.vala:330
 msgid "Calligraphic - \\mathcal"
 msgstr "Caligrafía - \\mathcal"
 
@@ -161,8 +162,8 @@ msgid "Center - \\begin{center}"
 msgstr "Centrado - \\begin{center}"
 
 #: src/latex_menu.vala:260
-msgid "Centered Formula - $$...$$"
-msgstr "Fórmula centrada - $$...$$"
+msgid "Centered Formula - \\[...\\]"
+msgstr "Fórmula centrada - \\[...\\]"
 
 #: src/main_window.vala:123
 msgid "Change the main file of the current project"
@@ -172,7 +173,7 @@ msgstr "Crear el archivo principal del proyecto actual"
 msgid "Chapter"
 msgstr "Capítulo"
 
-#: src/latex_menu.vala:428
+#: src/latex_menu.vala:429
 msgid "Characters Sizes"
 msgstr "Tamaño de caracteres"
 
@@ -192,7 +193,8 @@ msgstr "Limpiar archivos de construcción (*.aux, *.log, *.out, *.toc, *.etc)"
 msgid "Cleanup Build _Files"
 msgstr "Limpiar _Archivos de construcción"
 
-#: src/projects.vala:248 src/projects.vala:305
+#: src/projects.vala:248
+#: src/projects.vala:305
 msgid "Clear All"
 msgstr "Limpiar todo"
 
@@ -220,7 +222,8 @@ msgstr "Cerrar documento"
 msgid "Close the current file"
 msgstr "Cerrar el archivo actual"
 
-#: src/dialogs.vala:40 src/main_window.vala:769
+#: src/dialogs.vala:40
+#: src/main_window.vala:769
 msgid "Close without Saving"
 msgstr "Cerrar sin guardar"
 
@@ -320,7 +323,8 @@ msgstr "Descripción"
 msgid "Description - \\begin{description}"
 msgstr "Descripción - \\begin{description}"
 
-#: src/projects.vala:49 src/projects.vala:210
+#: src/projects.vala:49
+#: src/projects.vala:210
 msgid "Directory"
 msgstr "Directorio"
 
@@ -422,7 +426,7 @@ msgstr "Enumeración - \\begin{enumerate}"
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Error al tratar de convertir el documento a UTF-8"
 
-#: src/latex_menu.vala:334
+#: src/latex_menu.vala:335
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Euler Fraktur - \\mathfrak (amsfonts package)"
 
@@ -450,7 +454,8 @@ msgstr "Figura - \\begin{figure}"
 msgid "File"
 msgstr "Archivo"
 
-#: src/file_browser.vala:385 src/main_window.vala:282
+#: src/file_browser.vala:385
+#: src/main_window.vala:282
 msgid "File Browser"
 msgstr "Exporador de Archivos"
 
@@ -467,8 +472,7 @@ msgid ""
 "File extensions for which the build tool can be executed.\n"
 "The extensions are separated by spaces."
 msgstr ""
-"Extensiones de archivos para la cual la herramienta de construción puede ser "
-"ejecutada.\n"
+"Extensiones de archivos para la cual la herramienta de construción puede ser ejecutada.\n"
 "Las extensiones son separadas por espacios."
 
 #: src/ui/search_and_replace.ui:71
@@ -499,7 +503,7 @@ msgstr "Nota al pie"
 msgid "Forget you are not using tabulations"
 msgstr "Olvidar de que no está usando tabulaciones"
 
-#: src/latex_menu.vala:275
+#: src/latex_menu.vala:276
 msgid "Fraction - \\frac{}{}"
 msgstr "Fracción - \\frac{}{}"
 
@@ -531,7 +535,8 @@ msgstr "Acento grave - \\`"
 msgid "Greek"
 msgstr "Griego"
 
-#: src/build_view.vala:124 src/side_panel.vala:73
+#: src/build_view.vala:124
+#: src/side_panel.vala:73
 msgid "Hide panel"
 msgstr "Ocultar panel"
 
@@ -565,9 +570,7 @@ msgstr "Si no guarda, todos sus cambios serán perdidos permanentemente."
 
 #: src/document.vala:218
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr ""
-"Si lo guarda, todos los cambios externos serán perdidos. ¿Guardarlo de todas "
-"formas?"
+msgstr "Si lo guarda, todos los cambios externos serán perdidos. ¿Guardarlo de todas formas?"
 
 #: src/document.vala:138
 #, c-format
@@ -602,7 +605,7 @@ msgstr "_Acentos Internacionales"
 msgid "Italic - \\itshape"
 msgstr "Cursiva - \\itshape"
 
-#: src/latex_menu.vala:321
+#: src/latex_menu.vala:322
 msgid "Italic - \\mathit"
 msgstr "Cursiva - \\mathit"
 
@@ -623,22 +626,18 @@ msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
 msgstr "LaTeXila es un Entorno LaTeX Integrado para el escritorio GNOME"
 
 #: src/main_window.vala:648
-msgid ""
-"LaTeXila opened this instance of the file in a non-editable way. Do you want "
-"to edit it anyway?"
-msgstr ""
-"LaTeXila abrió esta instancia del archivo en una forma no editable. ¿Desea "
-"editarlo de todas formas?"
+msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
+msgstr "LaTeXila abrió esta instancia del archivo en una forma no editable. ¿Desea editarlo de todas formas?"
 
 #: src/latex_menu.vala:49
 msgid "Label"
 msgstr "Etiqueta"
 
-#: src/latex_menu.vala:366
+#: src/latex_menu.vala:367
 msgid "Large - \\;"
 msgstr "Largo - \\;"
 
-#: src/latex_menu.vala:438
+#: src/latex_menu.vala:439
 msgid "Left Delimiters"
 msgstr "Delimitadores Izquierdos"
 
@@ -676,12 +675,16 @@ msgstr "Ubicación del proyecto: %s"
 msgid "Macron - \\="
 msgstr "Macron - \\="
 
-#: src/document_tab.vala:233 src/projects.vala:51 src/projects.vala:147
+#: src/document_tab.vala:233
+#: src/projects.vala:51
+#: src/projects.vala:147
 #: src/projects.vala:223
 msgid "Main File"
 msgstr "Archivo Principal"
 
-#: src/document_tab.vala:236 src/projects.vala:45 src/projects.vala:144
+#: src/document_tab.vala:236
+#: src/projects.vala:45
+#: src/projects.vala:144
 msgid "Main File:"
 msgstr "Archivo Principal:"
 
@@ -689,27 +692,28 @@ msgstr "Archivo Principal:"
 msgid "Make title - \\maketitle"
 msgstr "Construir titulo - \\maketitle"
 
-#: src/main_window.vala:126 src/projects.vala:190
+#: src/main_window.vala:126
+#: src/projects.vala:190
 msgid "Manage Projects"
 msgstr "Administrar Proyectos"
 
-#: src/latex_menu.vala:435
+#: src/latex_menu.vala:436
 msgid "Math Environments"
 msgstr "Entornos matemáticos"
 
-#: src/latex_menu.vala:317
+#: src/latex_menu.vala:318
 msgid "Math Font _Styles"
 msgstr "E_Stilos de la tipografía matemática"
 
-#: src/latex_menu.vala:339
+#: src/latex_menu.vala:340
 msgid "Math _Accents"
 msgstr "_Acentos matemáticos"
 
-#: src/latex_menu.vala:283
+#: src/latex_menu.vala:284
 msgid "Math _Functions"
 msgstr "_Funciones matemáticas"
 
-#: src/latex_menu.vala:360
+#: src/latex_menu.vala:361
 msgid "Math _Spaces"
 msgstr "E_Spacios matemáticos"
 
@@ -717,7 +721,7 @@ msgstr "E_Spacios matemáticos"
 msgid "Mathematical Environment - $...$"
 msgstr "Entorno Matemático - $...$"
 
-#: src/latex_menu.vala:364
+#: src/latex_menu.vala:365
 msgid "Medium - \\:"
 msgstr "Medio - \\:"
 
@@ -761,7 +765,7 @@ msgstr "Multicolumna - \\multicolumn"
 msgid "Must Succeed"
 msgstr "Debe tener éxito"
 
-#: src/latex_menu.vala:279
+#: src/latex_menu.vala:280
 msgid "N-th Root - \\sqrt[]{}"
 msgstr "Raíz Enésima - \\sqrt[]{}"
 
@@ -798,8 +802,12 @@ msgid "New file"
 msgstr "Nuevo archivo"
 
 #: src/latex_menu.vala:187
-msgid "New page - \\newpage"
-msgstr "Nueva página - \\newpage"
+msgid ""
+"New page - \\n"
+"ewpage"
+msgstr ""
+"Nueva página - \\n"
+"ewpage"
 
 #: src/ui/preferences_dialog.ui:746
 msgid "No confirmation when cleaning-up"
@@ -810,8 +818,12 @@ msgid "No matching proposal"
 msgstr "No hay propuesta equivalente"
 
 #: src/latex_menu.vala:201
-msgid "No paragraph indentation - \\noindent"
-msgstr "Sin sangría de párrafo - \\noindent"
+msgid ""
+"No paragraph indentation - \\n"
+"oindent"
+msgstr ""
+"Sin sangría de párrafo - \\n"
+"oindent"
 
 #: src/search.vala:389
 msgid "Not found"
@@ -849,7 +861,8 @@ msgstr "Abrir archivos"
 msgid "Open _Recent"
 msgstr "Abir _Reciente"
 
-#: src/main_window.vala:35 src/main_window.vala:1025
+#: src/main_window.vala:35
+#: src/main_window.vala:1025
 msgid "Open a file"
 msgstr "Abrir un archivo"
 
@@ -945,7 +958,7 @@ msgstr "Referencia a un elemento bibliográfico"
 msgid "Reference to a label"
 msgstr "Referencia a una etiqueta"
 
-#: src/latex_menu.vala:431
+#: src/latex_menu.vala:432
 msgid "References"
 msgstr "Referencias"
 
@@ -985,7 +998,8 @@ msgstr "Reporte"
 msgid "Reset"
 msgstr "Restablecer"
 
-#: src/preferences_dialog.vala:31 src/preferences_dialog.vala:552
+#: src/preferences_dialog.vala:31
+#: src/preferences_dialog.vala:552
 msgid "Reset All"
 msgstr "Restablecer Todo"
 
@@ -993,15 +1007,15 @@ msgstr "Restablecer Todo"
 msgid "Reset the size of the font"
 msgstr "Restablecer el tamaño de la tipografía"
 
-#: src/latex_menu.vala:441
+#: src/latex_menu.vala:442
 msgid "Right Delimiters"
 msgstr "Delimitadores Derechos"
 
-#: src/latex_menu.vala:394
+#: src/latex_menu.vala:395
 msgid "Right _Delimiters"
 msgstr "_Delimitadores Derechos"
 
-#: src/latex_menu.vala:319
+#: src/latex_menu.vala:320
 msgid "Roman - \\mathrm"
 msgstr "Roman - \\mathrm"
 
@@ -1011,18 +1025,14 @@ msgstr "Roman - \\rmfamily"
 
 #: src/build_tools.vala:257
 msgid "Rubber may not support filenames with spaces (even in a directory)"
-msgstr ""
-"Puede que Rubber no soporte nombres de archivos con espacios (incluso en un "
-"directorio)"
+msgstr "Puede que Rubber no soporte nombres de archivos con espacios (incluso en un directorio)"
 
 #: src/main.vala:75
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
-msgstr ""
-"Ejecute '%s --help' para ver una lista completa de opciones de línea comando "
-"disponibles.\n"
+msgstr "Ejecute '%s --help' para ver una lista completa de opciones de línea comando disponibles.\n"
 
-#: src/latex_menu.vala:325
+#: src/latex_menu.vala:326
 msgid "Sans Serif - \\mathsf"
 msgstr "Sans Serif - \\mathsf"
 
@@ -1075,7 +1085,7 @@ msgstr "Buscar texto"
 msgid "Section"
 msgstr "Sección"
 
-#: src/latex_menu.vala:425
+#: src/latex_menu.vala:426
 msgid "Sectioning"
 msgstr "Seccionamiento"
 
@@ -1131,7 +1141,7 @@ msgstr "Inclinado - \\slshape"
 msgid "Slanted - \\textsl"
 msgstr "Inclinado - \\textsl"
 
-#: src/latex_menu.vala:362
+#: src/latex_menu.vala:363
 msgid "Small - \\,"
 msgstr "Pequeño - \\,"
 
@@ -1143,11 +1153,11 @@ msgstr "Versalitas - \\scshape"
 msgid "Small Capitals - \\textsc"
 msgstr "Versalitas - \\testsc"
 
-#: src/latex_menu.vala:277
+#: src/latex_menu.vala:278
 msgid "Square Root - \\sqrt{}"
 msgstr "Raíz cuadrada - \\sqrt{}"
 
-#: src/latex_menu.vala:276
+#: src/latex_menu.vala:277
 msgid "Square _Root - \\sqrt{}"
 msgstr "_Raíz cuadrada - \\sqrt{}"
 
@@ -1155,7 +1165,7 @@ msgstr "_Raíz cuadrada - \\sqrt{}"
 msgid "Stop Execution"
 msgstr "Detener la ejecución"
 
-#: src/latex_menu.vala:272
+#: src/latex_menu.vala:273
 msgid "Su_bscript - __{}"
 msgstr "Su_bíndice - __{}"
 
@@ -1171,11 +1181,11 @@ msgstr "Subsección"
 msgid "Sub-sub-section"
 msgstr "Subsubsección"
 
-#: src/latex_menu.vala:273
+#: src/latex_menu.vala:274
 msgid "Subscript - _{}"
 msgstr "Subíndice - _{}"
 
-#: src/latex_menu.vala:271
+#: src/latex_menu.vala:272
 msgid "Superscript - ^{}"
 msgstr "Superíndice - ^{}"
 
@@ -1239,11 +1249,8 @@ msgstr ""
 
 #: src/dialogs.vala:67
 #, c-format
-msgid ""
-"There are %d documents with unsaved changes. Save changes before closing?"
-msgstr ""
-"Hay %d documentos con cambios sin guardar. ¿Guardar los cambios antes de "
-"cerrar?"
+msgid "There are %d documents with unsaved changes. Save changes before closing?"
+msgstr "Hay %d documentos con cambios sin guardar. ¿Guardar los cambios antes de cerrar?"
 
 #: src/projects.vala:109
 #, c-format
@@ -1275,7 +1282,7 @@ msgstr "Conmutar entre modo de búsqueda y de reemplazo"
 msgid "Trema - \\\""
 msgstr "Trema - \\\""
 
-#: src/latex_menu.vala:327
+#: src/latex_menu.vala:328
 msgid "Typewriter - \\mathtt"
 msgstr "Teletipo - \\mathtt"
 
@@ -1393,8 +1400,8 @@ msgid "_Build"
 msgstr "_Construir"
 
 #: src/latex_menu.vala:259
-msgid "_Centered Formula - $$...$$"
-msgstr "Fórmula _Centrada - $$...$$"
+msgid "_Centered Formula - \\[...\\]"
+msgstr "Fórmula _Centrada - \\[...\\]"
 
 #: src/latex_menu.vala:100
 msgid "_Characters Sizes"
@@ -1440,7 +1447,7 @@ msgstr "Familia de la _Tipografía"
 msgid "_Font Styles"
 msgstr "Tamaño de la _Tipografía"
 
-#: src/latex_menu.vala:274
+#: src/latex_menu.vala:275
 msgid "_Fraction - \\frac{}{}"
 msgstr "_Fracción - \\frac{}{}"
 
@@ -1456,11 +1463,11 @@ msgstr "Ay_uda"
 msgid "_LaTeX Reference"
 msgstr "Referencia de _LaTeX"
 
-#: src/latex_menu.vala:365
+#: src/latex_menu.vala:366
 msgid "_Large"
 msgstr "_Largo"
 
-#: src/latex_menu.vala:372
+#: src/latex_menu.vala:373
 msgid "_Left Delimiters"
 msgstr "Delimitadores _Izquierdos"
 
@@ -1484,7 +1491,7 @@ msgstr "Entornos _Matemáticos"
 msgid "_Mathematical Environment - $...$"
 msgstr "Entorno _Matemático - $...$"
 
-#: src/latex_menu.vala:363
+#: src/latex_menu.vala:364
 msgid "_Medium"
 msgstr "_Medio"
 
@@ -1496,7 +1503,7 @@ msgstr "_Misceláneo"
 msgid "_Move to New Window"
 msgstr "_Mover a una nueva ventana"
 
-#: src/latex_menu.vala:278
+#: src/latex_menu.vala:279
 msgid "_N-th Root - \\sqrt[]{}"
 msgstr "Raíz E_nésima - \\sqrt[]{}"
 
@@ -1544,7 +1551,7 @@ msgstr "_Seccionamiento"
 msgid "_Side panel"
 msgstr "Panel _Lateral"
 
-#: src/latex_menu.vala:361
+#: src/latex_menu.vala:362
 msgid "_Small"
 msgstr "_Pequeño"
 
@@ -1556,7 +1563,7 @@ msgstr "E_spaciamiento"
 msgid "_Stop Execution"
 msgstr "_Detener la Ejecución"
 
-#: src/latex_menu.vala:270
+#: src/latex_menu.vala:271
 msgid "_Superscript - ^{}"
 msgstr "_Superíndice - ^{}"
 
@@ -1592,47 +1599,49 @@ msgstr "book-es.tex"
 msgid "build_tools-en.xml"
 msgstr "build_tools-es.xml"
 
-#: src/preferences_dialog.vala:268 src/preferences_dialog.vala:273
+#: src/preferences_dialog.vala:268
+#: src/preferences_dialog.vala:273
 msgid "character"
 msgstr "carácter"
 
-#: src/preferences_dialog.vala:268 src/preferences_dialog.vala:273
+#: src/preferences_dialog.vala:268
+#: src/preferences_dialog.vala:273
 msgid "characters"
 msgstr "caracteres"
 
-#: src/latex_menu.vala:385
+#: src/latex_menu.vala:386
 msgid "left  }"
 msgstr "} izquierdo"
 
-#: src/latex_menu.vala:373
+#: src/latex_menu.vala:374
 msgid "left ("
 msgstr "( izquierdo"
 
-#: src/latex_menu.vala:381
+#: src/latex_menu.vala:382
 msgid "left )"
 msgstr ") izquierdo"
 
-#: src/latex_menu.vala:389
+#: src/latex_menu.vala:390
 msgid "left ."
 msgstr ". izquierdo"
 
-#: src/latex_menu.vala:379
+#: src/latex_menu.vala:380
 msgid "left <"
 msgstr "< izquierdo"
 
-#: src/latex_menu.vala:387
+#: src/latex_menu.vala:388
 msgid "left >"
 msgstr "> izquierdo"
 
-#: src/latex_menu.vala:375
+#: src/latex_menu.vala:376
 msgid "left ["
 msgstr "[ izquierdo"
 
-#: src/latex_menu.vala:383
+#: src/latex_menu.vala:384
 msgid "left ]"
 msgstr "] izquierdo"
 
-#: src/latex_menu.vala:377
+#: src/latex_menu.vala:378
 msgid "left { "
 msgstr "{ izquierdo"
 
@@ -1640,11 +1649,13 @@ msgstr "{ izquierdo"
 msgid "letter-en.tex"
 msgstr "letter-es.tex"
 
-#: src/preferences_dialog.vala:253 src/preferences_dialog.vala:258
+#: src/preferences_dialog.vala:253
+#: src/preferences_dialog.vala:258
 msgid "minute"
 msgstr "minuto"
 
-#: src/preferences_dialog.vala:253 src/preferences_dialog.vala:258
+#: src/preferences_dialog.vala:253
+#: src/preferences_dialog.vala:258
 msgid "minutes"
 msgstr "minutos"
 
@@ -1652,39 +1663,39 @@ msgstr "minutos"
 msgid "report-en.tex"
 msgstr "report-es.tex"
 
-#: src/latex_menu.vala:399
+#: src/latex_menu.vala:400
 msgid "right  }"
 msgstr "} derecho"
 
-#: src/latex_menu.vala:403
+#: src/latex_menu.vala:404
 msgid "right ("
 msgstr "( derecho"
 
-#: src/latex_menu.vala:395
+#: src/latex_menu.vala:396
 msgid "right )"
 msgstr ") derecho"
 
-#: src/latex_menu.vala:411
+#: src/latex_menu.vala:412
 msgid "right ."
 msgstr ". derecho"
 
-#: src/latex_menu.vala:409
+#: src/latex_menu.vala:410
 msgid "right <"
 msgstr "< derecho"
 
-#: src/latex_menu.vala:401
+#: src/latex_menu.vala:402
 msgid "right >"
 msgstr "> derecho"
 
-#: src/latex_menu.vala:405
+#: src/latex_menu.vala:406
 msgid "right ["
 msgstr "[ derecho"
 
-#: src/latex_menu.vala:397
+#: src/latex_menu.vala:398
 msgid "right ]"
 msgstr "] derecho"
 
-#: src/latex_menu.vala:407
+#: src/latex_menu.vala:408
 msgid "right { "
 msgstr "{ derecho"
 
