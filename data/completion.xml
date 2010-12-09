@@ -725,6 +725,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="figure*" />
 			<choice name="flushleft" />
 			<choice name="flushright" />
+			<choice name="frame" />
 			<choice name="fussypar" />
 			<choice name="itemize" />
 			<choice name="letter" />
