@@ -82,10 +82,6 @@ msgstr "Alinha à Esquerda - \\begin{flushleft}"
 msgid "Align Right - \\begin{flushright}"
 msgstr "Alinha à Direita - \\begin{flushringht}"
 
-#: src/ui/search_and_replace.ui:188
-msgid "All"
-msgstr "Todos"
-
 #: src/latex_menu.vala:265
 msgid "Array of Equations - \\begin{align*}"
 msgstr "Array de Equações - \\begin{align*}"
@@ -101,14 +97,6 @@ msgstr "Artigo"
 #: src/latex_menu.vala:234
 msgid "Author - \\author"
 msgstr "Autor - \\author"
-
-#: src/ui/preferences_dialog.ui:764
-msgid "Automatically clean-up files after close"
-msgstr "Remover automaticamente arquivos após fechar"
-
-#: src/ui/preferences_dialog.ui:157
-msgid "Autosave files every"
-msgstr "Salvar arquivos automaticamente a cada"
 
 #: src/latex_menu.vala:193
 msgid "Big skip - \\bigskip"
@@ -141,10 +129,6 @@ msgstr "Breve - \\u"
 #: src/preferences_dialog.vala:616
 msgid "Build Tool"
 msgstr "Ferramenta de Construção"
-
-#: src/ui/preferences_dialog.ui:454
-msgid "Build Tools"
-msgstr "Ferramentas de Construção"
 
 #: src/latex_menu.vala:89
 msgid "Bulleted List - \\begin{itemize}"
@@ -203,18 +187,6 @@ msgstr "_Remover Arquivos Construídos"
 msgid "Clear All"
 msgstr "Limpar Tudo"
 
-#: src/ui/search_and_replace.ui:27
-msgid "Clear Find"
-msgstr "Limpar Busca"
-
-#: src/ui/search_and_replace.ui:125
-msgid "Clear Replace"
-msgstr "Limpar Substituir"
-
-#: src/ui/search_and_replace.ui:92
-msgid "Close"
-msgstr "Fechar"
-
 #: src/main_window.vala:107
 msgid "Close all open files"
 msgstr "Fechar todos os arquivos abertos"
@@ -231,10 +203,6 @@ msgstr "Fechar o arquivo atual"
 #: src/main_window.vala:769
 msgid "Close without Saving"
 msgstr "Fechar sem salvar"
-
-#: src/ui/preferences_dialog.ui:333
-msgid "Color Scheme"
-msgstr "Esquema de Cores"
 
 #: src/preferences_dialog.vala:733
 msgid "Commands"
@@ -267,10 +235,6 @@ msgstr "Copiar a seleção"
 #: src/main_window.vala:40
 msgid "Create _Template From Document..."
 msgstr "Criar _Modelo a partir do Documento..."
-
-#: src/ui/preferences_dialog.ui:139
-msgid "Create a backup copy of files before saving"
-msgstr "Criar uma cópia de backup dos arquivos antes de salvar"
 
 #: src/main_window.vala:121
 msgid "Create a new project"
@@ -321,10 +285,6 @@ msgstr "Excluir texto selecionado"
 msgid "Delimiters"
 msgstr "Delimitadores"
 
-#: src/ui/build_tool.ui:89
-msgid "Description"
-msgstr "Descrição"
-
 #: src/latex_menu.vala:93
 msgid "Description - \\begin{description}"
 msgstr "Descrição - \\begin{description}"
@@ -337,10 +297,6 @@ msgstr "Diretório"
 #: src/projects.vala:43
 msgid "Directory:"
 msgstr "Diretório:"
-
-#: src/ui/preferences_dialog.ui:28
-msgid "Display line numbers"
-msgstr "Exibir número de linhas"
 
 #: src/projects.vala:301
 msgid "Do you really want to clear all projects?"
@@ -400,14 +356,6 @@ msgstr "Acento agudo duplo - \\H"
 msgid "Edit Anyway"
 msgstr "Editar Mesmo Assim"
 
-#: src/ui/preferences_dialog.ui:219
-msgid "Editor"
-msgstr "Editor"
-
-#: src/ui/preferences_dialog.ui:280
-msgid "Editor _font: "
-msgstr "Editor de _fonte: "
-
 #: src/latex_menu.vala:137
 msgid "Emphasized - \\emph"
 msgstr "Enfatizado - \\emph"
@@ -437,18 +385,9 @@ msgstr "Erro ao tentar convert documento para UTF-8"
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Euler Fraktur - \\mathfrak (pacote amsfonts)"
 
-#: src/ui/preferences_dialog.ui:856
-#, fuzzy
-msgid "Except those for clean-up"
-msgstr "Exceto aqueles para remover"
-
 #: src/preferences_dialog.vala:593
 msgid "Execute"
 msgstr "Executar"
-
-#: src/ui/build_tool.ui:137
-msgid "Extensions"
-msgstr "Extensões"
 
 # não há tradução plausível
 #: src/latex_menu.vala:149
@@ -468,51 +407,18 @@ msgstr "Arquivo"
 msgid "File Browser"
 msgstr "Navegador de Arquivos"
 
-#: src/ui/preferences_dialog.ui:725
-msgid "File Clean-Up"
-msgstr "Remover Arquivo"
-
 #: src/file_browser.vala:415
 msgid "File System"
 msgstr "Sistema de Arquivos"
-
-#: src/ui/build_tool.ui:154
-#, fuzzy
-msgid ""
-"File extensions for which the build tool can be executed.\n"
-"The extensions are separated by spaces."
-msgstr ""
-"Extensões do arquivo com as quais foram construídas podem ser executadas.\n"
-"As Extensões são separadas por espaços."
-
-#: src/ui/search_and_replace.ui:71
-msgid "Find next"
-msgstr "Localizar próximo"
-
-#: src/ui/search_and_replace.ui:49
-msgid "Find previous"
-msgstr "Localizar anterior"
 
 # não há tradução plausível
 #: src/latex_menu.vala:155
 msgid "Fo_nt Shape"
 msgstr "Fo_nt Shape"
 
-#: src/ui/preferences_dialog.ui:238
-msgid "Font"
-msgstr "Fonte"
-
-#: src/ui/preferences_dialog.ui:384
-msgid "Font & Colors"
-msgstr "Fontes & Cores"
-
 #: src/latex_menu.vala:57
 msgid "Footnote"
 msgstr "Nota de Rodapé"
-
-#: src/ui/preferences_dialog.ui:94
-msgid "Forget you are not using tabulations"
-msgstr "Esqueça que você não está usando tabulações"
 
 #: src/latex_menu.vala:276
 msgid "Fraction - \\frac{}{}"
@@ -551,14 +457,6 @@ msgstr "Grego"
 msgid "Hide panel"
 msgstr "Ocultar painel"
 
-#: src/ui/preferences_dialog.ui:111
-msgid "Highlight current line"
-msgstr "Destacar linha atual"
-
-#: src/ui/preferences_dialog.ui:125
-msgid "Highlight matching brackets"
-msgstr "Destacar parênteses correspondentes"
-
 #: src/latex_menu.vala:179
 msgid "Horizontal line (columns specified) - \\cline"
 msgstr "Linha horizontal (colunas especificadas) - \\cline"
@@ -570,10 +468,6 @@ msgstr "Linha horizontal - \\hline"
 #: src/latex_menu.vala:197
 msgid "Horizontal space - \\hspace"
 msgstr "Espaço horizontal - \\hspace"
-
-#: src/ui/build_tool.ui:178
-msgid "Icon"
-msgstr "Ícone"
 
 #: src/dialogs.vala:131
 msgid "If you don't save, all your changes will be permanently lost."
@@ -600,15 +494,6 @@ msgstr "Incluir um arquivo - \\input"
 msgid "Include an image (graphicx package) - \\includegraphics"
 msgstr "Incluir um imagem (pacote graphicx) - \\includegraphics"
 
-#: src/ui/preferences_dialog.ui:76
-msgid "Insert spaces instead of tabs"
-msgstr "Inserir espaços em vez de tabulação"
-
-#: src/ui/preferences_dialog.ui:402
-#, fuzzy
-msgid "Interactive completion after"
-msgstr "Completar iterativamente após"
-
 # no Português pode significar Acentos Nacionais!
 #: src/latex_menu.vala:205
 msgid "International _Accents"
@@ -629,10 +514,6 @@ msgstr "Itálico - \\textit"
 #: src/build_view.vala:95
 msgid "Job"
 msgstr "Tarefa"
-
-#: src/ui/build_tool.ui:223
-msgid "Jobs"
-msgstr "Trabalhos"
 
 #: src/main_window.vala:1728
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
@@ -824,10 +705,6 @@ msgstr ""
 "Nova página - \\n"
 "ewpage"
 
-#: src/ui/preferences_dialog.ui:746
-msgid "No confirmation when cleaning-up"
-msgstr "Sem confirmação quando remover"
-
 #: src/completion.vala:290
 #, fuzzy
 msgid "No matching proposal"
@@ -844,14 +721,6 @@ msgstr ""
 #: src/search.vala:389
 msgid "Not found"
 msgstr "Não encontrado"
-
-#: src/ui/preferences_dialog.ui:418
-msgid "Number of characters after '\\'"
-msgstr "Número de caracteres após '\\'"
-
-#: src/ui/preferences_dialog.ui:685
-msgid "Number of most used symbols:"
-msgstr "Número de símbolos mais usados:"
 
 #: src/latex_menu.vala:268
 msgid "Numbered Array of Equations - \\begin{align}"
@@ -894,10 +763,6 @@ msgstr "Abrir arquivo utilizado recetemente"
 msgid "Operators"
 msgstr "Operadores"
 
-#: src/ui/preferences_dialog.ui:924
-msgid "Other"
-msgstr "Outro"
-
 #: src/latex_menu.vala:191
 msgid "Page break - \\pagebreak"
 msgstr "Quebra de página - \\pagebreak"
@@ -922,14 +787,6 @@ msgstr "Colar da área de transferência"
 msgid "Personnal templates"
 msgstr "Modelos Pensonalizados"
 
-#: src/ui/preferences_dialog.ui:296
-msgid "Pick the editor font"
-msgstr "Escolha o editor de fonte"
-
-#: src/ui/build_tool.ui:250
-msgid "Placeholders:"
-msgstr "Espaços Reservados:"
-
 #: src/preferences_dialog.vala:746
 #, fuzzy
 msgid "Post Processor"
@@ -942,10 +799,6 @@ msgstr "Preferências"
 #: src/templates.vala:61
 msgid "Presentation"
 msgstr "Apresentação"
-
-#: src/ui/preferences_dialog.ui:480
-msgid "Program for viewing documents:"
-msgstr "Programa para visualização de documentos:"
 
 #: src/main_window.vala:47
 msgid "Quit the program"
@@ -991,29 +844,13 @@ msgstr "Relações"
 msgid "Reload"
 msgstr "Atualizar"
 
-#: src/ui/preferences_dialog.ui:202
-msgid "Reopen files on startup"
-msgstr "Reabrir arquivos na inicialização"
-
 #: src/main_window.vala:939
 msgid "Replace"
 msgstr "Substituir"
 
-#: src/ui/search_and_replace.ui:169
-msgid "Replace All"
-msgstr "Substituir Todos"
-
-#: src/ui/search_and_replace.ui:319
-msgid "Replace with"
-msgstr "Substituir com"
-
 #: src/templates.vala:52
 msgid "Report"
 msgstr "Relatório"
-
-#: src/ui/preferences_dialog.ui:590
-msgid "Reset"
-msgstr "Recompor"
 
 #: src/preferences_dialog.vala:31
 #: src/preferences_dialog.vala:552
@@ -1088,10 +925,6 @@ msgstr "Salvar o arquivo atual"
 msgid "Save the current file with a different name"
 msgstr "Salvar o arquivo atual com um nome diferente"
 
-#: src/ui/search_and_replace.ui:250
-msgid "Search for"
-msgstr "Procurar por"
-
 #: src/main_window.vala:88
 msgid "Search for and replace text"
 msgstr "Buscar texto e substituir"
@@ -1106,7 +939,6 @@ msgstr "Seção"
 
 # Palavra confusa.
 #: src/latex_menu.vala:426
-#, fuzzy
 msgid "Sectioning"
 msgstr "Seccionamento"
 
@@ -1121,18 +953,6 @@ msgstr "Selecione o documento inteiro"
 #: src/dialogs.vala:236
 msgid "Select the files you want to delete:"
 msgstr "Selecione os arquivos que deseja excluir:"
-
-#: src/ui/preferences_dialog.ui:834
-msgid "Show all files"
-msgstr "Mostrar todos os arquivos"
-
-#: src/ui/preferences_dialog.ui:869
-msgid "Show hidden files (beginning with a dot)"
-msgstr "Mostrar arquivos ocultos (que iniciam com um ponto)"
-
-#: src/ui/preferences_dialog.ui:893
-msgid "Show only files with these extensions"
-msgstr "Mostrar somente arquivos com estas extensões"
 
 #: src/main_window.vala:141
 msgid "Show or hide the bottom panel"
@@ -1216,10 +1036,6 @@ msgstr "Sobrescrito - ^{}"
 msgid "Symbols"
 msgstr "Sí­mbolos"
 
-#: src/ui/preferences_dialog.ui:47
-msgid "Tab width:"
-msgstr "Largura da tabulação:"
-
 # Acho que é o mesmo que tabulação.
 #: src/latex_menu.vala:169
 msgid "Tabbing - \\begin{tabbing}"
@@ -1239,21 +1055,12 @@ msgid "Tabular - \\begin{tabular}"
 msgstr "Tabular - \\begin{tabular}"
 
 #: src/main_window.vala:131
-#, fuzzy
 msgid "The Kile LaTeX Reference"
-msgstr "Referência do LaTeX do Editor Kile"
+msgstr "Referência LaTeX do Editor Kile"
 
 #: src/projects.vala:334
 msgid "The Main File is not in the directory."
 msgstr "O Arquivo Principal não está dentro do diretório."
-
-#: src/ui/build_tool.ui:261
-msgid "The active document filename"
-msgstr "O nome do arquivo ativo"
-
-#: src/ui/build_tool.ui:274
-msgid "The active document filename without its extension"
-msgstr "O nome do arquivo ativo sem sua extensão"
 
 #: src/document_tab.vala:269
 #, c-format
@@ -1261,17 +1068,9 @@ msgid "The file %s changed on disk."
 msgstr "O arquivo %s foi mudado no disco."
 
 #: src/document.vala:216
-#, fuzzy, c-format
+#, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "O arquivo %s foi modificado desde a leitura."
-
-#: src/ui/build_tool.ui:287
-msgid ""
-"The program for viewing documents.\n"
-"Its value can be changed in the preferences dialog."
-msgstr ""
-"O programa para visualização de documentos.\n"
-"Seu valor pode ser mudado no diálogo de preferências."
 
 #: src/dialogs.vala:67
 #, c-format
@@ -1299,10 +1098,6 @@ msgstr "Tí­tulo - \\title"
 #: src/latex_menu.vala:84
 msgid "Title page - \\begin{titlepage}"
 msgstr "Página de Tí­tulo - \\begin{titlepage}"
-
-#: src/ui/search_and_replace.ui:224
-msgid "Toggle between search and replace mode"
-msgstr "Alternar entre o modo localizar e substituir"
 
 #: src/latex_menu.vala:209
 msgid "Trema - \\\""
@@ -1343,7 +1138,7 @@ msgstr "Usar pacote - \\usepackage"
 #: src/preferences_dialog.vala:335
 #, c-format
 msgid "Use the system fixed width font (%s)"
-msgstr "Usar tamanho da fonte fixada pelo sistema (%s)"
+msgstr "Usar a fonte de largura fixa padrão (%s)"
 
 #: src/latex_menu.vala:80
 msgid "Verbatim - \\begin{verbatim}"
@@ -1388,14 +1183,6 @@ msgstr "Visualizar PS"
 #: src/main_window.vala:99
 msgid "View _Log"
 msgstr "Visualizar _Log"
-
-#: src/ui/preferences_dialog.ui:651
-msgid "Web browser:"
-msgstr "Navegador web:"
-
-#: src/ui/build_tool.ui:46
-msgid "You can select this arrow and copy/paste it!"
-msgstr "Você pode selecionar esta seta e copiar/colar!"
 
 #: src/templates.vala:135
 msgid "Your personnal templates"
@@ -1483,7 +1270,7 @@ msgstr "_Ir para Linha"
 
 #: src/main_window.vala:129
 msgid "_Help"
-msgstr "_Ajuda"
+msgstr "A_juda"
 
 #: src/main_window.vala:130
 msgid "_LaTeX Reference"
@@ -1571,7 +1358,6 @@ msgid "_Search"
 msgstr "_Localizar"
 
 #: src/latex_menu.vala:30
-#, fuzzy
 msgid "_Sectioning"
 msgstr "_Seccionamento"
 
@@ -1604,29 +1390,25 @@ msgstr "_Tabular"
 msgid "_Uncomment"
 msgstr "_Descomentar"
 
-#: src/ui/preferences_dialog.ui:259
-msgid "_Use the system fixed width font (%s)"
-msgstr "_Usar tamanho da fonte fixada pelo sistema (%s)"
-
 #: src/main_window.vala:75
 msgid "_View"
 msgstr "_Visualizar"
 
 #: src/templates.vala:50
 msgid "article-en.tex"
-msgstr "article-en.tex"
+msgstr "article-pt.tex"
 
 #: src/templates.vala:62
 msgid "beamer-en.tex"
-msgstr "beamer-en.tex"
+msgstr "beamer-pt.tex"
 
 #: src/templates.vala:56
 msgid "book-en.tex"
-msgstr "book-en.tex"
+msgstr "book-pt.tex"
 
 #: src/app_settings.vala:552
 msgid "build_tools-en.xml"
-msgstr "build_tools-en.xml"
+msgstr "build_tools-pt.xml"
 
 #: src/preferences_dialog.vala:268
 #: src/preferences_dialog.vala:273
@@ -1639,7 +1421,6 @@ msgid "characters"
 msgstr "caracteres"
 
 #: src/latex_menu.vala:386
-#, fuzzy
 msgid "left  }"
 msgstr "} esquerda"
 
@@ -1677,7 +1458,7 @@ msgstr "{ esquerda"
 
 #: src/templates.vala:59
 msgid "letter-en.tex"
-msgstr "letter-en.tex"
+msgstr "letter-pt.tex"
 
 #: src/preferences_dialog.vala:253
 #: src/preferences_dialog.vala:258
@@ -1691,7 +1472,7 @@ msgstr "minutos"
 
 #: src/templates.vala:53
 msgid "report-en.tex"
-msgstr "report-en.tex"
+msgstr "report-pt.tex"
 
 #: src/latex_menu.vala:400
 msgid "right  }"
@@ -1731,5 +1512,220 @@ msgstr "{ direita"
 
 #: src/main_window.vala:1780
 msgid "translator-credits"
-msgstr "Átila Camurça, Darlildo Souza"
+msgstr ""
+"Átila Camurça <camurca.home@gmail.com>\n"
+"Darlildo Lima <darlildo.cefetce@gmail.com>"
+
+#: src/ui/build_tool.ui:46
+msgid "You can select this arrow and copy/paste it!"
+msgstr "Você pode selecionar esta seta e copiar/colar!"
+
+#: src/ui/build_tool.ui:89
+msgid "Description"
+msgstr "Descrição"
+
+#: src/ui/build_tool.ui:137
+msgid "Extensions"
+msgstr "Extensões"
+
+#: src/ui/build_tool.ui:154
+#, fuzzy
+msgid ""
+"File extensions for which the build tool can be executed.\n"
+"The extensions are separated by spaces."
+msgstr ""
+"Extensões do arquivo com as quais foram construídas podem ser executadas.\n"
+"As Extensões são separadas por espaços."
+
+#: src/ui/build_tool.ui:178
+msgid "Icon"
+msgstr "Ícone"
+
+#: src/ui/build_tool.ui:223
+msgid "Jobs"
+msgstr "Trabalhos"
+
+#: src/ui/build_tool.ui:250
+msgid "Placeholders:"
+msgstr "Espaços Reservados:"
+
+#: src/ui/build_tool.ui:261
+msgid "The active document filename"
+msgstr "O nome do arquivo ativo"
+
+#: src/ui/build_tool.ui:274
+msgid "The active document filename without its extension"
+msgstr "O nome do arquivo ativo sem sua extensão"
+
+#: src/ui/build_tool.ui:287
+msgid ""
+"The program for viewing documents.\n"
+"Its value can be changed in the preferences dialog."
+msgstr ""
+"O programa para visualização de documentos.\n"
+"Seu valor pode ser mudado no diálogo de preferências."
+
+#: src/ui/preferences_dialog.ui:28
+msgid "Display line numbers"
+msgstr "Exibir número de linhas"
+
+#: src/ui/preferences_dialog.ui:47
+msgid "Tab width:"
+msgstr "Largura da tabulação:"
+
+#: src/ui/preferences_dialog.ui:76
+msgid "Insert spaces instead of tabs"
+msgstr "Inserir espaços em vez de tabulação"
+
+#: src/ui/preferences_dialog.ui:94
+msgid "Forget you are not using tabulations"
+msgstr "Esqueça que você não está usando tabulações"
+
+#: src/ui/preferences_dialog.ui:111
+msgid "Highlight current line"
+msgstr "Destacar linha atual"
+
+#: src/ui/preferences_dialog.ui:125
+msgid "Highlight matching brackets"
+msgstr "Destacar parênteses correspondentes"
+
+#: src/ui/preferences_dialog.ui:139
+msgid "Create a backup copy of files before saving"
+msgstr "Criar uma cópia de backup dos arquivos antes de salvar"
+
+#: src/ui/preferences_dialog.ui:157
+msgid "Autosave files every"
+msgstr "Salvar arquivos automaticamente a cada"
+
+#: src/ui/preferences_dialog.ui:202
+msgid "Reopen files on startup"
+msgstr "Reabrir arquivos na inicialização"
+
+#: src/ui/preferences_dialog.ui:219
+msgid "Editor"
+msgstr "Editor"
+
+#: src/ui/preferences_dialog.ui:238
+msgid "Font"
+msgstr "Fonte"
+
+#: src/ui/preferences_dialog.ui:259
+msgid "_Use the system fixed width font (%s)"
+msgstr "_Usar tamanho da fonte fixada pelo sistema (%s)"
+
+#: src/ui/preferences_dialog.ui:280
+msgid "Editor _font: "
+msgstr "_Fonte do editor: "
+
+#: src/ui/preferences_dialog.ui:296
+msgid "Pick the editor font"
+msgstr "Escolha a fonte do editor"
+
+#: src/ui/preferences_dialog.ui:333
+msgid "Color Scheme"
+msgstr "Esquema de Cores"
+
+#: src/ui/preferences_dialog.ui:384
+msgid "Font & Colors"
+msgstr "Fontes e cores"
+
+#: src/ui/preferences_dialog.ui:402
+msgid "Interactive completion after"
+msgstr "Auto-completar após"
+
+#: src/ui/preferences_dialog.ui:418
+msgid "Number of characters after '\\'"
+msgstr "Número de caracteres após '\\'"
+
+#: src/ui/preferences_dialog.ui:454
+msgid "Build Tools"
+msgstr "Ferramentas de Construção"
+
+#: src/ui/preferences_dialog.ui:480
+msgid "Program for viewing documents:"
+msgstr "Programa para visualização de documentos:"
+
+#: src/ui/preferences_dialog.ui:590
+msgid "Reset"
+msgstr "Recompor"
+
+#: src/ui/preferences_dialog.ui:651
+msgid "Web browser:"
+msgstr "Navegador web:"
+
+#: src/ui/preferences_dialog.ui:685
+msgid "Number of most used symbols:"
+msgstr "Número de símbolos mais usados:"
+
+#: src/ui/preferences_dialog.ui:725
+msgid "File Clean-Up"
+msgstr "Remover Arquivo"
+
+#: src/ui/preferences_dialog.ui:746
+msgid "No confirmation when cleaning-up"
+msgstr "Sem confirmação quando remover"
+
+#: src/ui/preferences_dialog.ui:764
+msgid "Automatically clean-up files after close"
+msgstr "Remover automaticamente arquivos após fechar"
+
+#: src/ui/preferences_dialog.ui:834
+msgid "Show all files"
+msgstr "Mostrar todos os arquivos"
+
+#: src/ui/preferences_dialog.ui:856
+msgid "Except those for clean-up"
+msgstr "Exceto aqueles para remover"
+
+#: src/ui/preferences_dialog.ui:869
+msgid "Show hidden files (beginning with a dot)"
+msgstr "Mostrar arquivos ocultos (que iniciam com um ponto)"
+
+#: src/ui/preferences_dialog.ui:893
+msgid "Show only files with these extensions"
+msgstr "Mostrar somente arquivos com estas extensões"
+
+#: src/ui/preferences_dialog.ui:924
+msgid "Other"
+msgstr "Outro"
+
+#: src/ui/search_and_replace.ui:27
+msgid "Clear Find"
+msgstr "Limpar Busca"
+
+#: src/ui/search_and_replace.ui:49
+msgid "Find previous"
+msgstr "Localizar anterior"
+
+#: src/ui/search_and_replace.ui:71
+msgid "Find next"
+msgstr "Localizar próximo"
+
+#: src/ui/search_and_replace.ui:92
+msgid "Close"
+msgstr "Fechar"
+
+#: src/ui/search_and_replace.ui:125
+msgid "Clear Replace"
+msgstr "Limpar Substituir"
+
+#: src/ui/search_and_replace.ui:169
+msgid "Replace All"
+msgstr "Substituir Todos"
+
+#: src/ui/search_and_replace.ui:188
+msgid "All"
+msgstr "Todos"
+
+#: src/ui/search_and_replace.ui:224
+msgid "Toggle between search and replace mode"
+msgstr "Alternar entre o modo localizar e substituir"
+
+#: src/ui/search_and_replace.ui:250
+msgid "Search for"
+msgstr "Procurar por"
+
+#: src/ui/search_and_replace.ui:319
+msgid "Replace with"
+msgstr "Substituir com"
 

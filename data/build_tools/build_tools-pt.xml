@@ -1,0 +1,23 @@
+<tools>
+  <tool description="Criar um DVI a partir de um arquivo LaTeX" extensions=".tex" label="LaTeX → DVI" icon="compile_dvi">
+    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all $filename</job>
+    <job mustSucceed="true" postProcessor="generic">$view $shortname.dvi</job>
+  </tool>
+  <tool description="Criar um PDF a partir de um arquivo LaTeX" extensions=".tex" label="LaTeX → PDF" icon="compile_pdf">
+    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --pdf $filename</job>
+    <job mustSucceed="true" postProcessor="generic">$view $shortname.pdf</job>
+  </tool>
+  <tool description="Criar um PostScript a partir de um arquivo LaTeX" extensions=".tex" label="LaTeX → PS" icon="compile_ps">
+    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --ps $filename</job>
+    <job mustSucceed="true" postProcessor="generic">$view $shortname.ps</job>
+  </tool>
+  <tool description="Visualizar o arquivo DVI" extensions=".tex .dvi" label="View DVI" icon="view_dvi">
+    <job mustSucceed="true" postProcessor="generic">$view $shortname.dvi</job>
+  </tool>
+  <tool description="Visualizar o arquivo PDF" extensions=".tex .pdf" label="View PDF" icon="view_pdf">
+    <job mustSucceed="true" postProcessor="generic">$view $shortname.pdf</job>
+  </tool>
+  <tool description="Visualizar o arquivo PostScript" extensions=".tex .ps" label="View PS" icon="view_ps">
+    <job mustSucceed="true" postProcessor="generic">$view $shortname.ps</job>
+  </tool>
+</tools>
