@@ -38,9 +38,9 @@ public class MainWindow : Window
         { "FileSaveAs", STOCK_SAVE_AS, null, null,
             N_("Save the current file with a different name"), on_file_save_as },
         { "FileCreateTemplate", null, N_("Create _Template From Document..."), null,
-		    N_("Create a new template from the current document"), on_create_template },
-	    { "FileDeleteTemplate", null, N_("_Delete Template..."), null,
-		    N_("Delete personnal template(s)"), on_delete_template },
+            N_("Create a new template from the current document"), on_create_template },
+        { "FileDeleteTemplate", null, N_("_Delete Template..."), null,
+            N_("Delete personnal template(s)"), on_delete_template },
         { "FileClose", STOCK_CLOSE, null, null,
             N_("Close the current file"), on_file_close },
         { "FileQuit", STOCK_QUIT, null, null,
@@ -91,9 +91,9 @@ public class MainWindow : Window
 
         // Build
         { "Build", null, N_("_Build") },
-		{ "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
-		    N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
-		    on_build_clean },
+        { "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
+            N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
+            on_build_clean },
         { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
             N_("Stop Execution"), on_build_stop_execution },
         { "BuildViewLog", "view_log", N_("View _Log"), null,
@@ -136,19 +136,19 @@ public class MainWindow : Window
     private const ToggleActionEntry[] toggle_action_entries =
     {
         { "ViewSidePanel", null, N_("_Side panel"), null,
-		    N_("Show or hide the side panel"), on_show_side_panel },
-		{ "ViewBottomPanel", null, N_("_Bottom panel"), null,
-		    N_("Show or hide the bottom panel"), on_show_bottom_panel },
+            N_("Show or hide the side panel"), on_show_side_panel },
+        { "ViewBottomPanel", null, N_("_Bottom panel"), null,
+            N_("Show or hide the bottom panel"), on_show_bottom_panel },
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
-		    N_("Show or hide the edit toolbar"), on_show_edit_toolbar }
+            N_("Show or hide the edit toolbar"), on_show_edit_toolbar }
         /*
-		{ "BuildShowErrors", STOCK_DIALOG_ERROR, N_("Show _Errors"), null,
-		    N_("Show Errors"), on_build_show_errors },
-		{ "BuildShowWarnings", STOCK_DIALOG_WARNING, N_("Show _Warnings"), null,
-		    N_("Show Warnings"), on_build_show_warnings },
-		{ "BuildShowBadBoxes", "badbox", N_("Show _BadBoxes"), null,
-		    N_("Show BadBoxes"), on_build_show_badboxes }
-		*/
+        { "BuildShowErrors", STOCK_DIALOG_ERROR, N_("Show _Errors"), null,
+            N_("Show Errors"), on_build_show_errors },
+        { "BuildShowWarnings", STOCK_DIALOG_WARNING, N_("Show _Warnings"), null,
+            N_("Show Warnings"), on_build_show_warnings },
+        { "BuildShowBadBoxes", "badbox", N_("Show _BadBoxes"), null,
+            N_("Show BadBoxes"), on_build_show_badboxes }
+        */
     };
 
     private string file_chooser_current_folder = Environment.get_home_dir ();
@@ -1741,45 +1741,46 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
 
-		string website = "http://latexila.sourceforge.net/";
+        string website = "http://latexila.sourceforge.net/";
 
-		string[] authors =
-		{
-		    "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
-		    null
-		};
+        string[] authors =
+        {
+            "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
+            null
+        };
 
-		string[] artists =
-		{
-		    "Eric Forgeot <e.forgeot@laposte.net>",
-		    "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
-		    "The Kile Team: http://kile.sourceforge.net/",
-		    "Gedit LaTeX Plugin: http://www.michaels-website.de/gedit-latex-plugin/",
-		    null
-		};
+        string[] artists =
+        {
+            "Ann Melnichuk <melnichu@qtp.ufl.edu>",
+            "Eric Forgeot <e.forgeot@laposte.net>",
+            "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
+            "The Kile Team: http://kile.sourceforge.net/",
+            "Gedit LaTeX Plugin: http://www.michaels-website.de/gedit-latex-plugin/",
+            null
+        };
 
         Gdk.Pixbuf logo = null;
         try
         {
-		    logo = new Gdk.Pixbuf.from_file (Config.DATA_DIR + "/images/app/logo.png");
-		}
-		catch (Error e)
-		{
-		    stderr.printf ("Error with the logo: %s\n", e.message);
-		}
+            logo = new Gdk.Pixbuf.from_file (Config.DATA_DIR + "/images/app/logo.png");
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Error with the logo: %s\n", e.message);
+        }
 
-		show_about_dialog (this,
-		    "program-name", "LaTeXila",
-		    "version", Config.APP_VERSION,
-		    "authors", authors,
-		    "artists", artists,
-		    "comments", comments,
-		    "copyright", copyright,
-		    "license", licence,
-		    "title", _("About LaTeXila"),
-		    "translator-credits", _("translator-credits"),
-		    "website", website,
-		    "logo", logo,
-		    null);
+        show_about_dialog (this,
+            "program-name", "LaTeXila",
+            "version", Config.APP_VERSION,
+            "authors", authors,
+            "artists", artists,
+            "comments", comments,
+            "copyright", copyright,
+            "license", licence,
+            "title", _("About LaTeXila"),
+            "translator-credits", _("translator-credits"),
+            "website", website,
+            "logo", logo,
+            null);
     }
 }
