@@ -1,8 +1,23 @@
 TODO
 
-- Rubber doesn't support filenames with spaces: fix that
+- Rubber doesn't support filenames with spaces
   See https://bugs.launchpad.net/rubber/+bug/639983
 
+- Consider using Latexmk instead of Rubber:
+	- See http://www.phys.psu.edu/~collins/software/latexmk-jcc/
+	- Filenames with spaces are supported.
+	- Latexmk is highly configurable, it seems a better solution.
+	- Latexmk is still developed, whereas rubber doesn't seem still in life.
+	- Unfortunately the output of the latex or pdflatex commands are not filtered.
+	  We can filter the messages internally, as in latexila 0.2 or Kile.
+	  Or, better, we can improve latexmk (written in Perl) so it is useful
+	  for other projects.
+	- An example of command (PDF output):
+	  $ latexmk -pdf -e '$pdflatex=q/pdflatex %O -interaction=nonstopmode %S/' file.tex
+	  It's not really beautiful, but we must use -interaction=nonstopmode.
+	  Another means is to use an RC file (option -r instead of -e).
+	- In the output of latexmk we can see which commands are executed, and how many times.
+	  It would be useful to show this information too.
 
 LaTeXila 2.2 or later
 =====================
@@ -12,15 +27,18 @@ See also the Roadmap:
 - Auto-completion:
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
-	  (take into account all *.tex, *.bib, etc files of the project)
+	  (take into account all *.tex, *.bib, ... files of the project)
 
-- Forward and backward search with SyncTeX
+- Check spelling
 
 - Document compilation:
 	- show a different icon for errors/warnings/badboxes
-	  improve rubber: add an option that tells which type of message it is
+	  If we want to continue using rubber, we must improve it by adding an option
+	  that tells which type of message it is.
+	  Or we can use latexmk (see above).
 
 - Edit toolbar:
 	- create a custom MenuToolButton:
 	  Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.
 	  It would be better if the icon is the last item used (and we can click on it).
+	  A drawback is that the button would take more place, this can be a problem for small screens.
