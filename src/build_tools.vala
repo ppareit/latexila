@@ -422,7 +422,7 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
             try
             {
                 pattern = new Regex (
-                    "(?P<file>[a-zA-Z0-9./_-]+)(:(?P<line>[0-9\\-]+))?:(?P<text>.*)$",
+                    "(?P<file>[^:\n]+)(:(?P<line>[0-9\\-]+))?:(?P<text>.+)$",
                     RegexCompileFlags.MULTILINE);
             }
             catch (RegexError e)
