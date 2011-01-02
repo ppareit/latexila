@@ -466,8 +466,10 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
             }
 
             // filename
-            issue.filename = "%s/%s".printf (file.get_parent ().get_parse_name (),
-                match_info.fetch_named ("file"));
+            issue.filename = match_info.fetch_named ("file");
+            if (issue.filename[0] != '/')
+                issue.filename = "%s/%s".printf (file.get_parent ().get_parse_name (),
+                    issue.filename);
 
             issues += issue;
 
