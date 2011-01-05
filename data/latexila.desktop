@@ -1,9 +1,9 @@
 [Desktop Entry]
 Name=LaTeXila
-GenericName=LaTeX Frontend
-GenericName[fr]=Interface graphique LaTeX
-Comment=LaTeX editor
-Comment[fr]=Éditeur LaTeX
+GenericName=Integrated LaTeX Environment
+GenericName[fr]=Environnement LaTeX intégré
+Comment=Edit LaTeX documents
+Comment[fr]=Éditer des documents LaTeX
 Exec=latexila
 Icon=latexila
 Terminal=false

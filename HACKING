@@ -47,3 +47,31 @@ How to update the *.po files with latexila.pot file?
 How to create a new *.po for a new language?
 
     $ cd po/ ; msginit -l xx -o xx.po -i latexila.pot
+
+How to translate LaTeXila?
+
+    There is obviously the *.po file to translate. You can use Poedit for
+    example. Here are some strange items to translate:
+        - translator-credits: Your name <your@email> (so your name will appear
+          in the about dialog)
+
+        Templates:
+        - article-en.tex: article-xx.tex ("en" stands for English)
+        - beamer-en.tex: beamer-xx.tex
+        - book-en.tex: book-xx.tex
+        - letter-en.tex: letter-xx.tex
+        - report-en.tex: report-xx.tex
+
+        Build Tools:
+        - build_tools-en.xml: build_tools-xx.xml
+
+        You will see a lot of items with an underscore. It's used for
+        shortcuts (Alt + Letter underlined). If possible it is better to avoid
+        having several times the same letter in the same menu.
+
+    There is also the templates to translate in data/templates/ and the build
+    tools in data/build_tools/.
+
+    Finally, there are two little sentences in data/latexila.desktop.
+
+    Thanks!
