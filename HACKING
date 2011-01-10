@@ -70,7 +70,8 @@ How to translate LaTeXila?
         having several times the same letter in the same menu.
 
     There is also the templates to translate in data/templates/ and the build
-    tools in data/build_tools/.
+    tools in data/build_tools/. For the templates, add support for your
+    language (in most cases add the babel package).
 
     Finally, there are two little sentences in data/latexila.desktop.
 

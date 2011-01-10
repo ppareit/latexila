@@ -1,11 +1,12 @@
 Requirements
 ============
 
+GTK+ >= 2.16
+GtkSourceView >= 2.10
 GLib >= 2.26 (GIO is part of GLib)
 gsettings-desktop-schemas
 Vala 0.10.x (not above)
-GTK+ >= 2.16
-GtkSourceView >= 2.10
+libgee
 unique
 gdk-x11
 x11
