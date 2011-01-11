@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -148,6 +148,7 @@ public class BuildToolRunner : BuildToolProcess
     private BuildView view;
     private bool compilation;
     private string document_view_program;
+    private Gtk.Action action_stop_exec;
 
     private File file;
     private string filename;
@@ -161,14 +162,17 @@ public class BuildToolRunner : BuildToolProcess
     private int job_num = 0;
     private unowned BuildJob current_job;
 
-
     private TreeIter root_partition;
     private TreeIter[] job_partitions;
 
-    public BuildToolRunner (File file, BuildTool tool, BuildView view)
+    public signal void finished ();
+
+    public BuildToolRunner (File file, BuildTool tool, BuildView view,
+        Gtk.Action action_stop_exec)
     {
         this.file = file;
         this.compilation = tool.compilation;
+        this.action_stop_exec = action_stop_exec;
 
         filename = file.get_parse_name ();
         shortname = Utils.get_shortname (filename);
@@ -200,11 +204,12 @@ public class BuildToolRunner : BuildToolProcess
                 PartitionState.RUNNING, root_partition);
         }
 
-        view.set_can_abort (true, this);
+        action_stop_exec.set_sensitive (true);
         proceed ();
     }
 
-    public BuildToolRunner.web_browser (File file, string label, BuildView view)
+    public BuildToolRunner.web_browser (File file, string label, BuildView view,
+        Gtk.Action action_stop_exec)
     {
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.editor");
@@ -220,7 +225,7 @@ public class BuildToolRunner : BuildToolProcess
 
         build_tool.jobs.append (build_job);
 
-        this (file, build_tool, view);
+        this (file, build_tool, view, action_stop_exec);
     }
 
     private void proceed ()
@@ -229,12 +234,8 @@ public class BuildToolRunner : BuildToolProcess
         if (job_num >= jobs.length ())
         {
             view.set_partition_state (root_partition, PartitionState.SUCCEEDED);
-            view.set_can_abort (false, null);
-
-            // refresh the file browser
-            // (we have no reference to a MainWindow, but "view" has one)
-            if (compilation)
-                view.exec_finished (file);
+            action_stop_exec.set_sensitive (false);
+            finished ();
             return;
         }
 
@@ -328,7 +329,7 @@ public class BuildToolRunner : BuildToolProcess
 
     protected override void on_abort ()
     {
-        view.set_can_abort (false, null);
+        action_stop_exec.set_sensitive (false);
         view.set_partition_state (root_partition, PartitionState.ABORTED);
         for (int i = job_num ; i < job_partitions.length ; i++)
             view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
@@ -381,7 +382,7 @@ public class BuildToolRunner : BuildToolProcess
         for (int i = job_num + 1 ; i < job_partitions.length ; i++)
             view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
 
-        view.set_can_abort (false, null);
+        action_stop_exec.set_sensitive (false);
     }
 }
 

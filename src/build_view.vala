@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -65,16 +65,12 @@ public class BuildView : HBox
     private unowned MainWindow main_window;
     private TreeStore store;
     private TreeView view;
-    private unowned Gtk.Action action_stop_execution;
     private unowned ToggleAction action_view_bottom_panel;
-    private BuildToolRunner? runner = null;
 
-    public BuildView (MainWindow main_window, Toolbar toolbar, Gtk.Action stop_execution,
+    public BuildView (MainWindow main_window, Toolbar toolbar,
         ToggleAction view_bottom_panel)
     {
         this.main_window = main_window;
-        this.action_stop_execution = stop_execution;
-        stop_execution.set_sensitive (false);
         this.action_view_bottom_panel = view_bottom_panel;
 
         store = new TreeStore (BuildInfo.N_COLUMNS,
@@ -275,26 +271,6 @@ public class BuildView : HBox
             default:
                 return_val_if_reached (null);
         }
-    }
-
-    public void set_can_abort (bool can_abort, BuildToolRunner? runner)
-    {
-        action_stop_execution.set_sensitive (can_abort);
-        if (runner != null)
-            this.runner = runner;
-    }
-
-    public void exec_finished (File file)
-    {
-        FileBrowser file_browser = main_window.get_file_browser ();
-        file_browser.refresh_if_in_dir (file.get_parent ());
-        this.runner = null;
-    }
-
-    public void abort ()
-    {
-        return_if_fail (runner != null);
-        runner.abort ();
     }
 
     public new void show ()

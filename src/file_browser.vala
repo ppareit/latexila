@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -260,17 +260,20 @@ public class FileBrowser : VBox
             {
             // View DVI
             case ".dvi":
-                new BuildToolRunner (file, app_settings.build_tool_view_dvi, build_view);
+                new BuildToolRunner (file, app_settings.build_tool_view_dvi, build_view,
+                    main_window.get_action_stop_exec ());
                 break;
 
             // View PDF
             case ".pdf":
-                new BuildToolRunner (file, app_settings.build_tool_view_pdf, build_view);
+                new BuildToolRunner (file, app_settings.build_tool_view_pdf, build_view,
+                    main_window.get_action_stop_exec ());
                 break;
 
             // View PS
             case ".ps":
-                new BuildToolRunner (file, app_settings.build_tool_view_ps, build_view);
+                new BuildToolRunner (file, app_settings.build_tool_view_ps, build_view,
+                    main_window.get_action_stop_exec ());
                 break;
 
             // Open document

@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -171,6 +171,8 @@ public class MainWindow : Window
     private Gtk.ActionGroup build_tools_action_group;
     private uint documents_list_menu_ui_id;
     private uint build_tools_menu_ui_id;
+    private BuildToolRunner build_tool_runner;
+    private Gtk.Action action_stop_exec;
 
     // context id for the statusbar
     private uint tip_message_cid;
@@ -263,12 +265,11 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
 
         // build view
-        Gtk.Action action_stop_exec = action_group.get_action ("BuildStopExecution");
+        action_stop_exec = action_group.get_action ("BuildStopExecution");
+        action_stop_exec.set_sensitive (false);
         ToggleAction action_view_bottom_panel =
             (ToggleAction) action_group.get_action ("ViewBottomPanel");
-        build_view = new BuildView (this, build_toolbar, action_stop_exec,
-            action_view_bottom_panel);
-        //show_or_hide_build_messages ();
+        build_view = new BuildView (this, build_toolbar, action_view_bottom_panel);
 
         // side panel
         ToggleAction action_view_side_panel =
@@ -1197,7 +1198,23 @@ public class MainWindow : Window
             }
         }
 
-        new BuildToolRunner (active_document.get_main_file (), tool, build_view);
+        File main_file = active_document.get_main_file ();
+        build_tool_runner = new BuildToolRunner (main_file, tool, build_view,
+            action_stop_exec);
+
+        // refresh file browser when compilation is finished
+        if (tool.compilation)
+        {
+            build_tool_runner.finished.connect (() =>
+            {
+                file_browser.refresh_if_in_dir (main_file.get_parent ());
+            });
+        }
+    }
+
+    public Gtk.Action get_action_stop_exec ()
+    {
+        return action_stop_exec;
     }
 
     private void update_documents_list_menu ()
@@ -1612,7 +1629,8 @@ public class MainWindow : Window
 
     public void on_build_stop_execution ()
     {
-        build_view.abort ();
+        return_if_fail (build_tool_runner != null);
+        build_tool_runner.abort ();
         build_view.show ();
     }
 
@@ -1719,14 +1737,15 @@ public class MainWindow : Window
     public void on_help_latex_reference ()
     {
         File file = File.new_for_path (Config.DATA_DIR + "/latexhelp.html");
-        new BuildToolRunner.web_browser (file, _("View LaTeX Reference"), build_view);
+        new BuildToolRunner.web_browser (file, _("View LaTeX Reference"), build_view,
+            action_stop_exec);
     }
 
     public void on_about_dialog ()
     {
         string comments =
-            _("LaTeXila is an Integrated LaTeX Environment for the GNOME desktop");
-        string copyright = "Copyright (C) 2009, 2010 Sébastien Wilmet";
+            _("LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop");
+        string copyright = "Copyright (C) 2009-2011 Sébastien Wilmet";
         string licence =
 """LaTeXila is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
