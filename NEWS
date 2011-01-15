@@ -1,6 +1,14 @@
 LaTeXila NEWS
 
 ==============================
+* Release 2.0.3 (Jan 15, 2011)
+==============================
+
+- Fix path issues in RubberPostProcessor
+- C code generated (Vala is no longer required)
+
+
+==============================
 * Release 2.0.2 (Dec 25, 2010)
 ==============================
 
