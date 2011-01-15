@@ -31,6 +31,9 @@ There are some rules to follow when coding:
     - lines: 90 characters maximum (in some cases it can be a little more)
     - same coding style everywhere
 
+How to generate the C code from Vala files?
+    See the file "INSTALL".
+
 
 Translations
 ============

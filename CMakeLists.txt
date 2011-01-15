@@ -9,6 +9,7 @@ message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
 set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
+set (BUILD_VALA OFF CACHE BOOL "Generate the C code from Vala files")
 
 # for debugging
 #set (CMAKE_C_FLAGS "-ggdb")
@@ -26,12 +27,14 @@ configure_file (${latexila_SOURCE_DIR}/src/config.h.in
 	${latexila_BINARY_DIR}/src/config.h)
 add_definitions (-include config.h)
 
-list (APPEND CMAKE_MODULE_PATH "${latexila_SOURCE_DIR}/cmake/vala")
-include (ValaPrecompile)
-include (ValaVersion)
-find_package (Vala REQUIRED)
-ensure_vala_version ("0.10.0" MINIMUM)
-ensure_vala_version ("0.10.99" MAXIMUM)
+if (BUILD_VALA)
+	list (APPEND CMAKE_MODULE_PATH "${latexila_SOURCE_DIR}/cmake/vala")
+	include (ValaPrecompile)
+	include (ValaVersion)
+	find_package (Vala REQUIRED)
+	ensure_vala_version ("0.10.0" MINIMUM)
+	ensure_vala_version ("0.10.99" MAXIMUM)
+endif (BUILD_VALA)
 
 find_package (PkgConfig)
 pkg_check_modules (GTK REQUIRED "gtk+-2.0 >= 2.16")
@@ -62,7 +65,12 @@ link_libraries (
 	${X11_LIBRARIES}
 )
 
-include_directories (vapi src)
+include_directories (vapi src/C ${latexila_BINARY_DIR}/src)
 add_subdirectory (man)
-add_subdirectory (src)
+if (BUILD_VALA)
+	add_subdirectory (src)
+else (BUILD_VALA)
+	add_subdirectory (src/C)
+endif (BUILD_VALA)
+add_subdirectory (src/ui)
 add_subdirectory (data)

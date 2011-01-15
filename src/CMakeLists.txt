@@ -16,11 +16,12 @@ vala_precompile (
 # for debugging
 #	OPTIONS
 #		--debug
+
 	CUSTOM_VAPIS
 		${vapi_files}
+	DIRECTORY
+		"C"
 )
 
 add_executable (latexila ${VALA_C})
 install (TARGETS latexila DESTINATION "bin")
-
-add_subdirectory (ui)

@@ -5,7 +5,6 @@ GTK+ >= 2.16
 GtkSourceView >= 2.10
 GLib >= 2.26 (GIO is part of GLib)
 gsettings-desktop-schemas
-Vala 0.10.x (not above)
 libgee
 unique
 gdk-x11
@@ -13,14 +12,16 @@ x11
 CMake >= 2.6.4
 gettext
 
+Vala is not required because the C code is already generated.
+
 Simple install procedure
 ========================
 
-$ cd latexila/build/			# go to the build directory
-$ cmake ../				# run the Makefile generator
-$ make					# build LaTeXila
+$ cd build/			# go to the build directory
+$ cmake ../			# run the Makefile generator
+$ make				# build LaTeXila
 [ Become root if necessary ]
-$ make install				# install LaTeXila
+$ make install			# install LaTeXila
 
 Simple uninstall procedure
 ==========================
@@ -28,7 +29,7 @@ Simple uninstall procedure
 All the files installed are listed in the "install_manifest.txt" file.
 So you can uninstall LaTeXila by doing this:
 
-$ cd latexila/build/
+$ cd build/
 [ Become root if necessary ]
 $ xargs rm < install_manifest.txt
 
@@ -38,3 +39,8 @@ Configuration
 * Change the install directory (by default /usr/local/)
 	run cmake with this option:
 	-DCMAKE_INSTALL_PREFIX=/path/to/install/directory/
+
+* Generate the C code from the Vala files
+	run cmake with this option:
+	-DBUILD_VALA=ON
+

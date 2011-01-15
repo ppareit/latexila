@@ -1,5 +1,5 @@
 ##
-# Copyright 2009 Jakob Westhoff. All rights reserved.
+# Copyright 2009-2010 Jakob Westhoff. All rights reserved.
 # 
 # Redistribution and use in source and binary forms, with or without
 # modification, are permitted provided that the following conditions are met:
@@ -85,6 +85,8 @@ find_package(Vala REQUIRED)
 #       gtk+-2.0
 #       gio-1.0
 #       posix
+#   DIRECTORY
+#       gen
 #   OPTIONS
 #       --thread
 #   CUSTOM_VAPIS
@@ -100,8 +102,13 @@ find_package(Vala REQUIRED)
 ##
 
 macro(vala_precompile output)
-    include_directories(${CMAKE_CURRENT_BINARY_DIR})
-    parse_arguments(ARGS "PACKAGES;OPTIONS;GENERATE_HEADER;GENERATE_VAPI;CUSTOM_VAPIS" "" ${ARGN})
+    parse_arguments(ARGS "PACKAGES;OPTIONS;DIRECTORY;GENERATE_HEADER;GENERATE_VAPI;CUSTOM_VAPIS" "" ${ARGN})
+    if(ARGS_DIRECTORY)
+        set(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/${ARGS_DIRECTORY})
+    else(ARGS_DIRECTORY)
+        set(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
+    endif(ARGS_DIRECTORY)
+    include_directories(${DIRECTORY})
     set(vala_pkg_opts "")
     foreach(pkg ${ARGS_PACKAGES})
         list(APPEND vala_pkg_opts "--pkg=${pkg}")
@@ -112,14 +119,26 @@ macro(vala_precompile output)
     foreach(src ${ARGS_DEFAULT_ARGS})
         list(APPEND in_files "${CMAKE_CURRENT_SOURCE_DIR}/${src}")
         string(REPLACE ".vala" ".c" src ${src})
-        set(out_file "${CMAKE_CURRENT_BINARY_DIR}/${src}")
-        list(APPEND out_files "${CMAKE_CURRENT_BINARY_DIR}/${src}")
+        string(REPLACE ".gs" ".c" src ${src})
+        set(out_file "${DIRECTORY}/${src}")
+        list(APPEND out_files "${DIRECTORY}/${src}")
         list(APPEND ${output} ${out_file})
     endforeach(src ${ARGS_DEFAULT_ARGS})
 
+    set(custom_vapi_arguments "")
+    if(ARGS_CUSTOM_VAPIS)
+        foreach(vapi ${ARGS_CUSTOM_VAPIS})
+            if(${vapi} MATCHES ${CMAKE_SOURCE_DIR} OR ${vapi} MATCHES ${CMAKE_BINARY_DIR})
+                list(APPEND custom_vapi_arguments ${vapi})
+            else (${vapi} MATCHES ${CMAKE_SOURCE_DIR} OR ${vapi} MATCHES ${CMAKE_BINARY_DIR})
+                list(APPEND custom_vapi_arguments ${CMAKE_CURRENT_SOURCE_DIR}/${vapi})
+            endif(${vapi} MATCHES ${CMAKE_SOURCE_DIR} OR ${vapi} MATCHES ${CMAKE_BINARY_DIR})
+        endforeach(vapi ${ARGS_CUSTOM_VAPIS})
+    endif(ARGS_CUSTOM_VAPIS)
+
     set(vapi_arguments "")
     if(ARGS_GENERATE_VAPI)
-        list(APPEND out_files "${CMAKE_CURRENT_BINARY_DIR}/${ARGS_GENERATE_VAPI}.vapi")
+        list(APPEND out_files "${DIRECTORY}/${ARGS_GENERATE_VAPI}.vapi")
         set(vapi_arguments "--internal-vapi=${ARGS_GENERATE_VAPI}.vapi")
 
         # Header and internal header is needed to generate internal vapi
@@ -130,10 +149,10 @@ macro(vala_precompile output)
 
     set(header_arguments "")
     if(ARGS_GENERATE_HEADER)
-        list(APPEND out_files "${CMAKE_CURRENT_BINARY_DIR}/${ARGS_GENERATE_HEADER}.h")
-        list(APPEND out_files "${CMAKE_CURRENT_BINARY_DIR}/${ARGS_GENERATE_HEADER}_internal.h")
-        list(APPEND header_arguments "--header=${ARGS_GENERATE_HEADER}.h")
-        list(APPEND header_arguments "--internal-header=${ARGS_GENERATE_HEADER}_internal.h")
+        list(APPEND out_files "${DIRECTORY}/${ARGS_GENERATE_HEADER}.h")
+        list(APPEND out_files "${DIRECTORY}/${ARGS_GENERATE_HEADER}_internal.h")
+        list(APPEND header_arguments "--header=${DIRECTORY}/${ARGS_GENERATE_HEADER}.h")
+        list(APPEND header_arguments "--internal-header=${DIRECTORY}/${ARGS_GENERATE_HEADER}_internal.h")
     endif(ARGS_GENERATE_HEADER)
 
     add_custom_command(OUTPUT ${out_files} 
@@ -144,11 +163,11 @@ macro(vala_precompile output)
         ${header_arguments} 
         ${vapi_arguments}
         "-b" ${CMAKE_CURRENT_SOURCE_DIR} 
-        "-d" ${CMAKE_CURRENT_BINARY_DIR} 
+        "-d" ${DIRECTORY} 
         ${vala_pkg_opts} 
         ${ARGS_OPTIONS} 
         ${in_files} 
-        ${ARGS_CUSTOM_VAPIS}
+        ${custom_vapi_arguments}
     DEPENDS 
         ${in_files} 
         ${ARGS_CUSTOM_VAPIS}
