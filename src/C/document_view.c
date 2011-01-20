@@ -337,7 +337,7 @@ guint document_view_my_get_visual_column (DocumentView* self, GtkTextIter* iter)
 		} else {
 			column++;
 		}
-		if (!gtk_text_iter_forward_visible_cursor_position (&position)) {
+		if (!gtk_text_iter_forward_char (&position)) {
 			break;
 		}
 	}

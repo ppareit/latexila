@@ -134,7 +134,7 @@ public class DocumentView : Gtk.SourceView
         uint column = 0;
         uint tab_width = get_tab_width ();
 
-        var position = iter;
+        TextIter position = iter;
         position.set_visible_line_offset (0);
 
         while (! iter.equal (position))
@@ -144,7 +144,7 @@ public class DocumentView : Gtk.SourceView
             else
                 column++;
 
-            if (! position.forward_visible_cursor_position ())
+            if (! position.forward_char ())
                 break;
         }
 
