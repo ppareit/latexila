@@ -3262,7 +3262,6 @@ void main_window_on_documents_save_all (MainWindow* self) {
 			Document* doc;
 			doc = _g_object_ref0 ((Document*) doc_it->data);
 			{
-				main_window_set_active_tab (self, doc->tab);
 				document_save (doc, TRUE, FALSE);
 				_g_object_unref0 (doc);
 			}

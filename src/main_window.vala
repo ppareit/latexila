@@ -1683,10 +1683,7 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         foreach (Document doc in get_unsaved_documents ())
-        {
-            active_tab = doc.tab;
             doc.save ();
-        }
     }
 
     public void on_documents_close_all ()
