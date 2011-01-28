@@ -1,6 +1,14 @@
 LaTeXila NEWS
 
 ==============================
+* Release 2.0.4 (Jan 28, 2011)
+==============================
+
+- Bug fix: slowness at the end of long lines
+- Bug fix: "save all" modifies which tab is active
+
+
+==============================
 * Release 2.0.3 (Jan 15, 2011)
 ==============================
 
