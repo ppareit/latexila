@@ -144,61 +144,61 @@ public class PreferencesDialog : Dialog
             var settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
 
             settings.bind ("use-default-font", default_font_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("editor-font", font_button, "font-name",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("tabs-size", tab_width_spinbutton, "value",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("insert-spaces", insert_spaces_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("forget-no-tabs", forget_no_tabs, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("display-line-numbers", display_line_nb_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("highlight-current-line", hl_current_line_checkbutton,
-                "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
+                "active", SettingsBindFlags.DEFAULT);
             settings.bind ("bracket-matching", bracket_matching_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("create-backup-copy", backup_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("auto-save", autosave_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("auto-save-interval", autosave_spinbutton, "value",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("reopen-files", reopen_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
 
             settings.bind ("web-browser", web_browser, "text",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             settings.bind ("nb-most-used-symbols", nb_most_used_symbols, "value",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
 
             GLib.Settings latex_settings =
                 new GLib.Settings ("org.gnome.latexila.preferences.latex");
             latex_settings.bind ("interactive-completion", interactive_comp_checkbutton,
-                "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
+                "active", SettingsBindFlags.DEFAULT);
             latex_settings.bind ("interactive-completion-num",
                 interactive_comp_spinbutton, "value",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             latex_settings.bind ("document-view-program", document_view_program, "text",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             latex_settings.bind ("no-confirm-clean", confirm_clean_up_checkbutton,
-                "active", SettingsBindFlags.GET | SettingsBindFlags.SET);
+                "active", SettingsBindFlags.DEFAULT);
             latex_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             latex_settings.bind ("clean-extensions", clean_up_entry, "text",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
 
             GLib.Settings fb_settings =
                 new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
             fb_settings.bind ("show-all-files", file_browser_show_all, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             fb_settings.bind ("show-all-files-except", file_browser_except, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             fb_settings.bind ("show-hidden-files", file_browser_show_hidden, "active",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
             fb_settings.bind ("file-extensions", file_browser_entry, "text",
-                SettingsBindFlags.GET | SettingsBindFlags.SET);
+                SettingsBindFlags.DEFAULT);
 
             // schemes treeview
             var current_scheme_id = settings.get_string ("scheme");
