@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-21 01:23+0100\n"
+"POT-Creation-Date: 2011-01-29 00:15+0100\n"
 "PO-Revision-Date: 2010-11-21 01:24+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: French\n"
@@ -31,7 +31,7 @@ msgstr "%u sur %u"
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr "- Environnement LaTeX intégré pour GNOME"
 
-#: src/main_window.vala:934
+#: src/main_window.vala:935
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Un fichier nommé \"%s\" existe déjà. Voulez-vous le remplacer ?"
@@ -40,8 +40,7 @@ msgstr "Un fichier nommé \"%s\" existe déjà. Voulez-vous le remplacer ?"
 msgid "AMS packages"
 msgstr "Packages AMS"
 
-#: src/main_window.vala:133
-#: src/main_window.vala:1779
+#: src/main_window.vala:133 src/main_window.vala:1796
 msgid "About LaTeXila"
 msgstr "À propos de LaTeXila"
 
@@ -188,14 +187,14 @@ msgstr "Accent circonflexe - \\^"
 
 #: src/main_window.vala:95
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
-msgstr "Nettoyer les fichiers de construction (*.aux, *.log, *.out, *.toc, etc)"
+msgstr ""
+"Nettoyer les fichiers de construction (*.aux, *.log, *.out, *.toc, etc)"
 
 #: src/main_window.vala:94
 msgid "Cleanup Build _Files"
 msgstr "Nettoyer les _fichiers de construction"
 
-#: src/projects.vala:248
-#: src/projects.vala:305
+#: src/projects.vala:248 src/projects.vala:305
 msgid "Clear All"
 msgstr "Effacer tout"
 
@@ -223,8 +222,7 @@ msgstr "Fermer le document"
 msgid "Close the current file"
 msgstr "Fermer le document courant"
 
-#: src/dialogs.vala:40
-#: src/main_window.vala:769
+#: src/dialogs.vala:40 src/main_window.vala:770
 msgid "Close without Saving"
 msgstr "Fermer sans enregistrer"
 
@@ -238,7 +236,8 @@ msgstr "Commandes"
 
 #: src/main_window.vala:66
 msgid "Comment the selected lines (add the character \"%\")"
-msgstr "Mettre en commentaire les lignes sélectionnées (ajouter le caractère \"%\")"
+msgstr ""
+"Mettre en commentaire les lignes sélectionnées (ajouter le caractère \"%\")"
 
 #: src/projects.vala:124
 msgid "Configure Project"
@@ -324,8 +323,7 @@ msgstr "Description"
 msgid "Description - \\begin{description}"
 msgstr "Description - \\begin{description}"
 
-#: src/projects.vala:49
-#: src/projects.vala:210
+#: src/projects.vala:49 src/projects.vala:210
 msgid "Directory"
 msgstr "Répertoire"
 
@@ -357,7 +355,8 @@ msgstr "Êtes-vous sûr de vouloir supprimer ces fichiers ?"
 
 #: src/preferences_dialog.vala:533
 msgid "Do you really want to reset all build tools?"
-msgstr "Êtes-vous sûr de vouloir réinitialiser tous les outils de construction ?"
+msgstr ""
+"Êtes-vous sûr de vouloir réinitialiser tous les outils de construction ?"
 
 #: src/preferences_dialog.vala:53
 msgid "Do you really want to reset all preferences?"
@@ -375,7 +374,7 @@ msgstr "Voulez-vous recharger le fichier ?"
 msgid "Document class - \\documentclass"
 msgstr "Classe de document - \\documentclass"
 
-#: src/main_window.vala:652
+#: src/main_window.vala:653
 msgid "Don't Edit"
 msgstr "Ne pas éditer"
 
@@ -391,7 +390,7 @@ msgstr "Point - \\."
 msgid "Double acute accent - \\H"
 msgstr "Double accent aigu - \\H"
 
-#: src/main_window.vala:651
+#: src/main_window.vala:652
 msgid "Edit Anyway"
 msgstr "Éditer malgré tout"
 
@@ -451,12 +450,11 @@ msgstr "_Graisse de police"
 msgid "Figure - \\begin{figure}"
 msgstr "Figure - \\begin{figure}"
 
-#: src/build_view.vala:107
+#: src/build_view.vala:103
 msgid "File"
 msgstr "Fichier"
 
-#: src/file_browser.vala:385
-#: src/main_window.vala:282
+#: src/file_browser.vala:388 src/main_window.vala:283
 msgid "File Browser"
 msgstr "Navigateur de fichiers"
 
@@ -464,7 +462,7 @@ msgstr "Navigateur de fichiers"
 msgid "File Clean-Up"
 msgstr "Nettoyage des fichiers"
 
-#: src/file_browser.vala:415
+#: src/file_browser.vala:418
 msgid "File System"
 msgstr "Système de fichiers"
 
@@ -473,7 +471,8 @@ msgid ""
 "File extensions for which the build tool can be executed.\n"
 "The extensions are separated by spaces."
 msgstr ""
-"Les extensions de fichiers pour lesquelles l'outil de construction peut être exécuté.\n"
+"Les extensions de fichiers pour lesquelles l'outil de construction peut être "
+"exécuté.\n"
 "Les extensions sont séparées par des espaces."
 
 #: src/ui/search_and_replace.ui:71
@@ -536,8 +535,7 @@ msgstr "Accent grave - \\`"
 msgid "Greek"
 msgstr "Grec"
 
-#: src/build_view.vala:124
-#: src/side_panel.vala:73
+#: src/build_view.vala:120 src/side_panel.vala:73
 msgid "Hide panel"
 msgstr "Cacher le panneau"
 
@@ -571,7 +569,9 @@ msgstr "Si vous n'enregistrez pas, tous vos changements seront perdu à jamais."
 
 #: src/document.vala:218
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "Si vous l'enregistrez, tout vos changements externes peuvent être perdu. Enregistrer malgré tout ?"
+msgstr ""
+"Si vous l'enregistrez, tout vos changements externes peuvent être perdu. "
+"Enregistrer malgré tout ?"
 
 #: src/document.vala:138
 #, c-format
@@ -614,7 +614,7 @@ msgstr "Italique - \\mathit"
 msgid "Italic - \\textit"
 msgstr "Italique - \\textit"
 
-#: src/build_view.vala:95
+#: src/build_view.vala:91
 msgid "Job"
 msgstr "Tâche"
 
@@ -622,13 +622,20 @@ msgstr "Tâche"
 msgid "Jobs"
 msgstr "Tâche"
 
-#: src/main_window.vala:1728
-msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
-msgstr "LaTeXila est un environnement LaTeX intégré pour le bureau GNOME. À consommer avec modération."
+#: src/main_window.vala:1744
+#, fuzzy
+msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
+msgstr ""
+"LaTeXila est un environnement LaTeX intégré pour le bureau GNOME. À "
+"consommer avec modération."
 
-#: src/main_window.vala:648
-msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
-msgstr "LaTeXila a ouvert cette instance du fichier d'une manière non-éditable. Voulez-vous éditer malgré tout ?"
+#: src/main_window.vala:649
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr ""
+"LaTeXila a ouvert cette instance du fichier d'une manière non-éditable. "
+"Voulez-vous éditer malgré tout ?"
 
 #: src/latex_menu.vala:49
 msgid "Label"
@@ -646,7 +653,7 @@ msgstr "Délimiteurs gauches"
 msgid "Letter"
 msgstr "Lettre"
 
-#: src/build_view.vala:109
+#: src/build_view.vala:105
 msgid "Line"
 msgstr "Ligne"
 
@@ -676,16 +683,12 @@ msgstr "Emplacement du projet : %s"
 msgid "Macron - \\="
 msgstr "Macron - \\="
 
-#: src/document_tab.vala:233
-#: src/projects.vala:51
-#: src/projects.vala:147
+#: src/document_tab.vala:233 src/projects.vala:51 src/projects.vala:147
 #: src/projects.vala:223
 msgid "Main File"
 msgstr "Fichier principal"
 
-#: src/document_tab.vala:236
-#: src/projects.vala:45
-#: src/projects.vala:144
+#: src/document_tab.vala:236 src/projects.vala:45 src/projects.vala:144
 msgid "Main File:"
 msgstr "Fichier principal :"
 
@@ -693,8 +696,7 @@ msgstr "Fichier principal :"
 msgid "Make title - \\maketitle"
 msgstr "Afficher le titre - \\maketitle"
 
-#: src/main_window.vala:126
-#: src/projects.vala:190
+#: src/main_window.vala:126 src/projects.vala:190
 msgid "Manage Projects"
 msgstr "Gestion des projets"
 
@@ -803,12 +805,8 @@ msgid "New file"
 msgstr "Nouveau fichier"
 
 #: src/latex_menu.vala:187
-msgid ""
-"New page - \\n"
-"ewpage"
-msgstr ""
-"Nouvelle page - \\n"
-"ewpage"
+msgid "New page - \\newpage"
+msgstr "Nouvelle page - \\newpage"
 
 #: src/ui/preferences_dialog.ui:746
 msgid "No confirmation when cleaning-up"
@@ -819,12 +817,8 @@ msgid "No matching proposal"
 msgstr "Pas de proposition correspondante"
 
 #: src/latex_menu.vala:201
-msgid ""
-"No paragraph indentation - \\n"
-"oindent"
-msgstr ""
-"Pas d'alinéa - \\n"
-"oindent"
+msgid "No paragraph indentation - \\noindent"
+msgstr "Pas d'alinéa - \\noindent"
 
 #: src/search.vala:389
 msgid "Not found"
@@ -854,24 +848,23 @@ msgstr "Équation numérotée - \\begin{equation}"
 msgid "One match"
 msgstr "Une occurence"
 
-#: src/main_window.vala:1400
+#: src/main_window.vala:1417
 msgid "Open Files"
 msgstr "Ouvrir des fichiers"
 
-#: src/main_window.vala:480
+#: src/main_window.vala:481
 msgid "Open _Recent"
 msgstr "Ouvrir _récent"
 
-#: src/main_window.vala:35
-#: src/main_window.vala:1025
+#: src/main_window.vala:35 src/main_window.vala:1026
 msgid "Open a file"
 msgstr "Ouvre un fichier"
 
-#: src/main_window.vala:1026
+#: src/main_window.vala:1027
 msgid "Open a recently used file"
 msgstr "Ouvre un fichier récemment utilisé"
 
-#: src/main_window.vala:481
+#: src/main_window.vala:482
 msgid "Open recently used files"
 msgstr "Ouvre un fichier récemment utilisé"
 
@@ -943,7 +936,7 @@ msgstr "Citation longue - \\begin{quotation}"
 msgid "Quote - \\begin{quote}"
 msgstr "Citation courte - \\begin{quote}"
 
-#: src/main_window.vala:885
+#: src/main_window.vala:886
 msgid "Read-Only"
 msgstr "Lecture seule"
 
@@ -979,7 +972,7 @@ msgstr "Recharger"
 msgid "Reopen files on startup"
 msgstr "Réouvrir les fichiers au démarrage"
 
-#: src/main_window.vala:939
+#: src/main_window.vala:940
 msgid "Replace"
 msgstr "Remplacer"
 
@@ -999,8 +992,7 @@ msgstr "Rapport"
 msgid "Reset"
 msgstr "Réinitialiser"
 
-#: src/preferences_dialog.vala:31
-#: src/preferences_dialog.vala:552
+#: src/preferences_dialog.vala:31 src/preferences_dialog.vala:552
 msgid "Reset All"
 msgstr "Réinitialiser tout"
 
@@ -1024,14 +1016,17 @@ msgstr "Romain - \\mathrm"
 msgid "Roman - \\rmfamily"
 msgstr "Romains - \\rmfamily"
 
-#: src/build_tools.vala:257
+#: src/build_tools.vala:258
 msgid "Rubber may not support filenames with spaces (even in a directory)"
-msgstr "Rubber peut ne pas supporter des noms de fichiers avec des espaces (même dans un répertoire)"
+msgstr ""
+"Rubber peut ne pas supporter des noms de fichiers avec des espaces (même "
+"dans un répertoire)"
 
 #: src/main.vala:75
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
-msgstr "Lancez '%s --help' pour voir la liste complète des options disponibles.\n"
+msgstr ""
+"Lancez '%s --help' pour voir la liste complète des options disponibles.\n"
 
 #: src/latex_menu.vala:326
 msgid "Sans Serif - \\mathsf"
@@ -1049,7 +1044,7 @@ msgstr "Linéaux (sans serif) - \\textsf"
 msgid "Save Anyway"
 msgstr "Enregistrer malgré tout"
 
-#: src/main_window.vala:899
+#: src/main_window.vala:900
 msgid "Save File"
 msgstr "Enregistre le fichier"
 
@@ -1057,7 +1052,7 @@ msgstr "Enregistre le fichier"
 msgid "Save all open files"
 msgstr "Enregistre tous les fichiers ouverts"
 
-#: src/main_window.vala:766
+#: src/main_window.vala:767
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Enregistrer les changements de \"%s\" avant de le fermer ?"
@@ -1190,7 +1185,7 @@ msgstr "Indice - _{}"
 msgid "Superscript - ^{}"
 msgstr "Exposant - ^{}"
 
-#: src/main_window.vala:279
+#: src/main_window.vala:280
 msgid "Symbols"
 msgstr "Symboles"
 
@@ -1250,15 +1245,18 @@ msgstr ""
 
 #: src/dialogs.vala:67
 #, c-format
-msgid "There are %d documents with unsaved changes. Save changes before closing?"
-msgstr "Il y a %d documents avec des modifications non enregistrées. Voulez-vous enregistrer les modifications avant de fermer ?"
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+"Il y a %d documents avec des modifications non enregistrées. Voulez-vous "
+"enregistrer les modifications avant de fermer ?"
 
 #: src/projects.vala:109
 #, c-format
 msgid "There is a conflict with the project \"%s\"."
 msgstr "Il y a un conflit avec le projet \"%s\"."
 
-#: src/main_window.vala:646
+#: src/main_window.vala:647
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ce fichier (%s) est déjà ouvert dans une autre fenêtre de LaTeXila."
@@ -1344,7 +1342,7 @@ msgstr "Visionner DVI"
 msgid "View File"
 msgstr "Visionner le fichier"
 
-#: src/main_window.vala:1722
+#: src/main_window.vala:1737
 msgid "View LaTeX Reference"
 msgstr "Visionner la référence LaTeX"
 
@@ -1600,13 +1598,11 @@ msgstr "book-fr.tex"
 msgid "build_tools-en.xml"
 msgstr "build_tools-fr.xml"
 
-#: src/preferences_dialog.vala:268
-#: src/preferences_dialog.vala:273
+#: src/preferences_dialog.vala:268 src/preferences_dialog.vala:273
 msgid "character"
 msgstr "caractère"
 
-#: src/preferences_dialog.vala:268
-#: src/preferences_dialog.vala:273
+#: src/preferences_dialog.vala:268 src/preferences_dialog.vala:273
 msgid "characters"
 msgstr "caractères"
 
@@ -1650,13 +1646,11 @@ msgstr "{ à gauche"
 msgid "letter-en.tex"
 msgstr "letter-fr.tex"
 
-#: src/preferences_dialog.vala:253
-#: src/preferences_dialog.vala:258
+#: src/preferences_dialog.vala:253 src/preferences_dialog.vala:258
 msgid "minute"
 msgstr "minute"
 
-#: src/preferences_dialog.vala:253
-#: src/preferences_dialog.vala:258
+#: src/preferences_dialog.vala:253 src/preferences_dialog.vala:258
 msgid "minutes"
 msgstr "minutes"
 
@@ -1700,391 +1694,6 @@ msgstr "] à droite"
 msgid "right { "
 msgstr "{ à droite"
 
-#: src/main_window.vala:1780
+#: src/main_window.vala:1797
 msgid "translator-credits"
 msgstr "Sébastien Wilmet <sebastien.wilmet@gmail.com>"
-
-#~ msgid ""
-#~ "%s does not exist. If this is not already made, compile the document with "
-#~ "the right command."
-#~ msgstr ""
-#~ "%s n'existe pas. Si ce n'est pas déjà fait, compilez le document avec la "
-#~ "bonne commande."
-
-#~ msgid "About "
-#~ msgstr "À propos"
-
-#~ msgid "Action history"
-#~ msgstr "Historique des actions"
-
-#~ msgid "Align _Left - \\begin{flushleft}"
-#~ msgstr "Aligner à _gauche - \\begin{flushleft}"
-
-#~ msgid "Align _Right - \\begin{flushright}"
-#~ msgstr "Aligner à _droite - \\begin{flushright}"
-
-#~ msgid "BibTeX command:"
-#~ msgstr "Commande BibTeX :"
-
-#~ msgid "BibTeX is running. Please wait..."
-#~ msgstr "BibTeX est en cours d'exécution. Veuillez patienter..."
-
-#~ msgid "C_ompile (pdflatex)"
-#~ msgstr "C_ompiler (pdflatex)"
-
-#~ msgid "Clean-up build files after close (*.aux, *.log, *.out, *.toc, etc)"
-#~ msgstr ""
-#~ "Nettoyer les fichiers de construction après fermeture (*.aux, *.log, *."
-#~ "out, *.toc, etc)"
-
-#~ msgid "Compilation in progress. Please wait..."
-#~ msgstr "Compilation en cours. Veuillez patienter..."
-
-#~ msgid "Compile (latex)"
-#~ msgstr "Compiler (latex)"
-
-#~ msgid "Compile (pdflatex)"
-#~ msgstr "Compiler (pdflatex)"
-
-#~ msgid "Convert the DVI document to the PDF format"
-#~ msgstr "Converti le document DVI au format PDF"
-
-#~ msgid "Convert the DVI document to the PostScript format"
-#~ msgstr "Converti le document DVI au format PostScript"
-
-#~ msgid "Converting in progress. Please wait..."
-#~ msgstr "Conversion en cours. Veuillez patienter..."
-
-#~ msgid "Cu_t"
-#~ msgstr "Co_uper"
-
-#~ msgid "DVI to PDF"
-#~ msgstr "DVI -> PDF"
-
-#~ msgid "DVI to PDF command:"
-#~ msgstr "Commande DVI -> PDF :"
-
-#~ msgid "DVI to PS"
-#~ msgstr "DVI -> PS"
-
-#~ msgid "DVI to PS command:"
-#~ msgstr "Commande DVI -> PS :"
-
-#~ msgid "DVI to _PS"
-#~ msgstr "DVI -> _PS"
-
-#~ msgid "Display version informations"
-#~ msgstr "Affiche les informations de version"
-
-#~ msgid "Document Compilation"
-#~ msgstr "Compilation de document"
-
-#~ msgid "Done!"
-#~ msgstr "Terminé!"
-
-#~ msgid "File browser: show all files"
-#~ msgstr "Navigateur de fichiers : montrer tous les fichiers"
-
-#~ msgid "Find:"
-#~ msgstr "Rechercher:"
-
-#~ msgid "Finished with exit code %d"
-#~ msgstr "Terminé avec le code de sortie %d"
-
-#~ msgid "Found and replaced %d occurences"
-#~ msgstr "%d occurrences trouvées et remplacées"
-
-#~ msgid "Found and replaced one occurence"
-#~ msgstr "Une occurrence trouvée et remplacée"
-
-#~ msgid "Go to the directory of the current document"
-#~ msgstr "Aller dans le dossier du document courrant"
-
-#~ msgid "Indent the selected lines"
-#~ msgstr "Indente les lignes sélectionnées"
-
-#~ msgid "LaTeX"
-#~ msgstr "LaTeX"
-
-#~ msgid "Line numbers"
-#~ msgstr "Numéros de ligne"
-
-#~ msgid "MakeIndex command:"
-#~ msgstr "Commande MakeIndex :"
-
-#~ msgid "MakeIndex is running. Please wait..."
-#~ msgstr "MakeIndex est en cours d'exécution. Veuillez patienter..."
-
-#~ msgid "Match case"
-#~ msgstr "Respecter la casse"
-
-#~ msgid "Next"
-#~ msgstr "Suivant"
-
-#~ msgid "Next LaTeX Badbox"
-#~ msgstr "Prochain badbox LaTeX"
-
-#~ msgid "Next LaTeX Error"
-#~ msgstr "Prochaine erreur LaTeX"
-
-#~ msgid "Next LaTeX Warning"
-#~ msgstr "Prochain avertissement LaTeX"
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Pr_eferences"
-#~ msgstr "_Préférences"
-
-#~ msgid "Previous LaTeX Badbox"
-#~ msgstr "Badbox LaTeX précédent"
-
-#~ msgid "Previous LaTeX Error"
-#~ msgstr "Erreur LaTeX précédente"
-
-#~ msgid "Previous LaTeX Warning"
-#~ msgstr "Avertissement LaTeX précédent"
-
-#~ msgid "Produce the document in DVI format"
-#~ msgstr "Produit le document au format DVI"
-
-#~ msgid "Produce the document in PDF format"
-#~ msgstr "Produit le document au format PDF"
-
-#~ msgid "Qu_otation - \\begin{quotation}"
-#~ msgstr "_Citation longue - \\begin{quotation}"
-
-#~ msgid "Run BibTeX on the current document"
-#~ msgstr "Exécute BibTeX sur le document courrant"
-
-#~ msgid "Run MakeIndex on the current document"
-#~ msgstr "Exécute MakeIndex sur le document courrant"
-
-#~ msgid "Save _As..."
-#~ msgstr "Enregistrer _sous..."
-
-#~ msgid "Search backwards"
-#~ msgstr "Rechercher en arrière"
-
-#~ msgid "Select _All"
-#~ msgstr "_Tout sélectionner"
-
-#~ msgid "Show all output"
-#~ msgstr "Afficher toute la sortie"
-
-#~ msgid ""
-#~ "Show the edit toolbar on the same line as the main toolbar (restart "
-#~ "needed)"
-#~ msgstr ""
-#~ "Afficher la barre d'outils d'édition sur la même ligne que la barre "
-#~ "d'outils principale (redémarrage nécessaire)"
-
-#~ msgid "Small _Capitals - \\scshape"
-#~ msgstr "Petites _capitales - \\scshape"
-
-#~ msgid "Small _Capitals - \\textsc{}"
-#~ msgstr "Petites _capitales - \\textsc{}"
-
-#~ msgid "The child process exited abnormally"
-#~ msgstr "Le processus enfant a quitté anormalement"
-
-#~ msgid "U_nindent"
-#~ msgstr "_Désindenter"
-
-#~ msgid "Unindent the selected lines"
-#~ msgstr "Désindente les lignes sélectionnées"
-
-#~ msgid "V_iew PDF"
-#~ msgstr "V_isionner PDF"
-
-#~ msgid "View the DVI file"
-#~ msgstr "Visionner le fichier DVI"
-
-#~ msgid "View the PDF file"
-#~ msgstr "Visionner le fichier PDF"
-
-#~ msgid "View the PostScript file"
-#~ msgstr "Visionner le fichier PostScript"
-
-#~ msgid "Viewing in progress. Please wait..."
-#~ msgstr "Vision en cours. Veuillez patienter..."
-
-#~ msgid "Welcome to LaTeXila!"
-#~ msgstr "Bienvenue sur LaTeXila !"
-
-#~ msgid "\\item"
-#~ msgstr "\\item"
-
-#~ msgid "_About"
-#~ msgstr "À _propos"
-
-#~ msgid "_Bold - \\bfseries"
-#~ msgstr "_Gras - \\bfseries"
-
-#~ msgid "_Bold - \\textbf{}"
-#~ msgstr "_Gras - \\textbf{}"
-
-#~ msgid "_Bulleted List - \\begin{itemize}"
-#~ msgstr "Liste avec _tirets - \\begin{itemize}"
-
-#~ msgid "_Center - \\begin{center}"
-#~ msgstr "_Centrer - \\begin{center}"
-
-#~ msgid "_Compile (latex)"
-#~ msgstr "_Compiler (latex)"
-
-#~ msgid "_Copy"
-#~ msgstr "_Copier"
-
-#~ msgid "_DVI to PDF"
-#~ msgstr "_DVI -> PDF"
-
-#~ msgid "_Delete"
-#~ msgstr "_Supprimer"
-
-#~ msgid "_Description - \\begin{description}"
-#~ msgstr "_Description - \\begin{description}"
-
-#~ msgid "_Emphasized - \\emph{}"
-#~ msgstr "_Emphase - \\emph{}"
-
-#~ msgid "_Enumeration - \\begin{enumerate}"
-#~ msgstr "É_numération - \\begin{enumerate}"
-
-#~ msgid "_Environments"
-#~ msgstr "_Environnements"
-
-#~ msgid "_Find..."
-#~ msgstr "_Rechercher..."
-
-#~ msgid "_Indent"
-#~ msgstr "_Indenter"
-
-#~ msgid "_Italic - \\itshape"
-#~ msgstr "_Italique - \\itshape"
-
-#~ msgid "_Italic - \\textit{}"
-#~ msgstr "_Italique - \\textit{}"
-
-#~ msgid "_Medium - \\mdseries"
-#~ msgstr "_Non gras - \\mdseries"
-
-#~ msgid "_Minipage - \\begin{minipage}"
-#~ msgstr "_Minipage - \\begin{minipage}"
-
-#~ msgid "_Monospace - \\ttfamily"
-#~ msgstr "_Machine à écrire - \\ttfamily"
-
-#~ msgid "_New"
-#~ msgstr "_Nouveau"
-
-#~ msgid "_Next LaTeX Badbox"
-#~ msgstr "_Prochain badbox LaTeX"
-
-#~ msgid "_Next LaTeX Error"
-#~ msgstr "_Prochaine erreur LaTeX"
-
-#~ msgid "_Next LaTeX Warning"
-#~ msgstr "_Prochain avertissement LaTeX"
-
-#~ msgid "_Open..."
-#~ msgstr "_Ouvrir..."
-
-#~ msgid "_Paste"
-#~ msgstr "C_oller"
-
-#~ msgid "_Previous LaTeX Badbox"
-#~ msgstr "Badbox LaTeX _précédent"
-
-#~ msgid "_Previous LaTeX Error"
-#~ msgstr "Erreur LaTeX _précédente"
-
-#~ msgid "_Previous LaTeX Warning"
-#~ msgstr "Avertissement LaTeX _précédent"
-
-#~ msgid "_Quit"
-#~ msgstr "_Quitter"
-
-#~ msgid "_Quote - \\begin{quote}"
-#~ msgstr "_Citation courte - \\begin{quote}"
-
-#~ msgid "_Redo"
-#~ msgstr "_Rétablir"
-
-#~ msgid "_Replace..."
-#~ msgstr "_Remplacer..."
-
-#~ msgid "_Roman - \\rmfamily"
-#~ msgstr "_Romains - \\rmfamily"
-
-#~ msgid "_Sans Serif - \\sffamily"
-#~ msgstr "_Linéaux (sans serif) - \\sffamily"
-
-#~ msgid "_Save..."
-#~ msgstr "_Enregistrer..."
-
-#~ msgid "_Slanted - \\slshape"
-#~ msgstr "_Penché - \\slshape"
-
-#~ msgid "_Slanted - \\textsl{}"
-#~ msgstr "_Penché - \\textsl{}"
-
-#~ msgid "_Tools"
-#~ msgstr "_Outils"
-
-#~ msgid "_Typewriter - \\texttt{}"
-#~ msgstr "_Machine à écrire - \\texttt{}"
-
-#~ msgid "_Underline - \\underline{}"
-#~ msgstr "_Souligner - \\underline{}"
-
-#~ msgid "_Undo"
-#~ msgstr "A_nnuler"
-
-#~ msgid "_Upright - \\upshape"
-#~ msgstr "_Droits - \\upshape"
-
-#~ msgid "_Verse - \\begin{verse}"
-#~ msgstr "_Poème - \\begin{verse}"
-
-#~ msgid "_View DVI"
-#~ msgstr "_Visionner DVI"
-
-#~ msgid "_chapter"
-#~ msgstr "_Chapitre - \\chapter{}"
-
-#~ msgid "_part"
-#~ msgstr "_Partie - \\part{}"
-
-#~ msgid "_section"
-#~ msgstr "_Section - \\section{}"
-
-#~ msgid "compilation failed: %s is not a *.tex file"
-#~ msgstr "échec de la compilation : %s n'est pas un fichier *.tex"
-
-#~ msgid "execution failed: %s"
-#~ msgstr "échec de l'exécution : %s"
-
-#~ msgid "failed: %s is not a *.tex file"
-#~ msgstr "échec : %s n'est pas un fichier *.tex"
-
-#~ msgid "latex command:"
-#~ msgstr "Commande latex :"
-
-#~ msgid "p_aragraph"
-#~ msgstr "P_aragraphe - \\paragraph{}"
-
-#~ msgid "part"
-#~ msgstr "Partie - \\part{}"
-
-#~ msgid "pdflatex command:"
-#~ msgstr "Commande pdflatex :"
-
-#~ msgid "s_ubsection"
-#~ msgstr "S_ous-section - \\subsection{}"
-
-#~ msgid "su_bsubsection"
-#~ msgstr "So_us-sous-section - \\subsubsection{}"
-
-#~ msgid "subpa_ragraph"
-#~ msgstr "Sous-pa_ragraphe - \\subparagraph{}"

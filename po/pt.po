@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LaTeXila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-11-21 01:23+0100\n"
+"POT-Creation-Date: 2011-01-29 00:15+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: \n"
@@ -35,7 +35,7 @@ msgstr "%u de %u"
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr "- Ambiente LaTeX Integrado para GNOME"
 
-#: src/main_window.vala:934
+#: src/main_window.vala:935
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Um arquivo chamado \"%s\" já existe. Deseja sobrescrevê-lo?"
@@ -44,7 +44,7 @@ msgstr "Um arquivo chamado \"%s\" já existe. Deseja sobrescrevê-lo?"
 msgid "AMS packages"
 msgstr "Pacotes AMS"
 
-#: src/main_window.vala:133 src/main_window.vala:1779
+#: src/main_window.vala:133 src/main_window.vala:1796
 msgid "About LaTeXila"
 msgstr "Sobre LaTeXila"
 
@@ -225,7 +225,7 @@ msgstr "Fechar documento"
 msgid "Close the current file"
 msgstr "Fechar o arquivo atual"
 
-#: src/dialogs.vala:40 src/main_window.vala:769
+#: src/dialogs.vala:40 src/main_window.vala:770
 msgid "Close without Saving"
 msgstr "Fechar sem salvar"
 
@@ -377,7 +377,7 @@ msgstr "Você deseja recarregar o arquivo?"
 msgid "Document class - \\documentclass"
 msgstr "Classe de Documento - \\documentclass"
 
-#: src/main_window.vala:652
+#: src/main_window.vala:653
 msgid "Don't Edit"
 msgstr "Não Editar"
 
@@ -393,7 +393,7 @@ msgstr "Ponto - \\."
 msgid "Double acute accent - \\H"
 msgstr "Acento agudo duplo - \\H"
 
-#: src/main_window.vala:651
+#: src/main_window.vala:652
 msgid "Edit Anyway"
 msgstr "Editar Mesmo Assim"
 
@@ -455,11 +455,11 @@ msgstr "F_ont Series"
 msgid "Figure - \\begin{figure}"
 msgstr "Figura - \\begin{figure}"
 
-#: src/build_view.vala:107
+#: src/build_view.vala:103
 msgid "File"
 msgstr "Arquivo"
 
-#: src/file_browser.vala:385 src/main_window.vala:282
+#: src/file_browser.vala:388 src/main_window.vala:283
 msgid "File Browser"
 msgstr "Navegador de Arquivos"
 
@@ -467,7 +467,7 @@ msgstr "Navegador de Arquivos"
 msgid "File Clean-Up"
 msgstr "Remover Arquivo"
 
-#: src/file_browser.vala:415
+#: src/file_browser.vala:418
 msgid "File System"
 msgstr "Sistema de Arquivos"
 
@@ -541,7 +541,7 @@ msgstr "Acento Grave - \\`"
 msgid "Greek"
 msgstr "Grego"
 
-#: src/build_view.vala:124 src/side_panel.vala:73
+#: src/build_view.vala:120 src/side_panel.vala:73
 msgid "Hide panel"
 msgstr "Ocultar painel"
 
@@ -622,7 +622,7 @@ msgstr "Itálico - \\mathit"
 msgid "Italic - \\textit"
 msgstr "Itálico - \\textit"
 
-#: src/build_view.vala:95
+#: src/build_view.vala:91
 msgid "Job"
 msgstr "Tarefa"
 
@@ -630,11 +630,12 @@ msgstr "Tarefa"
 msgid "Jobs"
 msgstr "Trabalhos"
 
-#: src/main_window.vala:1728
-msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
+#: src/main_window.vala:1744
+#, fuzzy
+msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila é um sistema integrado de ambiente LaTeX para o desktop GNOME"
 
-#: src/main_window.vala:648
+#: src/main_window.vala:649
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -658,7 +659,7 @@ msgstr "Delimitadores Esquerdo"
 msgid "Letter"
 msgstr "Carta"
 
-#: src/build_view.vala:109
+#: src/build_view.vala:105
 msgid "Line"
 msgstr "Linha"
 
@@ -856,23 +857,23 @@ msgstr "Equação Numerada - \\begin{equation}"
 msgid "One match"
 msgstr "Uma ocorrência"
 
-#: src/main_window.vala:1400
+#: src/main_window.vala:1417
 msgid "Open Files"
 msgstr "Abrir Arquivos"
 
-#: src/main_window.vala:480
+#: src/main_window.vala:481
 msgid "Open _Recent"
 msgstr "Abrir _Recente"
 
-#: src/main_window.vala:35 src/main_window.vala:1025
+#: src/main_window.vala:35 src/main_window.vala:1026
 msgid "Open a file"
 msgstr "Abrir um arquivo"
 
-#: src/main_window.vala:1026
+#: src/main_window.vala:1027
 msgid "Open a recently used file"
 msgstr "Abrir um arquivo utilizado recetemente"
 
-#: src/main_window.vala:481
+#: src/main_window.vala:482
 msgid "Open recently used files"
 msgstr "Abrir arquivo utilizado recetemente"
 
@@ -945,7 +946,7 @@ msgstr "Citação - \\begin{quotation}"
 msgid "Quote - \\begin{quote}"
 msgstr "Citar - \\begin{quote}"
 
-#: src/main_window.vala:885
+#: src/main_window.vala:886
 msgid "Read-Only"
 msgstr "Apenas Leitura"
 
@@ -981,7 +982,7 @@ msgstr "Atualizar"
 msgid "Reopen files on startup"
 msgstr "Reabrir arquivos na inicialização"
 
-#: src/main_window.vala:939
+#: src/main_window.vala:940
 msgid "Replace"
 msgstr "Substituir"
 
@@ -1026,7 +1027,7 @@ msgstr "Romano - \\mathrm"
 msgid "Roman - \\rmfamily"
 msgstr "Romano - \\rmfamily"
 
-#: src/build_tools.vala:257
+#: src/build_tools.vala:258
 #, fuzzy
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
@@ -1055,7 +1056,7 @@ msgstr "Sans Serif - \\textsf"
 msgid "Save Anyway"
 msgstr "Salvar mesmo assim"
 
-#: src/main_window.vala:899
+#: src/main_window.vala:900
 msgid "Save File"
 msgstr "Salvar Arquivo"
 
@@ -1063,7 +1064,7 @@ msgstr "Salvar Arquivo"
 msgid "Save all open files"
 msgstr "Salvar todos os arquivos abertos"
 
-#: src/main_window.vala:766
+#: src/main_window.vala:767
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Salvar mudanças no documento \"%s\" antes de fechar?"
@@ -1199,7 +1200,7 @@ msgstr "Subscrito - _{}"
 msgid "Superscript - ^{}"
 msgstr "Sobrescrito - ^{}"
 
-#: src/main_window.vala:279
+#: src/main_window.vala:280
 msgid "Symbols"
 msgstr "Sí­mbolos"
 
@@ -1272,7 +1273,7 @@ msgstr ""
 msgid "There is a conflict with the project \"%s\"."
 msgstr "Há um conflito com o projeto \"%s\"."
 
-#: src/main_window.vala:646
+#: src/main_window.vala:647
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Este arquivo (%s) já está aberto em outra janela do LaTeXila."
@@ -1358,7 +1359,7 @@ msgstr "Visualizar DVI"
 msgid "View File"
 msgstr "Visualizar Arquivo"
 
-#: src/main_window.vala:1722
+#: src/main_window.vala:1737
 msgid "View LaTeX Reference"
 msgstr "Visualizar Referência do LaTeX"
 
@@ -1712,7 +1713,7 @@ msgstr "] direito"
 msgid "right { "
 msgstr "{ direita"
 
-#: src/main_window.vala:1780
+#: src/main_window.vala:1797
 msgid "translator-credits"
 msgstr ""
 "Átila Camurça <camurca.home@gmail.com>\n"
