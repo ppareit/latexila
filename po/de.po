@@ -769,7 +769,7 @@ msgstr "Muss funktionieren"
 
 #: src/latex_menu.vala:280
 msgid "N-th Root - \\sqrt[]{}"
-msgstr "N-th Wurzel - \\sqrt[]{}"
+msgstr "N-te Wurzel - \\sqrt[]{}"
 
 #: src/templates.vala:221
 msgid "Name of the new template:"
