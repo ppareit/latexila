@@ -1,6 +1,6 @@
 *.cmake
 *.gmo
-*.h
+config.h
 CMakeCache.txt
 CMakeFiles
 Makefile
