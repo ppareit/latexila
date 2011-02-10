@@ -1,23 +1,23 @@
 <tools>
   <tool description="DVI aus LaTeX Quelldatei erstellen" extensions=".tex" label="LaTeX → DVI" icon="compile_dvi">
     <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all $filename</job>
-    <job mustSucceed="true" postProcessor="generic">$view $shortname.dvi</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
   </tool>
   <tool description="PDF aus LaTeX Quelldatei erstellen" extensions=".tex" label="LaTeX → PDF" icon="compile_pdf">
     <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --pdf $filename</job>
-    <job mustSucceed="true" postProcessor="generic">$view $shortname.pdf</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
   <tool description="PostScript aus LaTeX Quelldatei erstellen" extensions=".tex" label="LaTeX → PS" icon="compile_ps">
     <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --ps $filename</job>
-    <job mustSucceed="true" postProcessor="generic">$view $shortname.ps</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
   <tool description="DVI Datei anzeigen" extensions=".tex .dvi" label="DVI anzeigen" icon="view_dvi">
-    <job mustSucceed="true" postProcessor="generic">$view $shortname.dvi</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
   </tool>
   <tool description="PDF Datei anzeigen" extensions=".tex .pdf" label="PDF anzeigen" icon="view_pdf">
-    <job mustSucceed="true" postProcessor="generic">$view $shortname.pdf</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
   <tool description="PostScript Datei anzeigen" extensions=".tex .ps" label="PS anzeigen" icon="view_ps">
-    <job mustSucceed="true" postProcessor="generic">$view $shortname.ps</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
 </tools>

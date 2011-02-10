@@ -102,7 +102,7 @@ public class BuildToolRunner : GLib.Object
         build_tool.label = label;
 
         BuildJob build_job = BuildJob ();
-        build_job.post_processor = "generic";
+        build_job.post_processor = "no-output";
         build_job.must_succeed = true;
         build_job.command = "%s $filename".printf (settings.get_string ("web-browser"));
 
@@ -225,16 +225,16 @@ public class BuildToolRunner : GLib.Object
         PostProcessor post_processor;
         switch (current_job.post_processor)
         {
-            case "generic":
-                post_processor = new GenericPostProcessor ();
+            case "no-output":
+                post_processor = new NoOutputPostProcessor ();
                 break;
             case "rubber":
                 post_processor = new RubberPostProcessor ();
                 break;
             default:
-                stderr.printf ("Warning: unknown post processor \"%s\". Use generic.",
+                stderr.printf ("Warning: unknown post processor \"%s\". Use no-output.",
                     current_job.post_processor);
-                post_processor = new GenericPostProcessor ();
+                post_processor = new NoOutputPostProcessor ();
                 break;
         }
 
@@ -276,7 +276,7 @@ public class BuildToolRunner : GLib.Object
 
         try
         {
-            if (current_job.post_processor == "generic")
+            if (current_job.post_processor == "no-output")
                 execute_without_output (command, directory);
 
             // rubber

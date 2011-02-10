@@ -722,7 +722,7 @@ private class BuildToolDialog : Dialog
         ListStore post_processor_store = new ListStore (1, typeof (string));
         TreeIter iterpp;
         post_processor_store.append (out iterpp);
-        post_processor_store.set (iterpp, 0, "generic", -1);
+        post_processor_store.set (iterpp, 0, "no-output", -1);
         post_processor_store.append (out iterpp);
         post_processor_store.set (iterpp, 0, "rubber", -1);
 
@@ -821,7 +821,7 @@ private class BuildToolDialog : Dialog
         jobs_store.set (iter,
             JobColumn.COMMAND, entry_command.text,
             JobColumn.MUST_SUCCEED, true,
-            JobColumn.POST_PROCESSOR, "generic",
+            JobColumn.POST_PROCESSOR, "no-output",
             -1);
         entry_command.text = "";
     }

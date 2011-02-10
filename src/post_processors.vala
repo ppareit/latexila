@@ -24,7 +24,7 @@ private interface PostProcessor : GLib.Object
     public abstract BuildIssue[] get_issues ();
 }
 
-private class GenericPostProcessor : GLib.Object, PostProcessor
+private class NoOutputPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
 
