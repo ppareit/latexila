@@ -20,7 +20,7 @@
 private interface PostProcessor : GLib.Object
 {
     public abstract bool successful { get; protected set; }
-    public abstract void process (File file, string stdout, string stderr, int status);
+    public abstract void process (File file, string output, int status);
     public abstract BuildIssue[] get_issues ();
 }
 
@@ -28,7 +28,7 @@ private class NoOutputPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
 
-    public void process (File file, string stdout, string stderr, int status)
+    public void process (File file, string output, int status)
     {
         successful = status == 0;
     }
@@ -64,14 +64,14 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
         }
     }
 
-    public void process (File file, string stdout, string stderr, int status)
+    public void process (File file, string output, int status)
     {
         successful = status == 0;
         if (pattern == null)
             return;
 
         MatchInfo match_info;
-        pattern.match (stderr, 0, out match_info);
+        pattern.match (output, 0, out match_info);
         while (match_info.matches ())
         {
             BuildIssue issue = BuildIssue ();

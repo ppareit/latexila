@@ -25,8 +25,8 @@ public class BuildToolRunner : GLib.Object
     private Pid? child_pid = null;
     private uint[] handlers = {};
     private IOChannel out_channel;
-    private IOChannel err_channel;
     private bool read_output = true;
+    private string output = "";
 
     private BuildView view;
     private bool compilation;
@@ -37,9 +37,6 @@ public class BuildToolRunner : GLib.Object
     private string filename;
     private string shortname;
     private string directory;
-
-    private string stdout_text = "";
-    private string stderr_text = "";
 
     private unowned List<BuildJob?> jobs;
     private int job_num = 0;
@@ -121,21 +118,23 @@ public class BuildToolRunner : GLib.Object
 
         try
         {
-            int std_out, std_err;
+            int std_out;
+
             Process.spawn_async_with_pipes (working_directory, command, null,
-                SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH, null,
-                out child_pid, null, out std_out, out std_err);
+                SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH,
+
+                // redirect stderr into stdout
+                () => { Posix.dup2 (Posix.STDOUT_FILENO, Posix.STDERR_FILENO); },
+
+                out child_pid, null, out std_out);
 
             // we want to know the exit code
             handlers += ChildWatch.add (child_pid, on_exit);
 
             out_channel = new IOChannel.unix_new (std_out);
-            err_channel = new IOChannel.unix_new (std_err);
             out_channel.set_flags (IOFlags.NONBLOCK);
-            err_channel.set_flags (IOFlags.NONBLOCK);
 
-            handlers += Timeout.add (POLL_INTERVAL, on_stdout);
-            handlers += Timeout.add (POLL_INTERVAL, on_stderr);
+            handlers += Timeout.add (POLL_INTERVAL, on_output);
         }
         catch (Error e)
         {
@@ -179,7 +178,7 @@ public class BuildToolRunner : GLib.Object
             view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
     }
 
-    private bool on_stdout ()
+    private bool on_output ()
     {
         return_val_if_fail (read_output, false);
         try
@@ -188,24 +187,10 @@ public class BuildToolRunner : GLib.Object
             size_t length;
             out_channel.read_to_end (out text, out length);
             if (length > 0)
-                stdout_text += text;
+                output += text;
         }
         catch (Error e) {}
-        return true;
-    }
 
-    private bool on_stderr ()
-    {
-        return_val_if_fail (read_output, false);
-        try
-        {
-            string text;
-            size_t length;
-            err_channel.read_to_end (out text, out length);
-            if (length > 0)
-                stderr_text += text;
-        }
-        catch (Error e) {}
         return true;
     }
 
@@ -216,10 +201,7 @@ public class BuildToolRunner : GLib.Object
 
         // read remaining output
         if (read_output)
-        {
-            on_stdout ();
-            on_stderr ();
-        }
+            on_output ();
 
         // create post processor
         PostProcessor post_processor;
@@ -238,7 +220,7 @@ public class BuildToolRunner : GLib.Object
                 break;
         }
 
-        post_processor.process (file, stdout_text, stderr_text, status);
+        post_processor.process (file, output, status);
         view.append_issues (job_partitions[job_num], post_processor.get_issues ());
 
         if (post_processor.successful)
