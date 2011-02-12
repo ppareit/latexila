@@ -210,6 +210,9 @@ public class BuildToolRunner : GLib.Object
             case "no-output":
                 post_processor = new NoOutputPostProcessor ();
                 break;
+            case "all-output":
+                post_processor = new AllOutputPostProcessor ();
+                break;
             case "rubber":
                 post_processor = new RubberPostProcessor ();
                 break;

@@ -37,7 +37,7 @@ public struct BuildIssue
     public string message;
     public BuildMessageType message_type;
     public string? filename;
-    public int start_line;
+    public int start_line; // no line: -1
     public int end_line;
 }
 

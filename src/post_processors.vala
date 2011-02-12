@@ -41,6 +41,35 @@ private class NoOutputPostProcessor : GLib.Object, PostProcessor
     }
 }
 
+private class AllOutputPostProcessor : GLib.Object, PostProcessor
+{
+    public bool successful { get; protected set; }
+    private BuildIssue[] issues = {};
+
+    public void process (File file, string output, int status)
+    {
+        successful = status == 0;
+
+        string[] lines = output.split ("\n");
+        BuildIssue issue = BuildIssue ();
+        issue.message_type = BuildMessageType.OTHER;
+        issue.filename = null;
+        issue.start_line = -1;
+        issue.end_line = -1;
+
+        foreach (string line in lines)
+        {
+            issue.message = line; // remove g_strdup() here?
+            issues += issue;
+        }
+    }
+
+    public BuildIssue[] get_issues ()
+    {
+        return issues;
+    }
+}
+
 private class RubberPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }

@@ -720,11 +720,15 @@ private class BuildToolDialog : Dialog
         /* post processor list store */
 
         ListStore post_processor_store = new ListStore (1, typeof (string));
-        TreeIter iterpp;
-        post_processor_store.append (out iterpp);
-        post_processor_store.set (iterpp, 0, "no-output", -1);
-        post_processor_store.append (out iterpp);
-        post_processor_store.set (iterpp, 0, "rubber", -1);
+
+        string[] post_processors = { "no-output", "all-output", "rubber" };
+
+        foreach (string post_processor in post_processors)
+        {
+            TreeIter iterpp;
+            post_processor_store.append (out iterpp);
+            post_processor_store.set (iterpp, 0, post_processor, -1);
+        }
 
         /* cell renderers */
 
