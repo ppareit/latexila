@@ -208,12 +208,15 @@ public class BuildToolRunner : GLib.Object
         switch (current_job.post_processor)
         {
             case "no-output":
+                //stdout.printf ("no-output post processor\n");
                 post_processor = new NoOutputPostProcessor ();
                 break;
             case "all-output":
+                //stdout.printf ("all-output post processor\n");
                 post_processor = new AllOutputPostProcessor ();
                 break;
             case "rubber":
+                //stdout.printf ("rubber post processor\n");
                 post_processor = new RubberPostProcessor ();
                 break;
             default:
@@ -255,6 +258,9 @@ public class BuildToolRunner : GLib.Object
             finished ();
             return;
         }
+
+        // reset output because it's the same variable for all jobs
+        output = "";
 
         current_job = jobs.nth_data (job_num);
         string[] command = get_command (current_job, false);
