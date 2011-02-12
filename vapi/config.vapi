@@ -8,4 +8,5 @@ namespace Config
     public const string GETTEXT_PACKAGE;
     public const string SCHEMA_DIR;
     public const string ICONS_DIR;
+    public const bool   DESKTOP_SCHEMAS;
 }

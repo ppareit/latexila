@@ -23,9 +23,6 @@ gettext_create_translations (po/latexila.pot ALL ${latexila_PO_FILES})
 
 set (SCHEMA_DIR "${CMAKE_INSTALL_PREFIX}/share")
 set (ICONS_DIR "${CMAKE_INSTALL_PREFIX}/share/icons/hicolor")
-configure_file (${latexila_SOURCE_DIR}/src/config.h.in
-	${latexila_BINARY_DIR}/src/config.h)
-add_definitions (-include config.h)
 
 if (BUILD_VALA)
 	list (APPEND CMAKE_MODULE_PATH "${latexila_SOURCE_DIR}/cmake/vala")
@@ -44,6 +41,18 @@ pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.26")
 pkg_check_modules (UNIQUE REQUIRED "unique-1.0")
 pkg_check_modules (GDK-X11 REQUIRED "gdk-x11-2.0")
 pkg_check_modules (X11 REQUIRED "x11")
+pkg_check_modules (DESKTOP-SCHEMAS "gsettings-desktop-schemas")
+
+# is there an easier way?
+if (DESKTOP-SCHEMAS_FOUND)
+	set (DESKTOP_SCHEMAS "1")
+else ()
+	set (DESKTOP_SCHEMAS "0")
+endif ()
+
+configure_file (${latexila_SOURCE_DIR}/src/config.h.in
+	${latexila_BINARY_DIR}/src/config.h)
+add_definitions (-include config.h)
 
 add_definitions (
 	${GTK_CFLAGS}
