@@ -32,10 +32,14 @@ See also the Roadmap:
 	- latexmk post processor:
 		- based on pdftex post processor but show more information (which commands, how many times, etc)
 		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)
-	- "show all output" post processor
+	- all-output post processor:
 		- add some simple build tools like bibtex, makeindex, dvipdf, dvips, etc
 	- option to show or hide a build tool in the menu and toolbar
 	- by default show only latexmk, hide the rest
+	- preferences dialog: double click on a build tool -> open properties
+	- bottom panel:
+		- show/hide errors/warnings/badboxes buttons
+		- right click menu: copy the line to the clipboard
 
 - List of chapters, sections, etc to easily navigate in a document
 
