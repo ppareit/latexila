@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-29 00:15+0100\n"
+"POT-Creation-Date: 2011-02-13 18:18+0100\n"
 "PO-Revision-Date: 2010-11-21 01:27+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: Spanish\n"
@@ -132,7 +132,7 @@ msgstr "Libro"
 msgid "Breve - \\u"
 msgstr "Breve - \\u"
 
-#: src/preferences_dialog.vala:616
+#: src/build_tool_dialog.vala:71
 msgid "Build Tool"
 msgstr "Herramienta de construcción"
 
@@ -228,7 +228,7 @@ msgstr "Cerrar sin guardar"
 msgid "Color Scheme"
 msgstr "Esquema de color"
 
-#: src/preferences_dialog.vala:733
+#: src/build_tool_dialog.vala:192
 msgid "Commands"
 msgstr "Comandos"
 
@@ -248,7 +248,7 @@ msgstr "Configurar la aplicación"
 msgid "Content of the document - \\begin{document}"
 msgstr "Contenido del documento - \\begin{document}"
 
-#: src/preferences_dialog.vala:597
+#: src/build_tool_dialog.vala:52
 msgid "Convert"
 msgstr "Convertir"
 
@@ -430,7 +430,7 @@ msgstr "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgid "Except those for clean-up"
 msgstr "Excepto aquellos para limpieza"
 
-#: src/preferences_dialog.vala:593
+#: src/build_tool_dialog.vala:48
 msgid "Execute"
 msgstr "Ejecutar"
 
@@ -758,7 +758,7 @@ msgstr "Mover el documento actual a una nueva ventana"
 msgid "Multicolumn - \\multicolumn"
 msgstr "Multicolumna - \\multicolumn"
 
-#: src/preferences_dialog.vala:738
+#: src/build_tool_dialog.vala:197
 msgid "Must Succeed"
 msgstr "Debe tener éxito"
 
@@ -902,7 +902,7 @@ msgstr "Elija la tipografía del editor"
 msgid "Placeholders:"
 msgstr "Marcadores:"
 
-#: src/preferences_dialog.vala:746
+#: src/build_tool_dialog.vala:205
 msgid "Post Processor"
 msgstr "Post Procesador"
 
@@ -1010,7 +1010,7 @@ msgstr "Roman - \\mathrm"
 msgid "Roman - \\rmfamily"
 msgstr "Roman - \\rmfamily"
 
-#: src/build_tools.vala:258
+#: src/build_tool_runner.vala:281
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 "Puede que Rubber no soporte nombres de archivos con espacios (incluso en un "
@@ -1329,11 +1329,11 @@ msgstr "Línea vertical - \\vline"
 msgid "Vertical space - \\vspace"
 msgstr "Espacio vertical - \\vspace"
 
-#: src/preferences_dialog.vala:599
+#: src/build_tool_dialog.vala:54
 msgid "View DVI"
 msgstr "Ver DVI"
 
-#: src/preferences_dialog.vala:598
+#: src/build_tool_dialog.vala:53
 msgid "View File"
 msgstr "Ver Archivo"
 
@@ -1345,11 +1345,11 @@ msgstr "Ver la Referencia de LaTeX"
 msgid "View Log"
 msgstr "Ver Registro"
 
-#: src/preferences_dialog.vala:600
+#: src/build_tool_dialog.vala:55
 msgid "View PDF"
 msgstr "Ver PDF"
 
-#: src/preferences_dialog.vala:601
+#: src/build_tool_dialog.vala:56
 msgid "View PS"
 msgstr "Ver PS"
 
@@ -1589,7 +1589,7 @@ msgstr "beamer-es.tex"
 msgid "book-en.tex"
 msgstr "book-es.tex"
 
-#: src/app_settings.vala:552
+#: src/app_settings.vala:557
 msgid "build_tools-en.xml"
 msgstr "build_tools-es.xml"
 

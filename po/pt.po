@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: LaTeXila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-29 00:15+0100\n"
+"POT-Creation-Date: 2011-02-13 18:18+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: \n"
@@ -137,7 +137,7 @@ msgstr "Livro"
 msgid "Breve - \\u"
 msgstr "Breve - \\u"
 
-#: src/preferences_dialog.vala:616
+#: src/build_tool_dialog.vala:71
 msgid "Build Tool"
 msgstr "Ferramenta de Construção"
 
@@ -233,7 +233,7 @@ msgstr "Fechar sem salvar"
 msgid "Color Scheme"
 msgstr "Esquema de Cores"
 
-#: src/preferences_dialog.vala:733
+#: src/build_tool_dialog.vala:192
 msgid "Commands"
 msgstr "Comandos"
 
@@ -253,7 +253,7 @@ msgstr "Configurar a aplicação"
 msgid "Content of the document - \\begin{document}"
 msgstr "Conteúdo do documento - \\begin{document}"
 
-#: src/preferences_dialog.vala:597
+#: src/build_tool_dialog.vala:52
 msgid "Convert"
 msgstr "Converter"
 
@@ -438,7 +438,7 @@ msgstr "Euler Fraktur - \\mathfrak (pacote amsfonts)"
 msgid "Except those for clean-up"
 msgstr "Exceto aqueles para remover"
 
-#: src/preferences_dialog.vala:593
+#: src/build_tool_dialog.vala:48
 msgid "Execute"
 msgstr "Executar"
 
@@ -771,7 +771,7 @@ msgstr "Mova o documento atual para uma nova janela"
 msgid "Multicolumn - \\multicolumn"
 msgstr "Multicolumn - \\multicolumn"
 
-#: src/preferences_dialog.vala:738
+#: src/build_tool_dialog.vala:197
 msgid "Must Succeed"
 msgstr "Deve Suceder"
 
@@ -917,7 +917,7 @@ msgstr "Escolha a fonte do editor"
 msgid "Placeholders:"
 msgstr "Espaços Reservados:"
 
-#: src/preferences_dialog.vala:746
+#: src/build_tool_dialog.vala:205
 #, fuzzy
 msgid "Post Processor"
 msgstr "Processado Rapidamente"
@@ -1027,7 +1027,7 @@ msgstr "Romano - \\mathrm"
 msgid "Roman - \\rmfamily"
 msgstr "Romano - \\rmfamily"
 
-#: src/build_tools.vala:258
+#: src/build_tool_runner.vala:281
 #, fuzzy
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
@@ -1351,11 +1351,11 @@ msgstr "Linha vertical - \\vline"
 msgid "Vertical space - \\vspace"
 msgstr "Espaço vertical - \\vspace"
 
-#: src/preferences_dialog.vala:599
+#: src/build_tool_dialog.vala:54
 msgid "View DVI"
 msgstr "Visualizar DVI"
 
-#: src/preferences_dialog.vala:598
+#: src/build_tool_dialog.vala:53
 msgid "View File"
 msgstr "Visualizar Arquivo"
 
@@ -1367,11 +1367,11 @@ msgstr "Visualizar Referência do LaTeX"
 msgid "View Log"
 msgstr "Visualizar Log"
 
-#: src/preferences_dialog.vala:600
+#: src/build_tool_dialog.vala:55
 msgid "View PDF"
 msgstr "Visualizar PDF"
 
-#: src/preferences_dialog.vala:601
+#: src/build_tool_dialog.vala:56
 msgid "View PS"
 msgstr "Visualizar PS"
 
@@ -1613,7 +1613,7 @@ msgstr "beamer-pt.tex"
 msgid "book-en.tex"
 msgstr "book-pt.tex"
 
-#: src/app_settings.vala:552
+#: src/app_settings.vala:557
 msgid "build_tools-en.xml"
 msgstr "build_tools-pt.xml"
 

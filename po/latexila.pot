@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-01-29 00:15+0100\n"
+"POT-Creation-Date: 2011-02-13 18:18+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,7 +121,7 @@ msgstr ""
 msgid "Breve - \\u"
 msgstr ""
 
-#: src/preferences_dialog.vala:616
+#: src/build_tool_dialog.vala:71
 msgid "Build Tool"
 msgstr ""
 
@@ -197,7 +197,7 @@ msgstr ""
 msgid "Close without Saving"
 msgstr ""
 
-#: src/preferences_dialog.vala:733
+#: src/build_tool_dialog.vala:192
 msgid "Commands"
 msgstr ""
 
@@ -217,7 +217,7 @@ msgstr ""
 msgid "Content of the document - \\begin{document}"
 msgstr ""
 
-#: src/preferences_dialog.vala:597
+#: src/build_tool_dialog.vala:52
 msgid "Convert"
 msgstr ""
 
@@ -375,7 +375,7 @@ msgstr ""
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr ""
 
-#: src/preferences_dialog.vala:593
+#: src/build_tool_dialog.vala:48
 msgid "Execute"
 msgstr ""
 
@@ -637,7 +637,7 @@ msgstr ""
 msgid "Multicolumn - \\multicolumn"
 msgstr ""
 
-#: src/preferences_dialog.vala:738
+#: src/build_tool_dialog.vala:197
 msgid "Must Succeed"
 msgstr ""
 
@@ -757,7 +757,7 @@ msgstr ""
 msgid "Personnal templates"
 msgstr ""
 
-#: src/preferences_dialog.vala:746
+#: src/build_tool_dialog.vala:205
 msgid "Post Processor"
 msgstr ""
 
@@ -845,7 +845,7 @@ msgstr ""
 msgid "Roman - \\rmfamily"
 msgstr ""
 
-#: src/build_tools.vala:258
+#: src/build_tool_runner.vala:281
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 
@@ -1118,11 +1118,11 @@ msgstr ""
 msgid "Vertical space - \\vspace"
 msgstr ""
 
-#: src/preferences_dialog.vala:599
+#: src/build_tool_dialog.vala:54
 msgid "View DVI"
 msgstr ""
 
-#: src/preferences_dialog.vala:598
+#: src/build_tool_dialog.vala:53
 msgid "View File"
 msgstr ""
 
@@ -1134,11 +1134,11 @@ msgstr ""
 msgid "View Log"
 msgstr ""
 
-#: src/preferences_dialog.vala:600
+#: src/build_tool_dialog.vala:55
 msgid "View PDF"
 msgstr ""
 
-#: src/preferences_dialog.vala:601
+#: src/build_tool_dialog.vala:56
 msgid "View PS"
 msgstr ""
 
@@ -1366,7 +1366,7 @@ msgstr ""
 msgid "book-en.tex"
 msgstr ""
 
-#: src/app_settings.vala:552
+#: src/app_settings.vala:557
 msgid "build_tools-en.xml"
 msgstr ""
 
