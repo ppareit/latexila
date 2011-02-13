@@ -1,6 +1,17 @@
 LaTeXila NEWS
 
 ==============================
+* Release 2.0.5 (Feb 13, 2011)
+==============================
+
+- German translation
+- GSettings desktop schemas are now optional
+- New post processor for build tools: 'all-output'
+- Rename 'generic' post processor to 'no-output'
+- Bug fixes in build tools
+
+
+==============================
 * Release 2.0.4 (Jan 28, 2011)
 ==============================
 
