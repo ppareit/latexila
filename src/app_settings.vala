@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -516,7 +516,6 @@ public class AppSettings : GLib.Settings
                 || job1.must_succeed != job2.must_succeed
                 || job1.post_processor != job2.post_processor)
                 return false;
-            i++;
         }
 
         return true;
