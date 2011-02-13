@@ -54,12 +54,6 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
             return;
 
         string[] lines = output.split ("\n");
-        BuildIssue issue = BuildIssue ();
-        issue.message_type = BuildMessageType.OTHER;
-        issue.filename = null;
-        issue.start_line = -1;
-        issue.end_line = -1;
-
         int l = lines.length;
         return_if_fail (l > 0);
 
@@ -68,10 +62,18 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
         if (lines[l-1].length == 0)
             l--;
 
+        issues = new BuildIssue[l];
+
+        BuildIssue issue = BuildIssue ();
+        issue.message_type = BuildMessageType.OTHER;
+        issue.filename = null;
+        issue.start_line = -1;
+        issue.end_line = -1;
+
         for (int i = 0 ; i < l ; i++)
         {
-            issue.message = lines[i];
-            issues += issue;
+            issues[i] = issue;
+            issues[i].message = (owned) lines[i];
         }
     }
 
