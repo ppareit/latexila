@@ -50,6 +50,9 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
     {
         successful = status == 0;
 
+        if (output.length == 0)
+            return;
+
         string[] lines = output.split ("\n");
         BuildIssue issue = BuildIssue ();
         issue.message_type = BuildMessageType.OTHER;
@@ -57,9 +60,17 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
         issue.start_line = -1;
         issue.end_line = -1;
 
-        foreach (string line in lines)
+        int l = lines.length;
+        return_if_fail (l > 0);
+
+        // Generally there is a \n at the end of the output so an empty line is added,
+        // but we don't want to display it.
+        if (lines[l-1].length == 0)
+            l--;
+
+        for (int i = 0 ; i < l ; i++)
         {
-            issue.message = line; // remove g_strdup() here?
+            issue.message = lines[i];
             issues += issue;
         }
     }
