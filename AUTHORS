@@ -2,8 +2,10 @@ Main developer:
 Sébastien Wilmet <sebastien.wilmet@gmail.com>
 
 Contributors:
+Matthieu Baerts (Ubuntu package)
 Átila Camurça (Brazilian Portuguese translation)
 Éric Forgeot (logo, icon and web site)
+Frederik Hahne (German translation)
 Ann Melnichuk (icon)
 Thibault North (Fedora package)
 Tanguy Ortolo (Debian package, manpage)
@@ -12,3 +14,4 @@ Bernd Prünster (Arch Linux package)
 Matias De la Puente (some patches and Spanish translation)
 Stéphane Roy (some patches)
 Darlildo Souza (Brazilian Portuguese translation)
+Johannes Wilde (German translation)
