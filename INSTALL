@@ -4,15 +4,18 @@ Requirements
 GTK+ >= 2.16
 GtkSourceView >= 2.10
 GLib >= 2.26 (GIO is part of GLib)
-gsettings-desktop-schemas
 libgee
 unique
 gdk-x11
 x11
 CMake >= 2.6.4
 gettext
+gsettings-desktop-schemas (optional)
 
-Vala is not required because the C code is already generated.
+If you are installing LaTeXila from a .tar.bz2 or from the 'releases' branch,
+you don't have to install Vala because the C code is already generated.
+Otherwise, see the CMake configuration at the end of this file.
+
 
 Simple install procedure
 ========================
@@ -23,6 +26,7 @@ $ make				# build LaTeXila
 [ Become root if necessary ]
 $ make install			# install LaTeXila
 
+
 Simple uninstall procedure
 ==========================
 
@@ -32,6 +36,7 @@ So you can uninstall LaTeXila by doing this:
 $ cd build/
 [ Become root if necessary ]
 $ xargs rm < install_manifest.txt
+
 
 Configuration
 =============

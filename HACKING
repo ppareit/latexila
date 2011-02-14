@@ -24,7 +24,7 @@ Here is how you can generate a patch:
 
     $ git diff origin > patch
 
-But a pull request is better.
+But creating a fork on GitHub and then make a pull request is simpler.
 
 There are some rules to follow when coding:
     - indentation: 4 spaces
