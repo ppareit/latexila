@@ -32,6 +32,7 @@ public struct BuildTool
     public string extensions;
     public string label;
     public string icon;
+    public bool show;
     public bool compilation;
     public unowned GLib.List<BuildJob?> jobs;
 }
@@ -500,7 +501,8 @@ public class AppSettings : GLib.Settings
 
     private bool is_build_tools_equal (BuildTool tool1, BuildTool tool2)
     {
-        if (tool1.label != tool2.label
+        if (tool1.show != tool2.show
+            || tool1.label != tool2.label
             || tool1.description != tool2.description
             || tool1.extensions != tool2.extensions
             || tool1.icon != tool2.icon
@@ -586,6 +588,9 @@ public class AppSettings : GLib.Settings
                 {
                     switch (attr_names[i])
                     {
+                        case "show":
+                            current_build_tool.show = attr_values[i].to_bool ();
+                            break;
                         case "description":
                             current_build_tool.description = attr_values[i];
                             break;
@@ -695,8 +700,12 @@ public class AppSettings : GLib.Settings
         string content = "<tools>\n";
         foreach (BuildTool tool in build_tools)
         {
-            content += "  <tool description=\"%s\" extensions=\"%s\" label=\"%s\" icon=\"%s\">\n".printf (
-                tool.description, tool.extensions, tool.label, tool.icon);
+            content += "  <tool show=\"%s\" description=\"%s\" ".printf (
+                tool.show.to_string (), tool.description);
+
+            content += "extensions=\"%s\" label=\"%s\" icon=\"%s\">\n".printf (
+                tool.extensions, tool.label, tool.icon);
+
             foreach (BuildJob job in tool.jobs)
             {
                 content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">%s</job>\n".printf (

@@ -400,6 +400,7 @@ public class PreferencesDialog : Dialog
 
     private enum BuildToolColumn
     {
+        SHOW,
         PIXBUF,
         LABEL,
         DESCRIPTION,
@@ -408,11 +409,18 @@ public class PreferencesDialog : Dialog
 
     private void init_build_tools_treeview ()
     {
-        build_tools_store = new ListStore (BuildToolColumn.N_COLUMNS, typeof (string),
-            typeof (string), typeof (string));
+        build_tools_store = new ListStore (BuildToolColumn.N_COLUMNS, typeof (bool),
+            typeof (string), typeof (string), typeof (string));
         build_tools_view.set_model (build_tools_store);
 
         TreeViewColumn column = new TreeViewColumn ();
+        build_tools_view.append_column (column);
+
+        CellRendererToggle toggle_renderer = new CellRendererToggle ();
+        column.pack_start (toggle_renderer, false);
+        column.set_attributes (toggle_renderer, "active", BuildToolColumn.SHOW, null);
+
+        column = new TreeViewColumn ();
         build_tools_view.append_column (column);
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
@@ -430,6 +438,27 @@ public class PreferencesDialog : Dialog
 
         /* fill list store */
         update_build_tools_store ();
+
+        /* show/hide build tool */
+        toggle_renderer.toggled.connect ((path_string) =>
+        {
+            TreeIter iter;
+            build_tools_store.get_iter_from_string (out iter, path_string);
+            bool val;
+            TreeModel model = (TreeModel) build_tools_store;
+            model.get (iter, BuildToolColumn.SHOW, out val, -1);
+
+            val = ! val;
+            build_tools_store.set (iter, BuildToolColumn.SHOW, val, -1);
+
+            int num = path_string.to_int ();
+            unowned LinkedList<BuildTool?> build_tools =
+                AppSettings.get_default ().get_build_tools ();
+            BuildTool build_tool = build_tools.get (num);
+            build_tool.show = val;
+
+            AppSettings.get_default ().update_build_tool (num, build_tool);
+        });
     }
 
     private void update_build_tools_store ()
@@ -443,6 +472,7 @@ public class PreferencesDialog : Dialog
             TreeIter iter;
             build_tools_store.append (out iter);
             build_tools_store.set (iter,
+                BuildToolColumn.SHOW, tool.show,
                 BuildToolColumn.PIXBUF, tool.icon,
                 BuildToolColumn.LABEL, tool.label,
                 BuildToolColumn.DESCRIPTION, tool.description,

@@ -1138,15 +1138,22 @@ public class MainWindow : Window
         uint id = build_tools.size > 0 ? ui_manager.new_merge_id () : 0;
 
         int i = 0;
+        int j = 0;
         foreach (BuildTool build_tool in build_tools)
         {
+            if (! build_tool.show)
+            {
+                i++;
+                continue;
+            }
+
             string action_name = @"BuildTool_$i";
             Gtk.Action action = new Gtk.Action (action_name, build_tool.label,
                 build_tool.description, build_tool.icon);
 
             // F2 -> F11
             // (F1 = help, F12 = stop execution)
-            string accel = i < 10 ? "<Release>F%d".printf (i + 2) : null;
+            string accel = j < 10 ? "<Release>F%d".printf (j + 2) : null;
 
             build_tools_action_group.add_action_with_accel (action, accel);
             action.activate.connect (build_tools_menu_activate);
@@ -1157,6 +1164,7 @@ public class MainWindow : Window
                 action_name, action_name, UIManagerItemType.TOOLITEM, false);
 
             i++;
+            j++;
         }
 
         build_tools_menu_ui_id = id;
@@ -1369,6 +1377,12 @@ public class MainWindow : Window
         int i = 0;
         foreach (BuildTool tool in tools)
         {
+            if (! tool.show)
+            {
+                i++;
+                continue;
+            }
+
             string[] extensions = tool.extensions.split (" ");
             bool sensitive = tool.extensions.length == 0 || ext in extensions;
 

@@ -34,7 +34,6 @@ See also the Roadmap:
 		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)
 	- all-output post processor:
 		- add some simple build tools like bibtex, makeindex, dvipdf, dvips, etc
-	- option to show or hide a build tool in the menu and toolbar
 	- by default show only latexmk, hide the rest
 	- preferences dialog: double click on a build tool -> open properties
 	- bottom panel:
