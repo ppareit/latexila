@@ -32,8 +32,6 @@ See also the Roadmap:
 	- latexmk post processor:
 		- based on pdftex post processor but show more information (which commands, how many times, etc)
 		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)
-	- all-output post processor:
-		- add some simple build tools like bibtex, makeindex, dvipdf, dvips, etc
 	- by default show only latexmk, hide the rest
 	- preferences dialog: double click on a build tool -> open properties
 	- bottom panel:
