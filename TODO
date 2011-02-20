@@ -24,7 +24,6 @@ See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
 - Build Tools:
-	- add latex and pdflatex build tools (latex post processor)
 	- latexmk post processor:
 		- based on pdftex post processor but show more information (which commands, how many times, etc)
 		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)

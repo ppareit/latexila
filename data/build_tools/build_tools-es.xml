@@ -67,4 +67,16 @@
     <description>Convert the PostScript document to the PDF format</description>
     <job mustSucceed="true" postProcessor="all-output">ps2pdf $shortname.ps</job>
   </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_dvi">
+    <label>LaTeX → DVI (simple)</label>
+    <description>Create a DVI from LaTeX source with the &quot;latex&quot; command</description>
+    <job mustSucceed="true" postProcessor="latex">latex -interaction=nonstopmode $filename</job>
+  </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_pdf">
+    <label>LaTeX → PDF (simple)</label>
+    <description>Create a PDF from LaTeX source with the &quot;pdflatex&quot; command</description>
+    <job mustSucceed="true" postProcessor="latex">pdflatex -interaction=nonstopmode $filename</job>
+  </tool>
 </tools>
