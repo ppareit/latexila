@@ -51,6 +51,7 @@ public class BuildView : HBox
         ICON,
         MESSAGE,
         MESSAGE_TYPE,
+        WEIGHT,
         BASENAME,
         FILENAME,
         START_LINE,
@@ -80,6 +81,7 @@ public class BuildView : HBox
             typeof (string),    // icon (stock-id)
             typeof (string),    // message
             typeof (BuildMessageType),
+            typeof (int),       // weight (normal or bold)
             typeof (string),    // basename
             typeof (string),    // filename
             typeof (int),       // start line
@@ -98,8 +100,10 @@ public class BuildView : HBox
         column_job.add_attribute (renderer_pixbuf, "stock-id", BuildInfo.ICON);
 
         CellRendererText renderer_text = new CellRendererText ();
+        renderer_text.weight_set = true;
         column_job.pack_start (renderer_text, true);
         column_job.add_attribute (renderer_text, "text", BuildInfo.MESSAGE);
+        column_job.add_attribute (renderer_text, "weight", BuildInfo.WEIGHT);
 
         view.append_column (column_job);
 
@@ -200,14 +204,16 @@ public class BuildView : HBox
         view.columns_autosize ();
     }
 
-    public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent)
+    public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent,
+        bool bold = false)
     {
         TreeIter iter;
         store.append (out iter, parent);
         store.set (iter,
-            BuildInfo.ICON, get_icon_from_state (state),
-            BuildInfo.MESSAGE, msg,
+            BuildInfo.ICON,         get_icon_from_state (state),
+            BuildInfo.MESSAGE,      msg,
             BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
+            BuildInfo.WEIGHT,       bold ? 800 : 400,
             -1);
 
         view.expand_all ();
@@ -227,16 +233,17 @@ public class BuildView : HBox
             TreeIter iter;
             store.append (out iter, partition_id);
             store.set (iter,
-                BuildInfo.ICON, get_icon_from_msg_type (issue.message_type),
-                BuildInfo.MESSAGE, issue.message,
+                BuildInfo.ICON,         get_icon_from_msg_type (issue.message_type),
+                BuildInfo.MESSAGE,      issue.message,
                 BuildInfo.MESSAGE_TYPE, issue.message_type,
-                BuildInfo.BASENAME, issue.filename != null ?
-                    Path.get_basename (issue.filename) : null,
-                BuildInfo.FILENAME, issue.filename,
-                BuildInfo.START_LINE, issue.start_line,
-                BuildInfo.END_LINE, issue.end_line,
-                BuildInfo.LINE,
-                    issue.start_line != -1 ? issue.start_line.to_string () : null,
+                BuildInfo.WEIGHT,       400,
+                BuildInfo.BASENAME,     issue.filename != null ?
+                                        Path.get_basename (issue.filename) : null,
+                BuildInfo.FILENAME,     issue.filename,
+                BuildInfo.START_LINE,   issue.start_line,
+                BuildInfo.END_LINE,     issue.end_line,
+                BuildInfo.LINE,         issue.start_line != -1 ?
+                                        issue.start_line.to_string () : null,
                 -1);
         }
 
