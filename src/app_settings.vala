@@ -477,10 +477,14 @@ public class AppSettings : GLib.Settings
         update_all_build_tools_menu ();
     }
 
-    public void update_build_tool (int num, BuildTool tool)
+    public void update_build_tool (int num, BuildTool tool, bool keep_show = false)
     {
         return_if_fail (num >= 0 && num < build_tools.size);
         BuildTool current_tool = build_tools.get (num);
+
+        if (keep_show)
+            tool.show = current_tool.show;
+
         if (! is_build_tools_equal (current_tool, tool))
         {
             tool.compilation = is_compilation (tool.icon);

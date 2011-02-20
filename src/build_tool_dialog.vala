@@ -406,9 +406,12 @@ private class BuildToolDialog : Dialog
 
             /* update build tools settings */
             if (num == -1)
+            {
+                tool.show = true;
                 AppSettings.get_default ().append_build_tool (tool);
+            }
             else
-                AppSettings.get_default ().update_build_tool (num, tool);
+                AppSettings.get_default ().update_build_tool (num, tool, true);
 
             hide ();
             return true;
