@@ -176,7 +176,7 @@ private class BuildToolDialog : Dialog
 
         ListStore post_processor_store = new ListStore (1, typeof (string));
 
-        string[] post_processors = { "no-output", "all-output", "rubber" };
+        string[] post_processors = { "no-output", "all-output", "rubber", "latex" };
 
         foreach (string post_processor in post_processors)
         {

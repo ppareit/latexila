@@ -110,12 +110,6 @@ public class BuildToolRunner : GLib.Object
 
     private void execute (string[] command, string? working_directory) throws Error
     {
-//        stdout.printf ("\nexecute ()\n");
-//        stdout.printf ("working dir: %s\n", working_directory);
-//        stdout.printf ("COMMAND:\n");
-//        foreach (string cmd in command)
-//            stdout.printf ("%s\n", cmd);
-
         try
         {
             int std_out;
@@ -133,6 +127,7 @@ public class BuildToolRunner : GLib.Object
 
             out_channel = new IOChannel.unix_new (std_out);
             out_channel.set_flags (IOFlags.NONBLOCK);
+            out_channel.set_encoding (null);
 
             handlers += Timeout.add (POLL_INTERVAL, on_output);
         }
@@ -181,15 +176,55 @@ public class BuildToolRunner : GLib.Object
     private bool on_output ()
     {
         return_val_if_fail (read_output, false);
+
+        string? text = null;
+        size_t length;
+
         try
         {
-            string text;
-            size_t length;
             out_channel.read_to_end (out text, out length);
-            if (length > 0)
-                output += text;
         }
-        catch (Error e) {}
+        catch (ConvertError e)
+        {
+            stderr.printf ("Read output: convert error: %s\n", e.message);
+        }
+        catch (IOChannelError e)
+        {
+            stderr.printf ("Read output: IO channel error: %s\n", e.message);
+        }
+
+        if (length <= 0)
+            return true;
+
+        // check if the output is a valid UTF-8 string
+        if (text.validate ())
+        {
+            output += text;
+            return true;
+        }
+
+        // make the conversion into UTF-8 line by line, because if it is done to the all
+        // string at once, there are some encodings troubles with the "latex" and
+        // "pdflatex" commands (with accents in the filename for instance).
+        string[] lines = text.split ("\n");
+        foreach (string line in lines)
+        {
+            string? line_utf8 = line.locale_to_utf8 (-1, null, null);
+
+            if (line_utf8 == null)
+            {
+                try
+                {
+                    line_utf8 = convert (line, -1, "UTF-8", "ISO-8859-1");
+                }
+                catch (ConvertError e) {}
+            }
+
+            if (line_utf8 != null && line_utf8.validate ())
+                output += line_utf8 + "\n";
+            else
+                stderr.printf ("Read output failed: %s\n", line);
+        }
 
         return true;
     }
@@ -218,6 +253,10 @@ public class BuildToolRunner : GLib.Object
             case "rubber":
                 //stdout.printf ("rubber post processor\n");
                 post_processor = new RubberPostProcessor ();
+                break;
+            case "latex":
+                //stdout.printf ("latex post processor\n");
+                post_processor = new LatexPostProcessor ();
                 break;
             default:
                 stderr.printf ("Warning: unknown post processor \"%s\". Use no-output.",

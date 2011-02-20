@@ -37,7 +37,10 @@ public struct BuildIssue
     public string message;
     public BuildMessageType message_type;
     public string? filename;
-    public int start_line; // no line: -1
+
+    // no line: -1
+    // if end_line is -1, end_line takes the same value as start_line
+    public int start_line;
     public int end_line;
 }
 
@@ -96,7 +99,7 @@ public class BuildView : HBox
 
         CellRendererText renderer_text = new CellRendererText ();
         column_job.pack_start (renderer_text, true);
-        column_job.add_attribute (renderer_text, "markup", BuildInfo.MESSAGE);
+        column_job.add_attribute (renderer_text, "text", BuildInfo.MESSAGE);
 
         view.append_column (column_job);
 

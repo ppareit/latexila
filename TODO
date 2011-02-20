@@ -24,11 +24,7 @@ See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
 - Build Tools:
-	- pdftex post processor:
-		- filter latex and pdflatex commands (like in latexila 0.2 and Kile)
-		- add latex and pdflatex build tools
-		- show a different icon for errors/warnings/badboxes (but not for Rubber)
-		- show some stats
+	- add latex and pdflatex build tools (latex post processor)
 	- latexmk post processor:
 		- based on pdftex post processor but show more information (which commands, how many times, etc)
 		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)
