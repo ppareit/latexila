@@ -74,8 +74,8 @@ public class BuildToolRunner : GLib.Object
         jobs = tool.jobs;
         this.view = view;
         view.clear ();
-        root_partition = view.add_partition ("<b>" + tool.label + "</b>",
-            PartitionState.RUNNING, null);
+        root_partition = view.add_partition (tool.label, PartitionState.RUNNING, null,
+            true);
 
         foreach (BuildJob job in jobs)
         {
