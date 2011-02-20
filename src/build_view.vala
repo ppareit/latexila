@@ -194,6 +194,7 @@ public class BuildView : HBox
     public void clear ()
     {
         store.clear ();
+        view.columns_autosize ();
     }
 
     public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent)
