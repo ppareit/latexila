@@ -701,15 +701,21 @@ public class AppSettings : GLib.Settings
         foreach (BuildTool tool in build_tools)
         {
             content += "  <tool show=\"%s\" description=\"%s\" ".printf (
-                tool.show.to_string (), tool.description);
+                tool.show.to_string (),
+                Markup.escape_text (tool.description));
 
             content += "extensions=\"%s\" label=\"%s\" icon=\"%s\">\n".printf (
-                tool.extensions, tool.label, tool.icon);
+                tool.extensions,
+                Markup.escape_text (tool.label),
+                tool.icon);
 
             foreach (BuildJob job in tool.jobs)
             {
-                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">%s</job>\n".printf (
-                    job.must_succeed.to_string (), job.post_processor, job.command);
+                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">".printf (
+                    job.must_succeed.to_string (),
+                    job.post_processor);
+
+                content += Markup.printf_escaped ("%s</job>\n", job.command);
             }
             content += "  </tool>\n";
         }
