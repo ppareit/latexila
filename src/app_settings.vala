@@ -579,6 +579,8 @@ public class AppSettings : GLib.Settings
         switch (name)
         {
             case "tools":
+            case "label":
+            case "description":
                 return;
 
             case "tool":
@@ -591,14 +593,8 @@ public class AppSettings : GLib.Settings
                         case "show":
                             current_build_tool.show = attr_values[i].to_bool ();
                             break;
-                        case "description":
-                            current_build_tool.description = attr_values[i];
-                            break;
                         case "extensions":
                             current_build_tool.extensions = attr_values[i];
-                            break;
-                        case "label":
-                            current_build_tool.label = attr_values[i];
                             break;
                         case "icon":
                             string icon = attr_values[i];
@@ -654,6 +650,8 @@ public class AppSettings : GLib.Settings
         switch (name)
         {
             case "tools":
+            case "label":
+            case "description":
                 return;
 
             case "tool":
@@ -688,8 +686,18 @@ public class AppSettings : GLib.Settings
     private void parser_text (MarkupParseContext context, string text, size_t text_len)
         throws MarkupError
     {
-        if (context.get_element () == "job")
-            current_build_job.command = text;
+        switch (context.get_element ())
+        {
+            case "job":
+                current_build_job.command = text;
+                break;
+            case "label":
+                current_build_tool.label = text;
+                break;
+            case "description":
+                current_build_tool.description = text;
+                break;
+        }
     }
 
     public void save_build_tools ()
@@ -697,17 +705,15 @@ public class AppSettings : GLib.Settings
         if (! build_tools_modified)
             return;
 
-        string content = "<tools>\n";
+        string content = "<tools>";
         foreach (BuildTool tool in build_tools)
         {
-            content += "  <tool show=\"%s\" description=\"%s\" ".printf (
-                tool.show.to_string (),
-                Markup.escape_text (tool.description));
+            content += "\n  <tool show=\"%s\" extensions=\"%s\" icon=\"%s\">\n".printf (
+                tool.show.to_string (), tool.extensions, tool.icon);
 
-            content += "extensions=\"%s\" label=\"%s\" icon=\"%s\">\n".printf (
-                tool.extensions,
-                Markup.escape_text (tool.label),
-                tool.icon);
+            content += Markup.printf_escaped ("    <label>%s</label>\n", tool.label);
+            content += Markup.printf_escaped ("    <description>%s</description>\n",
+                tool.description);
 
             foreach (BuildJob job in tool.jobs)
             {

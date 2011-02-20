@@ -1,39 +1,70 @@
 <tools>
-  <tool show="true" description="Crear un DVI a partir del archivo LaTeX" extensions=".tex" label="LaTeX → DVI" icon="compile_dvi">
+  <tool show="true" extensions=".tex" icon="compile_dvi">
+    <label>LaTeX → DVI</label>
+    <description>Crear un DVI a partir del archivo LaTeX</description>
     <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
   </tool>
-  <tool show="true" description="Crear un PDF a partir del archivo LaTeX" extensions=".tex" label="LaTeX → PDF" icon="compile_pdf">
+
+  <tool show="true" extensions=".tex" icon="compile_pdf">
+    <label>LaTeX → PDF</label>
+    <description>Crear un PDF a partir del archivo LaTeX</description>
     <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --pdf $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
-  <tool show="true" description="Crear un PostScript a partir del archivo LaTeX" extensions=".tex" label="LaTeX → PS" icon="compile_ps">
+
+  <tool show="true" extensions=".tex" icon="compile_ps">
+    <label>LaTeX → PS</label>
+    <description>Crear un PostScript a partir del archivo LaTeX</description>
     <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --ps $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
-  <tool show="true" description="Ver el archivo DVI" extensions=".tex .dvi" label="Ver DVI" icon="view_dvi">
+
+  <tool show="true" extensions=".tex .dvi" icon="view_dvi">
+    <label>Ver DVI</label>
+    <description>Ver el archivo DVI</description>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
   </tool>
-  <tool show="true" description="Ver el archivo PDF" extensions=".tex .pdf" label="Ver PDF" icon="view_pdf">
+
+  <tool show="true" extensions=".tex .pdf" icon="view_pdf">
+    <label>Ver PDF</label>
+    <description>Ver el archivo PDF</description>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
-  <tool show="true" description="Ver el archivo PostScript" extensions=".tex .ps" label="Ver PS" icon="view_ps">
+
+  <tool show="true" extensions=".tex .ps" icon="view_ps">
+    <label>Ver PS</label>
+    <description>Ver el archivo PostScript</description>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
 
-  <tool show="false" description="Run BibTeX (bibliography)" extensions=".tex" label="BibTeX" icon="gtk-execute">
+  <tool show="false" extensions=".tex" icon="gtk-execute">
+    <label>BibTeX</label>
+    <description>Run BibTeX (bibliography)</description>
     <job mustSucceed="true" postProcessor="all-output">bibtex $shortname.aux</job>
   </tool>
-  <tool show="false" description="Run MakeIndex" extensions=".tex" label="MakeIndex" icon="gtk-execute">
+
+  <tool show="false" extensions=".tex" icon="gtk-execute">
+    <label>MakeIndex</label>
+    <description>Run MakeIndex</description>
     <job mustSucceed="true" postProcessor="all-output">makeindex $shortname.idx</job>
   </tool>
-  <tool show="false" description="Convert the DVI document to the PDF format" extensions=".tex" label="DVI → PDF" icon="gtk-convert">
+
+  <tool show="false" extensions=".tex" icon="gtk-convert">
+    <label>DVI → PDF</label>
+    <description>Convert the DVI document to the PDF format</description>
     <job mustSucceed="true" postProcessor="all-output">dvipdf $shortname.dvi</job>
   </tool>
-  <tool show="false" description="Convert the DVI document to the PostScript format" extensions=".tex" label="DVI → PS" icon="gtk-convert">
+
+  <tool show="false" extensions=".tex" icon="gtk-convert">
+    <label>DVI → PS</label>
+    <description>Convert the DVI document to the PostScript format</description>
     <job mustSucceed="true" postProcessor="all-output">dvips $shortname.dvi</job>
   </tool>
-  <tool show="false" description="Convert the PostScript document to the PDF format" extensions=".tex" label="PS → PDF" icon="gtk-convert">
+
+  <tool show="false" extensions=".tex" icon="gtk-convert">
+    <label>PS → PDF</label>
+    <description>Convert the PostScript document to the PDF format</description>
     <job mustSucceed="true" postProcessor="all-output">ps2pdf $shortname.ps</job>
   </tool>
 </tools>
