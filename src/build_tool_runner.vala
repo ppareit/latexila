@@ -110,11 +110,10 @@ public class BuildToolRunner : GLib.Object
 
     private void execute (string[] command, string? working_directory) throws Error
     {
-//        stdout.printf ("\nexecute ()\n");
-//        stdout.printf ("working dir: %s\n", working_directory);
-//        stdout.printf ("COMMAND:\n");
-//        foreach (string cmd in command)
-//            stdout.printf ("%s\n", cmd);
+//        stdout.printf ("command arguments:\n");
+//        foreach (string arg in command)
+//            stdout.printf ("%s\n", arg);
+//        stdout.printf ("\n");
 
         try
         {
@@ -314,9 +313,49 @@ public class BuildToolRunner : GLib.Object
             base_shortname = Utils.get_shortname (base_filename);
         }
 
-        string[] command = build_job.command.split (" ");
+        string[] command = {};
 
-        // replace placeholders
+        if (build_job.command_args != null)
+            command = build_job.command_args;
+
+        /* separate arguments */
+        else
+        {
+            // first, we split the string with a space as delimiter
+            string[] args = build_job.command.split (" ");
+
+
+            // but, some arguments that contain spaces begin and end with ' or "
+            string arg_buf = "";
+            string delimiter = null;
+            foreach (string arg in args)
+            {
+                if (delimiter != null)
+                {
+                    arg_buf += " " + arg;
+                    if (arg.has_suffix (delimiter))
+                    {
+                        delimiter = null;
+                        command += arg_buf;
+                    }
+                    continue;
+                }
+
+                if ((arg.has_prefix ("'") && ! arg.has_suffix ("'")) ||
+                    (arg.has_prefix ("\"") && ! arg.has_suffix ("\"")))
+                {
+                    delimiter = arg[0].to_string ();
+                    arg_buf = arg;
+                    continue;
+                }
+
+                command += arg;
+            }
+
+            build_job.command_args = command;
+        }
+
+        /* replace placeholders */
         for (int i = 0 ; i < command.length ; i++)
         {
             if (command[i].contains ("$view"))
