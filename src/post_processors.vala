@@ -166,6 +166,92 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
     }
 }
 
+private class LatexmkPostProcessor : GLib.Object, PostProcessor
+{
+    public bool successful { get; protected set; }
+    private BuildIssue[] issues = {};
+
+    private static Regex? reg_rule = null;
+
+    public LatexmkPostProcessor ()
+    {
+        if (reg_rule == null)
+        {
+            try
+            {
+                string reg_rule_str = "^-{12}\n";
+                reg_rule_str += "(?P<line>Run number [0-9]+ of rule '(?P<rule>.*)')\n";
+                reg_rule_str += "(-{12}\n){2}";
+                reg_rule_str += "Running '(?P<cmd>.*)'\n";
+                reg_rule_str += "-{12}\n";
+                reg_rule_str += "Latexmk: applying rule .*\n";
+                reg_rule_str += "(?P<output>(.*\n)*)";
+                reg_rule_str += "Latexmk:.*";
+                reg_rule = new Regex (reg_rule_str,
+                    RegexCompileFlags.MULTILINE | RegexCompileFlags.UNGREEDY);
+            }
+            catch (RegexError e)
+            {
+                stderr.printf ("LatexmkPostProcessor: %s\n", e.message);
+            }
+        }
+    }
+
+    public void process (File file, string output, int status)
+    {
+        //stdout.printf ("*** OUTPUT ***\n\n%s\n\n*** END OUTPUT ***\n\n", output);
+        successful = status == 0;
+        if (reg_rule == null)
+            return;
+
+        string latex_output = null;
+
+        MatchInfo match_info;
+        reg_rule.match (output, 0, out match_info);
+        while (match_info.matches ())
+        {
+            BuildIssue issue = BuildIssue ();
+            issue.message_type = BuildMessageType.OTHER;
+            issue.start_line = -1;
+
+            issue.message = match_info.fetch_named ("line");
+            issues += issue;
+
+            issue.message = "$ " + match_info.fetch_named ("cmd");
+            issues += issue;
+
+            string rule = match_info.fetch_named ("rule");
+            if (rule.has_suffix ("latex"))
+                latex_output = match_info.fetch_named ("output");
+
+            try
+            {
+                match_info.next ();
+            }
+            catch (RegexError e)
+            {
+                stderr.printf ("Warning: LatexmkPostProcessor: %s\n", e.message);
+                break;
+            }
+        }
+
+        // Run latex post processor on the last latex or pdflatex output
+        if (latex_output != null)
+        {
+            PostProcessor latex_post_processor = new LatexPostProcessor ();
+            latex_post_processor.process (file, latex_output, 0);
+            BuildIssue[] latex_issues = latex_post_processor.get_issues ();
+            foreach (BuildIssue latex_issue in latex_issues)
+                issues += latex_issue;
+        }
+    }
+
+    public BuildIssue[] get_issues ()
+    {
+        return issues;
+    }
+}
+
 private class LatexPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
@@ -263,7 +349,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             }
             catch (RegexError e)
             {
-                stderr.printf ("PdftexPostProcessor: %s\n", e.message);
+                stderr.printf ("LatexPostProcessor: %s\n", e.message);
             }
         }
 

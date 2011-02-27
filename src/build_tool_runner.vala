@@ -247,21 +247,20 @@ public class BuildToolRunner : GLib.Object
         PostProcessor post_processor;
         switch (current_job.post_processor)
         {
-            case "no-output":
-                //stdout.printf ("no-output post processor\n");
-                post_processor = new NoOutputPostProcessor ();
-                break;
             case "all-output":
-                //stdout.printf ("all-output post processor\n");
                 post_processor = new AllOutputPostProcessor ();
                 break;
-            case "rubber":
-                //stdout.printf ("rubber post processor\n");
-                post_processor = new RubberPostProcessor ();
-                break;
             case "latex":
-                //stdout.printf ("latex post processor\n");
                 post_processor = new LatexPostProcessor ();
+                break;
+            case "latexmk":
+                post_processor = new LatexmkPostProcessor ();
+                break;
+            case "no-output":
+                post_processor = new NoOutputPostProcessor ();
+                break;
+            case "rubber":
+                post_processor = new RubberPostProcessor ();
                 break;
             default:
                 stderr.printf ("Warning: unknown post processor \"%s\". Use no-output.",
