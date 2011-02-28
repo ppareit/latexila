@@ -1585,19 +1585,19 @@ msgstr "_Ansicht"
 
 #: src/templates.vala:50
 msgid "article-en.tex"
-msgstr "article-de"
+msgstr "article-de.tex"
 
 #: src/templates.vala:62
 msgid "beamer-en.tex"
-msgstr "beamer-de"
+msgstr "beamer-de.tex"
 
 #: src/templates.vala:56
 msgid "book-en.tex"
-msgstr "book-de"
+msgstr "book-de.tex"
 
 #: src/app_settings.vala:557
 msgid "build_tools-en.xml"
-msgstr "Erstellungs_werkzeuge-de.xml"
+msgstr "build_tools-de.xml"
 
 #: src/preferences_dialog.vala:268 src/preferences_dialog.vala:273
 msgid "character"
