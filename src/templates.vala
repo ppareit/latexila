@@ -123,24 +123,27 @@ public class Templates : GLib.Object
         settings.get ("new-file-dialog-size", "(ii)", out w, out h);
         dialog.set_default_size (w, h);
 
-        Box content_area1 = (Box) dialog.get_content_area ();
-        VBox content_area = new VBox (false, 18);
-        content_area.set_border_width (10);
-        content_area1.pack_start (content_area);
+        // without this, we can not shrink the dialog completely
+        dialog.set_size_request (0, 0);
+
+        Box content_area = (Box) dialog.get_content_area ();
+        VPaned vpaned = new VPaned ();
+        content_area.pack_start (vpaned);
+        vpaned.position = settings.get_int ("new-file-dialog-paned-position");
 
         /* icon view for the default templates */
         IconView icon_view_default_templates = create_icon_view (default_store);
         Widget component = get_dialog_component (_("Default templates"),
             icon_view_default_templates);
-        content_area.pack_start (component);
+        vpaned.pack1 (component, true, true);
 
 	    /* icon view for the personnal templates */
 	    IconView icon_view_personnal_templates = create_icon_view (personnal_store);
 	    component = get_dialog_component (_("Your personnal templates"),
 	        icon_view_personnal_templates);
-	    content_area.pack_start (component);
+	    vpaned.pack2 (component, false, true);
 
-	    content_area1.show_all ();
+	    content_area.show_all ();
 
 	    icon_view_default_templates.selection_changed.connect (() =>
 	    {
@@ -179,9 +182,10 @@ public class Templates : GLib.Object
             tab.document.set_contents (contents);
 	    }
 
-	    // save dialog size
+	    // save dialog size and paned position
 	    dialog.get_size (out w, out h);
 	    settings.set ("new-file-dialog-size", "(ii)", w, h);
+	    settings.set_int ("new-file-dialog-paned-position", vpaned.position);
 
 	    dialog.destroy ();
     }
