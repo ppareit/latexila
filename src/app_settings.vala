@@ -565,10 +565,10 @@ public class AppSettings : GLib.Settings
         File[] files = {};
         files += get_user_config_build_tools_file ();
         files += File.new_for_path (Path.build_filename (Config.DATA_DIR, "build_tools",
-            _("build_tools-en.xml")));
+            _("build_tools-en.xml"), null));
 
         File default_file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
-            "build_tools", "build_tools-en.xml"));
+            "build_tools", "build_tools-en.xml", null));
 
         // if no translation is available, there is only two files to test
         if (! default_file.equal (files[1]))
@@ -788,6 +788,12 @@ public class AppSettings : GLib.Settings
         return projects;
     }
 
+    private void update_projects_menus ()
+    {
+        foreach (MainWindow window in Application.get_default ().windows)
+            window.update_config_project_sensitivity ();
+    }
+
     // returns true if project successfully added
     public bool add_project (Project new_project, out File conflict)
     {
@@ -813,6 +819,8 @@ public class AppSettings : GLib.Settings
             if (doc.location.has_prefix (new_project.directory))
                 doc.project_id = projects.size - 1;
         }
+
+        update_projects_menus ();
 
         return true;
     }
@@ -857,15 +865,18 @@ public class AppSettings : GLib.Settings
             else if (doc.project_id > num)
                 doc.project_id--;
         }
+
+        update_projects_menus ();
     }
 
     public void clear_all_projects ()
     {
         projects.clear ();
         update_all_documents ();
+        update_projects_menus ();
     }
 
-    public void update_all_documents ()
+    private void update_all_documents ()
     {
         GLib.List<Document> docs = Application.get_default ().get_documents ();
         foreach (Document doc in docs)
@@ -899,6 +910,9 @@ public class AppSettings : GLib.Settings
             MarkupParser parser = { projects_parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
+
+            update_all_documents ();
+            update_projects_menus ();
         }
         catch (GLib.Error e)
         {

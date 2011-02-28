@@ -340,23 +340,19 @@ public class MainWindow : Window
             set_redo_sensitivity ();
             update_next_prev_doc_sensitivity ();
             update_build_tools_sensitivity ();
+            update_config_project_sensitivity ();
             my_set_title ();
             update_cursor_position_statusbar ();
 
             /* activate the right item in the documents menu */
             string action_name = "Tab_%u".printf (page_num);
-            RadioAction action =
+            RadioAction? action =
                 (RadioAction) documents_list_action_group.get_action (action_name);
 
             // sometimes the action doesn't exist yet, and the proper action is set
             // active during the documents list menu creation
             if (action != null)
                 action.set_active (true);
-
-            /* configure current project: sensitivity */
-            Gtk.Action action2 = action_group.get_action ("ProjectsConfigCurrent");
-            action2.set_sensitive (active_tab != null
-                && active_document.project_id != -1);
 
             notify_property ("active-tab");
             notify_property ("active-document");
@@ -1378,6 +1374,13 @@ public class MainWindow : Window
         }
     }
 
+    public void update_config_project_sensitivity ()
+    {
+        /* configure current project: sensitivity */
+        Gtk.Action action = action_group.get_action ("ProjectsConfigCurrent");
+        action.set_sensitive (active_tab != null && active_document.project_id != -1);
+    }
+
     private void selection_changed ()
     {
         if (active_tab != null)
@@ -1733,7 +1736,8 @@ public class MainWindow : Window
 
     public void on_help_latex_reference ()
     {
-        File file = File.new_for_path (Config.DATA_DIR + "/latexhelp.html");
+        File file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
+            "latexhelp.html", null));
         new BuildToolRunner.web_browser (file, _("View LaTeX Reference"), build_view,
             action_stop_exec);
     }
