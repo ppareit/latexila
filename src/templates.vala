@@ -117,7 +117,11 @@ public class Templates : GLib.Object
             STOCK_CANCEL, ResponseType.REJECT,
             null);
 
-        dialog.set_default_size (400, 340);
+        // get and set previous size
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
+        int w, h;
+        settings.get ("new-file-dialog-size", "(ii)", out w, out h);
+        dialog.set_default_size (w, h);
 
         Box content_area1 = (Box) dialog.get_content_area ();
         VBox content_area = new VBox (false, 18);
@@ -174,6 +178,10 @@ public class Templates : GLib.Object
             DocumentTab tab = parent.create_tab (true);
             tab.document.set_contents (contents);
 	    }
+
+	    // save dialog size
+	    dialog.get_size (out w, out h);
+	    settings.set ("new-file-dialog-size", "(ii)", w, h);
 
 	    dialog.destroy ();
     }
