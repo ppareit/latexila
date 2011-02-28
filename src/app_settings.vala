@@ -457,6 +457,8 @@ public class AppSettings : GLib.Settings
 
     private void swap_build_tools (int num1, int num2)
     {
+        return_if_fail (build_tools != null);
+
         BuildTool tool = build_tools.get (num1);
         build_tools.remove_at (num1);
         build_tools.insert (num2, tool);
@@ -465,6 +467,8 @@ public class AppSettings : GLib.Settings
 
     public void delete_build_tool (int num)
     {
+        return_if_fail (build_tools != null);
+
         return_if_fail (num >= 0 && num < build_tools.size);
         build_tools.remove_at (num);
         update_all_build_tools_menu ();
@@ -472,6 +476,8 @@ public class AppSettings : GLib.Settings
 
     public void append_build_tool (BuildTool tool)
     {
+        return_if_fail (build_tools != null);
+
         tool.compilation = is_compilation (tool.icon);
         build_tools.add (tool);
         update_all_build_tools_menu ();
@@ -479,6 +485,7 @@ public class AppSettings : GLib.Settings
 
     public void update_build_tool (int num, BuildTool tool)
     {
+        return_if_fail (build_tools != null);
         return_if_fail (num >= 0 && num < build_tools.size);
         BuildTool current_tool = build_tools.get (num);
         if (! is_build_tools_equal (current_tool, tool))
@@ -548,27 +555,47 @@ public class AppSettings : GLib.Settings
 
     private void load_build_tools ()
     {
-        try
+        build_tools = new LinkedList<BuildTool?> ();
+
+        // First, try to load the user config file if it exists.
+        // Otherwise try to load the default config file translated.
+        // If the translated file doesn't exist or there is no translation
+        // available, try to load the default file.
+
+        File[] files = {};
+        files += get_user_config_build_tools_file ();
+        files += File.new_for_path (Path.build_filename (Config.DATA_DIR, "build_tools",
+            _("build_tools-en.xml")));
+
+        File default_file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
+            "build_tools", "build_tools-en.xml"));
+
+        // if no translation is available, there is only two files to test
+        if (! default_file.equal (files[1]))
+            files += default_file;
+
+        foreach (File file in files)
         {
-            // try to load the user config file if it exists
-            // otherwise load the default config file
-            File file = get_user_config_build_tools_file ();
-            if (! file.query_exists ())
-                file = File.new_for_path (Config.DATA_DIR + "/build_tools/"
-                    + _("build_tools-en.xml"));
+            try
+            {
+                if (! file.query_exists ())
+                    continue;
 
-            string contents;
-            file.load_contents (null, out contents);
+                string contents;
+                file.load_contents (null, out contents);
 
-            build_tools = new LinkedList<BuildTool?> ();
-
-            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
-            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
-            context.parse (contents, -1);
-        }
-        catch (GLib.Error e)
-        {
-            stderr.printf ("Warning: impossible to load build tools: %s\n", e.message);
+                MarkupParser parser =
+                    { parser_start, parser_end, parser_text, null, null };
+                MarkupParseContext context =
+                    new MarkupParseContext (parser, 0, this, null);
+                context.parse (contents, -1);
+                break;
+            }
+            catch (GLib.Error e)
+            {
+                stderr.printf ("Warning: impossible to load build tools: %s\n",
+                    e.message);
+            }
         }
     }
 
@@ -690,6 +717,8 @@ public class AppSettings : GLib.Settings
 
     public void save_build_tools ()
     {
+        return_if_fail (build_tools != null);
+
         if (! build_tools_modified)
             return;
 
