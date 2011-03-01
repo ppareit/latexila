@@ -270,7 +270,19 @@ public class BuildToolRunner : GLib.Object
         }
 
         post_processor.process (file, output, status);
-        view.append_issues (job_partitions[job_num], post_processor.get_issues ());
+
+        PostProcessorIssues[] all_issues = post_processor.get_issues ();
+        foreach (PostProcessorIssues issues in all_issues)
+        {
+            if (issues.partition_msg != null)
+            {
+                TreeIter iter = view.add_partition (issues.partition_msg,
+                    issues.partition_state, job_partitions[job_num]);
+                view.append_issues (iter, issues.issues);
+            }
+            else
+                view.append_issues (job_partitions[job_num], issues.issues);
+        }
 
         if (post_processor.successful)
         {

@@ -17,11 +17,18 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+public struct PostProcessorIssues
+{
+    public string? partition_msg;
+    public PartitionState partition_state;
+    public BuildIssue[] issues;
+}
+
 private interface PostProcessor : GLib.Object
 {
     public abstract bool successful { get; protected set; }
     public abstract void process (File file, string output, int status);
-    public abstract BuildIssue[] get_issues ();
+    public abstract PostProcessorIssues[] get_issues ();
 }
 
 private class NoOutputPostProcessor : GLib.Object, PostProcessor
@@ -33,10 +40,10 @@ private class NoOutputPostProcessor : GLib.Object, PostProcessor
         successful = status == 0;
     }
 
-    public BuildIssue[] get_issues ()
+    public PostProcessorIssues[] get_issues ()
     {
         // empty
-        BuildIssue[] issues = {};
+        PostProcessorIssues[] issues = {};
         return issues;
     }
 }
@@ -77,9 +84,12 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
         }
     }
 
-    public BuildIssue[] get_issues ()
+    public PostProcessorIssues[] get_issues ()
     {
-        return issues;
+        PostProcessorIssues[] pp_issues = new PostProcessorIssues[1];
+        pp_issues[0].partition_msg = null;
+        pp_issues[0].issues = issues;
+        return pp_issues;
     }
 }
 
@@ -160,16 +170,19 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
         }
     }
 
-    public BuildIssue[] get_issues ()
+    public PostProcessorIssues[] get_issues ()
     {
-        return issues;
+        PostProcessorIssues[] pp_issues = new PostProcessorIssues[1];
+        pp_issues[0].partition_msg = null;
+        pp_issues[0].issues = issues;
+        return pp_issues;
     }
 }
 
 private class LatexmkPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
-    private BuildIssue[] issues = {};
+    private PostProcessorIssues[] all_issues = {};
 
     private static Regex? reg_rule = null;
 
@@ -205,24 +218,50 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
             return;
 
         string latex_output = null;
+        int last_latex_cmd_index = 0;
 
         MatchInfo match_info;
         reg_rule.match (output, 0, out match_info);
-        while (match_info.matches ())
+        for (int i = 0 ; match_info.matches () ; i++)
         {
+            PostProcessorIssues pp_issues = PostProcessorIssues ();
+            pp_issues.partition_msg = match_info.fetch_named ("line");
+            pp_issues.partition_state = PartitionState.SUCCEEDED;
+
+            BuildIssue[] issues = {};
+
             BuildIssue issue = BuildIssue ();
             issue.message_type = BuildMessageType.OTHER;
             issue.start_line = -1;
-
-            issue.message = match_info.fetch_named ("line");
-            issues += issue;
-
             issue.message = "$ " + match_info.fetch_named ("cmd");
             issues += issue;
 
             string rule = match_info.fetch_named ("rule");
+
+            // if the rule is latex or pdflatex, we store the output
             if (rule.has_suffix ("latex"))
+            {
                 latex_output = match_info.fetch_named ("output");
+                last_latex_cmd_index = i;
+            }
+
+            // if it's another rule (bibtex, makeindex, etc), we show all output
+            else
+            {
+                string cmd_output = match_info.fetch_named ("output");
+                PostProcessor all_output_pp = new AllOutputPostProcessor ();
+                all_output_pp.process (file, cmd_output, 0);
+                PostProcessorIssues[] all_output_issues = all_output_pp.get_issues ();
+
+                return_if_fail (all_output_issues.length == 1
+                    && all_output_issues[0].partition_msg == null);
+
+                foreach (BuildIssue all_output_issue in all_output_issues[0].issues)
+                    issues += all_output_issue;
+            }
+
+            pp_issues.issues = issues;
+            all_issues += pp_issues;
 
             try
             {
@@ -238,17 +277,25 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
         // Run latex post processor on the last latex or pdflatex output
         if (latex_output != null)
         {
-            PostProcessor latex_post_processor = new LatexPostProcessor ();
-            latex_post_processor.process (file, latex_output, 0);
-            BuildIssue[] latex_issues = latex_post_processor.get_issues ();
-            foreach (BuildIssue latex_issue in latex_issues)
+            PostProcessor latex_pp = new LatexPostProcessor ();
+            latex_pp.process (file, latex_output, 0);
+            PostProcessorIssues[] latex_issues = latex_pp.get_issues ();
+
+            return_if_fail (latex_issues.length == 1
+                && latex_issues[0].partition_msg == null);
+
+            BuildIssue[] issues = all_issues[last_latex_cmd_index].issues;
+
+            foreach (BuildIssue latex_issue in latex_issues[0].issues)
                 issues += latex_issue;
+
+            all_issues[last_latex_cmd_index].issues = issues;
         }
     }
 
-    public BuildIssue[] get_issues ()
+    public PostProcessorIssues[] get_issues ()
     {
-        return issues;
+        return all_issues;
     }
 }
 
@@ -378,9 +425,12 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         add_msg (false);
     }
 
-    public BuildIssue[] get_issues ()
+    public PostProcessorIssues[] get_issues ()
     {
-        return issues;
+        PostProcessorIssues[] pp_issues = new PostProcessorIssues[1];
+        pp_issues[0].partition_msg = null;
+        pp_issues[0].issues = issues;
+        return pp_issues;
     }
 
     private void latex_output_filter (string line)
