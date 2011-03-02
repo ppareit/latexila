@@ -226,7 +226,7 @@ public class BuildView : HBox
         store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state), -1);
     }
 
-    public void append_issues (TreeIter partition_id, BuildIssue[] issues)
+    public void append_issues (TreeIter partition_id, Gee.ArrayList<BuildIssue?> issues)
     {
         foreach (BuildIssue issue in issues)
         {

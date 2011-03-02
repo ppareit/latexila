@@ -14,8 +14,8 @@ vala_precompile (
 		posix
 
 # for debugging
-#	OPTIONS
-#		--debug
+	OPTIONS
+		--debug
 
 	CUSTOM_VAPIS
 		${vapi_files}

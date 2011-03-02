@@ -331,12 +331,12 @@ public class BuildToolRunner : GLib.Object
                 // Attention, rubber doesn't support filenames with spaces, warn the user
                 if (filename.contains (" "))
                 {
-                    BuildIssue[] issues = new BuildIssue[1];
+                    Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
                     BuildIssue issue = BuildIssue ();
                     issue.message = _("Rubber may not support filenames with spaces (even in a directory)");
                     issue.message_type = BuildMessageType.WARNING;
                     issue.filename = filename;
-                    issues[0] = issue;
+                    issues.add (issue);
 
                     view.append_issues (job_partitions[job_num], issues);
                 }

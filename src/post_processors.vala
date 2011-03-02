@@ -21,7 +21,7 @@ public struct PostProcessorIssues
 {
     public string? partition_msg;
     public PartitionState partition_state;
-    public BuildIssue[] issues;
+    public Gee.ArrayList<BuildIssue?> issues;
 }
 
 private interface PostProcessor : GLib.Object
@@ -51,7 +51,7 @@ private class NoOutputPostProcessor : GLib.Object, PostProcessor
 private class AllOutputPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
-    private BuildIssue[] issues = {};
+    private Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
 
     public void process (File file, string output, int status)
     {
@@ -69,8 +69,6 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
         if (lines[l-1].length == 0)
             l--;
 
-        issues = new BuildIssue[l];
-
         BuildIssue issue = BuildIssue ();
         issue.message_type = BuildMessageType.OTHER;
         issue.filename = null;
@@ -79,8 +77,8 @@ private class AllOutputPostProcessor : GLib.Object, PostProcessor
 
         for (int i = 0 ; i < l ; i++)
         {
-            issues[i] = issue;
-            issues[i].message = (owned) lines[i];
+            issue.message = lines[i];
+            issues.add (issue);
         }
     }
 
@@ -97,7 +95,7 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
     private static Regex? pattern = null;
-    private BuildIssue[] issues = {};
+    private Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
 
     public RubberPostProcessor ()
     {
@@ -156,7 +154,7 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
                 issue.filename = "%s/%s".printf (file.get_parent ().get_parse_name (),
                     issue.filename);
 
-            issues += issue;
+            issues.add (issue);
 
             try
             {
@@ -228,13 +226,13 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
             pp_issues.partition_msg = match_info.fetch_named ("line");
             pp_issues.partition_state = PartitionState.SUCCEEDED;
 
-            BuildIssue[] issues = {};
+            Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
 
             BuildIssue issue = BuildIssue ();
             issue.message_type = BuildMessageType.OTHER;
             issue.start_line = -1;
             issue.message = "$ " + match_info.fetch_named ("cmd");
-            issues += issue;
+            issues.add (issue);
 
             string rule = match_info.fetch_named ("rule");
 
@@ -253,11 +251,11 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
                 all_output_pp.process (file, cmd_output, 0);
                 PostProcessorIssues[] all_output_issues = all_output_pp.get_issues ();
 
+                // normally there is no partition in the output
                 return_if_fail (all_output_issues.length == 1
                     && all_output_issues[0].partition_msg == null);
 
-                foreach (BuildIssue all_output_issue in all_output_issues[0].issues)
-                    issues += all_output_issue;
+                issues.add_all (all_output_issues[0].issues);
             }
 
             pp_issues.issues = issues;
@@ -281,15 +279,11 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
             latex_pp.process (file, latex_output, 0);
             PostProcessorIssues[] latex_issues = latex_pp.get_issues ();
 
+            // normally there is no partition in the latex output
             return_if_fail (latex_issues.length == 1
                 && latex_issues[0].partition_msg == null);
 
-            BuildIssue[] issues = all_issues[last_latex_cmd_index].issues;
-
-            foreach (BuildIssue latex_issue in latex_issues[0].issues)
-                issues += latex_issue;
-
-            all_issues[last_latex_cmd_index].issues = issues;
+            all_issues[last_latex_cmd_index].issues.add_all (latex_issues[0].issues);
         }
     }
 
@@ -302,7 +296,7 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
 private class LatexPostProcessor : GLib.Object, PostProcessor
 {
     public bool successful { get; protected set; }
-    private BuildIssue[] issues = {};
+    private Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
 
     private enum FilterStatus
     {
@@ -1074,7 +1068,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
     {
         if (set_filename)
             msg.filename = get_current_filename ();
-        issues += msg;
+        issues.add (msg);
 
         msg.message = null;
         msg.message_type = BuildMessageType.OTHER;

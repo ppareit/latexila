@@ -12,7 +12,7 @@ set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
 
 # for debugging
-#set (CMAKE_C_FLAGS "-ggdb")
+set (CMAKE_C_FLAGS "-ggdb")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
