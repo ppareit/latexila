@@ -24,7 +24,7 @@ Here is how you can generate a patch:
 
     $ git diff origin > patch
 
-But a pull request is better.
+But creating a fork on GitHub and then make a pull request is simpler.
 
 There are some rules to follow when coding:
     - indentation: 4 spaces
@@ -45,16 +45,35 @@ How to generate latexila.pot?
 How to update the *.po files with latexila.pot file?
 
     $ cd build/ ; cmake ../
-    $ make
+    $ make translations
 
 How to create a new *.po for a new language?
 
+    A lot of sentences are the same as in Gedit, so you can avoid
+    re-translating them:
+    	- download Gedit 2.30 sources:
+	  http://ftp.acc.umu.se/pub/GNOME/sources/gedit/2.30/
+	- take the Gedit *.po of your language and copy it in the po/ directory
+	- update the *.po files with latexila.pot (see above)
+	- at the end of the *.po file, you'll see a lot of lines commented
+	  (i.e. beginning with #). That's all the sentences from Gedit that are
+	  not present in LaTeXila. You can remove these lines.
+
+    Anyway, if you want to create a completely new *.po, you can do:
     $ cd po/ ; msginit -l xx -o xx.po -i latexila.pot
 
 How to translate LaTeXila?
 
-    There is obviously the *.po file to translate. You can use Poedit for
-    example. Here are some strange items to translate:
+    When someone begins translating LaTeXila, an announcement is made on the
+    Mailing List. So to avoid duplicated work, make sure nobody else is already
+    translating LaTeXila in your language. If it's not the case, then you can
+    make the announcement. You can find the link to the Mailing List there:
+
+        http://latexila.sourceforge.net/#contact
+    
+    The first thing to do is to take the *.po file from Gedit (see above). When
+    it's done, you can use Poedit for example to complete the translation. Here
+    are some strange items to translate:
         - translator-credits: Your name <your@email> (so your name will appear
           in the about dialog)
 

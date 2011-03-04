@@ -2,8 +2,10 @@
 Name=LaTeXila
 GenericName=Integrated LaTeX Environment
 GenericName[fr]=Environnement LaTeX intégré
+GenericName[it]=Ambiente Integrato per LaTeX
 Comment=Edit LaTeX documents
 Comment[fr]=Éditer des documents LaTeX
+Comment[it]=Editor per documenti LaTeX
 Exec=latexila
 Icon=latexila
 Terminal=false

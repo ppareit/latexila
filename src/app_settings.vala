@@ -24,6 +24,7 @@ public struct BuildJob
     public bool must_succeed;
     public string post_processor;
     public string command;
+    public string[] command_args;
 }
 
 public struct BuildTool
@@ -456,6 +457,8 @@ public class AppSettings : GLib.Settings
 
     private void swap_build_tools (int num1, int num2)
     {
+        return_if_fail (build_tools != null);
+
         BuildTool tool = build_tools.get (num1);
         build_tools.remove_at (num1);
         build_tools.insert (num2, tool);
@@ -464,6 +467,8 @@ public class AppSettings : GLib.Settings
 
     public void delete_build_tool (int num)
     {
+        return_if_fail (build_tools != null);
+
         return_if_fail (num >= 0 && num < build_tools.size);
         build_tools.remove_at (num);
         update_all_build_tools_menu ();
@@ -471,6 +476,8 @@ public class AppSettings : GLib.Settings
 
     public void append_build_tool (BuildTool tool)
     {
+        return_if_fail (build_tools != null);
+
         tool.compilation = is_compilation (tool.icon);
         build_tools.add (tool);
         update_all_build_tools_menu ();
@@ -478,6 +485,7 @@ public class AppSettings : GLib.Settings
 
     public void update_build_tool (int num, BuildTool tool)
     {
+        return_if_fail (build_tools != null);
         return_if_fail (num >= 0 && num < build_tools.size);
         BuildTool current_tool = build_tools.get (num);
         if (! is_build_tools_equal (current_tool, tool))
@@ -547,27 +555,47 @@ public class AppSettings : GLib.Settings
 
     private void load_build_tools ()
     {
-        try
+        build_tools = new LinkedList<BuildTool?> ();
+
+        // First, try to load the user config file if it exists.
+        // Otherwise try to load the default config file translated.
+        // If the translated file doesn't exist or there is no translation
+        // available, try to load the default file.
+
+        File[] files = {};
+        files += get_user_config_build_tools_file ();
+        files += File.new_for_path (Path.build_filename (Config.DATA_DIR, "build_tools",
+            _("build_tools-en.xml"), null));
+
+        File default_file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
+            "build_tools", "build_tools-en.xml", null));
+
+        // if no translation is available, there is only two files to test
+        if (! default_file.equal (files[1]))
+            files += default_file;
+
+        foreach (File file in files)
         {
-            // try to load the user config file if it exists
-            // otherwise load the default config file
-            File file = get_user_config_build_tools_file ();
-            if (! file.query_exists ())
-                file = File.new_for_path (Config.DATA_DIR + "/build_tools/"
-                    + _("build_tools-en.xml"));
+            try
+            {
+                if (! file.query_exists ())
+                    continue;
 
-            string contents;
-            file.load_contents (null, out contents);
+                string contents;
+                file.load_contents (null, out contents);
 
-            build_tools = new LinkedList<BuildTool?> ();
-
-            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
-            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
-            context.parse (contents, -1);
-        }
-        catch (GLib.Error e)
-        {
-            stderr.printf ("Warning: impossible to load build tools: %s\n", e.message);
+                MarkupParser parser =
+                    { parser_start, parser_end, parser_text, null, null };
+                MarkupParseContext context =
+                    new MarkupParseContext (parser, 0, this, null);
+                context.parse (contents, -1);
+                break;
+            }
+            catch (GLib.Error e)
+            {
+                stderr.printf ("Warning: impossible to load build tools: %s\n",
+                    e.message);
+            }
         }
     }
 
@@ -689,6 +717,8 @@ public class AppSettings : GLib.Settings
 
     public void save_build_tools ()
     {
+        return_if_fail (build_tools != null);
+
         if (! build_tools_modified)
             return;
 
@@ -696,11 +726,18 @@ public class AppSettings : GLib.Settings
         foreach (BuildTool tool in build_tools)
         {
             content += "  <tool description=\"%s\" extensions=\"%s\" label=\"%s\" icon=\"%s\">\n".printf (
-                tool.description, tool.extensions, tool.label, tool.icon);
+                Markup.escape_text (tool.description),
+                tool.extensions,
+                Markup.escape_text (tool.label),
+                tool.icon);
+
             foreach (BuildJob job in tool.jobs)
             {
-                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">%s</job>\n".printf (
-                    job.must_succeed.to_string (), job.post_processor, job.command);
+                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">".printf (
+                    job.must_succeed.to_string (),
+                    job.post_processor);
+
+                content += Markup.printf_escaped ("%s</job>\n", job.command);
             }
             content += "  </tool>\n";
         }
@@ -751,6 +788,12 @@ public class AppSettings : GLib.Settings
         return projects;
     }
 
+    private void update_projects_menus ()
+    {
+        foreach (MainWindow window in Application.get_default ().windows)
+            window.update_config_project_sensitivity ();
+    }
+
     // returns true if project successfully added
     public bool add_project (Project new_project, out File conflict)
     {
@@ -776,6 +819,8 @@ public class AppSettings : GLib.Settings
             if (doc.location.has_prefix (new_project.directory))
                 doc.project_id = projects.size - 1;
         }
+
+        update_projects_menus ();
 
         return true;
     }
@@ -820,15 +865,18 @@ public class AppSettings : GLib.Settings
             else if (doc.project_id > num)
                 doc.project_id--;
         }
+
+        update_projects_menus ();
     }
 
     public void clear_all_projects ()
     {
         projects.clear ();
         update_all_documents ();
+        update_projects_menus ();
     }
 
-    public void update_all_documents ()
+    private void update_all_documents ()
     {
         GLib.List<Document> docs = Application.get_default ().get_documents ();
         foreach (Document doc in docs)
@@ -862,6 +910,9 @@ public class AppSettings : GLib.Settings
             MarkupParser parser = { projects_parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
+
+            update_all_documents ();
+            update_projects_menus ();
         }
         catch (GLib.Error e)
         {
