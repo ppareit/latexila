@@ -59,7 +59,7 @@ char** remaining_args = NULL;
 extern gint application_NEW_WINDOW;
 
 gint _vala_main (char** args, int args_length1);
-static void _vala_array_add13 (char*** array, int* length, int* size, char* value);
+static void _vala_array_add18 (char*** array, int* length, int* size, char* value);
 GType application_get_type (void) G_GNUC_CONST;
 Application* application_get_default (void);
 void application_open_documents (Application* self, char** uris);
@@ -74,7 +74,7 @@ static int _vala_strcmp0 (const char * str1, const char * str2);
 const GOptionEntry options[5] = {{"version", 'V', 0, G_OPTION_ARG_NONE, &option_version, N_ ("Show the application's version"), NULL}, {"new-document", 'n', 0, G_OPTION_ARG_NONE, &option_new_document, N_ ("Create new document"), NULL}, {"new-window", '\0', 0, G_OPTION_ARG_NONE, &option_new_window, N_ ("Create a new top-level window in an existing instance of LaTeXila"), NULL}, {"", '\0', 0, G_OPTION_ARG_FILENAME_ARRAY, &remaining_args, NULL, "[FILE...]"}, {NULL}};
 
 
-static void _vala_array_add13 (char*** array, int* length, int* size, char* value) {
+static void _vala_array_add18 (char*** array, int* length, int* size, char* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (char*, *array, (*size) + 1);
@@ -176,7 +176,7 @@ gint _vala_main (char** args, int args_length1) {
 				arg = g_strdup (arg_collection[arg_it]);
 				{
 					GFile* _tmp3_;
-					_vala_array_add13 (&uris, &uris_length1, &_uris_size_, g_file_get_uri (_tmp3_ = g_file_new_for_path (arg)));
+					_vala_array_add18 (&uris, &uris_length1, &_uris_size_, g_file_get_uri (_tmp3_ = g_file_new_for_path (arg)));
 					_g_object_unref0 (_tmp3_);
 					_g_free0 (arg);
 				}

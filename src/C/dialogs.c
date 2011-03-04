@@ -129,7 +129,7 @@ GType dialogs_clean_file_column_get_type (void) G_GNUC_CONST;
 gboolean dialogs_confirm_clean_build_files (MainWindow* window, GFile* directory, char** basenames, int basenames_length1);
 static void _lambda13_ (const char* path_str, Block18Data* _data18_);
 static void __lambda13__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle* _sender, const char* path, gpointer self);
-static void _vala_array_add12 (char*** array, int* length, int* size, char* value);
+static void _vala_array_add17 (char*** array, int* length, int* size, char* value);
 void utils_delete_file (GFile* file);
 static Block18Data* block18_data_ref (Block18Data* _data18_);
 static void block18_data_unref (Block18Data* _data18_);
@@ -393,7 +393,7 @@ static void __lambda13__gtk_cell_renderer_toggle_toggled (GtkCellRendererToggle*
 }
 
 
-static void _vala_array_add12 (char*** array, int* length, int* size, char* value) {
+static void _vala_array_add17 (char*** array, int* length, int* size, char* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (char*, *array, (*size) + 1);
@@ -522,7 +522,7 @@ gboolean dialogs_confirm_clean_build_files (MainWindow* window, GFile* directory
 			basename = NULL;
 			gtk_tree_model_get ((GtkTreeModel*) _data18_->store, &iter, DIALOGS_CLEAN_FILE_COLUMN_DELETE, &selected, DIALOGS_CLEAN_FILE_COLUMN_NAME, &basename, -1, -1);
 			if (selected) {
-				_vala_array_add12 (&selected_files, &selected_files_length1, &_selected_files_size_, g_strdup (basename));
+				_vala_array_add17 (&selected_files, &selected_files_length1, &_selected_files_size_, g_strdup (basename));
 			}
 			valid = gtk_tree_model_iter_next ((GtkTreeModel*) _data18_->store, &iter);
 			_g_free0 (basename);

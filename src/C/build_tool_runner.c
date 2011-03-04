@@ -122,6 +122,8 @@ struct _BuildJob {
 	gboolean must_succeed;
 	char* post_processor;
 	char* command;
+	char** command_args;
+	gint command_args_length1;
 };
 
 struct _BuildToolRunnerPrivate {
@@ -215,7 +217,7 @@ char* utils_get_extension (const char* path);
 static gboolean _vala_string_array_contains (char** stack, int stack_length, char* needle);
 void build_view_clear (BuildView* self);
 GType partition_state_get_type (void) G_GNUC_CONST;
-void build_view_add_partition (BuildView* self, const char* msg, PartitionState state, GtkTreeIter* parent, GtkTreeIter* result);
+void build_view_add_partition (BuildView* self, const char* msg, PartitionState state, GtkTreeIter* parent, gboolean bold, GtkTreeIter* result);
 static char** build_tool_runner_get_command (BuildToolRunner* self, BuildJob* build_job, gboolean basename, int* result_length1);
 static void _vala_array_add3 (GtkTreeIter** array, int* length, int* size, const GtkTreeIter* value);
 static void build_tool_runner_proceed (BuildToolRunner* self);
@@ -257,6 +259,10 @@ BuildIssue* post_processor_get_issues (PostProcessor* self, int* result_length1)
 static void _vala_BuildIssue_array_free (BuildIssue* array, gint array_length);
 gboolean post_processor_get_successful (PostProcessor* self);
 static void build_tool_runner_failed (BuildToolRunner* self);
+static char** _vala_array_dup1 (char** self, int length);
+static void _vala_array_add7 (char*** array, int* length, int* size, char* value);
+static void _vala_array_add8 (char*** array, int* length, int* size, char* value);
+static char** _vala_array_dup2 (char** self, int length);
 static void build_tool_runner_finalize (GObject* obj);
 static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
@@ -315,9 +321,7 @@ BuildToolRunner* build_tool_runner_construct (GType object_type, GFile* file, Bu
 	char** extensions;
 	gboolean _tmp9_ = FALSE;
 	BuildView* _tmp11_;
-	char* _tmp12_;
-	char* _tmp13_;
-	GtkTreeIter _tmp14_ = {0};
+	GtkTreeIter _tmp12_ = {0};
 	g_return_val_if_fail (file != NULL, NULL);
 	g_return_val_if_fail (view != NULL, NULL);
 	g_return_val_if_fail (action_stop_exec != NULL, NULL);
@@ -348,29 +352,27 @@ BuildToolRunner* build_tool_runner_construct (GType object_type, GFile* file, Bu
 	self->priv->jobs = (*tool).jobs;
 	self->priv->view = (_tmp11_ = _g_object_ref0 (view), _g_object_unref0 (self->priv->view), _tmp11_);
 	build_view_clear (view);
-	self->priv->root_partition = (build_view_add_partition (view, _tmp13_ = g_strconcat (_tmp12_ = g_strconcat ("<b>", (*tool).label, NULL), "</b>", NULL), PARTITION_STATE_RUNNING, NULL, &_tmp14_), _tmp14_);
-	_g_free0 (_tmp13_);
-	_g_free0 (_tmp12_);
+	self->priv->root_partition = (build_view_add_partition (view, (*tool).label, PARTITION_STATE_RUNNING, NULL, TRUE, &_tmp12_), _tmp12_);
 	{
 		GList* job_collection;
 		GList* job_it;
 		job_collection = self->priv->jobs;
 		for (job_it = job_collection; job_it != NULL; job_it = job_it->next) {
-			BuildJob _tmp20_ = {0};
+			BuildJob _tmp18_ = {0};
 			BuildJob job;
-			job = (build_job_copy ((BuildJob*) job_it->data, &_tmp20_), _tmp20_);
+			job = (build_job_copy ((BuildJob*) job_it->data, &_tmp18_), _tmp18_);
 			{
 				gint command_length1;
 				gint _command_size_;
-				char** _tmp16_;
-				gint _tmp15_;
+				char** _tmp14_;
+				gint _tmp13_;
 				char** command;
-				char* _tmp17_;
-				GtkTreeIter _tmp18_ = {0};
-				GtkTreeIter _tmp19_;
-				command = (_tmp16_ = build_tool_runner_get_command (self, &job, TRUE, &_tmp15_), command_length1 = _tmp15_, _command_size_ = command_length1, _tmp16_);
-				_vala_array_add3 (&self->priv->job_partitions, &self->priv->job_partitions_length1, &self->priv->_job_partitions_size_, (_tmp19_ = (build_view_add_partition (view, _tmp17_ = g_strjoinv (" ", command), PARTITION_STATE_RUNNING, &self->priv->root_partition, &_tmp18_), _tmp18_), &_tmp19_));
-				_g_free0 (_tmp17_);
+				char* _tmp15_;
+				GtkTreeIter _tmp16_ = {0};
+				GtkTreeIter _tmp17_;
+				command = (_tmp14_ = build_tool_runner_get_command (self, &job, TRUE, &_tmp13_), command_length1 = _tmp13_, _command_size_ = command_length1, _tmp14_);
+				_vala_array_add3 (&self->priv->job_partitions, &self->priv->job_partitions_length1, &self->priv->_job_partitions_size_, (_tmp17_ = (build_view_add_partition (view, _tmp15_ = g_strjoinv (" ", command), PARTITION_STATE_RUNNING, &self->priv->root_partition, FALSE, &_tmp16_), _tmp16_), &_tmp17_));
+				_g_free0 (_tmp15_);
 				command = (_vala_array_free (command, command_length1, (GDestroyNotify) g_free), NULL);
 				build_job_destroy (&job);
 			}
@@ -840,7 +842,7 @@ static void build_tool_runner_proceed (BuildToolRunner* self) {
 			GtkTreeIter _tmp10_;
 			GtkTreeIter _tmp11_ = {0};
 			build_view_set_partition_state (self->priv->view, (_tmp9_ = self->priv->job_partitions[self->priv->job_num], &_tmp9_), PARTITION_STATE_FAILED);
-			build_view_add_partition (self->priv->view, e->message, PARTITION_STATE_FAILED, (_tmp10_ = self->priv->job_partitions[self->priv->job_num], &_tmp10_), &_tmp11_);
+			build_view_add_partition (self->priv->view, e->message, PARTITION_STATE_FAILED, (_tmp10_ = self->priv->job_partitions[self->priv->job_num], &_tmp10_), FALSE, &_tmp11_);
 			_tmp11_;
 			if (self->priv->current_job.must_succeed) {
 				build_tool_runner_failed (self);
@@ -859,6 +861,58 @@ static void build_tool_runner_proceed (BuildToolRunner* self) {
 		return;
 	}
 	command = (_vala_array_free (command, command_length1, (GDestroyNotify) g_free), NULL);
+}
+
+
+static char** _vala_array_dup1 (char** self, int length) {
+	char** result;
+	int i;
+	result = g_new0 (char*, length + 1);
+	for (i = 0; i < length; i++) {
+		result[i] = g_strdup (self[i]);
+	}
+	return result;
+}
+
+
+static void _vala_array_add7 (char*** array, int* length, int* size, char* value) {
+	if ((*length) == (*size)) {
+		*size = (*size) ? (2 * (*size)) : 4;
+		*array = g_renew (char*, *array, (*size) + 1);
+	}
+	(*array)[(*length)++] = value;
+	(*array)[*length] = NULL;
+}
+
+
+static char* g_unichar_to_string (gunichar self) {
+	char* result = NULL;
+	char* str;
+	str = (char*) g_new0 (gchar, 7);
+	g_unichar_to_utf8 (self, str);
+	result = str;
+	return result;
+}
+
+
+static void _vala_array_add8 (char*** array, int* length, int* size, char* value) {
+	if ((*length) == (*size)) {
+		*size = (*size) ? (2 * (*size)) : 4;
+		*array = g_renew (char*, *array, (*size) + 1);
+	}
+	(*array)[(*length)++] = value;
+	(*array)[*length] = NULL;
+}
+
+
+static char** _vala_array_dup2 (char** self, int length) {
+	char** result;
+	int i;
+	result = g_new0 (char*, length + 1);
+	for (i = 0; i < length; i++) {
+		result[i] = g_strdup (self[i]);
+	}
+	return result;
 }
 
 
@@ -924,9 +978,9 @@ static char** build_tool_runner_get_command (BuildToolRunner* self, BuildJob* bu
 	gint command_length1;
 	gint _command_size_;
 	char** _tmp3_;
-	char** _tmp2_;
+	char** _tmp2_ = NULL;
 	char** command;
-	char** _tmp12_;
+	char** _tmp26_;
 	g_return_val_if_fail (self != NULL, NULL);
 	base_filename = NULL;
 	base_shortname = NULL;
@@ -936,54 +990,130 @@ static char** build_tool_runner_get_command (BuildToolRunner* self, BuildJob* bu
 		base_filename = (_tmp0_ = g_file_get_basename (self->priv->file), _g_free0 (base_filename), _tmp0_);
 		base_shortname = (_tmp1_ = utils_get_shortname (base_filename), _g_free0 (base_shortname), _tmp1_);
 	}
-	command = (_tmp3_ = _tmp2_ = g_strsplit ((*build_job).command, " ", 0), command_length1 = _vala_array_length (_tmp2_), _command_size_ = command_length1, _tmp3_);
+	command = (_tmp3_ = (_tmp2_ = g_new0 (char*, 0 + 1), _tmp2_), command_length1 = 0, _command_size_ = command_length1, _tmp3_);
+	if ((*build_job).command_args != NULL) {
+		char** _tmp4_;
+		char** _tmp5_;
+		command = (_tmp5_ = (_tmp4_ = (*build_job).command_args, (_tmp4_ == NULL) ? ((gpointer) _tmp4_) : _vala_array_dup1 (_tmp4_, (*build_job).command_args_length1)), command = (_vala_array_free (command, command_length1, (GDestroyNotify) g_free), NULL), command_length1 = (*build_job).command_args_length1, _command_size_ = command_length1, _tmp5_);
+	} else {
+		gint args_length1;
+		gint _args_size_;
+		char** _tmp7_;
+		char** _tmp6_;
+		char** args;
+		char* arg_buf;
+		char* delimiter;
+		char** _tmp16_;
+		char** _tmp17_;
+		args = (_tmp7_ = _tmp6_ = g_strsplit ((*build_job).command, " ", 0), args_length1 = _vala_array_length (_tmp6_), _args_size_ = args_length1, _tmp7_);
+		arg_buf = g_strdup ("");
+		delimiter = NULL;
+		{
+			char** arg_collection;
+			int arg_collection_length1;
+			int arg_it;
+			arg_collection = args;
+			arg_collection_length1 = args_length1;
+			for (arg_it = 0; arg_it < args_length1; arg_it = arg_it + 1) {
+				char* arg;
+				arg = g_strdup (arg_collection[arg_it]);
+				{
+					gboolean _tmp11_ = FALSE;
+					gboolean _tmp12_ = FALSE;
+					if (delimiter != NULL) {
+						char* _tmp8_;
+						char* _tmp9_;
+						arg_buf = (_tmp9_ = g_strconcat (arg_buf, _tmp8_ = g_strconcat (" ", arg, NULL), NULL), _g_free0 (arg_buf), _tmp9_);
+						_g_free0 (_tmp8_);
+						if (g_str_has_suffix (arg, delimiter)) {
+							char* _tmp10_;
+							delimiter = (_tmp10_ = NULL, _g_free0 (delimiter), _tmp10_);
+							_vala_array_add7 (&command, &command_length1, &_command_size_, g_strdup (arg_buf));
+						}
+						_g_free0 (arg);
+						continue;
+					}
+					if (g_str_has_prefix (arg, "'")) {
+						_tmp12_ = !g_str_has_suffix (arg, "'");
+					} else {
+						_tmp12_ = FALSE;
+					}
+					if (_tmp12_) {
+						_tmp11_ = TRUE;
+					} else {
+						gboolean _tmp13_ = FALSE;
+						if (g_str_has_prefix (arg, "\"")) {
+							_tmp13_ = !g_str_has_suffix (arg, "\"");
+						} else {
+							_tmp13_ = FALSE;
+						}
+						_tmp11_ = _tmp13_;
+					}
+					if (_tmp11_) {
+						char* _tmp14_;
+						char* _tmp15_;
+						delimiter = (_tmp14_ = g_unichar_to_string (g_utf8_get_char (g_utf8_offset_to_pointer (arg, 0))), _g_free0 (delimiter), _tmp14_);
+						arg_buf = (_tmp15_ = g_strdup (arg), _g_free0 (arg_buf), _tmp15_);
+						_g_free0 (arg);
+						continue;
+					}
+					_vala_array_add8 (&command, &command_length1, &_command_size_, g_strdup (arg));
+					_g_free0 (arg);
+				}
+			}
+		}
+		(*build_job).command_args = (_tmp17_ = (_tmp16_ = command, (_tmp16_ == NULL) ? ((gpointer) _tmp16_) : _vala_array_dup2 (_tmp16_, command_length1)), (*build_job).command_args = (_vala_array_free ((*build_job).command_args, (*build_job).command_args_length1, (GDestroyNotify) g_free), NULL), (*build_job).command_args_length1 = command_length1, _tmp17_);
+		_g_free0 (delimiter);
+		_g_free0 (arg_buf);
+		args = (_vala_array_free (args, args_length1, (GDestroyNotify) g_free), NULL);
+	}
 	{
 		gint i;
 		i = 0;
 		{
-			gboolean _tmp4_;
-			_tmp4_ = TRUE;
+			gboolean _tmp18_;
+			_tmp18_ = TRUE;
 			while (TRUE) {
-				if (!_tmp4_) {
+				if (!_tmp18_) {
 					i++;
 				}
-				_tmp4_ = FALSE;
+				_tmp18_ = FALSE;
 				if (!(i < command_length1)) {
 					break;
 				}
 				if (string_contains (command[i], "$view")) {
-					char* _tmp5_;
-					command[i] = (_tmp5_ = string_replace (command[i], "$view", self->priv->document_view_program), _g_free0 (command[i]), _tmp5_);
+					char* _tmp19_;
+					command[i] = (_tmp19_ = string_replace (command[i], "$view", self->priv->document_view_program), _g_free0 (command[i]), _tmp19_);
 					continue;
 				}
 				if (string_contains (command[i], "$filename")) {
-					char* _tmp6_;
-					char* _tmp8_;
-					_tmp6_ = g_strdup (base_filename);
-					if (_tmp6_ == NULL) {
-						char* _tmp7_;
-						_tmp6_ = (_tmp7_ = g_strdup (self->priv->filename), _g_free0 (_tmp6_), _tmp7_);
+					char* _tmp20_;
+					char* _tmp22_;
+					_tmp20_ = g_strdup (base_filename);
+					if (_tmp20_ == NULL) {
+						char* _tmp21_;
+						_tmp20_ = (_tmp21_ = g_strdup (self->priv->filename), _g_free0 (_tmp20_), _tmp21_);
 					}
-					command[i] = (_tmp8_ = string_replace (command[i], "$filename", _tmp6_), _g_free0 (command[i]), _tmp8_);
-					_g_free0 (_tmp6_);
+					command[i] = (_tmp22_ = string_replace (command[i], "$filename", _tmp20_), _g_free0 (command[i]), _tmp22_);
+					_g_free0 (_tmp20_);
 					continue;
 				}
 				if (string_contains (command[i], "$shortname")) {
-					char* _tmp9_;
-					char* _tmp11_;
-					_tmp9_ = g_strdup (base_shortname);
-					if (_tmp9_ == NULL) {
-						char* _tmp10_;
-						_tmp9_ = (_tmp10_ = g_strdup (self->priv->shortname), _g_free0 (_tmp9_), _tmp10_);
+					char* _tmp23_;
+					char* _tmp25_;
+					_tmp23_ = g_strdup (base_shortname);
+					if (_tmp23_ == NULL) {
+						char* _tmp24_;
+						_tmp23_ = (_tmp24_ = g_strdup (self->priv->shortname), _g_free0 (_tmp23_), _tmp24_);
 					}
-					command[i] = (_tmp11_ = string_replace (command[i], "$shortname", _tmp9_), _g_free0 (command[i]), _tmp11_);
-					_g_free0 (_tmp9_);
+					command[i] = (_tmp25_ = string_replace (command[i], "$shortname", _tmp23_), _g_free0 (command[i]), _tmp25_);
+					_g_free0 (_tmp23_);
 					continue;
 				}
 			}
 		}
 	}
-	result = (_tmp12_ = command, *result_length1 = command_length1, _tmp12_);
+	result = (_tmp26_ = command, *result_length1 = command_length1, _tmp26_);
 	_g_free0 (base_shortname);
 	_g_free0 (base_filename);
 	return result;

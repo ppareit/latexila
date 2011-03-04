@@ -100,7 +100,7 @@ SidePanel* side_panel_construct (GType object_type, MainWindow* main_window, Gtk
 static GtkComboBox* side_panel_get_combo_box (SidePanel* self);
 static GtkButton* side_panel_get_close_button (SidePanel* self);
 void side_panel_add_component (SidePanel* self, const char* name, const char* stock_id, GtkVBox* component);
-static void _vala_array_add10 (GtkVBox*** array, int* length, int* size, GtkVBox* value);
+static void _vala_array_add15 (GtkVBox*** array, int* length, int* size, GtkVBox* value);
 void side_panel_restore_state (SidePanel* self);
 static void _lambda47_ (SidePanel* self);
 static void __lambda47__gtk_button_clicked (GtkButton* _sender, gpointer self);
@@ -160,7 +160,7 @@ static gpointer _g_object_ref0 (gpointer self) {
 }
 
 
-static void _vala_array_add10 (GtkVBox*** array, int* length, int* size, GtkVBox* value) {
+static void _vala_array_add15 (GtkVBox*** array, int* length, int* size, GtkVBox* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (GtkVBox*, *array, (*size) + 1);
@@ -179,7 +179,7 @@ void side_panel_add_component (SidePanel* self, const char* name, const char* st
 	gtk_list_store_append (self->priv->list_store, &iter);
 	gtk_list_store_set (self->priv->list_store, &iter, SIDE_PANEL_SIDE_PANEL_COLUMN_PIXBUF, stock_id, SIDE_PANEL_SIDE_PANEL_COLUMN_NAME, name, -1, -1);
 	gtk_box_pack_start ((GtkBox*) self, (GtkWidget*) component, TRUE, TRUE, 0);
-	_vala_array_add10 (&self->priv->components, &self->priv->components_length1, &self->priv->_components_size_, _g_object_ref0 (component));
+	_vala_array_add15 (&self->priv->components, &self->priv->components_length1, &self->priv->_components_size_, _g_object_ref0 (component));
 }
 
 

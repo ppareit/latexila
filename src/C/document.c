@@ -263,7 +263,7 @@ gboolean document_clean_build_files (Document* self, MainWindow* window);
 GFile* document_get_main_file (Document* self);
 char* utils_get_shortname (const char* path);
 void utils_delete_file (GFile* file);
-static void _vala_array_add11 (char*** array, int* length, int* size, char* value);
+static void _vala_array_add16 (char*** array, int* length, int* size, char* value);
 gboolean dialogs_confirm_clean_build_files (MainWindow* window, GFile* directory, char** basenames, int basenames_length1);
 gboolean document_goto_line (Document* self, gint line);
 gint document_get_project_id (Document* self);
@@ -1223,7 +1223,7 @@ gboolean document_is_tex_document (Document* self) {
 }
 
 
-static void _vala_array_add11 (char*** array, int* length, int* size, char* value) {
+static void _vala_array_add16 (char*** array, int* length, int* size, char* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (char*, *array, (*size) + 1);
@@ -1294,7 +1294,7 @@ gboolean document_clean_build_files (Document* self, MainWindow* window) {
 					if (no_confirm) {
 						utils_delete_file (file);
 					} else {
-						_vala_array_add11 (&basenames, &basenames_length1, &_basenames_size_, g_strdup (basename));
+						_vala_array_add16 (&basenames, &basenames_length1, &_basenames_size_, g_strdup (basename));
 					}
 				}
 				_g_object_unref0 (file);

@@ -124,6 +124,7 @@ typedef enum  {
 	BUILD_VIEW_BUILD_INFO_ICON,
 	BUILD_VIEW_BUILD_INFO_MESSAGE,
 	BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE,
+	BUILD_VIEW_BUILD_INFO_WEIGHT,
 	BUILD_VIEW_BUILD_INFO_BASENAME,
 	BUILD_VIEW_BUILD_INFO_FILENAME,
 	BUILD_VIEW_BUILD_INFO_START_LINE,
@@ -163,7 +164,7 @@ GType document_get_type (void) G_GNUC_CONST;
 Document* document_tab_get_document (DocumentTab* self);
 void document_select_lines (Document* self, gint start, gint end);
 void build_view_clear (BuildView* self);
-void build_view_add_partition (BuildView* self, const char* msg, PartitionState state, GtkTreeIter* parent, GtkTreeIter* result);
+void build_view_add_partition (BuildView* self, const char* msg, PartitionState state, GtkTreeIter* parent, gboolean bold, GtkTreeIter* result);
 static char* build_view_get_icon_from_state (BuildView* self, PartitionState state);
 void build_view_set_partition_state (BuildView* self, GtkTreeIter* partition_id, PartitionState state);
 void build_view_append_issues (BuildView* self, GtkTreeIter* partition_id, BuildIssue* issues, int issues_length1);
@@ -240,7 +241,7 @@ GType build_issue_get_type (void) {
 static GType build_view_build_info_get_type (void) {
 	static volatile gsize build_view_build_info_type_id__volatile = 0;
 	if (g_once_init_enter (&build_view_build_info_type_id__volatile)) {
-		static const GEnumValue values[] = {{BUILD_VIEW_BUILD_INFO_ICON, "BUILD_VIEW_BUILD_INFO_ICON", "icon"}, {BUILD_VIEW_BUILD_INFO_MESSAGE, "BUILD_VIEW_BUILD_INFO_MESSAGE", "message"}, {BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE, "BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE", "message-type"}, {BUILD_VIEW_BUILD_INFO_BASENAME, "BUILD_VIEW_BUILD_INFO_BASENAME", "basename"}, {BUILD_VIEW_BUILD_INFO_FILENAME, "BUILD_VIEW_BUILD_INFO_FILENAME", "filename"}, {BUILD_VIEW_BUILD_INFO_START_LINE, "BUILD_VIEW_BUILD_INFO_START_LINE", "start-line"}, {BUILD_VIEW_BUILD_INFO_END_LINE, "BUILD_VIEW_BUILD_INFO_END_LINE", "end-line"}, {BUILD_VIEW_BUILD_INFO_LINE, "BUILD_VIEW_BUILD_INFO_LINE", "line"}, {BUILD_VIEW_BUILD_INFO_N_COLUMNS, "BUILD_VIEW_BUILD_INFO_N_COLUMNS", "n-columns"}, {0, NULL, NULL}};
+		static const GEnumValue values[] = {{BUILD_VIEW_BUILD_INFO_ICON, "BUILD_VIEW_BUILD_INFO_ICON", "icon"}, {BUILD_VIEW_BUILD_INFO_MESSAGE, "BUILD_VIEW_BUILD_INFO_MESSAGE", "message"}, {BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE, "BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE", "message-type"}, {BUILD_VIEW_BUILD_INFO_WEIGHT, "BUILD_VIEW_BUILD_INFO_WEIGHT", "weight"}, {BUILD_VIEW_BUILD_INFO_BASENAME, "BUILD_VIEW_BUILD_INFO_BASENAME", "basename"}, {BUILD_VIEW_BUILD_INFO_FILENAME, "BUILD_VIEW_BUILD_INFO_FILENAME", "filename"}, {BUILD_VIEW_BUILD_INFO_START_LINE, "BUILD_VIEW_BUILD_INFO_START_LINE", "start-line"}, {BUILD_VIEW_BUILD_INFO_END_LINE, "BUILD_VIEW_BUILD_INFO_END_LINE", "end-line"}, {BUILD_VIEW_BUILD_INFO_LINE, "BUILD_VIEW_BUILD_INFO_LINE", "line"}, {BUILD_VIEW_BUILD_INFO_N_COLUMNS, "BUILD_VIEW_BUILD_INFO_N_COLUMNS", "n-columns"}, {0, NULL, NULL}};
 		GType build_view_build_info_type_id;
 		build_view_build_info_type_id = g_enum_register_static ("BuildViewBuildInfo", values);
 		g_once_init_leave (&build_view_build_info_type_id__volatile, build_view_build_info_type_id);
@@ -292,7 +293,7 @@ BuildView* build_view_construct (GType object_type, MainWindow* main_window, Gtk
 	self = g_object_newv (object_type, 0, NULL);
 	self->priv->main_window = main_window;
 	self->priv->action_view_bottom_panel = view_bottom_panel;
-	self->priv->store = (_tmp0_ = gtk_tree_store_new ((gint) BUILD_VIEW_BUILD_INFO_N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, TYPE_BUILD_MESSAGE_TYPE, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_STRING), _g_object_unref0 (self->priv->store), _tmp0_);
+	self->priv->store = (_tmp0_ = gtk_tree_store_new ((gint) BUILD_VIEW_BUILD_INFO_N_COLUMNS, G_TYPE_STRING, G_TYPE_STRING, TYPE_BUILD_MESSAGE_TYPE, G_TYPE_INT, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT, G_TYPE_INT, G_TYPE_STRING), _g_object_unref0 (self->priv->store), _tmp0_);
 	self->priv->view = (_tmp1_ = g_object_ref_sink ((GtkTreeView*) gtk_tree_view_new_with_model ((GtkTreeModel*) self->priv->store)), _g_object_unref0 (self->priv->view), _tmp1_);
 	column_job = g_object_ref_sink (gtk_tree_view_column_new ());
 	gtk_tree_view_column_set_title (column_job, _ ("Job"));
@@ -300,8 +301,10 @@ BuildView* build_view_construct (GType object_type, MainWindow* main_window, Gtk
 	gtk_cell_layout_pack_start ((GtkCellLayout*) column_job, (GtkCellRenderer*) renderer_pixbuf, FALSE);
 	gtk_cell_layout_add_attribute ((GtkCellLayout*) column_job, (GtkCellRenderer*) renderer_pixbuf, "stock-id", (gint) BUILD_VIEW_BUILD_INFO_ICON);
 	renderer_text = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ());
+	g_object_set (renderer_text, "weight-set", TRUE, NULL);
 	gtk_cell_layout_pack_start ((GtkCellLayout*) column_job, (GtkCellRenderer*) renderer_text, TRUE);
-	gtk_cell_layout_add_attribute ((GtkCellLayout*) column_job, (GtkCellRenderer*) renderer_text, "markup", (gint) BUILD_VIEW_BUILD_INFO_MESSAGE);
+	gtk_cell_layout_add_attribute ((GtkCellLayout*) column_job, (GtkCellRenderer*) renderer_text, "text", (gint) BUILD_VIEW_BUILD_INFO_MESSAGE);
+	gtk_cell_layout_add_attribute ((GtkCellLayout*) column_job, (GtkCellRenderer*) renderer_text, "weight", (gint) BUILD_VIEW_BUILD_INFO_WEIGHT);
 	gtk_tree_view_append_column (self->priv->view, column_job);
 	gtk_tree_view_insert_column_with_attributes (self->priv->view, -1, _ ("File"), (GtkCellRenderer*) (_tmp2_ = g_object_ref_sink ((GtkCellRendererText*) gtk_cell_renderer_text_new ())), "text", BUILD_VIEW_BUILD_INFO_BASENAME, NULL);
 	_g_object_unref0 (_tmp2_);
@@ -423,17 +426,24 @@ static void build_view_jump_to_file (BuildView* self, const char* filename, gint
 void build_view_clear (BuildView* self) {
 	g_return_if_fail (self != NULL);
 	gtk_tree_store_clear (self->priv->store);
+	gtk_tree_view_columns_autosize (self->priv->view);
 }
 
 
-void build_view_add_partition (BuildView* self, const char* msg, PartitionState state, GtkTreeIter* parent, GtkTreeIter* result) {
+void build_view_add_partition (BuildView* self, const char* msg, PartitionState state, GtkTreeIter* parent, gboolean bold, GtkTreeIter* result) {
 	GtkTreeIter iter = {0};
-	char* _tmp0_;
+	gint _tmp0_ = 0;
+	char* _tmp1_;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (msg != NULL);
 	gtk_tree_store_append (self->priv->store, &iter, parent);
-	gtk_tree_store_set (self->priv->store, &iter, BUILD_VIEW_BUILD_INFO_ICON, _tmp0_ = build_view_get_icon_from_state (self, state), BUILD_VIEW_BUILD_INFO_MESSAGE, msg, BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE, BUILD_MESSAGE_TYPE_OTHER, -1, -1);
-	_g_free0 (_tmp0_);
+	if (bold) {
+		_tmp0_ = 800;
+	} else {
+		_tmp0_ = 400;
+	}
+	gtk_tree_store_set (self->priv->store, &iter, BUILD_VIEW_BUILD_INFO_ICON, _tmp1_ = build_view_get_icon_from_state (self, state), BUILD_VIEW_BUILD_INFO_MESSAGE, msg, BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE, BUILD_MESSAGE_TYPE_OTHER, BUILD_VIEW_BUILD_INFO_WEIGHT, _tmp0_, -1, -1);
+	_g_free0 (_tmp1_);
 	gtk_tree_view_expand_all (self->priv->view);
 	*result = iter;
 	return;
@@ -482,7 +492,7 @@ void build_view_append_issues (BuildView* self, GtkTreeIter* partition_id, Build
 					char* _tmp5_;
 					_tmp3_ = (_tmp5_ = NULL, _g_free0 (_tmp3_), _tmp5_);
 				}
-				gtk_tree_store_set (self->priv->store, &iter, BUILD_VIEW_BUILD_INFO_ICON, _tmp6_ = build_view_get_icon_from_msg_type (self, issue.message_type), BUILD_VIEW_BUILD_INFO_MESSAGE, issue.message, BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE, issue.message_type, BUILD_VIEW_BUILD_INFO_BASENAME, _tmp0_, BUILD_VIEW_BUILD_INFO_FILENAME, issue.filename, BUILD_VIEW_BUILD_INFO_START_LINE, issue.start_line, BUILD_VIEW_BUILD_INFO_END_LINE, issue.end_line, BUILD_VIEW_BUILD_INFO_LINE, _tmp3_, -1, -1);
+				gtk_tree_store_set (self->priv->store, &iter, BUILD_VIEW_BUILD_INFO_ICON, _tmp6_ = build_view_get_icon_from_msg_type (self, issue.message_type), BUILD_VIEW_BUILD_INFO_MESSAGE, issue.message, BUILD_VIEW_BUILD_INFO_MESSAGE_TYPE, issue.message_type, BUILD_VIEW_BUILD_INFO_WEIGHT, 400, BUILD_VIEW_BUILD_INFO_BASENAME, _tmp0_, BUILD_VIEW_BUILD_INFO_FILENAME, issue.filename, BUILD_VIEW_BUILD_INFO_START_LINE, issue.start_line, BUILD_VIEW_BUILD_INFO_END_LINE, issue.end_line, BUILD_VIEW_BUILD_INFO_LINE, _tmp3_, -1, -1);
 				_g_free0 (_tmp6_);
 				_g_free0 (_tmp3_);
 				_g_free0 (_tmp0_);

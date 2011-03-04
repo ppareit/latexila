@@ -378,8 +378,11 @@ static void block8_data_unref (Block8Data* _data8_) {
 void templates_show_dialog_new (Templates* self, MainWindow* parent) {
 	Block8Data* _data8_;
 	GtkDialog* dialog;
-	GtkBox* content_area1;
-	GtkVBox* content_area;
+	GSettings* settings;
+	gint w = 0;
+	gint h = 0;
+	GtkBox* content_area;
+	GtkVPaned* vpaned;
 	GtkWidget* component;
 	GtkWidget* _tmp0_;
 	g_return_if_fail (self != NULL);
@@ -388,18 +391,21 @@ void templates_show_dialog_new (Templates* self, MainWindow* parent) {
 	_data8_->_ref_count_ = 1;
 	_data8_->self = g_object_ref (self);
 	dialog = g_object_ref_sink ((GtkDialog*) gtk_dialog_new_with_buttons (_ ("New File..."), (GtkWindow*) parent, GTK_DIALOG_NO_SEPARATOR, GTK_STOCK_OK, GTK_RESPONSE_ACCEPT, GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT, NULL, NULL));
-	gtk_window_set_default_size ((GtkWindow*) dialog, 400, 340);
-	content_area1 = _g_object_ref0 (GTK_BOX (gtk_dialog_get_content_area (dialog)));
-	content_area = g_object_ref_sink ((GtkVBox*) gtk_vbox_new (FALSE, 18));
-	gtk_container_set_border_width ((GtkContainer*) content_area, (guint) 10);
-	gtk_box_pack_start (content_area1, (GtkWidget*) content_area, TRUE, TRUE, 0);
+	settings = g_settings_new ("org.gnome.latexila.state.window");
+	g_settings_get (settings, "new-file-dialog-size", "(ii)", &w, &h);
+	gtk_window_set_default_size ((GtkWindow*) dialog, w, h);
+	gtk_widget_set_size_request ((GtkWidget*) dialog, 0, 0);
+	content_area = _g_object_ref0 (GTK_BOX (gtk_dialog_get_content_area (dialog)));
+	vpaned = g_object_ref_sink ((GtkVPaned*) gtk_vpaned_new ());
+	gtk_box_pack_start (content_area, (GtkWidget*) vpaned, TRUE, TRUE, 0);
+	gtk_paned_set_position ((GtkPaned*) vpaned, g_settings_get_int (settings, "new-file-dialog-paned-position"));
 	_data8_->icon_view_default_templates = templates_create_icon_view (self, self->priv->default_store);
 	component = templates_get_dialog_component (self, _ ("Default templates"), (GtkWidget*) _data8_->icon_view_default_templates);
-	gtk_box_pack_start ((GtkBox*) content_area, component, TRUE, TRUE, 0);
+	gtk_paned_pack1 ((GtkPaned*) vpaned, component, TRUE, TRUE);
 	_data8_->icon_view_personnal_templates = templates_create_icon_view (self, self->priv->personnal_store);
 	component = (_tmp0_ = templates_get_dialog_component (self, _ ("Your personnal templates"), (GtkWidget*) _data8_->icon_view_personnal_templates), _g_object_unref0 (component), _tmp0_);
-	gtk_box_pack_start ((GtkBox*) content_area, component, TRUE, TRUE, 0);
-	gtk_widget_show_all ((GtkWidget*) content_area1);
+	gtk_paned_pack2 ((GtkPaned*) vpaned, component, FALSE, TRUE);
+	gtk_widget_show_all ((GtkWidget*) content_area);
 	g_signal_connect_data (_data8_->icon_view_default_templates, "selection-changed", (GCallback) __lambda59__gtk_icon_view_selection_changed, block8_data_ref (_data8_), (GClosureNotify) block8_data_unref, 0);
 	g_signal_connect_data (_data8_->icon_view_personnal_templates, "selection-changed", (GCallback) __lambda60__gtk_icon_view_selection_changed, block8_data_ref (_data8_), (GClosureNotify) block8_data_unref, 0);
 	if (gtk_dialog_run (dialog) == GTK_RESPONSE_ACCEPT) {
@@ -438,10 +444,14 @@ void templates_show_dialog_new (Templates* self, MainWindow* parent) {
 		_g_object_unref0 (model);
 		__g_list_free_gtk_tree_path_free0 (selected_items);
 	}
+	gtk_window_get_size ((GtkWindow*) dialog, &w, &h);
+	g_settings_set (settings, "new-file-dialog-size", "(ii)", w, h);
+	g_settings_set_int (settings, "new-file-dialog-paned-position", gtk_paned_get_position ((GtkPaned*) vpaned));
 	gtk_object_destroy ((GtkObject*) dialog);
 	_g_object_unref0 (component);
+	_g_object_unref0 (vpaned);
 	_g_object_unref0 (content_area);
-	_g_object_unref0 (content_area1);
+	_g_object_unref0 (settings);
 	_g_object_unref0 (dialog);
 	block8_data_unref (_data8_);
 }

@@ -241,14 +241,14 @@ MainWindow* application_get_active_window (Application* self);
 DocumentView* main_window_get_active_view (MainWindow* self);
 static char* completion_provider_get_text_line_at_iter (CompletionProvider* self, GtkTextIter* iter);
 static gboolean completion_provider_char_is_escaped (CompletionProvider* self, const char* text, glong index);
-static void _vala_array_add8 (CompletionProviderCompletionChoice** array, int* length, int* size, const CompletionProviderCompletionChoice* value);
+static void _vala_array_add13 (CompletionProviderCompletionChoice** array, int* length, int* size, const CompletionProviderCompletionChoice* value);
 static char* completion_provider_get_command_text (CompletionProvider* self, CompletionProviderCompletionCommand* cmd);
-static void _vala_array_add9 (CompletionProviderCompletionArgument** array, int* length, int* size, const CompletionProviderCompletionArgument* value);
+static void _vala_array_add14 (CompletionProviderCompletionArgument** array, int* length, int* size, const CompletionProviderCompletionArgument* value);
 static char* completion_provider_get_latex_command_at_index (CompletionProvider* self, const char* text, glong index);
 static void _vala_CompletionProviderCompletionArgument_array_free (CompletionProviderCompletionArgument* array, gint array_length);
-static CompletionProviderCompletionArgument* _vala_array_dup3 (CompletionProviderCompletionArgument* self, int length);
+static CompletionProviderCompletionArgument* _vala_array_dup6 (CompletionProviderCompletionArgument* self, int length);
 static void _vala_CompletionProviderCompletionChoice_array_free (CompletionProviderCompletionChoice* array, gint array_length);
-static CompletionProviderCompletionChoice* _vala_array_dup4 (CompletionProviderCompletionChoice* self, int length);
+static CompletionProviderCompletionChoice* _vala_array_dup7 (CompletionProviderCompletionChoice* self, int length);
 static void completion_provider_finalize (GObject* obj);
 static gint _vala_array_length (gpointer array);
 static int _vala_strcmp0 (const char * str1, const char * str2);
@@ -1074,7 +1074,7 @@ void completion_provider_hide_calltip_window (CompletionProvider* self) {
 }
 
 
-static void _vala_array_add8 (CompletionProviderCompletionChoice** array, int* length, int* size, const CompletionProviderCompletionChoice* value) {
+static void _vala_array_add13 (CompletionProviderCompletionChoice** array, int* length, int* size, const CompletionProviderCompletionChoice* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (CompletionProviderCompletionChoice, *array, *size);
@@ -1316,7 +1316,7 @@ static void completion_provider_parser_start (CompletionProvider* self, GMarkupP
 					}
 				}
 			}
-			_vala_array_add8 (&self->priv->current_arg.choices, &self->priv->current_arg.choices_length1, &self->priv->current_arg._choices_size_, (_tmp28_ = (completion_provider_completion_choice_copy (&choice, &_tmp27_), _tmp27_), &_tmp28_));
+			_vala_array_add13 (&self->priv->current_arg.choices, &self->priv->current_arg.choices_length1, &self->priv->current_arg._choices_size_, (_tmp28_ = (completion_provider_completion_choice_copy (&choice, &_tmp27_), _tmp27_), &_tmp28_));
 			completion_provider_completion_choice_destroy (&choice);
 			break;
 		}
@@ -1349,7 +1349,7 @@ static void completion_provider_parser_start (CompletionProvider* self, GMarkupP
 }
 
 
-static void _vala_array_add9 (CompletionProviderCompletionArgument** array, int* length, int* size, const CompletionProviderCompletionArgument* value) {
+static void _vala_array_add14 (CompletionProviderCompletionArgument** array, int* length, int* size, const CompletionProviderCompletionArgument* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (CompletionProviderCompletionArgument, *array, *size);
@@ -1400,7 +1400,7 @@ static void completion_provider_parser_end (CompletionProvider* self, GMarkupPar
 		{
 			CompletionProviderCompletionArgument _tmp4_ = {0};
 			CompletionProviderCompletionArgument _tmp5_;
-			_vala_array_add9 (&self->priv->current_command.args, &self->priv->current_command.args_length1, &self->priv->current_command._args_size_, (_tmp5_ = (completion_provider_completion_argument_copy (&self->priv->current_arg, &_tmp4_), _tmp4_), &_tmp5_));
+			_vala_array_add14 (&self->priv->current_command.args, &self->priv->current_command.args_length1, &self->priv->current_command._args_size_, (_tmp5_ = (completion_provider_completion_argument_copy (&self->priv->current_arg, &_tmp4_), _tmp4_), &_tmp5_));
 			break;
 		}
 	}
@@ -1907,7 +1907,7 @@ static void _vala_CompletionProviderCompletionArgument_array_free (CompletionPro
 }
 
 
-static CompletionProviderCompletionArgument* _vala_array_dup3 (CompletionProviderCompletionArgument* self, int length) {
+static CompletionProviderCompletionArgument* _vala_array_dup6 (CompletionProviderCompletionArgument* self, int length) {
 	CompletionProviderCompletionArgument* result;
 	int i;
 	CompletionProviderCompletionArgument _tmp0_ = {0};
@@ -1923,7 +1923,7 @@ static void completion_provider_completion_command_copy (const CompletionProvide
 	CompletionProviderCompletionArgument* _tmp0_;
 	dest->name = g_strdup (self->name);
 	dest->package = g_strdup (self->package);
-	dest->args = (_tmp0_ = self->args, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup3 (_tmp0_, (*self).args_length1));
+	dest->args = (_tmp0_ = self->args, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup6 (_tmp0_, (*self).args_length1));
 	dest->args_length1 = self->args_length1;
 }
 
@@ -1971,7 +1971,7 @@ static void _vala_CompletionProviderCompletionChoice_array_free (CompletionProvi
 }
 
 
-static CompletionProviderCompletionChoice* _vala_array_dup4 (CompletionProviderCompletionChoice* self, int length) {
+static CompletionProviderCompletionChoice* _vala_array_dup7 (CompletionProviderCompletionChoice* self, int length) {
 	CompletionProviderCompletionChoice* result;
 	int i;
 	CompletionProviderCompletionChoice _tmp0_ = {0};
@@ -1987,7 +1987,7 @@ static void completion_provider_completion_argument_copy (const CompletionProvid
 	CompletionProviderCompletionChoice* _tmp0_;
 	dest->label = g_strdup (self->label);
 	dest->optional = self->optional;
-	dest->choices = (_tmp0_ = self->choices, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup4 (_tmp0_, (*self).choices_length1));
+	dest->choices = (_tmp0_ = self->choices, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup7 (_tmp0_, (*self).choices_length1));
 	dest->choices_length1 = self->choices_length1;
 }
 

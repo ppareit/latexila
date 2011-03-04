@@ -120,6 +120,8 @@ struct _BuildJob {
 	gboolean must_succeed;
 	char* post_processor;
 	char* command;
+	char** command_args;
+	gint command_args_length1;
 };
 
 struct _BuildTool {
@@ -193,6 +195,7 @@ BuildJob* build_job_dup (const BuildJob* self);
 void build_job_free (BuildJob* self);
 void build_job_copy (const BuildJob* self, BuildJob* dest);
 void build_job_destroy (BuildJob* self);
+static char** _vala_array_dup3 (char** self, int length);
 GType build_tool_get_type (void) G_GNUC_CONST;
 BuildTool* build_tool_dup (const BuildTool* self);
 void build_tool_free (BuildTool* self);
@@ -292,6 +295,9 @@ static GFile* app_settings_get_user_config_build_tools_file (AppSettings* self);
 GType main_window_get_type (void) G_GNUC_CONST;
 GList* application_get_windows (Application* self);
 void main_window_update_build_tools_menu (MainWindow* self);
+static void _vala_array_add9 (GFile*** array, int* length, int* size, GFile* value);
+static void _vala_array_add10 (GFile*** array, int* length, int* size, GFile* value);
+static void _vala_array_add11 (GFile*** array, int* length, int* size, GFile* value);
 static void app_settings_parser_start (AppSettings* self, GMarkupParseContext* context, const char* name, char** attr_names, int attr_names_length1, char** attr_values, int attr_values_length1, GError** error);
 static void _app_settings_parser_start_gmarkup_parser_start_element_func (GMarkupParseContext* context, const char* element_name, char** attribute_names, char** attribute_values, gpointer self, GError** error);
 static void app_settings_parser_end (AppSettings* self, GMarkupParseContext* context, const char* name, GError** error);
@@ -304,6 +310,8 @@ static void app_settings_set_build_tool_view_ps (AppSettings* self, BuildTool* v
 void app_settings_save_build_tools (AppSettings* self);
 Project* app_settings_get_project (AppSettings* self, gint id);
 GeeLinkedList* app_settings_get_projects (AppSettings* self);
+static void app_settings_update_projects_menus (AppSettings* self);
+void main_window_update_config_project_sensitivity (MainWindow* self);
 gboolean app_settings_add_project (AppSettings* self, Project* new_project, GFile** conflict);
 static gboolean app_settings_projects_conflict (AppSettings* self, GFile* dir1, GFile* dir2);
 gint document_get_project_id (Document* self);
@@ -312,7 +320,7 @@ void document_set_project_id (Document* self, gint value);
 gboolean app_settings_project_change_main_file (AppSettings* self, gint num, GFile* new_main_file);
 void app_settings_delete_project (AppSettings* self, gint num);
 void app_settings_clear_all_projects (AppSettings* self);
-void app_settings_update_all_documents (AppSettings* self);
+static void app_settings_update_all_documents (AppSettings* self);
 static GFile* app_settings_get_file_projects (AppSettings* self);
 static void app_settings_projects_parser_start (AppSettings* self, GMarkupParseContext* context, const char* name, char** attr_names, int attr_names_length1, char** attr_values, int attr_values_length1, GError** error);
 static void _app_settings_projects_parser_start_gmarkup_parser_start_element_func (GMarkupParseContext* context, const char* element_name, char** attribute_names, char** attribute_values, gpointer self, GError** error);
@@ -323,21 +331,38 @@ void app_settings_get_build_tool_view_ps (AppSettings* self, BuildTool* result);
 static void app_settings_finalize (GObject* obj);
 static void app_settings_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void app_settings_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func);
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func);
 static gint _vala_array_length (gpointer array);
 static int _vala_strcmp0 (const char * str1, const char * str2);
 
 
 
+static char** _vala_array_dup3 (char** self, int length) {
+	char** result;
+	int i;
+	result = g_new0 (char*, length + 1);
+	for (i = 0; i < length; i++) {
+		result[i] = g_strdup (self[i]);
+	}
+	return result;
+}
+
+
 void build_job_copy (const BuildJob* self, BuildJob* dest) {
+	char** _tmp0_;
 	dest->must_succeed = self->must_succeed;
 	dest->post_processor = g_strdup (self->post_processor);
 	dest->command = g_strdup (self->command);
+	dest->command_args = (_tmp0_ = self->command_args, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup3 (_tmp0_, (*self).command_args_length1));
+	dest->command_args_length1 = self->command_args_length1;
 }
 
 
 void build_job_destroy (BuildJob* self) {
 	_g_free0 (self->post_processor);
 	_g_free0 (self->command);
+	self->command_args = (_vala_array_free (self->command_args, (*self).command_args_length1, (GDestroyNotify) g_free), NULL);
 }
 
 
@@ -1370,6 +1395,7 @@ static void app_settings_swap_build_tools (AppSettings* self, gint num1, gint nu
 	BuildTool tool;
 	BuildTool* _tmp3_;
 	g_return_if_fail (self != NULL);
+	g_return_if_fail (self->priv->build_tools != NULL);
 	tool = (_tmp2_ = (build_tool_copy (_tmp0_ = (BuildTool*) gee_abstract_list_get ((GeeAbstractList*) self->priv->build_tools, num1), &_tmp1_), _tmp1_), _build_tool_free0 (_tmp0_), _tmp2_);
 	_tmp3_ = (BuildTool*) gee_abstract_list_remove_at ((GeeAbstractList*) self->priv->build_tools, num1);
 	_build_tool_free0 (_tmp3_);
@@ -1383,6 +1409,7 @@ void app_settings_delete_build_tool (AppSettings* self, gint num) {
 	gboolean _tmp0_ = FALSE;
 	BuildTool* _tmp1_;
 	g_return_if_fail (self != NULL);
+	g_return_if_fail (self->priv->build_tools != NULL);
 	if (num >= 0) {
 		_tmp0_ = num < gee_collection_get_size ((GeeCollection*) self->priv->build_tools);
 	} else {
@@ -1397,6 +1424,7 @@ void app_settings_delete_build_tool (AppSettings* self, gint num) {
 
 void app_settings_append_build_tool (AppSettings* self, BuildTool* tool) {
 	g_return_if_fail (self != NULL);
+	g_return_if_fail (self->priv->build_tools != NULL);
 	(*tool).compilation = app_settings_is_compilation (self, (*tool).icon);
 	gee_abstract_collection_add ((GeeAbstractCollection*) self->priv->build_tools, tool);
 	app_settings_update_all_build_tools_menu (self);
@@ -1410,6 +1438,7 @@ void app_settings_update_build_tool (AppSettings* self, gint num, BuildTool* too
 	BuildTool _tmp3_;
 	BuildTool current_tool;
 	g_return_if_fail (self != NULL);
+	g_return_if_fail (self->priv->build_tools != NULL);
 	if (num >= 0) {
 		_tmp0_ = num < gee_collection_get_size ((GeeCollection*) self->priv->build_tools);
 	} else {
@@ -1572,6 +1601,36 @@ static gboolean app_settings_is_compilation (AppSettings* self, const char* icon
 }
 
 
+static void _vala_array_add9 (GFile*** array, int* length, int* size, GFile* value) {
+	if ((*length) == (*size)) {
+		*size = (*size) ? (2 * (*size)) : 4;
+		*array = g_renew (GFile*, *array, (*size) + 1);
+	}
+	(*array)[(*length)++] = value;
+	(*array)[*length] = NULL;
+}
+
+
+static void _vala_array_add10 (GFile*** array, int* length, int* size, GFile* value) {
+	if ((*length) == (*size)) {
+		*size = (*size) ? (2 * (*size)) : 4;
+		*array = g_renew (GFile*, *array, (*size) + 1);
+	}
+	(*array)[(*length)++] = value;
+	(*array)[*length] = NULL;
+}
+
+
+static void _vala_array_add11 (GFile*** array, int* length, int* size, GFile* value) {
+	if ((*length) == (*size)) {
+		*size = (*size) ? (2 * (*size)) : 4;
+		*array = g_renew (GFile*, *array, (*size) + 1);
+	}
+	(*array)[(*length)++] = value;
+	(*array)[*length] = NULL;
+}
+
+
 static void _app_settings_parser_start_gmarkup_parser_start_element_func (GMarkupParseContext* context, const char* element_name, char** attribute_names, char** attribute_values, gpointer self, GError** error) {
 	app_settings_parser_start (self, context, element_name, attribute_names, _vala_array_length (attribute_names), attribute_values, _vala_array_length (attribute_values), error);
 }
@@ -1588,63 +1647,94 @@ static void _app_settings_parser_text_gmarkup_parser_text_func (GMarkupParseCont
 
 
 static void app_settings_load_build_tools (AppSettings* self) {
+	GeeLinkedList* _tmp0_;
+	gint files_length1;
+	gint _files_size_;
+	GFile** _tmp2_;
+	GFile** _tmp1_ = NULL;
+	GFile** files;
+	char* _tmp3_;
+	char* _tmp4_;
+	GFile* _tmp5_;
+	GFile* default_file;
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (self != NULL);
+	self->priv->build_tools = (_tmp0_ = gee_linked_list_new (TYPE_BUILD_TOOL, (GBoxedCopyFunc) build_tool_dup, build_tool_free, NULL), _g_object_unref0 (self->priv->build_tools), _tmp0_);
+	files = (_tmp2_ = (_tmp1_ = g_new0 (GFile*, 0 + 1), _tmp1_), files_length1 = 0, _files_size_ = files_length1, _tmp2_);
+	_vala_array_add9 (&files, &files_length1, &_files_size_, app_settings_get_user_config_build_tools_file (self));
+	_vala_array_add10 (&files, &files_length1, &_files_size_, g_file_new_for_path (_tmp3_ = g_build_filename (DATA_DIR, "build_tools", _ ("build_tools-en.xml"), NULL, NULL)));
+	_g_free0 (_tmp3_);
+	default_file = (_tmp5_ = g_file_new_for_path (_tmp4_ = g_build_filename (DATA_DIR, "build_tools", "build_tools-en.xml", NULL, NULL)), _g_free0 (_tmp4_), _tmp5_);
+	if (!g_file_equal (default_file, files[1])) {
+		_vala_array_add11 (&files, &files_length1, &_files_size_, _g_object_ref0 (default_file));
+	}
 	{
-		GFile* file;
-		char* contents;
-		char* _tmp2_ = NULL;
-		char* _tmp3_;
-		GeeLinkedList* _tmp4_;
-		GMarkupParser _tmp5_ = {0};
-		GMarkupParser parser;
-		GMarkupParseContext* context;
-		file = app_settings_get_user_config_build_tools_file (self);
-		if (!g_file_query_exists (file, NULL)) {
-			char* _tmp0_;
-			GFile* _tmp1_;
-			file = (_tmp1_ = g_file_new_for_path (_tmp0_ = g_strconcat (DATA_DIR "/build_tools/", _ ("build_tools-en.xml"), NULL)), _g_object_unref0 (file), _tmp1_);
-			_g_free0 (_tmp0_);
+		GFile** file_collection;
+		int file_collection_length1;
+		int file_it;
+		file_collection = files;
+		file_collection_length1 = files_length1;
+		for (file_it = 0; file_it < files_length1; file_it = file_it + 1) {
+			GFile* file;
+			file = _g_object_ref0 (file_collection[file_it]);
+			{
+				{
+					char* contents;
+					char* _tmp6_ = NULL;
+					char* _tmp7_;
+					GMarkupParser _tmp8_ = {0};
+					GMarkupParser parser;
+					GMarkupParseContext* context;
+					if (!g_file_query_exists (file, NULL)) {
+						_g_object_unref0 (file);
+						continue;
+					}
+					contents = NULL;
+					g_file_load_contents (file, NULL, &_tmp6_, NULL, NULL, &_inner_error_);
+					contents = (_tmp7_ = _tmp6_, _g_free0 (contents), _tmp7_);
+					if (_inner_error_ != NULL) {
+						_g_free0 (contents);
+						goto __catch21_g_error;
+					}
+					parser = (_tmp8_.start_element = _app_settings_parser_start_gmarkup_parser_start_element_func, _tmp8_.end_element = _app_settings_parser_end_gmarkup_parser_end_element_func, _tmp8_.text = _app_settings_parser_text_gmarkup_parser_text_func, _tmp8_.passthrough = NULL, _tmp8_.error = NULL, _tmp8_);
+					context = g_markup_parse_context_new (&parser, 0, self, NULL);
+					g_markup_parse_context_parse (context, contents, (gssize) (-1), &_inner_error_);
+					if (_inner_error_ != NULL) {
+						_g_markup_parse_context_free0 (context);
+						_g_free0 (contents);
+						goto __catch21_g_error;
+					}
+					_g_markup_parse_context_free0 (context);
+					_g_free0 (contents);
+					_g_object_unref0 (file);
+					break;
+				}
+				goto __finally21;
+				__catch21_g_error:
+				{
+					GError * e;
+					e = _inner_error_;
+					_inner_error_ = NULL;
+					{
+						fprintf (stderr, "Warning: impossible to load build tools: %s\n", e->message);
+						_g_error_free0 (e);
+					}
+				}
+				__finally21:
+				if (_inner_error_ != NULL) {
+					_g_object_unref0 (file);
+					_g_object_unref0 (default_file);
+					files = (_vala_array_free (files, files_length1, (GDestroyNotify) g_object_unref), NULL);
+					g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
+					g_clear_error (&_inner_error_);
+					return;
+				}
+				_g_object_unref0 (file);
+			}
 		}
-		contents = NULL;
-		g_file_load_contents (file, NULL, &_tmp2_, NULL, NULL, &_inner_error_);
-		contents = (_tmp3_ = _tmp2_, _g_free0 (contents), _tmp3_);
-		if (_inner_error_ != NULL) {
-			_g_free0 (contents);
-			_g_object_unref0 (file);
-			goto __catch21_g_error;
-		}
-		self->priv->build_tools = (_tmp4_ = gee_linked_list_new (TYPE_BUILD_TOOL, (GBoxedCopyFunc) build_tool_dup, build_tool_free, NULL), _g_object_unref0 (self->priv->build_tools), _tmp4_);
-		parser = (_tmp5_.start_element = _app_settings_parser_start_gmarkup_parser_start_element_func, _tmp5_.end_element = _app_settings_parser_end_gmarkup_parser_end_element_func, _tmp5_.text = _app_settings_parser_text_gmarkup_parser_text_func, _tmp5_.passthrough = NULL, _tmp5_.error = NULL, _tmp5_);
-		context = g_markup_parse_context_new (&parser, 0, self, NULL);
-		g_markup_parse_context_parse (context, contents, (gssize) (-1), &_inner_error_);
-		if (_inner_error_ != NULL) {
-			_g_markup_parse_context_free0 (context);
-			_g_free0 (contents);
-			_g_object_unref0 (file);
-			goto __catch21_g_error;
-		}
-		_g_markup_parse_context_free0 (context);
-		_g_free0 (contents);
-		_g_object_unref0 (file);
 	}
-	goto __finally21;
-	__catch21_g_error:
-	{
-		GError * e;
-		e = _inner_error_;
-		_inner_error_ = NULL;
-		{
-			fprintf (stderr, "Warning: impossible to load build tools: %s\n", e->message);
-			_g_error_free0 (e);
-		}
-	}
-	__finally21:
-	if (_inner_error_ != NULL) {
-		g_critical ("file %s: line %d: uncaught error: %s (%s, %d)", __FILE__, __LINE__, _inner_error_->message, g_quark_to_string (_inner_error_->domain), _inner_error_->code);
-		g_clear_error (&_inner_error_);
-		return;
-	}
+	_g_object_unref0 (default_file);
+	files = (_vala_array_free (files, files_length1, (GDestroyNotify) g_object_unref), NULL);
 }
 
 
@@ -1988,9 +2078,10 @@ static char* bool_to_string (gboolean self) {
 
 void app_settings_save_build_tools (AppSettings* self) {
 	char* content;
-	char* _tmp10_;
+	char* _tmp14_;
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (self != NULL);
+	g_return_if_fail (self->priv->build_tools != NULL);
 	if (!self->priv->build_tools_modified) {
 		return;
 	}
@@ -2005,51 +2096,59 @@ void app_settings_save_build_tools (AppSettings* self) {
 			BuildTool tool;
 			char* _tmp3_;
 			char* _tmp4_;
-			char* _tmp9_;
+			char* _tmp5_;
+			char* _tmp6_;
+			char* _tmp13_;
 			if (!gee_iterator_next (_tool_it)) {
 				break;
 			}
 			tool = (_tmp2_ = (build_tool_copy (_tmp0_ = (BuildTool*) gee_iterator_get (_tool_it), &_tmp1_), _tmp1_), _build_tool_free0 (_tmp0_), _tmp2_);
-			content = (_tmp4_ = g_strconcat (content, _tmp3_ = g_strdup_printf ("  <tool description=\"%s\" extensions=\"%s\" label=\"%s\" icon=\"%s\">" \
-"\n", tool.description, tool.extensions, tool.label, tool.icon), NULL), _g_free0 (content), _tmp4_);
+			content = (_tmp6_ = g_strconcat (content, _tmp5_ = g_strdup_printf ("  <tool description=\"%s\" extensions=\"%s\" label=\"%s\" icon=\"%s\">" \
+"\n", _tmp3_ = g_markup_escape_text (tool.description, -1), tool.extensions, _tmp4_ = g_markup_escape_text (tool.label, -1), tool.icon), NULL), _g_free0 (content), _tmp6_);
+			_g_free0 (_tmp5_);
+			_g_free0 (_tmp4_);
 			_g_free0 (_tmp3_);
 			{
 				GList* job_collection;
 				GList* job_it;
 				job_collection = tool.jobs;
 				for (job_it = job_collection; job_it != NULL; job_it = job_it->next) {
-					BuildJob _tmp8_ = {0};
+					BuildJob _tmp12_ = {0};
 					BuildJob job;
-					job = (build_job_copy ((BuildJob*) job_it->data, &_tmp8_), _tmp8_);
+					job = (build_job_copy ((BuildJob*) job_it->data, &_tmp12_), _tmp12_);
 					{
-						char* _tmp5_;
-						char* _tmp6_;
 						char* _tmp7_;
-						content = (_tmp7_ = g_strconcat (content, _tmp6_ = g_strdup_printf ("    <job mustSucceed=\"%s\" postProcessor=\"%s\">%s</job>\n", _tmp5_ = bool_to_string (job.must_succeed), job.post_processor, job.command), NULL), _g_free0 (content), _tmp7_);
-						_g_free0 (_tmp6_);
-						_g_free0 (_tmp5_);
+						char* _tmp8_;
+						char* _tmp9_;
+						char* _tmp10_;
+						char* _tmp11_;
+						content = (_tmp9_ = g_strconcat (content, _tmp8_ = g_strdup_printf ("    <job mustSucceed=\"%s\" postProcessor=\"%s\">", _tmp7_ = bool_to_string (job.must_succeed), job.post_processor), NULL), _g_free0 (content), _tmp9_);
+						_g_free0 (_tmp8_);
+						_g_free0 (_tmp7_);
+						content = (_tmp11_ = g_strconcat (content, _tmp10_ = g_markup_printf_escaped ("%s</job>\n", job.command), NULL), _g_free0 (content), _tmp11_);
+						_g_free0 (_tmp10_);
 						build_job_destroy (&job);
 					}
 				}
 			}
-			content = (_tmp9_ = g_strconcat (content, "  </tool>\n", NULL), _g_free0 (content), _tmp9_);
+			content = (_tmp13_ = g_strconcat (content, "  </tool>\n", NULL), _g_free0 (content), _tmp13_);
 			build_tool_destroy (&tool);
 		}
 		_g_object_unref0 (_tool_it);
 	}
-	content = (_tmp10_ = g_strconcat (content, "</tools>\n", NULL), _g_free0 (content), _tmp10_);
+	content = (_tmp14_ = g_strconcat (content, "</tools>\n", NULL), _g_free0 (content), _tmp14_);
 	{
 		GFile* file;
 		GFile* parent;
-		gboolean _tmp11_ = FALSE;
+		gboolean _tmp15_ = FALSE;
 		file = app_settings_get_user_config_build_tools_file (self);
 		parent = g_file_get_parent (file);
 		if (parent != NULL) {
-			_tmp11_ = !g_file_query_exists (parent, NULL);
+			_tmp15_ = !g_file_query_exists (parent, NULL);
 		} else {
-			_tmp11_ = FALSE;
+			_tmp15_ = FALSE;
 		}
-		if (_tmp11_) {
+		if (_tmp15_) {
 			g_file_make_directory_with_parents (parent, NULL, &_inner_error_);
 			if (_inner_error_ != NULL) {
 				_g_object_unref0 (parent);
@@ -2122,6 +2221,26 @@ GeeLinkedList* app_settings_get_projects (AppSettings* self) {
 }
 
 
+static void app_settings_update_projects_menus (AppSettings* self) {
+	g_return_if_fail (self != NULL);
+	{
+		Application* _tmp0_;
+		GList* _tmp1_;
+		GList* window_collection;
+		GList* window_it;
+		window_collection = (_tmp1_ = application_get_windows (_tmp0_ = application_get_default ()), _g_object_unref0 (_tmp0_), _tmp1_);
+		for (window_it = window_collection; window_it != NULL; window_it = window_it->next) {
+			MainWindow* window;
+			window = _g_object_ref0 ((MainWindow*) window_it->data);
+			{
+				main_window_update_config_project_sensitivity (window);
+				_g_object_unref0 (window);
+			}
+		}
+	}
+}
+
+
 gboolean app_settings_add_project (AppSettings* self, Project* new_project, GFile** conflict) {
 	gboolean result = FALSE;
 	Application* _tmp4_;
@@ -2177,6 +2296,7 @@ gboolean app_settings_add_project (AppSettings* self, Project* new_project, GFil
 			}
 		}
 	}
+	app_settings_update_projects_menus (self);
 	result = TRUE;
 	__g_list_free_g_object_unref0 (docs);
 	return result;
@@ -2273,6 +2393,7 @@ void app_settings_delete_project (AppSettings* self, gint num) {
 			}
 		}
 	}
+	app_settings_update_projects_menus (self);
 	__g_list_free_g_object_unref0 (docs);
 }
 
@@ -2281,10 +2402,11 @@ void app_settings_clear_all_projects (AppSettings* self) {
 	g_return_if_fail (self != NULL);
 	gee_abstract_collection_clear ((GeeAbstractCollection*) self->priv->projects);
 	app_settings_update_all_documents (self);
+	app_settings_update_projects_menus (self);
 }
 
 
-void app_settings_update_all_documents (AppSettings* self) {
+static void app_settings_update_all_documents (AppSettings* self) {
 	Application* _tmp0_;
 	GList* _tmp1_;
 	GList* docs;
@@ -2368,6 +2490,8 @@ static void app_settings_load_projects (AppSettings* self) {
 			_g_free0 (contents);
 			goto __catch23_g_error;
 		}
+		app_settings_update_all_documents (self);
+		app_settings_update_projects_menus (self);
 		_g_markup_parse_context_free0 (context);
 		_g_free0 (contents);
 	}
@@ -2793,6 +2917,24 @@ static void app_settings_set_property (GObject * object, guint property_id, cons
 		G_OBJECT_WARN_INVALID_PROPERTY_ID (object, property_id, pspec);
 		break;
 	}
+}
+
+
+static void _vala_array_destroy (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	if ((array != NULL) && (destroy_func != NULL)) {
+		int i;
+		for (i = 0; i < array_length; i = i + 1) {
+			if (((gpointer*) array)[i] != NULL) {
+				destroy_func (((gpointer*) array)[i]);
+			}
+		}
+	}
+}
+
+
+static void _vala_array_free (gpointer array, gint array_length, GDestroyNotify destroy_func) {
+	_vala_array_destroy (array, array_length, destroy_func);
+	g_free (array);
 }
 
 

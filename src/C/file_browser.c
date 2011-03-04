@@ -165,6 +165,8 @@ struct _BuildJob {
 	gboolean must_succeed;
 	char* post_processor;
 	char* command;
+	char** command_args;
+	gint command_args_length1;
 };
 
 struct _BuildTool {

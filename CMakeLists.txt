@@ -9,7 +9,7 @@ message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
 set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
-set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
+set (BUILD_VALA OFF CACHE BOOL "Generate the C code from Vala files")
 
 # for debugging
 #set (CMAKE_C_FLAGS "-ggdb")

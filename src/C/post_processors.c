@@ -190,7 +190,7 @@ enum  {
 };
 static void all_output_post_processor_real_process (PostProcessor* base, GFile* file, const char* output, gint status);
 static BuildIssue* all_output_post_processor_real_get_issues (PostProcessor* base, int* result_length1);
-static BuildIssue* _vala_array_dup1 (BuildIssue* self, int length);
+static BuildIssue* _vala_array_dup4 (BuildIssue* self, int length);
 AllOutputPostProcessor* all_output_post_processor_new (void);
 AllOutputPostProcessor* all_output_post_processor_construct (GType object_type);
 static void all_output_post_processor_finalize (GObject* obj);
@@ -205,9 +205,9 @@ enum  {
 RubberPostProcessor* rubber_post_processor_new (void);
 RubberPostProcessor* rubber_post_processor_construct (GType object_type);
 static void rubber_post_processor_real_process (PostProcessor* base, GFile* file, const char* output, gint status);
-static void _vala_array_add7 (BuildIssue** array, int* length, int* size, const BuildIssue* value);
+static void _vala_array_add12 (BuildIssue** array, int* length, int* size, const BuildIssue* value);
 static BuildIssue* rubber_post_processor_real_get_issues (PostProcessor* base, int* result_length1);
-static BuildIssue* _vala_array_dup2 (BuildIssue* self, int length);
+static BuildIssue* _vala_array_dup5 (BuildIssue* self, int length);
 static void rubber_post_processor_finalize (GObject* obj);
 static void rubber_post_processor_get_property (GObject * object, guint property_id, GValue * value, GParamSpec * pspec);
 static void rubber_post_processor_set_property (GObject * object, guint property_id, const GValue * value, GParamSpec * pspec);
@@ -464,7 +464,7 @@ static void all_output_post_processor_real_process (PostProcessor* base, GFile* 
 }
 
 
-static BuildIssue* _vala_array_dup1 (BuildIssue* self, int length) {
+static BuildIssue* _vala_array_dup4 (BuildIssue* self, int length) {
 	BuildIssue* result;
 	int i;
 	BuildIssue _tmp0_ = {0};
@@ -482,7 +482,7 @@ static BuildIssue* all_output_post_processor_real_get_issues (PostProcessor* bas
 	BuildIssue* _tmp0_;
 	BuildIssue* _tmp1_;
 	self = (AllOutputPostProcessor*) base;
-	result = (_tmp1_ = (_tmp0_ = self->priv->issues, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup1 (_tmp0_, self->priv->issues_length1)), *result_length1 = self->priv->issues_length1, _tmp1_);
+	result = (_tmp1_ = (_tmp0_ = self->priv->issues, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup4 (_tmp0_, self->priv->issues_length1)), *result_length1 = self->priv->issues_length1, _tmp1_);
 	return result;
 }
 
@@ -649,7 +649,7 @@ static gboolean string_contains (const char* self, const char* needle) {
 }
 
 
-static void _vala_array_add7 (BuildIssue** array, int* length, int* size, const BuildIssue* value) {
+static void _vala_array_add12 (BuildIssue** array, int* length, int* size, const BuildIssue* value) {
 	if ((*length) == (*size)) {
 		*size = (*size) ? (2 * (*size)) : 4;
 		*array = g_renew (BuildIssue, *array, *size);
@@ -739,7 +739,7 @@ static void rubber_post_processor_real_process (PostProcessor* base, GFile* file
 			_g_free0 (_tmp11_);
 			_g_object_unref0 (_tmp10_);
 		}
-		_vala_array_add7 (&self->priv->issues, &self->priv->issues_length1, &self->priv->_issues_size_, (_tmp14_ = (build_issue_copy (&issue, &_tmp13_), _tmp13_), &_tmp14_));
+		_vala_array_add12 (&self->priv->issues, &self->priv->issues_length1, &self->priv->_issues_size_, (_tmp14_ = (build_issue_copy (&issue, &_tmp13_), _tmp13_), &_tmp14_));
 		{
 			g_match_info_next (match_info, &_inner_error_);
 			if (_inner_error_ != NULL) {
@@ -788,7 +788,7 @@ static void rubber_post_processor_real_process (PostProcessor* base, GFile* file
 }
 
 
-static BuildIssue* _vala_array_dup2 (BuildIssue* self, int length) {
+static BuildIssue* _vala_array_dup5 (BuildIssue* self, int length) {
 	BuildIssue* result;
 	int i;
 	BuildIssue _tmp0_ = {0};
@@ -806,7 +806,7 @@ static BuildIssue* rubber_post_processor_real_get_issues (PostProcessor* base, i
 	BuildIssue* _tmp0_;
 	BuildIssue* _tmp1_;
 	self = (RubberPostProcessor*) base;
-	result = (_tmp1_ = (_tmp0_ = self->priv->issues, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup2 (_tmp0_, self->priv->issues_length1)), *result_length1 = self->priv->issues_length1, _tmp1_);
+	result = (_tmp1_ = (_tmp0_ = self->priv->issues, (_tmp0_ == NULL) ? ((gpointer) _tmp0_) : _vala_array_dup5 (_tmp0_, self->priv->issues_length1)), *result_length1 = self->priv->issues_length1, _tmp1_);
 	return result;
 }
 

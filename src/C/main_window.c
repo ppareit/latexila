@@ -140,15 +140,15 @@ typedef struct _BuildToolRunnerClass BuildToolRunnerClass;
 #define _g_free0(var) (var = (g_free (var), NULL))
 #define _g_object_unref0(var) ((var == NULL) ? NULL : (var = (g_object_unref (var), NULL)))
 
-#define TYPE_DOCUMENT_TAB (document_tab_get_type ())
-#define DOCUMENT_TAB(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_DOCUMENT_TAB, DocumentTab))
-#define DOCUMENT_TAB_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_DOCUMENT_TAB, DocumentTabClass))
-#define IS_DOCUMENT_TAB(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_DOCUMENT_TAB))
-#define IS_DOCUMENT_TAB_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_DOCUMENT_TAB))
-#define DOCUMENT_TAB_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_DOCUMENT_TAB, DocumentTabClass))
+#define TYPE_COMPLETION_PROVIDER (completion_provider_get_type ())
+#define COMPLETION_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_COMPLETION_PROVIDER, CompletionProvider))
+#define COMPLETION_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_COMPLETION_PROVIDER, CompletionProviderClass))
+#define IS_COMPLETION_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_COMPLETION_PROVIDER))
+#define IS_COMPLETION_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_COMPLETION_PROVIDER))
+#define COMPLETION_PROVIDER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_COMPLETION_PROVIDER, CompletionProviderClass))
 
-typedef struct _DocumentTab DocumentTab;
-typedef struct _DocumentTabClass DocumentTabClass;
+typedef struct _CompletionProvider CompletionProvider;
+typedef struct _CompletionProviderClass CompletionProviderClass;
 
 #define TYPE_DOCUMENT (document_get_type ())
 #define DOCUMENT(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_DOCUMENT, Document))
@@ -160,15 +160,15 @@ typedef struct _DocumentTabClass DocumentTabClass;
 typedef struct _Document Document;
 typedef struct _DocumentClass DocumentClass;
 
-#define TYPE_COMPLETION_PROVIDER (completion_provider_get_type ())
-#define COMPLETION_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_COMPLETION_PROVIDER, CompletionProvider))
-#define COMPLETION_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_COMPLETION_PROVIDER, CompletionProviderClass))
-#define IS_COMPLETION_PROVIDER(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_COMPLETION_PROVIDER))
-#define IS_COMPLETION_PROVIDER_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_COMPLETION_PROVIDER))
-#define COMPLETION_PROVIDER_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_COMPLETION_PROVIDER, CompletionProviderClass))
+#define TYPE_DOCUMENT_TAB (document_tab_get_type ())
+#define DOCUMENT_TAB(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_DOCUMENT_TAB, DocumentTab))
+#define DOCUMENT_TAB_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_DOCUMENT_TAB, DocumentTabClass))
+#define IS_DOCUMENT_TAB(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_DOCUMENT_TAB))
+#define IS_DOCUMENT_TAB_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_DOCUMENT_TAB))
+#define DOCUMENT_TAB_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_DOCUMENT_TAB, DocumentTabClass))
 
-typedef struct _CompletionProvider CompletionProvider;
-typedef struct _CompletionProviderClass CompletionProviderClass;
+typedef struct _DocumentTab DocumentTab;
+typedef struct _DocumentTabClass DocumentTabClass;
 #define __g_list_free_g_object_unref0(var) ((var == NULL) ? NULL : (var = (_g_list_free_g_object_unref (var), NULL)))
 
 #define TYPE_DOCUMENT_VIEW (document_view_get_type ())
@@ -307,6 +307,8 @@ struct _BuildJob {
 	gboolean must_succeed;
 	char* post_processor;
 	char* command;
+	char** command_args;
+	gint command_args_length1;
 };
 
 struct _BuildTool {
@@ -467,12 +469,8 @@ static void main_window_set_undo_sensitivity (MainWindow* self);
 static void main_window_set_redo_sensitivity (MainWindow* self);
 static void main_window_update_next_prev_doc_sensitivity (MainWindow* self);
 static void main_window_update_build_tools_sensitivity (MainWindow* self);
+void main_window_update_config_project_sensitivity (MainWindow* self);
 static void main_window_update_cursor_position_statusbar (MainWindow* self);
-GType document_tab_get_type (void) G_GNUC_CONST;
-DocumentTab* main_window_get_active_tab (MainWindow* self);
-GType document_get_type (void) G_GNUC_CONST;
-Document* main_window_get_active_document (MainWindow* self);
-gint document_get_project_id (Document* self);
 static void __lambda77__gtk_notebook_switch_page (GtkNotebook* _sender, GtkNotebookPage* page, guint page_num, gpointer self);
 static void _lambda78_ (MainWindow* self);
 static void __lambda78__gtk_notebook_page_reordered (GtkNotebook* _sender, GtkWidget* p0, guint p1, gpointer self);
@@ -485,7 +483,9 @@ static gboolean _lambda80_ (MainWindow* self);
 static gboolean __lambda80__gtk_widget_focus_out_event (GtkWidget* _sender, GdkEventFocus* event, gpointer self);
 GtkWidget* search_and_replace_get_widget (SearchAndReplace* self);
 static void main_window_show_or_hide_widgets (MainWindow* self);
+GType document_get_type (void) G_GNUC_CONST;
 GList* main_window_get_documents (MainWindow* self);
+GType document_tab_get_type (void) G_GNUC_CONST;
 Document* document_tab_get_document (DocumentTab* self);
 static void _g_list_free_g_object_unref (GList* self);
 GList* main_window_get_unsaved_documents (MainWindow* self);
@@ -542,6 +542,7 @@ static void _lambda37_ (Block6Data* _data6_);
 gboolean main_window_close_tab (MainWindow* self, DocumentTab* tab, gboolean force_close);
 static void __lambda37__document_tab_close_document (DocumentTab* _sender, gpointer self);
 static void _lambda38_ (Block6Data* _data6_);
+DocumentTab* main_window_get_active_tab (MainWindow* self);
 static void __lambda38__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
 static void _lambda39_ (Block6Data* _data6_);
 static void __lambda39__g_object_notify (GObject* _sender, GParamSpec* pspec, gpointer self);
@@ -568,6 +569,7 @@ guint utils_get_window_workspace (GtkWindow* gtkwindow);
 #define UTILS_ALL_WORKSPACES ((guint) 0xffffff)
 char* document_tab_get_name (DocumentTab* self);
 char* document_tab_get_menu_tip (DocumentTab* self);
+Document* main_window_get_active_document (MainWindow* self);
 char* document_get_short_name_for_display (Document* self);
 char* utils_str_middle_truncate (const char* str, guint max_length);
 char* utils_get_dirname_for_display (GFile* location);
@@ -602,6 +604,7 @@ void build_tool_copy (const BuildTool* self, BuildTool* dest);
 void build_tool_destroy (BuildTool* self);
 GeeLinkedList* app_settings_get_build_tools (AppSettings* self);
 void build_view_show (BuildView* self);
+gint document_get_project_id (Document* self);
 GFile* document_get_main_file (Document* self);
 BuildToolRunner* build_tool_runner_new (GFile* file, BuildTool* tool, BuildView* view, GtkAction* action_stop_exec);
 BuildToolRunner* build_tool_runner_construct (GType object_type, GFile* file, BuildTool* tool, BuildView* view, GtkAction* action_stop_exec);
@@ -945,13 +948,12 @@ static void __lambda76__gtk_notebook_page_removed (GtkNotebook* _sender, GtkWidg
 static void _lambda77_ (GtkNotebookPage* pg, guint page_num, MainWindow* self) {
 	char* action_name;
 	GtkRadioAction* action;
-	GtkAction* action2;
-	gboolean _tmp0_ = FALSE;
 	g_return_if_fail (pg != NULL);
 	main_window_set_undo_sensitivity (self);
 	main_window_set_redo_sensitivity (self);
 	main_window_update_next_prev_doc_sensitivity (self);
 	main_window_update_build_tools_sensitivity (self);
+	main_window_update_config_project_sensitivity (self);
 	main_window_my_set_title (self);
 	main_window_update_cursor_position_statusbar (self);
 	action_name = g_strdup_printf ("Tab_%u", page_num);
@@ -959,17 +961,9 @@ static void _lambda77_ (GtkNotebookPage* pg, guint page_num, MainWindow* self) {
 	if (action != NULL) {
 		gtk_toggle_action_set_active ((GtkToggleAction*) action, TRUE);
 	}
-	action2 = _g_object_ref0 (gtk_action_group_get_action (self->priv->action_group, "ProjectsConfigCurrent"));
-	if (main_window_get_active_tab (self) != NULL) {
-		_tmp0_ = document_get_project_id (main_window_get_active_document (self)) != (-1);
-	} else {
-		_tmp0_ = FALSE;
-	}
-	gtk_action_set_sensitive (action2, _tmp0_);
 	g_object_notify ((GObject*) self, "active-tab");
 	g_object_notify ((GObject*) self, "active-document");
 	g_object_notify ((GObject*) self, "active-view");
-	_g_object_unref0 (action2);
 	_g_object_unref0 (action);
 	_g_free0 (action_name);
 }
@@ -1334,7 +1328,7 @@ static void main_window_initialize_menubar_and_toolbar (MainWindow* self) {
 		err = _inner_error_;
 		_inner_error_ = NULL;
 		{
-			g_error ("main_window.vala:504: %s", err->message);
+			g_error ("main_window.vala:500: %s", err->message);
 			_g_error_free0 (err);
 		}
 	}
@@ -2844,6 +2838,21 @@ static void main_window_update_build_tools_sensitivity (MainWindow* self) {
 }
 
 
+void main_window_update_config_project_sensitivity (MainWindow* self) {
+	GtkAction* action;
+	gboolean _tmp0_ = FALSE;
+	g_return_if_fail (self != NULL);
+	action = _g_object_ref0 (gtk_action_group_get_action (self->priv->action_group, "ProjectsConfigCurrent"));
+	if (main_window_get_active_tab (self) != NULL) {
+		_tmp0_ = document_get_project_id (main_window_get_active_document (self)) != (-1);
+	} else {
+		_tmp0_ = FALSE;
+	}
+	gtk_action_set_sensitive (action, _tmp0_);
+	_g_object_unref0 (action);
+}
+
+
 static void main_window_selection_changed (MainWindow* self) {
 	g_return_if_fail (self != NULL);
 	if (main_window_get_active_tab (self) != NULL) {
@@ -3309,12 +3318,14 @@ void main_window_on_projects_manage (MainWindow* self) {
 
 
 void main_window_on_help_latex_reference (MainWindow* self) {
+	char* _tmp0_;
+	GFile* _tmp1_;
 	GFile* file;
-	BuildToolRunner* _tmp0_;
+	BuildToolRunner* _tmp2_;
 	g_return_if_fail (self != NULL);
-	file = g_file_new_for_path (DATA_DIR "/latexhelp.html");
-	_tmp0_ = build_tool_runner_new_web_browser (file, _ ("View LaTeX Reference"), self->priv->build_view, self->priv->action_stop_exec);
-	_g_object_unref0 (_tmp0_);
+	file = (_tmp1_ = g_file_new_for_path (_tmp0_ = g_build_filename (DATA_DIR, "latexhelp.html", NULL, NULL)), _g_free0 (_tmp0_), _tmp1_);
+	_tmp2_ = build_tool_runner_new_web_browser (file, _ ("View LaTeX Reference"), self->priv->build_view, self->priv->action_stop_exec);
+	_g_object_unref0 (_tmp2_);
 	_g_object_unref0 (file);
 }
 
