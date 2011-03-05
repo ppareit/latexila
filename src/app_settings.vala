@@ -687,6 +687,10 @@ public class AppSettings : GLib.Settings
                 return;
 
             case "tool":
+                // the description is optional
+                if (current_build_tool.description == null)
+                    current_build_tool.description = current_build_tool.label;
+
                 build_tools.add (current_build_tool);
                 if (current_tool_is_view_dvi)
                 {
@@ -721,13 +725,13 @@ public class AppSettings : GLib.Settings
         switch (context.get_element ())
         {
             case "job":
-                current_build_job.command = text;
+                current_build_job.command = text.strip ();
                 break;
             case "label":
-                current_build_tool.label = text;
+                current_build_tool.label = text.strip ();
                 break;
             case "description":
-                current_build_tool.description = text;
+                current_build_tool.description = text.strip ();
                 break;
         }
     }

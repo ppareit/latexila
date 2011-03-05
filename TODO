@@ -1,23 +1,5 @@
 TODO
 
-- Rubber doesn't support filenames with spaces
-  See https://bugs.launchpad.net/rubber/+bug/639983
-
-- Consider using Latexmk instead of Rubber:
-	- See http://www.phys.psu.edu/~collins/software/latexmk-jcc/
-	- Filenames with spaces are supported.
-	- Latexmk is highly configurable, it seems a better solution.
-	- Latexmk is still developed, whereas rubber doesn't seem still in life.
-	- Unfortunately the output of the latex or pdflatex commands are not filtered.
-	  We can filter the messages internally, as in latexila 0.2 or Kile.
-	  Or we can improve latexmk (written in Perl) so it is useful for other projects.
-	- An example of command (PDF output):
-	  $ latexmk -pdf -e '$pdflatex=q/pdflatex %O -interaction=nonstopmode %S/' file.tex
-	  It's not really beautiful, but we must use -interaction=nonstopmode.
-	  Another means is to use an RC file (option -r instead of -e).
-	- In the output of latexmk we can see which commands are executed, and how many times.
-	  It would be useful to show this information too.
-
 LaTeXila 2.2 or later
 =====================
 See also the Roadmap:
@@ -25,9 +7,8 @@ See also the Roadmap:
 
 - Build Tools:
 	- latexmk post processor:
-		- based on latex post processor but show more information (which commands, how many times, etc)
-		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)
-	- by default show only latexmk, hide the rest
+		- make a good parsing, show useful information in a clear way
+		- expand only the last 'latex' or 'pdflatex' rule
 	- preferences dialog: double click on a build tool -> open properties
 	- bottom panel:
 		- show/hide errors/warnings/badboxes buttons

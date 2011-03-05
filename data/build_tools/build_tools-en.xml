@@ -1,23 +1,42 @@
 <tools>
-  <tool show="true" extensions=".tex" icon="compile_dvi">
-    <label>LaTeX → DVI</label>
-    <description>Create a DVI from LaTeX source</description>
-    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all $filename</job>
-    <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
-  </tool>
+  <!-- Latexmk -->
 
   <tool show="true" extensions=".tex" icon="compile_pdf">
-    <label>LaTeX → PDF</label>
-    <description>Create a PDF from LaTeX source</description>
-    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --pdf $filename</job>
+    <label>LaTeX → PDF (Latexmk)</label>
+    <job mustSucceed="true" postProcessor="latexmk">latexmk -pdf $filename</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
+  </tool>
+
+  <tool show="true" extensions=".tex" icon="compile_dvi">
+    <label>LaTeX → DVI → PDF (Latexmk)</label>
+    <job mustSucceed="true" postProcessor="latexmk">latexmk -pdfdvi $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
 
   <tool show="true" extensions=".tex" icon="compile_ps">
-    <label>LaTeX → PS</label>
-    <description>Create a PostScript from LaTeX source</description>
-    <job mustSucceed="true" postProcessor="rubber">rubber --maxerr -1 --short --force --warn all --ps $filename</job>
+    <label>LaTeX → DVI → PS → PDF (Latexmk)</label>
+    <job mustSucceed="true" postProcessor="latexmk">latexmk -pdfps $filename</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
+  </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_dvi">
+    <label>LaTeX → DVI (Latexmk)</label>
+    <job mustSucceed="true" postProcessor="latexmk">latexmk $filename</job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
+  </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_ps">
+    <label>LaTeX → DVI → PS (Latexmk)</label>
+    <job mustSucceed="true" postProcessor="latexmk">latexmk -ps $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
+  </tool>
+
+  <!-- View DVI/PDF/PS -->
+
+  <tool show="true" extensions=".tex .pdf" icon="view_pdf">
+    <label>View PDF</label>
+    <description>View the PDF file</description>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
 
   <tool show="true" extensions=".tex .dvi" icon="view_dvi">
@@ -26,17 +45,53 @@
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
   </tool>
 
-  <tool show="true" extensions=".tex .pdf" icon="view_pdf">
-    <label>View PDF</label>
-    <description>View the PDF file</description>
-    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
-  </tool>
-
   <tool show="true" extensions=".tex .ps" icon="view_ps">
     <label>View PS</label>
     <description>View the PostScript file</description>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
+
+  <!-- Rubber -->
+
+  <tool show="false" extensions=".tex" icon="compile_pdf">
+    <label>LaTeX → PDF (Rubber)</label>
+    <job mustSucceed="true" postProcessor="rubber">
+      rubber --maxerr -1 --short --force --warn all --pdf $filename
+    </job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
+  </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_dvi">
+    <label>LaTeX → DVI (Rubber)</label>
+    <job mustSucceed="true" postProcessor="rubber">
+      rubber --maxerr -1 --short --force --warn all $filename
+    </job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
+  </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_ps">
+    <label>LaTeX → DVI → PS (Rubber)</label>
+    <job mustSucceed="true" postProcessor="rubber">
+      rubber --maxerr -1 --short --force --warn all --ps $filename
+    </job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
+  </tool>
+
+  <!-- latex, pdflatex -->
+
+  <tool show="false" extensions=".tex" icon="compile_pdf">
+    <label>LaTeX → PDF (pdflatex)</label>
+    <description>Create a PDF file from LaTeX sources with the 'pdflatex' command</description>
+    <job mustSucceed="true" postProcessor="latex">pdflatex -interaction=nonstopmode $filename</job>
+  </tool>
+
+  <tool show="false" extensions=".tex" icon="compile_dvi">
+    <label>LaTeX → DVI (latex)</label>
+    <description>Create a DVI file from LaTeX sources with the 'latex' command</description>
+    <job mustSucceed="true" postProcessor="latex">latex -interaction=nonstopmode $filename</job>
+  </tool>
+
+  <!-- BibTeX, MakeIndex -->
 
   <tool show="false" extensions=".tex" icon="gtk-execute">
     <label>BibTeX</label>
@@ -49,6 +104,8 @@
     <description>Run MakeIndex</description>
     <job mustSucceed="true" postProcessor="all-output">makeindex $shortname.idx</job>
   </tool>
+
+  <!-- Convert -->
 
   <tool show="false" extensions=".tex" icon="gtk-convert">
     <label>DVI → PDF</label>
@@ -66,17 +123,5 @@
     <label>PS → PDF</label>
     <description>Convert the PostScript document to the PDF format</description>
     <job mustSucceed="true" postProcessor="all-output">ps2pdf $shortname.ps</job>
-  </tool>
-
-  <tool show="false" extensions=".tex" icon="compile_dvi">
-    <label>LaTeX → DVI (simple)</label>
-    <description>Create a DVI from LaTeX source with the &quot;latex&quot; command</description>
-    <job mustSucceed="true" postProcessor="latex">latex -interaction=nonstopmode $filename</job>
-  </tool>
-
-  <tool show="false" extensions=".tex" icon="compile_pdf">
-    <label>LaTeX → PDF (simple)</label>
-    <description>Create a PDF from LaTeX source with the &quot;pdflatex&quot; command</description>
-    <job mustSucceed="true" postProcessor="latex">pdflatex -interaction=nonstopmode $filename</job>
   </tool>
 </tools>
