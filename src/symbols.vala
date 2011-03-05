@@ -806,7 +806,7 @@ public class Symbols : VBox
         button.clicked.connect (() =>
         {
             mus_store.clear ();
-            AppSettings.get_default ().clear_most_used_symbols ();
+            MostUsedSymbols.get_default ().clear ();
         });
 
         categories_view.selection_changed.connect (() =>
@@ -861,7 +861,7 @@ public class Symbols : VBox
                 main_window.active_view.grab_focus ();
 
                 // insert to most used symbol
-                AppSettings.get_default ().add_symbol (id, latex_command,
+                MostUsedSymbols.get_default ().add_symbol (id, latex_command,
                     package != "" ? package : null);
             }
         });
@@ -904,7 +904,7 @@ public class Symbols : VBox
     public static void reload_most_used_symbols ()
     {
         Gee.List<MostUsedSymbol?> most_used_symbols =
-            AppSettings.get_default ().get_most_used_symbols ();
+            MostUsedSymbols.get_default ().get_most_used_symbols ();
 
         mus_store.clear ();
 

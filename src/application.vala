@@ -245,8 +245,8 @@ public class Application : GLib.Object
             {
                 AppSettings app_settings = AppSettings.get_default ();
                 app_settings.save_build_tools ();
-                app_settings.save_most_used_symbols ();
                 app_settings.save_projects ();
+                MostUsedSymbols.get_default ().save ();
                 Gtk.main_quit ();
             }
             else if (window == active_window)
