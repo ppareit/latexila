@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,351 +17,267 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gtk;
+using Gee;
 
-public class Projects : GLib.Object
+public struct Project
 {
-    public static void new_project (MainWindow main_window)
+    public File directory;
+    public File main_file;
+}
+
+public class Projects
+{
+    private static Projects instance = null;
+
+    private LinkedList<Project?> projects;
+    private bool modified = false;
+
+    private Projects ()
     {
-        Dialog dialog = new Dialog.with_buttons (_("New Project"), main_window,
-            DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_NEW, ResponseType.OK,
-            null);
+        projects = new LinkedList<Project?> ();
 
-        /* create dialog widgets */
-        VBox content_area = (VBox) dialog.get_content_area ();
-
-        HBox hbox = new HBox (false, 6);
-        VBox vbox1 = new VBox (true, 6);
-        VBox vbox2 = new VBox (true, 6);
-        hbox.pack_start (vbox1, false, false);
-        hbox.pack_start (vbox2);
-        hbox.border_width = 6;
-
-        Label label1 = new Label (null);
-        label1.set_markup ("<b>" + _("Directory:") + "</b>");
-        Label label2 = new Label (null);
-        label2.set_markup ("<b>" + _("Main File:") + "</b>");
-        vbox1.pack_start (label1);
-        vbox1.pack_start (label2);
-
-        FileChooserButton file_chooser_button1 = new FileChooserButton (_("Directory"),
-            FileChooserAction.SELECT_FOLDER);
-        FileChooserButton file_chooser_button2 = new FileChooserButton (_("Main File"),
-            FileChooserAction.OPEN);
-
-        vbox2.pack_start (file_chooser_button1);
-        vbox2.pack_start (file_chooser_button2);
-
-        content_area.pack_start (hbox);
-        content_area.show_all ();
-
-        /* callbacks */
-        file_chooser_button1.file_set.connect (() =>
-        {
-            File dir = file_chooser_button1.get_file ();
-            try
-            {
-                file_chooser_button2.set_current_folder_file (dir);
-            }
-            catch (Error e) {}
-        });
-
-        /* if a document is opened, go to the document's directory */
-        Document? doc = main_window.active_document;
-        if (doc != null)
-        {
-            try
-            {
-                file_chooser_button1.set_file (doc.location.get_parent ());
-                file_chooser_button2.set_file (doc.location);
-            }
-            catch (GLib.Error e) {}
-        }
-
-        while (dialog.run () == ResponseType.OK)
-        {
-            File? directory = file_chooser_button1.get_file ();
-            File? main_file = file_chooser_button2.get_file ();
-
-            if (directory == null || main_file == null)
-                continue;
-
-            // main file not in directory
-            if (! main_file_is_in_directory (dialog, main_file, directory))
-                continue;
-
-            // try to add the project
-            Project project = Project ();
-            project.directory = directory;
-            project.main_file = main_file;
-
-            File conflict;
-            if (AppSettings.get_default ().add_project (project, out conflict))
-                break;
-
-            // conflict with another project
-            Dialog error_dialog = new MessageDialog (dialog,
-                DialogFlags.DESTROY_WITH_PARENT,
-                MessageType.ERROR,
-                ButtonsType.OK,
-                _("There is a conflict with the project \"%s\"."),
-                Utils.replace_home_dir_with_tilde (conflict.get_parse_name ()) + "/");
-            error_dialog.run ();
-            error_dialog.destroy ();
-        }
-
-        dialog.destroy ();
-    }
-
-    // returns true if configuration changed
-    public static bool configure_project (Window main_window, int project_id)
-    {
-        Project? project = AppSettings.get_default ().get_project (project_id);
-        return_val_if_fail (project != null, false);
-
-        Dialog dialog = new Dialog.with_buttons (_("Configure Project"),
-            main_window,
-            DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_OK, ResponseType.OK,
-            null);
-
-        /* create dialog widgets */
-        VBox content_area = (VBox) dialog.get_content_area ();
-
-        Label location = new Label (_("Location of the project: %s").printf (
-            Utils.replace_home_dir_with_tilde (project.directory.get_parse_name ())
-            + "/"));
-        location.set_line_wrap (true);
-
-        content_area.pack_start (location, false, false, 6);
-
-        HBox hbox = new HBox (false, 6);
-        content_area.pack_start (hbox);
-
-        Label label = new Label (_("Main File:"));
-        hbox.pack_start (label, false, false);
-
-        FileChooserButton file_chooser_button = new FileChooserButton (_("Main File"),
-            FileChooserAction.OPEN);
-        hbox.pack_start (file_chooser_button);
-
-        content_area.show_all ();
+        /* load projects from the XML file */
+        File file = get_xml_file ();
+        if (! file.query_exists ())
+            return;
 
         try
         {
-            file_chooser_button.set_file (project.main_file);
+            string contents;
+            file.load_contents (null, out contents);
+
+            MarkupParser parser = { parser_start, null, null, null, null };
+            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+
+            update_all_documents ();
+            update_all_menus ();
         }
-        catch (Error e) {}
-
-        /* run */
-        bool ret = false;
-        while (dialog.run () == ResponseType.OK)
+        catch (GLib.Error e)
         {
-            File? main_file = file_chooser_button.get_file ();
-
-            if (main_file == null)
-                continue;
-
-            // main file not in directory
-            if (! main_file_is_in_directory (dialog, main_file, project.directory))
-                continue;
-
-            ret = AppSettings.get_default ().project_change_main_file (project_id,
-                main_file);
-            break;
+            stderr.printf ("Warning: impossible to load projects: %s\n",
+                e.message);
         }
-
-        dialog.destroy ();
-        return ret;
     }
 
-    private static enum ProjectColumn
+    public static Projects get_default ()
     {
-        DIRECTORY,
-        MAIN_FILE,
-        N_COLUMNS
+        if (instance == null)
+            instance = new Projects ();
+        return instance;
     }
 
-    public static void manage_projects (MainWindow main_window)
+    public Project? get (int id)
     {
-        Dialog dialog = new Dialog.with_buttons (_("Manage Projects"),
-            main_window,
-            DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CLOSE, ResponseType.OK,
-            null);
-
-        VBox content_area = (VBox) dialog.get_content_area ();
-
-        /* treeview */
-        ListStore store = new ListStore (ProjectColumn.N_COLUMNS, typeof (string),
-            typeof (string));
-        update_model (store);
-
-        TreeView treeview = new TreeView.with_model (store);
-        treeview.set_size_request (400, 150);
-        treeview.rules_hint = true;
-
-        // column directory
-        TreeViewColumn column = new TreeViewColumn ();
-        treeview.append_column (column);
-        column.title = _("Directory");
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        pixbuf_renderer.stock_id = STOCK_DIRECTORY;
-        column.pack_start (pixbuf_renderer, false);
-
-        CellRendererText text_renderer = new CellRendererText ();
-        column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", ProjectColumn.DIRECTORY, null);
-
-        // column main file
-        column = new TreeViewColumn ();
-        treeview.append_column (column);
-        column.title = _("Main File");
-
-        pixbuf_renderer = new CellRendererPixbuf ();
-        pixbuf_renderer.stock_id = STOCK_FILE;
-        column.pack_start (pixbuf_renderer, false);
-
-        text_renderer = new CellRendererText ();
-        column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", ProjectColumn.MAIN_FILE, null);
-
-        // selection
-        TreeSelection select = treeview.get_selection ();
-        select.set_mode (SelectionMode.SINGLE);
-
-        // with scrollbar
-        var sw = Utils.add_scrollbar (treeview);
-        content_area.pack_start (sw);
-
-        /* buttons */
-        HBox hbox = new HBox (false, 5);
-        content_area.pack_start (hbox, false, false, 5);
-
-        Button edit_button = new Button.from_stock (STOCK_PROPERTIES);
-        Button delete_button = new Button.from_stock (STOCK_DELETE);
-
-        Button clear_all_button = new Button.with_label (_("Clear All"));
-        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.MENU);
-        clear_all_button.set_image (image);
-
-        hbox.pack_start (edit_button);
-        hbox.pack_start (delete_button);
-        hbox.pack_start (clear_all_button);
-
-        content_area.show_all ();
-
-        /* callbacks */
-        edit_button.clicked.connect (() =>
-        {
-            int i = Utils.get_selected_row (treeview);
-            if (i != -1 && configure_project (dialog, i))
-                update_model (store);
-        });
-
-        delete_button.clicked.connect (() =>
-        {
-            TreeIter iter;
-            int i = Utils.get_selected_row (treeview, out iter);
-            if (i == -1)
-                return;
-
-            string directory;
-            TreeModel model = (TreeModel) store;
-            model.get (iter, ProjectColumn.DIRECTORY, out directory, -1);
-
-            Dialog delete_dialog = new MessageDialog (dialog,
-                DialogFlags.DESTROY_WITH_PARENT,
-                MessageType.QUESTION, ButtonsType.NONE,
-                _("Do you really want to delete the project \"%s\"?"),
-                directory);
-
-            delete_dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
-                STOCK_DELETE, ResponseType.YES);
-
-            if (delete_dialog.run () == ResponseType.YES)
-            {
-                store.remove (iter);
-                AppSettings.get_default ().delete_project (i);
-            }
-
-            delete_dialog.destroy ();
-        });
-
-        clear_all_button.clicked.connect (() =>
-        {
-            Dialog clear_dialog = new MessageDialog (dialog,
-                DialogFlags.DESTROY_WITH_PARENT,
-                MessageType.QUESTION,
-                ButtonsType.NONE,
-                _("Do you really want to clear all projects?"));
-
-            clear_dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
-
-            Button button = new Button.with_label (_("Clear All"));
-            Image img = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
-            button.set_image (img);
-            button.show_all ();
-            clear_dialog.add_action_widget (button, ResponseType.YES);
-
-            if (clear_dialog.run () == ResponseType.YES)
-            {
-                AppSettings.get_default ().clear_all_projects ();
-                store.clear ();
-            }
-
-            clear_dialog.destroy ();
-        });
-
-        dialog.run ();
-        dialog.destroy ();
+        return_val_if_fail (id >= 0 && id < projects.size, null);
+        return projects[id];
     }
 
-    private static bool main_file_is_in_directory (Window window, File main_file,
-        File directory)
+    public unowned LinkedList<Project?> get_projects ()
     {
-        if (main_file.has_prefix (directory))
-            return true;
-
-        Dialog error_dialog = new MessageDialog (window,
-            DialogFlags.DESTROY_WITH_PARENT,
-            MessageType.ERROR,
-            ButtonsType.OK,
-            _("The Main File is not in the directory."));
-
-        error_dialog.run ();
-        error_dialog.destroy ();
-        return false;
+        return projects;
     }
 
-    private static void update_model (ListStore model)
+    private void update_all_menus ()
     {
-        model.clear ();
+        foreach (MainWindow window in Application.get_default ().windows)
+            window.update_config_project_sensitivity ();
+    }
 
-        unowned Gee.LinkedList<Project?> projects =
-            AppSettings.get_default ().get_projects ();
-
+    // returns true if project successfully added
+    public bool add (Project new_project, out File conflict_file)
+    {
         foreach (Project project in projects)
         {
-            string uri_directory = project.directory.get_parse_name ();
-            string uri_main_file = project.main_file.get_parse_name ();
+            if (conflict (project.directory, new_project.directory))
+            {
+                conflict_file = project.directory;
+                return false;
+            }
+        }
 
-            string dir = Utils.replace_home_dir_with_tilde (uri_directory) + "/";
+        projects.add (new_project);
+        modified = true;
 
-            // relative path
-            string main_file =
-                uri_main_file[uri_directory.length + 1 : uri_main_file.length];
+        // find if some opened documents are belonging to the new project
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            if (doc.project_id != -1)
+                continue;
 
-            TreeIter iter;
-            model.append (out iter);
-            model.set (iter,
-                ProjectColumn.DIRECTORY, dir,
-                ProjectColumn.MAIN_FILE, main_file,
-                -1);
+            if (doc.location.has_prefix (new_project.directory))
+                doc.project_id = projects.size - 1;
+        }
+
+        update_all_menus ();
+
+        return true;
+    }
+
+    // returns true if main file changed
+    public bool change_main_file (int num, File new_main_file)
+    {
+        return_val_if_fail (num >= 0 && num < projects.size, false);
+        Project project = projects[num];
+
+        if (new_main_file.equal (project.main_file))
+            return false;
+
+        return_if_fail (new_main_file.has_prefix (project.directory));
+
+        project.main_file = new_main_file;
+        projects[num] = project;
+        modified = true;
+
+        // refresh docs
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            if (doc.project_id == num)
+                doc.project_id = num;
+        }
+
+        return true;
+    }
+
+    public void delete (int num)
+    {
+        return_if_fail (num >= 0 && num < projects.size);
+        projects.remove_at (num);
+
+        // refresh docs
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            if (doc.project_id == num)
+                doc.project_id = -1;
+            else if (doc.project_id > num)
+                doc.project_id--;
+        }
+
+        update_all_menus ();
+    }
+
+    public void clear_all ()
+    {
+        projects.clear ();
+        update_all_documents ();
+        update_all_menus ();
+    }
+
+    private void update_all_documents ()
+    {
+        GLib.List<Document> docs = Application.get_default ().get_documents ();
+        foreach (Document doc in docs)
+        {
+            doc.project_id = -1;
+
+            for (int i = 0 ; i < projects.size ; i++)
+            {
+                if (doc.location.has_prefix (projects[i].directory))
+                {
+                    doc.project_id = i;
+                    break;
+                }
+            }
         }
     }
+
+    private void parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "projects":
+                return;
+
+            case "project":
+                Project project = Project ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "directory":
+                            project.directory = File.new_for_uri (attr_values[i]);
+                            break;
+                        case "main_file":
+                            project.main_file = File.new_for_uri (attr_values[i]);
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                projects.add (project);
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private File get_xml_file ()
+    {
+        string path = Path.build_filename (Environment.get_user_data_dir (),
+            "latexila", "projects.xml", null);
+        return File.new_for_path (path);
+    }
+
+    public void save ()
+    {
+        if (! modified)
+            return;
+
+        File file = get_xml_file ();
+
+        // if empty, delete the file
+        if (projects.size == 0)
+        {
+            Utils.delete_file (file);
+            return;
+        }
+
+        string content = "<projects>\n";
+        foreach (Project project in projects)
+        {
+            content += "  <project directory=\"%s\" main_file=\"%s\" />\n".printf (
+                project.directory.get_uri (), project.main_file.get_uri ());
+        }
+        content += "</projects>\n";
+
+        try
+        {
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
+            file.replace_contents (content, content.size (), null, false,
+                FileCreateFlags.NONE, null, null);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: impossible to save projects: %s\n",
+                e.message);
+        }
+    }
+
+    // returns true if dir1 is a subdirectory of dir2, or inversely
+    private bool conflict (File dir1, File dir2)
+    {
+        return dir1.has_prefix (dir2) || dir2.has_prefix (dir1) || dir1.equal (dir2);
+    }
+
+//    private void print_summary ()
+//    {
+//        stdout.printf ("\n=== PROJECTS ===\n");
+//        foreach (Project project in projects)
+//        {
+//            stdout.printf ("\n= PROJECT =\n");
+//            stdout.printf ("directory: %s\n", project.directory.get_parse_name ());
+//            stdout.printf ("main file: %s\n", project.main_file.get_parse_name ());
+//        }
+//    }
 }

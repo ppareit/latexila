@@ -224,8 +224,7 @@ public class DocumentTab : VBox
 
             if (document.project_id != -1)
             {
-                Project? project =
-                    AppSettings.get_default ().get_project (document.project_id);
+                Project? project = Projects.get_default ().get (document.project_id);
                 if (project == null)
                     return;
 

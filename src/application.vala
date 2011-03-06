@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -243,7 +243,7 @@ public class Application : GLib.Object
             windows.remove (window);
             if (windows.length () == 0)
             {
-                AppSettings.get_default ().save_projects ();
+                Projects.get_default ().save ();
                 BuildTools.get_default ().save ();
                 MostUsedSymbols.get_default ().save ();
                 Gtk.main_quit ();

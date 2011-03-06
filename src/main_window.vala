@@ -1731,19 +1731,19 @@ public class MainWindow : Window
 
     public void on_projects_new ()
     {
-        Projects.new_project (this);
+        ProjectDialogs.new_project (this);
     }
 
     public void on_projects_config_current ()
     {
         return_if_fail (active_tab != null);
         return_if_fail (active_document.project_id != -1);
-        Projects.configure_project (this, active_document.project_id);
+        ProjectDialogs.configure_project (this, active_document.project_id);
     }
 
     public void on_projects_manage ()
     {
-        Projects.manage_projects (this);
+        ProjectDialogs.manage_projects (this);
     }
 
     /* Help */
