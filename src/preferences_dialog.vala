@@ -453,11 +453,11 @@ public class PreferencesDialog : Dialog
 
             int num = path_string.to_int ();
             unowned LinkedList<BuildTool?> build_tools =
-                AppSettings.get_default ().get_build_tools ();
+                BuildTools.get_default ().get_build_tools ();
             BuildTool build_tool = build_tools.get (num);
             build_tool.show = val;
 
-            AppSettings.get_default ().update_build_tool (num, build_tool);
+            BuildTools.get_default ().update (num, build_tool);
         });
     }
 
@@ -466,7 +466,7 @@ public class PreferencesDialog : Dialog
         build_tools_store.clear ();
 
         unowned LinkedList<BuildTool?> tools =
-            AppSettings.get_default ().get_build_tools ();
+            BuildTools.get_default ().get_build_tools ();
         foreach (BuildTool tool in tools)
         {
             TreeIter iter;
@@ -521,7 +521,7 @@ public class PreferencesDialog : Dialog
             if (dialog.run () == ResponseType.YES)
             {
                 build_tools_store.remove (iter);
-                AppSettings.get_default ().delete_build_tool (i);
+                BuildTools.get_default ().delete (i);
             }
 
             dialog.destroy ();
@@ -537,7 +537,7 @@ public class PreferencesDialog : Dialog
                 if (Utils.tree_model_iter_prev (build_tools_store, ref iter2))
                 {
                     build_tools_store.swap (iter1, iter2);
-                    AppSettings.get_default ().move_build_tool_up (i);
+                    BuildTools.get_default ().move_up (i);
                 }
             }
         });
@@ -552,7 +552,7 @@ public class PreferencesDialog : Dialog
                 if (build_tools_store.iter_next (ref iter2))
                 {
                     build_tools_store.swap (iter1, iter2);
-                    AppSettings.get_default ().move_build_tool_down (i);
+                    BuildTools.get_default ().move_down (i);
                 }
             }
         });
@@ -564,7 +564,7 @@ public class PreferencesDialog : Dialog
 
             if (dialog.run () == ResponseType.YES)
             {
-                AppSettings.get_default ().reset_all_build_tools ();
+                BuildTools.get_default ().reset_all ();
                 update_build_tools_store ();
             }
 

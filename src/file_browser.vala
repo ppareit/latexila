@@ -254,25 +254,25 @@ public class FileBrowser : VBox
                 return;
             }
 
-            AppSettings app_settings = AppSettings.get_default ();
+            BuildTools build_tools = BuildTools.get_default ();
             string extension = Utils.get_extension (basename);
             switch (extension)
             {
             // View DVI
             case ".dvi":
-                new BuildToolRunner (file, app_settings.build_tool_view_dvi, build_view,
+                new BuildToolRunner (file, build_tools.view_dvi, build_view,
                     main_window.get_action_stop_exec ());
                 break;
 
             // View PDF
             case ".pdf":
-                new BuildToolRunner (file, app_settings.build_tool_view_pdf, build_view,
+                new BuildToolRunner (file, build_tools.view_pdf, build_view,
                     main_window.get_action_stop_exec ());
                 break;
 
             // View PS
             case ".ps":
-                new BuildToolRunner (file, app_settings.build_tool_view_ps, build_view,
+                new BuildToolRunner (file, build_tools.view_ps, build_view,
                     main_window.get_action_stop_exec ());
                 break;
 

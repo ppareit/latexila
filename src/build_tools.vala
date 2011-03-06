@@ -1,0 +1,422 @@
+/*
+ * This file is part of LaTeXila.
+ *
+ * Copyright © 2010-2011 Sébastien Wilmet
+ *
+ * LaTeXila is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * LaTeXila is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+using Gee;
+
+public struct BuildJob
+{
+    public bool must_succeed;
+    public string post_processor;
+    public string command;
+    public string[] command_args;
+}
+
+public struct BuildTool
+{
+    public string description;
+    public string extensions;
+    public string label;
+    public string icon;
+    public bool show;
+    public bool compilation;
+    public unowned GLib.List<BuildJob?> jobs;
+}
+
+public class BuildTools : GLib.Object
+{
+    private static BuildTools instance = null;
+
+    private LinkedList<BuildTool?> build_tools;
+    private BuildTool cur_tool;
+    private BuildJob cur_job;
+
+    public BuildTool view_dvi { get; private set; }
+    public BuildTool view_pdf { get; private set; }
+    public BuildTool view_ps  { get; private set; }
+
+    private bool cur_tool_is_view_dvi = false;
+    private bool cur_tool_is_view_pdf = false;
+    private bool cur_tool_is_view_ps  = false;
+
+    private bool modified = false;
+
+    private BuildTools ()
+    {
+        load ();
+    }
+
+    public static BuildTools get_default ()
+    {
+        if (instance == null)
+            instance = new BuildTools ();
+        return instance;
+    }
+
+    public unowned LinkedList<BuildTool?> get_build_tools ()
+    {
+        return build_tools;
+    }
+
+    public void move_up (int num)
+    {
+        return_if_fail (num > 0);
+        swap (num, num - 1);
+    }
+
+    public void move_down (int num)
+    {
+        return_if_fail (num < build_tools.size - 1);
+        swap (num, num + 1);
+    }
+
+    private void swap (int num1, int num2)
+    {
+        return_if_fail (build_tools != null);
+
+        BuildTool tool = build_tools.get (num1);
+        build_tools.remove_at (num1);
+        build_tools.insert (num2, tool);
+        update_all_menus ();
+    }
+
+    public void delete (int num)
+    {
+        return_if_fail (build_tools != null);
+
+        return_if_fail (num >= 0 && num < build_tools.size);
+        build_tools.remove_at (num);
+        update_all_menus ();
+    }
+
+    public void add (BuildTool tool)
+    {
+        return_if_fail (build_tools != null);
+
+        tool.compilation = is_compilation (tool.icon);
+        build_tools.add (tool);
+        update_all_menus ();
+    }
+
+    public void update (int num, BuildTool tool, bool keep_show = false)
+    {
+        return_if_fail (build_tools != null);
+        return_if_fail (num >= 0 && num < build_tools.size);
+        BuildTool current_tool = build_tools.get (num);
+
+        if (keep_show)
+            tool.show = current_tool.show;
+
+        if (! is_equal (current_tool, tool))
+        {
+            tool.compilation = is_compilation (tool.icon);
+            build_tools.remove_at (num);
+            build_tools.insert (num, tool);
+            update_all_menus ();
+        }
+    }
+
+    public void reset_all ()
+    {
+        File file = get_user_config_file ();
+        if (file.query_exists ())
+            Utils.delete_file (file);
+        load ();
+        update_all_menus ();
+    }
+
+    private bool is_equal (BuildTool tool1, BuildTool tool2)
+    {
+        if (tool1.show != tool2.show
+            || tool1.label != tool2.label
+            || tool1.description != tool2.description
+            || tool1.extensions != tool2.extensions
+            || tool1.icon != tool2.icon
+            || tool1.jobs.length () != tool2.jobs.length ())
+            return false;
+
+        for (uint i = 0 ; i < tool1.jobs.length () ; i++)
+        {
+            BuildJob job1 = tool1.jobs.nth_data (i);
+            BuildJob job2 = tool2.jobs.nth_data (i);
+
+            if (job1.command != job2.command
+                || job1.must_succeed != job2.must_succeed
+                || job1.post_processor != job2.post_processor)
+                return false;
+        }
+
+        return true;
+    }
+
+    /*
+    private void print_summary ()
+    {
+        stdout.printf ("\n=== build tools summary ===\n");
+        foreach (BuildTool tool in build_tools)
+            stdout.printf ("%s\n", tool.label);
+    }
+    */
+
+    private void update_all_menus ()
+    {
+        modified = true;
+        foreach (MainWindow window in Application.get_default ().windows)
+            window.update_build_tools_menu ();
+    }
+
+    private bool is_compilation (string icon)
+    {
+        // If it's a compilation, the file browser is refreshed after the execution.
+        return icon.contains ("compile")
+            || icon == Gtk.STOCK_EXECUTE
+            || icon == Gtk.STOCK_CONVERT;
+    }
+
+    private void load ()
+    {
+        build_tools = new LinkedList<BuildTool?> ();
+
+        // First, try to load the user config file if it exists.
+        // Otherwise try to load the default config file translated.
+        // If the translated file doesn't exist or there is no translation
+        // available, try to load the default file.
+
+        File[] files = {};
+        files += get_user_config_file ();
+        files += File.new_for_path (Path.build_filename (Config.DATA_DIR, "build_tools",
+            _("build_tools-en.xml"), null));
+
+        File default_file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
+            "build_tools", "build_tools-en.xml", null));
+
+        // if no translation is available, there is only two files to test
+        if (! default_file.equal (files[1]))
+            files += default_file;
+
+        foreach (File file in files)
+        {
+            try
+            {
+                if (! file.query_exists ())
+                    continue;
+
+                string contents;
+                file.load_contents (null, out contents);
+
+                MarkupParser parser =
+                    { parser_start, parser_end, parser_text, null, null };
+                MarkupParseContext context =
+                    new MarkupParseContext (parser, 0, this, null);
+                context.parse (contents, -1);
+                break;
+            }
+            catch (GLib.Error e)
+            {
+                stderr.printf ("Warning: impossible to load build tools: %s\n",
+                    e.message);
+            }
+        }
+    }
+
+    private void parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "tools":
+            case "label":
+            case "description":
+                return;
+
+            case "tool":
+                cur_tool = BuildTool ();
+                cur_tool.compilation = false;
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "show":
+                            cur_tool.show = attr_values[i].to_bool ();
+                            break;
+                        case "extensions":
+                            cur_tool.extensions = attr_values[i];
+                            break;
+                        case "icon":
+                            string icon = attr_values[i];
+                            cur_tool.icon = icon;
+                            switch (icon)
+                            {
+                                case "view_dvi":
+                                    cur_tool_is_view_dvi = true;
+                                    break;
+                                case "view_pdf":
+                                    cur_tool_is_view_pdf = true;
+                                    break;
+                                case "view_ps":
+                                    cur_tool_is_view_ps = true;
+                                    break;
+                            }
+                            cur_tool.compilation = is_compilation (icon);
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                break;
+
+            case "job":
+                cur_job = BuildJob ();
+                for (int i = 0 ; i < attr_names.length ; i++)
+                {
+                    switch (attr_names[i])
+                    {
+                        case "mustSucceed":
+                            cur_job.must_succeed = attr_values[i].to_bool ();
+                            break;
+                        case "postProcessor":
+                            cur_job.post_processor = attr_values[i];
+                            break;
+                        default:
+                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                                "unknown attribute \"" + attr_names[i] + "\"");
+                    }
+                }
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private void parser_end (MarkupParseContext context, string name) throws MarkupError
+    {
+        switch (name)
+        {
+            case "tools":
+            case "label":
+            case "description":
+                return;
+
+            case "tool":
+                // the description is optional
+                if (cur_tool.description == null)
+                    cur_tool.description = cur_tool.label;
+
+                build_tools.add (cur_tool);
+                if (cur_tool_is_view_dvi)
+                {
+                    view_dvi = cur_tool;
+                    cur_tool_is_view_dvi = false;
+                }
+                else if (cur_tool_is_view_pdf)
+                {
+                    view_pdf = cur_tool;
+                    cur_tool_is_view_pdf = false;
+                }
+                else if (cur_tool_is_view_ps)
+                {
+                    view_ps = cur_tool;
+                    cur_tool_is_view_ps = false;
+                }
+                break;
+
+            case "job":
+                cur_tool.jobs.append (cur_job);
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private void parser_text (MarkupParseContext context, string text, size_t text_len)
+        throws MarkupError
+    {
+        switch (context.get_element ())
+        {
+            case "job":
+                cur_job.command = text.strip ();
+                break;
+            case "label":
+                cur_tool.label = text.strip ();
+                break;
+            case "description":
+                cur_tool.description = text.strip ();
+                break;
+        }
+    }
+
+    public void save ()
+    {
+        return_if_fail (build_tools != null);
+
+        if (! modified)
+            return;
+
+        string content = "<tools>";
+        foreach (BuildTool tool in build_tools)
+        {
+            content += "\n  <tool show=\"%s\" extensions=\"%s\" icon=\"%s\">\n".printf (
+                tool.show.to_string (), tool.extensions, tool.icon);
+
+            content += Markup.printf_escaped ("    <label>%s</label>\n", tool.label);
+            content += Markup.printf_escaped ("    <description>%s</description>\n",
+                tool.description);
+
+            foreach (BuildJob job in tool.jobs)
+            {
+                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">".printf (
+                    job.must_succeed.to_string (),
+                    job.post_processor);
+
+                content += Markup.printf_escaped ("%s</job>\n", job.command);
+            }
+            content += "  </tool>\n";
+        }
+        content += "</tools>\n";
+
+        try
+        {
+            File file = get_user_config_file ();
+
+            // check if parent directories exist, if not, create it
+            File parent = file.get_parent ();
+            if (parent != null && ! parent.query_exists ())
+                parent.make_directory_with_parents ();
+
+            // a backup is made
+            file.replace_contents (content, content.size (), null, true,
+                FileCreateFlags.NONE, null, null);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Warning: impossible to save build tools: %s\n", e.message);
+        }
+    }
+
+    private File get_user_config_file ()
+    {
+        string path = Path.build_filename (Environment.get_user_config_dir (),
+            "latexila", "build_tools.xml", null);
+        return File.new_for_path (path);
+    }
+}

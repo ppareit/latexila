@@ -304,8 +304,8 @@ private class BuildToolDialog : Dialog
         else
         {
             unowned LinkedList<BuildTool?> tools =
-                AppSettings.get_default ().get_build_tools ();
-            instance.init_with_build_tool (tools.get (num));
+                BuildTools.get_default ().get_build_tools ();
+            instance.init_with_build_tool (tools[num]);
         }
 
         treeview_jobs.columns_autosize ();
@@ -415,10 +415,10 @@ private class BuildToolDialog : Dialog
             if (num == -1)
             {
                 tool.show = true;
-                AppSettings.get_default ().append_build_tool (tool);
+                BuildTools.get_default ().add (tool);
             }
             else
-                AppSettings.get_default ().update_build_tool (num, tool, true);
+                BuildTools.get_default ().update (num, tool, true);
 
             hide ();
             return true;

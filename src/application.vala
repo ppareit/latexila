@@ -243,9 +243,8 @@ public class Application : GLib.Object
             windows.remove (window);
             if (windows.length () == 0)
             {
-                AppSettings app_settings = AppSettings.get_default ();
-                app_settings.save_build_tools ();
-                app_settings.save_projects ();
+                AppSettings.get_default ().save_projects ();
+                BuildTools.get_default ().save ();
                 MostUsedSymbols.get_default ().save ();
                 Gtk.main_quit ();
             }
