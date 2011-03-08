@@ -297,7 +297,7 @@ public class Templates : GLib.Object
         /* icon view for the personnal templates */
         IconView icon_view = create_icon_view (personnal_store);
         icon_view.set_selection_mode (SelectionMode.MULTIPLE);
-        Widget component = get_dialog_component (_("Personnal templates"), icon_view);
+        Widget component = get_dialog_component (_("Personal templates"), icon_view);
         content_area.pack_start (component, true, true, 10);
         content_area.show_all ();
 
