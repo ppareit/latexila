@@ -40,7 +40,7 @@ public class MainWindow : Window
         { "FileCreateTemplate", null, N_("Create _Template From Document..."), null,
             N_("Create a new template from the current document"), on_create_template },
         { "FileDeleteTemplate", null, N_("_Delete Template..."), null,
-            N_("Delete personnal template(s)"), on_delete_template },
+            N_("Delete personal template(s)"), on_delete_template },
         { "FileClose", STOCK_CLOSE, null, null,
             N_("Close the current file"), on_file_close },
         { "FileQuit", STOCK_QUIT, null, null,
