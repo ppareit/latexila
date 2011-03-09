@@ -1,17 +1,17 @@
 <schemalist>
-  <schema id="org.gnome.latexila" path="/apps/latexila/">
-    <child name="preferences" schema="org.gnome.latexila.preferences" />
-    <child name="state" schema="org.gnome.latexila.state" />
+  <schema id="org.gnome.latexila" path="/org/gnome/latexila/">
+    <child schema="org.gnome.latexila.preferences" name="preferences" />
+    <child schema="org.gnome.latexila.state" name="state" />
   </schema>
 
-  <schema id="org.gnome.latexila.preferences" path="/apps/latexila/preferences/">
-    <child name="editor" schema="org.gnome.latexila.preferences.editor" />
-    <child name="ui" schema="org.gnome.latexila.preferences.ui" />
-    <child name="latex" schema="org.gnome.latexila.preferences.latex" />
-    <child name="file-browser" schema="org.gnome.latexila.preferences.file-browser" />
+  <schema id="org.gnome.latexila.preferences" path="/org/gnome/latexila/preferences/">
+    <child schema="org.gnome.latexila.preferences.editor" name="editor" />
+    <child schema="org.gnome.latexila.preferences.ui" name="ui" />
+    <child schema="org.gnome.latexila.preferences.latex" name="latex" />
+    <child schema="org.gnome.latexila.preferences.file-browser" name="file-browser" />
   </schema>
 
-  <schema id="org.gnome.latexila.preferences.editor" path="/apps/latexila/preferences/editor/">
+  <schema id="org.gnome.latexila.preferences.editor" path="/org/gnome/latexila/preferences/editor/">
     <key name="use-default-font" type="b">
       <default>true</default>
       <summary>Use Default Font</summary>
@@ -87,7 +87,7 @@
     </key>
   </schema>
 
-  <schema id="org.gnome.latexila.preferences.ui" path="/apps/latexila/preferences/ui/">
+  <schema id="org.gnome.latexila.preferences.ui" path="/org/gnome/latexila/preferences/ui/">
     <key name="edit-toolbar-visible" type="b">
       <default>true</default>
       <summary>Edit toolbar is visible</summary>
@@ -124,7 +124,7 @@
     -->
   </schema>
 
-  <schema id="org.gnome.latexila.preferences.latex" path="/apps/latexila/preferences/latex/">
+  <schema id="org.gnome.latexila.preferences.latex" path="/org/gnome/latexila/preferences/latex/">
     <key name="interactive-completion" type="b">
       <default>true</default>
       <summary>Interactive completion</summary>
@@ -157,7 +157,7 @@
     </key>
   </schema>
 
-  <schema id="org.gnome.latexila.preferences.file-browser" path="/apps/latexila/preferences/file-browser/">
+  <schema id="org.gnome.latexila.preferences.file-browser" path="/org/gnome/latexila/preferences/file-browser/">
     <key name="current-directory" type="s">
       <default>''</default>
       <summary>Current directory</summary>
@@ -185,11 +185,11 @@
     </key>
   </schema>
 
-  <schema id="org.gnome.latexila.state" path="/apps/latexila/state/">
-    <child name="window" schema="org.gnome.latexila.state.window"/>
+  <schema id="org.gnome.latexila.state" path="/org/gnome/latexila/state/">
+    <child schema="org.gnome.latexila.state.window" name="window" />
   </schema>
 
-  <schema id="org.gnome.latexila.state.window" path="/apps/latexila/state/window/">
+  <schema id="org.gnome.latexila.state.window" path="/org/gnome/latexila/state/window/">
     <key name="state" type="i">
       <default>0</default>
     </key>
