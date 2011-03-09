@@ -363,7 +363,17 @@ public class FileBrowser : VBox
                             pixbuf = "view_dvi";
                             break;
                         case ".ps":
+                        case ".eps":
                             pixbuf = "view_ps";
+                            break;
+                        case ".png":
+                        case ".jpg":
+                        case ".jpeg":
+                        case ".gif":
+                        case ".bmp":
+                        case ".tif":
+                        case ".tiff":
+                            pixbuf = "image";
                             break;
                         default:
                             pixbuf = STOCK_FILE;

@@ -99,7 +99,8 @@ public class Application : GLib.Object
 	    { Config.DATA_DIR + "/images/icons/mathaccent9.png", "mathaccent9" },
 	    { Config.DATA_DIR + "/images/icons/mathaccent10.png", "mathaccent10" },
 	    { Config.DATA_DIR + "/images/icons/completion_choice.png", "completion_choice" },
-	    { Config.DATA_DIR + "/images/icons/completion_cmd.png", "completion_cmd" }
+	    { Config.DATA_DIR + "/images/icons/completion_cmd.png", "completion_cmd" },
+	    { Config.DATA_DIR + "/images/icons/image.png", "image" }
     };
 
     public static int NEW_WINDOW = 1;

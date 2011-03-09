@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,7 +91,7 @@ namespace Utils
     // get file's extension (with the dot)
     public string get_extension (string path)
     {
-        return path[get_extension_pos (path):path.length];
+        return path[get_extension_pos (path):path.length].down ();
     }
 
     private long get_extension_pos (string path)
