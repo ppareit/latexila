@@ -47,9 +47,11 @@ public class BuildToolRunner : GLib.Object
 
     public signal void finished ();
 
-    public BuildToolRunner (File file, BuildTool tool, BuildView view,
+    public BuildToolRunner (File file, BuildTool? tool, BuildView view,
         Gtk.Action action_stop_exec)
     {
+        return_if_fail (tool != null);
+
         this.file = file;
         this.compilation = tool.compilation;
         this.action_stop_exec = action_stop_exec;

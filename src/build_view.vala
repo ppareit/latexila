@@ -29,7 +29,10 @@ public enum PartitionState
 
 public enum BuildMessageType
 {
-    ERROR, WARNING, BADBOX, OTHER
+    ERROR,
+    WARNING,
+    BADBOX,
+    OTHER
 }
 
 public struct BuildIssue

@@ -260,20 +260,20 @@ public class FileBrowser : VBox
             {
             // View DVI
             case ".dvi":
-                new BuildToolRunner (file, build_tools.view_dvi, build_view,
-                    main_window.get_action_stop_exec ());
+                new BuildToolRunner (file, build_tools.get_view_doc (DocType.DVI),
+                    build_view, main_window.get_action_stop_exec ());
                 break;
 
             // View PDF
             case ".pdf":
-                new BuildToolRunner (file, build_tools.view_pdf, build_view,
-                    main_window.get_action_stop_exec ());
+                new BuildToolRunner (file, build_tools.get_view_doc (DocType.PDF),
+                    build_view, main_window.get_action_stop_exec ());
                 break;
 
             // View PS
             case ".ps":
-                new BuildToolRunner (file, build_tools.view_ps, build_view,
-                    main_window.get_action_stop_exec ());
+                new BuildToolRunner (file, build_tools.get_view_doc (DocType.PS),
+                    build_view, main_window.get_action_stop_exec ());
                 break;
 
             // Open document

@@ -38,6 +38,14 @@ public struct BuildTool
     public unowned GLib.List<BuildJob?> jobs;
 }
 
+public enum DocType
+{
+    DVI,
+    PDF,
+    PS,
+    LAST
+}
+
 public class BuildTools
 {
     private static BuildTools instance = null;
@@ -45,14 +53,6 @@ public class BuildTools
     private LinkedList<BuildTool?> build_tools;
     private BuildTool cur_tool;
     private BuildJob cur_job;
-
-    public BuildTool view_dvi { get; private set; }
-    public BuildTool view_pdf { get; private set; }
-    public BuildTool view_ps  { get; private set; }
-
-    private bool cur_tool_is_view_dvi = false;
-    private bool cur_tool_is_view_pdf = false;
-    private bool cur_tool_is_view_ps  = false;
 
     private bool modified = false;
 
@@ -77,6 +77,23 @@ public class BuildTools
     public Iterator<BuildTool?> iterator ()
     {
         return (Iterator<BuildTool?>) build_tools.iterator ();
+    }
+
+    public BuildTool? get_view_doc (DocType type)
+    {
+        string[] icon = new string[DocType.LAST];
+        icon[DocType.DVI] = "view_dvi";
+        icon[DocType.PDF] = "view_pdf";
+        icon[DocType.PS] = "view_ps";
+
+        // we take the first match
+        foreach (BuildTool build_tool in build_tools)
+        {
+            if (build_tool.icon == icon[type])
+                return build_tool;
+        }
+
+        return null;
     }
 
     public bool is_empty ()
@@ -269,21 +286,8 @@ public class BuildTools
                             cur_tool.extensions = attr_values[i];
                             break;
                         case "icon":
-                            string icon = attr_values[i];
-                            cur_tool.icon = icon;
-                            switch (icon)
-                            {
-                                case "view_dvi":
-                                    cur_tool_is_view_dvi = true;
-                                    break;
-                                case "view_pdf":
-                                    cur_tool_is_view_pdf = true;
-                                    break;
-                                case "view_ps":
-                                    cur_tool_is_view_ps = true;
-                                    break;
-                            }
-                            cur_tool.compilation = is_compilation (icon);
+                            cur_tool.icon = attr_values[i];
+                            cur_tool.compilation = is_compilation (attr_values[i]);
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -330,23 +334,7 @@ public class BuildTools
                 // the description is optional
                 if (cur_tool.description == null)
                     cur_tool.description = cur_tool.label;
-
                 build_tools.add (cur_tool);
-                if (cur_tool_is_view_dvi)
-                {
-                    view_dvi = cur_tool;
-                    cur_tool_is_view_dvi = false;
-                }
-                else if (cur_tool_is_view_pdf)
-                {
-                    view_pdf = cur_tool;
-                    cur_tool_is_view_pdf = false;
-                }
-                else if (cur_tool_is_view_ps)
-                {
-                    view_ps = cur_tool;
-                    cur_tool_is_view_ps = false;
-                }
                 break;
 
             case "job":
