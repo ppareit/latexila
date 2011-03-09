@@ -38,7 +38,7 @@ public struct BuildTool
     public unowned GLib.List<BuildJob?> jobs;
 }
 
-public class BuildTools : GLib.Object
+public class BuildTools
 {
     private static BuildTools instance = null;
 
@@ -68,9 +68,20 @@ public class BuildTools : GLib.Object
         return instance;
     }
 
-    public unowned LinkedList<BuildTool?> get_build_tools ()
+    public BuildTool? get (int id)
     {
-        return build_tools;
+        return_val_if_fail (id >= 0 && id < build_tools.size, null);
+        return build_tools[id];
+    }
+
+    public Iterator<BuildTool?> iterator ()
+    {
+        return (Iterator<BuildTool?>) build_tools.iterator ();
+    }
+
+    public bool is_empty ()
+    {
+        return build_tools.size == 0;
     }
 
     public void move_up (int num)

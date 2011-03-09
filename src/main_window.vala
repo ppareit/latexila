@@ -1128,10 +1128,9 @@ public class MainWindow : Window
             build_tools_action_group.remove_action (action);
         }
 
-        unowned Gee.LinkedList<BuildTool?> build_tools =
-            BuildTools.get_default ().get_build_tools ();
+        BuildTools build_tools = BuildTools.get_default ();
 
-        uint id = build_tools.size > 0 ? ui_manager.new_merge_id () : 0;
+        uint id = build_tools.is_empty () ? 0 : ui_manager.new_merge_id ();
 
         int i = 0;
         int j = 0;
@@ -1174,9 +1173,7 @@ public class MainWindow : Window
         string[] _name = action.name.split ("_");
         int i = _name[1].to_int ();
 
-        unowned Gee.LinkedList<BuildTool?> build_tools =
-            BuildTools.get_default ().get_build_tools ();
-        BuildTool tool = build_tools[i];
+        BuildTool tool = BuildTools.get_default ()[i];
 
         //Utils.print_build_tool (tool);
 
@@ -1368,10 +1365,8 @@ public class MainWindow : Window
 
         string ext = Utils.get_extension (active_document.location.get_parse_name ());
 
-        unowned Gee.LinkedList<BuildTool?> tools =
-            BuildTools.get_default ().get_build_tools ();
         int i = 0;
-        foreach (BuildTool tool in tools)
+        foreach (BuildTool tool in BuildTools.get_default ())
         {
             if (! tool.show)
             {

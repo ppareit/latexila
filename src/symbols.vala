@@ -903,12 +903,9 @@ public class Symbols : VBox
 
     public static void reload_most_used_symbols ()
     {
-        Gee.List<MostUsedSymbol?> most_used_symbols =
-            MostUsedSymbols.get_default ().get_most_used_symbols ();
-
         mus_store.clear ();
 
-        foreach (MostUsedSymbol mus in most_used_symbols)
+        foreach (MostUsedSymbol mus in MostUsedSymbols.get_default ())
         {
             var symbol = get_symbol_info_from_most_used (mus);
             insert_symbol (mus_store, -1, symbol);

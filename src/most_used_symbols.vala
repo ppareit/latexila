@@ -69,10 +69,11 @@ public class MostUsedSymbols : GLib.Object
         return instance;
     }
 
-    public Gee.List<MostUsedSymbol?>? get_most_used_symbols ()
+    public Iterator<MostUsedSymbol?> iterator ()
     {
         int max = settings.get_int ("nb-most-used-symbols");
-        return most_used_symbols.slice (0, int.min (max, most_used_symbols.size));
+        var slice = most_used_symbols.slice (0, int.min (max, most_used_symbols.size));
+        return (Iterator<MostUsedSymbol?>) slice.iterator ();
     }
 
     public void clear ()

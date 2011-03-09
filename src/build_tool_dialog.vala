@@ -302,11 +302,7 @@ private class BuildToolDialog : Dialog
         if (num == -1)
             instance.init_new_build_tool ();
         else
-        {
-            unowned LinkedList<BuildTool?> tools =
-                BuildTools.get_default ().get_build_tools ();
-            instance.init_with_build_tool (tools[num]);
-        }
+            instance.init_with_build_tool (BuildTools.get_default ()[num]);
 
         treeview_jobs.columns_autosize ();
     }

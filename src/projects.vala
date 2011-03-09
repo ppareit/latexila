@@ -73,9 +73,9 @@ public class Projects
         return projects[id];
     }
 
-    public unowned LinkedList<Project?> get_projects ()
+    public Iterator<Project?> iterator ()
     {
-        return projects;
+        return (Iterator<Project?>) projects.iterator ();
     }
 
     private void update_all_menus ()

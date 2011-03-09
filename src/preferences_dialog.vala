@@ -452,12 +452,11 @@ public class PreferencesDialog : Dialog
             build_tools_store.set (iter, BuildToolColumn.SHOW, val, -1);
 
             int num = path_string.to_int ();
-            unowned LinkedList<BuildTool?> build_tools =
-                BuildTools.get_default ().get_build_tools ();
-            BuildTool build_tool = build_tools.get (num);
+            BuildTools build_tools = BuildTools.get_default ();
+            BuildTool build_tool = build_tools[num];
             build_tool.show = val;
 
-            BuildTools.get_default ().update (num, build_tool);
+            build_tools.update (num, build_tool);
         });
     }
 
@@ -465,9 +464,7 @@ public class PreferencesDialog : Dialog
     {
         build_tools_store.clear ();
 
-        unowned LinkedList<BuildTool?> tools =
-            BuildTools.get_default ().get_build_tools ();
-        foreach (BuildTool tool in tools)
+        foreach (BuildTool tool in BuildTools.get_default ())
         {
             TreeIter iter;
             build_tools_store.append (out iter);

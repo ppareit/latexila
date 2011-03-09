@@ -340,10 +340,7 @@ namespace ProjectDialogs
     {
         model.clear ();
 
-        unowned Gee.LinkedList<Project?> projects =
-            Projects.get_default ().get_projects ();
-
-        foreach (Project project in projects)
+        foreach (Project project in Projects.get_default ())
         {
             string uri_directory = project.directory.get_parse_name ();
             string uri_main_file = project.main_file.get_parse_name ();

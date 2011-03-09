@@ -277,16 +277,15 @@ public class Document : Gtk.SourceBuffer
 
     private void update_project_id ()
     {
-        unowned Gee.LinkedList<Project?> projects =
-            Projects.get_default ().get_projects ();
-
-        for (int i = 0 ; i < projects.size ; i++)
+        int i = 0;
+        foreach (Project project in Projects.get_default ())
         {
-            if (location.has_prefix (projects[i].directory))
+            if (location.has_prefix (project.directory))
             {
                 project_id = i;
                 return;
             }
+            i++;
         }
     }
 
