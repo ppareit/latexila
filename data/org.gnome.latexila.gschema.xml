@@ -78,7 +78,7 @@
       <description>Whether LaTeXila should highlight matching brackets.</description>
     </key>
     <key name="web-browser" type="s">
-      <default>'gnome-open'</default>
+      <default>'xdg-open'</default>
       <summary>Web browser</summary>
     </key>
     <key name="nb-most-used-symbols" type="i">
@@ -136,7 +136,7 @@
       <description>Minimum number of characters after '\' for interactive completion</description>
     </key>
     <key name="document-view-program" type="s">
-      <default>'gnome-open'</default>
+      <default>'xdg-open'</default>
       <summary>Document view program</summary>
       <description>Program for viewing documents (PDF, DVI, PS)</description>
     </key>
