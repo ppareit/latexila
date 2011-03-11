@@ -85,6 +85,8 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
     private static Regex? reg_file_pop = null;
     private static Regex? reg_other_bytes = null;
 
+    private static Regex? reg_spaces = null;
+
     public LatexPostProcessor ()
     {
         if (reg_badbox == null)
@@ -111,6 +113,8 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
                 reg_file_pop = new Regex ("(\\) )?:<-$");
                 reg_other_bytes = new Regex ("([0-9]+) bytes");
+
+                reg_spaces = new Regex ("[[:space:]]{2,}");
             }
             catch (RegexError e)
             {
@@ -214,7 +218,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return true;
 
             case FilterStatus.BADBOX:
-                line_buf += line;
+                line_buf += @" $line";
                 nb_lines++;
                 if (detect_badbox_line (line_buf, line.length == 0))
                 {
@@ -321,7 +325,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return false;
 
             case FilterStatus.WARNING:
-                line_buf += line;
+                line_buf += @" $line";
                 nb_lines++;
                 if (detect_warning_line (line_buf, line.length == 0))
                 {
@@ -429,7 +433,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return false;
 
             case FilterStatus.ERROR:
-                line_buf += line;
+                line_buf += @" $line";
                 nb_lines++;
 
                 if (line[line.length - 1] == '.')
@@ -792,6 +796,18 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
     {
         if (set_filename)
             msg.filename = get_current_filename ();
+
+        try
+        {
+            // A message on several lines are sometimes indented, so when the lines are
+            // catenated there are a lot of spaces. We replace these spaces by one space.
+            msg.message = reg_spaces.replace (msg.message, -1, 0, " ");
+        }
+        catch (RegexError e)
+        {
+            stderr.printf ("Latex post processor warning: %s\n", e.message);
+        }
+
         issues.add (msg);
 
         msg.message = null;
