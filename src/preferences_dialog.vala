@@ -113,6 +113,7 @@ public class PreferencesDialog : Dialog
             Label interactive_comp_label =
                 (Label) builder.get_object ("interactive_comp_label");
             var document_view_program = builder.get_object ("document_view_program");
+            var latexmk_checkbutton = builder.get_object ("latexmk_checkbutton");
             var web_browser = builder.get_object ("web_browser");
             var nb_most_used_symbols = builder.get_object ("nb_most_used_symbols");
 
@@ -181,6 +182,8 @@ public class PreferencesDialog : Dialog
                 interactive_comp_spinbutton, "value",
                 SettingsBindFlags.DEFAULT);
             latex_settings.bind ("document-view-program", document_view_program, "text",
+                SettingsBindFlags.DEFAULT);
+            latex_settings.bind ("latexmk-always-show-all", latexmk_checkbutton, "active",
                 SettingsBindFlags.DEFAULT);
             latex_settings.bind ("no-confirm-clean", confirm_clean_up_checkbutton,
                 "active", SettingsBindFlags.DEFAULT);

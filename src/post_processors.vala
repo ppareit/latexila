@@ -183,9 +183,12 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
     private PostProcessorIssues[] all_issues = {};
 
     private static Regex? reg_rule = null;
+    private bool show_all;
 
-    public LatexmkPostProcessor ()
+    public LatexmkPostProcessor (bool show_all = false)
     {
+        this.show_all = show_all;
+
         if (reg_rule == null)
         {
             try
@@ -222,7 +225,9 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
 
         MatchInfo match_info;
         reg_rule.match (output, 0, out match_info);
-        for (int i = 0 ; match_info.matches () ; i++)
+
+        int i;
+        for (i = 0 ; match_info.matches () ; i++)
         {
             PostProcessorIssues pp_issues = PostProcessorIssues ();
             pp_issues.partition_msg = match_info.fetch_named ("line");
@@ -285,7 +290,13 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
             return_if_fail (latex_issues.length == 1
                 && latex_issues[0].partition_msg == null);
 
-            all_issues[last_latex_cmd_index].issues.add_all (latex_issues[0].issues);
+            // Almost all the time, the user wants to see only the latex output.
+            // If an error has occured, we verify if the last command was a latex command.
+            // If it is the case, there is no need to show all output.
+            if (! show_all && (successful || last_latex_cmd_index == i - 1))
+                all_issues = latex_issues;
+            else
+                all_issues[last_latex_cmd_index].issues.add_all (latex_issues[0].issues);
         }
     }
 

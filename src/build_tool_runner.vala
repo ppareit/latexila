@@ -31,6 +31,7 @@ public class BuildToolRunner : GLib.Object
     private BuildView view;
     private bool compilation;
     private string document_view_program;
+    private bool latexmk_show_all;
     private Gtk.Action action_stop_exec;
 
     private File file;
@@ -63,6 +64,7 @@ public class BuildToolRunner : GLib.Object
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
         document_view_program = settings.get_string ("document-view-program");
+        latexmk_show_all = settings.get_boolean ("latexmk-always-show-all");
 
         // verify if file extension is allowed for the build tool
         string[] extensions = tool.extensions.split (" ");
@@ -256,7 +258,7 @@ public class BuildToolRunner : GLib.Object
                 post_processor = new LatexPostProcessor ();
                 break;
             case "latexmk":
-                post_processor = new LatexmkPostProcessor ();
+                post_processor = new LatexmkPostProcessor (latexmk_show_all);
                 break;
             case "no-output":
                 post_processor = new NoOutputPostProcessor ();
