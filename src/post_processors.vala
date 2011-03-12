@@ -183,6 +183,7 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
     private PostProcessorIssues[] all_issues = {};
 
     private static Regex? reg_rule = null;
+    private static Regex? reg_no_rule = null;
     private bool show_all;
 
     public LatexmkPostProcessor (bool show_all = false)
@@ -205,6 +206,12 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
 
                 reg_rule = new Regex (reg_rule_str,
                     RegexCompileFlags.MULTILINE | RegexCompileFlags.OPTIMIZE);
+
+                string reg_no_rule_str = "^(Latexmk: This is Latexmk.*\n)?";
+                reg_no_rule_str += "(\\*{4} Report bugs.*\n)?";
+                reg_no_rule_str += "(?P<output>(.*\n)*)";
+
+                reg_no_rule = new Regex (reg_no_rule_str, RegexCompileFlags.MULTILINE);
             }
             catch (RegexError e)
             {
@@ -217,8 +224,8 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
     {
         //stdout.printf ("*** OUTPUT ***\n\n%s\n\n*** END OUTPUT ***\n\n", output);
         successful = status == 0;
-        if (reg_rule == null)
-            return;
+
+        return_if_fail (reg_rule != null && reg_no_rule != null);
 
         string latex_output = null;
         int last_latex_cmd_index = 0;
@@ -298,6 +305,24 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
             else
                 all_issues[last_latex_cmd_index].issues.add_all (latex_issues[0].issues);
         }
+
+        if (i > 0)
+            return;
+
+        // show all output since there were no rule executed
+
+        PostProcessor all_output_pp = new AllOutputPostProcessor ();
+
+        if (reg_no_rule.match (output, 0, out match_info))
+        {
+            // almost all output
+            string all_output = match_info.fetch_named ("output");
+            all_output_pp.process (file, all_output, 0);
+        }
+        else
+            all_output_pp.process (file, output, 0);
+
+        all_issues = all_output_pp.get_issues ();
     }
 
     public PostProcessorIssues[] get_issues ()
