@@ -196,10 +196,12 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
                 reg_rule_str += "Running '(?P<cmd>.*)'\n";
                 reg_rule_str += "-{12}\n";
                 reg_rule_str += "Latexmk: applying rule .*\n";
-                reg_rule_str += "(?P<output>(.*\n)*)";
-                reg_rule_str += "Latexmk:.*";
+                reg_rule_str += "(For rule '.*', running .*\n)?";
+                reg_rule_str += "(?P<output>(?U)(.*\n)*)"; // ungreedy
+                reg_rule_str += "(Latexmk:|Rule '.*':)";
+
                 reg_rule = new Regex (reg_rule_str,
-                    RegexCompileFlags.MULTILINE | RegexCompileFlags.UNGREEDY);
+                    RegexCompileFlags.MULTILINE | RegexCompileFlags.OPTIMIZE);
             }
             catch (RegexError e)
             {
