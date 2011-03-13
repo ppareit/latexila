@@ -17,7 +17,7 @@
   <object class="GtkNotebook" id="notebook">
     <property name="visible">True</property>
     <property name="can_focus">True</property>
-    <property name="border_width">6</property>
+    <property name="border_width">5</property>
     <child>
       <object class="GtkVBox" id="vbox_editor">
         <property name="visible">True</property>

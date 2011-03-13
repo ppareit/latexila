@@ -128,7 +128,7 @@
       <summary>Interactive completion</summary>
       <description>Automatically show commands proposals</description>
     </key>
-    <key name="interactive-completion-num" type="i">
+    <key name="interactive-completion-num" type="u">
       <default>2</default>
       <summary>Interactive completion min chars</summary>
       <description>Minimum number of characters after '\' for interactive completion</description>
