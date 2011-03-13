@@ -108,7 +108,6 @@
       <summary>Side panel component</summary>
       <description>Side panel active component. 0: Symbols. 1: File browser.</description>
     </key>
-    <!--
     <key name="show-build-errors" type="b">
       <default>true</default>
       <summary>Show build output errors</summary>
@@ -121,7 +120,6 @@
       <default>true</default>
       <summary>Show build output badboxes</summary>
     </key>
-    -->
   </schema>
 
   <schema id="org.gnome.latexila.preferences.latex" path="/org/gnome/latexila/preferences/latex/">

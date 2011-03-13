@@ -5,25 +5,23 @@ LaTeXila 2.2 or later
 See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
-- Build Tools:
-	- latexmk post processor:
-		- make a good parsing, show useful information in a clear way
-		- expand only the last 'latex' or 'pdflatex' rule
-	- preferences dialog: double click on a build tool -> open properties
-	- bottom panel:
-		- show/hide errors/warnings/badboxes buttons
-		- right click menu: copy the line to the clipboard
-
 - List of chapters, sections, etc to easily navigate in a document
 
-- Check spelling
+- Migrate to GTK+ 3.0 and Vala 0.12
 
-- Auto-completion:
+(-) Build Tools:
+	- preferences dialog: double click on a build tool -> open properties
+	- bottom panel:
+		- right click menu: copy the line to the clipboard
+
+(-) Check spelling
+
+(-) Auto-completion:
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)
 
-- Edit toolbar:
+(-) Edit toolbar:
 	- create a custom MenuToolButton:
 	  Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.
 	  It would be better if the icon is the last item used (and we can click on it).

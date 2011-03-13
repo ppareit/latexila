@@ -63,14 +63,13 @@ public class BuildView : HBox
         N_COLUMNS
     }
 
-    /*
     public bool show_errors { get; set; }
     public bool show_warnings { get; set; }
     public bool show_badboxes { get; set; }
-    */
 
     private unowned MainWindow main_window;
     private TreeStore store;
+    private TreeModelFilter filtered_model;
     private TreeView view;
     private unowned ToggleAction action_view_bottom_panel;
 
@@ -92,8 +91,32 @@ public class BuildView : HBox
             typeof (string)     // line (same as start line but for display)
         );
 
+        /* filter errors/warnings/badboxes */
+        filtered_model = new TreeModelFilter (store, null);
+        filtered_model.set_visible_func ((model, iter) =>
+        {
+            BuildMessageType msg_type;
+            model.get (iter, BuildInfo.MESSAGE_TYPE, out msg_type, -1);
+
+            switch (msg_type)
+            {
+                case BuildMessageType.ERROR:
+                    return show_errors;
+                case BuildMessageType.WARNING:
+                    return show_warnings;
+                case BuildMessageType.BADBOX:
+                    return show_badboxes;
+                default:
+                    return true;
+            }
+        });
+
+        this.notify["show-errors"].connect (() => filtered_model.refilter ());
+        this.notify["show-warnings"].connect (() => filtered_model.refilter ());
+        this.notify["show-badboxes"].connect (() => filtered_model.refilter ());
+
         /* create tree view */
-        view = new TreeView.with_model (store);
+        view = new TreeView.with_model (filtered_model);
 
         TreeViewColumn column_job = new TreeViewColumn ();
         column_job.title = _("Job");
@@ -126,7 +149,6 @@ public class BuildView : HBox
         Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
-        //close_button.name = "my-close-button";
         close_button.tooltip_text = _("Hide panel");
         close_button.add (new Image.from_stock (STOCK_CLOSE, IconSize.MENU));
         close_button.clicked.connect (() =>
@@ -149,38 +171,39 @@ public class BuildView : HBox
         TreePath path, bool path_currently_selected)
     {
         TreeIter iter;
-        if (model.get_iter (out iter, path))
+        if (! model.get_iter (out iter, path))
+            // the row is not selected
+            return false;
+
+        BuildMessageType msg_type;
+        string filename;
+        int start_line, end_line;
+
+        model.get (iter,
+            BuildInfo.MESSAGE_TYPE, out msg_type,
+            BuildInfo.FILENAME, out filename,
+            BuildInfo.START_LINE, out start_line,
+            BuildInfo.END_LINE, out end_line,
+            -1);
+
+        if (msg_type != BuildMessageType.OTHER && filename != null
+            && filename.length > 0)
         {
-            BuildMessageType msg_type;
-            string filename;
-            int start_line, end_line;
+            jump_to_file (filename, start_line, end_line);
 
-            model.get (iter,
-                BuildInfo.MESSAGE_TYPE, out msg_type,
-                BuildInfo.FILENAME, out filename,
-                BuildInfo.START_LINE, out start_line,
-                BuildInfo.END_LINE, out end_line,
-                -1);
+            // the row is selected
+            return true;
+        }
 
-            if (msg_type != BuildMessageType.OTHER && filename != null
-                && filename.length > 0)
+        // maybe it's a parent, so we can show or hide its children
+        else if (msg_type == BuildMessageType.OTHER)
+        {
+            if (model.iter_has_child (iter))
             {
-                jump_to_file (filename, start_line, end_line);
-
-                // the row is selected
-                return true;
-            }
-
-            // maybe it's a parent, so we can show or hide its children
-            else if (msg_type == BuildMessageType.OTHER)
-            {
-                if (model.iter_has_child (iter))
-                {
-                    if (view.is_row_expanded (path))
-                        view.collapse_row (path);
-                    else
-                        view.expand_to_path (path);
-                }
+                if (view.is_row_expanded (path))
+                    view.collapse_row (path);
+                else
+                    view.expand_to_path (path);
             }
         }
 

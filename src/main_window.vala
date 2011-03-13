@@ -140,15 +140,13 @@ public class MainWindow : Window
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), on_show_bottom_panel },
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
-            N_("Show or hide the edit toolbar"), on_show_edit_toolbar }
-        /*
+            N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "BuildShowErrors", STOCK_DIALOG_ERROR, N_("Show _Errors"), null,
             N_("Show Errors"), on_build_show_errors },
         { "BuildShowWarnings", STOCK_DIALOG_WARNING, N_("Show _Warnings"), null,
             N_("Show Warnings"), on_build_show_warnings },
         { "BuildShowBadBoxes", "badbox", N_("Show _BadBoxes"), null,
             N_("Show BadBoxes"), on_build_show_badboxes }
-        */
     };
 
     private string file_chooser_current_folder = Environment.get_home_dir ();
@@ -434,6 +432,7 @@ public class MainWindow : Window
         add (main_vbox);
         show ();
         show_or_hide_widgets ();
+        show_or_hide_build_messages ();
     }
 
     public List<Document> get_documents ()
@@ -578,7 +577,6 @@ public class MainWindow : Window
         action.set_active (show);
     }
 
-    /*
     private void show_or_hide_build_messages ()
     {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
@@ -599,7 +597,6 @@ public class MainWindow : Window
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         action.set_active (show_badboxes);
     }
-    */
 
     public BuildView get_build_view ()
     {
@@ -1086,7 +1083,6 @@ public class MainWindow : Window
 
         settings_ui.set_int ("side-panel-component", side_panel.get_active_component ());
 
-        /*
         action = (ToggleAction) action_group.get_action ("BuildShowErrors");
         settings_ui.set_boolean ("show-build-errors", action.active);
 
@@ -1095,7 +1091,6 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         settings_ui.set_boolean ("show-build-badboxes", action.active);
-        */
 
         if (sync)
         {
@@ -1672,7 +1667,6 @@ public class MainWindow : Window
             tab.document.readonly = true;
     }
 
-    /*
     public void on_build_show_errors (Gtk.Action action)
     {
         build_view.show_errors = ((ToggleAction) action).active;
@@ -1687,7 +1681,6 @@ public class MainWindow : Window
     {
         build_view.show_badboxes = ((ToggleAction) action).active;
     }
-    */
 
     /* Documents */
 
