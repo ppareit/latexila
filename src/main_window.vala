@@ -279,6 +279,9 @@ public class MainWindow : Window
 
         file_browser = new FileBrowser (this);
         side_panel.add_component (_("File Browser"), STOCK_OPEN, file_browser);
+
+        VBox structure = new Structure ();
+        side_panel.add_component (_("Structure"), STOCK_INDEX, structure);
         side_panel.restore_state ();
 
         /* signal handlers */

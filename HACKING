@@ -70,7 +70,7 @@ How to translate LaTeXila?
     make the announcement. You can find the link to the Mailing List there:
 
         http://latexila.sourceforge.net/#contact
-    
+
     The first thing to do is to take the *.po file from Gedit (see above). When
     it's done, you can use Poedit for example to complete the translation. Here
     are some strange items to translate:

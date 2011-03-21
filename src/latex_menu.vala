@@ -164,7 +164,7 @@ public class LatexMenu : Gtk.ActionGroup
 
 		// Tabular
 
-		{ "Tabular", null, N_("_Tabular") },
+		{ "Tabular", "table", N_("_Tabular") },
 		{ "TabularTabbing", null, "\\begin{ta_bbing}", null,
 		    N_("Tabbing - \\begin{tabbing}"), on_tabular_tabbing },
 		{ "TabularTabular", null, "\\begin{_tabular}", null,

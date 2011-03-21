@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -69,7 +69,6 @@ public class SidePanel : VBox
         Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
-        //close_button.name = "my-close-button";
         close_button.tooltip_text = _("Hide panel");
         close_button.add (new Image.from_stock (STOCK_CLOSE, IconSize.MENU));
         close_button.clicked.connect (() =>
