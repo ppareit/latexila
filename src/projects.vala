@@ -145,6 +145,7 @@ public class Projects
     {
         return_if_fail (num >= 0 && num < projects.size);
         projects.remove_at (num);
+        modified = true;
 
         // refresh docs
         GLib.List<Document> docs = Application.get_default ().get_documents ();
@@ -162,6 +163,7 @@ public class Projects
     public void clear_all ()
     {
         projects.clear ();
+        modified = true;
         update_all_documents ();
         update_all_menus ();
     }
