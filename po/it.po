@@ -1413,7 +1413,7 @@ msgstr "_Chiudi tutti"
 
 #: src/main_window.vala:65
 msgid "_Comment"
-msgstr "Comment "
+msgstr "Commenta"
 
 #: src/main_window.vala:122
 msgid "_Configure Current Project"
@@ -1437,7 +1437,7 @@ msgstr "_Modifica Toolbar"
 
 #: src/main_window.vala:29
 msgid "_File"
-msgstr "_Fil "
+msgstr "_File"
 
 #: src/latex_menu.vala:141
 msgid "_Font Family"
