@@ -1,56 +1,27 @@
 TODO
 
-- Rubber doesn't support filenames with spaces
-  See https://bugs.launchpad.net/rubber/+bug/639983
-
-- Consider using Latexmk instead of Rubber:
-	- See http://www.phys.psu.edu/~collins/software/latexmk-jcc/
-	- Filenames with spaces are supported.
-	- Latexmk is highly configurable, it seems a better solution.
-	- Latexmk is still developed, whereas rubber doesn't seem still in life.
-	- Unfortunately the output of the latex or pdflatex commands are not filtered.
-	  We can filter the messages internally, as in latexila 0.2 or Kile.
-	  Or we can improve latexmk (written in Perl) so it is useful for other projects.
-	- An example of command (PDF output):
-	  $ latexmk -pdf -e '$pdflatex=q/pdflatex %O -interaction=nonstopmode %S/' file.tex
-	  It's not really beautiful, but we must use -interaction=nonstopmode.
-	  Another means is to use an RC file (option -r instead of -e).
-	- In the output of latexmk we can see which commands are executed, and how many times.
-	  It would be useful to show this information too.
-
 LaTeXila 2.2 or later
 =====================
 See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
-- Build Tools:
-	- pdftex post processor:
-		- filter latex and pdflatex commands (like in latexila 0.2 and Kile)
-		- add latex and pdflatex build tools
-		- show a different icon for errors/warnings/badboxes (but not for Rubber)
-		- show some stats
-	- latexmk post processor:
-		- based on pdftex post processor but show more information (which commands, how many times, etc)
-		- add some latexmk build tools that will replace rubber (+ latex -> ps -> pdf)
-	- all-output post processor:
-		- add some simple build tools like bibtex, makeindex, dvipdf, dvips, etc
-	- option to show or hide a build tool in the menu and toolbar
-	- by default show only latexmk, hide the rest
-	- preferences dialog: double click on a build tool -> open properties
-	- bottom panel:
-		- show/hide errors/warnings/badboxes buttons
-		- right click menu: copy the line to the clipboard
-
 - List of chapters, sections, etc to easily navigate in a document
 
-- Check spelling
+- Migrate to GTK+ 3.0 and Vala 0.12
 
-- Auto-completion:
+(-) Build Tools:
+	- preferences dialog: double click on a build tool -> open properties
+	- bottom panel:
+		- right click menu: copy the line to the clipboard
+
+(-) Check spelling
+
+(-) Auto-completion:
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)
 
-- Edit toolbar:
+(-) Edit toolbar:
 	- create a custom MenuToolButton:
 	  Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.
 	  It would be better if the icon is the last item used (and we can click on it).
