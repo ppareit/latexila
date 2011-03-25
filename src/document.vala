@@ -278,7 +278,7 @@ public class Document : Gtk.SourceBuffer
     private void update_project_id ()
     {
         unowned Gee.LinkedList<Project?> projects =
-            AppSettings.get_default ().get_projects ();
+            Projects.get_default ().get_projects ();
 
         for (int i = 0 ; i < projects.size ; i++)
         {
@@ -529,7 +529,7 @@ public class Document : Gtk.SourceBuffer
         if (project_id == -1)
             return location;
 
-        Project? project = AppSettings.get_default ().get_project (project_id);
+        Project? project = Projects.get_default ().get (project_id);
         if (project == null)
             return location;
 
