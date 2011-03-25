@@ -75,18 +75,19 @@ typedef struct _TabInfoBar TabInfoBar;
 typedef struct _TabInfoBarClass TabInfoBarClass;
 #define _g_free0(var) (var = (g_free (var), NULL))
 
-#define TYPE_APP_SETTINGS (app_settings_get_type ())
-#define APP_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_APP_SETTINGS, AppSettings))
-#define APP_SETTINGS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_APP_SETTINGS, AppSettingsClass))
-#define IS_APP_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_APP_SETTINGS))
-#define IS_APP_SETTINGS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_APP_SETTINGS))
-#define APP_SETTINGS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_APP_SETTINGS, AppSettingsClass))
+#define TYPE_PROJECTS (projects_get_type ())
+#define PROJECTS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_PROJECTS, Projects))
+#define PROJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_PROJECTS, ProjectsClass))
+#define IS_PROJECTS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_PROJECTS))
+#define IS_PROJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_PROJECTS))
+#define PROJECTS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_PROJECTS, ProjectsClass))
 
-typedef struct _AppSettings AppSettings;
-typedef struct _AppSettingsClass AppSettingsClass;
+typedef struct _Projects Projects;
+typedef struct _ProjectsClass ProjectsClass;
 
 #define TYPE_PROJECT (project_get_type ())
 typedef struct _Project Project;
+#define _projects_unref0(var) ((var == NULL) ? NULL : (var = (projects_unref (var), NULL)))
 #define _project_free0(var) ((var == NULL) ? NULL : (var = (project_free (var), NULL)))
 typedef struct _Block20Data Block20Data;
 
@@ -192,14 +193,20 @@ static void document_tab_set_label_text (DocumentTab* self, const char* value);
 GFile* document_get_location (Document* self);
 char* document_get_uri_for_display (Document* self);
 gint document_get_project_id (Document* self);
-GType app_settings_get_type (void) G_GNUC_CONST;
-AppSettings* app_settings_get_default (void);
+gpointer projects_ref (gpointer instance);
+void projects_unref (gpointer instance);
+GParamSpec* param_spec_projects (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
+void value_set_projects (GValue* value, gpointer v_object);
+void value_take_projects (GValue* value, gpointer v_object);
+gpointer value_get_projects (const GValue* value);
+GType projects_get_type (void) G_GNUC_CONST;
+Projects* projects_get_default (void);
 GType project_get_type (void) G_GNUC_CONST;
 Project* project_dup (const Project* self);
 void project_free (Project* self);
 void project_copy (const Project* self, Project* dest);
 void project_destroy (Project* self);
-Project* app_settings_get_project (AppSettings* self, gint id);
+Project* projects_get (Projects* self, gint id);
 char* utils_replace_home_dir_with_tilde (const char* uri);
 char* document_tab_get_name (DocumentTab* self);
 const char* document_tab_get_label_text (DocumentTab* self);
@@ -433,10 +440,10 @@ static void document_tab_update_label_tooltip (DocumentTab* self) {
 		gtk_widget_set_tooltip_markup ((GtkWidget*) self->priv->_label, _tmp0_ = document_get_uri_for_display (self->priv->_document));
 		_g_free0 (_tmp0_);
 		if (document_get_project_id (self->priv->_document) != (-1)) {
-			AppSettings* _tmp1_;
+			Projects* _tmp1_;
 			Project* _tmp2_;
 			Project* project;
-			project = (_tmp2_ = app_settings_get_project (_tmp1_ = app_settings_get_default (), document_get_project_id (self->priv->_document)), _g_object_unref0 (_tmp1_), _tmp2_);
+			project = (_tmp2_ = projects_get (_tmp1_ = projects_get_default (), document_get_project_id (self->priv->_document)), _projects_unref0 (_tmp1_), _tmp2_);
 			if (project == NULL) {
 				_project_free0 (project);
 				return;

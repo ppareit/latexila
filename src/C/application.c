@@ -4,7 +4,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -91,6 +91,17 @@ typedef struct _DocumentClass DocumentClass;
 
 typedef struct _DocumentView DocumentView;
 typedef struct _DocumentViewClass DocumentViewClass;
+
+#define TYPE_PROJECTS (projects_get_type ())
+#define PROJECTS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_PROJECTS, Projects))
+#define PROJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_PROJECTS, ProjectsClass))
+#define IS_PROJECTS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_PROJECTS))
+#define IS_PROJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_PROJECTS))
+#define PROJECTS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_PROJECTS, ProjectsClass))
+
+typedef struct _Projects Projects;
+typedef struct _ProjectsClass ProjectsClass;
+#define _projects_unref0(var) ((var == NULL) ? NULL : (var = (projects_unref (var), NULL)))
 typedef struct _Block19Data Block19Data;
 
 #define TYPE_DOCUMENT_TAB (document_tab_get_type ())
@@ -178,7 +189,15 @@ MainWindow* main_window_construct (GType object_type);
 static void _lambda61_ (Block19Data* _data19_);
 void app_settings_save_build_tools (AppSettings* self);
 void app_settings_save_most_used_symbols (AppSettings* self);
-void app_settings_save_projects (AppSettings* self);
+gpointer projects_ref (gpointer instance);
+void projects_unref (gpointer instance);
+GParamSpec* param_spec_projects (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
+void value_set_projects (GValue* value, gpointer v_object);
+void value_take_projects (GValue* value, gpointer v_object);
+gpointer value_get_projects (const GValue* value);
+GType projects_get_type (void) G_GNUC_CONST;
+Projects* projects_get_default (void);
+void projects_save (Projects* self);
 static void __lambda61__gtk_object_destroy (GtkObject* _sender, gpointer self);
 static gboolean _lambda62_ (Block19Data* _data19_);
 static gboolean __lambda62__gtk_widget_focus_in_event (GtkWidget* _sender, GdkEventFocus* event, gpointer self);
@@ -421,10 +440,12 @@ static void _lambda61_ (Block19Data* _data19_) {
 	self->priv->_windows = g_list_remove (self->priv->_windows, _data19_->window);
 	if (g_list_length (self->priv->_windows) == 0) {
 		AppSettings* app_settings;
+		Projects* _tmp0_;
 		app_settings = app_settings_get_default ();
 		app_settings_save_build_tools (app_settings);
 		app_settings_save_most_used_symbols (app_settings);
-		app_settings_save_projects (app_settings);
+		projects_save (_tmp0_ = projects_get_default ());
+		_projects_unref0 (_tmp0_);
 		gtk_main_quit ();
 		_g_object_unref0 (app_settings);
 	} else {

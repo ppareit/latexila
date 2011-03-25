@@ -87,18 +87,19 @@ typedef struct _TabInfoBarClass TabInfoBarClass;
 #define _g_error_free0(var) ((var == NULL) ? NULL : (var = (g_error_free (var), NULL)))
 typedef struct _Block15Data Block15Data;
 
-#define TYPE_APP_SETTINGS (app_settings_get_type ())
-#define APP_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_APP_SETTINGS, AppSettings))
-#define APP_SETTINGS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_APP_SETTINGS, AppSettingsClass))
-#define IS_APP_SETTINGS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_APP_SETTINGS))
-#define IS_APP_SETTINGS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_APP_SETTINGS))
-#define APP_SETTINGS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_APP_SETTINGS, AppSettingsClass))
+#define TYPE_PROJECTS (projects_get_type ())
+#define PROJECTS(obj) (G_TYPE_CHECK_INSTANCE_CAST ((obj), TYPE_PROJECTS, Projects))
+#define PROJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_CAST ((klass), TYPE_PROJECTS, ProjectsClass))
+#define IS_PROJECTS(obj) (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TYPE_PROJECTS))
+#define IS_PROJECTS_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TYPE_PROJECTS))
+#define PROJECTS_GET_CLASS(obj) (G_TYPE_INSTANCE_GET_CLASS ((obj), TYPE_PROJECTS, ProjectsClass))
 
-typedef struct _AppSettings AppSettings;
-typedef struct _AppSettingsClass AppSettingsClass;
+typedef struct _Projects Projects;
+typedef struct _ProjectsClass ProjectsClass;
 
 #define TYPE_PROJECT (project_get_type ())
 typedef struct _Project Project;
+#define _projects_unref0(var) ((var == NULL) ? NULL : (var = (projects_unref (var), NULL)))
 #define _project_free0(var) ((var == NULL) ? NULL : (var = (project_free (var), NULL)))
 
 #define TYPE_DOCUMENT_VIEW (document_view_get_type ())
@@ -232,14 +233,20 @@ static void __lambda12__gtk_info_bar_response (GtkInfoBar* _sender, gint respons
 static Block15Data* block15_data_ref (Block15Data* _data15_);
 static void block15_data_unref (Block15Data* _data15_);
 void tab_info_bar_add_ok_button (TabInfoBar* self);
-GType app_settings_get_type (void) G_GNUC_CONST;
-AppSettings* app_settings_get_default (void);
+gpointer projects_ref (gpointer instance);
+void projects_unref (gpointer instance);
+GParamSpec* param_spec_projects (const gchar* name, const gchar* nick, const gchar* blurb, GType object_type, GParamFlags flags);
+void value_set_projects (GValue* value, gpointer v_object);
+void value_take_projects (GValue* value, gpointer v_object);
+gpointer value_get_projects (const GValue* value);
+GType projects_get_type (void) G_GNUC_CONST;
+Projects* projects_get_default (void);
 GType project_get_type (void) G_GNUC_CONST;
 Project* project_dup (const Project* self);
 void project_free (Project* self);
 void project_copy (const Project* self, Project* dest);
 void project_destroy (Project* self);
-GeeLinkedList* app_settings_get_projects (AppSettings* self);
+GeeLinkedList* projects_get_projects (Projects* self);
 void document_set_project_id (Document* self, gint value);
 char* document_get_uri_for_display (Document* self);
 static char* document_get_unsaved_document_name (Document* self);
@@ -267,7 +274,7 @@ static void _vala_array_add16 (char*** array, int* length, int* size, char* valu
 gboolean dialogs_confirm_clean_build_files (MainWindow* window, GFile* directory, char** basenames, int basenames_length1);
 gboolean document_goto_line (Document* self, gint line);
 gint document_get_project_id (Document* self);
-Project* app_settings_get_project (AppSettings* self, gint id);
+Project* projects_get (Projects* self, gint id);
 char* document_get_current_indentation (Document* self, gint line);
 void document_set_search_text (Document* self, const char* text, gboolean case_sensitive, gboolean entire_word, guint* nb_matches, guint* num_match, gboolean select);
 static void document_search_cursor_moved_handler (Document* self);
@@ -909,11 +916,11 @@ static void document_update_syntax_highlighting (Document* self) {
 
 
 static void document_update_project_id (Document* self) {
-	AppSettings* _tmp0_;
+	Projects* _tmp0_;
 	GeeLinkedList* _tmp1_;
 	GeeLinkedList* projects;
 	g_return_if_fail (self != NULL);
-	projects = (_tmp1_ = app_settings_get_projects (_tmp0_ = app_settings_get_default ()), _g_object_unref0 (_tmp0_), _tmp1_);
+	projects = (_tmp1_ = projects_get_projects (_tmp0_ = projects_get_default ()), _projects_unref0 (_tmp0_), _tmp1_);
 	{
 		gint i;
 		i = 0;
@@ -1359,7 +1366,7 @@ gboolean document_goto_line (Document* self, gint line) {
 
 GFile* document_get_main_file (Document* self) {
 	GFile* result = NULL;
-	AppSettings* _tmp0_;
+	Projects* _tmp0_;
 	Project* _tmp1_;
 	Project* project;
 	g_return_val_if_fail (self != NULL, NULL);
@@ -1371,7 +1378,7 @@ GFile* document_get_main_file (Document* self) {
 		result = _g_object_ref0 (self->priv->_location);
 		return result;
 	}
-	project = (_tmp1_ = app_settings_get_project (_tmp0_ = app_settings_get_default (), self->priv->_project_id), _g_object_unref0 (_tmp0_), _tmp1_);
+	project = (_tmp1_ = projects_get (_tmp0_ = projects_get_default (), self->priv->_project_id), _projects_unref0 (_tmp0_), _tmp1_);
 	if (project == NULL) {
 		result = _g_object_ref0 (self->priv->_location);
 		_project_free0 (project);

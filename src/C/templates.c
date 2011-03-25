@@ -4,7 +4,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,8 +96,8 @@ struct _TemplatesClass {
 
 struct _TemplatesPrivate {
 	GtkListStore* default_store;
-	GtkListStore* personnal_store;
-	gint nb_personnal_templates;
+	GtkListStore* personal_store;
+	gint nb_personal_templates;
 	char* rc_file;
 	char* rc_dir;
 };
@@ -114,7 +114,7 @@ struct _Block8Data {
 	int _ref_count_;
 	Templates * self;
 	GtkIconView* icon_view_default_templates;
-	GtkIconView* icon_view_personnal_templates;
+	GtkIconView* icon_view_personal_templates;
 };
 
 
@@ -154,7 +154,7 @@ GtkWidget* utils_add_scrollbar (GtkWidget* child);
 void templates_show_dialog_create (Templates* self, MainWindow* parent);
 DocumentTab* main_window_get_active_tab (MainWindow* self);
 Document* main_window_get_active_document (MainWindow* self);
-static void templates_add_personnal_template (Templates* self, const char* contents);
+static void templates_add_personal_template (Templates* self, const char* contents);
 void templates_show_dialog_delete (Templates* self, MainWindow* parent);
 static void templates_save_rc_file (Templates* self);
 static void templates_save_contents (Templates* self);
@@ -213,8 +213,8 @@ static Templates* templates_construct (GType object_type) {
 	templates_add_template_from_file (self, self->priv->default_store, _ ("Presentation"), "beamer", _tmp10_ = g_file_new_for_path (_tmp9_ = g_strconcat (DATA_DIR "/templates/", _ ("beamer-en.tex"), NULL)));
 	_g_object_unref0 (_tmp10_);
 	_g_free0 (_tmp9_);
-	self->priv->personnal_store = (_tmp11_ = gtk_list_store_new ((gint) TEMPLATES_TEMPLATE_COLUMN_N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING), _g_object_unref0 (self->priv->personnal_store), _tmp11_);
-	self->priv->nb_personnal_templates = 0;
+	self->priv->personal_store = (_tmp11_ = gtk_list_store_new ((gint) TEMPLATES_TEMPLATE_COLUMN_N_COLUMNS, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING), _g_object_unref0 (self->priv->personal_store), _tmp11_);
+	self->priv->nb_personal_templates = 0;
 	self->priv->rc_file = (_tmp12_ = g_build_filename (g_get_user_data_dir (), "latexila", "templatesrc", NULL, NULL), _g_free0 (self->priv->rc_file), _tmp12_);
 	self->priv->rc_dir = (_tmp13_ = g_build_filename (g_get_user_data_dir (), "latexila", NULL, NULL), _g_free0 (self->priv->rc_dir), _tmp13_);
 	if ((_tmp15_ = !g_file_query_exists (_tmp14_ = g_file_new_for_path (self->priv->rc_file), NULL), _g_object_unref0 (_tmp14_), _tmp15_)) {
@@ -249,7 +249,7 @@ static Templates* templates_construct (GType object_type) {
 			_g_key_file_free0 (key_file);
 			goto __catch7_g_error;
 		}
-		self->priv->nb_personnal_templates = names_length1;
+		self->priv->nb_personal_templates = names_length1;
 		{
 			gint i;
 			i = 0;
@@ -264,7 +264,7 @@ static Templates* templates_construct (GType object_type) {
 						i++;
 					}
 					_tmp20_ = FALSE;
-					if (!(i < self->priv->nb_personnal_templates)) {
+					if (!(i < self->priv->nb_personal_templates)) {
 						break;
 					}
 					file = (_tmp22_ = g_file_new_for_path (_tmp21_ = g_strdup_printf ("%s/%d.tex", self->priv->rc_dir, i)), _g_free0 (_tmp21_), _tmp22_);
@@ -272,7 +272,7 @@ static Templates* templates_construct (GType object_type) {
 						_g_object_unref0 (file);
 						continue;
 					}
-					templates_add_template_from_file (self, self->priv->personnal_store, names[i], icons[i], file);
+					templates_add_template_from_file (self, self->priv->personal_store, names[i], icons[i], file);
 					_g_object_unref0 (file);
 				}
 			}
@@ -327,7 +327,7 @@ Templates* templates_get_default (void) {
 static void _lambda59_ (Block8Data* _data8_) {
 	Templates * self;
 	self = _data8_->self;
-	templates_on_icon_view_selection_changed (self, _data8_->icon_view_default_templates, _data8_->icon_view_personnal_templates);
+	templates_on_icon_view_selection_changed (self, _data8_->icon_view_default_templates, _data8_->icon_view_personal_templates);
 }
 
 
@@ -339,7 +339,7 @@ static void __lambda59__gtk_icon_view_selection_changed (GtkIconView* _sender, g
 static void _lambda60_ (Block8Data* _data8_) {
 	Templates * self;
 	self = _data8_->self;
-	templates_on_icon_view_selection_changed (self, _data8_->icon_view_personnal_templates, _data8_->icon_view_default_templates);
+	templates_on_icon_view_selection_changed (self, _data8_->icon_view_personal_templates, _data8_->icon_view_default_templates);
 }
 
 
@@ -368,7 +368,7 @@ static Block8Data* block8_data_ref (Block8Data* _data8_) {
 static void block8_data_unref (Block8Data* _data8_) {
 	if (g_atomic_int_dec_and_test (&_data8_->_ref_count_)) {
 		_g_object_unref0 (_data8_->self);
-		_g_object_unref0 (_data8_->icon_view_personnal_templates);
+		_g_object_unref0 (_data8_->icon_view_personal_templates);
 		_g_object_unref0 (_data8_->icon_view_default_templates);
 		g_slice_free (Block8Data, _data8_);
 	}
@@ -402,12 +402,12 @@ void templates_show_dialog_new (Templates* self, MainWindow* parent) {
 	_data8_->icon_view_default_templates = templates_create_icon_view (self, self->priv->default_store);
 	component = templates_get_dialog_component (self, _ ("Default templates"), (GtkWidget*) _data8_->icon_view_default_templates);
 	gtk_paned_pack1 ((GtkPaned*) vpaned, component, TRUE, TRUE);
-	_data8_->icon_view_personnal_templates = templates_create_icon_view (self, self->priv->personnal_store);
-	component = (_tmp0_ = templates_get_dialog_component (self, _ ("Your personnal templates"), (GtkWidget*) _data8_->icon_view_personnal_templates), _g_object_unref0 (component), _tmp0_);
+	_data8_->icon_view_personal_templates = templates_create_icon_view (self, self->priv->personal_store);
+	component = (_tmp0_ = templates_get_dialog_component (self, _ ("Your personal templates"), (GtkWidget*) _data8_->icon_view_personal_templates), _g_object_unref0 (component), _tmp0_);
 	gtk_paned_pack2 ((GtkPaned*) vpaned, component, FALSE, TRUE);
 	gtk_widget_show_all ((GtkWidget*) content_area);
 	g_signal_connect_data (_data8_->icon_view_default_templates, "selection-changed", (GCallback) __lambda59__gtk_icon_view_selection_changed, block8_data_ref (_data8_), (GClosureNotify) block8_data_unref, 0);
-	g_signal_connect_data (_data8_->icon_view_personnal_templates, "selection-changed", (GCallback) __lambda60__gtk_icon_view_selection_changed, block8_data_ref (_data8_), (GClosureNotify) block8_data_unref, 0);
+	g_signal_connect_data (_data8_->icon_view_personal_templates, "selection-changed", (GCallback) __lambda60__gtk_icon_view_selection_changed, block8_data_ref (_data8_), (GClosureNotify) block8_data_unref, 0);
 	if (gtk_dialog_run (dialog) == GTK_RESPONSE_ACCEPT) {
 		GList* selected_items;
 		GtkTreeModel* model;
@@ -422,8 +422,8 @@ void templates_show_dialog_new (Templates* self, MainWindow* parent) {
 		if (g_list_length (selected_items) == 0) {
 			GList* _tmp1_;
 			GtkTreeModel* _tmp2_;
-			selected_items = (_tmp1_ = gtk_icon_view_get_selected_items (_data8_->icon_view_personnal_templates), __g_list_free_gtk_tree_path_free0 (selected_items), _tmp1_);
-			model = (_tmp2_ = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personnal_store)), _g_object_unref0 (model), _tmp2_);
+			selected_items = (_tmp1_ = gtk_icon_view_get_selected_items (_data8_->icon_view_personal_templates), __g_list_free_gtk_tree_path_free0 (selected_items), _tmp1_);
+			model = (_tmp2_ = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personal_store)), _g_object_unref0 (model), _tmp2_);
 		}
 		path = _gtk_tree_path_copy0 ((GtkTreePath*) ((GtkTreePath*) g_list_nth_data (selected_items, (guint) 0)));
 		iter = (_tmp3_);
@@ -535,7 +535,7 @@ void templates_show_dialog_create (Templates* self, MainWindow* parent) {
 			__g_list_free_gtk_tree_path_free0 (selected_items);
 			continue;
 		}
-		self->priv->nb_personnal_templates++;
+		self->priv->nb_personal_templates++;
 		gtk_text_buffer_get_bounds ((GtkTextBuffer*) main_window_get_active_document (parent), &start, &end);
 		contents = gtk_text_buffer_get_text ((GtkTextBuffer*) main_window_get_active_document (parent), &start, &end, FALSE);
 		model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->default_store));
@@ -543,8 +543,8 @@ void templates_show_dialog_create (Templates* self, MainWindow* parent) {
 		icon_id = NULL;
 		gtk_tree_model_get_iter (model, &iter, path);
 		gtk_tree_model_get (model, &iter, TEMPLATES_TEMPLATE_COLUMN_ICON_ID, &icon_id, -1, -1);
-		templates_add_template_from_string (self, self->priv->personnal_store, gtk_entry_get_text (entry), icon_id, contents);
-		templates_add_personnal_template (self, contents);
+		templates_add_template_from_string (self, self->priv->personal_store, gtk_entry_get_text (entry), icon_id, contents);
+		templates_add_personal_template (self, contents);
 		_g_free0 (icon_id);
 		_gtk_tree_path_free0 (path);
 		_g_object_unref0 (model);
@@ -569,18 +569,18 @@ void templates_show_dialog_delete (Templates* self, MainWindow* parent) {
 	GtkBox* content_area;
 	GtkIconView* icon_view;
 	GtkWidget* component;
-	gint nb_personnal_templates_before;
+	gint nb_personal_templates_before;
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (parent != NULL);
 	dialog = g_object_ref_sink ((GtkDialog*) gtk_dialog_new_with_buttons (_ ("Delete Template(s)..."), (GtkWindow*) parent, GTK_DIALOG_NO_SEPARATOR, GTK_STOCK_DELETE, GTK_RESPONSE_ACCEPT, GTK_STOCK_OK, GTK_RESPONSE_REJECT, NULL, NULL));
 	gtk_window_set_default_size ((GtkWindow*) dialog, 400, 200);
 	content_area = _g_object_ref0 (GTK_BOX (gtk_dialog_get_content_area (dialog)));
-	icon_view = templates_create_icon_view (self, self->priv->personnal_store);
+	icon_view = templates_create_icon_view (self, self->priv->personal_store);
 	gtk_icon_view_set_selection_mode (icon_view, GTK_SELECTION_MULTIPLE);
-	component = templates_get_dialog_component (self, _ ("Personnal templates"), (GtkWidget*) icon_view);
+	component = templates_get_dialog_component (self, _ ("Personal templates"), (GtkWidget*) icon_view);
 	gtk_box_pack_start (content_area, component, TRUE, TRUE, (guint) 10);
 	gtk_widget_show_all ((GtkWidget*) content_area);
-	nb_personnal_templates_before = self->priv->nb_personnal_templates;
+	nb_personal_templates_before = self->priv->nb_personal_templates;
 	while (TRUE) {
 		GList* selected_items;
 		GtkTreeModel* model;
@@ -589,7 +589,7 @@ void templates_show_dialog_delete (Templates* self, MainWindow* parent) {
 			break;
 		}
 		selected_items = gtk_icon_view_get_selected_items (icon_view);
-		model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personnal_store));
+		model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personal_store));
 		nb_selected_items = g_list_length (selected_items);
 		{
 			gint i;
@@ -609,16 +609,16 @@ void templates_show_dialog_delete (Templates* self, MainWindow* parent) {
 					}
 					path = _gtk_tree_path_copy0 ((GtkTreePath*) g_list_nth_data (selected_items, (guint) i));
 					gtk_tree_model_get_iter (model, &iter, path);
-					gtk_list_store_remove (self->priv->personnal_store, &iter);
+					gtk_list_store_remove (self->priv->personal_store, &iter);
 					_gtk_tree_path_free0 (path);
 				}
 			}
 		}
-		self->priv->nb_personnal_templates = self->priv->nb_personnal_templates - ((gint) nb_selected_items);
+		self->priv->nb_personal_templates = self->priv->nb_personal_templates - ((gint) nb_selected_items);
 		_g_object_unref0 (model);
 		__g_list_free_gtk_tree_path_free0 (selected_items);
 	}
-	if (self->priv->nb_personnal_templates != nb_personnal_templates_before) {
+	if (self->priv->nb_personal_templates != nb_personal_templates_before) {
 		templates_save_rc_file (self);
 		templates_save_contents (self);
 	}
@@ -739,7 +739,7 @@ static void templates_on_icon_view_selection_changed (Templates* self, GtkIconVi
 }
 
 
-static void templates_add_personnal_template (Templates* self, const char* contents) {
+static void templates_add_personal_template (Templates* self, const char* contents) {
 	char* _tmp0_;
 	GFile* _tmp1_;
 	GFile* file;
@@ -747,7 +747,7 @@ static void templates_add_personnal_template (Templates* self, const char* conte
 	g_return_if_fail (self != NULL);
 	g_return_if_fail (contents != NULL);
 	templates_save_rc_file (self);
-	file = (_tmp1_ = g_file_new_for_path (_tmp0_ = g_strdup_printf ("%s/%d.tex", self->priv->rc_dir, self->priv->nb_personnal_templates - 1)), _g_free0 (_tmp0_), _tmp1_);
+	file = (_tmp1_ = g_file_new_for_path (_tmp0_ = g_strdup_printf ("%s/%d.tex", self->priv->rc_dir, self->priv->nb_personal_templates - 1)), _g_free0 (_tmp0_), _tmp1_);
 	{
 		GFile* parent;
 		gboolean _tmp2_ = FALSE;
@@ -808,7 +808,7 @@ static void templates_save_rc_file (Templates* self) {
 	gint i;
 	GError * _inner_error_ = NULL;
 	g_return_if_fail (self != NULL);
-	if (self->priv->nb_personnal_templates == 0) {
+	if (self->priv->nb_personal_templates == 0) {
 		{
 			GFile* _tmp0_;
 			g_file_delete (_tmp0_ = g_file_new_for_path (self->priv->rc_file), NULL, &_inner_error_);
@@ -835,9 +835,9 @@ static void templates_save_rc_file (Templates* self) {
 		}
 		return;
 	}
-	names = (_tmp1_ = g_new0 (char*, self->priv->nb_personnal_templates + 1), names_length1 = self->priv->nb_personnal_templates, _names_size_ = names_length1, _tmp1_);
-	icons = (_tmp2_ = g_new0 (char*, self->priv->nb_personnal_templates + 1), icons_length1 = self->priv->nb_personnal_templates, _icons_size_ = icons_length1, _tmp2_);
-	model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personnal_store));
+	names = (_tmp1_ = g_new0 (char*, self->priv->nb_personal_templates + 1), names_length1 = self->priv->nb_personal_templates, _names_size_ = names_length1, _tmp1_);
+	icons = (_tmp2_ = g_new0 (char*, self->priv->nb_personal_templates + 1), icons_length1 = self->priv->nb_personal_templates, _icons_size_ = icons_length1, _tmp2_);
+	model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personal_store));
 	valid_iter = gtk_tree_model_get_iter_first (model, &iter);
 	i = 0;
 	while (TRUE) {
@@ -924,7 +924,7 @@ static void templates_save_contents (Templates* self) {
 	g_return_if_fail (self != NULL);
 	system (_tmp0_ = g_strdup_printf ("rm -f %s/*.tex", self->priv->rc_dir));
 	_g_free0 (_tmp0_);
-	model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personnal_store));
+	model = _g_object_ref0 (GTK_TREE_MODEL (self->priv->personal_store));
 	valid_iter = gtk_tree_model_get_iter_first (model, &iter);
 	i = 0;
 	while (TRUE) {
@@ -1006,7 +1006,7 @@ static void templates_finalize (GObject* obj) {
 	Templates * self;
 	self = TEMPLATES (obj);
 	_g_object_unref0 (self->priv->default_store);
-	_g_object_unref0 (self->priv->personnal_store);
+	_g_object_unref0 (self->priv->personal_store);
 	_g_free0 (self->priv->rc_file);
 	_g_free0 (self->priv->rc_dir);
 	G_OBJECT_CLASS (templates_parent_class)->finalize (obj);
