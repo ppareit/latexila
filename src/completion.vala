@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -488,7 +488,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         calltip_window.show_all ();
     }
 
-    public void hide_calltip_window ()
+    private void hide_calltip_window ()
     {
         if (calltip_window == null)
             return;
