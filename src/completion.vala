@@ -475,7 +475,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         {
             if (text[i] == '[' || text[i] == '{')
             {
-                if (char_is_escaped (text, i))
+                if (Utils.char_is_escaped (text, i))
                     continue;
                 pos.backward_chars ((int) (text.length - 1 - i));
                 break;
@@ -732,7 +732,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             if (text[i] == '\\')
             {
                 // if the backslash is escaped, it's not a latex command
-                if (char_is_escaped (text, i))
+                if (Utils.char_is_escaped (text, i))
                     break;
 
                 return text[i : index + 1];
@@ -780,7 +780,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             if (fetch_argument_contents)
             {
                 // end of argument content
-                if ((text[i] == '{' || text[i] == '[') && ! char_is_escaped (text, i))
+                if ((text[i] == '{' || text[i] == '[')
+                    && ! Utils.char_is_escaped (text, i))
                 {
                     if (&arguments != null)
                         arguments.insert (0, text[i] == '[');
@@ -804,7 +805,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             else if (in_other_argument)
             {
                 if (text[i] == other_argument_opening_bracket)
-                    in_other_argument = char_is_escaped (text, i);
+                    in_other_argument = Utils.char_is_escaped (text, i);
                 continue;
             }
 
@@ -828,7 +829,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 // maybe the end of another argument
                 if (text[i] == '}' || text[i] == ']')
                 {
-                    if (char_is_escaped (text, i))
+                    if (Utils.char_is_escaped (text, i))
                         return false;
 
                     in_other_argument = true;
@@ -844,19 +845,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         return false;
-    }
-
-    private bool char_is_escaped (string text, long index)
-    {
-        bool escaped = false;
-        for (long i = index - 1 ; i >= 0 ; i--)
-        {
-            if (text[i] == '\\')
-                escaped = ! escaped;
-            else
-                break;
-        }
-        return escaped;
     }
 
     // static because of bug #627736

@@ -241,4 +241,26 @@ namespace Utils
         var pixbuf = w.render_icon (stock_id, size, "vala");
         return pixbuf;
     }
+
+    public Button get_toolbar_button (string stock_id)
+    {
+        Button button = new Button ();
+        Image image = new Image.from_stock (stock_id, IconSize.MENU);
+        button.add (image);
+        button.set_relief (ReliefStyle.NONE);
+        return button;
+    }
+
+    public bool char_is_escaped (string text, long index)
+    {
+        bool escaped = false;
+        for (long i = index - 1 ; i >= 0 ; i--)
+        {
+            if (text[i] == '\\')
+                escaped = ! escaped;
+            else
+                break;
+        }
+        return escaped;
+    }
 }

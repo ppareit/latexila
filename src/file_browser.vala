@@ -96,10 +96,10 @@ public class FileBrowser : VBox
         HBox hbox = new HBox (true, 0);
         pack_start (hbox, false, false);
 
-        Button home_button = get_toolbar_button (STOCK_HOME);
-        parent_button = get_toolbar_button (STOCK_GO_UP);
-        Button jump_button = get_toolbar_button (STOCK_JUMP_TO);
-        Button refresh_button = get_toolbar_button (STOCK_REFRESH);
+        Button home_button = Utils.get_toolbar_button (STOCK_HOME);
+        parent_button = Utils.get_toolbar_button (STOCK_GO_UP);
+        Button jump_button = Utils.get_toolbar_button (STOCK_JUMP_TO);
+        Button refresh_button = Utils.get_toolbar_button (STOCK_REFRESH);
 
         home_button.tooltip_text = _("Go to the home directory");
         parent_button.tooltip_text = _("Go to the parent directory");
@@ -143,15 +143,6 @@ public class FileBrowser : VBox
         });
 
         refresh_button.clicked.connect (refresh);
-    }
-
-    private Button get_toolbar_button (string stock_id)
-    {
-        Button button = new Button ();
-        Image image = new Image.from_stock (stock_id, IconSize.MENU);
-        button.add (image);
-        button.set_relief (ReliefStyle.NONE);
-        return button;
     }
 
     // list of parent directories
