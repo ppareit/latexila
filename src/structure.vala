@@ -44,6 +44,7 @@ public class Structure : VBox
         TYPE,
         TEXT,
         TOOLTIP,
+        MARK,
         N_COLUMNS
     }
 
@@ -57,6 +58,8 @@ public class Structure : VBox
     private unowned MainWindow _main_window;
     private TreeStore _tree_store;
     private TreeView _tree_view;
+    private int _nb_marks = 0;
+    private static const string MARK_NAME_PREFIX = "struct_item_";
 
     private const StructSimpleCommand[] _simple_commands =
     {
@@ -102,7 +105,8 @@ public class Structure : VBox
             typeof (string),     // pixbuf (stock-id)
             typeof (StructType), // item type
             typeof (string),     // text
-            typeof (string)      // tooltip
+            typeof (string),     // tooltip
+            typeof (TextMark)    // mark
             );
 
         _tree_view = new TreeView.with_model (_tree_store);
@@ -124,9 +128,39 @@ public class Structure : VBox
         // tooltip
         _tree_view.set_tooltip_column (StructItem.TOOLTIP);
 
+        // selection
+        TreeSelection select = _tree_view.get_selection ();
+        select.set_mode (SelectionMode.SINGLE);
+        select.set_select_function (on_row_selection);
+
         // with a scrollbar
         var sw = Utils.add_scrollbar (_tree_view);
         pack_start (sw);
+    }
+
+    private bool on_row_selection (TreeSelection selection, TreeModel model,
+        TreePath path, bool path_currently_selected)
+    {
+        TreeIter tree_iter;
+        if (! model.get_iter (out tree_iter, path))
+            // the row is not selected
+            return false;
+
+        TextMark mark;
+        model.get (tree_iter, StructItem.MARK, out mark, -1);
+
+        TextBuffer doc = mark.get_buffer ();
+        if (doc != _main_window.active_document)
+            return false;
+
+        // place the cursor so the line is highlighted (by default)
+        TextIter text_iter;
+        doc.get_iter_at_mark (out text_iter, mark);
+        doc.place_cursor (text_iter);
+        _main_window.active_view.scroll_to_cursor ();
+
+        // the row is selected
+        return true;
     }
 
     private string? get_icon_from_type (StructType type)
@@ -221,8 +255,14 @@ public class Structure : VBox
         }
     }
 
-    private TreeIter add_item (TreeIter? parent, StructType type, string text)
+    private TreeIter add_item (TreeIter? parent, StructType type, string text,
+        TextIter mark_iter)
     {
+        TextBuffer doc = mark_iter.get_buffer ();
+        string mark_name = MARK_NAME_PREFIX + _nb_marks.to_string ();
+        TextMark mark = doc.create_mark (mark_name, mark_iter, false);
+        _nb_marks++;
+
         TreeIter iter;
         _tree_store.append (out iter, parent);
         _tree_store.set (iter,
@@ -230,6 +270,7 @@ public class Structure : VBox
             StructItem.TYPE, type,
             StructItem.TEXT, text,
             StructItem.TOOLTIP, get_tooltip_from_type (type),
+            StructItem.MARK, mark,
             -1);
 
         return iter;
@@ -246,6 +287,19 @@ public class Structure : VBox
         return null;
     }
 
+    private void clear_all_structure_marks (TextBuffer doc)
+    {
+        for (int i = 0 ; i < _nb_marks ; i++)
+        {
+            string mark_name = MARK_NAME_PREFIX + i.to_string ();
+            TextMark? mark = doc.get_mark (mark_name);
+            if (mark != null)
+                doc.delete_mark (mark);
+        }
+
+        _nb_marks = 0;
+    }
+
     private void analyze_document (TextBuffer? doc)
     {
         _tree_store.clear ();
@@ -253,6 +307,8 @@ public class Structure : VBox
 
         if (doc == null)
             return;
+
+        clear_all_structure_marks (doc);
 
         /* search commands (begin with a backslash) */
 
@@ -311,7 +367,10 @@ public class Structure : VBox
                 type = StructType.FIXME;
 
             string text = match_info.fetch_named ("text");
-            add_item (null, type, text);
+
+            TextIter mark_iter = iter;
+            mark_iter.backward_char ();
+            add_item (null, type, text, mark_iter);
         }
     }
 
@@ -366,9 +425,14 @@ public class Structure : VBox
 
                 // found!
                 string contents = end_line[0:i];
+
+                // empty
                 if (contents.length == 0)
                     return false;
-                add_item (null, type, contents);
+
+                TextIter mark_iter = begin_name_iter;
+                mark_iter.backward_char ();
+                add_item (null, type, contents, mark_iter);
                 return true;
             }
         }
