@@ -654,12 +654,12 @@ public class MainWindow : Window
         foreach (Document doc in Application.get_default ().get_documents ())
         {
             if (doc.location == null)
-                all_nums += doc.unsaved_document_n;
+                all_nums += doc.unsaved_document_num;
         }
 
         uint num;
         for (num = 1 ; num in all_nums ; num++);
-        tab.document.unsaved_document_n = num;
+        tab.document.unsaved_document_num = num;
 
         return process_create_tab (tab, jump_to);
     }

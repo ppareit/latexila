@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,12 +31,14 @@ public class Document : Gtk.SourceBuffer
     public File location { get; set; }
     public bool readonly { get; set; default = false; }
     public DocumentTab tab;
-    public uint unsaved_document_n { get; set; }
+    public uint unsaved_document_num { get; set; }
     public int project_id { get; set; default = -1; }
     private bool backup_made = false;
     private string _etag;
     private string? encoding = null;
     private bool new_file = true;
+
+    private DocumentStructure _structure = null;
 
     private TextTag found_tag;
     private TextTag found_tag_selected;
@@ -307,7 +309,7 @@ public class Document : Gtk.SourceBuffer
 
     private string get_unsaved_document_name ()
     {
-        return _("Unsaved Document") + " %u".printf (unsaved_document_n);
+        return _("Unsaved Document") + " %u".printf (unsaved_document_num);
     }
 
     public bool is_local ()
@@ -553,6 +555,13 @@ public class Document : Gtk.SourceBuffer
         }
 
         return current_indent;
+    }
+
+    public DocumentStructure get_structure ()
+    {
+        if (_structure == null)
+            _structure = new DocumentStructure (this);
+        return _structure;
     }
 
 
