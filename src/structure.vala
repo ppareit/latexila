@@ -23,7 +23,7 @@ public class Structure : VBox
 {
     private enum StructType
     {
-        PART,
+        PART = 0,
         CHAPTER,
         SECTION,
         SUBSECTION,
@@ -55,21 +55,38 @@ public class Structure : VBox
         string name;
     }
 
+    private struct DataNode
+    {
+        StructType type;
+        string text;
+        TextMark mark;
+    }
+
     private unowned MainWindow _main_window;
     private TreeStore _tree_store;
     private TreeView _tree_view;
     private int _nb_marks = 0;
     private static const string MARK_NAME_PREFIX = "struct_item_";
 
+    private bool _insert_at_end = true;
+    private Node<DataNode?> _tree;
+
     private const StructSimpleCommand[] _simple_commands =
     {
         { StructType.PART,          "part" },
+        { StructType.PART,          "part*" },
         { StructType.CHAPTER,       "chapter" },
+        { StructType.CHAPTER,       "chapter*" },
         { StructType.SECTION,       "section" },
+        { StructType.SECTION,       "section*" },
         { StructType.SUBSECTION,    "subsection" },
+        { StructType.SUBSECTION,    "subsection*" },
         { StructType.SUBSUBSECTION, "subsubsection" },
+        { StructType.SUBSUBSECTION, "subsubsection*" },
         { StructType.PARAGRAPH,     "paragraph" },
+        { StructType.PARAGRAPH,     "paragraph*" },
         { StructType.SUBPARAGRAPH,  "subparagraph" },
+        { StructType.SUBPARAGRAPH,  "subparagraph*" },
         { StructType.LABEL,         "label" },
         { StructType.INCLUDE,       "input" },
         { StructType.INCLUDE,       "include" }
@@ -95,7 +112,7 @@ public class Structure : VBox
 
         refresh_button.clicked.connect (() =>
         {
-            analyze_document (_main_window.active_document);
+            parse_document (_main_window.active_document);
         });
     }
 
@@ -255,25 +272,146 @@ public class Structure : VBox
         }
     }
 
-    private TreeIter add_item (TreeIter? parent, StructType type, string text,
-        TextIter mark_iter)
+    // The data are first inserted in Gnodes. When the parsing is done, this method is
+    // called to populate the tree store with the data contained in the GNodes.
+    private void populate_tree_store (Node<DataNode?> node, TreeIter? parent = null,
+        bool root_node = true)
     {
-        TextBuffer doc = mark_iter.get_buffer ();
-        string mark_name = MARK_NAME_PREFIX + _nb_marks.to_string ();
-        TextMark mark = doc.create_mark (mark_name, mark_iter, false);
-        _nb_marks++;
+        TreeIter? iter = null;
+        if (! root_node)
+            iter = add_item_to_tree_store (parent, node.data);
 
+        node.children_foreach (TraverseFlags.ALL, (child_node) =>
+        {
+            populate_tree_store (child_node, iter, false);
+        });
+    }
+
+    private TreeIter add_item_to_tree_store (TreeIter? parent, DataNode data)
+    {
         TreeIter iter;
         _tree_store.append (out iter, parent);
         _tree_store.set (iter,
-            StructItem.PIXBUF, get_icon_from_type (type),
-            StructItem.TYPE, type,
-            StructItem.TEXT, text,
-            StructItem.TOOLTIP, get_tooltip_from_type (type),
-            StructItem.MARK, mark,
+            StructItem.PIXBUF, get_icon_from_type (data.type),
+            StructItem.TYPE, data.type,
+            StructItem.TEXT, data.text,
+            StructItem.TOOLTIP, get_tooltip_from_type (data.type),
+            StructItem.MARK, data.mark,
             -1);
 
         return iter;
+    }
+
+    private void add_item (StructType type, string text, TextIter iter)
+    {
+        DataNode data = {};
+        data.type = type;
+        data.text = text;
+        data.mark = create_text_mark_from_iter (iter);
+
+        if (_insert_at_end)
+            add_item_at_end (data);
+        else
+            add_item_in_middle (data);
+    }
+
+    private void add_item_at_end (DataNode item)
+    {
+        /* search the parent, based on the type */
+        int depth = item.type;
+        int cur_depth = StructType.PART;
+        unowned Node<DataNode?> parent = _tree;
+        while (cur_depth < depth)
+        {
+            unowned Node<DataNode?> last_child = parent.last_child ();
+            if (last_child == null)
+                break;
+
+            DataNode child_data = last_child.data;
+            if (child_data.type > StructType.SUBPARAGRAPH)
+                break;
+
+            parent = last_child;
+            cur_depth++;
+        }
+
+        // append the item
+        parent.append_data (item);
+    }
+
+    // In the middle means that we have to find where to insert the data in the tree.
+    // If items have to be shifted (for example: insert a chapter in the middle of
+    // sections), it will be done by insert_item_at_position().
+    private void add_item_in_middle (DataNode item)
+    {
+        // if the tree is empty
+        if (_tree.is_leaf ())
+        {
+            _tree.append_data (item);
+            return;
+        }
+
+        int pos = get_position_from_mark (item.mark);
+        unowned Node<DataNode?> cur_parent = _tree;
+        while (true)
+        {
+            unowned Node<DataNode?> cur_child = cur_parent.first_child ();
+            int child_index = 0;
+            while (true)
+            {
+                int cur_pos = get_position_from_mark (cur_child.data.mark);
+
+                if (cur_pos > pos)
+                {
+                    if (child_index == 0)
+                    {
+                        insert_item_at_position (item, cur_parent, child_index);
+                        return;
+                    }
+
+                    unowned Node<DataNode?> prev_child = cur_child.prev_sibling ();
+                    if (prev_child.is_leaf ())
+                    {
+                        insert_item_at_position (item, cur_parent, child_index);
+                        return;
+                    }
+
+                    cur_parent = prev_child;
+                    break;
+                }
+
+                unowned Node<DataNode?> next_child = cur_child.next_sibling ();
+
+                // current child is the last child
+                if (next_child == null)
+                {
+                    if (cur_child.is_leaf ())
+                    {
+                        insert_item_at_position (item, cur_parent, child_index+1);
+                        return;
+                    }
+
+                    cur_parent = cur_child;
+                    break;
+                }
+
+                cur_child = next_child;
+                child_index++;
+            }
+        }
+    }
+
+    private void insert_item_at_position (DataNode item, Node<DataNode?> parent, int pos)
+    {
+        parent.insert_data (pos, item);
+    }
+
+    private int get_position_from_mark (TextMark mark)
+    {
+        TextIter iter;
+        TextBuffer doc = mark.get_buffer ();
+        doc.get_iter_at_mark (out iter, mark);
+        return iter.get_offset ();
     }
 
     private StructType? get_type_from_simple_command_name (string name)
@@ -285,6 +423,16 @@ public class Structure : VBox
         }
 
         return null;
+    }
+
+    private TextMark create_text_mark_from_iter (TextIter iter)
+    {
+        TextBuffer doc = iter.get_buffer ();
+        string name = MARK_NAME_PREFIX + _nb_marks.to_string ();
+        TextMark mark = doc.create_mark (name, iter, false);
+        _nb_marks++;
+
+        return mark;
     }
 
     private void clear_all_structure_marks (TextBuffer doc)
@@ -300,10 +448,12 @@ public class Structure : VBox
         _nb_marks = 0;
     }
 
-    private void analyze_document (TextBuffer? doc)
+    private void parse_document (TextBuffer? doc)
     {
         _tree_store.clear ();
         _tree_view.columns_autosize ();
+        DataNode empty_data = {};
+        _tree = new Node<DataNode?> (empty_data);
 
         if (doc == null)
             return;
@@ -311,6 +461,8 @@ public class Structure : VBox
         clear_all_structure_marks (doc);
 
         /* search commands (begin with a backslash) */
+
+        _insert_at_end = true;
 
         TextIter iter;
         doc.get_start_iter (out iter);
@@ -321,6 +473,8 @@ public class Structure : VBox
         {
             search_simple_command (iter);
         }
+
+        _insert_at_end = false;
 
         /* search comments (begin with '%') */
 
@@ -370,8 +524,10 @@ public class Structure : VBox
 
             TextIter mark_iter = iter;
             mark_iter.backward_char ();
-            add_item (null, type, text, mark_iter);
+            add_item (type, text, mark_iter);
         }
+
+        populate_tree_store (_tree);
     }
 
     private bool search_simple_command (TextIter begin_name_iter)
@@ -432,7 +588,7 @@ public class Structure : VBox
 
                 TextIter mark_iter = begin_name_iter;
                 mark_iter.backward_char ();
-                add_item (null, type, contents, mark_iter);
+                add_item (type, contents, mark_iter);
                 return true;
             }
         }

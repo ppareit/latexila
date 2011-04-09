@@ -5,7 +5,14 @@ LaTeXila 2.2 or later
 See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
-- List of chapters, sections, etc to easily navigate in a document
+- Structure (list of chapters, sections, etc.):
+	- expand/collapse all buttons
+	- detect figures and tables (take the caption for the text)
+	- show/hide buttons (label, include, table, image, todo/fixme)
+	- change the minimum level
+	- run the analyze in a thread (test with big documents)
+	- open a doc -> analyze it if the structure is displayed
+	- keep structure data as long as the file is opened
 
 - Migrate to GTK+ 3.0 and Vala 0.12
 
