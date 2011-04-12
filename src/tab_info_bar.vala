@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,17 +30,17 @@ public class TabInfoBar : InfoBar
         switch (msg_type)
         {
             case MessageType.ERROR:
-                stock_id = STOCK_DIALOG_ERROR;
+                stock_id = Stock.DIALOG_ERROR;
                 break;
             case MessageType.QUESTION:
-                stock_id = STOCK_DIALOG_QUESTION;
+                stock_id = Stock.DIALOG_QUESTION;
                 break;
             case MessageType.WARNING:
-                stock_id = STOCK_DIALOG_WARNING;
+                stock_id = Stock.DIALOG_WARNING;
                 break;
             case MessageType.INFO:
             default:
-                stock_id = STOCK_DIALOG_INFO;
+                stock_id = Stock.DIALOG_INFO;
                 break;
         }
 
@@ -72,7 +72,7 @@ public class TabInfoBar : InfoBar
 
     public void add_ok_button ()
     {
-        add_button (STOCK_OK, ResponseType.OK);
+        add_button (Stock.OK, ResponseType.OK);
         response.connect ((response_id) =>
         {
             if (response_id == ResponseType.OK)

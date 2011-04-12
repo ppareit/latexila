@@ -27,40 +27,40 @@ public class MainWindow : Window
     {
         // File
         { "File", null, N_("_File") },
-        { "FileNew", STOCK_NEW, null, null,
+        { "FileNew", Stock.NEW, null, null,
             N_("New file"), on_file_new },
         { "FileNewWindow", null, N_("New _Window"), null,
             N_("Create a new window"), on_new_window },
-        { "FileOpen", STOCK_OPEN, null, null,
+        { "FileOpen", Stock.OPEN, null, null,
             N_("Open a file"), on_file_open },
-        { "FileSave", STOCK_SAVE, null, null,
+        { "FileSave", Stock.SAVE, null, null,
             N_("Save the current file"), on_file_save },
-        { "FileSaveAs", STOCK_SAVE_AS, null, null,
+        { "FileSaveAs", Stock.SAVE_AS, null, null,
             N_("Save the current file with a different name"), on_file_save_as },
         { "FileCreateTemplate", null, N_("Create _Template From Document..."), null,
             N_("Create a new template from the current document"), on_create_template },
         { "FileDeleteTemplate", null, N_("_Delete Template..."), null,
             N_("Delete personal template(s)"), on_delete_template },
-        { "FileClose", STOCK_CLOSE, null, null,
+        { "FileClose", Stock.CLOSE, null, null,
             N_("Close the current file"), on_file_close },
-        { "FileQuit", STOCK_QUIT, null, null,
+        { "FileQuit", Stock.QUIT, null, null,
             N_("Quit the program"), on_quit },
 
         // Edit
         { "Edit", null, N_("_Edit") },
-        { "EditUndo", STOCK_UNDO, null, "<Control>Z",
+        { "EditUndo", Stock.UNDO, null, "<Control>Z",
             N_("Undo the last action"), on_edit_undo },
-        { "EditRedo", STOCK_REDO, null, "<Shift><Control>Z",
+        { "EditRedo", Stock.REDO, null, "<Shift><Control>Z",
             N_("Redo the last undone action"), on_edit_redo },
-        { "EditCut", STOCK_CUT, null, null,
+        { "EditCut", Stock.CUT, null, null,
             N_("Cut the selection"), on_edit_cut },
-        { "EditCopy", STOCK_COPY, null, null,
+        { "EditCopy", Stock.COPY, null, null,
             N_("Copy the selection"), on_edit_copy },
-        { "EditPaste", STOCK_PASTE, null, null,
+        { "EditPaste", Stock.PASTE, null, null,
             N_("Paste the clipboard"), on_edit_paste },
-        { "EditDelete", STOCK_DELETE, null, null,
+        { "EditDelete", Stock.DELETE, null, null,
             N_("Delete the selected text"), on_edit_delete },
-        { "EditSelectAll", STOCK_SELECT_ALL, null, "<Control>A",
+        { "EditSelectAll", Stock.SELECT_ALL, null, "<Control>A",
             N_("Select the entire document"), on_edit_select_all },
         { "EditComment", null, N_("_Comment"), "<Control>M",
             N_("Comment the selected lines (add the character \"%\")"),
@@ -68,47 +68,47 @@ public class MainWindow : Window
         { "EditUncomment", null, N_("_Uncomment"), "<Shift><Control>M",
             N_("Uncomment the selected lines (remove the character \"%\")"),
             on_edit_uncomment },
-        { "EditPreferences", STOCK_PREFERENCES, null, null,
+        { "EditPreferences", Stock.PREFERENCES, null, null,
             N_("Configure the application"), on_open_preferences },
 
         // View
         { "View", null, N_("_View") },
-        { "ViewZoomIn", STOCK_ZOOM_IN, N_("Zoom _In"), "<Control>plus",
+        { "ViewZoomIn", Stock.ZOOM_IN, N_("Zoom _In"), "<Control>plus",
             N_("Enlarge the font"), on_view_zoom_in },
-        { "ViewZoomOut", STOCK_ZOOM_OUT, N_("Zoom _Out"), "<Control>minus",
+        { "ViewZoomOut", Stock.ZOOM_OUT, N_("Zoom _Out"), "<Control>minus",
             N_("Shrink the font"), on_view_zoom_out },
-        { "ViewZoomReset", STOCK_ZOOM_100, N_("_Reset Zoom"), "<Control>0",
+        { "ViewZoomReset", Stock.ZOOM_100, N_("_Reset Zoom"), "<Control>0",
             N_("Reset the size of the font"), on_view_zoom_reset },
 
         // Search
         { "Search", null, N_("_Search") },
-        { "SearchFind", STOCK_FIND, null, null,
+        { "SearchFind", Stock.FIND, null, null,
             N_("Search for text"), on_search_find },
-        { "SearchReplace", STOCK_FIND_AND_REPLACE, null, null,
+        { "SearchReplace", Stock.FIND_AND_REPLACE, null, null,
             N_("Search for and replace text"), on_search_replace },
-        { "SearchGoToLine", STOCK_JUMP_TO, N_("_Go to Line..."), "<Control>G",
+        { "SearchGoToLine", Stock.JUMP_TO, N_("_Go to Line..."), "<Control>G",
             N_("Go to a specific line"), on_search_goto_line },
 
         // Build
         { "Build", null, N_("_Build") },
-        { "BuildClean", STOCK_CLEAR, N_("Cleanup Build _Files"), null,
+        { "BuildClean", Stock.CLEAR, N_("Cleanup Build _Files"), null,
             N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
             on_build_clean },
-        { "BuildStopExecution", STOCK_STOP, N_("_Stop Execution"), "<Release>F12",
+        { "BuildStopExecution", Stock.STOP, N_("_Stop Execution"), "<Release>F12",
             N_("Stop Execution"), on_build_stop_execution },
         { "BuildViewLog", "view_log", N_("View _Log"), null,
             N_("View Log"), on_build_view_log },
 
         // Documents
         { "Documents", null, N_("_Documents") },
-        { "DocumentsSaveAll", STOCK_SAVE, N_("_Save All"), "<Shift><Control>L",
+        { "DocumentsSaveAll", Stock.SAVE, N_("_Save All"), "<Shift><Control>L",
             N_("Save all open files"), on_documents_save_all },
-        { "DocumentsCloseAll", STOCK_CLOSE, N_("_Close All"), "<Shift><Control>W",
+        { "DocumentsCloseAll", Stock.CLOSE, N_("_Close All"), "<Shift><Control>W",
             N_("Close all open files"), on_documents_close_all },
-        { "DocumentsPrevious", STOCK_GO_BACK, N_("_Previous Document"),
+        { "DocumentsPrevious", Stock.GO_BACK, N_("_Previous Document"),
             "<Control><Alt>Page_Up", N_("Activate previous document"),
             on_documents_previous },
-        { "DocumentsNext", STOCK_GO_FORWARD, N_("_Next Document"),
+        { "DocumentsNext", Stock.GO_FORWARD, N_("_Next Document"),
             "<Control><Alt>Page_Down", N_("Activate next document"),
             on_documents_next },
         { "DocumentsMoveToNewWindow", null, N_("_Move to New Window"), null,
@@ -117,19 +117,19 @@ public class MainWindow : Window
 
         // Projects
         { "Projects", null, N_("_Projects") },
-        { "ProjectsNew", STOCK_NEW, N_("_New Project"), null,
+        { "ProjectsNew", Stock.NEW, N_("_New Project"), null,
             N_("Create a new project"), on_projects_new },
-        { "ProjectsConfigCurrent", STOCK_PROPERTIES, N_("_Configure Current Project"),
+        { "ProjectsConfigCurrent", Stock.PROPERTIES, N_("_Configure Current Project"),
             null, N_("Change the main file of the current project"),
             on_projects_config_current },
-        { "ProjectsManage", STOCK_PREFERENCES, N_("_Manage Projects"), null,
+        { "ProjectsManage", Stock.PREFERENCES, N_("_Manage Projects"), null,
             N_("Manage Projects"), on_projects_manage },
 
         // Help
         { "Help", null, N_("_Help") },
-        { "HelpLatexReference", STOCK_HELP, N_("_LaTeX Reference"), "<Release>F1",
+        { "HelpLatexReference", Stock.HELP, N_("_LaTeX Reference"), "<Release>F1",
             N_("The Kile LaTeX Reference"), on_help_latex_reference },
-        { "HelpAbout", STOCK_ABOUT, null, null,
+        { "HelpAbout", Stock.ABOUT, null, null,
             N_("About LaTeXila"), on_about_dialog }
     };
 
@@ -141,9 +141,9 @@ public class MainWindow : Window
             N_("Show or hide the bottom panel"), on_show_bottom_panel },
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
             N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
-        { "BuildShowErrors", STOCK_DIALOG_ERROR, N_("Show _Errors"), null,
+        { "BuildShowErrors", Stock.DIALOG_ERROR, N_("Show _Errors"), null,
             N_("Show Errors"), on_build_show_errors },
-        { "BuildShowWarnings", STOCK_DIALOG_WARNING, N_("Show _Warnings"), null,
+        { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
             N_("Show Warnings"), on_build_show_warnings },
         { "BuildShowBadBoxes", "badbox", N_("Show _BadBoxes"), null,
             N_("Show BadBoxes"), on_build_show_badboxes }
@@ -278,10 +278,10 @@ public class MainWindow : Window
         side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
 
         file_browser = new FileBrowser (this);
-        side_panel.add_component (_("File Browser"), STOCK_OPEN, file_browser);
+        side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
         VBox structure = new Structure (this);
-        side_panel.add_component (_("Structure"), STOCK_INDEX, structure);
+        side_panel.add_component (_("Structure"), Stock.INDEX, structure);
         side_panel.restore_state ();
 
         /* signal handlers */
@@ -747,12 +747,12 @@ public class MainWindow : Window
                 tab.label_text);
 
             dialog.add_buttons (_("Close without Saving"), ResponseType.CLOSE,
-                STOCK_CANCEL, ResponseType.CANCEL);
+                Stock.CANCEL, ResponseType.CANCEL);
 
             if (tab.document.location == null)
-                dialog.add_button (STOCK_SAVE_AS, ResponseType.ACCEPT);
+                dialog.add_button (Stock.SAVE_AS, ResponseType.ACCEPT);
             else
-                dialog.add_button (STOCK_SAVE, ResponseType.ACCEPT);
+                dialog.add_button (Stock.SAVE, ResponseType.ACCEPT);
 
             while (true)
             {
@@ -878,8 +878,8 @@ public class MainWindow : Window
 
         var file_chooser = new FileChooserDialog (_("Save File"), this,
             FileChooserAction.SAVE,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_SAVE, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.SAVE, ResponseType.ACCEPT,
             null);
 
         if (doc.location == null)
@@ -914,10 +914,10 @@ public class MainWindow : Window
                     _("A file named \"%s\" already exists. Do you want to replace it?"),
                     file.get_basename ());
 
-                confirmation.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+                confirmation.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
                 var button_replace = new Button.with_label (_("Replace"));
-                var icon = new Image.from_stock (STOCK_SAVE_AS, IconSize.BUTTON);
+                var icon = new Image.from_stock (Stock.SAVE_AS, IconSize.BUTTON);
                 button_replace.set_image (icon);
                 confirmation.add_action_widget (button_replace, ResponseType.YES);
                 button_replace.show ();
@@ -1000,7 +1000,7 @@ public class MainWindow : Window
         Widget toolbar_recent_menu = new RecentChooserMenu.for_manager (recent_manager);
         configure_recent_chooser ((RecentChooser) toolbar_recent_menu);
 
-        MenuToolButton open_button = new MenuToolButton.from_stock (STOCK_OPEN);
+        MenuToolButton open_button = new MenuToolButton.from_stock (Stock.OPEN);
         open_button.set_menu (toolbar_recent_menu);
         open_button.set_tooltip_text (_("Open a file"));
         open_button.set_arrow_tooltip_text (_("Open a recently used file"));
@@ -1152,7 +1152,7 @@ public class MainWindow : Window
         return_if_fail (active_document.location != null);
 
         string[] _name = action.name.split ("_");
-        int i = _name[1].to_int ();
+        int i = int.parse (_name[1]);
 
         BuildTool tool = BuildTools.get_default ()[i];
 
@@ -1409,8 +1409,8 @@ public class MainWindow : Window
     {
         FileChooserDialog file_chooser = new FileChooserDialog (_("Open Files"), this,
             FileChooserAction.OPEN,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_OPEN, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.OPEN, ResponseType.ACCEPT,
             null);
 
         if (this.file_chooser_current_folder != null)

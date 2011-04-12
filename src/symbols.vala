@@ -740,7 +740,7 @@ public class Symbols : VBox
             }
 
             // mosed used symbols
-            var pixbuf = Utils.get_pixbuf_from_stock (STOCK_ABOUT, IconSize.MENU);
+            var pixbuf = Utils.get_pixbuf_from_stock (Stock.ABOUT, IconSize.MENU);
             TreeIter iter;
             categories_store.append (out iter);
             categories_store.set (iter,
@@ -799,7 +799,7 @@ public class Symbols : VBox
         sw.show_all ();
 
         /* clear button (for most used symbols) */
-        Button button = new Button.from_stock (STOCK_CLEAR);
+        Button button = new Button.from_stock (Stock.CLEAR);
         pack_start (button, false, false, 2);
 
         /* signals */

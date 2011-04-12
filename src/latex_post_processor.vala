@@ -241,8 +241,8 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             status = FilterStatus.START;
             string[] strings = reg_badbox_lines.split (badbox);
             msg.message = strings[1];
-            int n1 = strings[2].to_int ();
-            int n2 = strings[3].to_int ();
+            int n1 = int.parse (strings[2]);
+            int n2 = int.parse (strings[3]);
 
             if (n1 <= n2)
             {
@@ -263,7 +263,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             status = FilterStatus.START;
             string[] strings = reg_badbox_line.split (badbox);
             msg.message = strings[1];
-            msg.start_line = strings[2].to_int ();
+            msg.start_line = int.parse (strings[2]);
             return true;
         }
 
@@ -348,7 +348,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             status = FilterStatus.START;
             string[] strings = reg_warning_line.split (warning);
             msg.message = strings[1];
-            msg.start_line = strings[2].to_int ();
+            msg.start_line = int.parse (strings[2]);
             return true;
         }
 
@@ -357,7 +357,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             status = FilterStatus.START;
             string[] strings = reg_warning_international_line.split (warning);
             msg.message = strings[1];
-            msg.start_line = strings[2].to_int ();
+            msg.start_line = int.parse (strings[2]);
             return true;
         }
 
@@ -458,7 +458,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 if (reg_error_line.match (line))
                 {
                     string[] strings = reg_error_line.split (line);
-                    msg.start_line = strings[1].to_int ();
+                    msg.start_line = int.parse (strings[1]);
                     add_msg ();
                     nb_lines = 0;
                     status = FilterStatus.START;
@@ -498,7 +498,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
         /* try to show the file size in a human readable format */
         string[] strings = reg_other_bytes.split (line);
-        int nb_bytes = strings[1].to_int ();
+        int nb_bytes = int.parse (strings[1]);
 
         bool replace = false;
         string human_size = null;

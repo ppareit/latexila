@@ -25,8 +25,8 @@ namespace ProjectDialogs
     {
         Dialog dialog = new Dialog.with_buttons (_("New Project"), main_window,
             DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_NEW, ResponseType.OK,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.NEW, ResponseType.OK,
             null);
 
         /* create dialog widgets */
@@ -124,8 +124,8 @@ namespace ProjectDialogs
         Dialog dialog = new Dialog.with_buttons (_("Configure Project"),
             main_window,
             DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_OK, ResponseType.OK,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.OK, ResponseType.OK,
             null);
 
         /* create dialog widgets */
@@ -189,7 +189,7 @@ namespace ProjectDialogs
         Dialog dialog = new Dialog.with_buttons (_("Manage Projects"),
             main_window,
             DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CLOSE, ResponseType.OK,
+            Stock.CLOSE, ResponseType.OK,
             null);
 
         VBox content_area = (VBox) dialog.get_content_area ();
@@ -209,7 +209,7 @@ namespace ProjectDialogs
         column.title = _("Directory");
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        pixbuf_renderer.stock_id = STOCK_DIRECTORY;
+        pixbuf_renderer.stock_id = Stock.DIRECTORY;
         column.pack_start (pixbuf_renderer, false);
 
         CellRendererText text_renderer = new CellRendererText ();
@@ -222,7 +222,7 @@ namespace ProjectDialogs
         column.title = _("Main File");
 
         pixbuf_renderer = new CellRendererPixbuf ();
-        pixbuf_renderer.stock_id = STOCK_FILE;
+        pixbuf_renderer.stock_id = Stock.FILE;
         column.pack_start (pixbuf_renderer, false);
 
         text_renderer = new CellRendererText ();
@@ -241,11 +241,11 @@ namespace ProjectDialogs
         HBox hbox = new HBox (false, 5);
         content_area.pack_start (hbox, false, false, 5);
 
-        Button edit_button = new Button.from_stock (STOCK_PROPERTIES);
-        Button delete_button = new Button.from_stock (STOCK_DELETE);
+        Button edit_button = new Button.from_stock (Stock.PROPERTIES);
+        Button delete_button = new Button.from_stock (Stock.DELETE);
 
         Button clear_all_button = new Button.with_label (_("Clear All"));
-        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.MENU);
+        Image image = new Image.from_stock (Stock.CLEAR, IconSize.MENU);
         clear_all_button.set_image (image);
 
         hbox.pack_start (edit_button);
@@ -279,8 +279,8 @@ namespace ProjectDialogs
                 _("Do you really want to delete the project \"%s\"?"),
                 directory);
 
-            delete_dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
-                STOCK_DELETE, ResponseType.YES);
+            delete_dialog.add_buttons (Stock.CANCEL, ResponseType.CANCEL,
+                Stock.DELETE, ResponseType.YES);
 
             if (delete_dialog.run () == ResponseType.YES)
             {
@@ -299,10 +299,10 @@ namespace ProjectDialogs
                 ButtonsType.NONE,
                 _("Do you really want to clear all projects?"));
 
-            clear_dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+            clear_dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
             Button button = new Button.with_label (_("Clear All"));
-            Image img = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
+            Image img = new Image.from_stock (Stock.CLEAR, IconSize.BUTTON);
             button.set_image (img);
             button.show_all ();
             clear_dialog.add_action_widget (button, ResponseType.YES);

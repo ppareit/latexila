@@ -189,21 +189,18 @@ public class Document : Gtk.SourceBuffer
 
             // if encoding specified, convert to this encoding
             if (encoding != null)
-                text = convert (text, (ssize_t) text.size (), encoding, "UTF-8");
+                text = convert (text, (ssize_t) text.length, encoding, "UTF-8");
 
             // else, convert to the system default encoding
             else
-                text = Filename.from_utf8 (text, (ssize_t) text.size (), null, null);
+                text = Filename.from_utf8 (text, (ssize_t) text.length, null, null);
 
             // check if parent directories exist, if not, create it
             File parent = location.get_parent ();
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            // Attention, the second parameter named "length" in the API is the size in
-            // bytes, not the number of characters, so we must use text.size() and not
-            // text.length.
-            location.replace_contents (text, text.size (), etag, make_backup,
+            location.replace_contents (text, text.length, etag, make_backup,
                 FileCreateFlags.NONE, out _etag, null);
 
             set_modified (false);
@@ -220,7 +217,7 @@ public class Document : Gtk.SourceBuffer
                 var secondary_msg = _("If you save it, all the external changes could be lost. Save it anyway?");
                 var infobar = tab.add_message (primary_msg, secondary_msg,
                     MessageType.WARNING);
-                infobar.add_stock_button_with_text (_("Save Anyway"), STOCK_SAVE,
+                infobar.add_stock_button_with_text (_("Save Anyway"), Stock.SAVE,
                     ResponseType.YES);
                 infobar.add_button (_("Don't Save"), ResponseType.CANCEL);
                 infobar.response.connect ((response_id) =>
@@ -247,7 +244,7 @@ public class Document : Gtk.SourceBuffer
         {
             try
             {
-                string utf8_text = convert (text, (ssize_t) text.size (), "UTF-8",
+                string utf8_text = convert (text, (ssize_t) text.length, "UTF-8",
                     charset);
                 encoding = charset;
                 return utf8_text;

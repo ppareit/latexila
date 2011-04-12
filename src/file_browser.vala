@@ -96,10 +96,10 @@ public class FileBrowser : VBox
         HBox hbox = new HBox (true, 0);
         pack_start (hbox, false, false);
 
-        Button home_button = Utils.get_toolbar_button (STOCK_HOME);
-        parent_button = Utils.get_toolbar_button (STOCK_GO_UP);
-        Button jump_button = Utils.get_toolbar_button (STOCK_JUMP_TO);
-        Button refresh_button = Utils.get_toolbar_button (STOCK_REFRESH);
+        Button home_button = Utils.get_toolbar_button (Stock.HOME);
+        parent_button = Utils.get_toolbar_button (Stock.GO_UP);
+        Button jump_button = Utils.get_toolbar_button (Stock.JUMP_TO);
+        Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
 
         home_button.tooltip_text = _("Go to the home directory");
         parent_button.tooltip_text = _("Go to the parent directory");
@@ -332,7 +332,7 @@ public class FileBrowser : VBox
                 FileType type = info.get_file_type ();
                 if (type == FileType.DIRECTORY)
                 {
-                    insert_file (true, STOCK_DIRECTORY, basename);
+                    insert_file (true, Stock.DIRECTORY, basename);
                     continue;
                 }
 
@@ -345,7 +345,7 @@ public class FileBrowser : VBox
                     switch (extension)
                     {
                         case ".tex":
-                            pixbuf = STOCK_EDIT;
+                            pixbuf = Stock.EDIT;
                             break;
                         case ".pdf":
                             pixbuf = "view_pdf";
@@ -367,7 +367,7 @@ public class FileBrowser : VBox
                             pixbuf = "image";
                             break;
                         default:
-                            pixbuf = STOCK_FILE;
+                            pixbuf = Stock.FILE;
                             break;
                     }
 
@@ -426,11 +426,11 @@ public class FileBrowser : VBox
             // pixbuf
             string pixbuf;
             if (i == 0)
-                pixbuf = STOCK_HARDDISK;
+                pixbuf = Stock.HARDDISK;
             else if (Environment.get_home_dir () == current.get_path ())
-                pixbuf = STOCK_HOME;
+                pixbuf = Stock.HOME;
             else
-                pixbuf = STOCK_DIRECTORY;
+                pixbuf = Stock.DIRECTORY;
 
             // insert
             parent_dir_store.append (out iter);

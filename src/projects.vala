@@ -256,7 +256,7 @@ public class Projects
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (content, content.size (), null, false,
+            file.replace_contents (content, content.length, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

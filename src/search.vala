@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@ public class GotoLine : HBox
         var close_button = new Button ();
         pack_start (close_button, false, false, 0);
         close_button.set_relief (ReliefStyle.NONE);
-        var img = new Image.from_stock (STOCK_CLOSE, IconSize.MENU);
+        var img = new Image.from_stock (Stock.CLOSE, IconSize.MENU);
         close_button.add (img);
         close_button.clicked.connect (() => hide ());
 
@@ -41,7 +41,7 @@ public class GotoLine : HBox
 
         entry = new Entry ();
         pack_start (entry, false, false, 0);
-        entry.set_icon_from_stock (EntryIconPosition.SECONDARY, STOCK_JUMP_TO);
+        entry.set_icon_from_stock (EntryIconPosition.SECONDARY, Stock.JUMP_TO);
         entry.set_icon_activatable (EntryIconPosition.SECONDARY, true);
         entry.set_tooltip_text (_("Line you want to move the cursor to"));
         entry.set_size_request (100, -1);
@@ -78,7 +78,7 @@ public class GotoLine : HBox
             }
         }
 
-        var line = text.to_int ();
+        var line = int.parse (text);
         var error = ! main_window.active_document.goto_line (--line);
         Utils.set_entry_error (entry, error);
         main_window.active_view.scroll_to_cursor ();

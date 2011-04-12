@@ -150,7 +150,7 @@ public class BuildView : HBox
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
         close_button.tooltip_text = _("Hide panel");
-        close_button.add (new Image.from_stock (STOCK_CLOSE, IconSize.MENU));
+        close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
         close_button.clicked.connect (() =>
         {
             this.hide ();
@@ -281,13 +281,13 @@ public class BuildView : HBox
         switch (state)
         {
             case PartitionState.RUNNING:
-                return STOCK_EXECUTE;
+                return Stock.EXECUTE;
             case PartitionState.SUCCEEDED:
-                return STOCK_APPLY;
+                return Stock.APPLY;
             case PartitionState.FAILED:
-                return STOCK_DIALOG_ERROR;
+                return Stock.DIALOG_ERROR;
             case PartitionState.ABORTED:
-                return STOCK_STOP;
+                return Stock.STOP;
             default:
                 return_val_if_reached (null);
         }
@@ -298,9 +298,9 @@ public class BuildView : HBox
         switch (type)
         {
             case BuildMessageType.ERROR:
-                return STOCK_DIALOG_ERROR;
+                return Stock.DIALOG_ERROR;
             case BuildMessageType.WARNING:
-                return STOCK_DIALOG_WARNING;
+                return Stock.DIALOG_WARNING;
             case BuildMessageType.BADBOX:
                 return "badbox";
             case BuildMessageType.OTHER:

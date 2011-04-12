@@ -76,7 +76,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
         icon_normal_choice = Utils.get_pixbuf_from_stock ("completion_choice",
             IconSize.MENU);
-        icon_package_required = Utils.get_pixbuf_from_stock (STOCK_DIALOG_WARNING,
+        icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
             IconSize.MENU);
 
         try

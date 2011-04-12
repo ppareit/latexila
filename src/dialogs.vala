@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,8 +38,8 @@ namespace Dialogs
             window,
             DialogFlags.DESTROY_WITH_PARENT,
             _("Close without Saving"), ResponseType.CLOSE,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_SAVE, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.SAVE, ResponseType.ACCEPT,
             null);
 
         dialog.has_separator = false;
@@ -50,7 +50,7 @@ namespace Dialogs
         content_area.pack_start (hbox, true, true, 0);
 
         /* image */
-        var image = new Image.from_stock (STOCK_DIALOG_WARNING, IconSize.DIALOG);
+        var image = new Image.from_stock (Stock.DIALOG_WARNING, IconSize.DIALOG);
         image.set_alignment ((float) 0.5, (float) 0.0);
         hbox.pack_start (image, false, false, 0);
 
@@ -200,8 +200,8 @@ namespace Dialogs
         var dialog = new Dialog.with_buttons (null,
             window,
             DialogFlags.DESTROY_WITH_PARENT,
-            STOCK_CANCEL, ResponseType.CANCEL,
-            STOCK_DELETE, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.DELETE, ResponseType.ACCEPT,
             null);
 
         dialog.has_separator = false;
@@ -212,7 +212,7 @@ namespace Dialogs
         content_area.pack_start (hbox, true, true, 0);
 
         /* image */
-        var image = new Image.from_stock (STOCK_DIALOG_WARNING, IconSize.DIALOG);
+        var image = new Image.from_stock (Stock.DIALOG_WARNING, IconSize.DIALOG);
         image.set_alignment ((float) 0.5, (float) 0.0);
         hbox.pack_start (image, false, false, 0);
 

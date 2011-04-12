@@ -34,13 +34,13 @@ public class PreferencesDialog : Dialog
 
         // reset all button
         Button reset_button = new Button.with_label (_("Reset All"));
-        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.MENU);
+        Image image = new Image.from_stock (Stock.CLEAR, IconSize.MENU);
         reset_button.set_image (image);
         reset_button.show_all ();
         add_action_widget (reset_button, ResponseType.APPLY);
 
         // close button
-        add_button (STOCK_CLOSE, ResponseType.CLOSE);
+        add_button (Stock.CLOSE, ResponseType.CLOSE);
 
         response.connect ((response_id) =>
         {
@@ -322,8 +322,8 @@ public class PreferencesDialog : Dialog
                 _("Do you really want to delete the build tool \"%s\"?"),
                 label);
 
-            dialog.add_buttons (STOCK_CANCEL, ResponseType.CANCEL,
-                STOCK_DELETE, ResponseType.YES);
+            dialog.add_buttons (Stock.CANCEL, ResponseType.CANCEL,
+                Stock.DELETE, ResponseType.YES);
 
             if (dialog.run () == ResponseType.YES)
             {
@@ -566,7 +566,7 @@ public class PreferencesDialog : Dialog
             val = ! val;
             build_tools_store.set (iter, BuildToolColumn.SHOW, val, -1);
 
-            int num = path_string.to_int ();
+            int num = int.parse (path_string);
             BuildTools build_tools = BuildTools.get_default ();
             BuildTool build_tool = build_tools[num];
             build_tool.show = val;
@@ -597,10 +597,10 @@ public class PreferencesDialog : Dialog
         Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
             MessageType.QUESTION, ButtonsType.NONE, msg);
 
-        dialog.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+        dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
         Button button = new Button.with_label (_("Reset All"));
-        Image image = new Image.from_stock (STOCK_CLEAR, IconSize.BUTTON);
+        Image image = new Image.from_stock (Stock.CLEAR, IconSize.BUTTON);
         button.set_image (image);
         button.show_all ();
         dialog.add_action_widget (button, ResponseType.YES);

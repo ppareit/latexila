@@ -45,12 +45,12 @@ private class BuildToolDialog : Dialog
 
     private const IconColumn[] icons =
     {
-        { STOCK_EXECUTE, N_("Execute") },
+        { Stock.EXECUTE, N_("Execute") },
         { "compile_dvi", "LaTeX → DVI" },
         { "compile_pdf", "LaTeX → PDF" },
         { "compile_ps", "LaTeX → PS" },
-        { STOCK_CONVERT, N_("Convert") },
-        { STOCK_FILE, N_("View File") },
+        { Stock.CONVERT, N_("Convert") },
+        { Stock.FILE, N_("View File") },
         { "view_dvi", N_("View DVI") },
         { "view_pdf", N_("View PDF") },
         { "view_ps", N_("View PS") }
@@ -66,8 +66,8 @@ private class BuildToolDialog : Dialog
 
     private BuildToolDialog ()
     {
-        add_button (STOCK_CANCEL, ResponseType.CANCEL);
-        add_button (STOCK_OK, ResponseType.OK);
+        add_button (Stock.CANCEL, ResponseType.CANCEL);
+        add_button (Stock.OK, ResponseType.OK);
         title = _("Build Tool");
         has_separator = false;
         destroy_with_parent = true;

@@ -191,7 +191,7 @@ public class MostUsedSymbols : GLib.Object
                                 attr_values[i] != "" ? attr_values[i] : null;
                             break;
                         case "num":
-                            symbol.num = (uint) attr_values[i].to_int ();
+                            symbol.num = (uint) int.parse (attr_values[i]);
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -244,7 +244,7 @@ public class MostUsedSymbols : GLib.Object
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (content, content.size (), null, false,
+            file.replace_contents (content, content.length, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

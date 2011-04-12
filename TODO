@@ -6,15 +6,19 @@ See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
 - Structure (list of chapters, sections, etc.):
+	- update the structure on tab changed/file opened/file saved/...
+	    attention when opening several files (e.g. on startup)
 	- expand/collapse all buttons
-	- detect figures and tables (take the caption for the text)
 	- show/hide buttons (label, include, table, image, todo/fixme)
 	- change the minimum level
-	- run the analyze in a thread (test with big documents)
-	- open a doc -> analyze it if the structure is displayed
-	- keep structure data as long as the file is opened
+	- detect figures and tables (take the caption for the text)
+	- run the parsing in a thread (test with big documents)
+	- different style (e.g. italic) for commented items
+	- improve insert_item_at_position() (shift items if needed)
+	- update on the fly the structure when the document is modified
+	- right click: cut, copy, paste below, select, delete, comment, shift left/right
 
-- Migrate to GTK+ 3.0 and Vala 0.12
+- Migrate to GTK+ 3.0
 
 (-) Build Tools:
 	- preferences dialog: double click on a build tool -> open properties

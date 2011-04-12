@@ -113,8 +113,8 @@ public class Templates : GLib.Object
     {
         Dialog dialog = new Dialog.with_buttons (_("New File..."), parent,
             DialogFlags.NO_SEPARATOR,
-            STOCK_OK, ResponseType.ACCEPT,
-            STOCK_CANCEL, ResponseType.REJECT,
+            Stock.OK, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.REJECT,
             null);
 
         // get and set previous size
@@ -220,8 +220,8 @@ public class Templates : GLib.Object
         return_if_fail (parent.active_tab != null);
 
         Dialog dialog = new Dialog.with_buttons (_("New Template..."), parent, 0,
-            STOCK_OK, ResponseType.ACCEPT,
-            STOCK_CANCEL, ResponseType.REJECT,
+            Stock.OK, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.REJECT,
             null);
 
         dialog.set_default_size (400, 330);
@@ -286,8 +286,8 @@ public class Templates : GLib.Object
     {
         Dialog dialog = new Dialog.with_buttons (_("Delete Template(s)..."), parent,
             DialogFlags.NO_SEPARATOR,
-            STOCK_DELETE, ResponseType.ACCEPT,
-            STOCK_OK, ResponseType.REJECT,
+            Stock.DELETE, ResponseType.ACCEPT,
+            Stock.OK, ResponseType.REJECT,
             null);
 
         dialog.set_default_size (400, 200);
@@ -409,7 +409,7 @@ public class Templates : GLib.Object
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (contents, contents.size (), null, false,
+            file.replace_contents (contents, contents.length, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)
@@ -464,7 +464,7 @@ public class Templates : GLib.Object
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (key_file_data, key_file_data.size (), null, false,
+            file.replace_contents (key_file_data, key_file_data.length, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)
@@ -497,7 +497,7 @@ public class Templates : GLib.Object
                 if (parent != null && ! parent.query_exists ())
                     parent.make_directory_with_parents ();
 
-                file.replace_contents (contents, contents.size (), null, false,
+                file.replace_contents (contents, contents.length, null, false,
                     FileCreateFlags.NONE, null, null);
             }
             catch (Error e)

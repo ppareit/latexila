@@ -50,7 +50,7 @@ public class Structure : VBox
         HBox hbox = new HBox (true, 0);
         pack_start (hbox, false, false);
 
-        Button refresh_button = Utils.get_toolbar_button (STOCK_REFRESH);
+        Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
         hbox.pack_start (refresh_button);
 
         refresh_button.clicked.connect (() =>

@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -173,7 +173,7 @@ public class DocumentTab : VBox
         close_button.focus_on_click = false;
         close_button.name = "my-close-button";
         close_button.tooltip_text = _("Close document");
-        close_button.add (new Image.from_stock (STOCK_CLOSE, IconSize.MENU));
+        close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
         close_button.clicked.connect (() => this.close_document ());
 
         _label = new HBox (false, 0);
@@ -275,9 +275,9 @@ public class DocumentTab : VBox
                 secondary_msg = _("Do you want to reload the file?");
 
             var infobar = add_message (primary_msg, secondary_msg, MessageType.WARNING);
-            infobar.add_stock_button_with_text (_("Reload"), STOCK_REFRESH,
+            infobar.add_stock_button_with_text (_("Reload"), Stock.REFRESH,
                 ResponseType.OK);
-            infobar.add_button (STOCK_CANCEL, ResponseType.CANCEL);
+            infobar.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
             infobar.response.connect ((response_id) =>
             {

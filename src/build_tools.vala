@@ -212,8 +212,8 @@ public class BuildTools
     {
         // If it's a compilation, the file browser is refreshed after the execution.
         return icon.contains ("compile")
-            || icon == Gtk.STOCK_EXECUTE
-            || icon == Gtk.STOCK_CONVERT;
+            || icon == Gtk.Stock.EXECUTE
+            || icon == Gtk.Stock.CONVERT;
     }
 
     private void load ()
@@ -280,7 +280,7 @@ public class BuildTools
                     switch (attr_names[i])
                     {
                         case "show":
-                            cur_tool.show = attr_values[i].to_bool ();
+                            cur_tool.show = bool.parse (attr_values[i]);
                             break;
                         case "extensions":
                             cur_tool.extensions = attr_values[i];
@@ -303,7 +303,7 @@ public class BuildTools
                     switch (attr_names[i])
                     {
                         case "mustSucceed":
-                            cur_job.must_succeed = attr_values[i].to_bool ();
+                            cur_job.must_succeed = bool.parse (attr_values[i]);
                             break;
                         case "postProcessor":
                             cur_job.post_processor = attr_values[i];
@@ -403,7 +403,7 @@ public class BuildTools
                 parent.make_directory_with_parents ();
 
             // a backup is made
-            file.replace_contents (content, content.size (), null, true,
+            file.replace_contents (content, content.length, null, true,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

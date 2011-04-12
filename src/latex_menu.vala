@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -59,12 +59,12 @@ public class LatexMenu : Gtk.ActionGroup
 	        N_("Reference to a bibliography item"), on_ref_cite },
 
         // LaTeX: Environments
-	    { "Environments", STOCK_JUSTIFY_CENTER, "_Environments" },
-	    { "EnvCenter", STOCK_JUSTIFY_CENTER, "\\begin{_center}", null,
+	    { "Environments", Stock.JUSTIFY_CENTER, "_Environments" },
+	    { "EnvCenter", Stock.JUSTIFY_CENTER, "\\begin{_center}", null,
 		    N_("Center - \\begin{center}"), on_env_center },
-	    { "EnvLeft", STOCK_JUSTIFY_LEFT, "\\begin{flush_left}", null,
+	    { "EnvLeft", Stock.JUSTIFY_LEFT, "\\begin{flush_left}", null,
 		    N_("Align Left - \\begin{flushleft}"), on_env_left },
-	    { "EnvRight", STOCK_JUSTIFY_RIGHT, "\\begin{flush_right}", null,
+	    { "EnvRight", Stock.JUSTIFY_RIGHT, "\\begin{flush_right}", null,
 		    N_("Align Right - \\begin{flushright}"), on_env_right },
 		{ "EnvFigure", null, "\\begin{_figure}", null,
 		    N_("Figure - \\begin{figure}"), on_env_figure },

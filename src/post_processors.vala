@@ -143,9 +143,9 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
             if (line != null && line.length > 0)
             {
                 string[] parts = line.split ("-");
-                issue.start_line = parts[0].to_int ();
+                issue.start_line = int.parse (parts[0]);
                 if (parts.length > 1 && parts[1] != null && parts[1].length > 0)
-                    issue.end_line = parts[1].to_int ();
+                    issue.end_line = int.parse (parts[1]);
             }
 
             // filename
