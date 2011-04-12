@@ -130,5 +130,6 @@ public class Structure : VBox
         DocumentStructure doc_struct = doc.get_structure ();
         doc_struct.parse ();
         doc_struct.populate_tree_store (_tree_store);
+        _tree_view.expand_all ();
     }
 }
