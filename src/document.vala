@@ -289,6 +289,8 @@ public class Document : Gtk.SourceBuffer
             }
             i++;
         }
+
+        project_id = -1;
     }
 
     public string get_uri_for_display ()
