@@ -288,6 +288,8 @@ public class Document : Gtk.SourceBuffer
                 return;
             }
         }
+
+        project_id = -1;
     }
 
     public string get_uri_for_display ()
