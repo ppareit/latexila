@@ -765,16 +765,23 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
     private void push_file_on_stack (string filename, bool reliable)
     {
-        //print_info ("***\tpush\t\"%s\" (%s)", filename, reliable ? "reliable" : "not reliable");
         FileInStack file = FileInStack ();
+        file.reliable = reliable;
 
-        string path = get_path_if_file_exists (filename);
+        // handle special case when a warning message is collapsed
+        string clean_filename;
+        string bad_suffix = "pdfTeX";
+        if (filename.has_suffix (bad_suffix))
+            clean_filename = filename[0 : -bad_suffix.length];
+        else
+            clean_filename = filename;
+
+        string path = get_path_if_file_exists (clean_filename);
         if (path != null)
             file.filename = path;
         else
-            file.filename = filename;
+            file.filename = clean_filename;
 
-        file.reliable = reliable;
         stack_files.prepend (file);
     }
 
