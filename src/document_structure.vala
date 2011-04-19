@@ -225,21 +225,19 @@ public class DocumentStructure : GLib.Object
     {
         /* search the parent, based on the type */
         unowned Node<DataNode?> parent = _tree;
-        int cur_depth = StructType.PART;
         int item_depth = item.type;
 
-        while (cur_depth < item_depth)
+        while (true)
         {
             unowned Node<DataNode?> last_child = parent.last_child ();
             if (last_child == null)
                 break;
 
-            DataNode child_data = last_child.data;
-            if (child_data.type > StructType.SUBPARAGRAPH)
+            int cur_depth = last_child.data.type;
+            if (cur_depth >= item_depth || cur_depth > StructType.SUBPARAGRAPH)
                 break;
 
             parent = last_child;
-            cur_depth = parent.data.type + 1;
         }
 
         // append the item
