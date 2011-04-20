@@ -293,12 +293,14 @@ public class Application : GLib.Object
     public void open_documents (
         [CCode (array_length = false, array_null_terminated = true)] string[] uris)
     {
+        bool jump_to = true;
         foreach (string uri in uris)
         {
             if (uri.length == 0)
                 continue;
             var location = File.new_for_uri (uri);
-            active_window.open_document (location);
+            active_window.open_document (location, jump_to);
+            jump_to = false;
         }
     }
 

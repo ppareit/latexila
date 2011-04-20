@@ -1,13 +1,12 @@
 TODO
 
-LaTeXila 2.2 or later
-=====================
 See also the Roadmap:
 	http://latexila.sourceforge.net/#roadmap
 
+LaTeXila 2.2
+============
+
 - Structure (list of chapters, sections, etc.):
-	- update the structure on tab changed/file opened/file saved/...
-	    attention when opening several files (e.g. on startup)
 	- expand/collapse all buttons
 	- show/hide buttons (label, include, table, image, todo/fixme)
 	- change the minimum level
@@ -20,14 +19,17 @@ See also the Roadmap:
 
 - Migrate to GTK+ 3.0
 
-(-) Build Tools:
+- Build Tools:
 	- preferences dialog: double click on a build tool -> open properties
-	- bottom panel:
-		- right click menu: copy the line to the clipboard
+	- right click menu in bottom panel: copy the line to the clipboard
 
-(-) Check spelling
 
-(-) Auto-completion:
+LaTeXila ≥ 2.4
+==============
+
+- Check spelling
+
+- Auto-completion:
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)

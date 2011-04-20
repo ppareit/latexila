@@ -106,7 +106,7 @@ public class SidePanel : VBox
         combo_box.changed.connect (() =>
         {
             foreach (VBox component in components)
-                    component.hide ();
+                component.hide ();
 
             int i = combo_box.get_active ();
             components[i].show ();

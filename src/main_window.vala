@@ -334,7 +334,6 @@ public class MainWindow : Window
             update_documents_list_menu ();
         });
 
-        // FIXME switch page is called 2 times...
         documents_panel.switch_page.connect ((pg, page_num) =>
         {
             set_undo_sensitivity ();
@@ -346,14 +345,20 @@ public class MainWindow : Window
             update_cursor_position_statusbar ();
 
             /* activate the right item in the documents menu */
-            string action_name = "Tab_%u".printf (page_num);
+            string action_name = @"Tab_$page_num";
             RadioAction? action =
                 (RadioAction) documents_list_action_group.get_action (action_name);
 
             // sometimes the action doesn't exist yet, and the proper action is set
             // active during the documents list menu creation
             if (action != null)
+            {
+                // If we don't disconnect the signal, the switch_page signal is called
+                // 2 times.
+                action.activate.disconnect (documents_list_menu_activate);
                 action.set_active (true);
+                action.activate.connect (documents_list_menu_activate);
+            }
 
             notify_property ("active-tab");
             notify_property ("active-document");
@@ -604,7 +609,7 @@ public class MainWindow : Window
         return file_browser;
     }
 
-    public DocumentTab? open_document (File location)
+    public DocumentTab? open_document (File location, bool jump_to = true)
     {
         /* check if the document is already opened */
         foreach (MainWindow w in Application.get_default ().windows)
@@ -616,12 +621,13 @@ public class MainWindow : Window
                     /* the document is already opened in this window */
                     if (this == w)
                     {
-                        active_tab = doc.tab;
+                        if (jump_to)
+                            active_tab = doc.tab;
                         return doc.tab;
                     }
 
                     /* the document is already opened in another window */
-                    DocumentTab tab = create_tab_from_location (location, true);
+                    DocumentTab tab = create_tab_from_location (location, jump_to);
                     tab.document.readonly = true;
                     string primary_msg = _("This file (%s) is already opened in another LaTeXila window.")
                         .printf (location.get_parse_name ());
@@ -642,7 +648,7 @@ public class MainWindow : Window
             }
         }
 
-        return create_tab_from_location (location, true);
+        return create_tab_from_location (location, jump_to);
     }
 
     public DocumentTab? create_tab (bool jump_to)
@@ -824,7 +830,7 @@ public class MainWindow : Window
 
         // sync the item in the documents list menu
         int page_num = documents_panel.page_num (tab);
-        string action_name = "Tab_%d".printf (page_num);
+        string action_name = @"Tab_$page_num";
         Gtk.Action action = documents_list_action_group.get_action (action_name);
         return_if_fail (action != null);
         action.label = tab.get_name ().replace ("_", "__");
@@ -1220,7 +1226,7 @@ public class MainWindow : Window
         for (int i = 0 ; i < n ; i++)
         {
             DocumentTab tab = (DocumentTab) documents_panel.get_nth_page (i);
-            string action_name = "Tab_%d".printf (i);
+            string action_name = @"Tab_$i";
             string name = tab.get_name ().replace ("_", "__");
             string tip = tab.get_menu_tip ();
             string accel = i < 10 ? "<alt>%d".printf ((i + 1) % 10) : null;
@@ -1294,11 +1300,11 @@ public class MainWindow : Window
 
     private void set_redo_sensitivity ()
     {
-        if (active_tab != null)
-        {
-            Gtk.Action action = action_group.get_action ("EditRedo");
-            action.set_sensitive (active_document.can_redo);
-        }
+        if (active_tab == null)
+            return;
+
+        Gtk.Action action = action_group.get_action ("EditRedo");
+        action.set_sensitive (active_document.can_redo);
     }
 
     private void set_documents_move_to_new_window_sensitivity (bool sensitive)
@@ -1309,17 +1315,17 @@ public class MainWindow : Window
 
     private void update_next_prev_doc_sensitivity ()
     {
-        if (active_tab != null)
-        {
-            Gtk.Action action_previous = action_group.get_action ("DocumentsPrevious");
-            Gtk.Action action_next = action_group.get_action ("DocumentsNext");
+        if (active_tab == null)
+            return;
 
-            int current_page = documents_panel.page_num (active_tab);
-            action_previous.set_sensitive (current_page > 0);
+        Gtk.Action action_previous = action_group.get_action ("DocumentsPrevious");
+        Gtk.Action action_next = action_group.get_action ("DocumentsNext");
 
-            int nb_pages = documents_panel.get_n_pages ();
-            action_next.set_sensitive (current_page < nb_pages - 1);
-        }
+        int current_page = documents_panel.page_num (active_tab);
+        action_previous.set_sensitive (current_page > 0);
+
+        int nb_pages = documents_panel.get_n_pages ();
+        action_next.set_sensitive (current_page < nb_pages - 1);
     }
 
     private void update_build_tools_sensitivity ()
@@ -1427,8 +1433,12 @@ public class MainWindow : Window
 
         // We open the files after closing the dialog, because open a lot of documents can
         // take some time (this is not async).
+        bool jump_to = true;
         foreach (File file in files_to_open)
-            open_document (file);
+        {
+            open_document (file, jump_to);
+            jump_to = false;
+        }
     }
 
     public void on_file_save ()

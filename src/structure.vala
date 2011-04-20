@@ -43,6 +43,8 @@ public class Structure : VBox
         init_toolbar ();
         init_tree_view ();
         show_all ();
+
+        _main_window.notify["active-document"].connect (on_active_document_changed);
     }
 
     private void init_toolbar ()
@@ -122,14 +124,50 @@ public class Structure : VBox
         return true;
     }
 
-    private void parse_document (Document doc)
+    private void parse_document (Document? doc)
     {
-        _tree_store.clear ();
-        _tree_view.columns_autosize ();
+        clear ();
+
+        if (doc == null)
+            return;
 
         DocumentStructure doc_struct = doc.get_structure ();
         doc_struct.parse ();
+        populate (doc_struct);
+    }
+
+    private void on_active_document_changed ()
+    {
+        clear ();
+
+        Document? doc = _main_window.active_document;
+        if (doc == null)
+            return;
+
+        populate (doc.get_structure ());
+    }
+
+    private void clear ()
+    {
+        _tree_store.clear ();
+        _tree_view.columns_autosize ();
+    }
+
+    private void populate (DocumentStructure doc_struct)
+    {
         doc_struct.populate_tree_store (_tree_store);
         _tree_view.expand_all ();
+    }
+
+    public new void show ()
+    {
+        _main_window.notify["active-document"].connect (on_active_document_changed);
+        base.show ();
+    }
+
+    public new void hide ()
+    {
+        _main_window.notify["active-document"].disconnect (on_active_document_changed);
+        base.hide ();
     }
 }
