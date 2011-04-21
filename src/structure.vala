@@ -52,6 +52,7 @@ public class Structure : VBox
         HBox hbox = new HBox (true, 0);
         pack_start (hbox, false, false);
 
+        // refresh button
         Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
         hbox.pack_start (refresh_button);
 
@@ -59,6 +60,18 @@ public class Structure : VBox
         {
             parse_document (_main_window.active_document);
         });
+
+        // expand all button
+        Button expand_button = Utils.get_toolbar_button (Stock.ZOOM_IN);
+        hbox.pack_start (expand_button);
+
+        expand_button.clicked.connect (() => _tree_view.expand_all ());
+
+        // collapse all button
+        Button collapse_button = Utils.get_toolbar_button (Stock.ZOOM_OUT);
+        hbox.pack_start (collapse_button);
+
+        collapse_button.clicked.connect (() => _tree_view.collapse_all ());
     }
 
     private void init_tree_view ()

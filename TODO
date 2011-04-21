@@ -7,7 +7,6 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc.):
-	- expand/collapse all buttons
 	- show/hide buttons (label, include, table, image, todo/fixme)
 	- change the minimum level
 	- detect figures and tables (take the caption for the text)
