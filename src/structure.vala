@@ -29,22 +29,94 @@ public enum StructItem
     N_COLUMNS
 }
 
+public enum StructType
+{
+    PART = 0,
+    CHAPTER,
+    SECTION,
+    SUBSECTION,
+    SUBSUBSECTION,
+    PARAGRAPH,
+    SUBPARAGRAPH,
+    LABEL,
+    INCLUDE,
+    TABLE,
+    FIGURE,
+    TODO,
+    FIXME,
+    N_TYPES
+}
+
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
     private TreeStore _tree_store;
+    private TreeModelFilter _tree_filter;
     private TreeView _tree_view;
+    private bool[] _visible_types;
 
     public Structure (MainWindow main_window)
     {
         GLib.Object (spacing: 3);
         _main_window = main_window;
 
+        init_visible_types ();
         init_toolbar ();
         init_tree_view ();
         show_all ();
 
         _main_window.notify["active-document"].connect (on_active_document_changed);
+    }
+
+    private void init_visible_types ()
+    {
+        _visible_types = new bool[StructType.N_TYPES];
+        for (int type = 0 ; type < StructType.N_TYPES ; type++)
+            _visible_types[type] = true;
+
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
+        _visible_types[StructType.LABEL] =
+            settings.get_boolean ("structure-show-label");
+
+        _visible_types[StructType.INCLUDE] =
+            settings.get_boolean ("structure-show-include");
+
+        _visible_types[StructType.TABLE] =
+            settings.get_boolean ("structure-show-table");
+
+        _visible_types[StructType.FIGURE] =
+            settings.get_boolean ("structure-show-figure");
+
+        _visible_types[StructType.TODO] =
+            settings.get_boolean ("structure-show-todo");
+
+        _visible_types[StructType.FIXME] =
+            settings.get_boolean ("structure-show-fixme");
+    }
+
+    public void save_visible_types ()
+    {
+        /* Save visible types */
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
+        settings.set_boolean ("structure-show-label",
+            _visible_types[StructType.LABEL]);
+
+        settings.set_boolean ("structure-show-include",
+            _visible_types[StructType.INCLUDE]);
+
+        settings.set_boolean ("structure-show-table",
+            _visible_types[StructType.TABLE]);
+
+        settings.set_boolean ("structure-show-figure",
+            _visible_types[StructType.FIGURE]);
+
+        settings.set_boolean ("structure-show-todo",
+            _visible_types[StructType.TODO]);
+
+        settings.set_boolean ("structure-show-fixme",
+            _visible_types[StructType.FIXME]);
     }
 
     private void init_toolbar ()
@@ -72,19 +144,76 @@ public class Structure : VBox
         hbox.pack_start (collapse_button);
 
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
+
+        // show/hide buttons
+        ToggleButton toggle_button = create_show_hide_button ({ StructType.LABEL },
+            _("Show labels"));
+        hbox.pack_start (toggle_button);
+
+        toggle_button = create_show_hide_button ({ StructType.INCLUDE },
+            _("Show files included"));
+        hbox.pack_start (toggle_button);
+
+        toggle_button = create_show_hide_button ({ StructType.TABLE },
+            _("Show tables"));
+        hbox.pack_start (toggle_button);
+
+        toggle_button = create_show_hide_button ({ StructType.FIGURE },
+            _("Show figures"));
+        hbox.pack_start (toggle_button);
+
+        toggle_button = create_show_hide_button ({ StructType.TODO, StructType.FIXME },
+            _("Show TODOs and FIXMEs"));
+        hbox.pack_start (toggle_button);
+    }
+
+    /* Create a show/hide button for hiding some types.
+     * One button can hide several types, that's why it's an array.
+     * The button image is the same as for the first type. If needed, we could add a new
+     * parameter.
+     */
+    private ToggleButton? create_show_hide_button (StructType[] types, string tooltip)
+    {
+        return_val_if_fail (types.length > 0, null);
+
+        ToggleButton button =
+            Utils.get_toolbar_toggle_button (get_icon_from_type (types[0]));
+
+        button.tooltip_text = tooltip;
+        button.active = _visible_types[types[0]];
+
+        button.toggled.connect (() =>
+        {
+            foreach (StructType type in types)
+                _visible_types[type] = button.active;
+
+            if (_tree_filter != null)
+                _tree_filter.refilter ();
+        });
+
+        return button;
     }
 
     private void init_tree_view ()
     {
         _tree_store = new TreeStore (StructItem.N_COLUMNS,
             typeof (string),     // pixbuf (stock-id)
-            typeof (int),        // item type
+            typeof (StructType), // item type
             typeof (string),     // text
             typeof (string),     // tooltip
             typeof (TextMark)    // mark
             );
 
-        _tree_view = new TreeView.with_model (_tree_store);
+        _tree_filter = new TreeModelFilter (_tree_store, null);
+        _tree_filter.set_visible_func ((model, iter) =>
+        {
+            StructType type;
+            model.get (iter, StructItem.TYPE, out type, -1);
+
+            return _visible_types[type];
+        });
+
+        _tree_view = new TreeView.with_model (_tree_filter);
         _tree_view.headers_visible = false;
 
         TreeViewColumn column = new TreeViewColumn ();
@@ -182,5 +311,49 @@ public class Structure : VBox
     {
         _main_window.notify["active-document"].disconnect (on_active_document_changed);
         base.hide ();
+    }
+
+    public static string? get_icon_from_type (StructType type)
+    {
+        switch (type)
+        {
+            case StructType.PART:
+                return "tree_part";
+
+            case StructType.CHAPTER:
+                return "tree_chapter";
+
+            case StructType.SECTION:
+                return "tree_section";
+
+            case StructType.SUBSECTION:
+                return "tree_subsection";
+
+            case StructType.SUBSUBSECTION:
+                return "tree_subsubsection";
+
+            case StructType.PARAGRAPH:
+            case StructType.SUBPARAGRAPH:
+                return "tree_paragraph";
+
+            case StructType.LABEL:
+                return "tree_label";
+
+            case StructType.TODO:
+            case StructType.FIXME:
+                return "tree_todo";
+
+            case StructType.TABLE:
+                return "table";
+
+            case StructType.FIGURE:
+                return "image";
+
+            case StructType.INCLUDE:
+                return "tree_include";
+
+            default:
+                return_val_if_reached (null);
+        }
     }
 }

@@ -21,23 +21,6 @@ using Gtk;
 
 public class DocumentStructure : GLib.Object
 {
-    private enum StructType
-    {
-        PART = 0,
-        CHAPTER,
-        SECTION,
-        SUBSECTION,
-        SUBSUBSECTION,
-        PARAGRAPH,
-        SUBPARAGRAPH,
-        LABEL,
-        INCLUDE,
-        TABLE,
-        IMAGE,
-        TODO,
-        FIXME
-    }
-
     private struct DataNode
     {
         StructType type;
@@ -368,7 +351,7 @@ public class DocumentStructure : GLib.Object
         TreeIter iter;
         store.append (out iter, parent);
         store.set (iter,
-            StructItem.PIXBUF, get_icon_from_type (data.type),
+            StructItem.PIXBUF, Structure.get_icon_from_type (data.type),
             StructItem.TYPE, data.type,
             StructItem.TEXT, data.text,
             StructItem.TOOLTIP, get_tooltip_from_type (data.type),
@@ -376,50 +359,6 @@ public class DocumentStructure : GLib.Object
             -1);
 
         return iter;
-    }
-
-    private string? get_icon_from_type (StructType type)
-    {
-        switch (type)
-        {
-            case StructType.PART:
-                return "tree_part";
-
-            case StructType.CHAPTER:
-                return "tree_chapter";
-
-            case StructType.SECTION:
-                return "tree_section";
-
-            case StructType.SUBSECTION:
-                return "tree_subsection";
-
-            case StructType.SUBSUBSECTION:
-                return "tree_subsubsection";
-
-            case StructType.PARAGRAPH:
-            case StructType.SUBPARAGRAPH:
-                return "tree_paragraph";
-
-            case StructType.LABEL:
-                return "tree_label";
-
-            case StructType.TODO:
-            case StructType.FIXME:
-                return "tree_todo";
-
-            case StructType.TABLE:
-                return "table";
-
-            case StructType.IMAGE:
-                return "image";
-
-            case StructType.INCLUDE:
-                return "tree_include";
-
-            default:
-                return_val_if_reached (null);
-        }
     }
 
     private string? get_tooltip_from_type (StructType type)
@@ -459,7 +398,7 @@ public class DocumentStructure : GLib.Object
             case StructType.TABLE:
                 return _("Table");
 
-            case StructType.IMAGE:
+            case StructType.FIGURE:
                 return _("Figure");
 
             case StructType.INCLUDE:
