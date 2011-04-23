@@ -37,6 +37,9 @@ public class DocumentStructure : GLib.Object
 
     private static Regex? _comment_regex = null;
 
+    private bool _in_figure_env = false;
+    private bool _in_table_env = false;
+
     public DocumentStructure (TextBuffer doc)
     {
         _doc = doc;
@@ -57,9 +60,11 @@ public class DocumentStructure : GLib.Object
 
     public void parse ()
     {
+        // reset
         DataNode empty_data = {};
         _tree = new Node<DataNode?> (empty_data);
-
+        _in_figure_env = false;
+        _in_table_env = false;
         clear_all_structure_marks ();
 
         /* search commands (begin with a backslash) */
@@ -75,7 +80,9 @@ public class DocumentStructure : GLib.Object
             TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
             null, out iter, null))
         {
-            search_simple_command (iter);
+            if (search_simple_command (iter))
+                continue;
+            search_figure_or_table (iter);
         }
 
         _insert_at_end = false;
@@ -94,46 +101,43 @@ public class DocumentStructure : GLib.Object
         }
     }
 
-    private bool search_simple_command (TextIter begin_name_iter)
+    private StructType? get_simple_command_type (TextIter after_backslash,
+        out TextIter begin_contents_iter = null)
     {
         // set the limit to the end of the line
-        TextIter limit = begin_name_iter;
+        TextIter limit = after_backslash;
         limit.forward_to_line_end ();
 
-        /* try to get the command name (between '\' and '{') */
+        // try to get the command name (between '\' and '{')
 
         TextIter end_name_iter;
-        TextIter begin_contents_iter;
 
-        if (! begin_name_iter.forward_search ("{",
+        if (! after_backslash.forward_search ("{",
             TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
             out end_name_iter, out begin_contents_iter, limit))
         {
             // not a command
-            return false;
+            return null;
         }
 
-        string name = _doc.get_text (begin_name_iter, end_name_iter, false);
-        StructType? type = get_type_from_simple_command_name (name);
+        string name = _doc.get_text (after_backslash, end_name_iter, false);
+        return get_type_from_simple_command_name (name);
+    }
 
-        // not a good command
-        if (type == null)
-            return false;
-
-        /* try to get the command contents (between '{' and '}') */
-
-        // find the matching '}'
-        string end_line = _doc.get_text (begin_contents_iter, limit, false);
+    // Get the contents between '{' and the corresponding '}'.
+    // The first char of 'text' is the char just after the '{'.
+    private string? get_command_contents (string text)
+    {
         int brace_level = 0;
-        for (long i = 0 ; i < end_line.length ; i++)
+        for (long i = 0 ; i < text.length ; i++)
         {
-            if (end_line[i] == '{' && ! Utils.char_is_escaped (end_line, i))
+            if (text[i] == '{' && ! Utils.char_is_escaped (text, i))
             {
                 brace_level++;
                 continue;
             }
 
-            if (end_line[i] == '}' && ! Utils.char_is_escaped (end_line, i))
+            if (text[i] == '}' && ! Utils.char_is_escaped (text, i))
             {
                 if (brace_level > 0)
                 {
@@ -142,20 +146,57 @@ public class DocumentStructure : GLib.Object
                 }
 
                 // found!
-                string contents = end_line[0:i];
+                string contents = text[0:i];
 
                 // empty
                 if (contents.length == 0)
-                    return false;
+                    return null;
 
-                TextIter mark_iter = begin_name_iter;
-                mark_iter.backward_char ();
-                add_item (type, contents, mark_iter);
-                return true;
+                return contents;
             }
         }
 
-        return false;
+        return null;
+    }
+
+    private bool search_simple_command (TextIter begin_name_iter)
+    {
+        // get command type
+        TextIter begin_contents_iter;
+        StructType? type = get_simple_command_type (begin_name_iter,
+            out begin_contents_iter);
+
+        if (type == null)
+            return false;
+
+        // get command contents
+
+        TextIter limit = begin_contents_iter;
+        limit.forward_to_line_end ();
+
+        string end_line = _doc.get_text (begin_contents_iter, limit, false);
+        string? contents = get_command_contents (end_line);
+        if (contents == null)
+            return false;
+
+        TextIter mark_iter = begin_name_iter;
+        mark_iter.backward_char ();
+        add_item (type, contents, mark_iter);
+        return true;
+    }
+
+    private void search_figure_or_table (TextIter after_backslash)
+    {
+        string text = get_text_to_line_end (after_backslash);
+
+        if (text.has_prefix ("begin{figure}"))
+            _in_figure_env = true;
+        else if (text.has_prefix ("end{figure}"))
+            _in_figure_env = false;
+        else if (text.has_prefix ("begin{table}"))
+            _in_table_env = true;
+        else if (text.has_prefix ("end{table}"))
+            _in_table_env = false;
     }
 
     private bool search_comment (TextIter after_percent)
@@ -167,10 +208,7 @@ public class DocumentStructure : GLib.Object
         if (Utils.char_is_escaped (text_before, text_before.length - 1))
             return false;
 
-        TextIter end_line = after_percent;
-        end_line.forward_to_line_end ();
-        string text_after = _doc.get_text (after_percent, end_line, false);
-        text_after = text_after.strip ();
+        string text_after = get_text_to_line_end (after_percent).strip ();
 
         MatchInfo match_info;
         if (! _comment_regex.match (text_after, 0, out match_info))
@@ -189,6 +227,14 @@ public class DocumentStructure : GLib.Object
         mark_iter.backward_char ();
         add_item (type, text, mark_iter);
         return true;
+    }
+
+    private string get_text_to_line_end (TextIter start)
+    {
+        TextBuffer doc = start.get_buffer ();
+        TextIter line_end = start;
+        line_end.forward_to_line_end ();
+        return doc.get_text (start, line_end, false);
     }
 
     private void add_item (StructType type, string text, TextIter iter)
@@ -399,6 +445,13 @@ public class DocumentStructure : GLib.Object
             case "input":
             case "include":
                 return StructType.INCLUDE;
+
+            case "caption":
+                if (_in_figure_env)
+                    return StructType.FIGURE;
+                else if (_in_table_env)
+                    return StructType.TABLE;
+                return null;
 
             default:
                 return null;

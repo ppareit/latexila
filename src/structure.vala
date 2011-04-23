@@ -65,8 +65,8 @@ public class Structure : VBox
 
         init_visible_types ();
         init_toolbar ();
-        init_tree_view ();
         init_choose_min_level ();
+        init_tree_view ();
         show_all ();
 
         _main_window.notify["active-document"].connect (on_active_document_changed);
@@ -146,12 +146,14 @@ public class Structure : VBox
 
         // expand all button
         Button expand_button = Utils.get_toolbar_button (Stock.ZOOM_IN);
+        expand_button.tooltip_text = _("Expand All");
         hbox.pack_start (expand_button);
 
         expand_button.clicked.connect (() => _tree_view.expand_all ());
 
         // collapse all button
         Button collapse_button = Utils.get_toolbar_button (Stock.ZOOM_OUT);
+        collapse_button.tooltip_text = _("Collapse All");
         hbox.pack_start (collapse_button);
 
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
@@ -305,11 +307,13 @@ public class Structure : VBox
             for (int type = 0 ; type <= StructType.SUBPARAGRAPH ; type++)
                 _visible_types[type] = type <= selected_type;
 
-            _tree_filter.refilter ();
+            if (_tree_filter != null)
+                _tree_filter.refilter ();
+            if (_tree_view != null)
+                _tree_view.expand_all ();
         });
 
-        // Restore state.
-        // Do this after connecting the 'changed' signal so the items are filtered.
+        // restore state
         int min_level = _settings.get_int ("structure-min-level");
         min_level = min_level.clamp (StructType.PART, StructType.SUBPARAGRAPH);
         combo_box.set_active (min_level);
