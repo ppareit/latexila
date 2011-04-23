@@ -50,6 +50,7 @@ public enum StructType
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
+    private GLib.Settings _settings;
     private TreeStore _tree_store;
     private TreeModelFilter _tree_filter;
     private TreeView _tree_view;
@@ -60,9 +61,12 @@ public class Structure : VBox
         GLib.Object (spacing: 3);
         _main_window = main_window;
 
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
         init_visible_types ();
         init_toolbar ();
         init_tree_view ();
+        init_choose_min_level ();
         show_all ();
 
         _main_window.notify["active-document"].connect (on_active_document_changed);
@@ -71,52 +75,59 @@ public class Structure : VBox
     private void init_visible_types ()
     {
         _visible_types = new bool[StructType.N_TYPES];
-        for (int type = 0 ; type < StructType.N_TYPES ; type++)
-            _visible_types[type] = true;
-
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
         _visible_types[StructType.LABEL] =
-            settings.get_boolean ("structure-show-label");
+            _settings.get_boolean ("structure-show-label");
 
         _visible_types[StructType.INCLUDE] =
-            settings.get_boolean ("structure-show-include");
+            _settings.get_boolean ("structure-show-include");
 
         _visible_types[StructType.TABLE] =
-            settings.get_boolean ("structure-show-table");
+            _settings.get_boolean ("structure-show-table");
 
         _visible_types[StructType.FIGURE] =
-            settings.get_boolean ("structure-show-figure");
+            _settings.get_boolean ("structure-show-figure");
 
         _visible_types[StructType.TODO] =
-            settings.get_boolean ("structure-show-todo");
+            _settings.get_boolean ("structure-show-todo");
 
         _visible_types[StructType.FIXME] =
-            settings.get_boolean ("structure-show-fixme");
+            _settings.get_boolean ("structure-show-fixme");
     }
 
-    public void save_visible_types ()
+    public void save_state ()
     {
         /* Save visible types */
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
-        settings.set_boolean ("structure-show-label",
+        _settings.set_boolean ("structure-show-label",
             _visible_types[StructType.LABEL]);
 
-        settings.set_boolean ("structure-show-include",
+        _settings.set_boolean ("structure-show-include",
             _visible_types[StructType.INCLUDE]);
 
-        settings.set_boolean ("structure-show-table",
+        _settings.set_boolean ("structure-show-table",
             _visible_types[StructType.TABLE]);
 
-        settings.set_boolean ("structure-show-figure",
+        _settings.set_boolean ("structure-show-figure",
             _visible_types[StructType.FIGURE]);
 
-        settings.set_boolean ("structure-show-todo",
+        _settings.set_boolean ("structure-show-todo",
             _visible_types[StructType.TODO]);
 
-        settings.set_boolean ("structure-show-fixme",
+        _settings.set_boolean ("structure-show-fixme",
             _visible_types[StructType.FIXME]);
+
+        /* save min level */
+
+        int min_level = StructType.PART;
+        for (int level = 0 ; level <= StructType.SUBPARAGRAPH ; level++)
+        {
+            if (! _visible_types[level])
+                break;
+            min_level = level;
+        }
+
+        _settings.set_int ("structure-min-level", min_level);
     }
 
     private void init_toolbar ()
@@ -242,6 +253,70 @@ public class Structure : VBox
         pack_start (sw);
     }
 
+    private enum MinLevelColumn
+    {
+        PIXBUF,
+        NAME,
+        TYPE,
+        N_COLUMNS
+    }
+
+    private void init_choose_min_level ()
+    {
+        ListStore list_store = new ListStore (MinLevelColumn.N_COLUMNS,
+            typeof (string),
+            typeof (string),
+            typeof (StructType));
+
+        ComboBox combo_box = new ComboBox.with_model (list_store);
+        combo_box.tooltip_text = _("Minimum level");
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        combo_box.pack_start (pixbuf_renderer, false);
+        combo_box.set_attributes (pixbuf_renderer,
+            "stock-id", MinLevelColumn.PIXBUF, null);
+
+        CellRendererText text_renderer = new CellRendererText ();
+        combo_box.pack_start (text_renderer, true);
+        combo_box.set_attributes (text_renderer, "text", MinLevelColumn.NAME, null);
+
+        // populate the combo box
+        for (int type = StructType.PART ; type <= StructType.SUBPARAGRAPH ; type++)
+        {
+            TreeIter iter;
+            list_store.append (out iter);
+            list_store.set (iter,
+                MinLevelColumn.PIXBUF, get_icon_from_type ((StructType) type),
+                MinLevelColumn.NAME, get_type_name ((StructType) type),
+                MinLevelColumn.TYPE, type,
+                -1);
+        }
+
+        combo_box.changed.connect (() =>
+        {
+            TreeIter iter;
+            if (! combo_box.get_active_iter (out iter))
+                return;
+
+            StructType selected_type;
+            TreeModel model = (TreeModel) list_store;
+            model.get (iter, MinLevelColumn.TYPE, out selected_type, -1);
+
+            for (int type = 0 ; type <= StructType.SUBPARAGRAPH ; type++)
+                _visible_types[type] = type <= selected_type;
+
+            _tree_filter.refilter ();
+        });
+
+        // Restore state.
+        // Do this after connecting the 'changed' signal so the items are filtered.
+        int min_level = _settings.get_int ("structure-min-level");
+        min_level = min_level.clamp (StructType.PART, StructType.SUBPARAGRAPH);
+        combo_box.set_active (min_level);
+
+        pack_start (combo_box, false, false);
+    }
+
     private bool on_row_selection (TreeSelection selection, TreeModel model,
         TreePath path, bool path_currently_selected)
     {
@@ -351,6 +426,54 @@ public class Structure : VBox
 
             case StructType.INCLUDE:
                 return "tree_include";
+
+            default:
+                return_val_if_reached (null);
+        }
+    }
+
+    public static string? get_type_name (StructType type)
+    {
+        switch (type)
+        {
+            case StructType.PART:
+                return _("Part");
+
+            case StructType.CHAPTER:
+                return _("Chapter");
+
+            case StructType.SECTION:
+                return _("Section");
+
+            case StructType.SUBSECTION:
+                return _("Sub-section");
+
+            case StructType.SUBSUBSECTION:
+                return _("Sub-sub-section");
+
+            case StructType.PARAGRAPH:
+                return _("Paragraph");
+
+            case StructType.SUBPARAGRAPH:
+                return _("Sub-paragraph");
+
+            case StructType.LABEL:
+                return _("Label");
+
+            case StructType.TODO:
+                return "TODO";
+
+            case StructType.FIXME:
+                return "FIXME";
+
+            case StructType.TABLE:
+                return _("Table");
+
+            case StructType.FIGURE:
+                return _("Figure");
+
+            case StructType.INCLUDE:
+                return _("File included");
 
             default:
                 return_val_if_reached (null);

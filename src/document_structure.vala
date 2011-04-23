@@ -354,59 +354,11 @@ public class DocumentStructure : GLib.Object
             StructItem.PIXBUF, Structure.get_icon_from_type (data.type),
             StructItem.TYPE, data.type,
             StructItem.TEXT, data.text,
-            StructItem.TOOLTIP, get_tooltip_from_type (data.type),
+            StructItem.TOOLTIP, Structure.get_type_name (data.type),
             StructItem.MARK, data.mark,
             -1);
 
         return iter;
-    }
-
-    private string? get_tooltip_from_type (StructType type)
-    {
-        switch (type)
-        {
-            case StructType.PART:
-                return _("Part");
-
-            case StructType.CHAPTER:
-                return _("Chapter");
-
-            case StructType.SECTION:
-                return _("Section");
-
-            case StructType.SUBSECTION:
-                return _("Sub-section");
-
-            case StructType.SUBSUBSECTION:
-                return _("Sub-sub-section");
-
-            case StructType.PARAGRAPH:
-                return _("Paragraph");
-
-            case StructType.SUBPARAGRAPH:
-                return _("Sub-paragraph");
-
-            case StructType.LABEL:
-                return _("Label");
-
-            case StructType.TODO:
-                return "TODO";
-
-            case StructType.FIXME:
-                return "FIXME";
-
-            case StructType.TABLE:
-                return _("Table");
-
-            case StructType.FIGURE:
-                return _("Figure");
-
-            case StructType.INCLUDE:
-                return _("File included");
-
-            default:
-                return_val_if_reached (null);
-        }
     }
 
     private StructType? get_type_from_simple_command_name (string name)

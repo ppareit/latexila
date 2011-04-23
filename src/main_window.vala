@@ -1085,7 +1085,7 @@ public class MainWindow : Window
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         settings_ui.set_boolean ("show-build-badboxes", action.active);
 
-        structure.save_visible_types ();
+        structure.save_state ();
 
         if (sync)
         {

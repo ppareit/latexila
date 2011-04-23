@@ -144,6 +144,10 @@
       <default>true</default>
       <summary>Show FIXMEs in structure</summary>
     </key>
+    <key name="structure-min-level" type="i">
+      <default>6</default>
+      <summary>Minimum structure level</summary>
+    </key>
   </schema>
 
   <schema id="org.gnome.latexila.preferences.latex" path="/org/gnome/latexila/preferences/latex/">
