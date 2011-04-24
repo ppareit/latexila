@@ -654,32 +654,19 @@ public class MainWindow : Window
 
     public DocumentTab? create_tab (bool jump_to)
     {
-        var tab = new DocumentTab ();
-
-        /* get unsaved document number */
-        uint[] all_nums = {};
-        foreach (Document doc in Application.get_default ().get_documents ())
-        {
-            if (doc.location == null)
-                all_nums += doc.unsaved_document_num;
-        }
-
-        uint num;
-        for (num = 1 ; num in all_nums ; num++);
-        tab.document.unsaved_document_num = num;
-
+        DocumentTab tab = new DocumentTab ();
         return process_create_tab (tab, jump_to);
     }
 
     public DocumentTab? create_tab_from_location (File location, bool jump_to)
     {
-        var tab = new DocumentTab.from_location (location);
+        DocumentTab tab = new DocumentTab.from_location (location);
         return process_create_tab (tab, jump_to);
     }
 
     public void create_tab_with_view (DocumentView view)
     {
-        var tab = new DocumentTab.with_view (view);
+        DocumentTab tab = new DocumentTab.with_view (view);
         process_create_tab (tab, true);
     }
 
