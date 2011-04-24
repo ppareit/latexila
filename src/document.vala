@@ -31,7 +31,7 @@ public class Document : Gtk.SourceBuffer
     public File location { get; set; }
     public bool readonly { get; set; default = false; }
     public DocumentTab tab;
-    public uint unsaved_document_n { get; set; }
+    public uint _unsaved_doc_num = 0;
     public int project_id { get; set; default = -1; }
     private bool backup_made = false;
     private string _etag;
@@ -310,7 +310,35 @@ public class Document : Gtk.SourceBuffer
 
     private string get_unsaved_document_name ()
     {
-        return _("Unsaved Document") + " %u".printf (unsaved_document_n);
+        uint num = get_unsaved_document_num ();
+        return _("Unsaved Document") + @" $num";
+    }
+
+    private uint get_unsaved_document_num ()
+    {
+        return_val_if_fail (location == null, 0);
+
+        if (_unsaved_doc_num > 0)
+            return _unsaved_doc_num;
+
+        // get all unsaved document numbers
+        uint[] all_nums = {};
+        foreach (Document doc in Application.get_default ().get_documents ())
+        {
+            // avoid infinite loop
+            if (doc == this)
+                continue;
+
+            if (doc.location == null)
+                all_nums += doc.get_unsaved_document_num ();
+        }
+
+        // take the first free num
+        uint num;
+        for (num = 1 ; num in all_nums ; num++);
+
+        _unsaved_doc_num = num;
+        return num;
     }
 
     public bool is_local ()
