@@ -172,7 +172,8 @@ namespace Utils
         {
             stdout.printf ("== Build Job ==\n");
             stdout.printf ("must succeed: %s\n", build_job.must_succeed.to_string ());
-            stdout.printf ("post processor: %s\n", build_job.post_processor);
+            stdout.printf ("post processor: %s\n",
+                BuildTools.get_post_processor_name_from_type (build_job.post_processor));
             stdout.printf ("command: %s\n\n", build_job.command);
         }
     }

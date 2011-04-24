@@ -176,20 +176,14 @@ private class BuildToolDialog : Dialog
 
         ListStore post_processor_store = new ListStore (1, typeof (string));
 
-        string[] post_processors =
-        {
-            "all-output",
-            "latex",
-            "latexmk",
-            "no-output",
-            "rubber"
-        };
-
-        foreach (string post_processor in post_processors)
+        for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
         {
             TreeIter iterpp;
             post_processor_store.append (out iterpp);
-            post_processor_store.set (iterpp, 0, post_processor, -1);
+            post_processor_store.set (iterpp,
+                0, BuildTools.get_post_processor_name_from_type (
+                    (PostProcessorType) type),
+                -1);
         }
 
         /* cell renderers */
@@ -287,7 +281,8 @@ private class BuildToolDialog : Dialog
         jobs_store.set (iter,
             JobColumn.COMMAND, entry_command.text,
             JobColumn.MUST_SUCCEED, true,
-            JobColumn.POST_PROCESSOR, "no-output",
+            JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
+                PostProcessorType.NO_OUTPUT),
             -1);
         entry_command.text = "";
     }
@@ -341,7 +336,8 @@ private class BuildToolDialog : Dialog
             jobs_store.set (iter,
                 JobColumn.COMMAND, job.command,
                 JobColumn.MUST_SUCCEED, job.must_succeed,
-                JobColumn.POST_PROCESSOR, job.post_processor,
+                JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
+                    job.post_processor),
                 -1);
         }
     }
@@ -395,13 +391,16 @@ private class BuildToolDialog : Dialog
                 BuildJob job = BuildJob ();
 
                 string command;
+                string post_processor_name;
                 model.get (iter,
                     JobColumn.COMMAND, out command,
                     JobColumn.MUST_SUCCEED, out job.must_succeed,
-                    JobColumn.POST_PROCESSOR, out job.post_processor,
+                    JobColumn.POST_PROCESSOR, out post_processor_name,
                     -1);
 
                 job.command = command.strip ();
+                job.post_processor = BuildTools.get_post_processor_type_from_name (
+                    post_processor_name);
                 tool.jobs.append (job);
 
                 valid = jobs_store.iter_next (ref iter);

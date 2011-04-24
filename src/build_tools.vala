@@ -19,10 +19,21 @@
 
 using Gee;
 
+public enum PostProcessorType
+{
+    // please keep these items sorted in alphabetical order (for the build tool dialog)
+    ALL_OUTPUT = 0,
+    LATEX,
+    LATEXMK,
+    NO_OUTPUT,
+    RUBBER,
+    N_POST_PROCESSORS
+}
+
 public struct BuildJob
 {
     public bool must_succeed;
-    public string post_processor;
+    public PostProcessorType post_processor;
     public string command;
     public string[] command_args;
 }
@@ -49,6 +60,15 @@ public enum DocType
 public class BuildTools
 {
     private static BuildTools instance = null;
+
+    private static string[] _post_processor_names =
+    {
+        "all-output",
+        "latex",
+        "latexmk",
+        "no-output",
+        "rubber"
+    };
 
     private LinkedList<BuildTool?> build_tools;
     private BuildTool cur_tool;
@@ -306,7 +326,8 @@ public class BuildTools
                             cur_job.must_succeed = bool.parse (attr_values[i]);
                             break;
                         case "postProcessor":
-                            cur_job.post_processor = attr_values[i];
+                            cur_job.post_processor = get_post_processor_type_from_name (
+                                attr_values[i]);
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -385,7 +406,7 @@ public class BuildTools
             {
                 content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">".printf (
                     job.must_succeed.to_string (),
-                    job.post_processor);
+                    get_post_processor_name_from_type (job.post_processor));
 
                 content += Markup.printf_escaped ("%s</job>\n", job.command);
             }
@@ -417,5 +438,22 @@ public class BuildTools
         string path = Path.build_filename (Environment.get_user_config_dir (),
             "latexila", "build_tools.xml", null);
         return File.new_for_path (path);
+    }
+
+    public static PostProcessorType? get_post_processor_type_from_name (string name)
+    {
+        for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
+        {
+            if (_post_processor_names[type] == name)
+                return (PostProcessorType) type;
+        }
+
+        return_val_if_reached (null);
+    }
+
+    public static string? get_post_processor_name_from_type (PostProcessorType type)
+    {
+        return_val_if_fail (type != PostProcessorType.N_POST_PROCESSORS, null);
+        return _post_processor_names[type];
     }
 }

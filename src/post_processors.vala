@@ -128,11 +128,6 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
             string text = issue.message = match_info.fetch_named ("text");
 
             // message type
-            // TODO add an option to rubber that writes which type of message it is
-            // e.g.: test.tex:5:box: Overfull blabla
-            // types of messages: box, ref, misc, error (see --warn option)
-            // update: this is not needed because we will use latexmk instead
-
             issue.message_type = BuildMessageType.ERROR;
             if (text.contains ("Underfull") || text.contains ("Overfull"))
                 issue.message_type = BuildMessageType.BADBOX;

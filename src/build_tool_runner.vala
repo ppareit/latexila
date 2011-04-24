@@ -103,7 +103,7 @@ public class BuildToolRunner : GLib.Object
         build_tool.label = label;
 
         BuildJob build_job = BuildJob ();
-        build_job.post_processor = "no-output";
+        build_job.post_processor = PostProcessorType.NO_OUTPUT;
         build_job.must_succeed = true;
         build_job.command = "%s $filename".printf (settings.get_string ("web-browser"));
 
@@ -251,24 +251,23 @@ public class BuildToolRunner : GLib.Object
         PostProcessor post_processor;
         switch (current_job.post_processor)
         {
-            case "all-output":
+            case PostProcessorType.ALL_OUTPUT:
                 post_processor = new AllOutputPostProcessor ();
                 break;
-            case "latex":
+            case PostProcessorType.LATEX:
                 post_processor = new LatexPostProcessor ();
                 break;
-            case "latexmk":
+            case PostProcessorType.LATEXMK:
                 post_processor = new LatexmkPostProcessor (latexmk_show_all);
                 break;
-            case "no-output":
+            case PostProcessorType.NO_OUTPUT:
                 post_processor = new NoOutputPostProcessor ();
                 break;
-            case "rubber":
+            case PostProcessorType.RUBBER:
                 post_processor = new RubberPostProcessor ();
                 break;
             default:
-                stderr.printf ("Warning: unknown post processor \"%s\". Use no-output.",
-                    current_job.post_processor);
+                stderr.printf ("Warning: unknown post processor. Use no-output.");
                 post_processor = new NoOutputPostProcessor ();
                 break;
         }
@@ -324,28 +323,27 @@ public class BuildToolRunner : GLib.Object
         current_job = jobs.nth_data (job_num);
         string[] command = get_command (current_job, false);
 
+        // Attention, rubber doesn't support filenames with spaces, warn the user
+        if (current_job.post_processor == PostProcessorType.RUBBER
+            && filename.contains (" "))
+        {
+            Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
+            BuildIssue issue = BuildIssue ();
+            issue.message =
+                _("Rubber may not support filenames with spaces (even in a directory)");
+            issue.message_type = BuildMessageType.WARNING;
+            issue.filename = filename;
+            issues.add (issue);
+
+            view.append_issues (job_partitions[job_num], issues);
+        }
+
         try
         {
-            if (current_job.post_processor == "no-output")
+            if (current_job.post_processor == PostProcessorType.NO_OUTPUT)
                 execute_without_output (command, directory);
-
-            // rubber
             else
-            {
-                // Attention, rubber doesn't support filenames with spaces, warn the user
-                if (filename.contains (" "))
-                {
-                    Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
-                    BuildIssue issue = BuildIssue ();
-                    issue.message = _("Rubber may not support filenames with spaces (even in a directory)");
-                    issue.message_type = BuildMessageType.WARNING;
-                    issue.filename = filename;
-                    issues.add (issue);
-
-                    view.append_issues (job_partitions[job_num], issues);
-                }
                 execute (command, directory);
-            }
         }
         catch (Error e)
         {
