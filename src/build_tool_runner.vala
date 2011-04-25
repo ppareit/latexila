@@ -382,7 +382,6 @@ public class BuildToolRunner : GLib.Object
             // first, we split the string with a space as delimiter
             string[] args = build_job.command.split (" ");
 
-
             // but, some arguments that contain spaces begin and end with ' or "
             string arg_buf = "";
             string delimiter = null;
@@ -394,7 +393,13 @@ public class BuildToolRunner : GLib.Object
                     if (arg.has_suffix (delimiter))
                     {
                         delimiter = null;
-                        command += arg_buf;
+
+                        // We have to remove the delimiters because they are needed only
+                        // when used in a single string. But since here we have an array
+                        // of strings with each argument separated, if we keep the
+                        // delimiters, it doesn't work (maybe it works with some commands,
+                        // but not latexmk in any case).
+                        command += arg_buf[1:arg_buf.length-1];
                     }
                     continue;
                 }
