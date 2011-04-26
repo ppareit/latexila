@@ -13,8 +13,6 @@ LaTeXila 2.2
 	- update on the fly the structure when the document is modified
 	- right click: cut, copy, paste below, select, delete, comment, shift left/right
 
-- Migrate to GTK+ 3.0
-
 - Build Tools:
 	- preferences dialog: double click on a build tool -> open properties
 	- build tools: copy button to make a copy of a build tool, so we can modify the copy and keep the original
@@ -31,6 +29,8 @@ LaTeXila ≥ 2.4
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)
+
+- Migrate to GTK+ 3.0
 
 (-) Edit toolbar:
 	- create a custom MenuToolButton:

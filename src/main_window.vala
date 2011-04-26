@@ -1724,10 +1724,16 @@ public class MainWindow : Window
 
     public void on_help_latex_reference ()
     {
-        File file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
-            "latexhelp.html", null));
-        new BuildToolRunner.web_browser (file, _("View LaTeX Reference"), build_view,
-            action_stop_exec);
+        try
+        {
+            string uri = Filename.to_uri (Path.build_filename (Config.DATA_DIR,
+                "latexhelp.html", null));
+            show_uri (null, uri, Gdk.CURRENT_TIME);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Impossible to open the LaTeX reference: %s\n", e.message);
+        }
     }
 
     public void on_about_dialog ()

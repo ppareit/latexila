@@ -92,26 +92,6 @@ public class BuildToolRunner : GLib.Object
         proceed ();
     }
 
-    public BuildToolRunner.web_browser (File file, string label, BuildView view,
-        Gtk.Action action_stop_exec)
-    {
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.editor");
-
-        BuildTool build_tool = BuildTool ();
-        build_tool.extensions = "";
-        build_tool.label = label;
-
-        BuildJob build_job = BuildJob ();
-        build_job.post_processor = PostProcessorType.NO_OUTPUT;
-        build_job.must_succeed = true;
-        build_job.command = "%s $filename".printf (settings.get_string ("web-browser"));
-
-        build_tool.jobs.append (build_job);
-
-        this (file, build_tool, view, action_stop_exec);
-    }
-
     private void execute (string[] command, string? working_directory) throws Error
     {
 //        stdout.printf ("command arguments:\n");

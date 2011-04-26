@@ -391,10 +391,6 @@ public class PreferencesDialog : Dialog
         GLib.Settings fb_settings =
             new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
 
-        var web_browser = builder.get_object ("web_browser");
-        settings.bind ("web-browser", web_browser, "text",
-            SettingsBindFlags.DEFAULT);
-
         var nb_most_used_symbols = builder.get_object ("nb_most_used_symbols");
         settings.bind ("nb-most-used-symbols", nb_most_used_symbols, "value",
             SettingsBindFlags.DEFAULT);

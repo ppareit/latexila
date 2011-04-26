@@ -21,7 +21,7 @@
     <child>
       <object class="GtkVBox" id="vbox_editor">
         <property name="visible">True</property>
-        <property name="border_width">4</property>
+        <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">7</property>
         <child>
@@ -225,7 +225,7 @@
     <child>
       <object class="GtkVBox" id="vbox202">
         <property name="visible">True</property>
-        <property name="border_width">12</property>
+        <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
@@ -395,7 +395,7 @@
     <child>
       <object class="GtkVBox" id="vbox6">
         <property name="visible">True</property>
-        <property name="border_width">4</property>
+        <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
@@ -655,41 +655,17 @@
     <child>
       <object class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
-        <property name="border_width">12</property>
+        <property name="border_width">8</property>
         <property name="orientation">vertical</property>
         <property name="spacing">18</property>
         <child>
-          <object class="GtkVBox" id="vbox9">
+          <object class="GtkHBox" id="hbox6">
             <property name="visible">True</property>
-            <property name="orientation">vertical</property>
-            <property name="spacing">7</property>
+            <property name="spacing">5</property>
             <child>
-              <object class="GtkHBox" id="hbox4">
+              <object class="GtkLabel" id="label10">
                 <property name="visible">True</property>
-                <property name="spacing">5</property>
-                <child>
-                  <object class="GtkLabel" id="label8">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Web browser:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="web_browser">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                <property name="label" translatable="yes">Number of most used symbols:</property>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -698,41 +674,20 @@
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="hbox6">
+              <object class="GtkSpinButton" id="nb_most_used_symbols">
                 <property name="visible">True</property>
-                <property name="spacing">5</property>
-                <child>
-                  <object class="GtkLabel" id="label10">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Number of most used symbols:</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkSpinButton" id="nb_most_used_symbols">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="adjustment">adjustment3</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
+                <property name="can_focus">True</property>
+                <property name="invisible_char">&#x25CF;</property>
+                <property name="adjustment">adjustment3</property>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
           </object>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
             <property name="position">0</property>
           </packing>
         </child>
