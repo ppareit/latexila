@@ -41,6 +41,9 @@ public class SidePanel : VBox
         hbox.pack_start (combo_box);
         hbox.pack_start (get_close_button (), false, false);
         show_all ();
+
+        show.connect (show_active_component);
+        hide.connect (hide_all_components);
     }
 
     public void add_component (string name, string stock_id, VBox component)
@@ -103,14 +106,7 @@ public class SidePanel : VBox
         combo_box.pack_start (text_renderer, true);
         combo_box.set_attributes (text_renderer, "text", SidePanelColumn.NAME, null);
 
-        combo_box.changed.connect (() =>
-        {
-            foreach (VBox component in components)
-                component.hide ();
-
-            int i = combo_box.get_active ();
-            components[i].show ();
-        });
+        combo_box.changed.connect (show_active_component);
 
         return combo_box;
     }
@@ -118,5 +114,19 @@ public class SidePanel : VBox
     public int get_active_component ()
     {
         return combo_box.get_active ();
+    }
+
+    private void hide_all_components ()
+    {
+        foreach (VBox component in components)
+            component.hide ();
+    }
+
+    private void show_active_component ()
+    {
+        hide_all_components ();
+
+        int i = get_active_component ();
+            components[i].show ();
     }
 }

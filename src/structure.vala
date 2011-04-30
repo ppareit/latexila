@@ -69,7 +69,8 @@ public class Structure : VBox
         init_tree_view ();
         show_all ();
 
-        _main_window.notify["active-document"].connect (on_active_document_changed);
+        show.connect (connect_parsing);
+        hide.connect (disconnect_parsing);
     }
 
     private void init_visible_types ()
@@ -345,6 +346,7 @@ public class Structure : VBox
         return true;
     }
 
+    // TODO: delete this function when the refresh button is removed
     private void parse_document (Document? doc)
     {
         clear ();
@@ -357,7 +359,7 @@ public class Structure : VBox
         populate (doc_struct);
     }
 
-    private void on_active_document_changed ()
+    private void populate_active_document ()
     {
         clear ();
 
@@ -380,16 +382,15 @@ public class Structure : VBox
         _tree_view.expand_all ();
     }
 
-    public new void show ()
+    public void connect_parsing ()
     {
-        _main_window.notify["active-document"].connect (on_active_document_changed);
-        base.show ();
+        _main_window.notify["active-document"].connect (populate_active_document);
+        populate_active_document ();
     }
 
-    public new void hide ()
+    public void disconnect_parsing ()
     {
-        _main_window.notify["active-document"].disconnect (on_active_document_changed);
-        base.hide ();
+        _main_window.notify["active-document"].disconnect (populate_active_document);
     }
 
     public static string? get_icon_from_type (StructType type)
