@@ -7,7 +7,6 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc.):
-	- run the parsing in an IdleSource (test with big documents)
 	- different style (e.g. italic) for commented items
 	- improve insert_item_at_position() (shift items if needed)
 	- update on the fly the structure when the document is modified

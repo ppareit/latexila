@@ -40,6 +40,9 @@ public class DocumentStructure : GLib.Object
     private bool _in_figure_env = false;
     private bool _in_table_env = false;
 
+    private static const int MAX_NB_LINES_TO_PARSE = 500;
+    private int _start_parsing_line = 0;
+
     public DocumentStructure (TextBuffer doc)
     {
         _doc = doc;
@@ -66,19 +69,38 @@ public class DocumentStructure : GLib.Object
         _in_figure_env = false;
         _in_table_env = false;
         clear_all_structure_marks ();
+        _start_parsing_line = 0;
 
+        Idle.add (() =>
+        {
+            return parse_impl ();
+        });
+    }
+
+    // Parse the document. Returns false if finished, true otherwise.
+    private bool parse_impl ()
+    {
         /* search commands (begin with a backslash) */
 
         // At the beginning of the search, the place where to insert new items is always
         // at the end.
         _insert_at_end = true;
 
+        // The parsing is splitted into several chunks if it's a big document, so the UI
+        // is not frozen.
         TextIter iter;
-        _doc.get_start_iter (out iter);
+        _doc.get_iter_at_line (out iter, _start_parsing_line);
+
+        TextIter? limit = null;
+        int nb_lines = _doc.get_line_count ();
+        int end_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
+        bool limit_parsing = nb_lines > end_parsing_line;
+        if (limit_parsing)
+            _doc.get_iter_at_line (out limit, end_parsing_line);
 
         while (iter.forward_search ("\\",
             TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, null))
+            null, out iter, limit))
         {
             if (search_simple_command (iter))
                 continue;
@@ -89,16 +111,24 @@ public class DocumentStructure : GLib.Object
 
         /* search comments (begin with '%') */
 
-        for (_doc.get_start_iter (out iter) ;
+        for (_doc.get_iter_at_line (out iter, _start_parsing_line) ;
 
             iter.forward_search ("%",
             TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, null) ;
+            null, out iter, limit) ;
 
             iter.forward_visible_line ())
         {
             search_comment (iter);
         }
+
+        if (limit_parsing)
+        {
+            _start_parsing_line = end_parsing_line;
+            return true;
+        }
+
+        return false;
     }
 
     private StructType? get_simple_command_type (TextIter after_backslash,

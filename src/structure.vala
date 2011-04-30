@@ -378,8 +378,14 @@ public class Structure : VBox
 
     private void populate (DocumentStructure doc_struct)
     {
-        doc_struct.populate_tree_store (_tree_store);
-        _tree_view.expand_all ();
+        Idle.add (() =>
+        {
+            doc_struct.populate_tree_store (_tree_store);
+            _tree_view.expand_all ();
+
+            // remove the idle source
+            return false;
+        });
     }
 
     public void connect_parsing ()
