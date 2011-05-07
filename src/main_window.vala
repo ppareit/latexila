@@ -716,6 +716,11 @@ public class MainWindow : Window
             update_build_tools_sensitivity ();
         });
 
+        tab.document.notify["project-id"].connect (() =>
+        {
+            update_build_tools_sensitivity ();
+        });
+
         tab.document.modified_changed.connect (() => sync_name (tab));
         tab.document.notify["readonly"].connect (() => sync_name (tab));
         tab.document.cursor_moved.connect (update_cursor_position_statusbar);
@@ -1328,24 +1333,23 @@ public class MainWindow : Window
         Gtk.Action clean_action = action_group.get_action ("BuildClean");
         Gtk.Action view_log_action = action_group.get_action ("BuildViewLog");
 
-        if (active_tab == null || active_document.location == null)
+        if (active_tab == null || active_document.get_main_file () == null)
         {
             build_tools_action_group.set_sensitive (false);
             clean_action.set_sensitive (false);
             view_log_action.set_sensitive (false);
             return;
         }
+
         // we must set the _action group_ sensitive and then set the sensitivity for each
         // action of the action group
-        else
-        {
-            build_tools_action_group.set_sensitive (true);
-            bool is_tex = active_document.is_tex_document ();
-            clean_action.set_sensitive (is_tex);
-            view_log_action.set_sensitive (is_tex);
-        }
+        build_tools_action_group.set_sensitive (true);
+        bool is_tex = active_document.is_main_file_a_tex_file ();
+        clean_action.set_sensitive (is_tex);
+        view_log_action.set_sensitive (is_tex);
 
-        string ext = Utils.get_extension (active_document.location.get_parse_name ());
+        string path = active_document.get_main_file ().get_parse_name ();
+        string ext = Utils.get_extension (path);
 
         unowned Gee.LinkedList<BuildTool?> tools =
             AppSettings.get_default ().get_build_tools ();
@@ -1635,7 +1639,7 @@ public class MainWindow : Window
     public void on_build_view_log ()
     {
         return_if_fail (active_tab != null);
-        return_if_fail (active_document.is_tex_document ());
+        return_if_fail (active_document.is_main_file_a_tex_file ());
 
         File mainfile = active_document.get_main_file ();
         File directory = mainfile.get_parent ();

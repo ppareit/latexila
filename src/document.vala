@@ -480,18 +480,9 @@ public class Document : Gtk.SourceBuffer
         return SelectionType.MULTIPLE_LINES;
     }
 
-    public bool is_tex_document ()
-    {
-        if (location == null)
-            return false;
-
-        string path = location.get_parse_name ();
-        return path.has_suffix (".tex");
-    }
-
     public bool clean_build_files (MainWindow window)
     {
-        if (location == null || ! is_tex_document ())
+        if (! is_main_file_a_tex_file ())
             return false;
 
         bool ret = false;
@@ -564,6 +555,16 @@ public class Document : Gtk.SourceBuffer
             return location;
 
         return project.main_file;
+    }
+
+    public bool is_main_file_a_tex_file ()
+    {
+        File? main_file = get_main_file ();
+        if (main_file == null)
+            return false;
+
+        string path = main_file.get_parse_name ();
+        return path.has_suffix (".tex");
     }
 
     public string get_current_indentation (int line)
