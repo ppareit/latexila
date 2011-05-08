@@ -1162,8 +1162,6 @@ public class MainWindow : Window
             AppSettings.get_default ().get_build_tools ();
         BuildTool tool = build_tools.get (i);
 
-        //Utils.print_build_tool (tool);
-
         build_view.show ();
 
         // save the document if it's a compilation (e.g. with rubber)

@@ -112,6 +112,8 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
         if (pattern == null)
             return;
 
+        string parent_path = file.get_parent ().get_parse_name ();
+
         MatchInfo match_info;
         pattern.match (output, 0, out match_info);
         while (match_info.matches ())
@@ -142,8 +144,7 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
             // filename
             issue.filename = match_info.fetch_named ("file");
             if (issue.filename[0] != '/')
-                issue.filename = "%s/%s".printf (file.get_parent ().get_parse_name (),
-                    issue.filename);
+                issue.filename = "%s/%s".printf (parent_path, issue.filename);
 
             issues += issue;
 
