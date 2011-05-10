@@ -53,9 +53,10 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </menu>
 
     <menu action="View">
+      <menuitem action="ViewMainToolbar" />
+      <menuitem action="ViewEditToolbar" />
       <menuitem action="ViewSidePanel" />
       <menuitem action="ViewBottomPanel" />
-      <menuitem action="ViewEditToolbar" />
       <separator />
       <menuitem action="ViewZoomIn" />
       <menuitem action="ViewZoomOut" />

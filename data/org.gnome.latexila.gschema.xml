@@ -84,6 +84,11 @@
   </schema>
 
   <schema id="org.gnome.latexila.preferences.ui" path="/org/gnome/latexila/preferences/ui/">
+    <key name="main-toolbar-visible" type="b">
+      <default>true</default>
+      <summary>Main toolbar is visible</summary>
+      <description>Whether the main toolbar (file open, close, build, ...) should be visible.</description>
+    </key>
     <key name="edit-toolbar-visible" type="b">
       <default>true</default>
       <summary>Edit toolbar is visible</summary>

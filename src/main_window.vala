@@ -135,12 +135,14 @@ public class MainWindow : Window
 
     private const ToggleActionEntry[] toggle_action_entries =
     {
+        { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
+            N_("Show or hide the main toolbar"), on_show_main_toolbar },
+        { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
+            N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "ViewSidePanel", null, N_("_Side panel"), null,
             N_("Show or hide the side panel"), on_show_side_panel },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), on_show_bottom_panel },
-        { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
-            N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "BuildShowErrors", Stock.DIALOG_ERROR, N_("Show _Errors"), null,
             N_("Show Errors"), on_build_show_errors },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
@@ -155,6 +157,7 @@ public class MainWindow : Window
     private GotoLine goto_line;
     private SearchAndReplace search_and_replace;
     private BuildView build_view;
+    private Toolbar main_toolbar;
     private Toolbar edit_toolbar;
     private SidePanel side_panel;
     private Symbols symbols;
@@ -239,9 +242,9 @@ public class MainWindow : Window
         initialize_menubar_and_toolbar ();
         var menu = ui_manager.get_widget ("/MainMenu");
 
-        Toolbar toolbar = (Toolbar) ui_manager.get_widget ("/MainToolbar");
-        toolbar.set_style (ToolbarStyle.ICONS);
-        setup_toolbar_open_button (toolbar);
+        main_toolbar = (Toolbar) ui_manager.get_widget ("/MainToolbar");
+        main_toolbar.set_style (ToolbarStyle.ICONS);
+        setup_toolbar_open_button (main_toolbar);
 
         edit_toolbar = (Toolbar) ui_manager.get_widget ("/EditToolbar");
         edit_toolbar.set_style (ToolbarStyle.ICONS);
@@ -378,12 +381,12 @@ public class MainWindow : Window
         /* packing widgets */
         VBox main_vbox = new VBox (false, 0);
         main_vbox.pack_start (menu, false, false, 0);
-        main_vbox.pack_start (toolbar, false, false, 0);
+        main_vbox.pack_start (main_toolbar, false, false, 0);
         main_vbox.pack_start (edit_toolbar, false, false, 0);
 
         main_vbox.show ();
         menu.show_all ();
-        toolbar.show_all ();
+        main_toolbar.show_all ();
 
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
@@ -541,13 +544,21 @@ public class MainWindow : Window
     {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
+        /* main toolbar */
+        bool show = settings.get_boolean ("main-toolbar-visible");
+
+        main_toolbar.visible = show;
+
+        ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
+        action.active = show;
+
         /* edit toolbar */
-        bool show = settings.get_boolean ("edit-toolbar-visible");
+        show = settings.get_boolean ("edit-toolbar-visible");
 
         if (! show)
             edit_toolbar.hide ();
 
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
+        action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
         action.set_active (show);
 
         /* side panel */
@@ -1055,9 +1066,13 @@ public class MainWindow : Window
         GLib.Settings settings_ui =
             new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
-        // We don't bind this setting to the toggle action because when we change the
+        // We don't bind this settings to the toggle action because when we change the
         // setting it must be applied only on the current window and not all windows.
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
+
+        ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
+        settings_ui.set_boolean ("main-toolbar-visible", action.active);
+
+        action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
         settings_ui.set_boolean ("edit-toolbar-visible", action.active);
 
         action = (ToggleAction) action_group.get_action ("ViewSidePanel");
@@ -1571,6 +1586,15 @@ public class MainWindow : Window
             build_view.show_all ();
         else
             build_view.hide ();
+    }
+
+    public void on_show_main_toolbar (Gtk.Action action)
+    {
+        bool show = (action as ToggleAction).active;
+        if (show)
+            main_toolbar.show_all ();
+        else
+            main_toolbar.hide ();
     }
 
     public void on_show_edit_toolbar (Gtk.Action action)
