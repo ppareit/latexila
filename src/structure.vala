@@ -340,7 +340,8 @@ public class Structure : VBox
         TextIter text_iter;
         doc.get_iter_at_mark (out text_iter, mark);
         doc.place_cursor (text_iter);
-        _main_window.active_view.scroll_to_cursor ();
+        // scroll to cursor, line at the top
+        _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 0, 0);
 
         // the row is selected
         return true;
