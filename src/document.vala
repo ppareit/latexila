@@ -621,15 +621,23 @@ public class Document : Gtk.SourceBuffer
         search_case_sensitive = case_sensitive;
         search_entire_word = entire_word;
 
-        TextIter start, match_start, match_end, insert;
+        TextIter start = {};
+        TextIter match_start = {};
+        TextIter match_end = {};
+        TextIter insert = {};
+        TextIter try_match_start = {};
+        TextIter try_match_end = {};
+
         get_start_iter (out start);
         get_iter_at_mark (out insert, get_insert ());
         var next_match_after_cursor_found = ! select;
         uint i = 0;
 
-        while (iter_forward_search (start, null, out match_start, out match_end))
+        while (iter_forward_search (start, null, out try_match_start, out try_match_end))
         {
-            i++;
+            match_start = try_match_start;
+            match_end = try_match_end;
+
             if (! next_match_after_cursor_found && insert.compare (match_end) <= 0)
             {
                 next_match_after_cursor_found = true;
@@ -640,6 +648,7 @@ public class Document : Gtk.SourceBuffer
                 apply_tag (found_tag, match_start, match_end);
 
             start = match_end;
+            i++;
         }
 
         // if the cursor was after the last match, take the last match
