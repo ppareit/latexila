@@ -135,14 +135,25 @@ public class FileBrowser : VBox
         // jump button sensitivity
         main_window.notify["active-document"].connect (() =>
         {
-            if (main_window.active_tab == null
-                || main_window.active_document.location == null)
-                jump_button.set_sensitive (false);
-            else
-                jump_button.set_sensitive (true);
+            update_jump_button_sensitivity (jump_button);
+
+            // update jump button sensitivity when location changes
+            if (main_window.active_document != null)
+            {
+                main_window.active_document.notify["location"].connect (() =>
+                {
+                    update_jump_button_sensitivity (jump_button);
+                });
+            }
         });
 
         refresh_button.clicked.connect (refresh);
+    }
+
+    private void update_jump_button_sensitivity (Button jump_button)
+    {
+        jump_button.sensitive = main_window.active_tab != null
+            && main_window.active_document.location != null;
     }
 
     // list of parent directories
