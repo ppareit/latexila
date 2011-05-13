@@ -42,9 +42,6 @@ LaTeXila 2.2
 
 - Ctrl+V in the input text search is broken
 
-- segfault when searching
-  https://github.com/swilmet/latexila/issues/18
-
 - Write some documentation:
 	- explain the build tools, how to create a new one, etc.
 	- the difference between Latexmk and Rubber
