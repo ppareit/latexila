@@ -40,6 +40,15 @@ LaTeXila 2.2
   With the keyboard it should be possible to select the template with the arrows and then open it with "enter".
   https://github.com/swilmet/latexila/issues/15
 
+- Ctrl+V in the input text search is broken
+
+- segfault when searching
+  https://github.com/swilmet/latexila/issues/18
+
+- Write some documentation:
+	- explain the build tools, how to create a new one, etc.
+	- the difference between Latexmk and Rubber
+
 
 LaTeXila ≥ 2.4
 ==============
