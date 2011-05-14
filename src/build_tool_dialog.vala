@@ -190,8 +190,11 @@ private class BuildToolDialog : Dialog
 
         CellRendererText text_renderer = new CellRendererText ();
         text_renderer.editable = true;
-        treeview_jobs.insert_column_with_attributes (-1, _("Commands"), text_renderer,
-            "text", JobColumn.COMMAND, null);
+
+        TreeViewColumn column = new TreeViewColumn.with_attributes (_("Commands"),
+            text_renderer, "text", JobColumn.COMMAND, null);
+        column.set_resizable (true);
+        treeview_jobs.append_column (column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
         toggle_renderer.activatable = true;
