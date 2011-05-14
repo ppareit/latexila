@@ -36,10 +36,6 @@ LaTeXila 2.2
 	- build tools properties: resize columns of commands
 	- right click menu in bottom panel: copy the line to the clipboard
 
-- Double-click on a template to open it (in File -> New)
-  With the keyboard it should be possible to select the template with the arrows and then open it with "enter".
-  https://github.com/swilmet/latexila/issues/15
-
 - Ctrl+V in the input text search is broken
 
 - Write some documentation:
