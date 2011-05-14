@@ -367,6 +367,26 @@ public class DocumentStructure : GLib.Object
 
     private void insert_item_at_position (DataNode item, Node<DataNode?> parent, int pos)
     {
+        // If inserting a simple item (not a section) between sections, for example:
+        // chapter
+        //   section 1
+        //   => insert simple item here
+        //   section 2
+        //
+        // The item's parent will 'section 1' instead of 'chapter'.
+        if (pos > 0)
+        {
+            unowned Node<DataNode?> prev = parent.nth_child (pos - 1);
+            bool prev_is_section = prev.data.type <= StructType.SUBPARAGRAPH;
+            bool item_is_section = item.type <= StructType.SUBPARAGRAPH;
+
+            if (prev_is_section && ! item_is_section)
+            {
+                prev.append_data (item);
+                return;
+            }
+        }
+
         parent.insert_data (pos, item);
     }
 
