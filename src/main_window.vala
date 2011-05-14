@@ -56,8 +56,14 @@ public class MainWindow : Window
             N_("Cut the selection"), on_edit_cut },
         { "EditCopy", Stock.COPY, null, null,
             N_("Copy the selection"), on_edit_copy },
-        { "EditPaste", Stock.PASTE, null, null,
+
+        // No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+        // the window. In this case Ctrl+V in the search text entry would be broken (the
+        // text is pasted in the document instead of the entry).
+        // Anyway if we press Ctrl+V when the cursor is in the document, no problem.
+        { "EditPaste", Stock.PASTE, null, "",
             N_("Paste the clipboard"), on_edit_paste },
+
         { "EditDelete", Stock.DELETE, null, null,
             N_("Delete the selected text"), on_edit_delete },
         { "EditSelectAll", Stock.SELECT_ALL, null, "<Control>A",

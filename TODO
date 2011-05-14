@@ -34,8 +34,6 @@ LaTeXila 2.2
 	- build tools: copy button to make a copy of a build tool, so we can modify the copy and keep the original
 	- right click menu in bottom panel: copy the line to the clipboard
 
-- Ctrl+V in the input text search is broken
-
 - Write some documentation:
 	- explain the build tools, how to create a new one, etc.
 	- the difference between Latexmk and Rubber
