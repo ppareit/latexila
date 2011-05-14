@@ -31,7 +31,6 @@ LaTeXila 2.2
 	  know where the item ends.
 
 - Build Tools:
-	- preferences dialog: double click on a build tool -> open properties
 	- build tools: copy button to make a copy of a build tool, so we can modify the copy and keep the original
 	- build tools properties: resize columns of commands
 	- right click menu in bottom panel: copy the line to the clipboard

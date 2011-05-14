@@ -569,6 +569,12 @@ public class PreferencesDialog : Dialog
 
             build_tools.update (num, build_tool);
         });
+
+        build_tools_view.row_activated.connect ((path) =>
+        {
+            int num = path.get_indices ()[0];
+            run_build_tool_dialog (num);
+        });
     }
 
     private void update_build_tools_store ()
