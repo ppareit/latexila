@@ -19,6 +19,8 @@ LaTeXila 2.2
 
 	- Different style (e.g. italic) for commented items.
 
+	- Doesn't take into account stuff in verbatim environment.
+
 	- Right click: cut, copy, paste below, select, delete, comment, shift left/right.
 	  Shift left/right is new comparated to Kile. For example we have a big section (with
 	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
@@ -33,6 +35,11 @@ LaTeXila 2.2
 - Build Tools:
 	- build tools: copy button to make a copy of a build tool, so we can modify the copy and keep the original
 	- right click menu in bottom panel: copy the line to the clipboard
+
+- Cleanup Build Files: if a project is defined, some *.aux files are not removed
+  => If a project is defined, instead of replacing the extension of the main
+     file to see if the file exist and remove it, search directly all files
+     which have the extension (in all sub-directories), and remove them.
 
 - Write some documentation:
 	- explain the build tools, how to create a new one, etc.
