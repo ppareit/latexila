@@ -721,9 +721,14 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="cases" package="amsmath" />
 			<choice name="center" />
 			<choice name="document" />
-			<choice name="description" />
+			<choice name="description">
+				<insert>\item[</insert>
+				<insert_after>] </insert_after>
+			</choice>
 			<choice name="displaymath" />
-			<choice name="enumerate" />
+			<choice name="enumerate">
+				<insert>\item </insert>
+			</choice>
 			<choice name="eqnarray" />
 			<choice name="eqnarray*" />
 			<choice name="equation" />
@@ -733,7 +738,9 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="flushright" />
 			<choice name="frame" />
 			<choice name="fussypar" />
-			<choice name="itemize" />
+			<choice name="itemize">
+				<insert>\item </insert>
+			</choice>
 			<choice name="letter" />
 			<choice name="lstlisting" package="listings" />
 			<choice name="math" />
