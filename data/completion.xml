@@ -410,6 +410,10 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="mathfrak">
 		<argument label="Formula" />
 	</command>
+	
+	<command name="phantom">
+		<argument label="Text" />
+	</command>
 
 	<!-- structure -->
 
@@ -697,6 +701,14 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="caption">
 		<argument label="Short" type="optional" />
 		<argument label="Description" />
+	</command>
+
+	<command name="frametitle" package="beamer">
+		<argument label="Title" />
+	</command>
+
+	<command name="framesubtitle" package="beamer">
+		<argument label="SubTitle" />
 	</command>
 
 	<command name="documentclass">
