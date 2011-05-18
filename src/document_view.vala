@@ -66,6 +66,11 @@ public class DocumentView : Gtk.SourceView
 
             // Gtk-CRITICAL with that, see bug #629055
             //completion.show_headers = false;
+
+            buffer.notify["cursor-position"].connect (() =>
+            {
+                provider.hide_calltip_window ();
+            });
         }
         catch (GLib.Error e)
         {

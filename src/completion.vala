@@ -503,7 +503,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         calltip_window.show_all ();
     }
 
-    private void hide_calltip_window ()
+    public void hide_calltip_window ()
     {
         if (calltip_window == null)
             return;
