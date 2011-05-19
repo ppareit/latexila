@@ -258,19 +258,27 @@ public class SearchAndReplace : GLib.Object
                 working_document.replace_all (entry_replace.text);
             });
 
-            // TAB in find => go to replace
             entry_find.key_press_event.connect ((event) =>
             {
-                // See GDK_KEY_Tab in gdk/gdkkeysyms.h (not available in Vala)
-                if (event.keyval == 0xff09)
+                // See GDK_KEY_* in gdk/gdkkeysyms.h (not available in Vala)
+                switch (event.keyval)
                 {
-                    show_search_and_replace ();
-                    entry_replace.grab_focus ();
-                    return true;
-                }
+                    case 0xff09:    // GDK_KEY_Tab
+                        // TAB in find => go to replace
+                        show_search_and_replace ();
+                        entry_replace.grab_focus ();
+                        return true;
 
-                // propagate the event further
-                return false;
+                    case 0xff1b:    // GDK_KEY_Escape
+                        // Escape in find => select text and hide search
+                        select_selected_search_text ();
+                        hide ();
+                        return true;
+
+                    default:
+                        // propagate the event further
+                        return false;
+                }
             });
         }
         catch (Error e)
@@ -332,6 +340,7 @@ public class SearchAndReplace : GLib.Object
         if (working_document != null)
             clear_search ();
 
+        main_window.active_view.grab_focus ();
         main_window.notify["active-document"].disconnect (active_document_changed);
     }
 
@@ -372,6 +381,14 @@ public class SearchAndReplace : GLib.Object
             out nb_matches, out num_match, select);
 
         on_search_info_updated (nb_matches != 0, nb_matches, num_match);
+    }
+
+    private void select_selected_search_text ()
+    {
+        return_if_fail (main_window.active_document != null);
+
+        if (working_document != null);
+            working_document.select_selected_search_text ();
     }
 
     private void search_forward ()
