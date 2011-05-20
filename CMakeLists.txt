@@ -30,7 +30,7 @@ if (BUILD_VALA)
 	include (ValaVersion)
 	find_package (Vala REQUIRED)
 	ensure_vala_version ("0.10.0" MINIMUM)
-	ensure_vala_version ("0.10.99" MAXIMUM)
+#	ensure_vala_version ("0.10.99" MAXIMUM)
 endif ()
 
 find_package (PkgConfig)
