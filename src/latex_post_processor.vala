@@ -100,7 +100,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                     new Regex ("(.*)has occurred while \\output is active");
 
                 reg_warning =
-                    new Regex ("^(((! )?(La|pdf)TeX)|Package|Class) .*Warning.*:(.*)",
+                    new Regex ("^(((! )?(La|pdf)TeX)|Package|Class) .*Warning[^:]*:(.*)",
                     RegexCompileFlags.CASELESS);
                 reg_warning_no_file = new Regex ("(No file .*)");
                 reg_warning_line = new Regex ("(.*) on input line ([0-9]+)\\.$");
