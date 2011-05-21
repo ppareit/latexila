@@ -231,12 +231,80 @@ public class DocumentTab : VBox
                 if (project.main_file.equal (document.location))
                     _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
                 else
-                    // TODO relative path instead of absolute
                     _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
-                        + Utils.replace_home_dir_with_tilde (
-                            project.main_file.get_parse_name ());
+                        + get_main_file_relative_path ();
             }
         }
+    }
+
+    private string? get_main_file_relative_path ()
+    {
+        if (document.project_id == -1)
+            return null;
+
+        Project? project = Projects.get_default ().get (document.project_id);
+        if (project == null)
+            return null;
+
+        File main_file = project.main_file;
+        File project_dir = project.directory;
+        File doc_file = document.location;
+
+        File main_parent = main_file.get_parent ();
+        File doc_parent = doc_file.get_parent ();
+
+        // The document is in the same directory as the main file.
+        if (main_parent.equal (doc_parent))
+            return main_file.get_basename ();
+
+        // Get a list of parent directories. Stop at the project dir.
+        List<File> main_dirs = new List<File> ();
+        List<File> doc_dirs = new List<File> ();
+
+        while (main_parent != null && ! main_parent.equal (project_dir))
+        {
+            main_dirs.prepend (main_parent);
+            main_parent = main_parent.get_parent ();
+        }
+
+        while (doc_parent != null && ! doc_parent.equal (project_dir))
+        {
+            doc_dirs.prepend (doc_parent);
+            doc_parent = doc_parent.get_parent ();
+        }
+
+        // Get number of common dirs
+        uint dir_index = 0;
+        while (dir_index < main_dirs.length () && dir_index < doc_dirs.length ())
+        {
+            File cur_main_dir = main_dirs.nth_data (dir_index);
+            File cur_doc_dir = doc_dirs.nth_data (dir_index);
+            if (! cur_main_dir.equal (cur_doc_dir))
+                break;
+
+            dir_index++;
+        }
+
+        uint nb_common_dirs = dir_index;
+
+        /* Build the relative path */
+        string relative_path = "";
+
+        // go to the common dir
+        uint nb_remaining_doc_dirs = doc_dirs.length () - nb_common_dirs;
+        for (uint i = 0 ; i < nb_remaining_doc_dirs ; i++)
+            relative_path += "../";
+
+        // go to the main file dir
+        for (uint i = nb_common_dirs ; i < main_dirs.length () ; i++)
+        {
+            File cur_main_dir = main_dirs.nth_data (i);
+            relative_path += cur_main_dir.get_basename () + "/";
+        }
+
+        // add the main file basename
+        relative_path += main_file.get_basename ();
+        return relative_path;
     }
 
     public string get_name ()
