@@ -218,7 +218,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return true;
 
             case FilterStatus.BADBOX:
-                line_buf += @" $line";
+                line_buf += line;
                 nb_lines++;
                 if (detect_badbox_line (line_buf, line.length == 0))
                 {
@@ -325,7 +325,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return false;
 
             case FilterStatus.WARNING:
-                line_buf += @" $line";
+                line_buf += line;
                 nb_lines++;
                 if (detect_warning_line (line_buf, line.length == 0))
                 {
@@ -433,7 +433,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return false;
 
             case FilterStatus.ERROR:
-                line_buf += @" $line";
+                line_buf += line;
                 nb_lines++;
 
                 if (line[line.length - 1] == '.')
