@@ -217,8 +217,6 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<command name="today" />
 
-	<command name="pagebreak" />
-
 	<command name="textcopyright" />
 	<command name="textregistered" />
 
@@ -557,10 +555,6 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="extracolsep">
 		<argument label="Value" />
 	</command>
-
-	<command name="cleardoublepage" />
-
-	<command name="clearpage" />
 
 	<command name="centering" />
 
@@ -1336,9 +1330,59 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Text" />
 	</command>
 
+	<!-- line and page breaking -->
+
+	<command name="cleardoublepage" />
+
+	<command name="clearpage" />
+
+	<command name="hyphenation">
+		<argument label="ListOfWords" />
+	</command>
+
+	<command name="linebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
+
 	<command name="newline" />
 
 	<command name="newpage" />
+
+	<command name="nolinebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
+
+	<command name="nopagebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
+
+	<command name="pagebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
 
 	<!-- units -->
 
