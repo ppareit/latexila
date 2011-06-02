@@ -143,7 +143,10 @@ public class BuildView : HBox
         // selection
         TreeSelection select = view.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
-        select.set_select_function (on_row_selection);
+        select.set_select_function ((select, model, path) => select_row (model, path));
+
+        // double-click
+        view.row_activated.connect ((path) => select_row (filtered_model, path));
 
         // close button
         Button close_button = new Button ();
@@ -167,8 +170,7 @@ public class BuildView : HBox
         pack_start (vbox, false, false);
     }
 
-    private bool on_row_selection (TreeSelection selection, TreeModel model,
-        TreePath path, bool path_currently_selected)
+    private bool select_row (TreeModel model, TreePath path)
     {
         TreeIter iter;
         if (! model.get_iter (out iter, path))
