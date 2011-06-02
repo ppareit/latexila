@@ -209,7 +209,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="noindent" />
 
 	<command name="columnwidth" />
-  <command name="textwidth" />
+	<command name="textwidth" />
 
 	<command name="title">
 		<argument label="Title" />
@@ -525,14 +525,14 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Value" />
 	</command>
 
-  <command name="setcounter">
-    <argument label="Counter" />
-    <argument label="Value" />
-  </command>
+	<command name="setcounter">
+		<argument label="Counter" />
+		<argument label="Value" />
+	</command>
 
 	<command name="maketitle" />
 
-  <command name="appendix" />
+	<command name="appendix" />
 
 	<!-- lists -->
 
@@ -752,8 +752,10 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="math" />
 			<choice name="matrix" package="amsmath" />
 			<choice name="multicols" package="multicol" />
+			<choice name="overlay" />
 			<choice name="picture" />
 			<choice name="pmatrix" package="amsmath" />
+			<choice name="slide" />
 			<choice name="smallmatrix" package="amsmath" />
 			<choice name="subarray" package="amsmath" />
 			<choice name="subequations" package="amsmath" />
