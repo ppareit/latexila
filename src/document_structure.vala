@@ -21,19 +21,12 @@ using Gtk;
 
 public class DocumentStructure : GLib.Object
 {
-    private struct DataNode
-    {
-        StructType type;
-        string text;
-        TextMark mark;
-    }
-
     private unowned TextBuffer _doc;
     private int _nb_marks = 0;
     private static const string MARK_NAME_PREFIX = "struct_item_";
 
     private bool _insert_at_end = true;
-    private Node<DataNode?> _tree;
+    private StructureModel _model = null;
 
     private static Regex? _comment_regex = null;
 
@@ -64,8 +57,7 @@ public class DocumentStructure : GLib.Object
     public void parse ()
     {
         // reset
-        DataNode empty_data = {};
-        _tree = new Node<DataNode?> (empty_data);
+        _model = new StructureModel ();
         _in_figure_env = false;
         _in_table_env = false;
         clear_all_structure_marks ();
@@ -75,6 +67,11 @@ public class DocumentStructure : GLib.Object
         {
             return parse_impl ();
         });
+    }
+
+    public StructureModel get_model ()
+    {
+        return _model;
     }
 
     // Parse the document. Returns false if finished, true otherwise.
@@ -111,15 +108,14 @@ public class DocumentStructure : GLib.Object
 
         /* search comments (begin with '%') */
 
-        for (_doc.get_iter_at_line (out iter, _start_parsing_line) ;
+        _doc.get_iter_at_line (out iter, _start_parsing_line);
 
-            iter.forward_search ("%",
+        while (iter.forward_search ("%",
             TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, limit) ;
-
-            iter.forward_visible_line ())
+            null, out iter, limit))
         {
             search_comment (iter);
+            iter.forward_visible_line ();
         }
 
         if (limit_parsing)
@@ -269,133 +265,15 @@ public class DocumentStructure : GLib.Object
 
     private void add_item (StructType type, string text, TextIter iter)
     {
-        DataNode data = {};
+        StructData data = {};
         data.type = type;
         data.text = text;
         data.mark = create_text_mark_from_iter (iter);
 
         if (_insert_at_end)
-            add_item_at_end (data);
+            _model.add_item_at_end (data);
         else
-            add_item_in_middle (data);
-    }
-
-    private void add_item_at_end (DataNode item)
-    {
-        /* search the parent, based on the type */
-        unowned Node<DataNode?> parent = _tree;
-        int item_depth = item.type;
-
-        while (true)
-        {
-            unowned Node<DataNode?> last_child = parent.last_child ();
-            if (last_child == null)
-                break;
-
-            int cur_depth = last_child.data.type;
-            if (cur_depth >= item_depth || cur_depth > StructType.SUBPARAGRAPH)
-                break;
-
-            parent = last_child;
-        }
-
-        // append the item
-        parent.append_data (item);
-    }
-
-    // In the middle means that we have to find where to insert the data in the tree.
-    // If items have to be shifted (for example: insert a chapter in the middle of
-    // sections), it will be done by insert_item_at_position().
-    private void add_item_in_middle (DataNode item)
-    {
-        // if the tree is empty
-        if (_tree.is_leaf ())
-        {
-            _tree.append_data (item);
-            return;
-        }
-
-        int pos = get_position_from_mark (item.mark);
-        unowned Node<DataNode?> cur_parent = _tree;
-        while (true)
-        {
-            unowned Node<DataNode?> cur_child = cur_parent.first_child ();
-            int child_index = 0;
-            while (true)
-            {
-                int cur_pos = get_position_from_mark (cur_child.data.mark);
-
-                if (cur_pos > pos)
-                {
-                    if (child_index == 0)
-                    {
-                        insert_item_at_position (item, cur_parent, child_index);
-                        return;
-                    }
-
-                    unowned Node<DataNode?> prev_child = cur_child.prev_sibling ();
-                    if (prev_child.is_leaf ())
-                    {
-                        insert_item_at_position (item, cur_parent, child_index);
-                        return;
-                    }
-
-                    cur_parent = prev_child;
-                    break;
-                }
-
-                unowned Node<DataNode?> next_child = cur_child.next_sibling ();
-
-                // current child is the last child
-                if (next_child == null)
-                {
-                    if (cur_child.is_leaf ())
-                    {
-                        insert_item_at_position (item, cur_parent, child_index+1);
-                        return;
-                    }
-
-                    cur_parent = cur_child;
-                    break;
-                }
-
-                cur_child = next_child;
-                child_index++;
-            }
-        }
-    }
-
-    private void insert_item_at_position (DataNode item, Node<DataNode?> parent, int pos)
-    {
-        // If inserting a simple item (not a section) between sections, for example:
-        // chapter
-        //   section 1
-        //   => insert simple item here
-        //   section 2
-        //
-        // The item's parent will 'section 1' instead of 'chapter'.
-        if (pos > 0)
-        {
-            unowned Node<DataNode?> prev = parent.nth_child (pos - 1);
-            bool prev_is_section = prev.data.type <= StructType.SUBPARAGRAPH;
-            bool item_is_section = item.type <= StructType.SUBPARAGRAPH;
-
-            if (prev_is_section && ! item_is_section)
-            {
-                prev.append_data (item);
-                return;
-            }
-        }
-
-        parent.insert_data (pos, item);
-    }
-
-    private static int get_position_from_mark (TextMark mark)
-    {
-        TextIter iter;
-        TextBuffer doc = mark.get_buffer ();
-        doc.get_iter_at_mark (out iter, mark);
-        return iter.get_offset ();
+            _model.add_item_in_middle (data);
     }
 
     private TextMark create_text_mark_from_iter (TextIter iter)
@@ -419,42 +297,6 @@ public class DocumentStructure : GLib.Object
         }
 
         _nb_marks = 0;
-    }
-
-    public void populate_tree_store (TreeStore store)
-    {
-        populate_tree_store_at_node (store, _tree);
-    }
-
-    // The data are first inserted in Gnodes. When the parsing is done, this method is
-    // called to populate the tree store with the data contained in the GNodes.
-    private void populate_tree_store_at_node (TreeStore store, Node<DataNode?> node,
-        TreeIter? parent = null, bool root_node = true)
-    {
-        TreeIter? iter = null;
-        if (! root_node)
-            iter = add_item_to_tree_store (store, parent, node.data);
-
-        node.children_foreach (TraverseFlags.ALL, (child_node) =>
-        {
-            populate_tree_store_at_node (store, child_node, iter, false);
-        });
-    }
-
-    private TreeIter add_item_to_tree_store (TreeStore store, TreeIter? parent,
-        DataNode data)
-    {
-        TreeIter iter;
-        store.append (out iter, parent);
-        store.set (iter,
-            StructItem.PIXBUF, Structure.get_icon_from_type (data.type),
-            StructItem.TYPE, data.type,
-            StructItem.TEXT, data.text,
-            StructItem.TOOLTIP, Structure.get_type_name (data.type),
-            StructItem.MARK, data.mark,
-            -1);
-
-        return iter;
     }
 
     private StructType? get_type_from_simple_command_name (string name)

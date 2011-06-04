@@ -19,16 +19,6 @@
 
 using Gtk;
 
-public enum StructItem
-{
-    PIXBUF,
-    TYPE,
-    TEXT,
-    TOOLTIP,
-    MARK,
-    N_COLUMNS
-}
-
 public enum StructType
 {
     PART = 0,
@@ -51,7 +41,6 @@ public class Structure : VBox
 {
     private unowned MainWindow _main_window;
     private GLib.Settings _settings;
-    private TreeStore _tree_store;
     private TreeModelFilter _tree_filter;
     private TreeView _tree_view;
     private bool[] _visible_types;
@@ -94,6 +83,8 @@ public class Structure : VBox
 
         _visible_types[StructType.FIXME] =
             _settings.get_boolean ("structure-show-fixme");
+
+        // the other types are initialized in init_choose_min_level()
     }
 
     public void save_state ()
@@ -121,7 +112,7 @@ public class Structure : VBox
         /* save min level */
 
         int min_level = StructType.PART;
-        for (int level = 0 ; level <= StructType.SUBPARAGRAPH ; level++)
+        for (int level = min_level ; is_section ((StructType) level) ; level++)
         {
             if (! _visible_types[level])
                 break;
@@ -138,11 +129,12 @@ public class Structure : VBox
 
         // refresh button
         Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
+        refresh_button.tooltip_text = _("Refresh");
         hbox.pack_start (refresh_button);
 
         refresh_button.clicked.connect (() =>
         {
-            parse_document (_main_window.active_document);
+            show_document (_main_window.active_document, true);
         });
 
         // expand all button
@@ -210,24 +202,7 @@ public class Structure : VBox
 
     private void init_tree_view ()
     {
-        _tree_store = new TreeStore (StructItem.N_COLUMNS,
-            typeof (string),     // pixbuf (stock-id)
-            typeof (StructType), // item type
-            typeof (string),     // text
-            typeof (string),     // tooltip
-            typeof (TextMark)    // mark
-            );
-
-        _tree_filter = new TreeModelFilter (_tree_store, null);
-        _tree_filter.set_visible_func ((model, iter) =>
-        {
-            StructType type;
-            model.get (iter, StructItem.TYPE, out type, -1);
-
-            return _visible_types[type];
-        });
-
-        _tree_view = new TreeView.with_model (_tree_filter);
+        _tree_view = new TreeView ();
         _tree_view.headers_visible = false;
 
         TreeViewColumn column = new TreeViewColumn ();
@@ -236,15 +211,15 @@ public class Structure : VBox
         // icon
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         column.pack_start (pixbuf_renderer, false);
-        column.set_attributes (pixbuf_renderer, "stock-id", StructItem.PIXBUF, null);
+        column.set_attributes (pixbuf_renderer, "stock-id", StructColumn.PIXBUF, null);
 
         // name
         CellRendererText text_renderer = new CellRendererText ();
         column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", StructItem.TEXT, null);
+        column.set_attributes (text_renderer, "text", StructColumn.TEXT, null);
 
         // tooltip
-        _tree_view.set_tooltip_column (StructItem.TOOLTIP);
+        _tree_view.set_tooltip_column (StructColumn.TOOLTIP);
 
         // selection
         TreeSelection select = _tree_view.get_selection ();
@@ -305,7 +280,7 @@ public class Structure : VBox
             TreeModel model = (TreeModel) list_store;
             model.get (iter, MinLevelColumn.TYPE, out selected_type, -1);
 
-            for (int type = 0 ; type <= StructType.SUBPARAGRAPH ; type++)
+            for (int type = 0 ; is_section ((StructType) type) ; type++)
                 _visible_types[type] = type <= selected_type;
 
             if (_tree_filter != null)
@@ -331,7 +306,7 @@ public class Structure : VBox
             return false;
 
         TextMark mark;
-        model.get (tree_iter, StructItem.MARK, out mark, -1);
+        model.get (tree_iter, StructColumn.MARK, out mark, -1);
 
         TextBuffer doc = mark.get_buffer ();
         return_val_if_fail (doc == _main_window.active_document, false);
@@ -347,59 +322,63 @@ public class Structure : VBox
         return true;
     }
 
-    // TODO: delete this function when the refresh button is removed
-    private void parse_document (Document? doc)
+    private void show_active_document ()
     {
-        clear ();
+        show_document (_main_window.active_document);
+    }
 
+    private void show_document (Document? doc, bool force_parse = false)
+    {
         if (doc == null)
             return;
 
         DocumentStructure doc_struct = doc.get_structure ();
-        doc_struct.parse ();
-        populate (doc_struct);
+
+        if (force_parse)
+            doc_struct.parse ();
+
+        set_model (doc_struct.get_model ());
     }
 
-    private void populate_active_document ()
+    private void set_model (StructureModel model)
     {
-        clear ();
-
-        Document? doc = _main_window.active_document;
-        if (doc == null)
-            return;
-
-        populate (doc.get_structure ());
-    }
-
-    private void clear ()
-    {
-        _tree_store.clear ();
-        _tree_view.columns_autosize ();
-    }
-
-    private void populate (DocumentStructure doc_struct)
-    {
-        Idle.add (() =>
+        _tree_filter = new TreeModelFilter (model, null);
+        _tree_filter.set_visible_func ((mod, iter) =>
         {
-            doc_struct.populate_tree_store (_tree_store);
-            _tree_view.expand_all ();
+            StructType type;
+            mod.get (iter, StructColumn.TYPE, out type, -1);
 
-            // remove the idle source
-            return false;
+            return _visible_types[type];
         });
+
+        _tree_view.set_model (_tree_filter);
+
+        // the flush queue is needed because the expand_all doesn't work without
+        Utils.flush_queue ();
+        _tree_view.expand_all ();
+
+        _tree_view.columns_autosize ();
     }
 
     public void connect_parsing ()
     {
-        _main_window.notify["active-document"].connect (populate_active_document);
-        populate_active_document ();
+        _main_window.notify["active-document"].connect (show_active_document);
+        show_active_document ();
     }
 
     public void disconnect_parsing ()
     {
-        _main_window.notify["active-document"].disconnect (populate_active_document);
+        _main_window.notify["active-document"].disconnect (show_active_document);
     }
 
+    // Here it's the general meaning of "section" (part -> subparagraph).
+    // A label for example is not a section.
+    public static bool is_section (StructType type)
+    {
+        return type <= StructType.SUBPARAGRAPH;
+    }
+
+    // TODO get the icon from an array instead of using a switch
     public static string? get_icon_from_type (StructType type)
     {
         switch (type)
@@ -444,6 +423,7 @@ public class Structure : VBox
         }
     }
 
+    // TODO get the name from an array instead of using a switch
     public static string? get_type_name (StructType type)
     {
         switch (type)

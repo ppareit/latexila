@@ -7,33 +7,36 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Create a custom GtkTreeModel because using a separate tree (with GNodes) becomes
-	  too complicated/hackish for the update on the fly.
-	  If a custom GtkTreeModel is too complicated for our purpose, find a better way than
-	  repopulating all the TreeModel from the GNodes when items are shifted.
-
-	- Update on the fly the structure when the document is modified. An item can be inserted,
-	  deleted or modified. The simplest way I think is to re-run the parsing only on the modified
-	  lines (with a lower and upper bounds) every 2 seconds for example. This way, we simply
-	  delete all items between the two bounds, and the parsing will re-add them correcly.
+	- Doesn't take into account stuff in verbatim environment.
 
 	- Different style (e.g. italic) for commented items.
 
-	- Doesn't take into account stuff in verbatim environment.
+	- Add a show/hide button for sections.
+	  For example, to search the remaining TODOs and FIXMEs, it's boring to have all the sections.
+	
+	- Show/hide buttons: find a way to easily select only one item, and unselect the others.
+	  Also, find a way to easily select all the items.
+	  An idea is to add a menu on a right click on a button.
 
 	- Right click: cut, copy, paste below, select, delete, comment, shift left/right.
 	  Shift left/right is new comparated to Kile. For example we have a big section (with
 	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
 	  subsections becomes sections, etc.).
+	
+	(-) Update on the fly the structure when the document is modified. An item can be inserted,
+	    deleted or modified. The simplest way I think is to re-run the parsing only on the modified
+	    lines (with a lower and upper bounds) every 2 seconds for example. This way, we simply
+	    delete all items between the two bounds, and the parsing will re-add them correcly.
 
-	- Scroll to the nearest item in the structure when the document's cursor moves.
+	(-) Scroll to the nearest item in the structure when the document's cursor moves.
 
-	- If the document's cursor is _in_ an item, select it in the structure. This is more
-	  complicated than it sounds because now we only know the beginning of an item, we don't
-	  know where the item ends.
+	(-) If the document's cursor is _in_ an item, select it in the structure. This is more
+	    complicated than it sounds because now we only know the beginning of an item, we don't
+	    know where the item ends.
 
 - Build Tools:
-	- build tools: copy button to make a copy of a build tool, so we can modify the copy and keep the original
+	- build tools: copy button to make a copy of a build tool,
+	  so we can modify the copy and keep the original
 	- right click menu in bottom panel: copy the line to the clipboard
 
 - Cleanup Build Files: if a project is defined, some *.aux files are not removed
