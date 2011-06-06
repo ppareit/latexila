@@ -38,6 +38,8 @@ public class DocumentStructure : GLib.Object
 
     private bool _measure_parsing_time = true;
 
+    public signal void parsing_done ();
+
     public DocumentStructure (TextBuffer doc)
     {
         _doc = doc;
@@ -140,6 +142,7 @@ public class DocumentStructure : GLib.Object
             stdout.printf ("Structure parsing took %f seconds\n", timer.elapsed ());
         }
 
+        parsing_done ();
         return false;
     }
 

@@ -335,12 +335,17 @@ public class Structure : VBox
         if (doc == null)
             return;
 
+        _tree_view.set_model (null);
+
         DocumentStructure doc_struct = doc.get_structure ();
 
         if (force_parse)
             doc_struct.parse ();
 
-        set_model (doc_struct.get_model ());
+        doc_struct.parsing_done.connect (() =>
+        {
+            set_model (doc_struct.get_model ());
+        });
     }
 
     private void set_model (StructureModel model)
@@ -355,11 +360,7 @@ public class Structure : VBox
         });
 
         _tree_view.set_model (_tree_filter);
-
-        // the flush queue is needed because the expand_all doesn't work without
-        Utils.flush_queue ();
         _tree_view.expand_all ();
-
         _tree_view.columns_autosize ();
     }
 
