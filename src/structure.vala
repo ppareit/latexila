@@ -45,6 +45,9 @@ public class Structure : VBox
     private TreeView _tree_view;
     private bool[] _visible_types;
 
+    private static string[] _icons = null;
+    private static string[] _names = null;
+
     public Structure (MainWindow main_window)
     {
         GLib.Object (spacing: 3);
@@ -378,97 +381,49 @@ public class Structure : VBox
         return type <= StructType.SUBPARAGRAPH;
     }
 
-    // TODO get the icon from an array instead of using a switch
-    public static string? get_icon_from_type (StructType type)
+    public static string get_icon_from_type (StructType type)
     {
-        switch (type)
+        if (_icons == null)
         {
-            case StructType.PART:
-                return "tree_part";
-
-            case StructType.CHAPTER:
-                return "tree_chapter";
-
-            case StructType.SECTION:
-                return "tree_section";
-
-            case StructType.SUBSECTION:
-                return "tree_subsection";
-
-            case StructType.SUBSUBSECTION:
-                return "tree_subsubsection";
-
-            case StructType.PARAGRAPH:
-            case StructType.SUBPARAGRAPH:
-                return "tree_paragraph";
-
-            case StructType.LABEL:
-                return "tree_label";
-
-            case StructType.TODO:
-            case StructType.FIXME:
-                return "tree_todo";
-
-            case StructType.TABLE:
-                return "table";
-
-            case StructType.FIGURE:
-                return "image";
-
-            case StructType.INCLUDE:
-                return "tree_include";
-
-            default:
-                return_val_if_reached (null);
+            _icons = new string[StructType.N_TYPES];
+            _icons[StructType.PART]         = "tree_part";
+            _icons[StructType.CHAPTER]      = "tree_chapter";
+            _icons[StructType.SECTION]      = "tree_section";
+            _icons[StructType.SUBSECTION]   = "tree_subsection";
+            _icons[StructType.SUBSUBSECTION] = "tree_subsubsection";
+            _icons[StructType.PARAGRAPH]    = "tree_paragraph";
+            _icons[StructType.SUBPARAGRAPH] = "tree_paragraph";
+            _icons[StructType.LABEL]        = "tree_label";
+            _icons[StructType.TODO]         = "tree_todo";
+            _icons[StructType.FIXME]        = "tree_todo";
+            _icons[StructType.TABLE]        = "table";
+            _icons[StructType.FIGURE]       = "image";
+            _icons[StructType.INCLUDE]      = "tree_include";
         }
+
+        return _icons[type];
     }
 
-    // TODO get the name from an array instead of using a switch
-    public static string? get_type_name (StructType type)
+    public static string get_type_name (StructType type)
     {
-        switch (type)
+        if (_names == null)
         {
-            case StructType.PART:
-                return _("Part");
-
-            case StructType.CHAPTER:
-                return _("Chapter");
-
-            case StructType.SECTION:
-                return _("Section");
-
-            case StructType.SUBSECTION:
-                return _("Sub-section");
-
-            case StructType.SUBSUBSECTION:
-                return _("Sub-sub-section");
-
-            case StructType.PARAGRAPH:
-                return _("Paragraph");
-
-            case StructType.SUBPARAGRAPH:
-                return _("Sub-paragraph");
-
-            case StructType.LABEL:
-                return _("Label");
-
-            case StructType.TODO:
-                return "TODO";
-
-            case StructType.FIXME:
-                return "FIXME";
-
-            case StructType.TABLE:
-                return _("Table");
-
-            case StructType.FIGURE:
-                return _("Figure");
-
-            case StructType.INCLUDE:
-                return _("File included");
-
-            default:
-                return_val_if_reached (null);
+            _names = new string[StructType.N_TYPES];
+            _names[StructType.PART]         = _("Part");
+            _names[StructType.CHAPTER]      = _("Chapter");
+            _names[StructType.SECTION]      = _("Section");
+            _names[StructType.SUBSECTION]   = _("Sub-section");
+            _names[StructType.SUBSUBSECTION] = _("Sub-sub-section");
+            _names[StructType.PARAGRAPH]    = _("Paragraph");
+            _names[StructType.SUBPARAGRAPH] = _("Sub-paragraph");
+            _names[StructType.LABEL]        = _("Label");
+            _names[StructType.TODO]         = "TODO";
+            _names[StructType.FIXME]        = "FIXME";
+            _names[StructType.TABLE]        = _("Table");
+            _names[StructType.FIGURE]       = _("Figure");
+            _names[StructType.INCLUDE]      = _("File included");
         }
+
+        return _names[type];
     }
 }
