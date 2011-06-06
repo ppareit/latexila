@@ -36,6 +36,8 @@ public class DocumentStructure : GLib.Object
     private static const int MAX_NB_LINES_TO_PARSE = 500;
     private int _start_parsing_line = 0;
 
+    private bool _measure_parsing_time = true;
+
     public DocumentStructure (TextBuffer doc)
     {
         _doc = doc;
@@ -77,6 +79,10 @@ public class DocumentStructure : GLib.Object
     // Parse the document. Returns false if finished, true otherwise.
     private bool parse_impl ()
     {
+        Timer timer = null;
+        if (_measure_parsing_time)
+            timer = new Timer ();
+
         /* search commands (begin with a backslash) */
 
         // At the beginning of the search, the place where to insert new items is always
@@ -92,6 +98,10 @@ public class DocumentStructure : GLib.Object
         int nb_lines = _doc.get_line_count ();
         int end_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
         bool limit_parsing = nb_lines > end_parsing_line;
+
+        if (_measure_parsing_time)
+            limit_parsing = false;
+
         if (limit_parsing)
             _doc.get_iter_at_line (out limit, end_parsing_line);
 
@@ -122,6 +132,12 @@ public class DocumentStructure : GLib.Object
         {
             _start_parsing_line = end_parsing_line;
             return true;
+        }
+
+        if (_measure_parsing_time)
+        {
+            timer.stop ();
+            stdout.printf ("Structure parsing took %f seconds\n", timer.elapsed ());
         }
 
         return false;
