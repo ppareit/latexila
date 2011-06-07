@@ -7,8 +7,6 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Doesn't take into account stuff in verbatim environment.
-
 	- Different style (e.g. italic) for commented items.
 
 	- Add a show/hide button for sections.

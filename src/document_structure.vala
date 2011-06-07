@@ -34,6 +34,7 @@ public class DocumentStructure : GLib.Object
 
     private bool _in_figure_env = false;
     private bool _in_table_env = false;
+    private bool _in_verbatim_env = false;
 
     private static const int MAX_NB_LINES_TO_PARSE = 2000;
     private int _start_parsing_line = 0;
@@ -150,7 +151,7 @@ public class DocumentStructure : GLib.Object
                         search_markup (line, index);
 
                     // search comments (begin with '%')
-                    else
+                    else if (! _in_verbatim_env)
                         search_comment (line, index);
                 }
 
@@ -255,6 +256,9 @@ public class DocumentStructure : GLib.Object
         }
 
         /* simple markup */
+        if (_in_verbatim_env)
+            return;
+
         StructType? type = get_markup_type (name);
         if (type == null)
             return;
@@ -270,6 +274,15 @@ public class DocumentStructure : GLib.Object
     {
         string? contents = get_markup_contents (line, begin_contents_index);
         if (contents == null)
+            return;
+
+        if (contents == "verbatim" || contents == "verbatim*")
+        {
+            _in_verbatim_env = is_begin_env;
+            return;
+        }
+
+        if (_in_verbatim_env)
             return;
 
         switch (contents)
