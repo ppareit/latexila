@@ -146,13 +146,18 @@ public class DocumentStructure : GLib.Object
                 {
                     string char_matched = match_info.fetch (0);
 
-                    // search commands (begin with a backslash)
+                    // search markup (begin with a backslash)
                     if (char_matched == "\\")
                         search_markup (line, index);
 
                     // search comments (begin with '%')
                     else if (! _in_verbatim_env)
+                    {
                         search_comment (line, index);
+
+                        // commented items are not displayed in the structure
+                        break;
+                    }
                 }
 
                 try
