@@ -28,15 +28,19 @@ public class DocumentStructure : GLib.Object
     private bool _insert_at_end = true;
     private StructureModel _model = null;
 
+    private static Regex? _chars_regex = null;
     private static Regex? _comment_regex = null;
+    private static Regex? _command_name_regex = null;
 
     private bool _in_figure_env = false;
     private bool _in_table_env = false;
 
-    private static const int MAX_NB_LINES_TO_PARSE = 500;
+    private static const int MAX_NB_LINES_TO_PARSE = 2000;
     private int _start_parsing_line = 0;
+    private TextIter _cur_line_iter;
 
-    private bool _measure_parsing_time = true;
+    private static const bool _measure_parsing_time = false;
+    private Timer _timer = null;
 
     public signal void parsing_done ();
 
@@ -48,8 +52,12 @@ public class DocumentStructure : GLib.Object
         {
             try
             {
+                _chars_regex = new Regex ("\\\\|%");
+
                 _comment_regex =
                     new Regex ("^(?P<type>TODO|FIXME)[[:space:]:]*(?P<text>.*)$");
+
+                _command_name_regex = new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*{");
             }
             catch (RegexError e)
             {
@@ -81,108 +89,132 @@ public class DocumentStructure : GLib.Object
     // Parse the document. Returns false if finished, true otherwise.
     private bool parse_impl ()
     {
-        Timer timer = null;
         if (_measure_parsing_time)
-            timer = new Timer ();
+        {
+            if (_timer == null)
+                _timer = new Timer ();
+            else
+                _timer.continue ();
+        }
 
-        /* search commands (begin with a backslash) */
-
-        // At the beginning of the search, the place where to insert new items is always
-        // at the end.
+        // When parsing all the document at once, the items are always inserted at the end
         _insert_at_end = true;
 
-        // The parsing is splitted into several chunks if it's a big document, so the UI
-        // is not frozen.
-        TextIter iter;
-        _doc.get_iter_at_line (out iter, _start_parsing_line);
-
-        TextIter? limit = null;
+        int cur_line = _start_parsing_line;
         int nb_lines = _doc.get_line_count ();
-        int end_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
-        bool limit_parsing = nb_lines > end_parsing_line;
+
+        _doc.get_iter_at_line (out _cur_line_iter, cur_line);
+
+        while (cur_line < nb_lines)
+        {
+            // If it's a big document, the parsing is splitted into several chunks,
+            // so the UI is not frozen.
+            if (cur_line == _start_parsing_line + MAX_NB_LINES_TO_PARSE)
+            {
+                _start_parsing_line = cur_line;
+
+                if (_measure_parsing_time)
+                    _timer.stop ();
+
+                return true;
+            }
+
+            // get the text of the current line
+            TextIter next_line_iter;
+            if (cur_line == nb_lines - 1)
+                _doc.get_end_iter (out next_line_iter);
+            else
+                _doc.get_iter_at_line (out next_line_iter, cur_line + 1);
+
+            string line = _doc.get_text (_cur_line_iter, next_line_iter, false);
+
+            // search the character '\' or '%'
+            MatchInfo match_info;
+            _chars_regex.match (line, 0, out match_info);
+
+            while (match_info.matches ())
+            {
+                int index;
+                if (! match_info.fetch_pos (0, null, out index))
+                {
+                    stderr.printf ("Structure parsing: position can not be fetched\n");
+                    break;
+                }
+
+                if (! Utils.char_is_escaped (line, index - 1))
+                {
+                    string char_matched = match_info.fetch (0);
+
+                    // search commands (begin with a backslash)
+                    if (char_matched == "\\")
+                        search_markup (line, index);
+
+                    // search comments (begin with '%')
+                    else
+                        search_comment (line, index);
+                }
+
+                try
+                {
+                    match_info.next ();
+                }
+                catch (RegexError e)
+                {
+                    stderr.printf ("Warning: structure parsing: %s\n", e.message);
+                    break;
+                }
+            }
+
+            _cur_line_iter = next_line_iter;
+            cur_line++;
+        }
 
         if (_measure_parsing_time)
-            limit_parsing = false;
-
-        if (limit_parsing)
-            _doc.get_iter_at_line (out limit, end_parsing_line);
-
-        while (iter.forward_search ("\\",
-            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, limit))
         {
-            if (search_simple_command (iter))
-                continue;
-            search_figure_or_table (iter);
-        }
-
-        _insert_at_end = false;
-
-        /* search comments (begin with '%') */
-
-        _doc.get_iter_at_line (out iter, _start_parsing_line);
-
-        while (iter.forward_search ("%",
-            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, limit))
-        {
-            search_comment (iter);
-            iter.forward_visible_line ();
-        }
-
-        if (limit_parsing)
-        {
-            _start_parsing_line = end_parsing_line;
-            return true;
-        }
-
-        if (_measure_parsing_time)
-        {
-            timer.stop ();
-            stdout.printf ("Structure parsing took %f seconds\n", timer.elapsed ());
+            _timer.stop ();
+            stdout.printf ("Structure parsing took %f seconds\n", _timer.elapsed ());
+            _timer.reset ();
         }
 
         parsing_done ();
         return false;
     }
 
-    private StructType? get_simple_command_type (TextIter after_backslash,
-        out TextIter begin_contents_iter = null)
+    // Try to get the markup name (between '\' and '{').
+    private string? get_markup_name (string line, int after_backslash_index,
+        out int begin_contents_index = null)
     {
-        // set the limit to the end of the line
-        TextIter limit = after_backslash;
-        limit.forward_to_line_end ();
+        string after_backslash_text = line.substring (after_backslash_index);
 
-        // try to get the command name (between '\' and '{')
-
-        TextIter end_name_iter;
-
-        if (! after_backslash.forward_search ("{",
-            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            out end_name_iter, out begin_contents_iter, limit))
-        {
-            // not a command
+        MatchInfo match_info;
+        if (! _command_name_regex.match (after_backslash_text, 0, out match_info))
             return null;
+
+        if (&begin_contents_index != null)
+        {
+            int pos;
+            match_info.fetch_pos (0, null, out pos);
+            begin_contents_index = pos + after_backslash_index;
         }
 
-        string name = _doc.get_text (after_backslash, end_name_iter, false);
-        return get_type_from_simple_command_name (name);
+        return match_info.fetch_named ("name");
     }
 
     // Get the contents between '{' and the corresponding '}'.
-    // The first char of 'text' is the char just after the '{'.
-    private string? get_command_contents (string text)
+    private string? get_markup_contents (string line, int begin_contents_index)
     {
         int brace_level = 0;
-        for (long i = 0 ; i < text.length ; i++)
+
+        int line_length = line.length;
+        for (long i = begin_contents_index ; i < line_length ; i++)
         {
-            if (text[i] == '{' && ! Utils.char_is_escaped (text, i))
+            if (line[i] == '{' && ! Utils.char_is_escaped (line, i))
             {
                 brace_level++;
                 continue;
             }
 
-            if (text[i] == '}' && ! Utils.char_is_escaped (text, i))
+            if (line[i] == '}' && ! Utils.char_is_escaped (line, i))
             {
                 if (brace_level > 0)
                 {
@@ -191,10 +223,10 @@ public class DocumentStructure : GLib.Object
                 }
 
                 // found!
-                string contents = text[0:i];
+                string contents = line[begin_contents_index : i];
 
                 // empty
-                if (contents.length == 0)
+                if (contents == "")
                     return null;
 
                 return contents;
@@ -204,60 +236,61 @@ public class DocumentStructure : GLib.Object
         return null;
     }
 
-    private bool search_simple_command (TextIter begin_name_iter)
+    private void search_markup (string line, int after_backslash_index)
     {
-        // get command type
-        TextIter begin_contents_iter;
-        StructType? type = get_simple_command_type (begin_name_iter,
-            out begin_contents_iter);
+        /* get markup name */
+        int begin_contents_index;
+        string? name = get_markup_name (line, after_backslash_index,
+            out begin_contents_index);
 
+        if (name == null)
+            return;
+
+        /* environment */
+        bool is_begin_env = name == "begin";
+        if (is_begin_env || name == "end")
+        {
+            search_env (line, begin_contents_index, is_begin_env);
+            return;
+        }
+
+        /* simple markup */
+        StructType? type = get_markup_type (name);
         if (type == null)
-            return false;
+            return;
 
-        // get command contents
-
-        TextIter limit = begin_contents_iter;
-        limit.forward_to_line_end ();
-
-        string end_line = _doc.get_text (begin_contents_iter, limit, false);
-        string? contents = get_command_contents (end_line);
+        string? contents = get_markup_contents (line, begin_contents_index);
         if (contents == null)
-            return false;
+            return;
 
-        TextIter mark_iter = begin_name_iter;
-        mark_iter.backward_char ();
-        add_item (type, contents, mark_iter);
-        return true;
+        add_item (type, contents);
     }
 
-    private void search_figure_or_table (TextIter after_backslash)
+    private void search_env (string line, int begin_contents_index, bool is_begin_env)
     {
-        string text = get_text_to_line_end (after_backslash);
+        string? contents = get_markup_contents (line, begin_contents_index);
+        if (contents == null)
+            return;
 
-        if (text.has_prefix ("begin{figure}"))
-            _in_figure_env = true;
-        else if (text.has_prefix ("end{figure}"))
-            _in_figure_env = false;
-        else if (text.has_prefix ("begin{table}"))
-            _in_table_env = true;
-        else if (text.has_prefix ("end{table}"))
-            _in_table_env = false;
+        switch (contents)
+        {
+            case "figure":
+                _in_figure_env = is_begin_env;
+                break;
+
+            case "table":
+                _in_table_env = is_begin_env;
+                break;
+        }
     }
 
-    private bool search_comment (TextIter after_percent)
+    private void search_comment (string line, int after_percent_index)
     {
-        TextIter begin_line;
-        _doc.get_iter_at_line (out begin_line, after_percent.get_line ());
-        string text_before = _doc.get_text (begin_line, after_percent, false);
-
-        if (Utils.char_is_escaped (text_before, text_before.length - 1))
-            return false;
-
-        string text_after = get_text_to_line_end (after_percent).strip ();
+        string text_after = line.substring (after_percent_index).strip ();
 
         MatchInfo match_info;
         if (! _comment_regex.match (text_after, 0, out match_info))
-            return false;
+            return;
 
         string type_str = match_info.fetch_named ("type");
         StructType type;
@@ -266,28 +299,18 @@ public class DocumentStructure : GLib.Object
         else
             type = StructType.FIXME;
 
-        string text = match_info.fetch_named ("text");
+        string contents = match_info.fetch_named ("text");
 
-        TextIter mark_iter = after_percent;
-        mark_iter.backward_char ();
-        add_item (type, text, mark_iter);
-        return true;
+        add_item (type, contents);
+        return;
     }
 
-    private string get_text_to_line_end (TextIter start)
-    {
-        TextBuffer doc = start.get_buffer ();
-        TextIter line_end = start;
-        line_end.forward_to_line_end ();
-        return doc.get_text (start, line_end, false);
-    }
-
-    private void add_item (StructType type, string text, TextIter iter)
+    private void add_item (StructType type, string text)
     {
         StructData data = {};
         data.type = type;
         data.text = text;
-        data.mark = create_text_mark_from_iter (iter);
+        data.mark = create_text_mark_from_iter (_cur_line_iter);
 
         if (_insert_at_end)
             _model.add_item_at_end (data);
@@ -318,9 +341,9 @@ public class DocumentStructure : GLib.Object
         _nb_marks = 0;
     }
 
-    private StructType? get_type_from_simple_command_name (string name)
+    private StructType? get_markup_type (string markup_name)
     {
-        switch (name)
+        switch (markup_name)
         {
             case "part":
             case "part*":
