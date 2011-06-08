@@ -168,7 +168,6 @@ public class MainWindow : Window
     private SidePanel side_panel;
     private Symbols symbols;
     private FileBrowser file_browser;
-    private Structure structure;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -290,7 +289,7 @@ public class MainWindow : Window
         file_browser = new FileBrowser (this);
         side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
-        structure = new Structure (this);
+        Structure structure = new Structure (this);
         side_panel.add_component (_("Structure"), Stock.INDEX, structure);
         side_panel.restore_state ();
 
@@ -1114,8 +1113,6 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         settings_ui.set_boolean ("show-build-badboxes", action.active);
-
-        structure.save_state ();
 
         if (sync)
         {

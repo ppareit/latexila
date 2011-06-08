@@ -40,10 +40,7 @@ public enum StructType
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
-    private GLib.Settings _settings;
-    private TreeModelFilter _tree_filter;
     private TreeView _tree_view;
-    private bool[] _visible_types;
 
     private static string[] _icons = null;
     private static string[] _names = null;
@@ -53,76 +50,12 @@ public class Structure : VBox
         GLib.Object (spacing: 3);
         _main_window = main_window;
 
-        _settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-
-        init_visible_types ();
         init_toolbar ();
-        init_choose_min_level ();
         init_tree_view ();
         show_all ();
 
         show.connect (connect_parsing);
         hide.connect (disconnect_parsing);
-    }
-
-    private void init_visible_types ()
-    {
-        _visible_types = new bool[StructType.N_TYPES];
-
-        _visible_types[StructType.LABEL] =
-            _settings.get_boolean ("structure-show-label");
-
-        _visible_types[StructType.INCLUDE] =
-            _settings.get_boolean ("structure-show-include");
-
-        _visible_types[StructType.TABLE] =
-            _settings.get_boolean ("structure-show-table");
-
-        _visible_types[StructType.FIGURE] =
-            _settings.get_boolean ("structure-show-figure");
-
-        _visible_types[StructType.TODO] =
-            _settings.get_boolean ("structure-show-todo");
-
-        _visible_types[StructType.FIXME] =
-            _settings.get_boolean ("structure-show-fixme");
-
-        // the other types are initialized in init_choose_min_level()
-    }
-
-    public void save_state ()
-    {
-        /* Save visible types */
-
-        _settings.set_boolean ("structure-show-label",
-            _visible_types[StructType.LABEL]);
-
-        _settings.set_boolean ("structure-show-include",
-            _visible_types[StructType.INCLUDE]);
-
-        _settings.set_boolean ("structure-show-table",
-            _visible_types[StructType.TABLE]);
-
-        _settings.set_boolean ("structure-show-figure",
-            _visible_types[StructType.FIGURE]);
-
-        _settings.set_boolean ("structure-show-todo",
-            _visible_types[StructType.TODO]);
-
-        _settings.set_boolean ("structure-show-fixme",
-            _visible_types[StructType.FIXME]);
-
-        /* save min level */
-
-        int min_level = StructType.PART;
-        for (int level = min_level ; is_section ((StructType) level) ; level++)
-        {
-            if (! _visible_types[level])
-                break;
-            min_level = level;
-        }
-
-        _settings.set_int ("structure-min-level", min_level);
     }
 
     private void init_toolbar ()
@@ -154,34 +87,32 @@ public class Structure : VBox
 
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
 
-        // show/hide buttons
-        ToggleButton toggle_button = create_show_hide_button ({ StructType.LABEL },
+        // simple list buttons
+        ToggleButton toggle_button = create_simple_list_button ({ StructType.LABEL },
             _("Show labels"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_show_hide_button ({ StructType.INCLUDE },
+        toggle_button = create_simple_list_button ({ StructType.INCLUDE },
             _("Show files included"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_show_hide_button ({ StructType.TABLE },
+        toggle_button = create_simple_list_button ({ StructType.TABLE },
             _("Show tables"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_show_hide_button ({ StructType.FIGURE },
+        toggle_button = create_simple_list_button ({ StructType.FIGURE },
             _("Show figures"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_show_hide_button ({ StructType.TODO, StructType.FIXME },
+        toggle_button = create_simple_list_button ({ StructType.TODO, StructType.FIXME },
             _("Show TODOs and FIXMEs"));
         hbox.pack_start (toggle_button);
     }
 
-    /* Create a show/hide button for hiding some types.
-     * One button can hide several types, that's why it's an array.
-     * The button image is the same as for the first type. If needed, we could add a new
-     * parameter.
-     */
-    private ToggleButton? create_show_hide_button (StructType[] types, string tooltip)
+    // Only one button can be activated at the same time.
+    // If no button is selected, the simple list is hidden.
+    // If a button is selected, the simple list contains only items specified by 'types'.
+    private ToggleButton? create_simple_list_button (StructType[] types, string tooltip)
     {
         return_val_if_fail (types.length > 0, null);
 
@@ -189,16 +120,6 @@ public class Structure : VBox
             Utils.get_toolbar_toggle_button (get_icon_from_type (types[0]));
 
         button.tooltip_text = tooltip;
-        button.active = _visible_types[types[0]];
-
-        button.toggled.connect (() =>
-        {
-            foreach (StructType type in types)
-                _visible_types[type] = button.active;
-
-            if (_tree_filter != null)
-                _tree_filter.refilter ();
-        });
 
         return button;
     }
@@ -232,72 +153,6 @@ public class Structure : VBox
         // with a scrollbar
         var sw = Utils.add_scrollbar (_tree_view);
         pack_start (sw);
-    }
-
-    private enum MinLevelColumn
-    {
-        PIXBUF,
-        NAME,
-        TYPE,
-        N_COLUMNS
-    }
-
-    private void init_choose_min_level ()
-    {
-        ListStore list_store = new ListStore (MinLevelColumn.N_COLUMNS,
-            typeof (string),
-            typeof (string),
-            typeof (StructType));
-
-        ComboBox combo_box = new ComboBox.with_model (list_store);
-        combo_box.tooltip_text = _("Minimum level");
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        combo_box.pack_start (pixbuf_renderer, false);
-        combo_box.set_attributes (pixbuf_renderer,
-            "stock-id", MinLevelColumn.PIXBUF, null);
-
-        CellRendererText text_renderer = new CellRendererText ();
-        combo_box.pack_start (text_renderer, true);
-        combo_box.set_attributes (text_renderer, "text", MinLevelColumn.NAME, null);
-
-        // populate the combo box
-        for (int type = StructType.PART ; type <= StructType.SUBPARAGRAPH ; type++)
-        {
-            TreeIter iter;
-            list_store.append (out iter);
-            list_store.set (iter,
-                MinLevelColumn.PIXBUF, get_icon_from_type ((StructType) type),
-                MinLevelColumn.NAME, get_type_name ((StructType) type),
-                MinLevelColumn.TYPE, type,
-                -1);
-        }
-
-        combo_box.changed.connect (() =>
-        {
-            TreeIter iter;
-            if (! combo_box.get_active_iter (out iter))
-                return;
-
-            StructType selected_type;
-            TreeModel model = (TreeModel) list_store;
-            model.get (iter, MinLevelColumn.TYPE, out selected_type, -1);
-
-            for (int type = 0 ; is_section ((StructType) type) ; type++)
-                _visible_types[type] = type <= selected_type;
-
-            if (_tree_filter != null)
-                _tree_filter.refilter ();
-            if (_tree_view != null)
-                _tree_view.expand_all ();
-        });
-
-        // restore state
-        int min_level = _settings.get_int ("structure-min-level");
-        min_level = min_level.clamp (StructType.PART, StructType.SUBPARAGRAPH);
-        combo_box.set_active (min_level);
-
-        pack_start (combo_box, false, false);
     }
 
     private bool on_row_selection (TreeSelection selection, TreeModel model,
@@ -336,6 +191,7 @@ public class Structure : VBox
             return;
 
         _tree_view.set_model (null);
+        _tree_view.columns_autosize ();
 
         DocumentStructure doc_struct = doc.get_structure ();
 
@@ -344,24 +200,9 @@ public class Structure : VBox
 
         doc_struct.parsing_done.connect (() =>
         {
-            set_model (doc_struct.get_model ());
+            _tree_view.set_model (doc_struct.get_model ());
+            _tree_view.expand_all ();
         });
-    }
-
-    private void set_model (StructureModel model)
-    {
-        _tree_filter = new TreeModelFilter (model, null);
-        _tree_filter.set_visible_func ((mod, iter) =>
-        {
-            StructType type;
-            mod.get (iter, StructColumn.TYPE, out type, -1);
-
-            return _visible_types[type];
-        });
-
-        _tree_view.set_model (_tree_filter);
-        _tree_view.expand_all ();
-        _tree_view.columns_autosize ();
     }
 
     public void connect_parsing ()

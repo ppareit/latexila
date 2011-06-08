@@ -7,12 +7,13 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Add a show/hide button for sections.
-	  For example, to search the remaining TODOs and FIXMEs, it's boring to have all the sections.
-	
-	- Show/hide buttons: find a way to easily select only one item, and unselect the others.
-	  Also, find a way to easily select all the items.
-	  An idea is to add a menu on a right click on a button.
+	- Items overview:
+	  The problem: if we search an item, for example a figure or a TODO, it takes time to
+	  find it if there are a lot of sections.
+	  Solution: possibility to view a simple list of a certain item type. The list would be
+	  displayed below the mini-toolbar. If we click on a item in this list, the corresponding
+	  item in the complete tree is selected. The show/hide buttons would be used to change
+	  the item type of the simple list.
 
 	- Right click: cut, copy, paste below, select, delete, comment, shift left/right.
 	  Shift left/right is new comparated to Kile. For example we have a big section (with
