@@ -43,8 +43,10 @@ public class Structure : VBox
 
     private ToggleButton[] _simple_list_buttons = {};
     private VPaned _vpaned;
-    private Label _simple_list;
     private TreeView _tree_view;
+    private StructureModel? _model = null;
+    private Widget _list_view_sw;
+    private ListStore _list_store;
 
     private static string[] _icons = null;
     private static string[] _names = null;
@@ -56,10 +58,10 @@ public class Structure : VBox
 
         init_toolbar ();
         init_vpaned ();
-        init_simple_list ();
+        init_list_view ();
         init_tree_view ();
         show_all ();
-        _simple_list.hide ();
+        _list_view_sw.hide ();
 
         show.connect (connect_parsing);
         hide.connect (disconnect_parsing);
@@ -134,7 +136,7 @@ public class Structure : VBox
         {
             if (! button.get_active ())
             {
-                _simple_list.hide ();
+                _list_view_sw.hide ();
                 return;
             }
 
@@ -146,7 +148,13 @@ public class Structure : VBox
                 simple_list_button.set_active (false);
             }
 
-            _simple_list.show_all ();
+            _list_view_sw.show_all ();
+
+            // populate the list
+            _list_store.clear ();
+
+            if (_model != null)
+                _model.populate_list (_list_store, types[0]);
         });
 
         return button;
@@ -167,19 +175,48 @@ public class Structure : VBox
         settings.set_int ("structure-paned-position", _vpaned.get_position ());
     }
 
-    private void init_simple_list ()
+    private void init_list_view ()
     {
-        _simple_list = new Label ("Simple list");
-        _vpaned.add1 (_simple_list);
+        TreeView list_view = get_new_tree_view ();
+
+        _list_store = new ListStore (StructColumn.N_COLUMNS,
+            typeof (string),    // pixbuf
+            typeof (string),    // text
+            typeof (string),    // tooltip
+            typeof (TextMark)   // mark (not used)
+        );
+
+        list_view.set_model (_list_store);
+
+        // selection
+        TreeSelection select = list_view.get_selection ();
+        select.set_select_function (on_list_row_selection);
+
+        // with a scrollbar
+        _list_view_sw = Utils.add_scrollbar (list_view);
+        _vpaned.add1 (_list_view_sw);
     }
 
     private void init_tree_view ()
     {
-        _tree_view = new TreeView ();
-        _tree_view.headers_visible = false;
+        _tree_view = get_new_tree_view ();
+
+        // selection
+        TreeSelection select = _tree_view.get_selection ();
+        select.set_select_function (on_tree_row_selection);
+
+        // with a scrollbar
+        Widget sw = Utils.add_scrollbar (_tree_view);
+        _vpaned.add2 (sw);
+    }
+
+    private TreeView get_new_tree_view ()
+    {
+        TreeView tree_view = new TreeView ();
+        tree_view.headers_visible = false;
 
         TreeViewColumn column = new TreeViewColumn ();
-        _tree_view.append_column (column);
+        tree_view.append_column (column);
 
         // icon
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
@@ -192,19 +229,16 @@ public class Structure : VBox
         column.set_attributes (text_renderer, "text", StructColumn.TEXT, null);
 
         // tooltip
-        _tree_view.set_tooltip_column (StructColumn.TOOLTIP);
+        tree_view.set_tooltip_column (StructColumn.TOOLTIP);
 
         // selection
-        TreeSelection select = _tree_view.get_selection ();
+        TreeSelection select = tree_view.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
-        select.set_select_function (on_row_selection);
 
-        // with a scrollbar
-        Widget sw = Utils.add_scrollbar (_tree_view);
-        _vpaned.add2 (sw);
+        return tree_view;
     }
 
-    private bool on_row_selection (TreeSelection selection, TreeModel model,
+    private bool on_tree_row_selection (TreeSelection selection, TreeModel model,
         TreePath path, bool path_currently_selected)
     {
         TreeIter tree_iter;
@@ -229,6 +263,13 @@ public class Structure : VBox
         return true;
     }
 
+    private bool on_list_row_selection (TreeSelection selection, TreeModel model,
+        TreePath path, bool path_currently_selected)
+    {
+        // the row is not selected
+        return false;
+    }
+
     private void show_active_document ()
     {
         show_document (_main_window.active_document);
@@ -239,6 +280,7 @@ public class Structure : VBox
         if (doc == null)
             return;
 
+        _model = null;
         _tree_view.set_model (null);
         _tree_view.columns_autosize ();
 
@@ -249,7 +291,8 @@ public class Structure : VBox
 
         doc_struct.parsing_done.connect (() =>
         {
-            _tree_view.set_model (doc_struct.get_model ());
+            _model = doc_struct.get_model ();
+            _tree_view.set_model (_model);
             _tree_view.expand_all ();
         });
     }

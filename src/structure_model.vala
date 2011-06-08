@@ -29,7 +29,6 @@ public struct StructData
 public enum StructColumn
 {
     PIXBUF,
-    TYPE,
     TEXT,
     TOOLTIP,
     MARK,
@@ -42,11 +41,16 @@ public class StructureModel : TreeModel, GLib.Object
     private Node<StructData?> _tree;
     private int _stamp;
 
+    private Gee.ArrayList<unowned Node<StructData?>> _list_labels;
+    private Gee.ArrayList<unowned Node<StructData?>> _list_includes;
+    private Gee.ArrayList<unowned Node<StructData?>> _list_tables;
+    private Gee.ArrayList<unowned Node<StructData?>> _list_figures;
+    private Gee.ArrayList<unowned Node<StructData?>> _list_todo_and_fixme;
+
     public StructureModel ()
     {
         _column_types = new Type[StructColumn.N_COLUMNS];
         _column_types[StructColumn.PIXBUF]  = typeof (string);
-        _column_types[StructColumn.TYPE]    = typeof (StructType);
         _column_types[StructColumn.TEXT]    = typeof (string);
         _column_types[StructColumn.TOOLTIP] = typeof (string);
         _column_types[StructColumn.MARK]    = typeof (TextMark);
@@ -55,6 +59,12 @@ public class StructureModel : TreeModel, GLib.Object
         _tree = new Node<StructData?> (empty_data);
 
         new_stamp ();
+
+        _list_labels = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_includes = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_tables = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_figures = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_todo_and_fixme = new Gee.ArrayList<unowned Node<StructData?>> ();
     }
 
     // A new stamp should be generated each time the data in the model change
@@ -167,10 +177,6 @@ public class StructureModel : TreeModel, GLib.Object
 
         switch (column)
         {
-            case StructColumn.TYPE:
-                val = data.type;
-                break;
-
             case StructColumn.TEXT:
                 val = data.text;
                 break;
@@ -456,6 +462,13 @@ public class StructureModel : TreeModel, GLib.Object
             TreePath parent_path = get_path (parent_iter);
             row_has_child_toggled (parent_path, parent_iter);
         }
+
+        /* Store the node to a list, if it's not a section */
+        if (Structure.is_section (item.type))
+            return;
+
+        var list = get_list (item.type);
+        list.add (new_node);
     }
 
     private static int get_position_from_mark (TextMark mark)
@@ -464,6 +477,55 @@ public class StructureModel : TreeModel, GLib.Object
         TextBuffer doc = mark.get_buffer ();
         doc.get_iter_at_mark (out iter, mark);
         return iter.get_offset ();
+    }
+
+
+    /*************************************************************************/
+    // Simple lists
+
+    public void populate_list (ListStore store, StructType type)
+    {
+        var list = get_list (type);
+
+        foreach (unowned Node<StructData?> node in list)
+        {
+            StructData data = node.data;
+
+            TreeIter iter;
+            store.append (out iter);
+            store.set (iter,
+                StructColumn.PIXBUF, Structure.get_icon_from_type (data.type),
+                StructColumn.TEXT, data.text,
+                StructColumn.TOOLTIP, Structure.get_type_name (data.type),
+                -1);
+        }
+    }
+
+    private Gee.ArrayList<unowned Node<StructData?>> get_list (StructType type)
+    {
+        return_val_if_fail (! Structure.is_section (type), null);
+
+        switch (type)
+        {
+            case StructType.LABEL:
+                return _list_labels;
+
+            case StructType.INCLUDE:
+                return _list_includes;
+
+            case StructType.TABLE:
+                return _list_tables;
+
+            case StructType.FIGURE:
+                return _list_figures;
+
+            case StructType.TODO:
+            case StructType.FIXME:
+                return _list_todo_and_fixme;
+
+            default:
+                return_val_if_reached (null);
+        }
     }
 
 //    private void print_item (StructData item)
