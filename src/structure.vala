@@ -40,6 +40,10 @@ public enum StructType
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
+
+    private ToggleButton[] _simple_list_buttons = {};
+    private VPaned _vpaned;
+    private Label _simple_list;
     private TreeView _tree_view;
 
     private static string[] _icons = null;
@@ -51,8 +55,11 @@ public class Structure : VBox
         _main_window = main_window;
 
         init_toolbar ();
+        init_vpaned ();
+        init_simple_list ();
         init_tree_view ();
         show_all ();
+        _simple_list.hide ();
 
         show.connect (connect_parsing);
         hide.connect (disconnect_parsing);
@@ -121,7 +128,49 @@ public class Structure : VBox
 
         button.tooltip_text = tooltip;
 
+        _simple_list_buttons += button;
+
+        button.clicked.connect (() =>
+        {
+            if (! button.get_active ())
+            {
+                _simple_list.hide ();
+                return;
+            }
+
+            foreach (ToggleButton simple_list_button in _simple_list_buttons)
+            {
+                if (simple_list_button == button)
+                    continue;
+
+                simple_list_button.set_active (false);
+            }
+
+            _simple_list.show_all ();
+        });
+
         return button;
+    }
+
+    private void init_vpaned ()
+    {
+        _vpaned = new VPaned ();
+        pack_start (_vpaned);
+
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
+        _vpaned.set_position (settings.get_int ("structure-paned-position"));
+    }
+
+    public void save_state ()
+    {
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
+        settings.set_int ("structure-paned-position", _vpaned.get_position ());
+    }
+
+    private void init_simple_list ()
+    {
+        _simple_list = new Label ("Simple list");
+        _vpaned.add1 (_simple_list);
     }
 
     private void init_tree_view ()
@@ -151,8 +200,8 @@ public class Structure : VBox
         select.set_select_function (on_row_selection);
 
         // with a scrollbar
-        var sw = Utils.add_scrollbar (_tree_view);
-        pack_start (sw);
+        Widget sw = Utils.add_scrollbar (_tree_view);
+        _vpaned.add2 (sw);
     }
 
     private bool on_row_selection (TreeSelection selection, TreeModel model,

@@ -168,6 +168,7 @@ public class MainWindow : Window
     private SidePanel side_panel;
     private Symbols symbols;
     private FileBrowser file_browser;
+    private Structure _structure;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -289,8 +290,8 @@ public class MainWindow : Window
         file_browser = new FileBrowser (this);
         side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
-        Structure structure = new Structure (this);
-        side_panel.add_component (_("Structure"), Stock.INDEX, structure);
+        _structure = new Structure (this);
+        side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
         side_panel.restore_state ();
 
         /* signal handlers */
@@ -1083,6 +1084,8 @@ public class MainWindow : Window
 
         settings_window.set_int ("side-panel-size", main_hpaned.get_position ());
         settings_window.set_int ("vertical-paned-position", vpaned.get_position ());
+
+        _structure.save_state ();
 
         /* ui preferences */
         GLib.Settings settings_ui =

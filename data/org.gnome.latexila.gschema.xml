@@ -219,5 +219,8 @@
     <key name="new-file-dialog-paned-position" type="i">
       <default>170</default>
     </key>
+    <key name="structure-paned-position" type="i">
+      <default>100</default>
+    </key>
   </schema>
 </schemalist>
