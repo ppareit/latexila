@@ -1,5 +1,18 @@
 LaTeXila NEWS
 
+=============================
+* Release 2.1.0 (May 6, 2011)
+=============================
+
+- Build Tools: Latexmk by default instead of Rubber (Rubber is still available)
+- New build tools: "low level" commands (latex, pdflatex, dvipdf, etc.)
+- Show/hide a build tool
+- Build View: show/hide errors/warnings/badboxes
+- File Browser: new icon for images
+- Structure of a document to easily navigate in it
+- Some code clean-up and little fixes
+
+
 ==============================
 * Release 2.0.7 (Mar 25, 2011)
 ==============================

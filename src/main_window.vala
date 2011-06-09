@@ -1756,7 +1756,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
 
-        string website = "http://latexila.sourceforge.net/";
+        string website = "http://projects.gnome.org/latexila/";
 
         string[] authors =
         {
