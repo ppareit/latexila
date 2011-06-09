@@ -43,7 +43,7 @@ public class DocumentStructure : GLib.Object
     private static const bool _measure_parsing_time = false;
     private Timer _timer = null;
 
-    public signal void parsing_done ();
+    public bool parsing_done { get; private set; default = false; }
 
     public DocumentStructure (TextBuffer doc)
     {
@@ -70,6 +70,7 @@ public class DocumentStructure : GLib.Object
     public void parse ()
     {
         // reset
+        parsing_done = false;
         _model = new StructureModel ();
         _in_figure_env = false;
         _in_table_env = false;
@@ -182,7 +183,7 @@ public class DocumentStructure : GLib.Object
             _timer.reset ();
         }
 
-        parsing_done ();
+        parsing_done = true;
         return false;
     }
 

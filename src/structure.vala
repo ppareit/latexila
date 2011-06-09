@@ -47,6 +47,8 @@ public class Structure : VBox
     private StructureModel? _model = null;
     private Widget _list_view_sw;
     private ListStore _list_store;
+    private StructType _current_list_type;
+    private bool _list_is_hidden = true;
 
     private static string[] _icons = null;
     private static string[] _names = null;
@@ -125,8 +127,9 @@ public class Structure : VBox
     {
         return_val_if_fail (types.length > 0, null);
 
+        StructType cur_type = types[0];
         ToggleButton button =
-            Utils.get_toolbar_toggle_button (get_icon_from_type (types[0]));
+            Utils.get_toolbar_toggle_button (get_icon_from_type (cur_type));
 
         button.tooltip_text = tooltip;
 
@@ -136,10 +139,20 @@ public class Structure : VBox
         {
             if (! button.get_active ())
             {
-                _list_view_sw.hide ();
+                if (! _list_is_hidden && _current_list_type == cur_type)
+                {
+                    _list_is_hidden = true;
+                    _list_view_sw.hide ();
+                }
                 return;
             }
 
+            _current_list_type = cur_type;
+            _list_is_hidden = false;
+            _list_view_sw.show_all ();
+            populate_simple_list ();
+
+            // deselect the other buttons
             foreach (ToggleButton simple_list_button in _simple_list_buttons)
             {
                 if (simple_list_button == button)
@@ -147,17 +160,17 @@ public class Structure : VBox
 
                 simple_list_button.set_active (false);
             }
-
-            _list_view_sw.show_all ();
-
-            // populate the list
-            _list_store.clear ();
-
-            if (_model != null)
-                _model.populate_list (_list_store, types[0]);
         });
 
         return button;
+    }
+
+    private void populate_simple_list ()
+    {
+        _list_store.clear ();
+
+        if (_model != null && ! _list_is_hidden)
+            _model.populate_list (_list_store, _current_list_type);
     }
 
     private void init_vpaned ()
@@ -277,24 +290,34 @@ public class Structure : VBox
 
     private void show_document (Document? doc, bool force_parse = false)
     {
+        set_model (null);
+        _tree_view.columns_autosize ();
+
         if (doc == null)
             return;
-
-        _model = null;
-        _tree_view.set_model (null);
-        _tree_view.columns_autosize ();
 
         DocumentStructure doc_struct = doc.get_structure ();
 
         if (force_parse)
             doc_struct.parse ();
 
-        doc_struct.parsing_done.connect (() =>
+        if (doc_struct.parsing_done)
+            set_model (doc_struct.get_model ());
+
+        doc_struct.notify["parsing-done"].connect (() =>
         {
-            _model = doc_struct.get_model ();
-            _tree_view.set_model (_model);
-            _tree_view.expand_all ();
+            if (doc_struct.parsing_done)
+                set_model (doc_struct.get_model ());
         });
+    }
+
+    private void set_model (StructureModel? model)
+    {
+        _model = model;
+        _tree_view.set_model (model);
+        _tree_view.expand_all ();
+
+        populate_simple_list ();
     }
 
     public void connect_parsing ()
