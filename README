@@ -9,7 +9,7 @@ later, see the file "COPYING" for more information.
 
 The official web site is:
 
-    http://latexila.sourceforge.net/
+    http://projects.gnome.org/latexila
 
 See also:
 
@@ -28,3 +28,5 @@ Where to report bugs
 Bugs should be reported on GitHub:
 
     http://github.com/swilmet/latexila/issues
+
+In the near future, it will be done on the gnome.org bugzilla.
