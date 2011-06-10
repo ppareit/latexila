@@ -20,12 +20,14 @@ Later, to take the new commits you just have to do:
 
 
 If you want to contribute to LaTeXila, contact the main developer (see the
-file AUTHORS). Here is how you can generate a patch:
+file AUTHORS).
 
-    $ git diff origin > patch
+To create a patch, make first one or several commits (in another branch) and
+then use the 'git format-patch' command. You can submit your patch to the
+GNOME bugzilla.
 
-But it's easier to make a pull request, via GitHub for example. A GitHub
-repository is available:
+Alternatively, if you have a GitHub account, you can make a pull request.
+A GitHub repository is available, so you can fork it easily:
 
     https://github.com/swilmet/latexila
 
@@ -41,6 +43,7 @@ There are some rules to follow when coding:
         - if (! foo)                      // not if (!foo)
         - for (int i = 0 ; i < max ; i++) // not for(int i=0;i<max;i++)
         - etc...
+    - do not use 'var' for declaring variables, unless the type is very long
     - same coding style everywhere
 
 How to generate the C code from Vala files?

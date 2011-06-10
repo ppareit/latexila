@@ -7,24 +7,31 @@
 
   <name xml:lang="en">latexila</name>
   <shortdesc xml:lang="en">LaTeXila, an Integrated LaTeX Environment</shortdesc>
-  <description>LaTeXila is an Integrated LaTeX Environment for GNOME, written in Vala.
+  <description xml:lang="en">LaTeXila is an Integrated LaTeX Environment for GNOME, written in Vala.
 
 The main features are:
-- Customizable buttons to compile, convert and view a document in one click.
-  Latexmk is used by default, but Rubber and the "low-level" commands such as
-  pdflatex can also be used.
-- LaTeX commands completion
-- Document structure to easily navigate in it
-- Symbol tables
-- Templates
-- Easy projects management
-- Some menus and toolbars with the principal LaTeX commands</description>
 
-  <!-- TODO move all this stuff to gnome.org -->
+- Customizable buttons to compile, convert and view a document in one click.
+Latexmk is used by default, but Rubber and the "low-level" commands such as
+pdflatex can also be used.
+
+- LaTeX commands completion
+
+- Document structure to easily navigate in it
+
+- Symbol tables (Greek letters, arrows, etc)
+
+- Template managing: a few default templates, creating personal ones, etc
+
+- Easy projects management
+
+- Some menus and toolbars with the principal LaTeX commands
+  </description>
+
   <homepage rdf:resource="http://projects.gnome.org/latexila" />
-  <mailing-list rdf:resource="https://lists.sourceforge.net/lists/listinfo/latexila-misc" />
-  <download-page rdf:resource="https://sourceforge.net/projects/latexila/files/" />
-  <bug-database rdf:resource="https://github.com/swilmet/latexila/issues" />
+  <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/latexila-list" />
+  <download-page rdf:resource="http://ftp.gnome.org/pub/GNOME/sources/latexila/" />
+  <bug-database rdf:resource="https://bugzilla.gnome.org/browse.cgi?product=latexila" />
 
   <maintainer>
     <foaf:Person>
