@@ -227,8 +227,18 @@ public class Structure : VBox
         _list_view.set_model (_list_store);
 
         // selection
-        TreeSelection select = _list_view.get_selection ();
-        select.set_select_function (on_list_row_selection);
+        TreeSelection list_select = _list_view.get_selection ();
+        list_select.set_select_function ((select, model, path, path_currently_selected) =>
+        {
+            // always allow deselect
+            if (path_currently_selected)
+                return true;
+
+            return select_list_row (path);
+        });
+
+        // double-click
+        _list_view.row_activated.connect ((path) => select_list_row (path));
 
         // with a scrollbar
         _list_view_sw = Utils.add_scrollbar (_list_view);
@@ -241,8 +251,18 @@ public class Structure : VBox
             StructColumn.TOOLTIP);
 
         // selection
-        TreeSelection select = _tree_view.get_selection ();
-        select.set_select_function (on_tree_row_selection);
+        TreeSelection tree_select = _tree_view.get_selection ();
+        tree_select.set_select_function ((select, model, path, path_currently_selected) =>
+        {
+            // always allow deselect
+            if (path_currently_selected)
+                return true;
+
+            return select_tree_row (path);
+        });
+
+        // double-click
+        _tree_view.row_activated.connect ((path) => select_tree_row (path));
 
         // with a scrollbar
         Widget sw = Utils.add_scrollbar (_tree_view);
@@ -277,51 +297,8 @@ public class Structure : VBox
         return tree_view;
     }
 
-    private bool on_tree_row_selection (TreeSelection selection, TreeModel model,
-        TreePath path, bool path_currently_selected)
+    private bool select_list_row (TreePath list_path)
     {
-        // always allow deselect
-        if (path_currently_selected)
-            return true;
-
-        bool first_select = _first_select;
-        _first_select = true;
-
-        TreeIter tree_iter;
-        if (! model.get_iter (out tree_iter, path))
-            return_val_if_reached (false);
-
-        TextMark mark;
-        model.get (tree_iter, StructColumn.MARK, out mark, -1);
-
-        /* go to the location in the document */
-        TextBuffer doc = mark.get_buffer ();
-        return_val_if_fail (doc == _main_window.active_document, false);
-
-        // place the cursor so the line is highlighted (by default)
-        TextIter text_iter;
-        doc.get_iter_at_mark (out text_iter, mark);
-        doc.place_cursor (text_iter);
-        // scroll to cursor, line at the top
-        _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 0, 0);
-
-        /* select the corresponding item in the simple list */
-        if (! first_select)
-            return true;
-
-        select_simple_list_item (tree_iter);
-
-        // the row is selected
-        return true;
-    }
-
-    private bool on_list_row_selection (TreeSelection selection, TreeModel model,
-        TreePath path, bool path_currently_selected)
-    {
-        // always allow deselect
-        if (path_currently_selected)
-            return true;
-
         if (! _first_select)
         {
             _first_select = true;
@@ -334,7 +311,7 @@ public class Structure : VBox
         TreeSelection tree_select = _tree_view.get_selection ();
         tree_select.unselect_all ();
 
-        int row_num = path.get_indices ()[0];
+        int row_num = list_path.get_indices ()[0];
 
         TreePath? tree_path =
             _model.get_tree_path_from_list_num (_current_list_type, row_num);
@@ -347,6 +324,42 @@ public class Structure : VBox
         tree_select.select_path (tree_path);
 
         _tree_view.scroll_to_cell (tree_path, null, true, (float) 0.5, 0);
+
+        // the row is selected
+        return true;
+    }
+
+    private bool select_tree_row (TreePath tree_path)
+    {
+        // Reset _first_select and keep a copy, so if an error occurs, it's ok for the
+        // next select.
+        bool first_select = _first_select;
+        _first_select = true;
+
+        TreeIter tree_iter;
+        if (! _model.get_iter (out tree_iter, tree_path))
+            return_val_if_reached (false);
+
+        TextMark mark;
+        _model.get (tree_iter, StructColumn.MARK, out mark, -1);
+
+        /* go to the location in the document */
+        TextBuffer doc = mark.get_buffer ();
+        return_val_if_fail (doc == _main_window.active_document, false);
+
+        // place the cursor so the line is highlighted (by default)
+        TextIter text_iter;
+        doc.get_iter_at_mark (out text_iter, mark);
+        doc.place_cursor (text_iter);
+
+        // scroll to cursor, line at the top
+        _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 0, 0);
+
+        /* select the corresponding item in the simple list */
+        if (! first_select)
+            return true;
+
+        select_simple_list_item (tree_iter);
 
         // the row is selected
         return true;
