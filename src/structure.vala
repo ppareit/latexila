@@ -43,12 +43,17 @@ public class Structure : VBox
 
     private ToggleButton[] _simple_list_buttons = {};
     private VPaned _vpaned;
+
     private TreeView _tree_view;
     private StructureModel? _model = null;
+
+    private TreeView _list_view;
     private Widget _list_view_sw;
     private ListStore _list_store;
     private StructType _current_list_type;
     private bool _list_is_hidden = true;
+
+    private bool _first_select = true;
 
     private static string[] _icons = null;
     private static string[] _names = null;
@@ -190,29 +195,30 @@ public class Structure : VBox
 
     private void init_list_view ()
     {
-        TreeView list_view = get_new_tree_view ();
+        _list_view = get_new_tree_view (StructListColumn.PIXBUF, StructListColumn.TEXT,
+            StructListColumn.TOOLTIP);
 
-        _list_store = new ListStore (StructColumn.N_COLUMNS,
+        _list_store = new ListStore (StructListColumn.N_COLUMNS,
             typeof (string),    // pixbuf
             typeof (string),    // text
-            typeof (string),    // tooltip
-            typeof (TextMark)   // mark (not used)
+            typeof (string)     // tooltip
         );
 
-        list_view.set_model (_list_store);
+        _list_view.set_model (_list_store);
 
         // selection
-        TreeSelection select = list_view.get_selection ();
+        TreeSelection select = _list_view.get_selection ();
         select.set_select_function (on_list_row_selection);
 
         // with a scrollbar
-        _list_view_sw = Utils.add_scrollbar (list_view);
+        _list_view_sw = Utils.add_scrollbar (_list_view);
         _vpaned.add1 (_list_view_sw);
     }
 
     private void init_tree_view ()
     {
-        _tree_view = get_new_tree_view ();
+        _tree_view = get_new_tree_view (StructColumn.PIXBUF, StructColumn.TEXT,
+            StructColumn.TOOLTIP);
 
         // selection
         TreeSelection select = _tree_view.get_selection ();
@@ -223,7 +229,7 @@ public class Structure : VBox
         _vpaned.add2 (sw);
     }
 
-    private TreeView get_new_tree_view ()
+    private TreeView get_new_tree_view (int pixbuf_col, int text_col, int tooltip_col)
     {
         TreeView tree_view = new TreeView ();
         tree_view.headers_visible = false;
@@ -234,15 +240,15 @@ public class Structure : VBox
         // icon
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         column.pack_start (pixbuf_renderer, false);
-        column.set_attributes (pixbuf_renderer, "stock-id", StructColumn.PIXBUF, null);
+        column.set_attributes (pixbuf_renderer, "stock-id", pixbuf_col, null);
 
         // name
         CellRendererText text_renderer = new CellRendererText ();
         column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", StructColumn.TEXT, null);
+        column.set_attributes (text_renderer, "text", text_col, null);
 
         // tooltip
-        tree_view.set_tooltip_column (StructColumn.TOOLTIP);
+        tree_view.set_tooltip_column (tooltip_col);
 
         // selection
         TreeSelection select = tree_view.get_selection ();
@@ -254,14 +260,25 @@ public class Structure : VBox
     private bool on_tree_row_selection (TreeSelection selection, TreeModel model,
         TreePath path, bool path_currently_selected)
     {
+        // always allow deselect
+        if (path_currently_selected)
+            return true;
+
+        bool first_select = _first_select;
+        _first_select = true;
+
         TreeIter tree_iter;
         if (! model.get_iter (out tree_iter, path))
-            // the row is not selected
-            return false;
+            return_val_if_reached (false);
 
         TextMark mark;
-        model.get (tree_iter, StructColumn.MARK, out mark, -1);
+        StructType type;
+        model.get (tree_iter,
+            StructColumn.MARK, out mark,
+            StructColumn.TYPE, out type,
+            -1);
 
+        /* go to the location in the document */
         TextBuffer doc = mark.get_buffer ();
         return_val_if_fail (doc == _main_window.active_document, false);
 
@@ -272,6 +289,28 @@ public class Structure : VBox
         // scroll to cursor, line at the top
         _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 0, 0);
 
+        /* select the corresponding item in the simple list */
+        if (! first_select)
+            return true;
+
+        TreeSelection list_select = _list_view.get_selection ();
+        list_select.unselect_all ();
+
+        if (_list_is_hidden || type != _current_list_type)
+            return true;
+
+        int row_num = _model.get_list_num_from_tree_iter (tree_iter);
+
+        if (row_num == -1)
+            return true;
+
+        TreePath list_path = new TreePath.from_indices (row_num, -1);
+
+        _first_select = false;
+        list_select.select_path (list_path);
+
+        _list_view.scroll_to_cell (list_path, null, false, 0, 0);
+
         // the row is selected
         return true;
     }
@@ -279,8 +318,38 @@ public class Structure : VBox
     private bool on_list_row_selection (TreeSelection selection, TreeModel model,
         TreePath path, bool path_currently_selected)
     {
-        // the row is not selected
-        return false;
+        // always allow deselect
+        if (path_currently_selected)
+            return true;
+
+        if (! _first_select)
+        {
+            _first_select = true;
+            return true;
+        }
+
+        return_val_if_fail (_model != null, false);
+
+        /* select the corresponding item in the tree */
+        TreeSelection tree_select = _tree_view.get_selection ();
+        tree_select.unselect_all ();
+
+        int row_num = path.get_indices ()[0];
+
+        TreePath? tree_path =
+            _model.get_tree_path_from_list_num (_current_list_type, row_num);
+
+        return_val_if_fail (tree_path != null, false);
+
+        _tree_view.expand_to_path (tree_path);
+
+        _first_select = false;
+        tree_select.select_path (tree_path);
+
+        _tree_view.scroll_to_cell (tree_path, null, true, (float) 0.5, 0);
+
+        // the row is selected
+        return true;
     }
 
     private void show_active_document ()

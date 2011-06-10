@@ -32,6 +32,15 @@ public enum StructColumn
     TEXT,
     TOOLTIP,
     MARK,
+    TYPE,
+    N_COLUMNS
+}
+
+public enum StructListColumn
+{
+    PIXBUF,
+    TEXT,
+    TOOLTIP,
     N_COLUMNS
 }
 
@@ -54,6 +63,7 @@ public class StructureModel : TreeModel, GLib.Object
         _column_types[StructColumn.TEXT]    = typeof (string);
         _column_types[StructColumn.TOOLTIP] = typeof (string);
         _column_types[StructColumn.MARK]    = typeof (TextMark);
+        _column_types[StructColumn.TYPE]    = typeof (StructType);
 
         StructData empty_data = {};
         _tree = new Node<StructData?> (empty_data);
@@ -183,6 +193,10 @@ public class StructureModel : TreeModel, GLib.Object
 
             case StructColumn.MARK:
                 val = data.mark;
+                break;
+
+            case StructColumn.TYPE:
+                val = data.type;
                 break;
 
             case StructColumn.PIXBUF:
@@ -494,11 +508,40 @@ public class StructureModel : TreeModel, GLib.Object
             TreeIter iter;
             store.append (out iter);
             store.set (iter,
-                StructColumn.PIXBUF, Structure.get_icon_from_type (data.type),
-                StructColumn.TEXT, data.text,
-                StructColumn.TOOLTIP, Structure.get_type_name (data.type),
+                StructListColumn.PIXBUF, Structure.get_icon_from_type (data.type),
+                StructListColumn.TEXT, data.text,
+                StructListColumn.TOOLTIP, Structure.get_type_name (data.type),
                 -1);
         }
+    }
+
+    public TreePath? get_tree_path_from_list_num (StructType list_type, int num)
+    {
+        var list = get_list (list_type);
+        return_val_if_fail (list != null, null);
+
+        return_val_if_fail (0 <= num && num < list.size, null);
+
+        return get_path (create_iter_at_node (list[num]));
+    }
+
+    // return -1 on error
+    public int get_list_num_from_tree_iter (TreeIter tree_iter)
+    {
+        return_val_if_fail (iter_is_valid (tree_iter), -1);
+
+        unowned Node<StructData?> node = get_node_from_iter (tree_iter);
+
+        var list = get_list (node.data.type);
+        return_val_if_fail (list != null, -1);
+
+        for (int num = 0 ; num < list.size ; num++)
+        {
+            if (list[num] == node)
+                return num;
+        }
+
+        return_val_if_reached (-1);
     }
 
     private Gee.ArrayList<unowned Node<StructData?>> get_list (StructType type)
