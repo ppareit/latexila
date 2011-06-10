@@ -174,8 +174,28 @@ public class Structure : VBox
     {
         _list_store.clear ();
 
-        if (_model != null && ! _list_is_hidden)
-            _model.populate_list (_list_store, _current_list_type);
+        if (_model == null || _list_is_hidden)
+            return;
+
+        _model.populate_list (_list_store, _current_list_type);
+
+        /* select an item if needed */
+
+        TreeSelection tree_select = _tree_view.get_selection ();
+        List<TreePath> selected_rows = tree_select.get_selected_rows (null);
+
+        if (selected_rows.length () != 1)
+        {
+            //stdout.printf ("length: %u\n", selected_rows.length ());
+            return;
+        }
+
+        TreePath tree_path = selected_rows.nth_data (0);
+        TreeIter tree_iter;
+        if (! _model.get_iter (out tree_iter, tree_path))
+            return_if_reached ();
+
+        select_simple_list_item (tree_iter);
     }
 
     private void init_vpaned ()
@@ -272,11 +292,7 @@ public class Structure : VBox
             return_val_if_reached (false);
 
         TextMark mark;
-        StructType type;
-        model.get (tree_iter,
-            StructColumn.MARK, out mark,
-            StructColumn.TYPE, out type,
-            -1);
+        model.get (tree_iter, StructColumn.MARK, out mark, -1);
 
         /* go to the location in the document */
         TextBuffer doc = mark.get_buffer ();
@@ -293,23 +309,7 @@ public class Structure : VBox
         if (! first_select)
             return true;
 
-        TreeSelection list_select = _list_view.get_selection ();
-        list_select.unselect_all ();
-
-        if (_list_is_hidden || type != _current_list_type)
-            return true;
-
-        int row_num = _model.get_list_num_from_tree_iter (tree_iter);
-
-        if (row_num == -1)
-            return true;
-
-        TreePath list_path = new TreePath.from_indices (row_num, -1);
-
-        _first_select = false;
-        list_select.select_path (list_path);
-
-        _list_view.scroll_to_cell (list_path, null, false, 0, 0);
+        select_simple_list_item (tree_iter);
 
         // the row is selected
         return true;
@@ -350,6 +350,35 @@ public class Structure : VBox
 
         // the row is selected
         return true;
+    }
+
+    // tree_iter is a TreeIter from the tree (not the simple list) and points to the
+    // corresponding item.
+    private void select_simple_list_item (TreeIter tree_iter)
+    {
+        if (_list_is_hidden)
+            return;
+
+        TreeSelection list_select = _list_view.get_selection ();
+        list_select.unselect_all ();
+
+        StructType type;
+        _model.get (tree_iter, StructColumn.TYPE, out type, -1);
+
+        if (type != _current_list_type)
+            return;
+
+        int row_num = _model.get_list_num_from_tree_iter (tree_iter);
+
+        if (row_num == -1)
+            return;
+
+        TreePath list_path = new TreePath.from_indices (row_num, -1);
+
+        _first_select = false;
+        list_select.select_path (list_path);
+
+        _list_view.scroll_to_cell (list_path, null, false, 0, 0);
     }
 
     private void show_active_document ()
