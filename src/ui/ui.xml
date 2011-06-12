@@ -356,6 +356,19 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <menuitem action="ProjectsManage" />
     </menu>
 
+    <menu action="Structure">
+      <menuitem action="StructureCut" />
+      <menuitem action="StructureCopy" />
+      <menuitem action="StructureDelete" />
+      <separator />
+      <menuitem action="StructureSelect" />
+      <separator />
+      <menuitem action="StructureComment" />
+      <separator />
+      <menuitem action="StructureShiftLeft" />
+      <menuitem action="StructureShiftRight" />
+    </menu>
+
     <menu action="Help">
       <menuitem action="HelpLatexReference" />
       <menuitem action="HelpAbout" />
@@ -498,5 +511,18 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <menuitem action="FileSaveAs" />
     <separator />
     <menuitem action="FileClose" />
+  </popup>
+
+  <popup action="StructurePopup">
+    <menuitem action="StructureCut" />
+    <menuitem action="StructureCopy" />
+    <menuitem action="StructureDelete" />
+    <separator />
+    <menuitem action="StructureSelect" />
+    <separator />
+    <menuitem action="StructureComment" />
+    <separator />
+    <menuitem action="StructureShiftLeft" />
+    <menuitem action="StructureShiftRight" />
   </popup>
 </ui>

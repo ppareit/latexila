@@ -40,6 +40,15 @@ public enum StructType
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
+    private Menu _popup_menu;
+    private Gtk.Action _action_all_menu;
+    private Gtk.Action _action_cut;
+    private Gtk.Action _action_copy;
+    private Gtk.Action _action_delete;
+    private Gtk.Action _action_select;
+    private Gtk.Action _action_comment;
+    private Gtk.Action _action_shift_left;
+    private Gtk.Action _action_shift_right;
 
     private ToggleButton[] _simple_list_buttons = {};
     private VPaned _vpaned;
@@ -58,10 +67,21 @@ public class Structure : VBox
     private static string[] _icons = null;
     private static string[] _names = null;
 
-    public Structure (MainWindow main_window)
+    public Structure (MainWindow main_window, UIManager ui_manager)
     {
         GLib.Object (spacing: 3);
         _main_window = main_window;
+
+        _popup_menu = (Menu) ui_manager.get_widget ("/StructurePopup");
+        _action_all_menu = ui_manager.get_action ("/MainMenu/Structure");
+        _action_cut = ui_manager.get_action ("/StructurePopup/StructureCut");
+        _action_copy = ui_manager.get_action ("/StructurePopup/StructureCopy");
+        _action_delete = ui_manager.get_action ("/StructurePopup/StructureDelete");
+        _action_select = ui_manager.get_action ("/StructurePopup/StructureSelect");
+        _action_comment = ui_manager.get_action ("/StructurePopup/StructureComment");
+        _action_shift_left = ui_manager.get_action ("/StructurePopup/StructureShiftLeft");
+        _action_shift_right =
+            ui_manager.get_action ("/StructurePopup/StructureShiftRight");
 
         init_toolbar ();
         init_vpaned ();
@@ -71,7 +91,11 @@ public class Structure : VBox
         _list_view_sw.hide ();
 
         show.connect (connect_parsing);
-        hide.connect (disconnect_parsing);
+        hide.connect (() =>
+        {
+            disconnect_parsing ();
+            _action_all_menu.set_sensitive (false);
+        });
     }
 
     private void init_toolbar ()
@@ -264,6 +288,25 @@ public class Structure : VBox
         // double-click
         _tree_view.row_activated.connect ((path) => select_tree_row (path));
 
+        // right click
+        _popup_menu.attach_to_widget (_tree_view, null);
+
+        _tree_view.button_press_event.connect ((event) =>
+        {
+            // right click
+            if (event.button == 3 && event.type == Gdk.EventType.BUTTON_PRESS)
+                show_popup_menu (event);
+
+            // propagate the event further so the row is also selected
+            return false;
+        });
+
+        _tree_view.popup_menu.connect (() =>
+        {
+            show_popup_menu (null);
+            return true;
+        });
+
         // with a scrollbar
         Widget sw = Utils.add_scrollbar (_tree_view);
         _vpaned.add2 (sw);
@@ -341,7 +384,11 @@ public class Structure : VBox
             return_val_if_reached (false);
 
         TextMark mark;
-        _model.get (tree_iter, StructColumn.MARK, out mark, -1);
+        StructType type;
+        _model.get (tree_iter,
+            StructColumn.MARK, out mark,
+            StructColumn.TYPE, out type,
+            -1);
 
         /* go to the location in the document */
         TextBuffer doc = mark.get_buffer ();
@@ -356,6 +403,8 @@ public class Structure : VBox
         _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 0, 0);
 
         /* select the corresponding item in the simple list */
+        set_actions_sensitivity (type);
+
         if (! first_select)
             return true;
 
@@ -447,6 +496,62 @@ public class Structure : VBox
     public static bool is_section (StructType type)
     {
         return type <= StructType.SUBPARAGRAPH;
+    }
+
+
+    /*************************************************************************/
+    // Right-click: actions callbacks
+
+    private void show_popup_menu (Gdk.EventButton? event)
+    {
+        if (event != null)
+            _popup_menu.popup (null, null, null, event.button, event.time);
+        else
+            _popup_menu.popup (null, null, null, 0, get_current_event_time ());
+    }
+
+    private void set_actions_sensitivity (StructType type)
+    {
+        _action_all_menu.sensitive = true;
+
+        _action_cut.sensitive = true;
+        _action_copy.sensitive = true;
+        _action_delete.sensitive = true;
+        _action_select.sensitive = true;
+        _action_comment.sensitive = type != StructType.TODO && type != StructType.FIXME;
+
+        _action_shift_left.sensitive =
+            StructType.PART < type && type <= StructType.SUBPARAGRAPH;
+
+        _action_shift_right.sensitive = type < StructType.SUBPARAGRAPH;
+    }
+
+    public static void on_cut ()
+    {
+    }
+
+    public static void on_copy ()
+    {
+    }
+
+    public static void on_delete ()
+    {
+    }
+
+    public static void on_select ()
+    {
+    }
+
+    public static void on_comment ()
+    {
+    }
+
+    public static void on_shift_left ()
+    {
+    }
+
+    public static void on_shift_right ()
+    {
     }
 
     public static string get_icon_from_type (StructType type)

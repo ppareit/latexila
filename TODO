@@ -7,7 +7,21 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Right click: cut, copy, paste below, select, delete, comment, shift left/right.
+	- Figures and Tables:
+		- the TextMark should point to the \begin{env} line
+		- a second TextMark for the \end{env}
+		- contents of the item: first caption (max N characters)
+		- contents of the tooltip: all the caption
+
+	- New item type: graphic file (\includegraphics)
+
+	- Right click:
+		- cut, copy, delete, select
+		- comment
+		- shift left
+		- shift right:
+			- display a warning if a subparagraph already exists
+
 	  Shift left/right is new comparated to Kile. For example we have a big section (with
 	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
 	  subsections becomes sections, etc.).

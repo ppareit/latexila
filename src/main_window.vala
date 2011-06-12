@@ -131,6 +131,26 @@ public class MainWindow : Window
         { "ProjectsManage", Stock.PREFERENCES, N_("_Manage Projects"), null,
             N_("Manage Projects"), on_projects_manage },
 
+        // Structure
+        { "Structure", null, N_("S_tructure") },
+        { "StructureCut", Stock.CUT, null, "",
+            N_("Cut the selected structure item"), Structure.on_cut },
+        { "StructureCopy", Stock.COPY, null, "",
+            N_("Copy the selected structure item"), Structure.on_copy },
+        { "StructureDelete", Stock.DELETE, null, "",
+            N_("Delete the selected structure item"), Structure.on_delete },
+        { "StructureSelect", Stock.SELECT_ALL, N_("_Select"), "",
+            N_("Select the contents of the selected structure item"),
+            Structure.on_select },
+        { "StructureComment", null, N_("_Comment"), null,
+            N_("Comment the selected structure item"), Structure.on_comment },
+        { "StructureShiftLeft", Stock.GO_BACK, N_("Shift _Left"), "",
+            N_("Shift the selected structure item to the left (e.g. section → chapter"),
+            Structure.on_shift_left },
+        { "StructureShiftRight", Stock.GO_FORWARD, N_("Shift _Right"), "",
+            N_("Shift the selected structure item to the right (e.g. chapter → section"),
+            Structure.on_shift_right },
+
         // Help
         { "Help", null, N_("_Help") },
         { "HelpLatexReference", Stock.HELP, N_("_LaTeX Reference"), "<Release>F1",
@@ -290,8 +310,9 @@ public class MainWindow : Window
         file_browser = new FileBrowser (this);
         side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
-        _structure = new Structure (this);
+        _structure = new Structure (this, ui_manager);
         side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
+
         side_panel.restore_state ();
 
         /* signal handlers */
