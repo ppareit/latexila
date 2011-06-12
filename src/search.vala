@@ -29,14 +29,14 @@ public class GotoLine : HBox
         this.main_window = main_window;
         spacing = 3;
 
-        var close_button = new Button ();
+        Button close_button = new Button ();
         pack_start (close_button, false, false, 0);
         close_button.set_relief (ReliefStyle.NONE);
-        var img = new Image.from_stock (Stock.CLOSE, IconSize.MENU);
+        Image img = new Image.from_stock (Stock.CLOSE, IconSize.MENU);
         close_button.add (img);
         close_button.clicked.connect (() => hide ());
 
-        var label = new Label (_("Go to Line:"));
+        Label label = new Label (_("Go to Line:"));
         pack_start (label, false, false, 2);
 
         entry = new Entry ();
@@ -65,7 +65,7 @@ public class GotoLine : HBox
             return;
         }
 
-        var text = entry.get_text ();
+        string text = entry.get_text ();
 
         // check if all characters are digits
         for (int i = 0 ; i < text.length ; i++)
@@ -78,8 +78,8 @@ public class GotoLine : HBox
             }
         }
 
-        var line = int.parse (text);
-        var error = ! main_window.active_document.goto_line (--line);
+        int line = int.parse (text);
+        bool error = ! main_window.active_document.goto_line (--line);
         Utils.set_entry_error (entry, error);
         main_window.active_view.scroll_to_cursor ();
     }
@@ -128,11 +128,12 @@ public class SearchAndReplace : GLib.Object
     {
         this.main_window = main_window;
 
-        var path = Path.build_filename (Config.DATA_DIR, "ui", "search_and_replace.ui");
+        string path = Path.build_filename (Config.DATA_DIR, "ui",
+            "search_and_replace.ui");
 
         try
         {
-            var builder = new Builder ();
+            Builder builder = new Builder ();
             builder.add_from_file (path);
 
             /* get objects */
@@ -152,17 +153,18 @@ public class SearchAndReplace : GLib.Object
 
             entry_replace = (Entry) builder.get_object ("entry_replace");
             frame_replace = (Frame) builder.get_object ("frame_replace");
-            var button_clear_replace =
+            Button button_clear_replace =
                 (Button) builder.get_object ("button_clear_replace");
-            var button_replace = (Button) builder.get_object ("button_replace");
-            var button_replace_all = (Button) builder.get_object ("button_replace_all");
+            Button button_replace = (Button) builder.get_object ("button_replace");
+            Button button_replace_all =
+                (Button) builder.get_object ("button_replace_all");
 
             hbox_replace = (HBox) builder.get_object ("hbox_replace");
 
-            var button_previous = (Button) builder.get_object ("button_previous");
-            var button_next = (Button) builder.get_object ("button_next");
+            Button button_previous = (Button) builder.get_object ("button_previous");
+            Button button_next = (Button) builder.get_object ("button_next");
 
-            var button_close = (Button) builder.get_object ("button_close");
+            Button button_close = (Button) builder.get_object ("button_close");
 
             /* styles */
             Gdk.Color white;
@@ -171,7 +173,7 @@ public class SearchAndReplace : GLib.Object
             eventbox_label2.modify_bg (StateType.NORMAL, white);
 
             /* options menu */
-            var menu = new Menu ();
+            Menu menu = new Menu ();
             check_case_sensitive = new CheckMenuItem.with_label (_("Case sensitive"));
             check_entire_word = new CheckMenuItem.with_label (_("Entire words only"));
             menu.append (check_case_sensitive);
@@ -223,7 +225,7 @@ public class SearchAndReplace : GLib.Object
 
             entry_find.changed.connect (() =>
             {
-                var sensitive = entry_find.text_length > 0;
+                bool sensitive = entry_find.text_length > 0;
                 button_clear_find.sensitive = sensitive;
                 button_previous.sensitive = sensitive;
                 button_next.sensitive = sensitive;
@@ -284,7 +286,7 @@ public class SearchAndReplace : GLib.Object
         catch (Error e)
         {
             stderr.printf ("Error search and replace: %s\n", e.message);
-            var label = new Label (e.message);
+            Label label = new Label (e.message);
             label.set_line_wrap (true);
             widget = label;
         }
@@ -340,7 +342,9 @@ public class SearchAndReplace : GLib.Object
         if (working_document != null)
             clear_search ();
 
-        main_window.active_view.grab_focus ();
+        if (main_window.active_view != null)
+            main_window.active_view.grab_focus ();
+
         main_window.notify["active-document"].disconnect (active_document_changed);
     }
 

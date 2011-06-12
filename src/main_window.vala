@@ -651,35 +651,36 @@ public class MainWindow : Window
         {
             foreach (Document doc in w.get_documents ())
             {
-                if (doc.location != null && location.equal (doc.location))
-                {
-                    /* the document is already opened in this window */
-                    if (this == w)
-                    {
-                        if (jump_to)
-                            active_tab = doc.tab;
-                        return doc.tab;
-                    }
+                if (doc.location == null || ! location.equal (doc.location))
+                    continue;
 
-                    /* the document is already opened in another window */
-                    DocumentTab tab = create_tab_from_location (location, jump_to);
-                    tab.document.readonly = true;
-                    string primary_msg = _("This file (%s) is already opened in another LaTeXila window.")
-                        .printf (location.get_parse_name ());
-                    string secondary_msg = _("LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?");
-                    InfoBar infobar = tab.add_message (primary_msg, secondary_msg,
-                        MessageType.WARNING);
-                    infobar.add_button (_("Edit Anyway"), ResponseType.YES);
-                    infobar.add_button (_("Don't Edit"), ResponseType.NO);
-                    infobar.response.connect ((response_id) =>
-                    {
-                        if (response_id == ResponseType.YES)
-                            tab.document.readonly = false;
-                        infobar.destroy ();
-                        tab.view.grab_focus ();
-                    });
-                    return tab;
+                /* the document is already opened in this window */
+                if (this == w)
+                {
+                    if (jump_to)
+                        active_tab = doc.tab;
+                    return doc.tab;
                 }
+
+                /* the document is already opened in another window */
+                DocumentTab tab = create_tab_from_location (location, jump_to);
+                tab.document.readonly = true;
+                string primary_msg =
+                    _("This file (%s) is already opened in another LaTeXila window.")
+                    .printf (location.get_parse_name ());
+                string secondary_msg = _("LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?");
+                InfoBar infobar = tab.add_message (primary_msg, secondary_msg,
+                    MessageType.WARNING);
+                infobar.add_button (_("Edit Anyway"), ResponseType.YES);
+                infobar.add_button (_("Don't Edit"), ResponseType.NO);
+                infobar.response.connect ((response_id) =>
+                {
+                    if (response_id == ResponseType.YES)
+                        tab.document.readonly = false;
+                    infobar.destroy ();
+                    tab.view.grab_focus ();
+                });
+                return tab;
             }
         }
 

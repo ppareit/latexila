@@ -89,7 +89,7 @@ public class DocumentView : Gtk.SourceView
     public void cut_selection ()
     {
         return_if_fail (this.buffer != null);
-        var clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
+        Clipboard clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
         this.buffer.cut_clipboard (clipboard, ! ((Document) this.buffer).readonly);
         scroll_to_cursor (SCROLL_MARGIN);
         grab_focus ();
@@ -98,7 +98,7 @@ public class DocumentView : Gtk.SourceView
     public void copy_selection ()
     {
         return_if_fail (this.buffer != null);
-        var clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
+        Clipboard clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
         this.buffer.copy_clipboard (clipboard);
         grab_focus ();
     }
@@ -106,7 +106,7 @@ public class DocumentView : Gtk.SourceView
     public void my_paste_clipboard ()
     {
         return_if_fail (this.buffer != null);
-        var clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
+        Clipboard clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
         this.buffer.paste_clipboard (clipboard, null,
             ! ((Document) this.buffer).readonly);
         scroll_to_cursor (SCROLL_MARGIN);

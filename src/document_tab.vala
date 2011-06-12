@@ -131,7 +131,7 @@ public class DocumentTab : VBox
     private void initialize ()
     {
         // usefull when moving a tab to a new window
-        var reparent = document.tab != null;
+        bool reparent = document.tab != null;
 
         document.tab = this;
 
@@ -153,7 +153,7 @@ public class DocumentTab : VBox
         view.focus_in_event.connect (view_focused_in);
 
         // with a scrollbar
-        var sw = new ScrolledWindow (null, null);
+        ScrolledWindow sw = new ScrolledWindow (null, null);
         sw.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
 
         if (reparent)
@@ -168,7 +168,7 @@ public class DocumentTab : VBox
 
         update_label_text ();
 
-        var close_button = new Button ();
+        Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
         close_button.name = "my-close-button";
@@ -185,7 +185,8 @@ public class DocumentTab : VBox
 
 
         /* auto save */
-        var settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.editor");
         auto_save = settings.get_boolean ("auto-save");
         uint tmp;
         settings.get ("auto-save-interval", "u", out tmp);
@@ -203,7 +204,7 @@ public class DocumentTab : VBox
     public TabInfoBar add_message (string primary_msg, string secondary_msg,
         MessageType msg_type)
     {
-        var infobar = new TabInfoBar (primary_msg, secondary_msg, msg_type);
+        TabInfoBar infobar = new TabInfoBar (primary_msg, secondary_msg, msg_type);
         pack_start (infobar, false, false, 0);
         return infobar;
     }
@@ -333,7 +334,7 @@ public class DocumentTab : VBox
         {
             ask_if_externally_modified = true;
 
-            var primary_msg = _("The file %s changed on disk.")
+            string primary_msg = _("The file %s changed on disk.")
                 .printf (document.location.get_parse_name ());
 
             string secondary_msg;
@@ -342,7 +343,8 @@ public class DocumentTab : VBox
             else
                 secondary_msg = _("Do you want to reload the file?");
 
-            var infobar = add_message (primary_msg, secondary_msg, MessageType.WARNING);
+            TabInfoBar infobar = add_message (primary_msg, secondary_msg,
+                MessageType.WARNING);
             infobar.add_stock_button_with_text (_("Reload"), Stock.REFRESH,
                 ResponseType.OK);
             infobar.add_button (Stock.CANCEL, ResponseType.CANCEL);
