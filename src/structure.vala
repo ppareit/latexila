@@ -32,6 +32,7 @@ public enum StructType
     INCLUDE,
     TABLE,
     FIGURE,
+    IMAGE,
     TODO,
     FIXME,
     N_TYPES
@@ -140,8 +141,8 @@ public class Structure : VBox
             _("Show tables"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_simple_list_button ({ StructType.FIGURE },
-            _("Show figures"));
+        toggle_button = create_simple_list_button (
+            { StructType.FIGURE, StructType.IMAGE }, _("Show figures and images"));
         hbox.pack_start (toggle_button);
 
         toggle_button = create_simple_list_button ({ StructType.TODO, StructType.FIXME },
@@ -571,6 +572,7 @@ public class Structure : VBox
             _icons[StructType.FIXME]        = "tree_todo";
             _icons[StructType.TABLE]        = "table";
             _icons[StructType.FIGURE]       = "image";
+            _icons[StructType.IMAGE]        = "image";
             _icons[StructType.INCLUDE]      = "tree_include";
         }
 
@@ -594,6 +596,7 @@ public class Structure : VBox
             _names[StructType.FIXME]        = "FIXME";
             _names[StructType.TABLE]        = _("Table");
             _names[StructType.FIGURE]       = _("Figure");
+            _names[StructType.IMAGE]        = _("Image");
             _names[StructType.INCLUDE]      = _("File included");
         }
 

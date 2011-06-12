@@ -483,7 +483,24 @@ public class StructureModel : TreeModel, GLib.Object
             return;
 
         var list = get_list (item.type);
-        list.add (new_node);
+
+        // if it's an append_item(), append the item to the list too
+        if (pos == -1)
+        {
+            list.add (new_node);
+            return;
+        }
+
+        // if the item is inserted in the middle, search where to insert it in the list
+        int mark_pos = get_position_from_mark (item.start_mark);
+        int i;
+        for (i = 0 ; i < list.size ; i++)
+        {
+            int cur_mark_pos = get_position_from_mark (list[i].data.start_mark);
+            if (cur_mark_pos > mark_pos)
+                break;
+        }
+        list.insert (i, new_node);
     }
 
     private static int get_position_from_mark (TextMark mark)
@@ -561,6 +578,7 @@ public class StructureModel : TreeModel, GLib.Object
                 return _list_tables;
 
             case StructType.FIGURE:
+            case StructType.IMAGE:
                 return _list_figures;
 
             case StructType.TODO:

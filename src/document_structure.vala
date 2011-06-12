@@ -61,7 +61,9 @@ public class DocumentStructure : GLib.Object
                 _comment_regex =
                     new Regex ("^(?P<type>TODO|FIXME)[[:space:]:]*(?P<text>.*)$");
 
-                _command_name_regex = new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*{");
+                // the LaTeX command can contain some optional arguments
+                _command_name_regex =
+                    new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[[^\\]]*\\][[:space:]]*)*{");
             }
             catch (RegexError e)
             {
@@ -466,6 +468,9 @@ public class DocumentStructure : GLib.Object
             case "input":
             case "include":
                 return StructType.INCLUDE;
+
+            case "includegraphics":
+                return StructType.IMAGE;
 
             default:
                 return null;
