@@ -64,8 +64,8 @@ public class AppSettings : GLib.Settings
 
         editor.changed["use-default-font"].connect ((setting, key) =>
         {
-            var val = setting.get_boolean (key);
-            var font = val ? system_font : editor.get_string ("editor-font");
+            bool val = setting.get_boolean (key);
+            string font = val ? system_font : editor.get_string ("editor-font");
             set_font (font);
         });
 
@@ -78,12 +78,13 @@ public class AppSettings : GLib.Settings
 
         editor.changed["scheme"].connect ((setting, key) =>
         {
-            var scheme_id = setting.get_string (key);
+            string scheme_id = setting.get_string (key);
 
-            var manager = Gtk.SourceStyleSchemeManager.get_default ();
-            var scheme = manager.get_scheme (scheme_id);
+            Gtk.SourceStyleSchemeManager manager =
+                Gtk.SourceStyleSchemeManager.get_default ();
+            Gtk.SourceStyleScheme scheme = manager.get_scheme (scheme_id);
 
-            foreach (var doc in Application.get_default ().get_documents ())
+            foreach (Document doc in Application.get_default ().get_documents ())
                 doc.style_scheme = scheme;
 
             // we don't use doc.set_style_scheme_from_string() for performance reason
@@ -95,47 +96,47 @@ public class AppSettings : GLib.Settings
             setting.get (key, "u", out val);
             val = val.clamp (1, 24);
 
-            foreach (var view in Application.get_default ().get_views ())
+            foreach (DocumentView view in Application.get_default ().get_views ())
                 view.tab_width = val;
         });
 
         editor.changed["insert-spaces"].connect ((setting, key) =>
         {
-            var val = setting.get_boolean (key);
+            bool val = setting.get_boolean (key);
 
-            foreach (var view in Application.get_default ().get_views ())
+            foreach (DocumentView view in Application.get_default ().get_views ())
                 view.insert_spaces_instead_of_tabs = val;
         });
 
         editor.changed["display-line-numbers"].connect ((setting, key) =>
         {
-            var val = setting.get_boolean (key);
+            bool val = setting.get_boolean (key);
 
-            foreach (var view in Application.get_default ().get_views ())
+            foreach (DocumentView view in Application.get_default ().get_views ())
                 view.show_line_numbers = val;
         });
 
         editor.changed["highlight-current-line"].connect ((setting, key) =>
         {
-            var val = setting.get_boolean (key);
+            bool val = setting.get_boolean (key);
 
-            foreach (var view in Application.get_default ().get_views ())
+            foreach (DocumentView view in Application.get_default ().get_views ())
                 view.highlight_current_line = val;
         });
 
         editor.changed["bracket-matching"].connect ((setting, key) =>
         {
-            var val = setting.get_boolean (key);
+            bool val = setting.get_boolean (key);
 
-            foreach (var doc in Application.get_default ().get_documents ())
+            foreach (Document doc in Application.get_default ().get_documents ())
                 doc.highlight_matching_brackets = val;
         });
 
         editor.changed["auto-save"].connect ((setting, key) =>
         {
-            var val = setting.get_boolean (key);
+            bool val = setting.get_boolean (key);
 
-            foreach (var doc in Application.get_default ().get_documents ())
+            foreach (Document doc in Application.get_default ().get_documents ())
                 doc.tab.auto_save = val;
         });
 
@@ -144,7 +145,7 @@ public class AppSettings : GLib.Settings
             uint val;
             setting.get (key, "u", out val);
 
-            foreach (var doc in Application.get_default ().get_documents ())
+            foreach (Document doc in Application.get_default ().get_documents ())
                 doc.tab.auto_save_interval = val;
         });
 
@@ -163,7 +164,7 @@ public class AppSettings : GLib.Settings
 
     private void set_font (string font)
     {
-        foreach (var view in Application.get_default ().get_views ())
+        foreach (DocumentView view in Application.get_default ().get_views ())
             view.set_font_from_string (font);
     }
 }

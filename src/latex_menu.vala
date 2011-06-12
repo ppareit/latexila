@@ -422,22 +422,22 @@ public class LatexMenu : Gtk.ActionGroup
         this.main_window = main_window;
 
         // menus under toolitems
-        var sectioning = get_menu_tool_action ("SectioningToolItem", _("Sectioning"),
-            "sectioning-section");
+        Gtk.Action sectioning = get_menu_tool_action ("SectioningToolItem",
+            _("Sectioning"), "sectioning-section");
 
-        var sizes = get_menu_tool_action ("CharacterSizeToolItem", _("Characters Sizes"),
-            "character-size");
+        Gtk.Action sizes = get_menu_tool_action ("CharacterSizeToolItem",
+            _("Characters Sizes"), "character-size");
 
-        var references = get_menu_tool_action ("ReferencesToolItem", _("References"),
-            "references");
+        Gtk.Action references = get_menu_tool_action ("ReferencesToolItem",
+            _("References"), "references");
 
-        var math_env = get_menu_tool_action ("MathEnvironmentsToolItem",
+        Gtk.Action math_env = get_menu_tool_action ("MathEnvironmentsToolItem",
             _("Math Environments"), "math");
 
-        var math_left_del = get_menu_tool_action ("MathLeftDelimitersToolItem",
+        Gtk.Action math_left_del = get_menu_tool_action ("MathLeftDelimitersToolItem",
 			_("Left Delimiters"), "delimiters-left");
 
-		var math_right_del = get_menu_tool_action ("MathRightDelimitersToolItem",
+		Gtk.Action math_right_del = get_menu_tool_action ("MathRightDelimitersToolItem",
 			_("Right Delimiters"), "delimiters-right");
 
 		add_actions (latex_action_entries, this);

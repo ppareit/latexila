@@ -482,21 +482,21 @@ public class PreferencesDialog : Dialog
         list_store.set_sort_column_id (StyleSchemes.ID, SortType.ASCENDING);
         treeview.set_model (list_store);
 
-        var renderer = new CellRendererText ();
-        var column = new TreeViewColumn.with_attributes (
+        CellRendererText renderer = new CellRendererText ();
+        TreeViewColumn column = new TreeViewColumn.with_attributes (
             "Name and description", renderer,
             "markup", StyleSchemes.DESC, null);
         treeview.append_column (column);
 
-        var select = treeview.get_selection ();
+        TreeSelection select = treeview.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
 
         /* fill style scheme list store */
-        var manager = SourceStyleSchemeManager.get_default ();
+        SourceStyleSchemeManager manager = SourceStyleSchemeManager.get_default ();
         foreach (string id in manager.get_scheme_ids ())
         {
-            var scheme = manager.get_scheme (id);
-            var desc = "<b>%s</b> - %s".printf (scheme.name, scheme.description);
+            SourceStyleScheme scheme = manager.get_scheme (id);
+            string desc = "<b>%s</b> - %s".printf (scheme.name, scheme.description);
             TreeIter iter;
             list_store.append (out iter);
             list_store.set (iter,

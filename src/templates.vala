@@ -254,8 +254,8 @@ public class Templates : GLib.Object
 
         /* name */
         HBox hbox = new HBox (false, 5);
-        var label = new Label (_("Name of the new template:"));
-        var entry = new Entry ();
+        Label label = new Label (_("Name of the new template:"));
+        Entry entry = new Entry ();
 
         hbox.pack_start (label, false, false, 0);
         hbox.pack_start (entry, false, false, 0);
@@ -264,8 +264,8 @@ public class Templates : GLib.Object
         /* icon */
         // we take the default store because it contains all the icons
         IconView icon_view = create_icon_view (default_store);
-        var scrollbar = Utils.add_scrollbar (icon_view);
-        var frame = new Frame (_("Choose an icon:"));
+        Widget scrollbar = Utils.add_scrollbar (icon_view);
+        Frame frame = new Frame (_("Choose an icon:"));
         frame.add (scrollbar);
         content_area.pack_start (frame, true, true, 10);
 

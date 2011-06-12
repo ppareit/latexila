@@ -168,7 +168,7 @@ public class BuildView : HBox
         });
 
         // with a scrollbar
-        var sw = Utils.add_scrollbar (view);
+        Widget sw = Utils.add_scrollbar (view);
         pack_start (sw);
 
         VBox vbox = new VBox (false, 0);

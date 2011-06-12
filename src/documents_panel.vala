@@ -38,7 +38,7 @@ public class DocumentsPanel : Notebook
 
     public void add_tab (DocumentTab tab, int position, bool jump_to)
     {
-        var event_box = new EventBox ();
+        EventBox event_box = new EventBox ();
         event_box.add (tab.label);
         event_box.button_press_event.connect ((event) =>
         {
@@ -54,10 +54,10 @@ public class DocumentsPanel : Notebook
             return false;
         });
 
-        var i = this.insert_page (tab, event_box, position);
+        int page_pos = this.insert_page (tab, event_box, position);
         this.set_tab_reorderable (tab, true);
         if (jump_to)
-            this.set_current_page (i);
+            this.set_current_page (page_pos);
     }
 
     public void remove_tab (DocumentTab tab)

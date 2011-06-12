@@ -156,7 +156,7 @@ public class Application : GLib.Object
         };
 
         List<Gdk.Pixbuf> list = null;
-        foreach (var filename in filenames)
+        foreach (string filename in filenames)
         {
             try
             {
@@ -187,7 +187,7 @@ public class Application : GLib.Object
     public List<Document> get_documents ()
     {
         List<Document> res = null;
-        foreach (var w in windows)
+        foreach (MainWindow w in windows)
             res.concat (w.get_documents ());
         return res;
     }
@@ -196,7 +196,7 @@ public class Application : GLib.Object
     public List<DocumentView> get_views ()
     {
         List<DocumentView> res = null;
-        foreach (var w in windows)
+        foreach (MainWindow w in windows)
             res.concat (w.get_views ());
         return res;
     }
@@ -210,15 +210,15 @@ public class Application : GLib.Object
             return Unique.Response.OK;
         }
 
-        var workspace = data.get_workspace ();
-        var screen = data.get_screen ();
+        uint workspace = data.get_workspace ();
+        Gdk.Screen screen = data.get_screen ();
 
         // if active_window not on current workspace, try to find an other window on the
         // current workspace.
         if (! active_window.is_on_workspace_screen (screen, workspace))
         {
-            var found = false;
-            foreach (var w in windows)
+            bool found = false;
+            foreach (MainWindow w in windows)
             {
                 if (w == active_window)
                     continue;
@@ -249,7 +249,7 @@ public class Application : GLib.Object
         if (active_window != null)
             active_window.save_state (true);
 
-        var window = new MainWindow ();
+        MainWindow window = new MainWindow ();
         active_window = window;
         notify_property ("active-window");
 
@@ -298,7 +298,7 @@ public class Application : GLib.Object
         {
             if (uri.length == 0)
                 continue;
-            var location = File.new_for_uri (uri);
+            File location = File.new_for_uri (uri);
             active_window.open_document (location, jump_to);
             jump_to = false;
         }

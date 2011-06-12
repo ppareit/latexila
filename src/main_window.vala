@@ -246,7 +246,7 @@ public class MainWindow : Window
 
         /* components */
         initialize_menubar_and_toolbar ();
-        var menu = ui_manager.get_widget ("/MainMenu");
+        Widget menu = ui_manager.get_widget ("/MainMenu");
 
         main_toolbar = (Toolbar) ui_manager.get_widget ("/MainToolbar");
         main_toolbar.set_style (ToolbarStyle.ICONS);
@@ -509,7 +509,7 @@ public class MainWindow : Window
 
         try
         {
-            var path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
+            string path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
             ui_manager.add_ui_from_file (path);
         }
         catch (GLib.Error err)
@@ -773,7 +773,7 @@ public class MainWindow : Window
          */
         if (! force_close && tab.document.get_modified ())
         {
-            var dialog = new MessageDialog (this,
+            Dialog dialog = new MessageDialog (this,
                 DialogFlags.DESTROY_WITH_PARENT,
                 MessageType.QUESTION,
                 ButtonsType.NONE,
@@ -834,11 +834,11 @@ public class MainWindow : Window
     {
         if (screen != null)
         {
-            var cur_name = screen.get_display ().get_name ();
-            var cur_n = screen.get_number ();
+            string cur_name = screen.get_display ().get_name ();
+            int cur_n = screen.get_number ();
             Gdk.Screen s = this.get_screen ();
-            var name = s.get_display ().get_name ();
-            var n = s.get_number ();
+            string name = s.get_display ().get_name ();
+            int n = s.get_number ();
 
             if (cur_name != name || cur_n != n)
                 return false;
@@ -910,7 +910,7 @@ public class MainWindow : Window
             return true;
         }
 
-        var file_chooser = new FileChooserDialog (_("Save File"), this,
+        FileChooserDialog file_chooser = new FileChooserDialog (_("Save File"), this,
             FileChooserAction.SAVE,
             Stock.CANCEL, ResponseType.CANCEL,
             Stock.SAVE, ResponseType.ACCEPT,
@@ -941,7 +941,7 @@ public class MainWindow : Window
             /* if the file exists, ask the user if the file can be replaced */
             if (file.query_exists ())
             {
-                var confirmation = new MessageDialog (this,
+                MessageDialog confirmation = new MessageDialog (this,
                     DialogFlags.DESTROY_WITH_PARENT,
                     MessageType.QUESTION,
                     ButtonsType.NONE,
@@ -950,13 +950,13 @@ public class MainWindow : Window
 
                 confirmation.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
-                var button_replace = new Button.with_label (_("Replace"));
-                var icon = new Image.from_stock (Stock.SAVE_AS, IconSize.BUTTON);
+                Button button_replace = new Button.with_label (_("Replace"));
+                Image icon = new Image.from_stock (Stock.SAVE_AS, IconSize.BUTTON);
                 button_replace.set_image (icon);
                 confirmation.add_action_widget (button_replace, ResponseType.YES);
                 button_replace.show ();
 
-                var response = confirmation.run ();
+                int response = confirmation.run ();
                 confirmation.destroy ();
 
                 if (response != ResponseType.YES)

@@ -231,7 +231,7 @@ public class FileBrowser : VBox
         column.set_attributes (text_renderer, "text", FileColumn.NAME, null);
 
         // with a scrollbar
-        var sw = Utils.add_scrollbar (tree_view);
+        Widget sw = Utils.add_scrollbar (tree_view);
         pack_start (sw);
 
         tree_view.row_activated.connect ((path) =>

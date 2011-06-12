@@ -32,8 +32,8 @@ namespace Utils
         if (str.length <= max_length)
             return str;
 
-        var half_length = (max_length - 4) / 2;
-        var l = str.length;
+        uint half_length = (max_length - 4) / 2;
+        int l = str.length;
         return str[0:half_length] + "..." + str[l-half_length:l];
     }
 
@@ -68,7 +68,8 @@ namespace Utils
         {
             Mount mount = location.find_enclosing_mount (null);
             string mount_name = mount.get_name ();
-            var dirname = uri_get_dirname (location.get_path () ?? location.get_uri ());
+            string? dirname =
+                uri_get_dirname (location.get_path () ?? location.get_uri ());
 
             if (dirname == null || dirname == ".")
                 return mount_name;
@@ -154,7 +155,7 @@ namespace Utils
 
     public Widget add_scrollbar (Widget child)
     {
-        var scrollbar = new ScrolledWindow (null, null);
+        ScrolledWindow scrollbar = new ScrolledWindow (null, null);
         scrollbar.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
         scrollbar.add (child);
         return scrollbar;
@@ -238,8 +239,8 @@ namespace Utils
 
     public Gdk.Pixbuf get_pixbuf_from_stock (string stock_id, Gtk.IconSize size)
     {
-        var w = new Gtk.Invisible ();
-        var pixbuf = w.render_icon (stock_id, size, "vala");
+        Gtk.Invisible w = new Gtk.Invisible ();
+        Gdk.Pixbuf pixbuf = w.render_icon (stock_id, size, "vala");
         return pixbuf;
     }
 
