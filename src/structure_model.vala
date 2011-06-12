@@ -23,7 +23,8 @@ public struct StructData
 {
     StructType type;
     string text;
-    TextMark mark;
+    TextMark start_mark;
+    TextMark? end_mark;
 }
 
 public enum StructColumn
@@ -192,7 +193,7 @@ public class StructureModel : TreeModel, GLib.Object
                 break;
 
             case StructColumn.MARK:
-                val = data.mark;
+                val = data.start_mark;
                 break;
 
             case StructColumn.TYPE:
@@ -374,7 +375,7 @@ public class StructureModel : TreeModel, GLib.Object
             return;
         }
 
-        int pos = get_position_from_mark (item.mark);
+        int pos = get_position_from_mark (item.start_mark);
         unowned Node<StructData?> cur_parent = _tree;
         while (true)
         {
@@ -382,7 +383,7 @@ public class StructureModel : TreeModel, GLib.Object
             int child_index = 0;
             while (true)
             {
-                int cur_pos = get_position_from_mark (cur_child.data.mark);
+                int cur_pos = get_position_from_mark (cur_child.data.start_mark);
 
                 if (cur_pos > pos)
                 {

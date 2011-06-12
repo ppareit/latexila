@@ -7,13 +7,10 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Figures and Tables:
-		- the TextMark should point to the \begin{env} line
-		- a second TextMark for the \end{env}
-		- contents of the item: first caption (max N characters)
-		- contents of the tooltip: all the caption
-
 	- New item type: graphic file (\includegraphics)
+
+	- Figure and Table env:
+		- items between start_mark and end_mark of the env: children
 
 	- Right click:
 		- cut, copy, delete, select

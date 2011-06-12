@@ -42,6 +42,7 @@ public class FileBrowser : VBox
     private BuildView build_view;
     private ListStore parent_dir_store;
     private ListStore list_store;
+    private TreeView _list_view;
     private ComboBox combo_box;
     private File current_directory;
     private Button parent_button;
@@ -214,11 +215,11 @@ public class FileBrowser : VBox
         list_store.set_sort_func (0, on_sort);
         list_store.set_sort_column_id (0, SortType.ASCENDING);
 
-        TreeView tree_view = new TreeView.with_model (list_store);
-        tree_view.headers_visible = false;
+        _list_view = new TreeView.with_model (list_store);
+        _list_view.headers_visible = false;
 
         TreeViewColumn column = new TreeViewColumn ();
-        tree_view.append_column (column);
+        _list_view.append_column (column);
 
         // icon
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
@@ -231,10 +232,10 @@ public class FileBrowser : VBox
         column.set_attributes (text_renderer, "text", FileColumn.NAME, null);
 
         // with a scrollbar
-        Widget sw = Utils.add_scrollbar (tree_view);
+        Widget sw = Utils.add_scrollbar (_list_view);
         pack_start (sw);
 
-        tree_view.row_activated.connect ((path) =>
+        _list_view.row_activated.connect ((path) =>
         {
             TreeModel model = (TreeModel) list_store;
             TreeIter iter;
@@ -301,6 +302,8 @@ public class FileBrowser : VBox
     {
         list_store.clear ();
         parent_dir_store.clear ();
+
+        _list_view.columns_autosize ();
 
         /* files list store */
 

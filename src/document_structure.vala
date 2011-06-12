@@ -32,9 +32,12 @@ public class DocumentStructure : GLib.Object
     private static Regex? _comment_regex = null;
     private static Regex? _command_name_regex = null;
 
-    private bool _in_figure_env = false;
-    private bool _in_table_env = false;
     private bool _in_verbatim_env = false;
+
+    // we can not take all data for figures and tables at once
+    private StructData? _figure_data = null;
+    private StructData? _table_data = null;
+    private static const int CAPTION_MAX_LENGTH = 60;
 
     private static const int MAX_NB_LINES_TO_PARSE = 2000;
     private int _start_parsing_line = 0;
@@ -72,8 +75,8 @@ public class DocumentStructure : GLib.Object
         // reset
         parsing_done = false;
         _model = new StructureModel ();
-        _in_figure_env = false;
-        _in_table_env = false;
+        _figure_data = null;
+        _table_data = null;
         clear_all_structure_marks ();
         _start_parsing_line = 0;
 
@@ -265,15 +268,39 @@ public class DocumentStructure : GLib.Object
         if (_in_verbatim_env)
             return;
 
+        bool is_caption = name == "caption";
+
         StructType? type = get_markup_type (name);
-        if (type == null)
+        if (type == null && ! is_caption)
             return;
 
         string? contents = get_markup_contents (line, begin_contents_index);
+
         if (contents == null)
             return;
 
-        add_item (type, contents);
+        if (is_caption)
+            handle_caption (contents);
+        else
+            add_item (type, contents);
+    }
+
+    private void handle_caption (string contents)
+    {
+        string? text = null;
+        if (contents.length > CAPTION_MAX_LENGTH)
+            text = contents.substring (0, CAPTION_MAX_LENGTH);
+
+        // if there are several captions in the same environment, take the first
+
+        if (_figure_data != null && _figure_data.text == null)
+        {
+            _figure_data.text = text ?? contents;
+        }
+        else if (_table_data != null && _table_data.text == null)
+        {
+            _table_data.text = text ?? contents;
+        }
     }
 
     private void search_env (string line, int begin_contents_index, bool is_begin_env)
@@ -291,15 +318,50 @@ public class DocumentStructure : GLib.Object
         if (_in_verbatim_env)
             return;
 
-        switch (contents)
+        if (contents == "figure")
         {
-            case "figure":
-                _in_figure_env = is_begin_env;
-                break;
+            if (is_begin_env)
+            {
+                _figure_data = StructData ();
+                _figure_data.type = StructType.FIGURE;
+                _figure_data.text = null;
+                _figure_data.start_mark = create_text_mark_from_iter (_cur_line_iter);
+                _figure_data.end_mark = null;
+            }
+            else if (_figure_data != null)
+            {
+                if (_figure_data.text == null)
+                    _figure_data.text = "";
 
-            case "table":
-                _in_table_env = is_begin_env;
-                break;
+                _figure_data.end_mark = create_text_mark_from_iter (_cur_line_iter);
+
+                add_item_data (_figure_data, true);
+
+                _figure_data = null;
+            }
+        }
+
+        else if (contents == "table")
+        {
+            if (is_begin_env)
+            {
+                _table_data = StructData ();
+                _table_data.type = StructType.TABLE;
+                _table_data.text = null;
+                _table_data.start_mark = create_text_mark_from_iter (_cur_line_iter);
+                _table_data.end_mark = null;
+            }
+            else if (_table_data != null)
+            {
+                if (_table_data.text == null)
+                    _table_data.text = "";
+
+                _table_data.end_mark = create_text_mark_from_iter (_cur_line_iter);
+
+                add_item_data (_table_data, true);
+
+                _table_data = null;
+            }
         }
     }
 
@@ -329,9 +391,15 @@ public class DocumentStructure : GLib.Object
         StructData data = {};
         data.type = type;
         data.text = text;
-        data.mark = create_text_mark_from_iter (_cur_line_iter);
+        data.start_mark = create_text_mark_from_iter (_cur_line_iter);
+        data.end_mark = null;
 
-        if (_insert_at_end)
+        add_item_data (data);
+    }
+
+    private void add_item_data (StructData data, bool force_insert_in_middle = false)
+    {
+        if (_insert_at_end && ! force_insert_in_middle)
             _model.add_item_at_end (data);
         else
             _model.add_item_in_middle (data);
@@ -398,13 +466,6 @@ public class DocumentStructure : GLib.Object
             case "input":
             case "include":
                 return StructType.INCLUDE;
-
-            case "caption":
-                if (_in_figure_env)
-                    return StructType.FIGURE;
-                else if (_in_table_env)
-                    return StructType.TABLE;
-                return null;
 
             default:
                 return null;
