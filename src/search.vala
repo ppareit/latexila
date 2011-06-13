@@ -340,7 +340,8 @@ public class SearchAndReplace : GLib.Object
         if (working_document != null)
             clear_search ();
 
-        main_window.active_view.grab_focus ();
+        if (main_window.active_view != null)
+            main_window.active_view.grab_focus ();
         main_window.notify["active-document"].disconnect (active_document_changed);
     }
 
