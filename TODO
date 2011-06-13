@@ -7,9 +7,6 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Figure and Table env:
-		- items between start_mark and end_mark of the env: children
-
 	- Right click:
 		- cut, copy, delete, select
 		- comment

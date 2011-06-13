@@ -448,6 +448,21 @@ public class StructureModel : TreeModel, GLib.Object
             }
         }
 
+        // If the parent is not a section, insert the item after the parent.
+        // AFAIK, the unique case which can happen is:
+        // section
+        //     figure or table (the parent)
+        //         image, label, etc.
+        //         => insert a figure or a table here
+        //     => it must be inserted here instead
+        if (parent != _tree && ! Structure.is_section (parent.data.type))
+        {
+            unowned Node<StructData?> grand_parent = parent.parent;
+            int parent_pos = grand_parent.child_position (parent);
+            insert_item (grand_parent, parent_pos + 1, item);
+            return;
+        }
+
         insert_item (parent, pos, item);
     }
 
@@ -478,16 +493,30 @@ public class StructureModel : TreeModel, GLib.Object
             row_has_child_toggled (parent_path, parent_iter);
         }
 
-        /* Store the node to a list, if it's not a section */
+
+        // Store the node to a list, if it's not a section
+        bool append = pos == -1;
+        insert_node_in_list (new_node, append);
+
+        // If an end_mark exists, move the items between start_mark and end_mark so this
+        // node is the parent.
+        if (! append)
+            make_children_between_marks (new_node);
+    }
+
+    private void insert_node_in_list (Node<StructData?> node, bool at_end)
+    {
+        StructData item = node.data;
+
         if (Structure.is_section (item.type))
             return;
 
         var list = get_list (item.type);
 
         // if it's an append_item(), append the item to the list too
-        if (pos == -1)
+        if (at_end)
         {
-            list.add (new_node);
+            list.add (node);
             return;
         }
 
@@ -500,7 +529,49 @@ public class StructureModel : TreeModel, GLib.Object
             if (cur_mark_pos > mark_pos)
                 break;
         }
-        list.insert (i, new_node);
+        list.insert (i, node);
+    }
+
+    private void make_children_between_marks (Node<StructData?> node)
+    {
+        StructData data = node.data;
+        if (data.end_mark == null)
+            return;
+
+        int end_mark_pos = get_position_from_mark (data.end_mark);
+
+        unowned Node<StructData?>? sibling = node.next_sibling ();
+        while (sibling != null)
+        {
+            StructData sibling_data = sibling.data;
+
+            // if a section is in an environment, something is broken somewhere
+            // (too much tequila maybe?)
+            if (Structure.is_section (sibling_data.type))
+                break;
+
+            int sibling_pos = get_position_from_mark (sibling_data.start_mark);
+            if (end_mark_pos <= sibling_pos)
+                break;
+
+            // unlink the node
+            new_stamp ();
+            TreePath previous_path = get_path (create_iter_at_node (sibling));
+            Node<StructData?> sibling_unlinked = sibling.unlink ();
+            row_deleted (previous_path);
+
+            // append it as a child
+            new_stamp ();
+            unowned Node<StructData?> new_child = node.append ((owned) sibling_unlinked);
+
+            TreeIter? new_iter = create_iter_at_node (new_child);
+            return_if_fail (new_iter != null);
+
+            TreePath new_path = get_path (new_iter);
+            row_inserted (new_path, new_iter);
+
+            sibling = node.next_sibling ();
+        }
     }
 
     private static int get_position_from_mark (TextMark mark)
