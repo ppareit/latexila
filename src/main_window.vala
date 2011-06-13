@@ -56,8 +56,14 @@ public class MainWindow : Window
             N_("Cut the selection"), on_edit_cut },
         { "EditCopy", STOCK_COPY, null, null,
             N_("Copy the selection"), on_edit_copy },
-        { "EditPaste", STOCK_PASTE, null, null,
+
+        // No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+        // the window. In this case Ctrl+V in the search text entry would be broken (the
+        // text is pasted in the document instead of the entry).
+        // Anyway if we press Ctrl+V when the cursor is in the document, no problem.
+        { "EditPaste", STOCK_PASTE, null, "",
             N_("Paste the clipboard"), on_edit_paste },
+
         { "EditDelete", STOCK_DELETE, null, null,
             N_("Delete the selected text"), on_edit_delete },
         { "EditSelectAll", STOCK_SELECT_ALL, null, "<Control>A",
@@ -664,32 +670,19 @@ public class MainWindow : Window
 
     public DocumentTab? create_tab (bool jump_to)
     {
-        var tab = new DocumentTab ();
-
-        /* get unsaved document number */
-        uint[] all_nums = {};
-        foreach (Document doc in Application.get_default ().get_documents ())
-        {
-            if (doc.location == null)
-                all_nums += doc.unsaved_document_n;
-        }
-
-        uint num;
-        for (num = 1 ; num in all_nums ; num++);
-        tab.document.unsaved_document_n = num;
-
+        DocumentTab tab = new DocumentTab ();
         return process_create_tab (tab, jump_to);
     }
 
     public DocumentTab? create_tab_from_location (File location, bool jump_to)
     {
-        var tab = new DocumentTab.from_location (location);
+        DocumentTab tab = new DocumentTab.from_location (location);
         return process_create_tab (tab, jump_to);
     }
 
     public void create_tab_with_view (DocumentView view)
     {
-        var tab = new DocumentTab.with_view (view);
+        DocumentTab tab = new DocumentTab.with_view (view);
         process_create_tab (tab, true);
     }
 
@@ -726,6 +719,11 @@ public class MainWindow : Window
         tab.document.notify["location"].connect (() =>
         {
             sync_name (tab);
+            update_build_tools_sensitivity ();
+        });
+
+        tab.document.notify["project-id"].connect (() =>
+        {
             update_build_tools_sensitivity ();
         });
 
@@ -1170,8 +1168,6 @@ public class MainWindow : Window
             AppSettings.get_default ().get_build_tools ();
         BuildTool tool = build_tools.get (i);
 
-        //Utils.print_build_tool (tool);
-
         build_view.show ();
 
         // save the document if it's a compilation (e.g. with rubber)
@@ -1341,24 +1337,23 @@ public class MainWindow : Window
         Gtk.Action clean_action = action_group.get_action ("BuildClean");
         Gtk.Action view_log_action = action_group.get_action ("BuildViewLog");
 
-        if (active_tab == null || active_document.location == null)
+        if (active_tab == null || active_document.get_main_file () == null)
         {
             build_tools_action_group.set_sensitive (false);
             clean_action.set_sensitive (false);
             view_log_action.set_sensitive (false);
             return;
         }
+
         // we must set the _action group_ sensitive and then set the sensitivity for each
         // action of the action group
-        else
-        {
-            build_tools_action_group.set_sensitive (true);
-            bool is_tex = active_document.is_tex_document ();
-            clean_action.set_sensitive (is_tex);
-            view_log_action.set_sensitive (is_tex);
-        }
+        build_tools_action_group.set_sensitive (true);
+        bool is_tex = active_document.is_main_file_a_tex_file ();
+        clean_action.set_sensitive (is_tex);
+        view_log_action.set_sensitive (is_tex);
 
-        string ext = Utils.get_extension (active_document.location.get_parse_name ());
+        string path = active_document.get_main_file ().get_parse_name ();
+        string ext = Utils.get_extension (path);
 
         unowned Gee.LinkedList<BuildTool?> tools =
             AppSettings.get_default ().get_build_tools ();
@@ -1648,7 +1643,7 @@ public class MainWindow : Window
     public void on_build_view_log ()
     {
         return_if_fail (active_tab != null);
-        return_if_fail (active_document.is_tex_document ());
+        return_if_fail (active_document.is_main_file_a_tex_file ());
 
         File mainfile = active_document.get_main_file ();
         File directory = mainfile.get_parent ();
@@ -1761,7 +1756,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
 
-        string website = "http://latexila.sourceforge.net/";
+        string website = "http://projects.gnome.org/latexila/";
 
         string[] authors =
         {

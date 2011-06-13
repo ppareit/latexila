@@ -1,28 +1,62 @@
 TODO
 
-LaTeXila 2.2 or later
-=====================
 See also the Roadmap:
-	http://latexila.sourceforge.net/#roadmap
+	http://projects.gnome.org/latexila/#roadmap
 
-- List of chapters, sections, etc to easily navigate in a document
+LaTeXila 2.2
+============
 
-- Migrate to GTK+ 3.0 and Vala 0.12
+- Structure (list of chapters, sections, etc. to easily navigate in a document):
+	- Right click:
+		- cut, copy, delete, select
+		- comment
+		- shift left
+		- shift right:
+			- display a warning if a subparagraph already exists
 
-(-) Build Tools:
-	- preferences dialog: double click on a build tool -> open properties
-	- bottom panel:
-		- right click menu: copy the line to the clipboard
+	  Shift left/right is new comparated to Kile. For example we have a big section (with
+	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
+	  subsections becomes sections, etc.).
 
-(-) Check spelling
+- Build Tools:
+	- build tools: copy button to make a copy of a build tool,
+	  so we can modify the copy and keep the original
+	- right click menu in bottom panel: copy the line to the clipboard
 
-(-) Auto-completion:
+- Cleanup Build Files: if a project is defined, some *.aux files are not removed
+  => If a project is defined, instead of replacing the extension of the main
+     file to see if the file exist and remove it, search directly all files
+     which have the extension (in all sub-directories), and remove them.
+
+- Write some documentation:
+	- explain the build tools, how to create a new one, etc.
+	- the difference between Latexmk and Rubber
+
+
+LaTeXila ≥ 2.4
+==============
+
+- Check spelling
+
+- Auto-completion:
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)
 
-(-) Edit toolbar:
-	- create a custom MenuToolButton:
-	  Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.
-	  It would be better if the icon is the last item used (and we can click on it).
-	  A drawback is that the button would take more place, this can be a problem for small screens.
+- Migrate to GTK+ 3.0
+  I wanted to make the migration for the 2.2 release but GtkSourceView 3.0 have removed the
+  gtk_source_completion_info_set_sizing() function.
+  Also, GTK 3 widgets are a lot bigger, it doesn't fit well with LaTeXila.
+
+(-) Structure:
+	- Select the current section or item when the document cursor moves
+
+	- Update on the fly the structure when the document is modified. An item can be inserted,
+	  deleted or modified. The simplest way I think is to re-run the parsing only on the modified
+	  lines (with a lower and upper bounds) every 2 seconds for example. This way, we simply
+	  delete all items between the two bounds, and the parsing will re-add them correcly.
+
+(-) Edit toolbar: create a custom MenuToolButton:
+    Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.
+    It would be better if the icon is the last item used (and we can click on it).
+    A drawback is that the button would take more place, this can be a problem for small screens.

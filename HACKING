@@ -1,38 +1,64 @@
 Guidelines for LaTeXila
 =======================
 
-LaTeXila source code is maintained using the Git version control system
-and is available at the following location:
+LaTeXila source code is maintained using the Git version control system and is
+available at the following location:
 
-    git://github.com/swilmet/latexila.git
+    git://git.gnome.org/latexila
 
 A Web Interface is available at:
 
-    http://github.com/swilmet/latexila
+    http://git.gnome.org/browse/latexila
 
 You can download the source code from the Git repository by doing:
 
-    $ git clone git://github.com/swilmet/latexila.git
+    $ git clone git://git.gnome.org/latexila
 
 Later, to take the new commits you just have to do:
 
     $ git pull
 
 
-If you want to contribute to LaTeXila, contact the main developer (see the file AUTHORS).
-Here is how you can generate a patch:
+If you want to contribute to LaTeXila, contact the main developer (see the
+file AUTHORS).
 
-    $ git diff origin > patch
+To create a patch, make first one or several commits (in another branch) and
+then use the 'git format-patch' command. You can submit your patch to the
+GNOME bugzilla.
 
-But creating a fork on GitHub and then make a pull request is simpler.
+Alternatively, if you have a GitHub account, you can make a pull request.
+A GitHub repository is available, so you can fork it easily:
+
+    https://github.com/swilmet/latexila
 
 There are some rules to follow when coding:
     - indentation: 4 spaces
     - lines: 90 characters maximum (in some cases it can be a little more)
+    - no trailing spaces
+    - /* ... */ comments for delimiting code sections
+    - // ... comments otherwise (e.g. for explaining just one line)
+    - some spaces almost everywhere:
+        - function (blah);                // not function(blah);
+        - int num = 5;                    // not int num=5;
+        - if (! foo)                      // not if (!foo)
+        - for (int i = 0 ; i < max ; i++) // not for(int i=0;i<max;i++)
+        - etc...
+    - do not use 'var' for declaring variables, unless the type is very long
     - same coding style everywhere
 
 How to generate the C code from Vala files?
     See the file "INSTALL".
+
+How to debug LaTeXila with gdb?
+    If you are using the master branch, the debug stuff is enabled by default.
+    Here is how you can get the backtrace after a crash:
+
+    $ gdb ./latexila
+    > run
+    [segmentation fault]
+    > bt
+
+    The debug stuff is disabled in the releases-* branches.
 
 
 Translations
@@ -51,13 +77,13 @@ How to create a new *.po for a new language?
 
     A lot of sentences are the same as in Gedit, so you can avoid
     re-translating them:
-    	- download Gedit 2.30 sources:
-	  http://ftp.acc.umu.se/pub/GNOME/sources/gedit/2.30/
-	- take the Gedit *.po of your language and copy it in the po/ directory
-	- update the *.po files with latexila.pot (see above)
-	- at the end of the *.po file, you'll see a lot of lines commented
-	  (i.e. beginning with #). That's all the sentences from Gedit that are
-	  not present in LaTeXila. You can remove these lines.
+        - download Gedit 2.30 sources:
+          http://ftp.acc.umu.se/pub/GNOME/sources/gedit/2.30/
+        - take the Gedit *.po of your language and copy it in the po/ directory
+        - update the *.po files with latexila.pot (see above)
+        - at the end of the *.po file, you'll see a lot of lines commented
+          (i.e. beginning with #). That's all the sentences from Gedit that are
+          not present in LaTeXila. You can remove these lines.
 
     Anyway, if you want to create a completely new *.po, you can do:
     $ cd po/ ; msginit -l xx -o xx.po -i latexila.pot
@@ -69,8 +95,8 @@ How to translate LaTeXila?
     translating LaTeXila in your language. If it's not the case, then you can
     make the announcement. You can find the link to the Mailing List there:
 
-        http://latexila.sourceforge.net/#contact
-    
+        http://projects.gnome.org/latexila/#contact
+
     The first thing to do is to take the *.po file from Gedit (see above). When
     it's done, you can use Poedit for example to complete the translation. Here
     are some strange items to translate:

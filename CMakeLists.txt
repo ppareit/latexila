@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.6.4)
 project ("latexila" C)
 
 set (APP_NAME "LaTeXila")
-set (APP_VERSION "2.0.7")
+set (APP_VERSION "2.0.8")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
@@ -30,7 +30,7 @@ if (BUILD_VALA)
 	include (ValaVersion)
 	find_package (Vala REQUIRED)
 	ensure_vala_version ("0.10.0" MINIMUM)
-	ensure_vala_version ("0.10.99" MAXIMUM)
+#	ensure_vala_version ("0.10.99" MAXIMUM)
 endif ()
 
 find_package (PkgConfig)

@@ -55,6 +55,7 @@ public class DocumentView : Gtk.SourceView
         doc.highlight_matching_brackets =
             editor_settings.get_boolean ("bracket-matching");
         doc.set_style_scheme_from_string (editor_settings.get_string ("scheme"));
+        set_smart_home_end (SourceSmartHomeEndType.AFTER);
 
         // completion
         try
@@ -193,6 +194,7 @@ public class DocumentView : Gtk.SourceView
     {
         // See GDK_KEY_BackSpace in gdk/gdkkeysyms.h (not available in Vala)
 
+        // TODO connect/disconnect the signal when settings in gsettings change
         if (! editor_settings.get_boolean ("insert-spaces")
             || ! editor_settings.get_boolean ("forget-no-tabs")
             || event.keyval != 0xff08

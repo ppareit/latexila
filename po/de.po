@@ -28,16 +28,18 @@ msgstr "%u von %u"
 
 #: src/main.vala:64
 msgid "- Integrated LaTeX Environment for GNOME"
-msgstr " - Integrierte LaTex Umgebung für GNOME"
+msgstr " - Integrierte LaTeX-Umgebung für GNOME"
 
 #: src/main_window.vala:931
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
-msgstr "Eine Datei mit dem Namen \"%s\" existiert bereits. Wollen sie die vorhandene Datei ersetzen?"
+msgstr ""
+"Eine Datei mit dem Namen \"%s\" existiert bereits. Wollen Sie die vorhandene "
+"Datei ersetzen?"
 
 #: src/latex_menu.vala:233
 msgid "AMS packages"
-msgstr "AMS Pakete"
+msgstr "AMS-Pakete"
 
 #: src/main_window.vala:133
 #: src/main_window.vala:1800
@@ -59,7 +61,7 @@ msgstr "Nächstes aktives Dokument"
 
 #: src/main_window.vala:109
 msgid "Activate previous document"
-msgstr "Voheriges aktives Dokument"
+msgstr "Vorheriges aktives Dokument"
 
 #: src/latex_menu.vala:206
 msgid "Acute accent - \\'"
@@ -111,7 +113,7 @@ msgstr "Großer Sprung - \\bigskip"
 
 #: src/latex_menu.vala:332
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
-msgstr "Tafelmodus (nur Großbuchstaven) - \\mathbb (amsfonts Paket)"
+msgstr "Tafelmodus (nur Großbuchstaben) - \\mathbb (amsfonts Paket)"
 
 #: src/latex_menu.vala:153
 msgid "Bold - \\bfseries"
@@ -183,7 +185,7 @@ msgstr "Symbol auswählen:"
 
 #: src/latex_menu.vala:208
 msgid "Circumflex accent - \\^"
-msgstr "Circumflex accent - \\^"
+msgstr "Zirkumflex-Akzent - \\^"
 
 #: src/main_window.vala:95
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
@@ -360,11 +362,11 @@ msgstr "Möchten Sie wirklich alle Werkzeuge auf den Auslieferungszustand zurüc
 
 #: src/preferences_dialog.vala:53
 msgid "Do you really want to reset all preferences?"
-msgstr "Möchtest du wirklich alle Einstellungen zurücksetzen?"
+msgstr "Möchten Sie wirklich alle Einstellungen zurücksetzen?"
 
 #: src/document_tab.vala:273
 msgid "Do you want to drop your changes and reload the file?"
-msgstr "Möchten Sie ihre Änderungen verwefen oder die Datei neu laden?"
+msgstr "Möchten Sie Ihre Änderungen verwerfen oder die Datei neu laden?"
 
 #: src/document_tab.vala:275
 msgid "Do you want to reload the file?"
@@ -372,7 +374,7 @@ msgstr "Möchten Sie die Datei neu laden?"
 
 #: src/latex_menu.vala:229
 msgid "Document class - \\documentclass"
-msgstr "Dokumenten Typ - \\documentclass"
+msgstr "Dokumenten-Typ - \\documentclass"
 
 #: src/main_window.vala:649
 msgid "Don't Edit"
@@ -416,7 +418,7 @@ msgstr "Schrift vergrößern"
 
 #: src/search.vala:176
 msgid "Entire words only"
-msgstr "Nut ganze Wörter"
+msgstr "Nur ganze Wörter"
 
 #: src/latex_menu.vala:91
 msgid "Enumeration - \\begin{enumerate}"
@@ -428,7 +430,7 @@ msgstr "Fehler beim Versuch, das Dokument in UTF-8 umzuwandeln."
 
 #: src/latex_menu.vala:335
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
-msgstr "Euler Fraktur - \\mathfrak (package amsfonts)"
+msgstr "Euler-Fraktur - \\mathfrak (package amsfonts)"
 
 #: src/ui/preferences_dialog.ui:856
 msgid "Except those for clean-up"
@@ -481,7 +483,7 @@ msgstr "Gehe zu nächstem Treffer"
 
 #: src/ui/search_and_replace.ui:49
 msgid "Find previous"
-msgstr "Gehe zu vorherigen Treffer"
+msgstr "Gehe zu vorherigem Treffer"
 
 #: src/latex_menu.vala:155
 msgid "Fo_nt Shape"
@@ -566,11 +568,13 @@ msgstr "Symbol"
 
 #: src/dialogs.vala:131
 msgid "If you don't save, all your changes will be permanently lost."
-msgstr "Wenn Sie nicht speichern sind alle Ihre Änderungen für immer verloren."
+msgstr "Wenn Sie nicht speichern, sind alle Ihre Änderungen für immer verloren."
 
 #: src/document.vala:218
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "Wenn Sie jetzt speichen gehen alle Änderungen, die außerhalb von LaTeXila gemacht wurden verloren. Trozdem speichern?"
+msgstr ""
+"Wenn Sie jetzt speichern, gehen alle Änderungen, die außerhalb von LaTeXila "
+"gemacht wurden, verloren. Trotzdem speichern?"
 
 #: src/document.vala:138
 #, c-format
@@ -587,7 +591,7 @@ msgstr "Datei einbinden - \\input"
 
 #: src/latex_menu.vala:245
 msgid "Include an image (graphicx package) - \\includegraphics"
-msgstr "Bilde einbinden (graphicx Paket) - \\includegraphics"
+msgstr "Bild einbinden (graphicx Paket) - \\includegraphics"
 
 #: src/ui/preferences_dialog.ui:76
 msgid "Insert spaces instead of tabs"
@@ -700,7 +704,7 @@ msgstr "Projekte verwalten"
 
 #: src/latex_menu.vala:436
 msgid "Math Environments"
-msgstr "Mathematik Umgebungen"
+msgstr "Mathematik-Umgebungen"
 
 #: src/latex_menu.vala:318
 msgid "Math Font _Styles"
@@ -909,7 +913,7 @@ msgstr "Eigene Vorlagen"
 
 #: src/ui/preferences_dialog.ui:296
 msgid "Pick the editor font"
-msgstr "Nimm die Editor-Schriftart"
+msgstr "Wähle die Editor-Schriftart"
 
 #: src/ui/build_tool.ui:250
 msgid "Placeholders:"
@@ -929,7 +933,7 @@ msgstr "Präsentation"
 
 #: src/ui/preferences_dialog.ui:480
 msgid "Program for viewing documents:"
-msgstr "Program zum betrachten von Dokumenten"
+msgstr "Programm zum Betrachten von Dokumenten"
 
 #: src/main_window.vala:47
 msgid "Quit the program"
@@ -949,11 +953,11 @@ msgstr "Nur lesen"
 
 #: src/main_window.vala:54
 msgid "Redo the last undone action"
-msgstr "Letzte rückgängig gemachte Aktion doch weider ausführen"
+msgstr "Letzte rückgängig gemachte Aktion doch wieder ausführen"
 
 #: src/latex_menu.vala:59
 msgid "Reference to a bibliography item"
-msgstr "Auf ein Dokumente der Bibliographie verweisen"
+msgstr "Auf ein Dokument der Bibliographie verweisen"
 
 #: src/latex_menu.vala:51
 msgid "Reference to a label"
@@ -1060,7 +1064,7 @@ msgstr "Alle geöffneten Dateien speichern"
 #: src/main_window.vala:763
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
-msgstr "Alle Änderungen am Dokumente \"%s\" vor dem Schließen speichern?"
+msgstr "Alle Änderungen am Dokument \"%s\" vor dem Schließen speichern?"
 
 #: src/main_window.vala:37
 msgid "Save the current file"
@@ -1120,7 +1124,7 @@ msgstr "Untere Leiste anzeigen/ausblenden"
 
 #: src/main_window.vala:143
 msgid "Show or hide the edit toolbar"
-msgstr "Editier-leiste ein-/ausblenden"
+msgstr "Editierleiste ein-/ausblenden"
 
 #: src/main_window.vala:139
 msgid "Show or hide the side panel"
@@ -1244,7 +1248,9 @@ msgstr "Die Datei %s ist seit dem Lesen verändert worden."
 msgid ""
 "The program for viewing documents.\n"
 "Its value can be changed in the preferences dialog."
-msgstr "Das Programm zum Betrachte_n von Dokumenten.Der Wert kann unter Einstellungen geändert werden."
+msgstr ""
+"Das Programm zum Betrachte_n von Dokumenten. Der Wert kann unter "
+"Einstellungen geändert werden."
 
 #: src/dialogs.vala:67
 #, c-format
@@ -1299,7 +1305,7 @@ msgstr "Unterstreichen - \\underline"
 
 #: src/main_window.vala:52
 msgid "Undo the last action"
-msgstr "Letzte Aktion Rückgängig machen"
+msgstr "Letzte Aktion rückgängig machen"
 
 #: src/document.vala:311
 msgid "Unsaved Document"
@@ -1332,7 +1338,7 @@ msgstr "Vertikale Linie - \\vline"
 
 #: src/latex_menu.vala:199
 msgid "Vertical space - \\vspace"
-msgstr "Verticaler Abstand - \\vspace"
+msgstr "Vertikaler Abstand - \\vspace"
 
 #: src/build_tool_dialog.vala:54
 msgid "View DVI"
@@ -1500,7 +1506,7 @@ msgstr "_Verschiedenes"
 
 #: src/main_window.vala:114
 msgid "_Move to New Window"
-msgstr "Zu_m nächsetn Fenster bewegen"
+msgstr "Zu_m nächsten Fenster bewegen"
 
 #: src/latex_menu.vala:279
 msgid "_N-th Root - \\sqrt[]{}"
@@ -1520,7 +1526,7 @@ msgstr "_Nummerierte Gleichung - \\begin{equation}"
 
 #: src/main_window.vala:108
 msgid "_Previous Document"
-msgstr "_Vorriges Dokument"
+msgstr "_Vorheriges Dokument"
 
 #: src/main_window.vala:119
 msgid "_Projects"
@@ -1536,7 +1542,7 @@ msgstr "Zoom zu_rücksetzen"
 
 #: src/main_window.vala:104
 msgid "_Save All"
-msgstr "Alles _Speichern"
+msgstr "Alles _speichern"
 
 #: src/main_window.vala:84
 msgid "_Search"
@@ -1606,7 +1612,7 @@ msgstr "Character"
 #: src/preferences_dialog.vala:268
 #: src/preferences_dialog.vala:273
 msgid "characters"
-msgstr "Charactere"
+msgstr "Zeichen"
 
 #: src/latex_menu.vala:386
 msgid "left  }"
@@ -1705,4 +1711,4 @@ msgstr ""
 "Johannes Wilde <wo-is-jo@web.de>"
 
 #~ msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME desktop"
-#~ msgstr "LaTeXila ist eine Integrierte LaTeX Umgebung für den GNOME desktop"
+#~ msgstr "LaTeXila ist eine Integrierte LaTeX-Umgebung für den GNOME desktop"

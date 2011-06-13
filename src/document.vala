@@ -31,7 +31,7 @@ public class Document : Gtk.SourceBuffer
     public File location { get; set; }
     public bool readonly { get; set; default = false; }
     public DocumentTab tab;
-    public uint unsaved_document_n { get; set; }
+    public uint _unsaved_doc_num = 0;
     public int project_id { get; set; default = -1; }
     private bool backup_made = false;
     private string _etag;
@@ -288,6 +288,8 @@ public class Document : Gtk.SourceBuffer
                 return;
             }
         }
+
+        project_id = -1;
     }
 
     public string get_uri_for_display ()
@@ -308,7 +310,35 @@ public class Document : Gtk.SourceBuffer
 
     private string get_unsaved_document_name ()
     {
-        return _("Unsaved Document") + " %u".printf (unsaved_document_n);
+        uint num = get_unsaved_document_num ();
+        return _("Unsaved Document") + @" $num";
+    }
+
+    private uint get_unsaved_document_num ()
+    {
+        return_val_if_fail (location == null, 0);
+
+        if (_unsaved_doc_num > 0)
+            return _unsaved_doc_num;
+
+        // get all unsaved document numbers
+        uint[] all_nums = {};
+        foreach (Document doc in Application.get_default ().get_documents ())
+        {
+            // avoid infinite loop
+            if (doc == this)
+                continue;
+
+            if (doc.location == null)
+                all_nums += doc.get_unsaved_document_num ();
+        }
+
+        // take the first free num
+        uint num;
+        for (num = 1 ; num in all_nums ; num++);
+
+        _unsaved_doc_num = num;
+        return num;
     }
 
     public bool is_local ()
@@ -450,18 +480,9 @@ public class Document : Gtk.SourceBuffer
         return SelectionType.MULTIPLE_LINES;
     }
 
-    public bool is_tex_document ()
-    {
-        if (location == null)
-            return false;
-
-        string path = location.get_parse_name ();
-        return path.has_suffix (".tex");
-    }
-
     public bool clean_build_files (MainWindow window)
     {
-        if (location == null || ! is_tex_document ())
+        if (! is_main_file_a_tex_file ())
             return false;
 
         bool ret = false;
@@ -536,6 +557,16 @@ public class Document : Gtk.SourceBuffer
         return project.main_file;
     }
 
+    public bool is_main_file_a_tex_file ()
+    {
+        File? main_file = get_main_file ();
+        if (main_file == null)
+            return false;
+
+        string path = main_file.get_parse_name ();
+        return path.has_suffix (".tex");
+    }
+
     public string get_current_indentation (int line)
     {
         TextIter start_iter, end_iter;
@@ -590,15 +621,23 @@ public class Document : Gtk.SourceBuffer
         search_case_sensitive = case_sensitive;
         search_entire_word = entire_word;
 
-        TextIter start, match_start, match_end, insert;
+        TextIter start = {};
+        TextIter match_start = {};
+        TextIter match_end = {};
+        TextIter insert = {};
+        TextIter try_match_start = {};
+        TextIter try_match_end = {};
+
         get_start_iter (out start);
         get_iter_at_mark (out insert, get_insert ());
         var next_match_after_cursor_found = ! select;
         uint i = 0;
 
-        while (iter_forward_search (start, null, out match_start, out match_end))
+        while (iter_forward_search (start, null, out try_match_start, out try_match_end))
         {
-            i++;
+            match_start = try_match_start;
+            match_end = try_match_end;
+
             if (! next_match_after_cursor_found && insert.compare (match_end) <= 0)
             {
                 next_match_after_cursor_found = true;
@@ -609,6 +648,7 @@ public class Document : Gtk.SourceBuffer
                 apply_tag (found_tag, match_start, match_end);
 
             start = match_end;
+            i++;
         }
 
         // if the cursor was after the last match, take the last match
@@ -623,6 +663,15 @@ public class Document : Gtk.SourceBuffer
 
         if (search_nb_matches == 0)
             clear_search_tags ();
+    }
+
+    public void select_selected_search_text ()
+    {
+        TextIter start, end;
+        get_iter_at_mark (out start, get_mark ("search_selected_start"));
+        get_iter_at_mark (out end, get_mark ("search_selected_end"));
+        place_cursor (start);
+        move_mark (get_mark ("selection_bound"), end);
     }
 
     public void search_forward ()

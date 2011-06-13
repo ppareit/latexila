@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is the version 2.0.7 of LaTeXila.
+This is the version 2.0.8 of LaTeXila.
 LaTeXila is an Integrated LaTeX Environment for the GNOME desktop.
 
 LaTeXila is released under the GNU General Public License (GPL) version 3 or
@@ -9,7 +9,7 @@ later, see the file "COPYING" for more information.
 
 The official web site is:
 
-    http://latexila.sourceforge.net/
+    http://projects.gnome.org/latexila
 
 See also:
 
@@ -25,6 +25,6 @@ See the file "INSTALL".
 Where to report bugs
 ====================
 
-Bugs should be reported on GitHub:
+Bugs should be reported on the GNOME bugzilla:
 
-    http://github.com/swilmet/latexila/issues
+    https://bugzilla.gnome.org/browse.cgi?product=latexila
