@@ -60,6 +60,7 @@ public class Structure : VBox
     private TreeView _list_view;
     private Widget _list_view_sw;
     private ListStore _list_store;
+    // FIXME a simple list can contain several types
     private StructType _current_list_type;
     private bool _list_is_hidden = true;
 

@@ -13,6 +13,18 @@ LaTeXila NEWS
 - Some code clean-up and little fixes
 
 
+===============================
+* Release 2.0.8 (June 14, 2011)
+===============================
+
+- Fix a segmentation fault on search
+- Change behavior of HOME and END buttons
+- More completion data (Pieter Pareit)
+- Completion: insert \item for list environments (Pieter Pareit)
+- German translation: some fixes (Max Schillinger)
+- Some other little improvements and bug fixes
+
+
 ==============================
 * Release 2.0.7 (Mar 25, 2011)
 ==============================
