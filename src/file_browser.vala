@@ -292,10 +292,32 @@ public class FileBrowser : VBox
         fill_stores_with_dir (current_directory);
     }
 
-    public void refresh_if_in_dir (File dir)
+    // Refresh the file browser if the document has a "link" with the directory currently
+    // displayed.
+    public void refresh_for_document (Document doc)
     {
-        if (dir.equal (current_directory))
+        // If the document is not part of a project, refresh only if the document's
+        // directory is the same as the current directory.
+        if (doc.project_id == -1)
+        {
+            if (doc.location != null
+                && current_directory.equal (doc.location.get_parent ()))
+            {
+                refresh ();
+            }
+
+            return;
+        }
+
+        // If a project is defined, refresh if the current dir is part of the project.
+        Project? project = Projects.get_default ().get (doc.project_id);
+        File project_dir = project.directory;
+
+        if (current_directory.equal (project_dir)
+            || current_directory.has_prefix (project_dir))
+        {
             refresh ();
+        }
     }
 
     private void fill_stores_with_dir (File? dir)

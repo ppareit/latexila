@@ -1248,7 +1248,7 @@ public class MainWindow : Window
         {
             build_tool_runner.finished.connect (() =>
             {
-                file_browser.refresh_if_in_dir (main_file.get_parent ());
+                file_browser.refresh_for_document (active_document);
             });
         }
     }
@@ -1705,11 +1705,7 @@ public class MainWindow : Window
         CleanBuildFiles build_files = new CleanBuildFiles (this, active_document);
 
         if (build_files.clean ())
-        {
-            File? main_file = active_document.get_main_file ();
-            if (main_file != null)
-                file_browser.refresh_if_in_dir (main_file.get_parent ());
-        }
+            file_browser.refresh_for_document (active_document);
     }
 
     public void on_build_view_log ()
