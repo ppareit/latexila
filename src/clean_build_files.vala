@@ -73,7 +73,11 @@ public class CleanBuildFiles : GLib.Object
         }
 
         if (files_to_delete.size == 0)
+        {
+            if (! _no_confirm)
+                show_info_no_file ();
             return false;
+        }
 
         if (_no_confirm)
         {
@@ -324,5 +328,17 @@ public class CleanBuildFiles : GLib.Object
         model.get (b, CleanFileColumn.NAME, out name_b, -1);
 
         return name_a.collate (name_b);
+    }
+
+    private void show_info_no_file ()
+    {
+        Dialog dialog = new MessageDialog (_main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            MessageType.INFO,
+            ButtonsType.OK,
+            _("No build file to clean up."));
+
+        dialog.run ();
+        dialog.destroy ();
     }
 }
