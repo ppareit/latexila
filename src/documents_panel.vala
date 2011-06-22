@@ -65,9 +65,13 @@ public class DocumentsPanel : Notebook
         // automatic clean-up build files
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
+
         if (settings.get_boolean ("no-confirm-clean")
             && settings.get_boolean ("automatic-clean"))
-            tab.document.clean_build_files (main_window);
+        {
+            CleanBuildFiles build_files = new CleanBuildFiles (main_window, tab.document);
+            build_files.clean ();
+        }
 
         int pos = page_num (tab);
         remove_page (pos);

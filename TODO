@@ -23,11 +23,6 @@ LaTeXila 2.2
 	  so we can modify the copy and keep the original
 	- right click menu in bottom panel: copy the line to the clipboard
 
-- Cleanup Build Files: if a project is defined, some *.aux files are not removed
-  => If a project is defined, instead of replacing the extension of the main
-     file to see if the file exist and remove it, search directly all files
-     which have the extension (in all sub-directories), and remove them.
-
 - Write some documentation:
 	- explain the build tools, how to create a new one, etc.
 	- the difference between Latexmk and Rubber

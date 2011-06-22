@@ -1701,9 +1701,15 @@ public class MainWindow : Window
     public void on_build_clean ()
     {
         return_if_fail (active_tab != null);
-        if (active_document.clean_build_files (this))
-            file_browser.refresh_if_in_dir (
-                active_document.get_main_file ().get_parent ());
+
+        CleanBuildFiles build_files = new CleanBuildFiles (this, active_document);
+
+        if (build_files.clean ())
+        {
+            File? main_file = active_document.get_main_file ();
+            if (main_file != null)
+                file_browser.refresh_if_in_dir (main_file.get_parent ());
+        }
     }
 
     public void on_build_view_log ()

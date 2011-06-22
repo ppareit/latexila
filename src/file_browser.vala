@@ -320,6 +320,7 @@ public class FileBrowser : VBox
                 directory = File.new_for_path (Environment.get_home_dir ());
         }
 
+        // TODO try (haha) to put the minimum code in the try
         try
         {
             FileEnumerator enumerator = directory.enumerate_children (

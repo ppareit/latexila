@@ -481,47 +481,6 @@ public class Document : Gtk.SourceBuffer
         return SelectionType.MULTIPLE_LINES;
     }
 
-    public bool clean_build_files (MainWindow window)
-    {
-        if (! is_main_file_a_tex_file ())
-            return false;
-
-        bool ret = false;
-
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        string exts = settings.get_string ("clean-extensions");
-        string[] extensions = exts.split (" ");
-
-        bool no_confirm = settings.get_boolean ("no-confirm-clean");
-
-        File mainfile = get_main_file ();
-        File directory = mainfile.get_parent ();
-        string shortname = Utils.get_shortname (mainfile.get_basename ());
-        string[] basenames = {};
-        foreach (string extension in extensions)
-        {
-            string basename = shortname + extension;
-            File file = directory.get_child (basename);
-            if (file.query_exists ())
-            {
-                ret = true;
-                if (no_confirm)
-                    Utils.delete_file (file);
-                else
-                    basenames += basename;
-            }
-        }
-
-        if (no_confirm)
-            return ret;
-
-        else if (basenames.length > 0)
-            return Dialogs.confirm_clean_build_files (window, directory, basenames);
-
-        return false;
-    }
-
     // If line is bigger than the number of lines of the document, the cursor is moved
     // to the last line and false is returned.
     public bool goto_line (int line)
