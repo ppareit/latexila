@@ -177,6 +177,9 @@ public class CleanBuildFiles : GLib.Object
         ListStore store = new ListStore (CleanFileColumn.N_COLUMNS,
             typeof (bool), typeof (string), typeof (File));
 
+        store.set_sort_func (0, on_sort_list_files);
+        store.set_sort_column_id (0, SortType.ASCENDING);
+
         // fill the list
         foreach (File file_to_delete in files_to_delete)
         {
@@ -303,5 +306,16 @@ public class CleanBuildFiles : GLib.Object
 
         dialog.destroy ();
         return ret;
+    }
+
+    private int on_sort_list_files (TreeModel model, TreeIter a, TreeIter b)
+    {
+        string name_a;
+        string name_b;
+
+        model.get (a, CleanFileColumn.NAME, out name_a, -1);
+        model.get (b, CleanFileColumn.NAME, out name_b, -1);
+
+        return name_a.collate (name_b);
     }
 }
