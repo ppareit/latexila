@@ -56,14 +56,12 @@ public class CleanBuildFiles : GLib.Object
         Gee.ArrayList<File> files_to_delete;
         File directory;
 
+        Project? project = _doc.get_project ();
+
         // the document is part of a project
-        if (_doc.project_id != -1)
+        if (project != null)
         {
-            Project? project = Projects.get_default ().get (_doc.project_id);
-            return_val_if_fail (project != null, false);
-
             directory = project.directory;
-
             files_to_delete = get_build_files_in_directory (directory);
         }
         else

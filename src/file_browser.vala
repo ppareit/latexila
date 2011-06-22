@@ -296,9 +296,11 @@ public class FileBrowser : VBox
     // displayed.
     public void refresh_for_document (Document doc)
     {
+        Project? project = doc.get_project ();
+
         // If the document is not part of a project, refresh only if the document's
         // directory is the same as the current directory.
-        if (doc.project_id == -1)
+        if (project == null)
         {
             if (doc.location != null
                 && current_directory.equal (doc.location.get_parent ()))
@@ -310,7 +312,6 @@ public class FileBrowser : VBox
         }
 
         // If a project is defined, refresh if the current dir is part of the project.
-        Project? project = Projects.get_default ().get (doc.project_id);
         File project_dir = project.directory;
 
         if (current_directory.equal (project_dir)

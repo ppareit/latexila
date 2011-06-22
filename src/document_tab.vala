@@ -218,32 +218,27 @@ public class DocumentTab : VBox
     private void update_label_tooltip ()
     {
         if (document.location == null)
-            _label.tooltip_markup = "";
-        else
         {
-            _label.tooltip_markup = document.get_uri_for_display ();
-
-            if (document.project_id != -1)
-            {
-                Project? project = Projects.get_default ().get (document.project_id);
-                if (project == null)
-                    return;
-
-                if (project.main_file.equal (document.location))
-                    _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
-                else
-                    _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
-                        + get_main_file_relative_path ();
-            }
+            _label.tooltip_markup = "";
+            return;
         }
+
+        _label.tooltip_markup = document.get_uri_for_display ();
+
+        Project? project = document.get_project ();
+        if (project == null)
+            return;
+
+        if (project.main_file.equal (document.location))
+            _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
+        else
+            _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
+                + get_main_file_relative_path ();
     }
 
     private string? get_main_file_relative_path ()
     {
-        if (document.project_id == -1)
-            return null;
-
-        Project? project = Projects.get_default ().get (document.project_id);
+        Project? project = document.get_project ();
         if (project == null)
             return null;
 

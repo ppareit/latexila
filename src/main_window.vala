@@ -1222,9 +1222,9 @@ public class MainWindow : Window
         // save the document if it's a compilation (e.g. with rubber)
         if (tool.compilation)
         {
-            int num = active_document.project_id;
+            int project_id = active_document.project_id;
 
-            if (num == -1)
+            if (project_id == -1)
                 active_document.save ();
 
             // save all the documents belonging to the project
@@ -1233,7 +1233,7 @@ public class MainWindow : Window
                 List<Document> docs = Application.get_default ().get_documents ();
                 foreach (Document doc in docs)
                 {
-                    if (doc.project_id == num)
+                    if (doc.project_id == project_id)
                         doc.save ();
                 }
             }
@@ -1424,7 +1424,6 @@ public class MainWindow : Window
 
     public void update_config_project_sensitivity ()
     {
-        /* configure current project: sensitivity */
         Gtk.Action action = action_group.get_action ("ProjectsConfigCurrent");
         action.set_sensitive (active_tab != null && active_document.project_id != -1);
     }

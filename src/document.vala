@@ -502,15 +502,20 @@ public class Document : Gtk.SourceBuffer
         return ret;
     }
 
+    public Project? get_project ()
+    {
+        if (project_id == -1)
+            return null;
+
+        return Projects.get_default ().get (project_id);
+    }
+
     public File? get_main_file ()
     {
         if (location == null)
             return null;
 
-        if (project_id == -1)
-            return location;
-
-        Project? project = Projects.get_default ().get (project_id);
+        Project? project = get_project ();
         if (project == null)
             return location;
 
