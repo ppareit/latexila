@@ -262,14 +262,15 @@ public class CleanBuildFiles : GLib.Object
         vbox.pack_start (primary_label, false, false, 0);
 
         VBox vbox2 = new VBox (false, 8);
-        vbox.pack_start (vbox2, false, false);
+        vbox.pack_start (vbox2);
 
+        /* secondary label */
         Label select_label = new Label (_("Select the files you want to delete:"));
         select_label.set_line_wrap (true);
         select_label.set_alignment ((float) 0.0, (float) 0.5);
         vbox2.pack_start (select_label, false, false, 0);
 
-        // list of files with a scrollbar
+        /* list of files with a scrollbar */
         ScrolledWindow sw = Utils.add_scrollbar (list_files) as ScrolledWindow;
         sw.set_shadow_type (ShadowType.IN);
         vbox2.pack_start (sw);
