@@ -139,6 +139,12 @@ public class CleanBuildFiles : GLib.Object
                 break;
 
             string name = info.get_name ();
+
+            // don't take into account hidden files and directories
+            // example: Git have a *.idx file in the .git/ directory
+            if (name[0] == '.')
+                continue;
+
             File file = directory.get_child (name);
 
             FileType type = info.get_file_type ();
