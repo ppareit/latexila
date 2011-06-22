@@ -21,6 +21,14 @@ using Gtk;
 
 public class CleanBuildFiles : GLib.Object
 {
+    private enum CleanFileColumn
+    {
+        DELETE,
+        NAME,
+        FILE,
+        N_COLUMNS
+    }
+
     private unowned MainWindow  _main_window;
     private Document            _doc;
     private string[]            _extensions;
@@ -149,60 +157,18 @@ public class CleanBuildFiles : GLib.Object
         return files_to_delete;
     }
 
-    private enum CleanFileColumn
-    {
-        DELETE,
-        NAME,
-        FILE,
-        N_COLUMNS
-    }
-
     private bool confirm_cleanup (Gee.ArrayList<File> files_to_delete, File directory)
     {
         return_val_if_fail (0 < files_to_delete.size, false);
 
-        Dialog dialog = new Dialog.with_buttons (null,
-            _main_window,
-            DialogFlags.DESTROY_WITH_PARENT,
-            Stock.CANCEL, ResponseType.CANCEL,
-            Stock.DELETE, ResponseType.ACCEPT,
-            null);
+        TreeView list_files = get_list_files (files_to_delete, directory);
+        Dialog dialog = get_dialog (list_files);
 
-        dialog.has_separator = false;
+        return run_dialog (dialog, list_files.get_model ());
+    }
 
-        HBox hbox = new HBox (false, 12);
-        hbox.border_width = 5;
-        VBox content_area = dialog.get_content_area () as VBox;
-        content_area.pack_start (hbox);
-
-        /* image */
-        Image image = new Image.from_stock (Stock.DIALOG_WARNING, IconSize.DIALOG);
-        image.set_alignment ((float) 0.5, (float) 0.0);
-        hbox.pack_start (image, false, false, 0);
-
-        VBox vbox = new VBox (false, 12);
-        hbox.pack_start (vbox);
-
-        /* primary label */
-        Label primary_label = new Label (null);
-        primary_label.set_line_wrap (true);
-        primary_label.set_use_markup (true);
-        primary_label.set_alignment ((float) 0.0, (float) 0.5);
-        primary_label.set_selectable (true);
-        primary_label.set_markup ("<span weight=\"bold\" size=\"larger\">"
-            + _("Do you really want to delete these files?") + "</span>");
-
-        vbox.pack_start (primary_label, false, false, 0);
-
-        VBox vbox2 = new VBox (false, 8);
-        vbox.pack_start (vbox2, false, false);
-
-        Label select_label = new Label (_("Select the files you want to delete:"));
-        select_label.set_line_wrap (true);
-        select_label.set_alignment ((float) 0.0, (float) 0.5);
-        vbox2.pack_start (select_label, false, false, 0);
-
-        /* files list with checkboxes */
+    private TreeView get_list_files (Gee.ArrayList<File> files_to_delete, File directory)
+    {
         TreeView treeview = new TreeView ();
         treeview.set_size_request (260, 120);
         treeview.headers_visible = false;
@@ -248,27 +214,77 @@ public class CleanBuildFiles : GLib.Object
             "text", CleanFileColumn.NAME, null);
         treeview.append_column (column);
 
-        // with a scrollbar
-        ScrolledWindow sw = Utils.add_scrollbar (treeview) as ScrolledWindow;
+        return treeview;
+    }
+
+    private Dialog get_dialog (TreeView list_files)
+    {
+        Dialog dialog = new Dialog.with_buttons (null,
+            _main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            Stock.CANCEL, ResponseType.CANCEL,
+            Stock.DELETE, ResponseType.ACCEPT,
+            null);
+
+        dialog.has_separator = false;
+
+        HBox hbox = new HBox (false, 12);
+        hbox.border_width = 5;
+        VBox content_area = dialog.get_content_area () as VBox;
+        content_area.pack_start (hbox);
+
+        /* image */
+        Image image = new Image.from_stock (Stock.DIALOG_WARNING, IconSize.DIALOG);
+        image.set_alignment ((float) 0.5, (float) 0.0);
+        hbox.pack_start (image, false, false, 0);
+
+        VBox vbox = new VBox (false, 12);
+        hbox.pack_start (vbox);
+
+        /* primary label */
+        Label primary_label = new Label (null);
+        primary_label.set_line_wrap (true);
+        primary_label.set_use_markup (true);
+        primary_label.set_alignment ((float) 0.0, (float) 0.5);
+        primary_label.set_selectable (true);
+        primary_label.set_markup ("<span weight=\"bold\" size=\"larger\">"
+            + _("Do you really want to delete these files?") + "</span>");
+
+        vbox.pack_start (primary_label, false, false, 0);
+
+        VBox vbox2 = new VBox (false, 8);
+        vbox.pack_start (vbox2, false, false);
+
+        Label select_label = new Label (_("Select the files you want to delete:"));
+        select_label.set_line_wrap (true);
+        select_label.set_alignment ((float) 0.0, (float) 0.5);
+        vbox2.pack_start (select_label, false, false, 0);
+
+        // list of files with a scrollbar
+        ScrolledWindow sw = Utils.add_scrollbar (list_files) as ScrolledWindow;
         sw.set_shadow_type (ShadowType.IN);
         vbox2.pack_start (sw);
 
         hbox.show_all ();
 
-        /* run */
+        return dialog;
+    }
+
+    private bool run_dialog (Dialog dialog, TreeModel list_store)
+    {
         bool ret = false;
         if (dialog.run () == ResponseType.ACCEPT)
         {
             // get files to delete
             File[] selected_files = {};
             TreeIter iter;
-            bool valid = store.get_iter_first (out iter);
+            bool valid = list_store.get_iter_first (out iter);
             while (valid)
             {
                 bool selected;
                 File file_to_delete;
 
-                store.get (iter,
+                list_store.get (iter,
                     CleanFileColumn.DELETE, out selected,
                     CleanFileColumn.FILE, out file_to_delete,
                     -1);
@@ -276,7 +292,7 @@ public class CleanBuildFiles : GLib.Object
                 if (selected)
                     selected_files += file_to_delete;
 
-                valid = store.iter_next (ref iter);
+                valid = list_store.iter_next (ref iter);
             }
 
             ret = 0 < selected_files.length;
