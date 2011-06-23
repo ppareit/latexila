@@ -809,11 +809,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         bool in_other_argument = false;
         char other_argument_opening_bracket = '{';
 
-        if (&arguments != null)
-            arguments = new Gee.ArrayList<bool> ();
-
-        if (&valid_arg_contents != null)
-            valid_arg_contents = true;
+        arguments = new Gee.ArrayList<bool> ();
+        valid_arg_contents = true;
 
         for (long i = text.length - 1 ; i >= 0 ; i--)
         {
@@ -823,10 +820,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 if ((text[i] == '{' || text[i] == '[')
                     && ! Utils.char_is_escaped (text, i))
                 {
-                    if (&arguments != null)
-                        arguments.insert (0, text[i] == '[');
+                    arguments.insert (0, text[i] == '[');
 
-                    if (&argument_contents != null && index_start_argument_contents != -1)
+                    if (index_start_argument_contents != -1)
                         argument_contents =
                             text[index_start_argument_contents : text.length];
 
@@ -836,7 +832,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 }
 
                 // invalid argument content (no choice available)
-                if (&valid_arg_contents != null && ! text[i].isalpha () && text[i] != '*')
+                if (! text[i].isalpha () && text[i] != '*')
                     valid_arg_contents = false;
 
                 index_start_argument_contents = i;
@@ -860,10 +856,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 // last character of the command name
                 if (text[i].isalpha () || text[i] == '*')
                 {
-                    string tmp = get_latex_command_at_index (text, i);
-                    if (&cmd_name != null)
-                        cmd_name = tmp;
-                    return tmp != null;
+                    cmd_name = get_latex_command_at_index (text, i);
+                    return cmd_name != null;
                 }
 
                 // maybe the end of another argument
@@ -875,8 +869,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                     in_other_argument = true;
                     other_argument_opening_bracket = text[i] == '}' ? '{' : '[';
 
-                    if (&arguments != null)
-                        arguments.insert (0, text[i] == ']');
+                    arguments.insert (0, text[i] == ']');
                     continue;
                 }
 

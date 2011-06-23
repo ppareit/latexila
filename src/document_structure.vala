@@ -202,12 +202,9 @@ public class DocumentStructure : GLib.Object
         if (! _command_name_regex.match (after_backslash_text, 0, out match_info))
             return null;
 
-        if (&begin_contents_index != null)
-        {
-            int pos;
-            match_info.fetch_pos (0, null, out pos);
-            begin_contents_index = pos + after_backslash_index;
-        }
+        int pos;
+        match_info.fetch_pos (0, null, out pos);
+        begin_contents_index = pos + after_backslash_index;
 
         return match_info.fetch_named ("name");
     }

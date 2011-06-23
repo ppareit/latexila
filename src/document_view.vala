@@ -193,7 +193,8 @@ public class DocumentView : Gtk.SourceView
     {
         // See GDK_KEY_BackSpace in gdk/gdkkeysyms.h (not available in Vala)
 
-        // TODO connect/disconnect the signal when settings in gsettings change
+        // TODO~ connect/disconnect the signal when settings in gsettings change
+        // note: this function will be removed when latexila will become a Gedit plugin...
         if (! editor_settings.get_boolean ("insert-spaces")
             || ! editor_settings.get_boolean ("forget-no-tabs")
             || event.keyval != 0xff08

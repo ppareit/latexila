@@ -343,7 +343,9 @@ public class FileBrowser : VBox
                 directory = File.new_for_path (Environment.get_home_dir ());
         }
 
-        // TODO try (haha) to put the minimum code in the try
+        // TODO~ try (haha) to put the minimum code in the try
+        // note: the file browser will be removed when latexila will become a
+        // Gedit plugin...
         try
         {
             FileEnumerator enumerator = directory.enumerate_children (

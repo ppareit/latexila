@@ -227,8 +227,6 @@ public class StructureModel : TreeModel, GLib.Object
         if (node.is_leaf ())
             return false;
 
-        // FIXME check if &iter is null?
-        // I think there is an easier method now.
         iter = create_iter_at_node (node.first_child ());
         return true;
     }
@@ -263,8 +261,6 @@ public class StructureModel : TreeModel, GLib.Object
         if (n < 0 || node.n_children () <= n)
             return false;
 
-        // FIXME check if &iter is null?
-        // I think there is an easier method now.
         iter = create_iter_at_node (node.nth_child ((uint) n));
         return true;
     }
