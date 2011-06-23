@@ -156,8 +156,16 @@ public class BuildTools
     {
         return_if_fail (build_tools != null);
 
+        insert (build_tools.size, tool);
+    }
+
+    public void insert (int pos, BuildTool tool)
+    {
+        return_if_fail (build_tools != null);
+        return_if_fail (0 <= pos && pos <= build_tools.size);
+
         tool.compilation = is_compilation (tool.icon);
-        build_tools.add (tool);
+        build_tools.insert (pos, tool);
         update_all_menus ();
     }
 

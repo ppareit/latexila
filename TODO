@@ -19,8 +19,6 @@ LaTeXila 2.2
 	  subsections becomes sections, etc.).
 
 - Build Tools:
-	- build tools: copy button to make a copy of a build tool,
-	  so we can modify the copy and keep the original
 	- right click menu in bottom panel: copy the line to the clipboard
 
 - Write some documentation:
