@@ -127,6 +127,8 @@ public class BuildView : HBox
 
         CellRendererText renderer_text = new CellRendererText ();
         renderer_text.weight_set = true;
+        renderer_text.editable = true;
+        renderer_text.editable_set = true;
         column_job.pack_start (renderer_text, true);
         column_job.add_attribute (renderer_text, "text", BuildInfo.MESSAGE);
         column_job.add_attribute (renderer_text, "weight", BuildInfo.WEIGHT);
@@ -213,11 +215,14 @@ public class BuildView : HBox
                     view.collapse_row (path);
                 else
                     view.expand_to_path (path);
+
+                // the row is not selected
+                return false;
             }
         }
 
-        // the row is not selected
-        return false;
+        // the row is selected, so we can copy/paste its content
+        return true;
     }
 
     private void jump_to_file (string filename, int start_line, int end_line)

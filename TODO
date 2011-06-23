@@ -18,9 +18,6 @@ LaTeXila 2.2
 	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
 	  subsections becomes sections, etc.).
 
-- Build Tools:
-	- right click menu in bottom panel: copy the line to the clipboard
-
 - Write some documentation:
 	- explain the build tools, how to create a new one, etc.
 	- the difference between Latexmk and Rubber
