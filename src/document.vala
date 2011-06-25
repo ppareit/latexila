@@ -836,7 +836,6 @@ public class Document : Gtk.SourceBuffer
         if (insert.has_tag (found_tag_selected) ||
             insert_previous.has_tag (found_tag_selected))
         {
-            //stdout.printf ("has tag selected\n");
             return;
         }
 
@@ -844,10 +843,7 @@ public class Document : Gtk.SourceBuffer
         invalidate_search_selected_marks ();
 
         if (insert.has_tag (found_tag) || insert_previous.has_tag (found_tag))
-        {
-            //stdout.printf ("has tag\n");
             search_backward ();
-        }
         else
             search_info_updated (false, search_nb_matches, 0);
     }

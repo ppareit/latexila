@@ -60,8 +60,7 @@ public class Structure : VBox
     private TreeView _list_view;
     private Widget _list_view_sw;
     private ListStore _list_store;
-    // FIXME a simple list can contain several types
-    private StructType _current_list_type;
+    private StructType[] _current_list_types;
     private bool _list_is_hidden = true;
 
     private bool _first_select = true;
@@ -158,9 +157,9 @@ public class Structure : VBox
     {
         return_val_if_fail (types.length > 0, null);
 
-        StructType cur_type = types[0];
+        StructType main_type = types[0];
         ToggleButton button =
-            Utils.get_toolbar_toggle_button (get_icon_from_type (cur_type));
+            Utils.get_toolbar_toggle_button (get_icon_from_type (main_type));
 
         button.tooltip_text = tooltip;
 
@@ -170,7 +169,7 @@ public class Structure : VBox
         {
             if (! button.get_active ())
             {
-                if (! _list_is_hidden && _current_list_type == cur_type)
+                if (! _list_is_hidden && main_type in _current_list_types)
                 {
                     _list_is_hidden = true;
                     _list_view_sw.hide ();
@@ -178,7 +177,7 @@ public class Structure : VBox
                 return;
             }
 
-            _current_list_type = cur_type;
+            _current_list_types = types;
             _list_is_hidden = false;
             _list_view_sw.show_all ();
             populate_simple_list ();
@@ -203,7 +202,7 @@ public class Structure : VBox
         if (_model == null || _list_is_hidden)
             return;
 
-        _model.populate_list (_list_store, _current_list_type);
+        _model.populate_list (_list_store, _current_list_types[0]);
 
         /* select an item if needed */
 
@@ -211,10 +210,7 @@ public class Structure : VBox
         List<TreePath> selected_rows = tree_select.get_selected_rows (null);
 
         if (selected_rows.length () != 1)
-        {
-            //stdout.printf ("length: %u\n", selected_rows.length ());
             return;
-        }
 
         TreePath tree_path = selected_rows.nth_data (0);
         TreeIter tree_iter;
@@ -359,7 +355,7 @@ public class Structure : VBox
         int row_num = list_path.get_indices ()[0];
 
         TreePath? tree_path =
-            _model.get_tree_path_from_list_num (_current_list_type, row_num);
+            _model.get_tree_path_from_list_num (_current_list_types[0], row_num);
 
         return_val_if_fail (tree_path != null, false);
 
@@ -429,7 +425,7 @@ public class Structure : VBox
         StructType type;
         _model.get (tree_iter, StructColumn.TYPE, out type, -1);
 
-        if (type != _current_list_type)
+        if (! (type in _current_list_types))
             return;
 
         int row_num = _model.get_list_num_from_tree_iter (tree_iter);

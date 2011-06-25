@@ -218,7 +218,6 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
 
     public void process (File file, string output, int status)
     {
-        //stdout.printf ("*** OUTPUT ***\n\n%s\n\n*** END OUTPUT ***\n\n", output);
         successful = status == 0;
 
         return_if_fail (reg_rule != null && reg_no_rule != null);
