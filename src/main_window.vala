@@ -134,22 +134,22 @@ public class MainWindow : Window
         // Structure
         { "Structure", null, N_("S_tructure") },
         { "StructureCut", Stock.CUT, null, "",
-            N_("Cut the selected structure item"), Structure.on_cut },
+            N_("Cut the selected structure item"), on_structure_cut },
         { "StructureCopy", Stock.COPY, null, "",
-            N_("Copy the selected structure item"), Structure.on_copy },
+            N_("Copy the selected structure item"), on_structure_copy },
         { "StructureDelete", Stock.DELETE, null, "",
-            N_("Delete the selected structure item"), Structure.on_delete },
+            N_("Delete the selected structure item"), on_structure_delete },
         { "StructureSelect", Stock.SELECT_ALL, N_("_Select"), "",
             N_("Select the contents of the selected structure item"),
-            Structure.on_select },
+            on_structure_select },
         { "StructureComment", null, N_("_Comment"), null,
-            N_("Comment the selected structure item"), Structure.on_comment },
+            N_("Comment the selected structure item"), on_structure_comment },
         { "StructureShiftLeft", Stock.GO_BACK, N_("Shift _Left"), "",
             N_("Shift the selected structure item to the left (e.g. section → chapter"),
-            Structure.on_shift_left },
+            on_structure_shift_left },
         { "StructureShiftRight", Stock.GO_FORWARD, N_("Shift _Right"), "",
             N_("Shift the selected structure item to the right (e.g. chapter → section"),
-            Structure.on_shift_right },
+            on_structure_shift_right },
 
         // Help
         { "Help", null, N_("_Help") },
@@ -1790,6 +1790,50 @@ public class MainWindow : Window
     public void on_projects_manage ()
     {
         ProjectDialogs.manage_projects (this);
+    }
+
+    /* Structure */
+
+    public void on_structure_cut ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.CUT);
+    }
+
+    public void on_structure_copy ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.COPY);
+    }
+
+    public void on_structure_delete ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.DELETE);
+    }
+
+    public void on_structure_select ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.SELECT);
+    }
+
+    public void on_structure_comment ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.COMMENT);
+    }
+
+    public void on_structure_shift_left ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.SHIFT_LEFT);
+    }
+
+    public void on_structure_shift_right ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.SHIFT_RIGHT);
     }
 
     /* Help */

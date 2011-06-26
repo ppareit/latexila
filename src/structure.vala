@@ -38,6 +38,17 @@ public enum StructType
     N_TYPES
 }
 
+public enum StructAction
+{
+    CUT,
+    COPY,
+    DELETE,
+    SELECT,
+    COMMENT,
+    SHIFT_LEFT,
+    SHIFT_RIGHT
+}
+
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
@@ -55,6 +66,7 @@ public class Structure : VBox
     private VPaned _vpaned;
 
     private TreeView _tree_view;
+    private DocumentStructure _document_structure = null;
     private StructureModel? _model = null;
 
     private TreeView _list_view;
@@ -384,7 +396,7 @@ public class Structure : VBox
         TextMark mark;
         StructType type;
         _model.get (tree_iter,
-            StructColumn.MARK, out mark,
+            StructColumn.START_MARK, out mark,
             StructColumn.TYPE, out type,
             -1);
 
@@ -454,18 +466,18 @@ public class Structure : VBox
         if (doc == null)
             return;
 
-        DocumentStructure doc_struct = doc.get_structure ();
+        _document_structure = doc.get_structure ();
 
         if (force_parse)
-            doc_struct.parse ();
+            _document_structure.parse ();
 
-        if (doc_struct.parsing_done)
-            set_model (doc_struct.get_model ());
+        if (_document_structure.parsing_done)
+            set_model (_document_structure.get_model ());
 
-        doc_struct.notify["parsing-done"].connect (() =>
+        _document_structure.notify["parsing-done"].connect (() =>
         {
-            if (doc_struct.parsing_done)
-                set_model (doc_struct.get_model ());
+            if (_document_structure.parsing_done)
+                set_model (_document_structure.get_model ());
         });
     }
 
@@ -516,7 +528,7 @@ public class Structure : VBox
         _action_copy.sensitive = true;
         _action_delete.sensitive = true;
         _action_select.sensitive = true;
-        _action_comment.sensitive = type != StructType.TODO && type != StructType.FIXME;
+        _action_comment.sensitive = true;
 
         _action_shift_left.sensitive =
             StructType.PART < type && type <= StructType.SUBPARAGRAPH;
@@ -524,32 +536,14 @@ public class Structure : VBox
         _action_shift_right.sensitive = type < StructType.SUBPARAGRAPH;
     }
 
-    public static void on_cut ()
+    public void do_action (StructAction action_type)
     {
-    }
+        TreeIter selected_iter;
+        int selected_row = Utils.get_selected_row (_tree_view, out selected_iter);
 
-    public static void on_copy ()
-    {
-    }
+        return_if_fail (selected_row != -1);
 
-    public static void on_delete ()
-    {
-    }
-
-    public static void on_select ()
-    {
-    }
-
-    public static void on_comment ()
-    {
-    }
-
-    public static void on_shift_left ()
-    {
-    }
-
-    public static void on_shift_right ()
-    {
+        _document_structure.do_action (action_type, selected_iter);
     }
 
     public static string get_icon_from_type (StructType type)

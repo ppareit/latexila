@@ -32,7 +32,8 @@ public enum StructColumn
     PIXBUF,
     TEXT,
     TOOLTIP,
-    MARK,
+    START_MARK,
+    END_MARK,
     TYPE,
     N_COLUMNS
 }
@@ -43,6 +44,10 @@ public enum StructListColumn
     TEXT,
     TOOLTIP,
     N_COLUMNS
+}
+
+public errordomain StructError {
+    GENERAL
 }
 
 public class StructureModel : TreeModel, GLib.Object
@@ -60,22 +65,23 @@ public class StructureModel : TreeModel, GLib.Object
     public StructureModel ()
     {
         _column_types = new Type[StructColumn.N_COLUMNS];
-        _column_types[StructColumn.PIXBUF]  = typeof (string);
-        _column_types[StructColumn.TEXT]    = typeof (string);
-        _column_types[StructColumn.TOOLTIP] = typeof (string);
-        _column_types[StructColumn.MARK]    = typeof (TextMark);
-        _column_types[StructColumn.TYPE]    = typeof (StructType);
+        _column_types[StructColumn.PIXBUF]      = typeof (string);
+        _column_types[StructColumn.TEXT]        = typeof (string);
+        _column_types[StructColumn.TOOLTIP]     = typeof (string);
+        _column_types[StructColumn.START_MARK]  = typeof (TextMark);
+        _column_types[StructColumn.END_MARK]    = typeof (TextMark);
+        _column_types[StructColumn.TYPE]        = typeof (StructType);
 
         StructData empty_data = {};
         _tree = new Node<StructData?> (empty_data);
 
         new_stamp ();
 
-        _list_labels = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_includes = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_tables = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_figures = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_todo_and_fixme = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_labels            = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_includes          = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_tables            = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_figures           = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_todo_and_fixme    = new Gee.ArrayList<unowned Node<StructData?>> ();
     }
 
     // A new stamp should be generated each time the data in the model change
@@ -192,8 +198,12 @@ public class StructureModel : TreeModel, GLib.Object
                 val = data.text;
                 break;
 
-            case StructColumn.MARK:
+            case StructColumn.START_MARK:
                 val = data.start_mark;
+                break;
+
+            case StructColumn.END_MARK:
+                val = data.end_mark;
                 break;
 
             case StructColumn.TYPE:
@@ -335,7 +345,7 @@ public class StructureModel : TreeModel, GLib.Object
 
 
     /*************************************************************************/
-    // Custom methods (add an item)
+    // Custom methods
 
     public void add_item_at_end (StructData item)
     {
@@ -419,6 +429,31 @@ public class StructureModel : TreeModel, GLib.Object
                 child_index++;
             }
         }
+    }
+
+    // With the iter returned, we can simply go one line backward and we have the end of
+    // the section. If null is returned, the end of the section is the end of the doc.
+    public TreeIter? get_next_sibling_or_parent (TreeIter section_iter) throws StructError
+    {
+        if (! iter_is_valid (section_iter))
+            throw new StructError.GENERAL ("iter is not valid.");
+
+        unowned Node<StructData?> cur_node = get_node_from_iter (section_iter);
+
+        if (! Structure.is_section (cur_node.data.type))
+            throw new StructError.GENERAL ("iter is not a section.");
+
+        while (cur_node != null && cur_node != _tree)
+        {
+            unowned Node<StructData?>? next_sibling_node = cur_node.next_sibling ();
+
+            if (next_sibling_node != null)
+                return create_iter_at_node (next_sibling_node);
+
+            cur_node = cur_node.parent;
+        }
+
+        return null;
     }
 
     private void insert_item_at_position (StructData item, Node<StructData?> parent,

@@ -93,6 +93,9 @@ public class DocumentStructure : GLib.Object
         return _model;
     }
 
+    /*************************************************************************/
+    // Parsing stuff
+
     // Parse the document. Returns false if finished, true otherwise.
     private bool parse_impl ()
     {
@@ -472,5 +475,96 @@ public class DocumentStructure : GLib.Object
             default:
                 return null;
         }
+    }
+
+    /*************************************************************************/
+    // Actions: cut, copy, delete, select, comment, shift left/right
+
+    public void do_action (StructAction action_type, TreeIter tree_iter)
+    {
+        if (action_type == StructAction.COMMENT)
+        {
+            do_comment (tree_iter);
+            return;
+        }
+    }
+
+    private void do_comment (TreeIter tree_iter)
+    {
+        StructType type;
+        TextMark start_mark = null;
+        TextMark end_mark = null;
+
+        _model.get (tree_iter,
+            StructColumn.TYPE, out type,
+            StructColumn.START_MARK, out start_mark,
+            StructColumn.END_MARK, out end_mark,
+            -1);
+
+        TextIter start_iter;
+        TextIter? end_iter = null;
+
+        _doc.get_iter_at_mark (out start_iter, start_mark);
+
+        if (end_mark != null)
+            _doc.get_iter_at_mark (out end_iter, end_mark);
+
+        /* comment a simple item */
+        if (! Structure.is_section (type))
+        {
+            comment (start_iter, end_iter);
+            return;
+        }
+
+        /* comment a section */
+
+        // get next sibling or parent
+        TreeIter? next_section_iter = null;
+        try
+        {
+            next_section_iter = _model.get_next_sibling_or_parent (tree_iter);
+        }
+        catch (StructError e)
+        {
+            stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
+            return;
+        }
+
+        // the end of the section is the end of the document
+        if (next_section_iter == null)
+            _doc.get_end_iter (out end_iter);
+
+        // go one line backward
+        else
+        {
+            _model.get (next_section_iter,
+                StructColumn.START_MARK, out end_mark,
+                -1);
+
+            _doc.get_iter_at_mark (out end_iter, end_mark);
+            if (! end_iter.backward_line ())
+                end_iter = null;
+        }
+
+        comment (start_iter, end_iter);
+    }
+
+    // comment the lines between start_iter and end_iter included
+    private void comment (TextIter start_iter, TextIter? end_iter)
+    {
+        int start_line = start_iter.get_line ();
+        int end_line = start_line;
+
+        if (end_iter != null)
+            end_line = end_iter.get_line ();
+
+        _doc.begin_user_action ();
+        for (int line_index = start_line ; line_index <= end_line ; line_index++)
+        {
+            TextIter iter;
+            _doc.get_iter_at_line (out iter, line_index);
+            _doc.insert (iter, "% ", -1);
+        }
+        _doc.end_user_action ();
     }
 }
