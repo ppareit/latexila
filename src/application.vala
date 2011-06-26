@@ -106,7 +106,6 @@ public class Application : GLib.Object
 	    { Config.DATA_DIR + "/images/icons/mathaccent10.png", "mathaccent10" },
 	    { Config.DATA_DIR + "/images/icons/completion_choice.png", "completion_choice" },
 	    { Config.DATA_DIR + "/images/icons/completion_cmd.png", "completion_cmd" },
-	    { Config.DATA_DIR + "/images/icons/image.png", "image" },
 	    { Config.DATA_DIR + "/images/icons/tree_part.png", "tree_part" },
 	    { Config.DATA_DIR + "/images/icons/tree_chapter.png", "tree_chapter" },
 	    { Config.DATA_DIR + "/images/icons/tree_section.png", "tree_section" },
@@ -114,7 +113,6 @@ public class Application : GLib.Object
 	    { Config.DATA_DIR + "/images/icons/tree_subsubsection.png",
 	        "tree_subsubsection" },
 	    { Config.DATA_DIR + "/images/icons/tree_paragraph.png", "tree_paragraph" },
-	    { Config.DATA_DIR + "/images/icons/tree_include.png", "tree_include" },
 	    { Config.DATA_DIR + "/images/icons/tree_todo.png", "tree_todo" },
 	    { Config.DATA_DIR + "/images/icons/tree_label.png", "tree_label" },
 	    { Config.DATA_DIR + "/images/icons/table.png", "table" }
@@ -171,6 +169,8 @@ public class Application : GLib.Object
         Gtk.Window.set_default_icon_list (list);
 
         register_my_stock_icons ();
+        add_theme_icon_to_stock ("image-x-generic", "image");
+        add_theme_icon_to_stock ("text-x-generic", "tree_include");
 
         AppSettings.get_default ();
         create_window ();
@@ -317,6 +317,45 @@ public class Application : GLib.Object
             icon_factory.add (icon.stock_id, icon_set);
         }
 
+        icon_factory.add_default ();
+    }
+
+    private void add_theme_icon_to_stock (string icon_name, string stock_id)
+    {
+        Gtk.IconTheme theme = Gtk.IconTheme.get_default ();
+        Gtk.IconSet icon_set = new Gtk.IconSet ();
+
+        Gtk.IconSize[] sizes =
+        {
+            Gtk.IconSize.MENU,
+            Gtk.IconSize.SMALL_TOOLBAR,
+            Gtk.IconSize.LARGE_TOOLBAR,
+            Gtk.IconSize.BUTTON,
+            Gtk.IconSize.DND,
+            Gtk.IconSize.DIALOG
+        };
+
+        foreach (Gtk.IconSize size in sizes)
+        {
+            Gdk.Pixbuf pixbuf = null;
+            try
+            {
+                pixbuf = theme.load_icon (icon_name, size, 0);
+            }
+            catch (Error e)
+            {
+                stderr.printf ("Warning: get theme icon failed: %s\n", e.message);
+                continue;
+            }
+
+            Gtk.IconSource icon_source = new Gtk.IconSource ();
+            icon_source.set_pixbuf (pixbuf);
+            icon_source.set_size (size);
+            icon_set.add_source (icon_source);
+        }
+
+        Gtk.IconFactory icon_factory = new Gtk.IconFactory ();
+        icon_factory.add (stock_id, icon_set);
         icon_factory.add_default ();
     }
 }
