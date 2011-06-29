@@ -21,7 +21,9 @@ using Gtk;
 
 public enum StructType
 {
-    PART = 0,
+    // First part: must be exactly the same as the first part of LowLevelType
+    // (in DocumentStructure).
+    PART,
     CHAPTER,
     SECTION,
     SUBSECTION,
@@ -30,11 +32,13 @@ public enum StructType
     SUBPARAGRAPH,
     LABEL,
     INCLUDE,
-    TABLE,
-    FIGURE,
     IMAGE,
     TODO,
     FIXME,
+
+    // Second part: "high-level" only
+    TABLE,
+    FIGURE,
     N_TYPES
 }
 
