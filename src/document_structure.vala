@@ -159,13 +159,7 @@ public class DocumentStructure : GLib.Object
             }
 
             // get the text of the current line
-            TextIter next_line_iter;
-            if (cur_line == nb_lines - 1)
-                _doc.get_end_iter (out next_line_iter);
-            else
-                _doc.get_iter_at_line (out next_line_iter, cur_line + 1);
-
-            string line = _doc.get_text (cur_line_iter, next_line_iter, false);
+            string line = get_document_line_contents (cur_line);
 
             // in one line there could be several items
 
@@ -188,7 +182,7 @@ public class DocumentStructure : GLib.Object
                 start_index = end_match_index;
             }
 
-            cur_line_iter = next_line_iter;
+            cur_line_iter.forward_line ();
             cur_line++;
         }
 
@@ -558,12 +552,20 @@ public class DocumentStructure : GLib.Object
     {
         if (action_type == StructAction.COMMENT)
         {
-            do_comment (tree_iter);
+            comment_item (tree_iter);
             return;
         }
+
+        if (action_type != StructAction.SELECT)
+            return;
+
+        TextIter? start_iter;
+        TextIter? end_iter;
+        if (get_exact_item_bounds (tree_iter, out start_iter, out end_iter))
+            _doc.select_range (start_iter, end_iter);
     }
 
-    private void do_comment (TreeIter tree_iter)
+    private void comment_item (TreeIter tree_iter)
     {
         StructType type;
         TextMark start_mark = null;
@@ -586,7 +588,7 @@ public class DocumentStructure : GLib.Object
         /* comment a simple item */
         if (! Structure.is_section (type))
         {
-            comment (start_iter, end_iter);
+            comment_between (start_iter, end_iter);
             return;
         }
 
@@ -620,11 +622,11 @@ public class DocumentStructure : GLib.Object
                 end_iter = null;
         }
 
-        comment (start_iter, end_iter);
+        comment_between (start_iter, end_iter);
     }
 
     // comment the lines between start_iter and end_iter included
-    private void comment (TextIter start_iter, TextIter? end_iter)
+    private void comment_between (TextIter start_iter, TextIter? end_iter)
     {
         int start_line = start_iter.get_line ();
         int end_line = start_line;
@@ -640,5 +642,193 @@ public class DocumentStructure : GLib.Object
             _doc.insert (iter, "% ", -1);
         }
         _doc.end_user_action ();
+    }
+
+    // Returns true only if the bounds are correctly set.
+    private bool get_exact_item_bounds (TreeIter tree_iter, out TextIter? start_iter,
+        out TextIter? end_iter)
+    {
+        /* get item data */
+        StructType item_type;
+        TextMark start_mark = null;
+        TextMark end_mark = null;
+        string item_contents = null;
+
+        _model.get (tree_iter,
+            StructColumn.TYPE, out item_type,
+            StructColumn.START_MARK, out start_mark,
+            StructColumn.END_MARK, out end_mark,
+            StructColumn.TEXT, out item_contents,
+            -1);
+
+        /* search 'start_iter' */
+        TextIter line_iter;
+        _doc.get_iter_at_mark (out line_iter, start_mark);
+        int line_num = line_iter.get_line ();
+
+        int? start_match_index;
+        int? end_match_index;
+
+        bool found = get_low_level_item_bounds (item_type, item_contents, line_num, true,
+            out start_match_index, out end_match_index);
+
+        if (! found)
+            return false;
+
+        // set 'start_iter'
+        _doc.get_iter_at_line_index (out start_iter, line_num, start_match_index);
+
+        /* search 'end_iter' */
+
+        // a section
+        if (Structure.is_section (item_type))
+        {
+            TreeIter? next_section_iter = null;
+            try
+            {
+                next_section_iter = _model.get_next_sibling_or_parent (tree_iter);
+            }
+            catch (StructError e)
+            {
+                stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
+                return false;
+            }
+
+            // the end of the section is the end of the document
+            if (next_section_iter == null)
+            {
+                _doc.get_end_iter (out end_iter);
+                return true;
+            }
+
+            _model.get (next_section_iter,
+                StructColumn.TYPE, out item_type,
+                StructColumn.START_MARK, out start_mark,
+                StructColumn.TEXT, out item_contents,
+                -1);
+
+            _doc.get_iter_at_mark (out line_iter, start_mark);
+            line_num = line_iter.get_line ();
+
+            found = get_low_level_item_bounds (item_type, item_contents, line_num, true,
+                out start_match_index, null);
+
+            if (! found)
+                return false;
+
+            _doc.get_iter_at_line_index (out end_iter, line_num, start_match_index);
+            return true;
+        }
+
+        // an other common type
+        else if (item_type < StructType.NB_COMMON_TYPES)
+        {
+            _doc.get_iter_at_line_index (out end_iter, line_num, end_match_index);
+            return true;
+        }
+
+        // an environment
+        if (end_mark == null)
+            return false;
+
+        _doc.get_iter_at_mark (out line_iter, end_mark);
+        line_num = line_iter.get_line ();
+
+        found = get_low_level_item_bounds (item_type, item_contents, line_num, false,
+            null, out end_match_index);
+
+        if (! found)
+            return false;
+
+        _doc.get_iter_at_line_index (out end_iter, line_num, end_match_index);
+
+        return true;
+    }
+
+    private bool get_low_level_item_bounds (StructType item_type, string item_contents,
+        int line_num, bool is_start, out int? start_match_index, out int? end_match_index)
+    {
+        string line = get_document_line_contents (line_num);
+
+        /* parse the line */
+        int start_index = 0;
+        int line_length = line.length;
+
+        while (true)
+        {
+            if (line_length <= start_index)
+                break;
+
+            LowLevelType? low_level_type;
+            string? contents;
+
+            bool found = search_low_level_item (line, start_index, out low_level_type,
+                out contents, out start_match_index, out end_match_index);
+
+            if (! found)
+                break;
+
+            if (contents == null)
+                contents = "";
+
+            // compare the item found with the structure item
+            if (same_items (item_type, item_contents, low_level_type, contents, is_start))
+                return true;
+
+            start_index = end_match_index;
+        }
+
+        return false;
+    }
+
+    // Compare a structure item with another low-level item
+    // If 'start' is true, and if the structure item is an environment, a \begin{} is
+    // expected. Otherwise, a \end{} is expected.
+    private bool same_items (StructType item_type, string item_contents,
+        LowLevelType item_found_type, string item_found_contents, bool start)
+    {
+        if (item_found_type < LowLevelType.NB_COMMON_TYPES)
+        {
+            bool same_type = item_type == (StructType) item_found_type;
+            bool same_contents = item_contents == item_found_contents;
+            return same_type && same_contents;
+        }
+
+        if (item_type == StructType.FIGURE)
+        {
+            if (start)
+                return item_found_type == LowLevelType.BEGIN_FIGURE;
+            else
+                return item_found_type == LowLevelType.END_FIGURE;
+        }
+
+        if (item_type == StructType.TABLE)
+        {
+            if (start)
+                return item_found_type == LowLevelType.BEGIN_TABLE;
+            else
+                return item_found_type == LowLevelType.END_TABLE;
+        }
+
+        return false;
+    }
+
+    private string? get_document_line_contents (int line_num)
+    {
+        int nb_lines = _doc.get_line_count ();
+        return_val_if_fail (0 <= line_num && line_num < nb_lines, null);
+
+        TextIter begin;
+        _doc.get_iter_at_line (out begin, line_num);
+
+        // If the line is empty, and if we do a forward_to_line_end(), we go to the end of
+        // the _next_ line, so we must handle this special case.
+        if (begin.ends_line ())
+            return "";
+
+        TextIter end = begin;
+        end.forward_to_line_end ();
+
+        return _doc.get_text (begin, end, false);
     }
 }

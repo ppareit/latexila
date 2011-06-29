@@ -8,15 +8,27 @@ LaTeXila 2.2
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
 	- Right click:
-		- cut, copy, delete, select
-		- comment
+		- cut, copy, delete
+		- comment: remove the item(s) from the model when the item is commented
 		- shift left
 		- shift right:
 			- display a warning if a subparagraph already exists
+		- display a warning if the action fails (most probably when the structure data
+		  is not up-to-date)
 
 	  Shift left/right is new comparated to Kile. For example we have a big section (with
 	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
 	  subsections becomes sections, etc.).
+
+	- When setting a model, expand all only if the tree is not too big
+
+	- Insert in middle is very slow comparated to insert at the end
+	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
+
+	- Create the TextMarks at the right places with get_iter_at_line_index(),
+	  and simplify the code for actions
+
+	- Take into account \end{document}
 
 - Write some documentation:
 	- explain the build tools, how to create a new one, etc.

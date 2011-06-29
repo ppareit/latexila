@@ -35,6 +35,7 @@ public enum StructType
     IMAGE,
     TODO,
     FIXME,
+    NB_COMMON_TYPES,
 
     // Second part: "high-level" only
     TABLE,
