@@ -46,12 +46,14 @@ public class DocumentStructure : GLib.Object
         END_TABLE,
         BEGIN_VERBATIM,
         END_VERBATIM,
+        END_DOCUMENT,
         CAPTION
     }
 
-    private unowned TextBuffer _doc;
+    private unowned Document _doc;
     private int _nb_marks = 0;
     private static const string MARK_NAME_PREFIX = "struct_item_";
+    private TextMark? _end_document_mark = null;
 
     private StructureModel _model = null;
 
@@ -68,13 +70,12 @@ public class DocumentStructure : GLib.Object
 
     private static const int MAX_NB_LINES_TO_PARSE = 2000;
     private int _start_parsing_line = 0;
-
     private static const bool _measure_parsing_time = false;
     private Timer _timer = null;
 
     public bool parsing_done { get; private set; default = false; }
 
-    public DocumentStructure (TextBuffer doc)
+    public DocumentStructure (Document doc)
     {
         _doc = doc;
 
@@ -108,6 +109,7 @@ public class DocumentStructure : GLib.Object
         _env_data = null;
         _start_parsing_line = 0;
 
+        _end_document_mark = null;
         clear_all_structure_marks ();
 
         Idle.add (() =>
@@ -299,6 +301,12 @@ public class DocumentStructure : GLib.Object
             return true;
         }
 
+        if (contents == "document" && ! is_begin_env)
+        {
+            type = LowLevelType.END_DOCUMENT;
+            return true;
+        }
+
         return false;
     }
 
@@ -388,7 +396,7 @@ public class DocumentStructure : GLib.Object
         }
 
         // the low-level type is common with the high-level type
-        else if (type < LowLevelType.NB_COMMON_TYPES)
+        if (type < LowLevelType.NB_COMMON_TYPES)
             add_item ((StructType) type, contents, iter);
 
         // begin of a verbatim env
@@ -416,6 +424,10 @@ public class DocumentStructure : GLib.Object
             _env_data.end_mark = create_text_mark_from_iter (iter);
             add_item_data (_env_data, true);
         }
+
+        // end of the document
+        else if (type == LowLevelType.END_DOCUMENT)
+            _end_document_mark = create_text_mark_from_iter (iter);
     }
 
     private void create_new_environment (LowLevelType type, TextIter start_iter)
@@ -604,11 +616,16 @@ public class DocumentStructure : GLib.Object
             return;
         }
 
+        bool go_one_line_backward = true;
+
         // the end of the section is the end of the document
         if (next_section_iter == null)
-            _doc.get_end_iter (out end_iter);
+        {
+            bool end_of_file;
+            end_iter = get_end_document_iter (out end_of_file);
+            go_one_line_backward = ! end_of_file;
+        }
 
-        // go one line backward
         else
         {
             _model.get (next_section_iter,
@@ -616,6 +633,10 @@ public class DocumentStructure : GLib.Object
                 -1);
 
             _doc.get_iter_at_mark (out end_iter, end_mark);
+        }
+
+        if (go_one_line_backward)
+        {
             if (! end_iter.backward_line ())
                 end_iter = null;
         }
@@ -689,7 +710,7 @@ public class DocumentStructure : GLib.Object
             // the end of the section is the end of the document
             if (next_section_iter == null)
             {
-                _doc.get_end_iter (out end_iter);
+                end_iter = get_end_document_iter ();
                 return true;
             }
 
@@ -802,5 +823,22 @@ public class DocumentStructure : GLib.Object
         end.forward_to_line_end ();
 
         return _doc.get_text (begin, end, false);
+    }
+
+    // Take into account \end{document}
+    private TextIter get_end_document_iter (out bool end_of_file = null)
+    {
+        if (_end_document_mark != null)
+        {
+            end_of_file = false;
+            TextIter end_document_iter;
+            _doc.get_iter_at_mark (out end_document_iter, _end_document_mark);
+            return end_document_iter;
+        }
+
+        end_of_file = true;
+        TextIter eof_iter;
+        _doc.get_end_iter (out eof_iter);
+        return eof_iter;
     }
 }
