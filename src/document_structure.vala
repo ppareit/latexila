@@ -49,7 +49,6 @@ public class DocumentStructure : GLib.Object
         CAPTION
     }
 
-
     private unowned TextBuffer _doc;
     private int _nb_marks = 0;
     private static const string MARK_NAME_PREFIX = "struct_item_";
@@ -140,9 +139,6 @@ public class DocumentStructure : GLib.Object
         int nb_lines = _doc.get_line_count ();
         int stop_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
 
-        TextIter cur_line_iter;
-        _doc.get_iter_at_line (out cur_line_iter, cur_line);
-
         // The parsing is done line-by-line.
         while (cur_line < nb_lines)
         {
@@ -169,20 +165,22 @@ public class DocumentStructure : GLib.Object
             {
                 LowLevelType? type;
                 string? contents;
+                int? start_match_index;
                 int? end_match_index;
 
                 bool item_found = search_low_level_item (line, start_index, out type,
-                    out contents, null, out end_match_index);
+                    out contents, out start_match_index, out end_match_index);
 
                 if (! item_found)
                     break;
 
-                handle_item (type, contents, cur_line_iter);
+                TextIter iter;
+                _doc.get_iter_at_line_index (out iter, cur_line, start_match_index);
+                handle_item (type, contents, iter);
 
                 start_index = end_match_index;
             }
 
-            cur_line_iter.forward_line ();
             cur_line++;
         }
 
@@ -378,7 +376,7 @@ public class DocumentStructure : GLib.Object
         return true;
     }
 
-    private void handle_item (LowLevelType type, string? contents, TextIter cur_line_iter)
+    private void handle_item (LowLevelType type, string? contents, TextIter iter)
     {
         // we are currently in a verbatim env
         if (_in_verbatim_env)
@@ -391,7 +389,7 @@ public class DocumentStructure : GLib.Object
 
         // the low-level type is common with the high-level type
         else if (type < LowLevelType.NB_COMMON_TYPES)
-            add_item ((StructType) type, contents, cur_line_iter);
+            add_item ((StructType) type, contents, iter);
 
         // begin of a verbatim env
         else if (type == LowLevelType.BEGIN_VERBATIM)
@@ -399,7 +397,7 @@ public class DocumentStructure : GLib.Object
 
         // begin of a figure or table env
         else if (type == LowLevelType.BEGIN_FIGURE || type == LowLevelType.BEGIN_TABLE)
-            create_new_environment (type, cur_line_iter);
+            create_new_environment (type, iter);
 
         // a caption (we take only the first)
         else if (type == LowLevelType.CAPTION && _env_data != null
@@ -415,7 +413,7 @@ public class DocumentStructure : GLib.Object
         // end of a figure or table env
         else if (verify_end_environment_type (type))
         {
-            _env_data.end_mark = create_text_mark_from_iter (cur_line_iter);
+            _env_data.end_mark = create_text_mark_from_iter (iter);
             add_item_data (_env_data, true);
         }
     }
@@ -662,21 +660,15 @@ public class DocumentStructure : GLib.Object
             -1);
 
         /* search 'start_iter' */
-        TextIter line_iter;
-        _doc.get_iter_at_mark (out line_iter, start_mark);
-        int line_num = line_iter.get_line ();
+        _doc.get_iter_at_mark (out start_iter, start_mark);
 
-        int? start_match_index;
-        int? end_match_index;
-
-        bool found = get_low_level_item_bounds (item_type, item_contents, line_num, true,
-            out start_match_index, out end_match_index);
+        // Place 'end_iter' to the end of the low level type. If it's not the good place,
+        // it will be changed below.
+        bool found = get_low_level_item_bounds (item_type, item_contents, start_iter,
+            true, out end_iter);
 
         if (! found)
             return false;
-
-        // set 'start_iter'
-        _doc.get_iter_at_line_index (out start_iter, line_num, start_match_index);
 
         /* search 'end_iter' */
 
@@ -707,75 +699,55 @@ public class DocumentStructure : GLib.Object
                 StructColumn.TEXT, out item_contents,
                 -1);
 
-            _doc.get_iter_at_mark (out line_iter, start_mark);
-            line_num = line_iter.get_line ();
+            _doc.get_iter_at_mark (out end_iter, start_mark);
 
-            found = get_low_level_item_bounds (item_type, item_contents, line_num, true,
-                out start_match_index, null);
-
-            if (! found)
-                return false;
-
-            _doc.get_iter_at_line_index (out end_iter, line_num, start_match_index);
-            return true;
+            return get_low_level_item_bounds (item_type, item_contents, end_iter, true,
+                null);
         }
 
-        // an other common type
+        // an other common type: the end iter is already at the good place
         else if (item_type < StructType.NB_COMMON_TYPES)
-        {
-            _doc.get_iter_at_line_index (out end_iter, line_num, end_match_index);
             return true;
-        }
 
         // an environment
         if (end_mark == null)
             return false;
 
-        _doc.get_iter_at_mark (out line_iter, end_mark);
-        line_num = line_iter.get_line ();
+        TextIter end_env_iter;
+        _doc.get_iter_at_mark (out end_env_iter, end_mark);
 
-        found = get_low_level_item_bounds (item_type, item_contents, line_num, false,
-            null, out end_match_index);
-
-        if (! found)
-            return false;
-
-        _doc.get_iter_at_line_index (out end_iter, line_num, end_match_index);
-
-        return true;
+        return get_low_level_item_bounds (item_type, item_contents, end_env_iter, false,
+            out end_iter);
     }
 
     private bool get_low_level_item_bounds (StructType item_type, string item_contents,
-        int line_num, bool is_start, out int? start_match_index, out int? end_match_index)
+        TextIter start_match_iter, bool is_start, out TextIter? end_match_iter)
     {
+        int line_num = start_match_iter.get_line ();
         string line = get_document_line_contents (line_num);
 
         /* parse the line */
-        int start_index = 0;
-        int line_length = line.length;
+        int start_index = start_match_iter.get_line_index ();
+        LowLevelType? low_level_type;
+        string? contents;
+        int? start_match_index;
+        int? end_match_index;
 
-        while (true)
+        bool found = search_low_level_item (line, start_index, out low_level_type,
+            out contents, out start_match_index, out end_match_index);
+
+        // If an item is found, it should be located at exactly the same place.
+        if (! found || start_index != start_match_index)
+            return false;
+
+        if (contents == null)
+            contents = "";
+
+        // compare the item found with the structure item
+        if (same_items (item_type, item_contents, low_level_type, contents, is_start))
         {
-            if (line_length <= start_index)
-                break;
-
-            LowLevelType? low_level_type;
-            string? contents;
-
-            bool found = search_low_level_item (line, start_index, out low_level_type,
-                out contents, out start_match_index, out end_match_index);
-
-            if (! found)
-                break;
-
-            if (contents == null)
-                contents = "";
-
-            // compare the item found with the structure item
-            if (same_items (item_type, item_contents, low_level_type, contents, is_start))
-                return true;
-
-            start_index = end_match_index;
+            _doc.get_iter_at_line_index (out end_match_iter, line_num, end_match_index);
+            return true;
         }
 
         return false;

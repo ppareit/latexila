@@ -414,8 +414,8 @@ public class Structure : VBox
         doc.get_iter_at_mark (out text_iter, mark);
         doc.place_cursor (text_iter);
 
-        // scroll to cursor, line at the top
-        _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 0, 0);
+        // scroll to cursor, line at the top (no horizontal scroll)
+        _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 1, 0);
 
         /* select the corresponding item in the simple list */
         set_actions_sensitivity (type);

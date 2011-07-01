@@ -25,9 +25,6 @@ LaTeXila 2.2
 	- Insert in middle is very slow comparated to insert at the end
 	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
 
-	- Create the TextMarks at the right places with get_iter_at_line_index(),
-	  and simplify the code for actions
-
 	- Take into account \end{document}
 
 - Write some documentation:
