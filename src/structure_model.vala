@@ -456,6 +456,16 @@ public class StructureModel : TreeModel, GLib.Object
         return null;
     }
 
+    public void delete (TreeIter iter)
+    {
+        return_if_fail (iter_is_valid (iter));
+
+        TreePath path = get_path (iter);
+        unowned Node<StructData?> node = get_node_from_iter (iter);
+        node.unlink ();
+        row_deleted (path);
+    }
+
     private void insert_item_at_position (StructData item, Node<StructData?> parent,
         int pos)
     {

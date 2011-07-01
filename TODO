@@ -8,8 +8,6 @@ LaTeXila 2.2
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
 	- Right click:
-		- cut, copy, delete
-		- comment: remove the item(s) from the model when the item is commented
 		- shift left
 		- shift right:
 			- display a warning if a subparagraph already exists

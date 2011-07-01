@@ -562,28 +562,53 @@ public class DocumentStructure : GLib.Object
     {
         if (action_type == StructAction.COMMENT)
         {
-            comment_item (tree_iter);
+            bool item_commented = comment_item (tree_iter);
+            if (item_commented)
+                _model.delete (tree_iter);
             return;
         }
 
-        if (action_type != StructAction.SELECT)
+        if (action_type == StructAction.SHIFT_LEFT
+            || action_type == StructAction.SHIFT_RIGHT)
             return;
 
         TextIter? start_iter;
         TextIter? end_iter;
-        if (get_exact_item_bounds (tree_iter, out start_iter, out end_iter))
-        {
-            if (start_iter.get_line () != end_iter.get_line ())
-            {
-                backward_indentation (ref start_iter);
-                backward_indentation (ref end_iter);
-            }
+        bool found = get_exact_item_bounds (tree_iter, out start_iter, out end_iter);
 
+        if (! found)
+            return;
+
+        if (start_iter.get_line () != end_iter.get_line ())
+        {
+            backward_indentation (ref start_iter);
+            backward_indentation (ref end_iter);
+        }
+
+        if (action_type == StructAction.SELECT)
+        {
             _doc.select_range (start_iter, end_iter);
+            return;
+        }
+
+        if (action_type == StructAction.COPY || action_type == StructAction.CUT)
+        {
+            string data = _doc.get_text (start_iter, end_iter, false);
+            Clipboard clipboard = Clipboard.get (Gdk.SELECTION_CLIPBOARD);
+            clipboard.set_text (data, -1);
+        }
+
+        if (action_type == StructAction.DELETE || action_type == StructAction.CUT)
+        {
+            _doc.begin_user_action ();
+            _doc.delete (start_iter, end_iter);
+            _doc.end_user_action ();
+            _model.delete (tree_iter);
         }
     }
 
-    private void comment_item (TreeIter tree_iter)
+    // Returns true only if the item is correctly commented
+    private bool comment_item (TreeIter tree_iter)
     {
         StructType type;
         TextMark start_mark = null;
@@ -607,7 +632,7 @@ public class DocumentStructure : GLib.Object
         if (! Structure.is_section (type))
         {
             comment_between (start_iter, end_iter);
-            return;
+            return true;
         }
 
         /* comment a section */
@@ -621,7 +646,7 @@ public class DocumentStructure : GLib.Object
         catch (StructError e)
         {
             stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
-            return;
+            return false;
         }
 
         bool go_one_line_backward = true;
@@ -650,6 +675,7 @@ public class DocumentStructure : GLib.Object
         }
 
         comment_between (start_iter, end_iter);
+        return true;
     }
 
     // comment the lines between start_iter and end_iter included
