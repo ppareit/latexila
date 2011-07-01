@@ -572,7 +572,15 @@ public class DocumentStructure : GLib.Object
         TextIter? start_iter;
         TextIter? end_iter;
         if (get_exact_item_bounds (tree_iter, out start_iter, out end_iter))
+        {
+            if (start_iter.get_line () != end_iter.get_line ())
+            {
+                backward_indentation (ref start_iter);
+                backward_indentation (ref end_iter);
+            }
+
             _doc.select_range (start_iter, end_iter);
+        }
     }
 
     private void comment_item (TreeIter tree_iter)
@@ -840,5 +848,23 @@ public class DocumentStructure : GLib.Object
         TextIter eof_iter;
         _doc.get_end_iter (out eof_iter);
         return eof_iter;
+    }
+
+    // If there are some spaces between the beginning of the line and the iter, move
+    // the iter at the beginning of the line.
+    private void backward_indentation (ref TextIter? iter)
+    {
+        return_if_fail (iter != null);
+
+        if (iter.starts_line ())
+            return;
+
+        int line_num = iter.get_line ();
+        TextIter begin_line_iter;
+        _doc.get_iter_at_line (out begin_line_iter, line_num);
+
+        string text_between = _doc.get_text (begin_line_iter, iter, false);
+        if (text_between.strip () == "")
+            iter = begin_line_iter;
     }
 }
