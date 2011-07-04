@@ -73,6 +73,8 @@ public class DocumentStructure : GLib.Object
     private static const bool _measure_parsing_time = false;
     private Timer _timer = null;
 
+    private static string[] _section_names = null;
+
     public bool parsing_done { get; private set; default = false; }
 
     public DocumentStructure (Document doc)
@@ -568,9 +570,18 @@ public class DocumentStructure : GLib.Object
             return;
         }
 
-        if (action_type == StructAction.SHIFT_LEFT
-            || action_type == StructAction.SHIFT_RIGHT)
+        if (action_type == StructAction.SHIFT_LEFT)
             return;
+
+        if (action_type == StructAction.SHIFT_RIGHT)
+        {
+            _doc.begin_user_action ();
+            shift_right (tree_iter);
+            _doc.end_user_action ();
+
+            _model.shift_right (tree_iter);
+            return;
+        }
 
         TextIter? start_iter;
         TextIter? end_iter;
@@ -892,5 +903,92 @@ public class DocumentStructure : GLib.Object
         string text_between = _doc.get_text (begin_line_iter, iter, false);
         if (text_between.strip () == "")
             iter = begin_line_iter;
+    }
+
+    private bool shift_right (TreeIter tree_iter)
+    {
+        /* Get some data about the item */
+        StructType type;
+        TextMark mark;
+        _model.get (tree_iter,
+            StructColumn.TYPE, out type,
+            StructColumn.START_MARK, out mark,
+            -1);
+
+        return_val_if_fail (type != StructType.SUBPARAGRAPH, false);
+
+        if (! Structure.is_section (type))
+            return true;
+
+        /* Get the markup name, do some checks, etc. */
+        TextIter text_iter;
+        _doc.get_iter_at_mark (out text_iter, mark);
+
+        int line_num = text_iter.get_line ();
+        string? line = get_document_line_contents (line_num);
+        return_val_if_fail (line != null, false);
+
+        int backslash_index = text_iter.get_line_index ();
+        if (line[backslash_index] != '\\')
+            return false;
+
+        int after_backslash_index = backslash_index + 1;
+        string? markup_name = get_markup_name (line, after_backslash_index);
+        if (markup_name == null)
+            return false;
+
+        /* Get the new markup name */
+        bool with_star = markup_name.has_suffix ("*");
+
+        string? new_markup_name = get_section_name_from_type (type + 1);
+        return_val_if_fail (new_markup_name != null, false);
+
+        if (with_star)
+            new_markup_name += "*";
+
+        /* Replace the markup name */
+        TextIter begin_markup_name_iter;
+        _doc.get_iter_at_line_index (out begin_markup_name_iter, line_num,
+            after_backslash_index);
+
+        TextIter end_markup_name_iter;
+        _doc.get_iter_at_line_index (out end_markup_name_iter, line_num,
+            after_backslash_index + markup_name.length);
+
+        _doc.delete (begin_markup_name_iter, end_markup_name_iter);
+        _doc.insert (begin_markup_name_iter, new_markup_name, -1);
+
+        /* Do the same for all the children */
+        int nb_children = _model.iter_n_children (tree_iter);
+        for (int child_num = 0 ; child_num < nb_children ; child_num++)
+        {
+            TreeIter child_iter;
+            if (! _model.iter_nth_child (out child_iter, tree_iter, child_num))
+                continue;
+
+            if (! shift_right (child_iter))
+                return false;
+        }
+
+        return true;
+    }
+
+    private string? get_section_name_from_type (StructType type)
+    {
+        if (_section_names == null)
+        {
+            _section_names = new string[7];
+            _section_names[StructType.PART]             = "part";
+            _section_names[StructType.CHAPTER]          = "chapter";
+            _section_names[StructType.SECTION]          = "section";
+            _section_names[StructType.SUBSECTION]       = "subsection";
+            _section_names[StructType.SUBSUBSECTION]    = "subsubsection";
+            _section_names[StructType.PARAGRAPH]        = "paragraph";
+            _section_names[StructType.SUBPARAGRAPH]     = "subparagraph";
+        }
+
+        return_val_if_fail (Structure.is_section (type), null);
+
+        return _section_names[type];
     }
 }

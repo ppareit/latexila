@@ -460,10 +460,107 @@ public class StructureModel : TreeModel, GLib.Object
     {
         return_if_fail (iter_is_valid (iter));
 
-        TreePath path = get_path (iter);
         unowned Node<StructData?> node = get_node_from_iter (iter);
-        node.unlink ();
+        delete_node (node);
+    }
+
+    public void shift_right (TreeIter iter)
+    {
+        return_if_fail (iter_is_valid (iter));
+
+        unowned Node<StructData?> node = get_node_from_iter (iter);
+        StructType type = node.data.type;
+        return_if_fail (type < StructType.SUBPARAGRAPH);
+
+        StructType new_type = type + 1;
+
+        unowned Node<StructData?>? new_parent = node.prev_sibling ();
+        int new_pos;
+
+        if (new_parent == null || new_type <= new_parent.data.type)
+        {
+            new_parent = node.parent;
+            new_pos = new_parent.child_position (node);
+        }
+        else
+            new_pos = -1; // append
+
+        Node<StructData?> node_unlinked = delete_node (node);
+
+        shift_node_right (node_unlinked);
+
+        node = new_parent.insert (new_pos, (owned) node_unlinked);
+        reinsert_node (node);
+    }
+
+    private void insert_node (Node<StructData?> node, bool force_first_child = false)
+    {
+        new_stamp ();
+
+        TreeIter item_iter = create_iter_at_node (node);
+        TreePath item_path = get_path (item_iter);
+        row_inserted (item_path, item_iter);
+
+        // Attention, the row-has-child-toggled signal must be emitted _after_,
+        // else there are strange errors.
+        unowned Node<StructData?> parent = node.parent;
+        bool first_child = parent != _tree && parent.n_children () == 1;
+        if (force_first_child || first_child)
+        {
+            TreeIter parent_iter = create_iter_at_node (parent);
+            TreePath parent_path = get_path (parent_iter);
+            row_has_child_toggled (parent_path, parent_iter);
+        }
+    }
+
+    private Node<StructData?>? delete_node (Node<StructData?> node)
+    {
+        new_stamp ();
+
+        TreeIter? iter = create_iter_at_node (node);
+        return_val_if_fail (iter != null, null);
+
+        TreePath path = get_path (iter);
+        unowned Node<StructData?> parent = node.parent;
+        Node<StructData?> node_unlinked = node.unlink ();
         row_deleted (path);
+
+        if (parent != _tree && parent.n_children () == 0)
+        {
+            TreeIter parent_iter = create_iter_at_node (parent);
+            TreePath parent_path = get_path (parent_iter);
+            row_has_child_toggled (parent_path, parent_iter);
+        }
+
+        return node_unlinked;
+    }
+
+    private void shift_node_right (Node<StructData?> node)
+    {
+        if (node.data.type < StructType.SUBPARAGRAPH)
+            node.data.type += 1;
+
+        unowned Node<StructData?>? child = node.first_child ();
+        while (child != null)
+        {
+            shift_node_right (child);
+            child = child.next_sibling ();
+        }
+    }
+
+    private void reinsert_node (Node<StructData?> node, bool force_first_child = false)
+    {
+        insert_node (node, force_first_child);
+
+        unowned Node<StructData?>? child = node.first_child ();
+        bool first_child = true;
+
+        while (child != null)
+        {
+            reinsert_node (child, first_child);
+            child = child.next_sibling ();
+            first_child = false;
+        }
     }
 
     private void insert_item_at_position (StructData item, Node<StructData?> parent,
@@ -518,22 +615,7 @@ public class StructureModel : TreeModel, GLib.Object
         return_if_fail (item.text != null);
 
         unowned Node<StructData?> new_node = parent.insert_data (pos, item);
-
-        new_stamp ();
-
-        TreeIter item_iter = create_iter_at_node (new_node);
-        TreePath item_path = get_path (item_iter);
-        row_inserted (item_path, item_iter);
-
-        // Attention, the row-has-child-toggled signal must be emitted _after_,
-        // else there are strange errors.
-        if (parent != _tree && parent.n_children () == 1)
-        {
-            TreeIter parent_iter = create_iter_at_node (parent);
-            TreePath parent_path = get_path (parent_iter);
-            row_has_child_toggled (parent_path, parent_iter);
-        }
-
+        insert_node (new_node);
 
         // Store the node to a list, if it's not a section
         bool append = pos == -1;
@@ -596,20 +678,11 @@ public class StructureModel : TreeModel, GLib.Object
                 break;
 
             // unlink the node
-            new_stamp ();
-            TreePath previous_path = get_path (create_iter_at_node (sibling));
-            Node<StructData?> sibling_unlinked = sibling.unlink ();
-            row_deleted (previous_path);
+            Node<StructData?> sibling_unlinked = delete_node (sibling);
 
             // append it as a child
-            new_stamp ();
             unowned Node<StructData?> new_child = node.append ((owned) sibling_unlinked);
-
-            TreeIter? new_iter = create_iter_at_node (new_child);
-            return_if_fail (new_iter != null);
-
-            TreePath new_path = get_path (new_iter);
-            row_inserted (new_path, new_iter);
+            insert_node (new_child);
 
             sibling = node.next_sibling ();
         }
