@@ -9,8 +9,8 @@ LaTeXila 2.2
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
 	- Right click:
 		- shift left
-		- display a warning if the action fails (most probably when the structure data
-		  is not up-to-date)
+		- shift right: if an error occurs but some changes are already made to the document,
+		  undo these changes.
 
 	  Shift left/right is new comparated to Kile. For example we have a big section (with
 	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the

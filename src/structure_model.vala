@@ -47,7 +47,8 @@ public enum StructListColumn
 }
 
 public errordomain StructError {
-    GENERAL
+    GENERAL,
+    DATA_OUTDATED
 }
 
 public class StructureModel : TreeModel, GLib.Object

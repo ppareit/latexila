@@ -565,9 +565,10 @@ public class DocumentStructure : GLib.Object
     {
         if (action_type == StructAction.COMMENT)
         {
-            bool item_commented = comment_item (tree_iter);
-            if (item_commented)
-                _model.delete (tree_iter);
+            if (! comment_item (tree_iter))
+                throw new StructError.DATA_OUTDATED ("");
+
+            _model.delete (tree_iter);
             return;
         }
 
@@ -581,19 +582,24 @@ public class DocumentStructure : GLib.Object
                     _("The structure item already contains a sub-paragraph."));
 
             _doc.begin_user_action ();
-            shift_right (tree_iter);
+            bool success = shift_right (tree_iter);
             _doc.end_user_action ();
+
+            if (! success)
+                throw new StructError.DATA_OUTDATED ("");
 
             _model.shift_right (tree_iter);
             return;
         }
+
+        /* Select, copy, cut and delete */
 
         TextIter? start_iter;
         TextIter? end_iter;
         bool found = get_exact_item_bounds (tree_iter, out start_iter, out end_iter);
 
         if (! found)
-            return;
+            throw new StructError.DATA_OUTDATED ("");
 
         if (start_iter.get_line () != end_iter.get_line ())
         {
@@ -940,6 +946,15 @@ public class DocumentStructure : GLib.Object
         int after_backslash_index = backslash_index + 1;
         string? markup_name = get_markup_name (line, after_backslash_index);
         if (markup_name == null)
+            return false;
+
+        LowLevelType? markup_type = get_markup_low_level_type (markup_name);
+        if (markup_type == null)
+            return false;
+
+        // HACK see https://bugzilla.gnome.org/show_bug.cgi?id=652781
+        LowLevelType markup_type_hack = markup_type;
+        if ((int) type != (int) markup_type_hack)
             return false;
 
         /* Get the new markup name */

@@ -563,7 +563,11 @@ public class Structure : VBox
                 _("Structure action error: %s"),
                 get_action_name (action_type));
 
-            dialog.secondary_text = e.message;
+            if (e is StructError.DATA_OUTDATED)
+                dialog.secondary_text =
+                    _("The structure data seems outdated. Please refresh the structure.");
+            else
+                dialog.secondary_text = e.message;
 
             dialog.run ();
             dialog.destroy ();
