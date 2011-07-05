@@ -561,6 +561,7 @@ public class DocumentStructure : GLib.Object
     // Actions: cut, copy, delete, select, comment, shift left/right
 
     public void do_action (StructAction action_type, TreeIter tree_iter)
+        throws StructError
     {
         if (action_type == StructAction.COMMENT)
         {
@@ -575,6 +576,10 @@ public class DocumentStructure : GLib.Object
 
         if (action_type == StructAction.SHIFT_RIGHT)
         {
+            if (_model.item_contains_subparagraph (tree_iter))
+                throw new StructError.GENERAL (
+                    _("The structure item already contains a sub-paragraph."));
+
             _doc.begin_user_action ();
             shift_right (tree_iter);
             _doc.end_user_action ();

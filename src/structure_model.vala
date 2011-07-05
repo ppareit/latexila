@@ -493,6 +493,35 @@ public class StructureModel : TreeModel, GLib.Object
         reinsert_node (node);
     }
 
+    public bool item_contains_subparagraph (TreeIter iter)
+    {
+        return_val_if_fail (iter_is_valid (iter), false);
+
+        unowned Node<StructData?> node = get_node_from_iter (iter);
+        return node_contains_subparagraph (node);
+    }
+
+    private bool node_contains_subparagraph (Node<StructData?> node)
+    {
+        StructType type = node.data.type;
+
+        if (type == StructType.SUBPARAGRAPH)
+            return true;
+
+        if (! Structure.is_section (type))
+            return false;
+
+        unowned Node<StructData?>? child = node.first_child ();
+        while (child != null)
+        {
+            if (node_contains_subparagraph (child))
+                return true;
+            child = child.next_sibling ();
+        }
+
+        return false;
+    }
+
     private void insert_node (Node<StructData?> node, bool force_first_child = false)
     {
         new_stamp ();

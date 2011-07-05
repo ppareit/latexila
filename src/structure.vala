@@ -40,7 +40,7 @@ public enum StructType
     // Second part: "high-level" only
     TABLE,
     FIGURE,
-    N_TYPES
+    NB_TYPES
 }
 
 public enum StructAction
@@ -51,7 +51,8 @@ public enum StructAction
     SELECT,
     COMMENT,
     SHIFT_LEFT,
-    SHIFT_RIGHT
+    SHIFT_RIGHT,
+    NB_ACTIONS
 }
 
 public class Structure : VBox
@@ -84,6 +85,7 @@ public class Structure : VBox
 
     private static string[] _icons = null;
     private static string[] _names = null;
+    private static string[] _action_names = null;
 
     public Structure (MainWindow main_window, UIManager ui_manager)
     {
@@ -515,7 +517,7 @@ public class Structure : VBox
 
 
     /*************************************************************************/
-    // Right-click: actions callbacks
+    // Right-click: actions
 
     private void show_popup_menu (Gdk.EventButton? event)
     {
@@ -548,14 +550,48 @@ public class Structure : VBox
 
         return_if_fail (selected_row != -1);
 
-        _document_structure.do_action (action_type, selected_iter);
+        try
+        {
+            _document_structure.do_action (action_type, selected_iter);
+        }
+        catch (StructError e)
+        {
+            MessageDialog dialog = new MessageDialog (_main_window,
+                DialogFlags.DESTROY_WITH_PARENT,
+                MessageType.ERROR,
+                ButtonsType.OK,
+                _("Structure action error: %s"),
+                get_action_name (action_type));
+
+            dialog.secondary_text = e.message;
+
+            dialog.run ();
+            dialog.destroy ();
+        }
+    }
+
+    private static string get_action_name (StructAction action_type)
+    {
+        if (_action_names == null)
+        {
+            _action_names = new string[StructAction.NB_ACTIONS];
+            _action_names[StructAction.CUT]         = _("cut");
+            _action_names[StructAction.COPY]        = _("copy");
+            _action_names[StructAction.DELETE]      = _("delete");
+            _action_names[StructAction.SELECT]      = _("select");
+            _action_names[StructAction.COMMENT]     = _("comment");
+            _action_names[StructAction.SHIFT_LEFT]  = _("shift left");
+            _action_names[StructAction.SHIFT_RIGHT] = _("shift right");
+        }
+
+        return _action_names[action_type];
     }
 
     public static string get_icon_from_type (StructType type)
     {
         if (_icons == null)
         {
-            _icons = new string[StructType.N_TYPES];
+            _icons = new string[StructType.NB_TYPES];
             _icons[StructType.PART]         = "tree_part";
             _icons[StructType.CHAPTER]      = "tree_chapter";
             _icons[StructType.SECTION]      = "tree_section";
@@ -579,7 +615,7 @@ public class Structure : VBox
     {
         if (_names == null)
         {
-            _names = new string[StructType.N_TYPES];
+            _names = new string[StructType.NB_TYPES];
             _names[StructType.PART]         = _("Part");
             _names[StructType.CHAPTER]      = _("Chapter");
             _names[StructType.SECTION]      = _("Section");
