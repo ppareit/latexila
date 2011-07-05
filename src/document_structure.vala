@@ -582,11 +582,17 @@ public class DocumentStructure : GLib.Object
                     _("The structure item already contains a sub-paragraph."));
 
             _doc.begin_user_action ();
-            bool success = shift_right (tree_iter);
+            bool doc_modified;
+            bool success = shift_right (tree_iter, out doc_modified);
             _doc.end_user_action ();
 
             if (! success)
+            {
+                if (doc_modified)
+                    _doc.undo ();
+
                 throw new StructError.DATA_OUTDATED ("");
+            }
 
             _model.shift_right (tree_iter);
             return;
@@ -916,8 +922,10 @@ public class DocumentStructure : GLib.Object
             iter = begin_line_iter;
     }
 
-    private bool shift_right (TreeIter tree_iter)
+    private bool shift_right (TreeIter tree_iter, out bool doc_modified = null)
     {
+        doc_modified = false;
+
         /* Get some data about the item */
         StructType type;
         TextMark mark;
@@ -977,6 +985,7 @@ public class DocumentStructure : GLib.Object
 
         _doc.delete (begin_markup_name_iter, end_markup_name_iter);
         _doc.insert (begin_markup_name_iter, new_markup_name, -1);
+        doc_modified = true;
 
         /* Do the same for all the children */
         int nb_children = _model.iter_n_children (tree_iter);

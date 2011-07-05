@@ -9,12 +9,6 @@ LaTeXila 2.2
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
 	- Right click:
 		- shift left
-		- shift right: if an error occurs but some changes are already made to the document,
-		  undo these changes.
-
-	  Shift left/right is new comparated to Kile. For example we have a big section (with
-	  subsections, etc.) and we want to shift it to the left so it becomes a chapter (the
-	  subsections becomes sections, etc.).
 
 	- When setting a model, expand all only if the tree is not too big
 
