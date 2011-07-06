@@ -475,21 +475,78 @@ public class StructureModel : TreeModel, GLib.Object
 
         StructType new_type = type + 1;
 
+        /* Find new position in the tree */
         unowned Node<StructData?>? new_parent = node.prev_sibling ();
         int new_pos;
 
         if (new_parent == null || new_type <= new_parent.data.type)
         {
+            // position unchanged
             new_parent = node.parent;
             new_pos = new_parent.child_position (node);
         }
         else
-            new_pos = -1; // append
+            // append
+            new_pos = -1;
+
+        /* Unlink the node, modify the types and reinsert the node */
 
         Node<StructData?> node_unlinked = delete_node (node);
 
-        shift_node_right (node_unlinked);
+        shift_node (node_unlinked, true);
 
+        node = new_parent.insert (new_pos, (owned) node_unlinked);
+        reinsert_node (node);
+    }
+
+    public void shift_left (TreeIter iter)
+    {
+        return_if_fail (iter_is_valid (iter));
+
+        unowned Node<StructData?> node = get_node_from_iter (iter);
+        StructType type = node.data.type;
+        return_if_fail (StructType.PART < type && type <= StructType.SUBPARAGRAPH);
+
+        StructType new_type = type - 1;
+
+        /* Find new position in the tree */
+        unowned Node<StructData?> new_parent;
+        int new_pos;
+
+        unowned Node<StructData?> parent = node.parent;
+        if (parent == _tree || parent.data.type < new_type)
+        {
+            // position unchanged
+            new_parent = parent;
+            new_pos = parent.child_position (node);
+        }
+        else
+        {
+            new_parent = parent.parent;
+            new_pos = new_parent.child_position (parent) + 1;
+        }
+
+        /* Unlink the node and modify the types */
+        unowned Node<StructData?>? sibling = node.next_sibling ();
+
+        Node<StructData?> node_unlinked = delete_node (node);
+        shift_node (node_unlinked, false);
+
+        /* Next siblings becomes normally children */
+        while (sibling != null)
+        {
+            if (sibling.data.type <= new_type)
+                break;
+
+            unowned Node<StructData?>? next_sibling = sibling.next_sibling ();
+
+            Node<StructData?> new_child = delete_node (sibling);
+            node_unlinked.append ((owned) new_child);
+
+            sibling = next_sibling;
+        }
+
+        /* Reinsert the node */
         node = new_parent.insert (new_pos, (owned) node_unlinked);
         reinsert_node (node);
     }
@@ -565,15 +622,23 @@ public class StructureModel : TreeModel, GLib.Object
         return node_unlinked;
     }
 
-    private void shift_node_right (Node<StructData?> node)
+    private void shift_node (Node<StructData?> node, bool shift_right)
     {
-        if (node.data.type < StructType.SUBPARAGRAPH)
-            node.data.type += 1;
+        if (! Structure.is_section (node.data.type))
+            return;
+
+        if (shift_right)
+        {
+            if (node.data.type != StructType.SUBPARAGRAPH)
+                node.data.type += 1;
+        }
+        else if (node.data.type != StructType.PART)
+            node.data.type -= 1;
 
         unowned Node<StructData?>? child = node.first_child ();
         while (child != null)
         {
-            shift_node_right (child);
+            shift_node (child, shift_right);
             child = child.next_sibling ();
         }
     }

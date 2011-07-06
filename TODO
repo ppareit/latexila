@@ -7,9 +7,6 @@ LaTeXila 2.2
 ============
 
 - Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- Right click:
-		- shift left
-
 	- When setting a model, expand all only if the tree is not too big
 
 	- Insert in middle is very slow comparated to insert at the end

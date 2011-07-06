@@ -563,6 +563,8 @@ public class DocumentStructure : GLib.Object
     public void do_action (StructAction action_type, TreeIter tree_iter)
         throws StructError
     {
+        /* Comment */
+
         if (action_type == StructAction.COMMENT)
         {
             if (! comment_item (tree_iter))
@@ -572,18 +574,18 @@ public class DocumentStructure : GLib.Object
             return;
         }
 
-        if (action_type == StructAction.SHIFT_LEFT)
-            return;
+        /* Shift left/right */
 
-        if (action_type == StructAction.SHIFT_RIGHT)
+        bool shift_right = action_type == StructAction.SHIFT_RIGHT;
+        if (shift_right || action_type == StructAction.SHIFT_LEFT)
         {
-            if (_model.item_contains_subparagraph (tree_iter))
+            if (shift_right && _model.item_contains_subparagraph (tree_iter))
                 throw new StructError.GENERAL (
                     _("The structure item already contains a sub-paragraph."));
 
             _doc.begin_user_action ();
             bool doc_modified;
-            bool success = shift_right (tree_iter, out doc_modified);
+            bool success = shift_item (tree_iter, shift_right, out doc_modified);
             _doc.end_user_action ();
 
             if (! success)
@@ -594,7 +596,10 @@ public class DocumentStructure : GLib.Object
                 throw new StructError.DATA_OUTDATED ("");
             }
 
-            _model.shift_right (tree_iter);
+            if (shift_right)
+                _model.shift_right (tree_iter);
+            else
+                _model.shift_left (tree_iter);
             return;
         }
 
@@ -922,7 +927,8 @@ public class DocumentStructure : GLib.Object
             iter = begin_line_iter;
     }
 
-    private bool shift_right (TreeIter tree_iter, out bool doc_modified = null)
+    private bool shift_item (TreeIter tree_iter, bool shift_right,
+        out bool doc_modified = null)
     {
         doc_modified = false;
 
@@ -934,7 +940,10 @@ public class DocumentStructure : GLib.Object
             StructColumn.START_MARK, out mark,
             -1);
 
-        return_val_if_fail (type != StructType.SUBPARAGRAPH, false);
+        if (shift_right)
+            return_val_if_fail (type != StructType.SUBPARAGRAPH, false);
+        else
+            return_val_if_fail (type != StructType.PART, false);
 
         if (! Structure.is_section (type))
             return true;
@@ -968,7 +977,13 @@ public class DocumentStructure : GLib.Object
         /* Get the new markup name */
         bool with_star = markup_name.has_suffix ("*");
 
-        string? new_markup_name = get_section_name_from_type (type + 1);
+        StructType new_type;
+        if (shift_right)
+            new_type = type + 1;
+        else
+            new_type = type - 1;
+
+        string? new_markup_name = get_section_name_from_type (new_type);
         return_val_if_fail (new_markup_name != null, false);
 
         if (with_star)
@@ -992,10 +1007,11 @@ public class DocumentStructure : GLib.Object
         for (int child_num = 0 ; child_num < nb_children ; child_num++)
         {
             TreeIter child_iter;
-            if (! _model.iter_nth_child (out child_iter, tree_iter, child_num))
-                continue;
+            bool child_iter_set = _model.iter_nth_child (out child_iter, tree_iter,
+                child_num);
+            return_val_if_fail (child_iter_set, false);
 
-            if (! shift_right (child_iter))
+            if (! shift_item (child_iter, shift_right))
                 return false;
         }
 
