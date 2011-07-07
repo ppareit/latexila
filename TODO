@@ -13,7 +13,6 @@ LaTeXila 2.2
 	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
 
 - Write some documentation:
-	- the difference between Latexmk and Rubber
 	- open the Mallard doc from the program
 	- manage translations
 
