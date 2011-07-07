@@ -13,8 +13,14 @@ LaTeXila 2.2
 	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
 
 - Write some documentation:
-	- explain the build tools, how to create a new one, etc.
 	- the difference between Latexmk and Rubber
+	- open the Mallard doc from the program
+	- manage translations
+
+- Build Tools:
+	- BibTeX: problem writing .blg file
+	- MakeIndex: problem writing .ind file
+	- Some problems with the latex and latexmk post processors
 
 
 LaTeXila ≥ 2.4

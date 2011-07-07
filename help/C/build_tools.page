@@ -1,0 +1,196 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      type="topic"
+      id="build_tools">
+
+<info>
+  <link type="guide" xref="index" />
+</info>
+
+<title>Build Tools</title>
+
+<synopsis>
+  <p>The purpose of the build tools is to generate a document in the PDF, DVI or PS
+  format.</p>
+</synopsis>
+
+<!-- TODO mini toc -->
+<!-- <link type="section" /> -->
+
+<section id="overview">
+  <title>Overview</title>
+
+  <p>Several different tools can be used for a document compilation. There are some
+  low-level commands, and two higher-level tools: Latexmk and Rubber.</p>
+
+  <table rules="rowgroups">
+    <title>Low-level commands</title>
+    <thead>
+      <tr>
+        <td><p>Label</p></td>
+        <td><p>Command</p></td>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><p>LaTeX → DVI</p></td>
+        <td><p><cmd>latex</cmd></p></td>
+      </tr>
+      <tr>
+        <td><p>LaTeX → PDF</p></td>
+        <td><p><cmd>pdflatex</cmd></p></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td><p>DVI → PDF</p></td>
+        <td><p><cmd>dvipdf</cmd></p></td>
+      </tr>
+      <tr>
+        <td><p>DVI → PS</p></td>
+        <td><p><cmd>dvips</cmd></p></td>
+      </tr>
+      <tr>
+        <td><p>PS → PDF</p></td>
+        <td><p><cmd>ps2pdf</cmd></p></td>
+      </tr>
+    </tbody>
+    <tbody>
+      <tr>
+        <td><p>Bibliography</p></td>
+        <td><p><cmd>bibtex</cmd></p></td>
+      </tr>
+      <tr>
+        <td><p>Index</p></td>
+        <td><p><cmd>makeindex</cmd></p></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Compiling a LaTeX document can involve to execute several low-level commands, in a
+  certain order and a certain number of times. Here is an example:</p>
+  <code>
+$ latex document.tex
+$ bibtex document.aux
+$ latex document.tex
+$ dvips -t a4 document.dvi
+$ ps2pdf document.ps</code>
+
+  <p>Using a higher-level tool such as Latexmk or Rubber simplify a lot all this process,
+  since only one command is required. Indeed, these tools can detect how many times the
+  <cmd>latex</cmd> or <cmd>pdflatex</cmd> command must be called, and whether
+  <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is required. By default, LaTeXila uses
+  Latexmk.</p>
+</section>
+
+<!--
+<section id="latexmk-rubber">
+<title>Differences Between Latexmk and Rubber</title>
+
+<p></p>
+</section>
+-->
+
+<section id="execute">
+  <title>Execute a Build Tool</title>
+
+  <p>There are several means to execute a build tool:</p>
+  <list>
+    <item><p>Open the <gui style="menu">Build</gui> menu (first part).</p></item>
+    <item><p>Use the buttons in the main toolbar (last part).</p></item>
+    <item><p>Use the shortcut: <key>F2</key> → <key>F11</key>.</p></item>
+  </list>
+
+  <p>The build tool is executed on the currently opened file. If the file belongs to a
+  project, it is executed on the project's main file.</p>
+
+  <note style="important">
+    <title>Hidden Build Tools</title>
+    <p>By default, a lot of build tools are hidden, so they can't be executed. To view
+    the full list of build tools, activate or configure them, read the
+    <link xref="#general_configuration" /> section.</p>
+  </note>
+</section>
+
+<section id="general_configuration">
+  <title>General Configuration</title>
+
+  <p>
+    To configure the build tools, open the preferences dialog:
+    <guiseq>
+      <gui style="menu">Edit</gui>
+      <gui style="menu">Preferences</gui>
+      <gui style="tab">LaTeX</gui>
+    </guiseq>
+  </p>
+
+  <p>You will see a list with all the build tools. There are check buttons to show or hide
+  them. When a build tool is hidden, it's not possible to execute it. You can perform some
+  actions, like moving a tool up or down, open its properties, delete or copy it, create a
+  new one, etc.</p>
+
+  <note style="tip">
+    <p>Double-click on a build tool will open its properties.</p>
+  </note>
+
+  <p>For an explanation of the option about the Latexmk post processor, see
+  <link xref="#post-processors" />.</p>
+</section>
+
+<section id="jobs">
+  <title>Jobs of a Build Tool</title>
+
+  <p>In the properties of a build tool, the tricky part is to configure the jobs.
+  A build tool can execute several jobs. Each job contains three pieces of
+  information:</p>
+  <list>
+    <item><p>The command, which can use placeholders.</p></item>
+    <item><p>Whether the job must succeed. If this option is enabled, when an error
+    occurs during the job execution, the next job is not executed.</p></item>
+    <item><p>The post processor (see <link xref="#post-processors" />).</p></item>
+  </list>
+</section>
+
+<section id="post-processors">
+  <title>Post Processors</title>
+  <p>The purpose of a post processor is to filter the command output and extract
+  the useful information. Five post processors are available:</p>
+
+  <terms>
+    <item>
+      <title>no-output</title>
+      <p>The output is simply not displayed.</p>
+    </item>
+    <item>
+      <title>all-output</title>
+      <p>All the output is displayed, without filter.</p>
+    </item>
+    <item>
+      <title>latex</title>
+      <p>Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands.
+      There can be three types of errors: critical errors, warnings, or badboxes. There
+      are also some other useful information: the size of the document, the number of
+      pages, and the number of errors.</p>
+    </item>
+    <item>
+      <title>latexmk</title>
+      <p>Used for the <cmd>latexmk</cmd> command. Internally, this post processor uses
+      other ones: <em>latex</em> and <em>all-output</em>.</p>
+
+      <p>In the <link xref="#general_configuration" />, there is an option for always
+      showing all information of this post processor. If this option is disabled (which
+      is the case by default), only the output of the last <cmd>latex</cmd> or
+      <cmd>pdflatex</cmd> command is displayed, if no error occured in another command.
+      This allows to reduce the output showed in the bottom panel. But even if there are
+      no errors, it can be useful to see exactly which commands are executed, with their
+      output.</p>
+    </item>
+    <item>
+      <title>rubber</title>
+      <p>This is the post-processor used for the <cmd>rubber</cmd> command. The errors are
+      categorised into two types: badboxes, and the others. So, unlike the <em>latex</em>
+      post processor, there is no distinction between critical errors and simple
+      warnings.</p>
+    </item>
+  </terms>
+</section>
+</page>
