@@ -544,23 +544,31 @@ public class PreferencesDialog : Dialog
             typeof (string), typeof (string), typeof (string));
         build_tools_view.set_model (build_tools_store);
 
-        TreeViewColumn column = new TreeViewColumn ();
-        build_tools_view.append_column (column);
+        TreeViewColumn active_column = new TreeViewColumn ();
+        active_column.set_title (_("Active"));
+        build_tools_view.append_column (active_column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
-        column.pack_start (toggle_renderer, false);
-        column.set_attributes (toggle_renderer, "active", BuildToolColumn.SHOW, null);
+        active_column.pack_start (toggle_renderer, false);
+        active_column.set_attributes (toggle_renderer,
+          "active", BuildToolColumn.SHOW,
+          null);
 
-        column = new TreeViewColumn ();
-        build_tools_view.append_column (column);
+        TreeViewColumn label_column = new TreeViewColumn ();
+        label_column.set_title (_("Label"));
+        build_tools_view.append_column (label_column);
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        column.pack_start (pixbuf_renderer, false);
-        column.set_attributes (pixbuf_renderer, "stock-id", BuildToolColumn.PIXBUF, null);
+        label_column.pack_start (pixbuf_renderer, false);
+        label_column.set_attributes (pixbuf_renderer,
+          "stock-id", BuildToolColumn.PIXBUF,
+          null);
 
         CellRendererText text_renderer = new CellRendererText ();
-        column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", BuildToolColumn.LABEL, null);
+        label_column.pack_start (text_renderer, true);
+        label_column.set_attributes (text_renderer,
+          "text", BuildToolColumn.LABEL,
+          null);
 
         build_tools_view.set_tooltip_column (BuildToolColumn.DESCRIPTION);
 
@@ -590,10 +598,14 @@ public class PreferencesDialog : Dialog
             build_tools.update (num, build_tool);
         });
 
-        build_tools_view.row_activated.connect ((path) =>
+        /* double-click */
+        build_tools_view.row_activated.connect ((path, column) =>
         {
-            int num = path.get_indices ()[0];
-            run_build_tool_dialog (num);
+            if (column == label_column)
+            {
+                int num = path.get_indices ()[0];
+                run_build_tool_dialog (num);
+            }
         });
     }
 

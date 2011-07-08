@@ -120,7 +120,7 @@ public class Structure : VBox
 
     private void init_toolbar ()
     {
-        HBox hbox = new HBox (true, 0);
+        HBox hbox = new HBox (false, 0);
         pack_start (hbox, false, false);
 
         // refresh button
@@ -132,6 +132,10 @@ public class Structure : VBox
         {
             show_document (_main_window.active_document, true);
         });
+
+        // separator
+        SeparatorToolItem sep = new SeparatorToolItem ();
+        hbox.pack_start (sep, false);
 
         // expand all button
         Button expand_button = Utils.get_toolbar_button (Stock.ZOOM_IN);
@@ -146,6 +150,10 @@ public class Structure : VBox
         hbox.pack_start (collapse_button);
 
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
+
+        // separator
+        sep = new SeparatorToolItem ();
+        hbox.pack_start (sep, false);
 
         // simple list buttons
         ToggleButton toggle_button = create_simple_list_button ({ StructType.LABEL },
@@ -290,6 +298,8 @@ public class Structure : VBox
     {
         _tree_view = get_new_tree_view (StructColumn.PIXBUF, StructColumn.TEXT,
             StructColumn.TOOLTIP);
+
+        _tree_view.enable_tree_lines = true;
 
         // selection
         TreeSelection tree_select = _tree_view.get_selection ();
