@@ -49,6 +49,8 @@ else ()
 	set (DESKTOP_SCHEMAS "0")
 endif ()
 
+set (HELP_DIR ${DATA_DIR}/help/C)
+
 configure_file (${latexila_SOURCE_DIR}/src/config.h.in
 	${latexila_BINARY_DIR}/src/config.h)
 add_definitions (-include config.h)
@@ -82,3 +84,4 @@ else ()
 endif ()
 add_subdirectory (src/ui)
 add_subdirectory (data)
+add_subdirectory (help/C)

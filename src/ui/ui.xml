@@ -370,6 +370,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </menu>
 
     <menu action="Help">
+      <menuitem action="HelpContents" />
       <menuitem action="HelpLatexReference" />
       <menuitem action="HelpAbout" />
     </menu>

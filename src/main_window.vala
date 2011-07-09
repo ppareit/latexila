@@ -153,7 +153,9 @@ public class MainWindow : Window
 
         // Help
         { "Help", null, N_("_Help") },
-        { "HelpLatexReference", Stock.HELP, N_("_LaTeX Reference"), "<Release>F1",
+        { "HelpContents", Stock.HELP, N_("_Contents"), "<Release>F1",
+            N_("Open the LaTeXila documentation"), on_help_contents },
+        { "HelpLatexReference", null, N_("_LaTeX Reference"), null,
             N_("The Kile LaTeX Reference"), on_help_latex_reference },
         { "HelpAbout", Stock.ABOUT, null, null,
             N_("About LaTeXila"), on_about_dialog }
@@ -1838,13 +1840,25 @@ public class MainWindow : Window
 
     /* Help */
 
+    public void on_help_contents ()
+    {
+        try
+        {
+            show_uri (this.get_screen (), "ghelp:" + Config.HELP_DIR, Gdk.CURRENT_TIME);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Impossible to open the documentation: %s\n", e.message);
+        }
+    }
+
     public void on_help_latex_reference ()
     {
         try
         {
             string uri = Filename.to_uri (Path.build_filename (Config.DATA_DIR,
                 "latexhelp.html", null));
-            show_uri (null, uri, Gdk.CURRENT_TIME);
+            show_uri (this.get_screen (), uri, Gdk.CURRENT_TIME);
         }
         catch (Error e)
         {

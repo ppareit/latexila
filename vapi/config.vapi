@@ -9,4 +9,5 @@ namespace Config
     public const string SCHEMA_DIR;
     public const string ICONS_DIR;
     public const bool   DESKTOP_SCHEMAS;
+    public const string HELP_DIR;
 }

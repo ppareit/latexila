@@ -6,26 +6,23 @@ See also the Roadmap:
 LaTeXila 2.2
 ============
 
-- Structure (list of chapters, sections, etc. to easily navigate in a document):
-	- When setting a model, expand all only if the tree is not too big
-
-	- Insert in middle is very slow comparated to insert at the end
-	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
-
-- Write some documentation:
-	- open the Mallard doc from the program
-	- manage translations
+- Documentation:
+	- use gnome-doc-utils (autotools are required, so bye bye CMake :( )
 
 - Build Tools:
 	- BibTeX: problem writing .blg file
 	- MakeIndex: problem writing .ind file
 	- Some problems with the latex and latexmk post processors
 
+- Structure:
+	- When setting a model, expand all only if the tree is not too big
+
+	- Insert in middle is very slow comparated to insert at the end
+	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
+
 
 LaTeXila ≥ 2.4
 ==============
-
-- Check spelling
 
 - Auto-completion:
 	- show details by default
