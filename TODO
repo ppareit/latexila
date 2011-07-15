@@ -10,8 +10,6 @@ LaTeXila 2.2
 	- use gnome-doc-utils (autotools are required, so bye bye CMake :( )
 
 - Build Tools:
-	- BibTeX: problem writing .blg file
-	- MakeIndex: problem writing .ind file
 	- Some problems with the latex and latexmk post processors
 
 - Structure:

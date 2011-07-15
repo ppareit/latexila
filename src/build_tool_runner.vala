@@ -83,7 +83,7 @@ public class BuildToolRunner : GLib.Object
 
         foreach (BuildJob job in jobs)
         {
-            string[] command = get_command (job, true, true);
+            string[] command = get_command (job, true);
             job_partitions += view.add_partition (string.joinv (" ", command),
                 PartitionState.RUNNING, root_partition);
         }
@@ -301,7 +301,7 @@ public class BuildToolRunner : GLib.Object
         output = "";
 
         current_job = jobs.nth_data (job_num);
-        string[] command = get_command (current_job, false);
+        string[] command = get_command (current_job);
 
         // Attention, rubber doesn't support filenames with spaces, warn the user
         if (current_job.post_processor == PostProcessorType.RUBBER
@@ -341,16 +341,10 @@ public class BuildToolRunner : GLib.Object
         }
     }
 
-    private string[] get_command (BuildJob build_job, bool basename,
-        bool for_printing = false)
+    private string[] get_command (BuildJob build_job, bool for_printing = false)
     {
-        string base_filename = null;
-        string base_shortname = null;
-        if (basename)
-        {
-            base_filename = file.get_basename ();
-            base_shortname = Utils.get_shortname (base_filename);
-        }
+        string base_filename = file.get_basename ();
+        string base_shortname = Utils.get_shortname (base_filename);
 
         string[] command = {};
 
@@ -414,13 +408,12 @@ public class BuildToolRunner : GLib.Object
             }
             if (command[i].contains ("$filename"))
             {
-                command[i] = command[i].replace ("$filename", base_filename ?? filename);
+                command[i] = command[i].replace ("$filename", base_filename);
                 continue;
             }
             if (command[i].contains ("$shortname"))
             {
-                command[i] = command[i].replace ("$shortname",
-                    base_shortname ?? shortname);
+                command[i] = command[i].replace ("$shortname", base_shortname);
                 continue;
             }
         }
