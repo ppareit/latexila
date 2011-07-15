@@ -10,7 +10,7 @@ version.
 
 This program is distributed in the hope that it will be useful, but WITHOUT
 ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more 
+FOR A PARTICULAR PURPOSE.  See the GNU General Public Licence for more
 details.
 
 You should have received a copy of the GNU General Public Licence along with
@@ -54,7 +54,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="hypersetup" package="hyperref">
 		<argument label="Options" />
 	</command>
-	
+
 	<command name="TextField" package="hyperref">
 		<argument label="Parameters" type="optional" />
 		<argument label="Label" />
@@ -111,41 +111,41 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="MakeButtonField" package="hyperref">
 		<argument label="Text" />
 	</command>
-	
+
 	<!-- gchords -->
 	<command name="chord" package="gchords">
 		<argument label="Parameter" />
 		<argument label="Positions" />
 		<argument label="Name" />
 	</command>
-	
+
 	<command name="upchord" package="gchords">
 		<argument label="Name" />
 	</command>
-	
+
 	<command name="chords" package="gchords">
 		<argument label="Chords" />
 	</command>
 
 	<!-- fancyhdr -->
-	
+
 	<command name="fancyhead">
 		<argument label="Position" type="optional" />
 		<argument label="Text" />
 	</command>
-	
+
 	<command name="fancyfoot">
 		<argument label="Position" type="optional" />
 		<argument label="Text" />
 	</command>
-	
+
 	<command name="fancyhf">
 		<argument label="Position" type="optional" />
 		<argument label="Text" />
 	</command>
-	
+
 	<!-- general page setup -->
-	
+
 	<command name="pagenumbering">
 		<argument label="Type">
 			<choice name="Alph" />
@@ -164,7 +164,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="myheadings" />
 		</argument>
 	</command>
-	
+
 	<command name="thispagestyle">
 		<argument label="Type">
 			<choice name="plain" />
@@ -173,12 +173,12 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="myheadings" />
 		</argument>
 	</command>
-	
+
 	<command name="markboth">
 		<argument label="EvenHeader" />
 		<argument label="OddHeader" />
 	</command>
-	
+
 	<command name="markright">
 		<argument label="Header" />
 	</command>
@@ -203,20 +203,19 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Caption" />
 		<argument label="Counter" type="optional" />
 	</command>
-	
+
 	<command name="parindent" />
 	<command name="indent" />
 	<command name="noindent" />
 
 	<command name="columnwidth" />
+	<command name="textwidth" />
 
 	<command name="title">
 		<argument label="Title" />
 	</command>
 
 	<command name="today" />
-
-	<command name="pagebreak" />
 
 	<command name="textcopyright" />
 	<command name="textregistered" />
@@ -379,7 +378,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="mathbb" package="amssymb">
 		<argument label="Formula" />
 	</command>
-	
+
 	<command name="varnothing" package="amssymb" />
 
 	<command name="mathrm">
@@ -408,6 +407,10 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<command name="mathfrak">
 		<argument label="Formula" />
+	</command>
+	
+	<command name="phantom">
+		<argument label="Text" />
 	</command>
 
 	<!-- structure -->
@@ -522,9 +525,14 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Value" />
 	</command>
 
+	<command name="setcounter">
+		<argument label="Counter" />
+		<argument label="Value" />
+	</command>
+
 	<command name="maketitle" />
 
-  <command name="appendix" />
+	<command name="appendix" />
 
 	<!-- lists -->
 
@@ -547,10 +555,6 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="extracolsep">
 		<argument label="Value" />
 	</command>
-
-	<command name="cleardoublepage" />
-
-	<command name="clearpage" />
 
 	<command name="centering" />
 
@@ -693,6 +697,14 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Description" />
 	</command>
 
+	<command name="frametitle" package="beamer">
+		<argument label="Title" />
+	</command>
+
+	<command name="framesubtitle" package="beamer">
+		<argument label="SubTitle" />
+	</command>
+
 	<command name="documentclass">
 		<argument label="StyleOptions" type="optional" />
 		<argument label="DocumentClass" />
@@ -715,9 +727,14 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="cases" package="amsmath" />
 			<choice name="center" />
 			<choice name="document" />
-			<choice name="description" />
+			<choice name="description">
+				<insert>\item[</insert>
+				<insert_after>] </insert_after>
+			</choice>
 			<choice name="displaymath" />
-			<choice name="enumerate" />
+			<choice name="enumerate">
+				<insert>\item </insert>
+			</choice>
 			<choice name="eqnarray" />
 			<choice name="eqnarray*" />
 			<choice name="equation" />
@@ -727,14 +744,18 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="flushright" />
 			<choice name="frame" />
 			<choice name="fussypar" />
-			<choice name="itemize" />
+			<choice name="itemize">
+				<insert>\item </insert>
+			</choice>
 			<choice name="letter" />
 			<choice name="lstlisting" package="listings" />
 			<choice name="math" />
 			<choice name="matrix" package="amsmath" />
 			<choice name="multicols" package="multicol" />
+			<choice name="overlay" />
 			<choice name="picture" />
 			<choice name="pmatrix" package="amsmath" />
+			<choice name="slide" />
 			<choice name="smallmatrix" package="amsmath" />
 			<choice name="subarray" package="amsmath" />
 			<choice name="subequations" package="amsmath" />
@@ -756,7 +777,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="scriptsize" />
 			<choice name="small" />
 			<choice name="normalsize" />
-			
+
 			<placeholder key="Newenvironments" />
 		</argument>
 	</command>
@@ -1247,17 +1268,17 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="text" package="amsmath">
 		<argument label="Text" />
 	</command>
-	
+
 	<command name="underset" package="amsmath">
 		<argument label="Under" />
 		<argument label="Formula" />
 	</command>
-	
+
 	<command name="overset" package="amsmath">
 		<argument label="Over" />
 		<argument label="Formula" />
 	</command>
-	
+
 	<!-- picture environment -->
 
 	<command name="line" environment="picture">
@@ -1311,9 +1332,59 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Text" />
 	</command>
 
+	<!-- line and page breaking -->
+
+	<command name="cleardoublepage" />
+
+	<command name="clearpage" />
+
+	<command name="hyphenation">
+		<argument label="ListOfWords" />
+	</command>
+
+	<command name="linebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
+
 	<command name="newline" />
 
 	<command name="newpage" />
+
+	<command name="nolinebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
+
+	<command name="nopagebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
+
+	<command name="pagebreak">
+		<argument label="Number" type="optional">
+			<choice name="0" />
+			<choice name="1" />
+			<choice name="2" />
+			<choice name="3" />
+			<choice name="4" />
+		</argument>
+	</command>
 
 	<!-- units -->
 

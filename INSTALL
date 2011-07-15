@@ -12,7 +12,7 @@ CMake >= 2.6.4
 gettext
 gsettings-desktop-schemas (optional)
 
-If you are installing LaTeXila from a .tar.bz2 or from the 'releases' branch,
+If you are installing LaTeXila from a .tar.bz2 or from a 'releases-*' branch,
 you don't have to install Vala because the C code is already generated.
 Otherwise, see the CMake configuration at the end of this file.
 

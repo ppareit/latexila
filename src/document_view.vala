@@ -55,6 +55,7 @@ public class DocumentView : Gtk.SourceView
         doc.highlight_matching_brackets =
             editor_settings.get_boolean ("bracket-matching");
         doc.set_style_scheme_from_string (editor_settings.get_string ("scheme"));
+        set_smart_home_end (SourceSmartHomeEndType.AFTER);
 
         // completion
         try
@@ -65,6 +66,11 @@ public class DocumentView : Gtk.SourceView
 
             // Gtk-CRITICAL with that, see bug #629055
             //completion.show_headers = false;
+
+            buffer.notify["cursor-position"].connect (() =>
+            {
+                provider.hide_calltip_window ();
+            });
         }
         catch (GLib.Error e)
         {
@@ -83,7 +89,7 @@ public class DocumentView : Gtk.SourceView
     public void cut_selection ()
     {
         return_if_fail (this.buffer != null);
-        var clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
+        Clipboard clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
         this.buffer.cut_clipboard (clipboard, ! ((Document) this.buffer).readonly);
         scroll_to_cursor (SCROLL_MARGIN);
         grab_focus ();
@@ -92,7 +98,7 @@ public class DocumentView : Gtk.SourceView
     public void copy_selection ()
     {
         return_if_fail (this.buffer != null);
-        var clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
+        Clipboard clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
         this.buffer.copy_clipboard (clipboard);
         grab_focus ();
     }
@@ -100,7 +106,7 @@ public class DocumentView : Gtk.SourceView
     public void my_paste_clipboard ()
     {
         return_if_fail (this.buffer != null);
-        var clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
+        Clipboard clipboard = get_clipboard (Gdk.SELECTION_CLIPBOARD);
         this.buffer.paste_clipboard (clipboard, null,
             ! ((Document) this.buffer).readonly);
         scroll_to_cursor (SCROLL_MARGIN);
@@ -187,6 +193,8 @@ public class DocumentView : Gtk.SourceView
     {
         // See GDK_KEY_BackSpace in gdk/gdkkeysyms.h (not available in Vala)
 
+        // TODO~ connect/disconnect the signal when settings in gsettings change
+        // note: this function will be removed when latexila will become a Gedit plugin...
         if (! editor_settings.get_boolean ("insert-spaces")
             || ! editor_settings.get_boolean ("forget-no-tabs")
             || event.keyval != 0xff08

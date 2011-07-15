@@ -100,7 +100,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                     new Regex ("(.*)has occurred while \\output is active");
 
                 reg_warning =
-                    new Regex ("^(((! )?(La|pdf)TeX)|Package|Class) .*Warning.*:(.*)",
+                    new Regex ("^(((! )?(La|pdf)TeX)|Package|Class) .*Warning[^:]*:[[:space:]]*(.*)",
                     RegexCompileFlags.CASELESS);
                 reg_warning_no_file = new Regex ("(No file .*)");
                 reg_warning_line = new Regex ("(.*) on input line ([0-9]+)\\.$");
@@ -122,10 +122,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             }
         }
 
-        msg = BuildIssue ();
-        msg.message_type = BuildMessageType.OTHER;
-        msg.start_line = NO_LINE;
-        msg.end_line = NO_LINE;
+        reset_msg ();
     }
 
     public void process (File file, string output, int status)
@@ -205,7 +202,6 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                     return false;
 
                 msg.message_type = BuildMessageType.BADBOX;
-                nb_badboxes++;
 
                 if (detect_badbox_line (line, false))
                     add_msg ();
@@ -218,7 +214,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return true;
 
             case FilterStatus.BADBOX:
-                line_buf += @" $line";
+                line_buf += line;
                 nb_lines++;
                 if (detect_badbox_line (line_buf, line.length == 0))
                 {
@@ -295,7 +291,6 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             case FilterStatus.START:
                 if (reg_warning.match (line))
                 {
-                    nb_warnings++;
                     msg.message_type = BuildMessageType.WARNING;
 
                     string[] strings = reg_warning.split (line);
@@ -313,7 +308,6 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
                 else if (reg_warning_no_file.match (line))
                 {
-                    nb_warnings++;
                     msg.message_type = BuildMessageType.WARNING;
                     string[] strings = reg_warning_no_file.split (line);
                     msg.message = strings[1];
@@ -325,7 +319,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return false;
 
             case FilterStatus.WARNING:
-                line_buf += @" $line";
+                line_buf += line;
                 nb_lines++;
                 if (detect_warning_line (line_buf, line.length == 0))
                 {
@@ -411,7 +405,6 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
                 if (found)
                 {
-                    nb_errors++;
                     nb_lines++;
                     msg.message_type = BuildMessageType.ERROR;
 
@@ -433,7 +426,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 return false;
 
             case FilterStatus.ERROR:
-                line_buf += @" $line";
+                line_buf += line;
                 nb_lines++;
 
                 if (line[line.length - 1] == '.')
@@ -801,6 +794,14 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
     private void add_msg (bool set_filename = true)
     {
+        // exclude some useless messages here
+        if (msg.message_type == BuildMessageType.WARNING
+            && msg.message == "There were undefined references.")
+        {
+            reset_msg ();
+            return;
+        }
+
         if (set_filename)
             msg.filename = get_current_filename ();
 
@@ -815,8 +816,28 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             stderr.printf ("Latex post processor warning: %s\n", e.message);
         }
 
-        issues.add (msg);
+        switch (msg.message_type)
+        {
+            case BuildMessageType.BADBOX:
+                nb_badboxes++;
+                break;
 
+            case BuildMessageType.WARNING:
+                nb_warnings++;
+                break;
+
+            case BuildMessageType.ERROR:
+                nb_errors++;
+                break;
+        }
+
+        issues.add (msg);
+        reset_msg ();
+    }
+
+    private void reset_msg ()
+    {
+        msg = BuildIssue ();
         msg.message = null;
         msg.message_type = BuildMessageType.OTHER;
         msg.filename = null;

@@ -723,7 +723,7 @@ public class Symbols : VBox
             {
                 try
                 {
-                    var pixbuf = new Gdk.Pixbuf.from_file (info.icon);
+                    Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (info.icon);
                     TreeIter iter;
                     categories_store.append (out iter);
                     categories_store.set (iter,
@@ -740,7 +740,7 @@ public class Symbols : VBox
             }
 
             // mosed used symbols
-            var pixbuf = Utils.get_pixbuf_from_stock (Stock.ABOUT, IconSize.MENU);
+            Gdk.Pixbuf pixbuf = Utils.get_pixbuf_from_stock (Stock.ABOUT, IconSize.MENU);
             TreeIter iter;
             categories_store.append (out iter);
             categories_store.set (iter,
@@ -794,7 +794,7 @@ public class Symbols : VBox
         symbol_view.row_spacing = 0;
         symbol_view.column_spacing = 0;
 
-        var sw = Utils.add_scrollbar (symbol_view);
+        Widget sw = Utils.add_scrollbar (symbol_view);
         pack_start (sw);
         sw.show_all ();
 
@@ -840,8 +840,8 @@ public class Symbols : VBox
             // unselect the symbol, so the user can insert several times the same symbol
             symbol_view.unselect_all ();
 
-            var path = selected_items.nth_data (0);
-            var model = symbol_view.get_model ();
+            TreePath path = selected_items.nth_data (0);
+            TreeModel model = symbol_view.get_model ();
             TreeIter iter = {};
 
             if (path != null && model.get_iter (out iter, path))
@@ -926,7 +926,7 @@ public class Symbols : VBox
     {
         try
         {
-            var pixbuf = new Gdk.Pixbuf.from_file (symbol.filename);
+            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (symbol.filename);
 
             // some characters ('<' for example) generate errors for the tooltip,
 	        // so we must escape it

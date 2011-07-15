@@ -131,7 +131,7 @@ public class DocumentTab : VBox
     private void initialize ()
     {
         // usefull when moving a tab to a new window
-        var reparent = document.tab != null;
+        bool reparent = document.tab != null;
 
         document.tab = this;
 
@@ -153,7 +153,7 @@ public class DocumentTab : VBox
         view.focus_in_event.connect (view_focused_in);
 
         // with a scrollbar
-        var sw = new ScrolledWindow (null, null);
+        ScrolledWindow sw = new ScrolledWindow (null, null);
         sw.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
 
         if (reparent)
@@ -168,7 +168,7 @@ public class DocumentTab : VBox
 
         update_label_text ();
 
-        var close_button = new Button ();
+        Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
         close_button.name = "my-close-button";
@@ -185,7 +185,8 @@ public class DocumentTab : VBox
 
 
         /* auto save */
-        var settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.editor");
         auto_save = settings.get_boolean ("auto-save");
         uint tmp;
         settings.get ("auto-save-interval", "u", out tmp);
@@ -203,7 +204,7 @@ public class DocumentTab : VBox
     public TabInfoBar add_message (string primary_msg, string secondary_msg,
         MessageType msg_type)
     {
-        var infobar = new TabInfoBar (primary_msg, secondary_msg, msg_type);
+        TabInfoBar infobar = new TabInfoBar (primary_msg, secondary_msg, msg_type);
         pack_start (infobar, false, false, 0);
         return infobar;
     }
@@ -217,26 +218,35 @@ public class DocumentTab : VBox
     private void update_label_tooltip ()
     {
         if (document.location == null)
-            _label.tooltip_markup = "";
-        else
         {
-            _label.tooltip_markup = document.get_uri_for_display ();
-
-            if (document.project_id != -1)
-            {
-                Project? project = Projects.get_default ().get (document.project_id);
-                if (project == null)
-                    return;
-
-                if (project.main_file.equal (document.location))
-                    _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
-                else
-                    // TODO relative path instead of absolute
-                    _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
-                        + Utils.replace_home_dir_with_tilde (
-                            project.main_file.get_parse_name ());
-            }
+            _label.tooltip_markup = "";
+            return;
         }
+
+        _label.tooltip_markup = document.get_uri_for_display ();
+
+        Project? project = document.get_project ();
+        if (project == null)
+            return;
+
+        if (project.main_file.equal (document.location))
+            _label.tooltip_markup += "\n<b>" + _("Main File") + "</b>";
+        else
+            _label.tooltip_markup += "\n<b>" + _("Main File:") + "</b> "
+                + get_main_file_relative_path ();
+    }
+
+    private string? get_main_file_relative_path ()
+    {
+        Project? project = document.get_project ();
+        if (project == null)
+            return null;
+
+        File origin = document.location;
+        File target = project.main_file;
+        File common_dir = project.directory;
+
+        return Utils.get_relative_path (origin, target, common_dir);
     }
 
     public string get_name ()
@@ -265,7 +275,7 @@ public class DocumentTab : VBox
         {
             ask_if_externally_modified = true;
 
-            var primary_msg = _("The file %s changed on disk.")
+            string primary_msg = _("The file %s changed on disk.")
                 .printf (document.location.get_parse_name ());
 
             string secondary_msg;
@@ -274,7 +284,8 @@ public class DocumentTab : VBox
             else
                 secondary_msg = _("Do you want to reload the file?");
 
-            var infobar = add_message (primary_msg, secondary_msg, MessageType.WARNING);
+            TabInfoBar infobar = add_message (primary_msg, secondary_msg,
+                MessageType.WARNING);
             infobar.add_stock_button_with_text (_("Reload"), Stock.REFRESH,
                 ResponseType.OK);
             infobar.add_button (Stock.CANCEL, ResponseType.CANCEL);

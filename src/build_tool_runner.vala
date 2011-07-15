@@ -83,7 +83,7 @@ public class BuildToolRunner : GLib.Object
 
         foreach (BuildJob job in jobs)
         {
-            string[] command = get_command (job, true);
+            string[] command = get_command (job, true, true);
             job_partitions += view.add_partition (string.joinv (" ", command),
                 PartitionState.RUNNING, root_partition);
         }
@@ -341,7 +341,8 @@ public class BuildToolRunner : GLib.Object
         }
     }
 
-    private string[] get_command (BuildJob build_job, bool basename)
+    private string[] get_command (BuildJob build_job, bool basename,
+        bool for_printing = false)
     {
         string base_filename = null;
         string base_shortname = null;
@@ -370,10 +371,15 @@ public class BuildToolRunner : GLib.Object
                 if (delimiter != null)
                 {
                     arg_buf += " " + arg;
-                    if (arg.has_suffix (delimiter))
-                    {
-                        delimiter = null;
+                    if (! arg.has_suffix (delimiter))
+                        continue;
 
+                    delimiter = null;
+
+                    if (for_printing)
+                        command += arg_buf;
+                    else
+                    {
                         // We have to remove the delimiters because they are needed only
                         // when used in a single string. But since here we have an array
                         // of strings with each argument separated, if we keep the

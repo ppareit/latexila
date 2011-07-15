@@ -56,8 +56,14 @@ public class MainWindow : Window
             N_("Cut the selection"), on_edit_cut },
         { "EditCopy", Stock.COPY, null, null,
             N_("Copy the selection"), on_edit_copy },
-        { "EditPaste", Stock.PASTE, null, null,
+
+        // No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+        // the window. In this case Ctrl+V in the search text entry would be broken (the
+        // text is pasted in the document instead of the entry).
+        // Anyway if we press Ctrl+V when the cursor is in the document, no problem.
+        { "EditPaste", Stock.PASTE, null, "",
             N_("Paste the clipboard"), on_edit_paste },
+
         { "EditDelete", Stock.DELETE, null, null,
             N_("Delete the selected text"), on_edit_delete },
         { "EditSelectAll", Stock.SELECT_ALL, null, "<Control>A",
@@ -125,9 +131,31 @@ public class MainWindow : Window
         { "ProjectsManage", Stock.PREFERENCES, N_("_Manage Projects"), null,
             N_("Manage Projects"), on_projects_manage },
 
+        // Structure
+        { "Structure", null, N_("S_tructure") },
+        { "StructureCut", Stock.CUT, null, "",
+            N_("Cut the selected structure item"), on_structure_cut },
+        { "StructureCopy", Stock.COPY, null, "",
+            N_("Copy the selected structure item"), on_structure_copy },
+        { "StructureDelete", Stock.DELETE, null, "",
+            N_("Delete the selected structure item"), on_structure_delete },
+        { "StructureSelect", Stock.SELECT_ALL, N_("_Select"), "",
+            N_("Select the contents of the selected structure item"),
+            on_structure_select },
+        { "StructureComment", null, N_("_Comment"), null,
+            N_("Comment the selected structure item"), on_structure_comment },
+        { "StructureShiftLeft", Stock.GO_BACK, N_("Shift _Left"), "",
+            N_("Shift the selected structure item to the left (e.g. section → chapter"),
+            on_structure_shift_left },
+        { "StructureShiftRight", Stock.GO_FORWARD, N_("Shift _Right"), "",
+            N_("Shift the selected structure item to the right (e.g. chapter → section"),
+            on_structure_shift_right },
+
         // Help
         { "Help", null, N_("_Help") },
-        { "HelpLatexReference", Stock.HELP, N_("_LaTeX Reference"), "<Release>F1",
+        { "HelpContents", Stock.HELP, N_("_Contents"), "<Release>F1",
+            N_("Open the LaTeXila documentation"), on_help_contents },
+        { "HelpLatexReference", null, N_("_LaTeX Reference"), null,
             N_("The Kile LaTeX Reference"), on_help_latex_reference },
         { "HelpAbout", Stock.ABOUT, null, null,
             N_("About LaTeXila"), on_about_dialog }
@@ -135,12 +163,14 @@ public class MainWindow : Window
 
     private const ToggleActionEntry[] toggle_action_entries =
     {
+        { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
+            N_("Show or hide the main toolbar"), on_show_main_toolbar },
+        { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
+            N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "ViewSidePanel", null, N_("_Side panel"), null,
             N_("Show or hide the side panel"), on_show_side_panel },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), on_show_bottom_panel },
-        { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
-            N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "BuildShowErrors", Stock.DIALOG_ERROR, N_("Show _Errors"), null,
             N_("Show Errors"), on_build_show_errors },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
@@ -155,11 +185,12 @@ public class MainWindow : Window
     private GotoLine goto_line;
     private SearchAndReplace search_and_replace;
     private BuildView build_view;
+    private Toolbar main_toolbar;
     private Toolbar edit_toolbar;
     private SidePanel side_panel;
     private Symbols symbols;
     private FileBrowser file_browser;
-    private Structure structure;
+    private Structure _structure;
     private HPaned main_hpaned;
     private VPaned vpaned;
 
@@ -237,11 +268,11 @@ public class MainWindow : Window
 
         /* components */
         initialize_menubar_and_toolbar ();
-        var menu = ui_manager.get_widget ("/MainMenu");
+        Widget menu = ui_manager.get_widget ("/MainMenu");
 
-        Toolbar toolbar = (Toolbar) ui_manager.get_widget ("/MainToolbar");
-        toolbar.set_style (ToolbarStyle.ICONS);
-        setup_toolbar_open_button (toolbar);
+        main_toolbar = (Toolbar) ui_manager.get_widget ("/MainToolbar");
+        main_toolbar.set_style (ToolbarStyle.ICONS);
+        setup_toolbar_open_button (main_toolbar);
 
         edit_toolbar = (Toolbar) ui_manager.get_widget ("/EditToolbar");
         edit_toolbar.set_style (ToolbarStyle.ICONS);
@@ -281,8 +312,9 @@ public class MainWindow : Window
         file_browser = new FileBrowser (this);
         side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
-        structure = new Structure (this);
-        side_panel.add_component (_("Structure"), Stock.INDEX, structure);
+        _structure = new Structure (this, ui_manager);
+        side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
+
         side_panel.restore_state ();
 
         /* signal handlers */
@@ -372,18 +404,35 @@ public class MainWindow : Window
             update_documents_list_menu ();
         });
 
+        // hide completion calltip
+        notify["active-tab"].connect (() =>
+        {
+            CompletionProvider provider = CompletionProvider.get_default ();
+            provider.hide_calltip_window ();
+        });
+
+        // hide completion calltip
+        focus_out_event.connect (() =>
+        {
+            CompletionProvider provider = CompletionProvider.get_default ();
+            provider.hide_calltip_window ();
+
+            // propagate the event further
+            return false;
+        });
+
         set_file_actions_sensitivity (false);
         set_documents_move_to_new_window_sensitivity (false);
 
         /* packing widgets */
         VBox main_vbox = new VBox (false, 0);
         main_vbox.pack_start (menu, false, false, 0);
-        main_vbox.pack_start (toolbar, false, false, 0);
+        main_vbox.pack_start (main_toolbar, false, false, 0);
         main_vbox.pack_start (edit_toolbar, false, false, 0);
 
         main_vbox.show ();
         menu.show_all ();
-        toolbar.show_all ();
+        main_toolbar.show_all ();
 
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
@@ -483,7 +532,7 @@ public class MainWindow : Window
 
         try
         {
-            var path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
+            string path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
             ui_manager.add_ui_from_file (path);
         }
         catch (GLib.Error err)
@@ -541,13 +590,21 @@ public class MainWindow : Window
     {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
+        /* main toolbar */
+        bool show = settings.get_boolean ("main-toolbar-visible");
+
+        main_toolbar.visible = show;
+
+        ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
+        action.active = show;
+
         /* edit toolbar */
-        bool show = settings.get_boolean ("edit-toolbar-visible");
+        show = settings.get_boolean ("edit-toolbar-visible");
 
         if (! show)
             edit_toolbar.hide ();
 
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
+        action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
         action.set_active (show);
 
         /* side panel */
@@ -617,35 +674,36 @@ public class MainWindow : Window
         {
             foreach (Document doc in w.get_documents ())
             {
-                if (doc.location != null && location.equal (doc.location))
-                {
-                    /* the document is already opened in this window */
-                    if (this == w)
-                    {
-                        if (jump_to)
-                            active_tab = doc.tab;
-                        return doc.tab;
-                    }
+                if (doc.location == null || ! location.equal (doc.location))
+                    continue;
 
-                    /* the document is already opened in another window */
-                    DocumentTab tab = create_tab_from_location (location, jump_to);
-                    tab.document.readonly = true;
-                    string primary_msg = _("This file (%s) is already opened in another LaTeXila window.")
-                        .printf (location.get_parse_name ());
-                    string secondary_msg = _("LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?");
-                    InfoBar infobar = tab.add_message (primary_msg, secondary_msg,
-                        MessageType.WARNING);
-                    infobar.add_button (_("Edit Anyway"), ResponseType.YES);
-                    infobar.add_button (_("Don't Edit"), ResponseType.NO);
-                    infobar.response.connect ((response_id) =>
-                    {
-                        if (response_id == ResponseType.YES)
-                            tab.document.readonly = false;
-                        infobar.destroy ();
-                        tab.view.grab_focus ();
-                    });
-                    return tab;
+                /* the document is already opened in this window */
+                if (this == w)
+                {
+                    if (jump_to)
+                        active_tab = doc.tab;
+                    return doc.tab;
                 }
+
+                /* the document is already opened in another window */
+                DocumentTab tab = create_tab_from_location (location, jump_to);
+                tab.document.readonly = true;
+                string primary_msg =
+                    _("This file (%s) is already opened in another LaTeXila window.")
+                    .printf (location.get_parse_name ());
+                string secondary_msg = _("LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?");
+                InfoBar infobar = tab.add_message (primary_msg, secondary_msg,
+                    MessageType.WARNING);
+                infobar.add_button (_("Edit Anyway"), ResponseType.YES);
+                infobar.add_button (_("Don't Edit"), ResponseType.NO);
+                infobar.response.connect ((response_id) =>
+                {
+                    if (response_id == ResponseType.YES)
+                        tab.document.readonly = false;
+                    infobar.destroy ();
+                    tab.view.grab_focus ();
+                });
+                return tab;
             }
         }
 
@@ -706,6 +764,11 @@ public class MainWindow : Window
             update_build_tools_sensitivity ();
         });
 
+        tab.document.notify["project-id"].connect (() =>
+        {
+            update_build_tools_sensitivity ();
+        });
+
         tab.document.modified_changed.connect (() => sync_name (tab));
         tab.document.notify["readonly"].connect (() => sync_name (tab));
         tab.document.cursor_moved.connect (update_cursor_position_statusbar);
@@ -733,7 +796,7 @@ public class MainWindow : Window
          */
         if (! force_close && tab.document.get_modified ())
         {
-            var dialog = new MessageDialog (this,
+            Dialog dialog = new MessageDialog (this,
                 DialogFlags.DESTROY_WITH_PARENT,
                 MessageType.QUESTION,
                 ButtonsType.NONE,
@@ -794,11 +857,11 @@ public class MainWindow : Window
     {
         if (screen != null)
         {
-            var cur_name = screen.get_display ().get_name ();
-            var cur_n = screen.get_number ();
+            string cur_name = screen.get_display ().get_name ();
+            int cur_n = screen.get_number ();
             Gdk.Screen s = this.get_screen ();
-            var name = s.get_display ().get_name ();
-            var n = s.get_number ();
+            string name = s.get_display ().get_name ();
+            int n = s.get_number ();
 
             if (cur_name != name || cur_n != n)
                 return false;
@@ -870,7 +933,7 @@ public class MainWindow : Window
             return true;
         }
 
-        var file_chooser = new FileChooserDialog (_("Save File"), this,
+        FileChooserDialog file_chooser = new FileChooserDialog (_("Save File"), this,
             FileChooserAction.SAVE,
             Stock.CANCEL, ResponseType.CANCEL,
             Stock.SAVE, ResponseType.ACCEPT,
@@ -901,7 +964,7 @@ public class MainWindow : Window
             /* if the file exists, ask the user if the file can be replaced */
             if (file.query_exists ())
             {
-                var confirmation = new MessageDialog (this,
+                MessageDialog confirmation = new MessageDialog (this,
                     DialogFlags.DESTROY_WITH_PARENT,
                     MessageType.QUESTION,
                     ButtonsType.NONE,
@@ -910,13 +973,13 @@ public class MainWindow : Window
 
                 confirmation.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
-                var button_replace = new Button.with_label (_("Replace"));
-                var icon = new Image.from_stock (Stock.SAVE_AS, IconSize.BUTTON);
+                Button button_replace = new Button.with_label (_("Replace"));
+                Image icon = new Image.from_stock (Stock.SAVE_AS, IconSize.BUTTON);
                 button_replace.set_image (icon);
                 confirmation.add_action_widget (button_replace, ResponseType.YES);
                 button_replace.show ();
 
-                var response = confirmation.run ();
+                int response = confirmation.run ();
                 confirmation.destroy ();
 
                 if (response != ResponseType.YES)
@@ -1046,13 +1109,19 @@ public class MainWindow : Window
         settings_window.set_int ("side-panel-size", main_hpaned.get_position ());
         settings_window.set_int ("vertical-paned-position", vpaned.get_position ());
 
+        _structure.save_state ();
+
         /* ui preferences */
         GLib.Settings settings_ui =
             new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
-        // We don't bind this setting to the toggle action because when we change the
+        // We don't bind this settings to the toggle action because when we change the
         // setting it must be applied only on the current window and not all windows.
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
+
+        ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
+        settings_ui.set_boolean ("main-toolbar-visible", action.active);
+
+        action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
         settings_ui.set_boolean ("edit-toolbar-visible", action.active);
 
         action = (ToggleAction) action_group.get_action ("ViewSidePanel");
@@ -1071,8 +1140,6 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         settings_ui.set_boolean ("show-build-badboxes", action.active);
-
-        structure.save_state ();
 
         if (sync)
         {
@@ -1152,16 +1219,14 @@ public class MainWindow : Window
 
         BuildTool tool = BuildTools.get_default ()[i];
 
-        //Utils.print_build_tool (tool);
-
         build_view.show ();
 
         // save the document if it's a compilation (e.g. with rubber)
         if (tool.compilation)
         {
-            int num = active_document.project_id;
+            int project_id = active_document.project_id;
 
-            if (num == -1)
+            if (project_id == -1)
                 active_document.save ();
 
             // save all the documents belonging to the project
@@ -1170,7 +1235,7 @@ public class MainWindow : Window
                 List<Document> docs = Application.get_default ().get_documents ();
                 foreach (Document doc in docs)
                 {
-                    if (doc.project_id == num)
+                    if (doc.project_id == project_id)
                         doc.save ();
                 }
             }
@@ -1185,7 +1250,7 @@ public class MainWindow : Window
         {
             build_tool_runner.finished.connect (() =>
             {
-                file_browser.refresh_if_in_dir (main_file.get_parent ());
+                file_browser.refresh_for_document (active_document);
             });
         }
     }
@@ -1323,24 +1388,23 @@ public class MainWindow : Window
         Gtk.Action clean_action = action_group.get_action ("BuildClean");
         Gtk.Action view_log_action = action_group.get_action ("BuildViewLog");
 
-        if (active_tab == null || active_document.location == null)
+        if (active_tab == null || active_document.get_main_file () == null)
         {
             build_tools_action_group.set_sensitive (false);
             clean_action.set_sensitive (false);
             view_log_action.set_sensitive (false);
             return;
         }
+
         // we must set the _action group_ sensitive and then set the sensitivity for each
         // action of the action group
-        else
-        {
-            build_tools_action_group.set_sensitive (true);
-            bool is_tex = active_document.is_tex_document ();
-            clean_action.set_sensitive (is_tex);
-            view_log_action.set_sensitive (is_tex);
-        }
+        build_tools_action_group.set_sensitive (true);
+        bool is_tex = active_document.is_main_file_a_tex_file ();
+        clean_action.set_sensitive (is_tex);
+        view_log_action.set_sensitive (is_tex);
 
-        string ext = Utils.get_extension (active_document.location.get_parse_name ());
+        string path = active_document.get_main_file ().get_parse_name ();
+        string ext = Utils.get_extension (path);
 
         int i = 0;
         foreach (BuildTool tool in BuildTools.get_default ())
@@ -1362,7 +1426,6 @@ public class MainWindow : Window
 
     public void update_config_project_sensitivity ()
     {
-        /* configure current project: sensitivity */
         Gtk.Action action = action_group.get_action ("ProjectsConfigCurrent");
         action.set_sensitive (active_tab != null && active_document.project_id != -1);
     }
@@ -1571,6 +1634,15 @@ public class MainWindow : Window
             build_view.hide ();
     }
 
+    public void on_show_main_toolbar (Gtk.Action action)
+    {
+        bool show = (action as ToggleAction).active;
+        if (show)
+            main_toolbar.show_all ();
+        else
+            main_toolbar.hide ();
+    }
+
     public void on_show_edit_toolbar (Gtk.Action action)
     {
         bool show = (action as ToggleAction).active;
@@ -1630,15 +1702,17 @@ public class MainWindow : Window
     public void on_build_clean ()
     {
         return_if_fail (active_tab != null);
-        if (active_document.clean_build_files (this))
-            file_browser.refresh_if_in_dir (
-                active_document.get_main_file ().get_parent ());
+
+        CleanBuildFiles build_files = new CleanBuildFiles (this, active_document);
+
+        if (build_files.clean ())
+            file_browser.refresh_for_document (active_document);
     }
 
     public void on_build_view_log ()
     {
         return_if_fail (active_tab != null);
-        return_if_fail (active_document.is_tex_document ());
+        return_if_fail (active_document.is_main_file_a_tex_file ());
 
         File mainfile = active_document.get_main_file ();
         File directory = mainfile.get_parent ();
@@ -1720,7 +1794,63 @@ public class MainWindow : Window
         ProjectDialogs.manage_projects (this);
     }
 
+    /* Structure */
+
+    public void on_structure_cut ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.CUT);
+    }
+
+    public void on_structure_copy ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.COPY);
+    }
+
+    public void on_structure_delete ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.DELETE);
+    }
+
+    public void on_structure_select ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.SELECT);
+    }
+
+    public void on_structure_comment ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.COMMENT);
+    }
+
+    public void on_structure_shift_left ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.SHIFT_LEFT);
+    }
+
+    public void on_structure_shift_right ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.SHIFT_RIGHT);
+    }
+
     /* Help */
+
+    public void on_help_contents ()
+    {
+        try
+        {
+            show_uri (this.get_screen (), "ghelp:" + Config.HELP_DIR, Gdk.CURRENT_TIME);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Impossible to open the documentation: %s\n", e.message);
+        }
+    }
 
     public void on_help_latex_reference ()
     {
@@ -1728,7 +1858,7 @@ public class MainWindow : Window
         {
             string uri = Filename.to_uri (Path.build_filename (Config.DATA_DIR,
                 "latexhelp.html", null));
-            show_uri (null, uri, Gdk.CURRENT_TIME);
+            show_uri (this.get_screen (), uri, Gdk.CURRENT_TIME);
         }
         catch (Error e)
         {
@@ -1755,7 +1885,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
 
-        string website = "http://latexila.sourceforge.net/";
+        string website = "http://projects.gnome.org/latexila/";
 
         string[] authors =
         {

@@ -42,6 +42,7 @@ public class FileBrowser : VBox
     private BuildView build_view;
     private ListStore parent_dir_store;
     private ListStore list_store;
+    private TreeView _list_view;
     private ComboBox combo_box;
     private File current_directory;
     private Button parent_button;
@@ -135,14 +136,25 @@ public class FileBrowser : VBox
         // jump button sensitivity
         main_window.notify["active-document"].connect (() =>
         {
-            if (main_window.active_tab == null
-                || main_window.active_document.location == null)
-                jump_button.set_sensitive (false);
-            else
-                jump_button.set_sensitive (true);
+            update_jump_button_sensitivity (jump_button);
+
+            // update jump button sensitivity when location changes
+            if (main_window.active_document != null)
+            {
+                main_window.active_document.notify["location"].connect (() =>
+                {
+                    update_jump_button_sensitivity (jump_button);
+                });
+            }
         });
 
         refresh_button.clicked.connect (refresh);
+    }
+
+    private void update_jump_button_sensitivity (Button jump_button)
+    {
+        jump_button.sensitive = main_window.active_tab != null
+            && main_window.active_document.location != null;
     }
 
     // list of parent directories
@@ -203,11 +215,11 @@ public class FileBrowser : VBox
         list_store.set_sort_func (0, on_sort);
         list_store.set_sort_column_id (0, SortType.ASCENDING);
 
-        TreeView tree_view = new TreeView.with_model (list_store);
-        tree_view.headers_visible = false;
+        _list_view = new TreeView.with_model (list_store);
+        _list_view.headers_visible = false;
 
         TreeViewColumn column = new TreeViewColumn ();
-        tree_view.append_column (column);
+        _list_view.append_column (column);
 
         // icon
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
@@ -220,10 +232,10 @@ public class FileBrowser : VBox
         column.set_attributes (text_renderer, "text", FileColumn.NAME, null);
 
         // with a scrollbar
-        var sw = Utils.add_scrollbar (tree_view);
+        Widget sw = Utils.add_scrollbar (_list_view);
         pack_start (sw);
 
-        tree_view.row_activated.connect ((path) =>
+        _list_view.row_activated.connect ((path) =>
         {
             TreeModel model = (TreeModel) list_store;
             TreeIter iter;
@@ -280,16 +292,41 @@ public class FileBrowser : VBox
         fill_stores_with_dir (current_directory);
     }
 
-    public void refresh_if_in_dir (File dir)
+    // Refresh the file browser if the document has a "link" with the directory currently
+    // displayed.
+    public void refresh_for_document (Document doc)
     {
-        if (dir.equal (current_directory))
+        Project? project = doc.get_project ();
+
+        // If the document is not part of a project, refresh only if the document's
+        // directory is the same as the current directory.
+        if (project == null)
+        {
+            if (doc.location != null
+                && current_directory.equal (doc.location.get_parent ()))
+            {
+                refresh ();
+            }
+
+            return;
+        }
+
+        // If a project is defined, refresh if the current dir is part of the project.
+        File project_dir = project.directory;
+
+        if (current_directory.equal (project_dir)
+            || current_directory.has_prefix (project_dir))
+        {
             refresh ();
+        }
     }
 
     private void fill_stores_with_dir (File? dir)
     {
         list_store.clear ();
         parent_dir_store.clear ();
+
+        _list_view.columns_autosize ();
 
         /* files list store */
 
@@ -306,6 +343,9 @@ public class FileBrowser : VBox
                 directory = File.new_for_path (Environment.get_home_dir ());
         }
 
+        // TODO~ try (haha) to put the minimum code in the try
+        // note: the file browser will be removed when latexila will become a
+        // Gedit plugin...
         try
         {
             FileEnumerator enumerator = directory.enumerate_children (

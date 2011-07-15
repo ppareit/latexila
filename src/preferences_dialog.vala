@@ -36,6 +36,7 @@ public class PreferencesDialog : Dialog
         Button reset_button = new Button.with_label (_("Reset All"));
         Image image = new Image.from_stock (Stock.CLEAR, IconSize.MENU);
         reset_button.set_image (image);
+        reset_button.set_tooltip_text (_("Reset all preferences"));
         reset_button.show_all ();
         add_action_widget (reset_button, ResponseType.APPLY);
 
@@ -292,25 +293,76 @@ public class PreferencesDialog : Dialog
         var build_tools_view = (TreeView) builder.get_object ("build_tools_treeview");
         init_build_tools_treeview (build_tools_view);
 
-        Button bt_new = (Button) builder.get_object ("build_tool_new");
+        Button bt_properties = builder.get_object ("build_tool_properties") as Button;
+        bt_properties.clicked.connect (() =>
+        {
+            int num = Utils.get_selected_row (build_tools_view);
+            if (0 <= num)
+                run_build_tool_dialog (num);
+        });
+
+        Button bt_new = builder.get_object ("build_tool_new") as Button;
         bt_new.clicked.connect (() =>
         {
             run_build_tool_dialog (-1);
         });
 
-        Button bt_properties = (Button) builder.get_object ("build_tool_properties");
-        bt_properties.clicked.connect (() =>
+        Button bt_copy = builder.get_object ("build_tool_copy") as Button;
+        bt_copy.clicked.connect (() =>
         {
-            int num = Utils.get_selected_row (build_tools_view);
-            run_build_tool_dialog (num);
+            int selected_row = Utils.get_selected_row (build_tools_view);
+            if (selected_row < 0)
+                return;
+
+            BuildTools build_tools = BuildTools.get_default ();
+            BuildTool? tool = build_tools.get (selected_row);
+            return_if_fail (tool != null);
+
+            tool.show = false;
+            tool.label = _("%s [copy]").printf (tool.label);
+            build_tools.insert (selected_row + 1, tool);
+
+            update_build_tools_store ();
         });
 
-        Button bt_delete = (Button) builder.get_object ("build_tool_delete");
+        Button bt_up = builder.get_object ("build_tool_up") as Button;
+        bt_up.clicked.connect (() =>
+        {
+            TreeIter iter1, iter2;
+            int i = Utils.get_selected_row (build_tools_view, out iter1);
+            if (i != -1 && i > 0)
+            {
+                iter2 = iter1;
+                if (Utils.tree_model_iter_prev (build_tools_store, ref iter2))
+                {
+                    build_tools_store.swap (iter1, iter2);
+                    BuildTools.get_default ().move_up (i);
+                }
+            }
+        });
+
+        Button bt_down = builder.get_object ("build_tool_down") as Button;
+        bt_down.clicked.connect (() =>
+        {
+            TreeIter iter1, iter2;
+            int i = Utils.get_selected_row (build_tools_view, out iter1);
+            if (i != -1)
+            {
+                iter2 = iter1;
+                if (build_tools_store.iter_next (ref iter2))
+                {
+                    build_tools_store.swap (iter1, iter2);
+                    BuildTools.get_default ().move_down (i);
+                }
+            }
+        });
+
+        Button bt_delete = builder.get_object ("build_tool_delete") as Button;
         bt_delete.clicked.connect (() =>
         {
             TreeIter iter;
-            int i = Utils.get_selected_row (build_tools_view, out iter);
-            if (i == -1)
+            int selected_row = Utils.get_selected_row (build_tools_view, out iter);
+            if (selected_row == -1)
                 return;
 
             string label;
@@ -328,45 +380,13 @@ public class PreferencesDialog : Dialog
             if (dialog.run () == ResponseType.YES)
             {
                 build_tools_store.remove (iter);
-                BuildTools.get_default ().delete (i);
+                BuildTools.get_default ().delete (selected_row);
             }
 
             dialog.destroy ();
         });
 
-        Button bt_up = (Button) builder.get_object ("build_tool_up");
-        bt_up.clicked.connect (() =>
-        {
-            TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (build_tools_view, out iter1);
-            if (i != -1 && i > 0)
-            {
-                iter2 = iter1;
-                if (Utils.tree_model_iter_prev (build_tools_store, ref iter2))
-                {
-                    build_tools_store.swap (iter1, iter2);
-                    BuildTools.get_default ().move_up (i);
-                }
-            }
-        });
-
-        Button bt_down = (Button) builder.get_object ("build_tool_down");
-        bt_down.clicked.connect (() =>
-        {
-            TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (build_tools_view, out iter1);
-            if (i != -1)
-            {
-                iter2 = iter1;
-                if (build_tools_store.iter_next (ref iter2))
-                {
-                    build_tools_store.swap (iter1, iter2);
-                    BuildTools.get_default ().move_down (i);
-                }
-            }
-        });
-
-        Button bt_reset = (Button) builder.get_object ("build_tool_reset");
+        Button bt_reset = builder.get_object ("build_tool_reset") as Button;
         bt_reset.clicked.connect (() =>
         {
             Dialog dialog = get_reset_all_confirm_dialog (
@@ -482,21 +502,21 @@ public class PreferencesDialog : Dialog
         list_store.set_sort_column_id (StyleSchemes.ID, SortType.ASCENDING);
         treeview.set_model (list_store);
 
-        var renderer = new CellRendererText ();
-        var column = new TreeViewColumn.with_attributes (
+        CellRendererText renderer = new CellRendererText ();
+        TreeViewColumn column = new TreeViewColumn.with_attributes (
             "Name and description", renderer,
             "markup", StyleSchemes.DESC, null);
         treeview.append_column (column);
 
-        var select = treeview.get_selection ();
+        TreeSelection select = treeview.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
 
         /* fill style scheme list store */
-        var manager = SourceStyleSchemeManager.get_default ();
+        SourceStyleSchemeManager manager = SourceStyleSchemeManager.get_default ();
         foreach (string id in manager.get_scheme_ids ())
         {
-            var scheme = manager.get_scheme (id);
-            var desc = "<b>%s</b> - %s".printf (scheme.name, scheme.description);
+            SourceStyleScheme scheme = manager.get_scheme (id);
+            string desc = "<b>%s</b> - %s".printf (scheme.name, scheme.description);
             TreeIter iter;
             list_store.append (out iter);
             list_store.set (iter,
@@ -524,23 +544,31 @@ public class PreferencesDialog : Dialog
             typeof (string), typeof (string), typeof (string));
         build_tools_view.set_model (build_tools_store);
 
-        TreeViewColumn column = new TreeViewColumn ();
-        build_tools_view.append_column (column);
+        TreeViewColumn active_column = new TreeViewColumn ();
+        active_column.set_title (_("Active"));
+        build_tools_view.append_column (active_column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
-        column.pack_start (toggle_renderer, false);
-        column.set_attributes (toggle_renderer, "active", BuildToolColumn.SHOW, null);
+        active_column.pack_start (toggle_renderer, false);
+        active_column.set_attributes (toggle_renderer,
+          "active", BuildToolColumn.SHOW,
+          null);
 
-        column = new TreeViewColumn ();
-        build_tools_view.append_column (column);
+        TreeViewColumn label_column = new TreeViewColumn ();
+        label_column.set_title (_("Label"));
+        build_tools_view.append_column (label_column);
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        column.pack_start (pixbuf_renderer, false);
-        column.set_attributes (pixbuf_renderer, "stock-id", BuildToolColumn.PIXBUF, null);
+        label_column.pack_start (pixbuf_renderer, false);
+        label_column.set_attributes (pixbuf_renderer,
+          "stock-id", BuildToolColumn.PIXBUF,
+          null);
 
         CellRendererText text_renderer = new CellRendererText ();
-        column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", BuildToolColumn.LABEL, null);
+        label_column.pack_start (text_renderer, true);
+        label_column.set_attributes (text_renderer,
+          "text", BuildToolColumn.LABEL,
+          null);
 
         build_tools_view.set_tooltip_column (BuildToolColumn.DESCRIPTION);
 
@@ -568,6 +596,16 @@ public class PreferencesDialog : Dialog
             build_tool.show = val;
 
             build_tools.update (num, build_tool);
+        });
+
+        /* double-click */
+        build_tools_view.row_activated.connect ((path, column) =>
+        {
+            if (column == label_column)
+            {
+                int num = path.get_indices ()[0];
+                run_build_tool_dialog (num);
+            }
         });
     }
 

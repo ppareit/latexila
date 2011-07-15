@@ -84,6 +84,11 @@
   </schema>
 
   <schema id="org.gnome.latexila.preferences.ui" path="/org/gnome/latexila/preferences/ui/">
+    <key name="main-toolbar-visible" type="b">
+      <default>true</default>
+      <summary>Main toolbar is visible</summary>
+      <description>Whether the main toolbar (file open, close, build, ...) should be visible.</description>
+    </key>
     <key name="edit-toolbar-visible" type="b">
       <default>true</default>
       <summary>Edit toolbar is visible</summary>
@@ -115,34 +120,6 @@
     <key name="show-build-badboxes" type="b">
       <default>true</default>
       <summary>Show build output badboxes</summary>
-    </key>
-    <key name="structure-show-label" type="b">
-      <default>true</default>
-      <summary>Show labels in structure</summary>
-    </key>
-    <key name="structure-show-include" type="b">
-      <default>true</default>
-      <summary>Show includes in structure</summary>
-    </key>
-    <key name="structure-show-table" type="b">
-      <default>true</default>
-      <summary>Show tables in structure</summary>
-    </key>
-    <key name="structure-show-figure" type="b">
-      <default>true</default>
-      <summary>Show figures in structure</summary>
-    </key>
-    <key name="structure-show-todo" type="b">
-      <default>true</default>
-      <summary>Show TODOs in structure</summary>
-    </key>
-    <key name="structure-show-fixme" type="b">
-      <default>true</default>
-      <summary>Show FIXMEs in structure</summary>
-    </key>
-    <key name="structure-min-level" type="i">
-      <default>6</default>
-      <summary>Minimum structure level</summary>
     </key>
   </schema>
 
@@ -182,7 +159,7 @@
       <description>Automatically clean-up files after close. no-confirm-clean must be true.</description>
     </key>
     <key name="clean-extensions" type="s">
-      <default>'.aux .blg .bbl .idx .ilg .ind .log .nav .out .snm .toc'</default>
+      <default>'.aux .blg .bbl .idx .ilg .ind .log .nav .out .snm .toc .fdb_latexmk'</default>
       <summary>File extensions for clean-up</summary>
       <description>The file extensions for the clean-up are separated by spaces</description>
     </key>
@@ -241,6 +218,9 @@
     </key>
     <key name="new-file-dialog-paned-position" type="i">
       <default>170</default>
+    </key>
+    <key name="structure-paned-position" type="i">
+      <default>100</default>
     </key>
   </schema>
 </schemalist>

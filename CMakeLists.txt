@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.6.4)
 project ("latexila" C)
 
 set (APP_NAME "LaTeXila")
-set (APP_VERSION "2.1.0")
+set (APP_VERSION "2.1.1")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
@@ -29,8 +29,7 @@ if (BUILD_VALA)
 	include (ValaPrecompile)
 	include (ValaVersion)
 	find_package (Vala REQUIRED)
-	ensure_vala_version ("0.12.0" MINIMUM)
-	#ensure_vala_version ("0.12.99" MAXIMUM)
+	ensure_vala_version ("0.12.1" MINIMUM)
 endif ()
 
 find_package (PkgConfig)
@@ -49,6 +48,8 @@ if (DESKTOP-SCHEMAS_FOUND)
 else ()
 	set (DESKTOP_SCHEMAS "0")
 endif ()
+
+set (HELP_DIR ${DATA_DIR}/help/C)
 
 configure_file (${latexila_SOURCE_DIR}/src/config.h.in
 	${latexila_BINARY_DIR}/src/config.h)
@@ -83,3 +84,4 @@ else ()
 endif ()
 add_subdirectory (src/ui)
 add_subdirectory (data)
+add_subdirectory (help/C)

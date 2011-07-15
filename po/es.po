@@ -1,5 +1,5 @@
 # Spanish translations for latexila package.
-# Copyright (C) 2010 Matias De la Puente
+# Copyright (C) 2010-2011 Matias De la Puente
 # This file is distributed under the same license as the latexila package.
 #
 msgid ""
@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-05-06 21:08+0200\n"
-"PO-Revision-Date: 2010-11-21 01:27+0100\n"
+"PO-Revision-Date: 2011-06-10 122:10-0300\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: Spanish\n"
 "Language: es\n"
@@ -28,7 +28,7 @@ msgstr "%u de %u"
 
 #: src/main.vala:64
 msgid "- Integrated LaTeX Environment for GNOME"
-msgstr "- Entorno LateX Integrado para GNOME"
+msgstr "- Entorno LaTeX Integrado para GNOME"
 
 #: src/main_window.vala:908
 #, c-format
@@ -82,7 +82,7 @@ msgstr "Todo"
 
 #: src/ui/preferences_dialog.ui:482
 msgid "Always show all information for the Latexmk post processor"
-msgstr ""
+msgstr "Siempre mostrar toda la información para el post procesador Latexmk"
 
 #: src/latex_menu.vala:265
 msgid "Array of Equations - \\begin{align*}"
@@ -229,9 +229,8 @@ msgid "Close without Saving"
 msgstr "Cerrar sin guardar"
 
 #: src/structure.vala:157
-#, fuzzy
 msgid "Collapse All"
-msgstr "_Cerrar todo"
+msgstr "Ocultar Todos"
 
 #: src/ui/preferences_dialog.ui:337
 msgid "Color Scheme"
@@ -310,7 +309,6 @@ msgid "Delete Template(s)..."
 msgstr "Eliminar Plantilla(s)..."
 
 #: src/main_window.vala:43
-#, fuzzy
 msgid "Delete personal template(s)"
 msgstr "Eliminar plantilla(s) personal(es)"
 
@@ -446,7 +444,7 @@ msgstr "Ejecutar"
 
 #: src/structure.vala:150
 msgid "Expand All"
-msgstr ""
+msgstr "Mostrar Todo"
 
 #: src/ui/build_tool.ui:137
 msgid "Extensions"
@@ -458,7 +456,7 @@ msgstr "Serie de _Tipografías"
 
 #: src/structure.vala:484
 msgid "Figure"
-msgstr ""
+msgstr "Figura"
 
 #: src/latex_menu.vala:70
 msgid "Figure - \\begin{figure}"
@@ -491,7 +489,7 @@ msgstr ""
 
 #: src/structure.vala:487
 msgid "File included"
-msgstr ""
+msgstr "Archivo incluido"
 
 #: src/ui/search_and_replace.ui:71
 msgid "Find next"
@@ -588,8 +586,8 @@ msgstr "Si no guarda, todos sus cambios serán perdidos permanentemente."
 #: src/document.vala:217
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
-"Si lo guarda, todos los cambios externos serán perdidos. ¿Guardarlo de todas "
-"formas?"
+"Si lo guarda, todos los cambios externos serán perdidos."
+"¿Guardarlo de todas formas?"
 
 #: src/document.vala:140
 #, c-format
@@ -641,7 +639,6 @@ msgid "Jobs"
 msgstr "Trabajos"
 
 #: src/main_window.vala:1742
-#, fuzzy
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila es un Entorno LaTeX Integrado para el escritorio GNOME"
 
@@ -650,8 +647,8 @@ msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
 msgstr ""
-"LaTeXila abrió esta instancia del archivo en una forma no editable. ¿Desea "
-"editarlo de todas formas?"
+"LaTeXila abrió esta instancia del archivo en una forma no editable."
+"¿Desea editarlo de todas formas?"
 
 #: src/latex_menu.vala:49 src/structure.vala:472
 msgid "Label"
@@ -755,7 +752,7 @@ msgstr "Salto medio - \\medskip"
 
 #: src/structure.vala:275
 msgid "Minimum level"
-msgstr ""
+msgstr "Nivel mínimo"
 
 #: src/latex_menu.vala:82
 msgid "Minipage - \\begin{minipage}"
@@ -918,7 +915,6 @@ msgid "Paste the clipboard"
 msgstr "Pegar del portapapeles"
 
 #: src/templates.vala:300
-#, fuzzy
 msgid "Personal templates"
 msgstr "Plantillas personales"
 
@@ -1041,8 +1037,8 @@ msgstr "Roman - \\rmfamily"
 #: src/build_tool_runner.vala:313
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
-"Puede que Rubber no soporte nombres de archivos con espacios (incluso en un "
-"directorio)"
+"Puede que Rubber no soporte nombres de archivos con espacios "
+"(incluso en un directorio)"
 
 #: src/main.vala:75
 #, c-format
@@ -1122,54 +1118,51 @@ msgstr "Seleccione los archivos que desee guardar:"
 
 #: src/main_window.vala:149
 msgid "Show BadBoxes"
-msgstr ""
+msgstr "Mostrar BadBoxes"
 
 #: src/main_window.vala:145
 msgid "Show Errors"
-msgstr ""
+msgstr "Mostrar Errores"
 
 #: src/structure.vala:180
 msgid "Show TODOs and FIXMEs"
-msgstr ""
+msgstr "Mostrar TODOs y FIXMEs"
 
 #: src/main_window.vala:147
 msgid "Show Warnings"
-msgstr ""
+msgstr "Mostrar Advertencias"
 
 #: src/main_window.vala:148
 msgid "Show _BadBoxes"
-msgstr ""
+msgstr "Mostrar _BadBoxes"
 
 #: src/main_window.vala:144
 msgid "Show _Errors"
-msgstr ""
+msgstr "Mostrar _Errores"
 
 #: src/main_window.vala:146
 msgid "Show _Warnings"
-msgstr ""
+msgstr "Mostrar _Advertencias"
 
 #: src/ui/preferences_dialog.ui:815
 msgid "Show all files"
 msgstr "Mostrar todos los archivos"
 
 #: src/structure.vala:176
-#, fuzzy
 msgid "Show figures"
-msgstr "Mostrar todos los archivos"
+msgstr "Mostrar figuras"
 
 #: src/structure.vala:168
-#, fuzzy
 msgid "Show files included"
-msgstr "Mostrar todos los archivos"
+msgstr "Mostrar archivos incluidos"
 
 #: src/ui/preferences_dialog.ui:850
 msgid "Show hidden files (beginning with a dot)"
 msgstr "Mostrar archivos ocultos (empezando con un punto)"
 
 #: src/structure.vala:164
-#, fuzzy
 msgid "Show labels"
-msgstr "Mostrar todos los archivos"
+msgstr "Mostrar etiquetas"
 
 #: src/ui/preferences_dialog.ui:874
 msgid "Show only files with these extensions"
@@ -1188,9 +1181,8 @@ msgid "Show or hide the side panel"
 msgstr "Mostrar u ocultar el panel lateral"
 
 #: src/structure.vala:172
-#, fuzzy
 msgid "Show tables"
-msgstr "Mostrar todos los archivos"
+msgstr "Mostrar tablas"
 
 #: src/main.vala:32
 msgid "Show the application's version"
@@ -1234,7 +1226,7 @@ msgstr "Detener la ejecución"
 
 #: src/main_window.vala:285
 msgid "Structure"
-msgstr ""
+msgstr "Estructura"
 
 #: src/latex_menu.vala:273
 msgid "Su_bscript - __{}"
@@ -1274,7 +1266,7 @@ msgstr "Tabulación - \\begin{tabbing}"
 
 #: src/structure.vala:481
 msgid "Table"
-msgstr ""
+msgstr "Tabla"
 
 #: src/latex_menu.vala:72
 msgid "Table - \\begin{table}"
@@ -1442,7 +1434,6 @@ msgid "You can select this arrow and copy/paste it!"
 msgstr "¡Puedes elegir esta flecha y copiarlo/pagarlo!"
 
 #: src/templates.vala:142
-#, fuzzy
 msgid "Your personal templates"
 msgstr "Sus plantillas personales"
 

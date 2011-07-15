@@ -127,6 +127,8 @@ public class BuildView : HBox
 
         CellRendererText renderer_text = new CellRendererText ();
         renderer_text.weight_set = true;
+        renderer_text.editable = true;
+        renderer_text.editable_set = true;
         column_job.pack_start (renderer_text, true);
         column_job.add_attribute (renderer_text, "text", BuildInfo.MESSAGE);
         column_job.add_attribute (renderer_text, "weight", BuildInfo.WEIGHT);
@@ -143,7 +145,17 @@ public class BuildView : HBox
         // selection
         TreeSelection select = view.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
-        select.set_select_function (on_row_selection);
+        select.set_select_function ((select, model, path, path_currently_selected) =>
+        {
+            // always allow deselect
+            if (path_currently_selected)
+                return true;
+
+            return select_row (model, path);
+        });
+
+        // double-click
+        view.row_activated.connect ((path) => select_row (filtered_model, path));
 
         // close button
         Button close_button = new Button ();
@@ -158,7 +170,7 @@ public class BuildView : HBox
         });
 
         // with a scrollbar
-        var sw = Utils.add_scrollbar (view);
+        Widget sw = Utils.add_scrollbar (view);
         pack_start (sw);
 
         VBox vbox = new VBox (false, 0);
@@ -167,8 +179,7 @@ public class BuildView : HBox
         pack_start (vbox, false, false);
     }
 
-    private bool on_row_selection (TreeSelection selection, TreeModel model,
-        TreePath path, bool path_currently_selected)
+    private bool select_row (TreeModel model, TreePath path)
     {
         TreeIter iter;
         if (! model.get_iter (out iter, path))
@@ -204,17 +215,25 @@ public class BuildView : HBox
                     view.collapse_row (path);
                 else
                     view.expand_to_path (path);
+
+                // the row is not selected
+                return false;
             }
         }
 
-        // the row is not selected
-        return false;
+        // the row is selected, so we can copy/paste its content
+        return true;
     }
 
     private void jump_to_file (string filename, int start_line, int end_line)
     {
         File file = File.new_for_path (filename);
         DocumentTab tab = main_window.open_document (file);
+
+        // If the file was not yet opened, it takes some time. If we try to select the
+        // lines when the file is not fully charged, the lines are simply not selected.
+        Utils.flush_queue ();
+
         if (start_line != -1)
         {
             // start_line and end_line begins at 1 (from rubber),

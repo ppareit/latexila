@@ -30,11 +30,11 @@ public class Templates : GLib.Object
 
     private enum TemplateColumn
     {
-	    PIXBUF,
-	    ICON_ID,
-	    NAME,
-	    CONTENTS,
-	    N_COLUMNS
+        PIXBUF,
+        ICON_ID,
+        NAME,
+        CONTENTS,
+        N_COLUMNS
     }
 
     /* Templates is a singleton */
@@ -137,18 +137,18 @@ public class Templates : GLib.Object
             icon_view_default_templates);
         vpaned.pack1 (component, true, true);
 
-	    /* icon view for the personal templates */
-	    IconView icon_view_personal_templates = create_icon_view (personal_store);
-	    component = get_dialog_component (_("Your personal templates"),
-	        icon_view_personal_templates);
-	    vpaned.pack2 (component, false, true);
+        /* icon view for the personal templates */
+        IconView icon_view_personal_templates = create_icon_view (personal_store);
+        component = get_dialog_component (_("Your personal templates"),
+            icon_view_personal_templates);
+        vpaned.pack2 (component, false, true);
 
-	    content_area.show_all ();
+        content_area.show_all ();
 
-	    icon_view_default_templates.selection_changed.connect (() =>
-	    {
-	        on_icon_view_selection_changed (icon_view_default_templates,
-	            icon_view_personal_templates);
+        icon_view_default_templates.selection_changed.connect (() =>
+        {
+            on_icon_view_selection_changed (icon_view_default_templates,
+                icon_view_personal_templates);
         });
 
         icon_view_personal_templates.selection_changed.connect (() =>
@@ -157,37 +157,61 @@ public class Templates : GLib.Object
                 icon_view_default_templates);
         });
 
-	    if (dialog.run () == ResponseType.ACCEPT)
-	    {
-	        List<TreePath> selected_items =
-	            icon_view_default_templates.get_selected_items ();
-	        TreeModel model = (TreeModel) default_store;
+        icon_view_default_templates.item_activated.connect ((path) =>
+        {
+            open_template (parent, default_store, path);
+            close_dialog_new (dialog, vpaned);
+        });
 
-	        // if no item is selected in the default templates, maybe one item is
-		    // selected in the personal templates
-		    if (selected_items.length () == 0)
-		    {
-		        selected_items = icon_view_personal_templates.get_selected_items ();
-		        model = (TreeModel) personal_store;
-		    }
+        icon_view_personal_templates.item_activated.connect ((path) =>
+        {
+            open_template (parent, personal_store, path);
+            close_dialog_new (dialog, vpaned);
+        });
 
-	        TreePath path = (TreePath) selected_items.nth_data (0);
-	        TreeIter iter = {};
-	        string contents = "";
+        if (dialog.run () == ResponseType.ACCEPT)
+        {
+            List<TreePath> selected_items =
+                icon_view_default_templates.get_selected_items ();
+            TreeModel model = (TreeModel) default_store;
 
-	        if (path != null && model.get_iter (out iter, path))
-	            model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
+            // if no item is selected in the default templates, maybe one item is
+            // selected in the personal templates
+            if (selected_items.length () == 0)
+            {
+                selected_items = icon_view_personal_templates.get_selected_items ();
+                model = (TreeModel) personal_store;
+            }
 
-            DocumentTab tab = parent.create_tab (true);
-            tab.document.set_contents (contents);
-	    }
+            TreePath path = (TreePath) selected_items.nth_data (0);
+            open_template (parent, model, path);
+        }
 
-	    // save dialog size and paned position
-	    dialog.get_size (out w, out h);
-	    settings.set ("new-file-dialog-size", "(ii)", w, h);
-	    settings.set_int ("new-file-dialog-paned-position", vpaned.position);
+        close_dialog_new (dialog, vpaned);
+    }
 
-	    dialog.destroy ();
+    private void open_template (MainWindow main_window, TreeModel model, TreePath? path)
+    {
+        TreeIter iter = {};
+        string contents = "";
+
+        if (path != null && model.get_iter (out iter, path))
+            model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
+
+        DocumentTab tab = main_window.create_tab (true);
+        tab.document.set_contents (contents);
+    }
+
+    private void close_dialog_new (Dialog dialog, VPaned vpaned)
+    {
+        // save dialog size and paned position
+        int w, h;
+        dialog.get_size (out w, out h);
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
+        settings.set ("new-file-dialog-size", "(ii)", w, h);
+        settings.set_int ("new-file-dialog-paned-position", vpaned.position);
+
+        dialog.destroy ();
     }
 
     private Widget get_dialog_component (string title, Widget widget)
@@ -208,8 +232,8 @@ public class Templates : GLib.Object
         vbox.pack_start (alignment);
 
         // with a scrollbar (without that there is a problem for resizing the
-	    // dialog, we can make it bigger but not smaller...)
-	    Widget scrollbar = Utils.add_scrollbar (widget);
+        // dialog, we can make it bigger but not smaller...)
+        Widget scrollbar = Utils.add_scrollbar (widget);
         alignment.add (scrollbar);
 
         return vbox;
@@ -230,8 +254,8 @@ public class Templates : GLib.Object
 
         /* name */
         HBox hbox = new HBox (false, 5);
-        var label = new Label (_("Name of the new template:"));
-        var entry = new Entry ();
+        Label label = new Label (_("Name of the new template:"));
+        Entry entry = new Entry ();
 
         hbox.pack_start (label, false, false, 0);
         hbox.pack_start (entry, false, false, 0);
@@ -240,8 +264,8 @@ public class Templates : GLib.Object
         /* icon */
         // we take the default store because it contains all the icons
         IconView icon_view = create_icon_view (default_store);
-        var scrollbar = Utils.add_scrollbar (icon_view);
-        var frame = new Frame (_("Choose an icon:"));
+        Widget scrollbar = Utils.add_scrollbar (icon_view);
+        Frame frame = new Frame (_("Choose an icon:"));
         frame.add (scrollbar);
         content_area.pack_start (frame, true, true, 10);
 
@@ -385,15 +409,15 @@ public class Templates : GLib.Object
     {
         // only one item of the two icon views can be selected at once
 
-	    // we unselect all the items of the other icon view only if the current icon
-	    // view have an item selected, because when we unselect all the items the
-	    // "selection-changed" signal is emitted for the other icon view, so for the
-	    // other icon view this function is also called but no item is selected so
-	    // nothing is done and the item selected by the user keeps selected
+        // we unselect all the items of the other icon view only if the current icon
+        // view have an item selected, because when we unselect all the items the
+        // "selection-changed" signal is emitted for the other icon view, so for the
+        // other icon view this function is also called but no item is selected so
+        // nothing is done and the item selected by the user keeps selected
 
-	    List<TreePath> selected_items = icon_view.get_selected_items ();
-	    if (selected_items.length () > 0)
-	        other_icon_view.unselect_all ();
+        List<TreePath> selected_items = icon_view.get_selected_items ();
+        if (selected_items.length () > 0)
+            other_icon_view.unselect_all ();
     }
 
     private void add_personal_template (string contents)

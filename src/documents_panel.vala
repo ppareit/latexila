@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010 Sébastien Wilmet
+ * Copyright © 2010-2011 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ public class DocumentsPanel : Notebook
 
     public void add_tab (DocumentTab tab, int position, bool jump_to)
     {
-        var event_box = new EventBox ();
+        EventBox event_box = new EventBox ();
         event_box.add (tab.label);
         event_box.button_press_event.connect ((event) =>
         {
@@ -54,10 +54,10 @@ public class DocumentsPanel : Notebook
             return false;
         });
 
-        var i = this.insert_page (tab, event_box, position);
+        int page_pos = this.insert_page (tab, event_box, position);
         this.set_tab_reorderable (tab, true);
         if (jump_to)
-            this.set_current_page (i);
+            this.set_current_page (page_pos);
     }
 
     public void remove_tab (DocumentTab tab)
@@ -65,9 +65,13 @@ public class DocumentsPanel : Notebook
         // automatic clean-up build files
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
+
         if (settings.get_boolean ("no-confirm-clean")
             && settings.get_boolean ("automatic-clean"))
-            tab.document.clean_build_files (main_window);
+        {
+            CleanBuildFiles build_files = new CleanBuildFiles (main_window, tab.document);
+            build_files.clean ();
+        }
 
         int pos = page_num (tab);
         remove_page (pos);

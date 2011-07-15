@@ -1,8 +1,28 @@
 LaTeXila NEWS
 
-=============================
-* Release 2.1.0 (May 6, 2011)
-=============================
+====================================
+* Release 2.1.1 (May 6, 2011) [beta]
+====================================
+
+- Structure:
+	- better implemenation (custom Gtk.TreeModel)
+	- better performances (line-by-line parsing)
+	- simple lists of items, to find more quickly one element
+	- some actions: cut, copy, delete, select, comment, shift left/right
+
+- Build Tools: copy button to duplicate a build tool
+- Mallard documentation about the build tools
+- Build View: text is selectable, so we can copy/paste it
+- Cleanup Build Files: take into account projects
+- Show/hide the main toolbar
+- Fix: Build Tools not available on a .bib project file
+- dconf: scripts for migrating latexila 2.0.x -> 2.2.x
+- Some other little improvements and bug fixes
+
+
+====================================
+* Release 2.1.0 (May 6, 2011) [beta]
+====================================
 
 - Build Tools: Latexmk by default instead of Rubber (Rubber is still available)
 - New build tools: "low level" commands (latex, pdflatex, dvipdf, etc.)
@@ -11,6 +31,18 @@ LaTeXila NEWS
 - File Browser: new icon for images
 - Structure of a document to easily navigate in it
 - Some code clean-up and little fixes
+
+
+===============================
+* Release 2.0.8 (June 14, 2011)
+===============================
+
+- Fix a segmentation fault on search
+- Change behavior of HOME and END buttons
+- More completion data (Pieter Pareit)
+- Completion: insert \item for list environments (Pieter Pareit)
+- German translation: some fixes (Max Schillinger)
+- Some other little improvements and bug fixes
 
 
 ==============================

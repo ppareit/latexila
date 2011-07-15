@@ -21,29 +21,63 @@ using Gtk;
 
 public class DocumentStructure : GLib.Object
 {
-    private struct DataNode
+    private enum LowLevelType
     {
-        StructType type;
-        string text;
-        TextMark mark;
+        // First part: must be exactly the same as the first part of StructType
+        // (in Structure).
+        PART,
+        CHAPTER,
+        SECTION,
+        SUBSECTION,
+        SUBSUBSECTION,
+        PARAGRAPH,
+        SUBPARAGRAPH,
+        LABEL,
+        INCLUDE,
+        IMAGE,
+        TODO,
+        FIXME,
+        NB_COMMON_TYPES,
+
+        // Second part: "low-level" only
+        BEGIN_FIGURE,
+        END_FIGURE,
+        BEGIN_TABLE,
+        END_TABLE,
+        BEGIN_VERBATIM,
+        END_VERBATIM,
+        END_DOCUMENT,
+        CAPTION
     }
 
-    private unowned TextBuffer _doc;
+    private unowned Document _doc;
     private int _nb_marks = 0;
     private static const string MARK_NAME_PREFIX = "struct_item_";
+    private TextMark? _end_document_mark = null;
 
-    private bool _insert_at_end = true;
-    private Node<DataNode?> _tree;
+    private StructureModel _model = null;
 
+    private static Regex? _chars_regex = null;
     private static Regex? _comment_regex = null;
+    private static Regex? _command_name_regex = null;
 
-    private bool _in_figure_env = false;
-    private bool _in_table_env = false;
+    private bool _in_verbatim_env = false;
 
-    private static const int MAX_NB_LINES_TO_PARSE = 500;
+    // we can not take all data for figures and tables at once
+    private StructData? _env_data = null;
+
+    private static const int CAPTION_MAX_LENGTH = 60;
+
+    private static const int MAX_NB_LINES_TO_PARSE = 2000;
     private int _start_parsing_line = 0;
+    private static const bool _measure_parsing_time = false;
+    private Timer _timer = null;
 
-    public DocumentStructure (TextBuffer doc)
+    private static string[] _section_names = null;
+
+    public bool parsing_done { get; private set; default = false; }
+
+    public DocumentStructure (Document doc)
     {
         _doc = doc;
 
@@ -51,8 +85,16 @@ public class DocumentStructure : GLib.Object
         {
             try
             {
+                _chars_regex = new Regex ("\\\\|%");
+
                 _comment_regex =
                     new Regex ("^(?P<type>TODO|FIXME)[[:space:]:]*(?P<text>.*)$");
+
+                // the LaTeX command can contain some optional arguments
+                // TODO a better implementation of this regex would be to parse the line
+                // character by character, so we can verify if some chars are escaped.
+                _command_name_regex =
+                    new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[[^\\]]*\\][[:space:]]*)*{");
             }
             catch (RegexError e)
             {
@@ -64,12 +106,13 @@ public class DocumentStructure : GLib.Object
     public void parse ()
     {
         // reset
-        DataNode empty_data = {};
-        _tree = new Node<DataNode?> (empty_data);
-        _in_figure_env = false;
-        _in_table_env = false;
-        clear_all_structure_marks ();
+        parsing_done = false;
+        _model = new StructureModel ();
+        _env_data = null;
         _start_parsing_line = 0;
+
+        _end_document_mark = null;
+        clear_all_structure_marks ();
 
         Idle.add (() =>
         {
@@ -77,97 +120,231 @@ public class DocumentStructure : GLib.Object
         });
     }
 
+    public StructureModel get_model ()
+    {
+        return _model;
+    }
+
+    /*************************************************************************/
+    // Parsing stuff
+
     // Parse the document. Returns false if finished, true otherwise.
     private bool parse_impl ()
     {
-        /* search commands (begin with a backslash) */
+        if (_measure_parsing_time)
+        {
+            if (_timer == null)
+                _timer = new Timer ();
+            else
+                _timer.continue ();
+        }
 
-        // At the beginning of the search, the place where to insert new items is always
-        // at the end.
-        _insert_at_end = true;
-
-        // The parsing is splitted into several chunks if it's a big document, so the UI
-        // is not frozen.
-        TextIter iter;
-        _doc.get_iter_at_line (out iter, _start_parsing_line);
-
-        TextIter? limit = null;
+        int cur_line = _start_parsing_line;
         int nb_lines = _doc.get_line_count ();
-        int end_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
-        bool limit_parsing = nb_lines > end_parsing_line;
-        if (limit_parsing)
-            _doc.get_iter_at_line (out limit, end_parsing_line);
+        int stop_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
 
-        while (iter.forward_search ("\\",
-            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, limit))
+        // The parsing is done line-by-line.
+        while (cur_line < nb_lines)
         {
-            if (search_simple_command (iter))
-                continue;
-            search_figure_or_table (iter);
+            // If it's a big document, the parsing is splitted into several chunks,
+            // so the UI is not frozen.
+            if (cur_line == stop_parsing_line)
+            {
+                _start_parsing_line = cur_line;
+
+                if (_measure_parsing_time)
+                    _timer.stop ();
+
+                return true;
+            }
+
+            // get the text of the current line
+            string line = get_document_line_contents (cur_line);
+
+            // in one line there could be several items
+
+            int start_index = 0;
+            int line_length = line.length;
+            while (start_index < line_length)
+            {
+                LowLevelType? type;
+                string? contents;
+                int? start_match_index;
+                int? end_match_index;
+
+                bool item_found = search_low_level_item (line, start_index, out type,
+                    out contents, out start_match_index, out end_match_index);
+
+                if (! item_found)
+                    break;
+
+                TextIter iter;
+                _doc.get_iter_at_line_index (out iter, cur_line, start_match_index);
+                handle_item (type, contents, iter);
+
+                start_index = end_match_index;
+            }
+
+            cur_line++;
         }
 
-        _insert_at_end = false;
-
-        /* search comments (begin with '%') */
-
-        for (_doc.get_iter_at_line (out iter, _start_parsing_line) ;
-
-            iter.forward_search ("%",
-            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            null, out iter, limit) ;
-
-            iter.forward_visible_line ())
+        if (_measure_parsing_time)
         {
-            search_comment (iter);
+            _timer.stop ();
+            stdout.printf ("Structure parsing took %f seconds\n", _timer.elapsed ());
+            _timer.reset ();
         }
 
-        if (limit_parsing)
+        parsing_done = true;
+        return false;
+    }
+
+    // Search a "low-level" item in 'line'. The "high-level" items displayed in the
+    // structure can be composed of several low-level items, for example a figure is
+    // composed of \begin{figure}, the first \caption{} and \end{figure}.
+    //
+    // Begin the search at 'start_index'.
+    // Returns true if an item has been found, false otherwise.
+    // With the out arguments we can fetch the information we are intersted in.
+    private bool search_low_level_item (string line, int start_index,
+        out LowLevelType? type, out string? contents,
+        out int? start_match_index, out int? end_match_index)
+    {
+        /* search the character '\' or '%' */
+        MatchInfo match_info;
+        try
         {
-            _start_parsing_line = end_parsing_line;
+            _chars_regex.match_full (line, -1, start_index, 0, out match_info);
+        }
+        catch (Error e)
+        {
+            stderr.printf ("Structure parsing: chars regex: %s\n", e.message);
+            return false;
+        }
+
+        if (! match_info.matches ())
+            return false;
+
+        int after_char_index;
+        if (! match_info.fetch_pos (0, out start_match_index, out after_char_index))
+        {
+            stderr.printf ("Structure parsing: position can not be fetched\n");
+            return false;
+        }
+
+        if (Utils.char_is_escaped (line, start_match_index))
+            return false;
+
+        string char_matched = match_info.fetch (0);
+
+        // search markup (begin with a backslash)
+        if (char_matched == "\\")
+            return search_markup (line, after_char_index, out type, out contents,
+                out end_match_index);
+
+        // search comments (begin with '%')
+        return search_comment (line, after_char_index, out type, out contents,
+            out end_match_index);
+    }
+
+    private bool search_markup (string line, int after_backslash_index,
+        out LowLevelType? type, out string? contents, out int? end_match_index)
+    {
+        /* get markup name */
+        int? begin_contents_index;
+        string? name = get_markup_name (line, after_backslash_index,
+            out begin_contents_index);
+
+        if (name == null)
+            return false;
+
+        /* environment */
+        bool is_begin_env = name == "begin";
+        if (is_begin_env || name == "end")
+        {
+            contents = null;
+            return search_env (line, begin_contents_index, is_begin_env, out type,
+                out end_match_index);
+        }
+
+        /* simple markup */
+        type = get_markup_low_level_type (name);
+        if (type == null)
+            return false;
+
+        contents = get_markup_contents (line, begin_contents_index, out end_match_index);
+        return contents != null;
+    }
+
+    private bool search_env (string line, int begin_contents_index, bool is_begin_env,
+        out LowLevelType? type, out int? end_match_index)
+    {
+        string? contents = get_markup_contents (line, begin_contents_index,
+            out end_match_index);
+
+        if (contents == null)
+            return false;
+
+        if (contents == "verbatim" || contents == "verbatim*")
+        {
+            type = is_begin_env ? LowLevelType.BEGIN_VERBATIM : LowLevelType.END_VERBATIM;
+            return true;
+        }
+
+        if (contents == "figure")
+        {
+            type = is_begin_env ? LowLevelType.BEGIN_FIGURE : LowLevelType.END_FIGURE;
+            return true;
+        }
+
+        if (contents == "table")
+        {
+            type = is_begin_env ? LowLevelType.BEGIN_TABLE : LowLevelType.END_TABLE;
+            return true;
+        }
+
+        if (contents == "document" && ! is_begin_env)
+        {
+            type = LowLevelType.END_DOCUMENT;
             return true;
         }
 
         return false;
     }
 
-    private StructType? get_simple_command_type (TextIter after_backslash,
-        out TextIter begin_contents_iter = null)
+    // Try to get the markup name (between '\' and '{').
+    private string? get_markup_name (string line, int after_backslash_index,
+        out int? begin_contents_index = null)
     {
-        // set the limit to the end of the line
-        TextIter limit = after_backslash;
-        limit.forward_to_line_end ();
+        string after_backslash_text = line.substring (after_backslash_index);
 
-        // try to get the command name (between '\' and '{')
-
-        TextIter end_name_iter;
-
-        if (! after_backslash.forward_search ("{",
-            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
-            out end_name_iter, out begin_contents_iter, limit))
-        {
-            // not a command
+        MatchInfo match_info;
+        if (! _command_name_regex.match (after_backslash_text, 0, out match_info))
             return null;
-        }
 
-        string name = _doc.get_text (after_backslash, end_name_iter, false);
-        return get_type_from_simple_command_name (name);
+        int pos;
+        match_info.fetch_pos (0, null, out pos);
+        begin_contents_index = pos + after_backslash_index;
+
+        return match_info.fetch_named ("name");
     }
 
     // Get the contents between '{' and the corresponding '}'.
-    // The first char of 'text' is the char just after the '{'.
-    private string? get_command_contents (string text)
+    private string? get_markup_contents (string line, int begin_contents_index,
+        out int? end_match_index)
     {
         int brace_level = 0;
-        for (long i = 0 ; i < text.length ; i++)
+
+        int line_length = line.length;
+        for (int i = begin_contents_index ; i < line_length ; i++)
         {
-            if (text[i] == '{' && ! Utils.char_is_escaped (text, i))
+            if (line[i] == '{' && ! Utils.char_is_escaped (line, i))
             {
                 brace_level++;
                 continue;
             }
 
-            if (text[i] == '}' && ! Utils.char_is_escaped (text, i))
+            if (line[i] == '}' && ! Utils.char_is_escaped (line, i))
             {
                 if (brace_level > 0)
                 {
@@ -176,11 +353,13 @@ public class DocumentStructure : GLib.Object
                 }
 
                 // found!
-                string contents = text[0:i];
+                string contents = line[begin_contents_index : i];
 
-                // empty
-                if (contents.length == 0)
+                // but empty
+                if (contents == "")
                     return null;
+
+                end_match_index = i + 1;
 
                 return contents;
             }
@@ -189,193 +368,120 @@ public class DocumentStructure : GLib.Object
         return null;
     }
 
-    private bool search_simple_command (TextIter begin_name_iter)
+    private bool search_comment (string line, int after_percent_index,
+        out LowLevelType? type, out string? contents, out int? end_match_index)
     {
-        // get command type
-        TextIter begin_contents_iter;
-        StructType? type = get_simple_command_type (begin_name_iter,
-            out begin_contents_iter);
-
-        if (type == null)
-            return false;
-
-        // get command contents
-
-        TextIter limit = begin_contents_iter;
-        limit.forward_to_line_end ();
-
-        string end_line = _doc.get_text (begin_contents_iter, limit, false);
-        string? contents = get_command_contents (end_line);
-        if (contents == null)
-            return false;
-
-        TextIter mark_iter = begin_name_iter;
-        mark_iter.backward_char ();
-        add_item (type, contents, mark_iter);
-        return true;
-    }
-
-    private void search_figure_or_table (TextIter after_backslash)
-    {
-        string text = get_text_to_line_end (after_backslash);
-
-        if (text.has_prefix ("begin{figure}"))
-            _in_figure_env = true;
-        else if (text.has_prefix ("end{figure}"))
-            _in_figure_env = false;
-        else if (text.has_prefix ("begin{table}"))
-            _in_table_env = true;
-        else if (text.has_prefix ("end{table}"))
-            _in_table_env = false;
-    }
-
-    private bool search_comment (TextIter after_percent)
-    {
-        TextIter begin_line;
-        _doc.get_iter_at_line (out begin_line, after_percent.get_line ());
-        string text_before = _doc.get_text (begin_line, after_percent, false);
-
-        if (Utils.char_is_escaped (text_before, text_before.length - 1))
-            return false;
-
-        string text_after = get_text_to_line_end (after_percent).strip ();
+        string text_after = line.substring (after_percent_index).strip ();
 
         MatchInfo match_info;
         if (! _comment_regex.match (text_after, 0, out match_info))
             return false;
 
         string type_str = match_info.fetch_named ("type");
-        StructType type;
-        if (type_str == "TODO")
-            type = StructType.TODO;
-        else
-            type = StructType.FIXME;
+        type = type_str == "TODO" ? LowLevelType.TODO : LowLevelType.FIXME;
 
-        string text = match_info.fetch_named ("text");
+        contents = match_info.fetch_named ("text");
+        end_match_index = line.length;
 
-        TextIter mark_iter = after_percent;
-        mark_iter.backward_char ();
-        add_item (type, text, mark_iter);
         return true;
     }
 
-    private string get_text_to_line_end (TextIter start)
+    private void handle_item (LowLevelType type, string? contents, TextIter iter)
     {
-        TextBuffer doc = start.get_buffer ();
-        TextIter line_end = start;
-        line_end.forward_to_line_end ();
-        return doc.get_text (start, line_end, false);
-    }
-
-    private void add_item (StructType type, string text, TextIter iter)
-    {
-        DataNode data = {};
-        data.type = type;
-        data.text = text;
-        data.mark = create_text_mark_from_iter (iter);
-
-        if (_insert_at_end)
-            add_item_at_end (data);
-        else
-            add_item_in_middle (data);
-    }
-
-    private void add_item_at_end (DataNode item)
-    {
-        /* search the parent, based on the type */
-        unowned Node<DataNode?> parent = _tree;
-        int item_depth = item.type;
-
-        while (true)
+        // we are currently in a verbatim env
+        if (_in_verbatim_env)
         {
-            unowned Node<DataNode?> last_child = parent.last_child ();
-            if (last_child == null)
-                break;
+            if (type == LowLevelType.END_VERBATIM)
+                _in_verbatim_env = false;
 
-            int cur_depth = last_child.data.type;
-            if (cur_depth >= item_depth || cur_depth > StructType.SUBPARAGRAPH)
-                break;
-
-            parent = last_child;
-        }
-
-        // append the item
-        parent.append_data (item);
-    }
-
-    // In the middle means that we have to find where to insert the data in the tree.
-    // If items have to be shifted (for example: insert a chapter in the middle of
-    // sections), it will be done by insert_item_at_position().
-    private void add_item_in_middle (DataNode item)
-    {
-        // if the tree is empty
-        if (_tree.is_leaf ())
-        {
-            _tree.append_data (item);
             return;
         }
 
-        int pos = get_position_from_mark (item.mark);
-        unowned Node<DataNode?> cur_parent = _tree;
-        while (true)
+        // the low-level type is common with the high-level type
+        if (type < LowLevelType.NB_COMMON_TYPES)
+            add_item ((StructType) type, contents, iter);
+
+        // begin of a verbatim env
+        else if (type == LowLevelType.BEGIN_VERBATIM)
+            _in_verbatim_env = true;
+
+        // begin of a figure or table env
+        else if (type == LowLevelType.BEGIN_FIGURE || type == LowLevelType.BEGIN_TABLE)
+            create_new_environment (type, iter);
+
+        // a caption (we take only the first)
+        else if (type == LowLevelType.CAPTION && _env_data != null
+            && _env_data.text == null)
         {
-            unowned Node<DataNode?> cur_child = cur_parent.first_child ();
-            int child_index = 0;
-            while (true)
-            {
-                int cur_pos = get_position_from_mark (cur_child.data.mark);
+            string? short_caption = null;
+            if (contents.length > CAPTION_MAX_LENGTH)
+                short_caption = contents.substring (0, CAPTION_MAX_LENGTH);
 
-                if (cur_pos > pos)
-                {
-                    if (child_index == 0)
-                    {
-                        insert_item_at_position (item, cur_parent, child_index);
-                        return;
-                    }
-
-                    unowned Node<DataNode?> prev_child = cur_child.prev_sibling ();
-                    if (prev_child.is_leaf ())
-                    {
-                        insert_item_at_position (item, cur_parent, child_index);
-                        return;
-                    }
-
-                    cur_parent = prev_child;
-                    break;
-                }
-
-                unowned Node<DataNode?> next_child = cur_child.next_sibling ();
-
-                // current child is the last child
-                if (next_child == null)
-                {
-                    if (cur_child.is_leaf ())
-                    {
-                        insert_item_at_position (item, cur_parent, child_index+1);
-                        return;
-                    }
-
-                    cur_parent = cur_child;
-                    break;
-                }
-
-                cur_child = next_child;
-                child_index++;
-            }
+            _env_data.text = short_caption ?? contents;
         }
+
+        // end of a figure or table env
+        else if (verify_end_environment_type (type))
+        {
+            _env_data.end_mark = create_text_mark_from_iter (iter);
+            add_item_data (_env_data, true);
+        }
+
+        // end of the document
+        else if (type == LowLevelType.END_DOCUMENT)
+            _end_document_mark = create_text_mark_from_iter (iter);
     }
 
-    private void insert_item_at_position (DataNode item, Node<DataNode?> parent, int pos)
+    private void create_new_environment (LowLevelType type, TextIter start_iter)
     {
-        parent.insert_data (pos, item);
+        return_if_fail (type == LowLevelType.BEGIN_FIGURE
+            || type == LowLevelType.BEGIN_TABLE);
+
+        _env_data = StructData ();
+        _env_data.text = null;
+        _env_data.start_mark = create_text_mark_from_iter (start_iter);
+        _env_data.end_mark = null;
+
+        if (type == LowLevelType.BEGIN_TABLE)
+            _env_data.type = StructType.TABLE;
+        else
+            _env_data.type = StructType.FIGURE;
     }
 
-    private static int get_position_from_mark (TextMark mark)
+    private bool verify_end_environment_type (LowLevelType type)
     {
-        TextIter iter;
-        TextBuffer doc = mark.get_buffer ();
-        doc.get_iter_at_mark (out iter, mark);
-        return iter.get_offset ();
+        if (_env_data == null)
+            return false;
+
+        if (type == LowLevelType.END_TABLE)
+            return _env_data.type == StructType.TABLE;
+
+        if (type == LowLevelType.END_FIGURE)
+            return _env_data.type == StructType.FIGURE;
+
+        return false;
+    }
+
+    private void add_item (StructType type, string? text, TextIter start_iter)
+    {
+        StructData data = {};
+        data.type = type;
+        data.text = text;
+        data.start_mark = create_text_mark_from_iter (start_iter);
+        data.end_mark = null;
+
+        add_item_data (data);
+    }
+
+    private void add_item_data (StructData data, bool insert_in_middle = false)
+    {
+        if (data.text == null)
+            data.text = "";
+
+        if (insert_in_middle)
+            _model.add_item_in_middle (data);
+        else
+            _model.add_item_at_end (data);
     }
 
     private TextMark create_text_mark_from_iter (TextIter iter)
@@ -401,90 +507,538 @@ public class DocumentStructure : GLib.Object
         _nb_marks = 0;
     }
 
-    public void populate_tree_store (TreeStore store)
+    private LowLevelType? get_markup_low_level_type (string markup_name)
     {
-        populate_tree_store_at_node (store, _tree);
-    }
-
-    // The data are first inserted in Gnodes. When the parsing is done, this method is
-    // called to populate the tree store with the data contained in the GNodes.
-    private void populate_tree_store_at_node (TreeStore store, Node<DataNode?> node,
-        TreeIter? parent = null, bool root_node = true)
-    {
-        TreeIter? iter = null;
-        if (! root_node)
-            iter = add_item_to_tree_store (store, parent, node.data);
-
-        node.children_foreach (TraverseFlags.ALL, (child_node) =>
-        {
-            populate_tree_store_at_node (store, child_node, iter, false);
-        });
-    }
-
-    private TreeIter add_item_to_tree_store (TreeStore store, TreeIter? parent,
-        DataNode data)
-    {
-        TreeIter iter;
-        store.append (out iter, parent);
-        store.set (iter,
-            StructItem.PIXBUF, Structure.get_icon_from_type (data.type),
-            StructItem.TYPE, data.type,
-            StructItem.TEXT, data.text,
-            StructItem.TOOLTIP, Structure.get_type_name (data.type),
-            StructItem.MARK, data.mark,
-            -1);
-
-        return iter;
-    }
-
-    private StructType? get_type_from_simple_command_name (string name)
-    {
-        switch (name)
+        switch (markup_name)
         {
             case "part":
             case "part*":
-                return StructType.PART;
+                return LowLevelType.PART;
 
             case "chapter":
             case "chapter*":
-                return StructType.CHAPTER;
+                return LowLevelType.CHAPTER;
 
             case "section":
             case "section*":
-                return StructType.SECTION;
+                return LowLevelType.SECTION;
 
             case "subsection":
             case "subsection*":
-                return StructType.SUBSECTION;
+                return LowLevelType.SUBSECTION;
 
             case "subsubsection":
             case "subsubsection*":
-                return StructType.SUBSUBSECTION;
+                return LowLevelType.SUBSUBSECTION;
 
             case "paragraph":
             case "paragraph*":
-                return StructType.PARAGRAPH;
+                return LowLevelType.PARAGRAPH;
 
             case "subparagraph":
             case "subparagraph*":
-                return StructType.SUBPARAGRAPH;
+                return LowLevelType.SUBPARAGRAPH;
 
             case "label":
-                return StructType.LABEL;
+                return LowLevelType.LABEL;
 
             case "input":
             case "include":
-                return StructType.INCLUDE;
+                return LowLevelType.INCLUDE;
+
+            case "includegraphics":
+                return LowLevelType.IMAGE;
 
             case "caption":
-                if (_in_figure_env)
-                    return StructType.FIGURE;
-                else if (_in_table_env)
-                    return StructType.TABLE;
-                return null;
+                return LowLevelType.CAPTION;
 
             default:
                 return null;
         }
+    }
+
+    /*************************************************************************/
+    // Actions: cut, copy, delete, select, comment, shift left/right
+
+    public void do_action (StructAction action_type, TreeIter tree_iter,
+        out bool refresh_simple_list) throws StructError
+    {
+        refresh_simple_list = false;
+
+        /* Comment */
+
+        if (action_type == StructAction.COMMENT)
+        {
+            if (! comment_item (tree_iter))
+                throw new StructError.DATA_OUTDATED ("");
+
+            _model.delete (tree_iter);
+            refresh_simple_list = true;
+            return;
+        }
+
+        /* Shift left/right */
+
+        bool shift_right = action_type == StructAction.SHIFT_RIGHT;
+        if (shift_right || action_type == StructAction.SHIFT_LEFT)
+        {
+            if (shift_right && _model.item_contains_subparagraph (tree_iter))
+                throw new StructError.GENERAL (
+                    _("The structure item already contains a sub-paragraph."));
+
+            _doc.begin_user_action ();
+            bool doc_modified;
+            bool success = shift_item (tree_iter, shift_right, out doc_modified);
+            _doc.end_user_action ();
+
+            if (! success)
+            {
+                if (doc_modified)
+                    _doc.undo ();
+
+                throw new StructError.DATA_OUTDATED ("");
+            }
+
+            if (shift_right)
+                _model.shift_right (tree_iter);
+            else
+                _model.shift_left (tree_iter);
+            return;
+        }
+
+        /* Select, copy, cut and delete */
+
+        TextIter? start_iter;
+        TextIter? end_iter;
+        bool found = get_exact_item_bounds (tree_iter, out start_iter, out end_iter);
+
+        if (! found)
+            throw new StructError.DATA_OUTDATED ("");
+
+        if (start_iter.get_line () != end_iter.get_line ())
+        {
+            backward_indentation (ref start_iter);
+            backward_indentation (ref end_iter);
+        }
+
+        if (action_type == StructAction.SELECT)
+        {
+            _doc.select_range (start_iter, end_iter);
+            return;
+        }
+
+        if (action_type == StructAction.COPY || action_type == StructAction.CUT)
+        {
+            string data = _doc.get_text (start_iter, end_iter, false);
+            Clipboard clipboard = Clipboard.get (Gdk.SELECTION_CLIPBOARD);
+            clipboard.set_text (data, -1);
+        }
+
+        if (action_type == StructAction.DELETE || action_type == StructAction.CUT)
+        {
+            _doc.begin_user_action ();
+            _doc.delete (start_iter, end_iter);
+            _doc.end_user_action ();
+
+            _model.delete (tree_iter);
+            refresh_simple_list = true;
+        }
+    }
+
+    // Returns true only if the item is correctly commented
+    private bool comment_item (TreeIter tree_iter)
+    {
+        StructType type;
+        TextMark start_mark = null;
+        TextMark end_mark = null;
+
+        _model.get (tree_iter,
+            StructColumn.TYPE, out type,
+            StructColumn.START_MARK, out start_mark,
+            StructColumn.END_MARK, out end_mark,
+            -1);
+
+        TextIter start_iter;
+        TextIter? end_iter = null;
+
+        _doc.get_iter_at_mark (out start_iter, start_mark);
+
+        if (end_mark != null)
+            _doc.get_iter_at_mark (out end_iter, end_mark);
+
+        /* comment a simple item */
+        if (! Structure.is_section (type))
+        {
+            comment_between (start_iter, end_iter);
+            return true;
+        }
+
+        /* comment a section */
+
+        // get next sibling or parent
+        TreeIter? next_section_iter = null;
+        try
+        {
+            next_section_iter = _model.get_next_sibling_or_parent (tree_iter);
+        }
+        catch (StructError e)
+        {
+            stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
+            return false;
+        }
+
+        bool go_one_line_backward = true;
+
+        // the end of the section is the end of the document
+        if (next_section_iter == null)
+        {
+            bool end_of_file;
+            end_iter = get_end_document_iter (out end_of_file);
+            go_one_line_backward = ! end_of_file;
+        }
+
+        else
+        {
+            _model.get (next_section_iter,
+                StructColumn.START_MARK, out end_mark,
+                -1);
+
+            _doc.get_iter_at_mark (out end_iter, end_mark);
+        }
+
+        if (go_one_line_backward)
+        {
+            if (! end_iter.backward_line ())
+                end_iter = null;
+        }
+
+        comment_between (start_iter, end_iter);
+        return true;
+    }
+
+    // comment the lines between start_iter and end_iter included
+    private void comment_between (TextIter start_iter, TextIter? end_iter)
+    {
+        int start_line = start_iter.get_line ();
+        int end_line = start_line;
+
+        if (end_iter != null)
+            end_line = end_iter.get_line ();
+
+        _doc.begin_user_action ();
+        for (int line_index = start_line ; line_index <= end_line ; line_index++)
+        {
+            TextIter iter;
+            _doc.get_iter_at_line (out iter, line_index);
+            _doc.insert (iter, "% ", -1);
+        }
+        _doc.end_user_action ();
+    }
+
+    // Returns true only if the bounds are correctly set.
+    private bool get_exact_item_bounds (TreeIter tree_iter, out TextIter? start_iter,
+        out TextIter? end_iter)
+    {
+        /* get item data */
+        StructType item_type;
+        TextMark start_mark = null;
+        TextMark end_mark = null;
+        string item_contents = null;
+
+        _model.get (tree_iter,
+            StructColumn.TYPE, out item_type,
+            StructColumn.START_MARK, out start_mark,
+            StructColumn.END_MARK, out end_mark,
+            StructColumn.TEXT, out item_contents,
+            -1);
+
+        /* search 'start_iter' */
+        _doc.get_iter_at_mark (out start_iter, start_mark);
+
+        // Place 'end_iter' to the end of the low level type. If it's not the good place,
+        // it will be changed below.
+        bool found = get_low_level_item_bounds (item_type, item_contents, start_iter,
+            true, out end_iter);
+
+        if (! found)
+            return false;
+
+        /* search 'end_iter' */
+
+        // a section
+        if (Structure.is_section (item_type))
+        {
+            TreeIter? next_section_iter = null;
+            try
+            {
+                next_section_iter = _model.get_next_sibling_or_parent (tree_iter);
+            }
+            catch (StructError e)
+            {
+                stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
+                return false;
+            }
+
+            // the end of the section is the end of the document
+            if (next_section_iter == null)
+            {
+                end_iter = get_end_document_iter ();
+                return true;
+            }
+
+            _model.get (next_section_iter,
+                StructColumn.TYPE, out item_type,
+                StructColumn.START_MARK, out start_mark,
+                StructColumn.TEXT, out item_contents,
+                -1);
+
+            _doc.get_iter_at_mark (out end_iter, start_mark);
+
+            return get_low_level_item_bounds (item_type, item_contents, end_iter, true,
+                null);
+        }
+
+        // an other common type: the end iter is already at the good place
+        else if (item_type < StructType.NB_COMMON_TYPES)
+            return true;
+
+        // an environment
+        if (end_mark == null)
+            return false;
+
+        TextIter end_env_iter;
+        _doc.get_iter_at_mark (out end_env_iter, end_mark);
+
+        return get_low_level_item_bounds (item_type, item_contents, end_env_iter, false,
+            out end_iter);
+    }
+
+    private bool get_low_level_item_bounds (StructType item_type, string item_contents,
+        TextIter start_match_iter, bool is_start, out TextIter? end_match_iter)
+    {
+        int line_num = start_match_iter.get_line ();
+        string line = get_document_line_contents (line_num);
+
+        /* parse the line */
+        int start_index = start_match_iter.get_line_index ();
+        LowLevelType? low_level_type;
+        string? contents;
+        int? start_match_index;
+        int? end_match_index;
+
+        bool found = search_low_level_item (line, start_index, out low_level_type,
+            out contents, out start_match_index, out end_match_index);
+
+        // If an item is found, it should be located at exactly the same place.
+        if (! found || start_index != start_match_index)
+            return false;
+
+        if (contents == null)
+            contents = "";
+
+        // compare the item found with the structure item
+        if (same_items (item_type, item_contents, low_level_type, contents, is_start))
+        {
+            _doc.get_iter_at_line_index (out end_match_iter, line_num, end_match_index);
+            return true;
+        }
+
+        return false;
+    }
+
+    // Compare a structure item with another low-level item
+    // If 'start' is true, and if the structure item is an environment, a \begin{} is
+    // expected. Otherwise, a \end{} is expected.
+    private bool same_items (StructType item_type, string item_contents,
+        LowLevelType item_found_type, string item_found_contents, bool start)
+    {
+        if (item_found_type < LowLevelType.NB_COMMON_TYPES)
+        {
+            bool same_type = item_type == (StructType) item_found_type;
+            bool same_contents = item_contents == item_found_contents;
+            return same_type && same_contents;
+        }
+
+        if (item_type == StructType.FIGURE)
+        {
+            if (start)
+                return item_found_type == LowLevelType.BEGIN_FIGURE;
+            else
+                return item_found_type == LowLevelType.END_FIGURE;
+        }
+
+        if (item_type == StructType.TABLE)
+        {
+            if (start)
+                return item_found_type == LowLevelType.BEGIN_TABLE;
+            else
+                return item_found_type == LowLevelType.END_TABLE;
+        }
+
+        return false;
+    }
+
+    private string? get_document_line_contents (int line_num)
+    {
+        int nb_lines = _doc.get_line_count ();
+        return_val_if_fail (0 <= line_num && line_num < nb_lines, null);
+
+        TextIter begin;
+        _doc.get_iter_at_line (out begin, line_num);
+
+        // If the line is empty, and if we do a forward_to_line_end(), we go to the end of
+        // the _next_ line, so we must handle this special case.
+        if (begin.ends_line ())
+            return "";
+
+        TextIter end = begin;
+        end.forward_to_line_end ();
+
+        return _doc.get_text (begin, end, false);
+    }
+
+    // Take into account \end{document}
+    private TextIter get_end_document_iter (out bool end_of_file = null)
+    {
+        if (_end_document_mark != null)
+        {
+            end_of_file = false;
+            TextIter end_document_iter;
+            _doc.get_iter_at_mark (out end_document_iter, _end_document_mark);
+            return end_document_iter;
+        }
+
+        end_of_file = true;
+        TextIter eof_iter;
+        _doc.get_end_iter (out eof_iter);
+        return eof_iter;
+    }
+
+    // If there are some spaces between the beginning of the line and the iter, move
+    // the iter at the beginning of the line.
+    private void backward_indentation (ref TextIter? iter)
+    {
+        return_if_fail (iter != null);
+
+        if (iter.starts_line ())
+            return;
+
+        int line_num = iter.get_line ();
+        TextIter begin_line_iter;
+        _doc.get_iter_at_line (out begin_line_iter, line_num);
+
+        string text_between = _doc.get_text (begin_line_iter, iter, false);
+        if (text_between.strip () == "")
+            iter = begin_line_iter;
+    }
+
+    private bool shift_item (TreeIter tree_iter, bool shift_right,
+        out bool doc_modified = null)
+    {
+        doc_modified = false;
+
+        /* Get some data about the item */
+        StructType type;
+        TextMark mark;
+        _model.get (tree_iter,
+            StructColumn.TYPE, out type,
+            StructColumn.START_MARK, out mark,
+            -1);
+
+        if (shift_right)
+            return_val_if_fail (type != StructType.SUBPARAGRAPH, false);
+        else
+            return_val_if_fail (type != StructType.PART, false);
+
+        if (! Structure.is_section (type))
+            return true;
+
+        /* Get the markup name, do some checks, etc. */
+        TextIter text_iter;
+        _doc.get_iter_at_mark (out text_iter, mark);
+
+        int line_num = text_iter.get_line ();
+        string? line = get_document_line_contents (line_num);
+        return_val_if_fail (line != null, false);
+
+        int backslash_index = text_iter.get_line_index ();
+        if (line[backslash_index] != '\\')
+            return false;
+
+        int after_backslash_index = backslash_index + 1;
+        string? markup_name = get_markup_name (line, after_backslash_index);
+        if (markup_name == null)
+            return false;
+
+        LowLevelType? markup_type = get_markup_low_level_type (markup_name);
+        if (markup_type == null)
+            return false;
+
+        // HACK see https://bugzilla.gnome.org/show_bug.cgi?id=652781
+        LowLevelType markup_type_hack = markup_type;
+        if ((int) type != (int) markup_type_hack)
+            return false;
+
+        /* Get the new markup name */
+        bool with_star = markup_name.has_suffix ("*");
+
+        StructType new_type;
+        if (shift_right)
+            new_type = type + 1;
+        else
+            new_type = type - 1;
+
+        string? new_markup_name = get_section_name_from_type (new_type);
+        return_val_if_fail (new_markup_name != null, false);
+
+        if (with_star)
+            new_markup_name += "*";
+
+        /* Replace the markup name */
+        TextIter begin_markup_name_iter;
+        _doc.get_iter_at_line_index (out begin_markup_name_iter, line_num,
+            after_backslash_index);
+
+        TextIter end_markup_name_iter;
+        _doc.get_iter_at_line_index (out end_markup_name_iter, line_num,
+            after_backslash_index + markup_name.length);
+
+        _doc.delete (begin_markup_name_iter, end_markup_name_iter);
+        _doc.insert (begin_markup_name_iter, new_markup_name, -1);
+        doc_modified = true;
+
+        /* Do the same for all the children */
+        int nb_children = _model.iter_n_children (tree_iter);
+        for (int child_num = 0 ; child_num < nb_children ; child_num++)
+        {
+            TreeIter child_iter;
+            bool child_iter_set = _model.iter_nth_child (out child_iter, tree_iter,
+                child_num);
+            return_val_if_fail (child_iter_set, false);
+
+            if (! shift_item (child_iter, shift_right))
+                return false;
+        }
+
+        return true;
+    }
+
+    private string? get_section_name_from_type (StructType type)
+    {
+        if (_section_names == null)
+        {
+            _section_names = new string[7];
+            _section_names[StructType.PART]             = "part";
+            _section_names[StructType.CHAPTER]          = "chapter";
+            _section_names[StructType.SECTION]          = "section";
+            _section_names[StructType.SUBSECTION]       = "subsection";
+            _section_names[StructType.SUBSUBSECTION]    = "subsubsection";
+            _section_names[StructType.PARAGRAPH]        = "paragraph";
+            _section_names[StructType.SUBPARAGRAPH]     = "subparagraph";
+        }
+
+        return_val_if_fail (Structure.is_section (type), null);
+
+        return _section_names[type];
     }
 }

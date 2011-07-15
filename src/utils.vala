@@ -32,8 +32,8 @@ namespace Utils
         if (str.length <= max_length)
             return str;
 
-        var half_length = (max_length - 4) / 2;
-        var l = str.length;
+        uint half_length = (max_length - 4) / 2;
+        int l = str.length;
         return str[0:half_length] + "..." + str[l-half_length:l];
     }
 
@@ -68,7 +68,8 @@ namespace Utils
         {
             Mount mount = location.find_enclosing_mount (null);
             string mount_name = mount.get_name ();
-            var dirname = uri_get_dirname (location.get_path () ?? location.get_uri ());
+            string? dirname =
+                uri_get_dirname (location.get_path () ?? location.get_uri ());
 
             if (dirname == null || dirname == ".")
                 return mount_name;
@@ -154,7 +155,7 @@ namespace Utils
 
     public Widget add_scrollbar (Widget child)
     {
-        var scrollbar = new ScrolledWindow (null, null);
+        ScrolledWindow scrollbar = new ScrolledWindow (null, null);
         scrollbar.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
         scrollbar.add (child);
         return scrollbar;
@@ -221,14 +222,11 @@ namespace Utils
 
     // get indice of selected row in the treeview
     // returns -1 if no row is selected
-    public int get_selected_row (TreeView view, out TreeIter iter_to_set = null)
+    public int get_selected_row (TreeView view, out TreeIter iter = null)
     {
         TreeSelection select = view.get_selection ();
-        TreeIter iter;
         if (select.get_selected (null, out iter))
         {
-            if (&iter_to_set != null)
-                iter_to_set = iter;
             TreeModel model = view.get_model ();
             TreePath path = model.get_path (iter);
             return path.get_indices ()[0];
@@ -238,8 +236,8 @@ namespace Utils
 
     public Gdk.Pixbuf get_pixbuf_from_stock (string stock_id, Gtk.IconSize size)
     {
-        var w = new Gtk.Invisible ();
-        var pixbuf = w.render_icon (stock_id, size, "vala");
+        Gtk.Invisible w = new Gtk.Invisible ();
+        Gdk.Pixbuf pixbuf = w.render_icon (stock_id, size, "vala");
         return pixbuf;
     }
 
@@ -278,5 +276,73 @@ namespace Utils
                 break;
         }
         return escaped;
+    }
+
+    // origin can be equal to common_dir, but target must be different
+    public string? get_relative_path (File origin, File target, File common_dir)
+    {
+        File? origin_dir;
+        if (origin.equal (common_dir))
+            origin_dir = origin;
+        else
+            origin_dir = origin.get_parent ();
+
+        File? target_parent = target.get_parent ();
+
+        return_val_if_fail (origin_dir != null, null);
+        return_val_if_fail (target_parent != null, null);
+
+        // The origin is in the same directory as the target.
+        if (target_parent.equal (origin_dir))
+            return target.get_basename ();
+
+        // Get a list of parent directories. Stop at the common dir.
+        List<File> target_dirs = new List<File> ();
+        List<File> origin_dirs = new List<File> ();
+
+        while (target_parent != null && ! target_parent.equal (common_dir))
+        {
+            target_dirs.prepend (target_parent);
+            target_parent = target_parent.get_parent ();
+        }
+
+        while (origin_dir != null && ! origin_dir.equal (common_dir))
+        {
+            origin_dirs.prepend (origin_dir);
+            origin_dir = origin_dir.get_parent ();
+        }
+
+        // Get number of common dirs
+        uint dir_index = 0;
+        while (dir_index < target_dirs.length () && dir_index < origin_dirs.length ())
+        {
+            File cur_target_dir = target_dirs.nth_data (dir_index);
+            File cur_origin_dir = origin_dirs.nth_data (dir_index);
+            if (! cur_target_dir.equal (cur_origin_dir))
+                break;
+
+            dir_index++;
+        }
+
+        uint nb_common_dirs = dir_index;
+
+        /* Build the relative path */
+        string relative_path = "";
+
+        // go to the common dir
+        uint nb_remaining_origin_dirs = origin_dirs.length () - nb_common_dirs;
+        for (uint i = 0 ; i < nb_remaining_origin_dirs ; i++)
+            relative_path += "../";
+
+        // go to the target dir
+        for (uint i = nb_common_dirs ; i < target_dirs.length () ; i++)
+        {
+            File cur_target_dir = target_dirs.nth_data (i);
+            relative_path += cur_target_dir.get_basename () + "/";
+        }
+
+        // add the target basename
+        relative_path += target.get_basename ();
+        return relative_path;
     }
 }

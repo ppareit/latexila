@@ -95,7 +95,7 @@ private class BuildToolDialog : Dialog
             button_down = (Button) builder.get_object ("button_down");
 
             // packing widget
-            var content_area = (Box) get_content_area ();
+            Box content_area = (Box) get_content_area ();
             content_area.pack_start (main_vbox, true, true, 0);
             content_area.show_all ();
 
@@ -105,12 +105,12 @@ private class BuildToolDialog : Dialog
         }
         catch (Error e)
         {
-            var message = "Error: %s".printf (e.message);
+            string message = "Error: %s".printf (e.message);
             stderr.printf ("%s\n", message);
 
-            var label_error = new Label (message);
+            Label label_error = new Label (message);
             label_error.set_line_wrap (true);
-            var content_area = (Box) get_content_area ();
+            Box content_area = (Box) get_content_area ();
             content_area.pack_start (label_error, true, true, 0);
             content_area.show_all ();
         }
@@ -190,8 +190,11 @@ private class BuildToolDialog : Dialog
 
         CellRendererText text_renderer = new CellRendererText ();
         text_renderer.editable = true;
-        treeview_jobs.insert_column_with_attributes (-1, _("Commands"), text_renderer,
-            "text", JobColumn.COMMAND, null);
+
+        TreeViewColumn column = new TreeViewColumn.with_attributes (_("Commands"),
+            text_renderer, "text", JobColumn.COMMAND, null);
+        column.set_resizable (true);
+        treeview_jobs.append_column (column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
         toggle_renderer.activatable = true;

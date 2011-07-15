@@ -209,18 +209,17 @@ public class LatexMenu : Gtk.ActionGroup
 		{ "Accent3", "accent3", "\\\"", null, N_("Trema - \\\""), on_accent3 },
 		{ "Accent4", "accent4", "\\~", null, N_("Tilde - \\~"), on_accent4 },
 		{ "Accent5", "accent5", "\\=", null, N_("Macron - \\="), on_accent5 },
-		{ "Accent6", "accent6", "\\.", null, N_("Dot - \\."), on_accent6 },
+		{ "Accent6", "accent6", "\\.", null, N_("Dot above - \\."), on_accent6 },
 		{ "Accent7", "accent7", "\\v", null, N_("Caron - \\v"), on_accent7 },
 		{ "Accent8", "accent8", "\\u", null, N_("Breve - \\u"), on_accent8 },
 		{ "Accent9", "accent9", "\\H", null,
 		    N_("Double acute accent - \\H"), on_accent9 },
-		// TODO complete desc (accents names)
-		{ "Accent10", "accent10", "\\c", null, null, on_accent10 },
-		{ "Accent11", "accent11", "\\k", null, null, on_accent11 },
-		{ "Accent12", "accent12", "\\d", null, null, on_accent12 },
-		{ "Accent13", "accent13", "\\b", null, null, on_accent13 },
-		{ "Accent14", "accent14", "\\r", null, null, on_accent14 },
-		{ "Accent15", "accent15", "\\t", null, null, on_accent15 },
+		{ "Accent10", "accent10", "\\c", null, N_("Cedilla - \\c"), on_accent10 },
+		{ "Accent11", "accent11", "\\k", null, N_("Ogonek - \\k"), on_accent11 },
+		{ "Accent12", "accent12", "\\d", null, N_("Dot below - \\d"), on_accent12 },
+		{ "Accent13", "accent13", "\\b", null, N_("Macron below - \\b"), on_accent13 },
+		{ "Accent14", "accent14", "\\r", null, N_("Ring - \\r"), on_accent14 },
+		{ "Accent15", "accent15", "\\t", null, N_("Tie - \\t"), on_accent15 },
 
 		// Others
 
@@ -423,22 +422,22 @@ public class LatexMenu : Gtk.ActionGroup
         this.main_window = main_window;
 
         // menus under toolitems
-        var sectioning = get_menu_tool_action ("SectioningToolItem", _("Sectioning"),
-            "sectioning-section");
+        Gtk.Action sectioning = get_menu_tool_action ("SectioningToolItem",
+            _("Sectioning"), "sectioning-section");
 
-        var sizes = get_menu_tool_action ("CharacterSizeToolItem", _("Characters Sizes"),
-            "character-size");
+        Gtk.Action sizes = get_menu_tool_action ("CharacterSizeToolItem",
+            _("Characters Sizes"), "character-size");
 
-        var references = get_menu_tool_action ("ReferencesToolItem", _("References"),
-            "references");
+        Gtk.Action references = get_menu_tool_action ("ReferencesToolItem",
+            _("References"), "references");
 
-        var math_env = get_menu_tool_action ("MathEnvironmentsToolItem",
+        Gtk.Action math_env = get_menu_tool_action ("MathEnvironmentsToolItem",
             _("Math Environments"), "math");
 
-        var math_left_del = get_menu_tool_action ("MathLeftDelimitersToolItem",
+        Gtk.Action math_left_del = get_menu_tool_action ("MathLeftDelimitersToolItem",
 			_("Left Delimiters"), "delimiters-left");
 
-		var math_right_del = get_menu_tool_action ("MathRightDelimitersToolItem",
+		Gtk.Action math_right_del = get_menu_tool_action ("MathRightDelimitersToolItem",
 			_("Right Delimiters"), "delimiters-right");
 
 		add_actions (latex_action_entries, this);

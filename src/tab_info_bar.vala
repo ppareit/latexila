@@ -23,7 +23,7 @@ public class TabInfoBar : InfoBar
 {
     public TabInfoBar (string primary_msg, string secondary_msg, MessageType msg_type)
     {
-        var content_area = (HBox) get_content_area ();
+        HBox content_area = (HBox) get_content_area ();
 
         // icon
         string stock_id;
@@ -44,22 +44,22 @@ public class TabInfoBar : InfoBar
                 break;
         }
 
-        var image = new Image.from_stock (stock_id, IconSize.DIALOG);
+        Image image = new Image.from_stock (stock_id, IconSize.DIALOG);
         image.set_alignment ((float) 0.5, (float) 0.0);
         content_area.pack_start (image, false, false, 0);
 
         // text
-        var vbox = new VBox (false, 10);
+        VBox vbox = new VBox (false, 10);
         content_area.pack_start (vbox, true, true, 0);
 
-        var primary_label = new Label ("<b>" + primary_msg + "</b>");
+        Label primary_label = new Label ("<b>" + primary_msg + "</b>");
         vbox.pack_start (primary_label, false, false, 0);
         primary_label.set_alignment ((float) 0.0, (float) 0.5);
         primary_label.set_selectable (true);
         primary_label.set_line_wrap (true);
         primary_label.set_use_markup (true);
 
-        var secondary_label = new Label ("<small>" + secondary_msg + "</small>");
+        Label secondary_label = new Label ("<small>" + secondary_msg + "</small>");
         vbox.pack_start (secondary_label, false, false, 0);
         secondary_label.set_alignment ((float) 0.0, (float) 0.5);
         secondary_label.set_selectable (true);
@@ -82,8 +82,8 @@ public class TabInfoBar : InfoBar
 
     public void add_stock_button_with_text (string text, string stock_id, int response_id)
     {
-        var button = (Button) add_button (text, response_id);
-        var image = new Image.from_stock (stock_id, IconSize.BUTTON);
+        Button button = (Button) add_button (text, response_id);
+        Image image = new Image.from_stock (stock_id, IconSize.BUTTON);
         button.set_image (image);
     }
 }

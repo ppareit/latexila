@@ -39,16 +39,22 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         string name;
         string? package;
+        string? insert;
+        string? insert_after;
     }
 
     private static CompletionProvider instance = null;
     private List<SourceCompletionItem> proposals;
     private Gee.HashMap<string, CompletionCommand?> commands;
+    // contains only environments that have extra info
+    private Gee.HashMap<string, CompletionChoice?> environments;
 
     private GLib.Settings settings;
 
+    // while parsing, keep track of current command/argument/choice
     private CompletionCommand current_command;
     private CompletionArgument current_arg;
+    private CompletionChoice current_choice;
 
     private bool show_all_proposals = false;
 
@@ -71,6 +77,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
         commands = new Gee.HashMap<string, CompletionCommand?> ();
+        environments = new Gee.HashMap<string, CompletionChoice?> ();
 
         // icons
         icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
@@ -86,7 +93,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             string contents;
             file.load_contents (null, out contents);
 
-            MarkupParser parser = { parser_start, parser_end, null, null, null };
+            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
             proposals.sort ((CompareFunc) compare_proposals);
@@ -436,13 +443,20 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         string current_indent = doc.get_current_indentation (line);
 
+        /* get current choice */
+        CompletionChoice? environment = environments[env_name];
+
         /* close environment */
 
         Document document = (Document) doc;
         string indent = document.tab.view.get_indentation_style ();
 
         doc.insert (iter, @"\n$current_indent$indent", -1);
+        if (environment != null && environment.insert != null)
+            doc.insert (iter, environment.insert, -1);
         TextMark cursor_pos = doc.create_mark (null, iter, true);
+        if (environment != null && environment.insert_after != null)
+            doc.insert (iter, environment.insert_after, -1);
         doc.insert (iter, @"\n$current_indent\\end{" + env_name + "}", -1);
 
         doc.get_iter_at_mark (out iter, cursor_pos);
@@ -489,7 +503,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         calltip_window.show_all ();
     }
 
-    private void hide_calltip_window ()
+    public void hide_calltip_window ()
     {
         if (calltip_window == null)
             return;
@@ -547,23 +561,28 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 break;
 
             case "choice":
-                CompletionChoice choice = CompletionChoice ();
+                current_choice = CompletionChoice ();
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "name":
-                            choice.name = attr_values[i];
+                            current_choice.name = attr_values[i];
                             break;
                         case "package":
-                            choice.package = attr_values[i];
+                            current_choice.package = attr_values[i];
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
                                 "unknown choice attribute \"" + attr_names[i] + "\"");
                     }
                 }
-                current_arg.choices += choice;
+                break;
+
+            // insert and insert_after don't contain any attributes, but
+            // contain content, which is parsed in parser_text()
+            case "insert":
+            case "insert_after":
                 break;
 
             case "placeholder":
@@ -597,6 +616,27 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
             case "argument":
                 current_command.args += current_arg;
+                break;
+
+            case "choice":
+                current_arg.choices += current_choice;
+                if (current_choice.insert != null || current_choice.insert_after != null)
+                    environments[current_choice.name] = current_choice;
+                break;
+        }
+    }
+
+    private void parser_text (MarkupParseContext context, string text, size_t text_len)
+        throws MarkupError
+    {
+        switch (context.get_element ())
+        {
+            case "insert":
+                current_choice.insert = text;
+                break;
+
+            case "insert_after":
+                current_choice.insert_after = text;
                 break;
         }
     }
@@ -769,11 +809,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         bool in_other_argument = false;
         char other_argument_opening_bracket = '{';
 
-        if (&arguments != null)
-            arguments = new Gee.ArrayList<bool> ();
-
-        if (&valid_arg_contents != null)
-            valid_arg_contents = true;
+        arguments = new Gee.ArrayList<bool> ();
+        valid_arg_contents = true;
 
         for (long i = text.length - 1 ; i >= 0 ; i--)
         {
@@ -783,10 +820,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 if ((text[i] == '{' || text[i] == '[')
                     && ! Utils.char_is_escaped (text, i))
                 {
-                    if (&arguments != null)
-                        arguments.insert (0, text[i] == '[');
+                    arguments.insert (0, text[i] == '[');
 
-                    if (&argument_contents != null && index_start_argument_contents != -1)
+                    if (index_start_argument_contents != -1)
                         argument_contents =
                             text[index_start_argument_contents : text.length];
 
@@ -796,7 +832,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 }
 
                 // invalid argument content (no choice available)
-                if (&valid_arg_contents != null && ! text[i].isalpha () && text[i] != '*')
+                if (! text[i].isalpha () && text[i] != '*')
                     valid_arg_contents = false;
 
                 index_start_argument_contents = i;
@@ -820,10 +856,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 // last character of the command name
                 if (text[i].isalpha () || text[i] == '*')
                 {
-                    string tmp = get_latex_command_at_index (text, i);
-                    if (&cmd_name != null)
-                        cmd_name = tmp;
-                    return tmp != null;
+                    cmd_name = get_latex_command_at_index (text, i);
+                    return cmd_name != null;
                 }
 
                 // maybe the end of another argument
@@ -835,8 +869,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                     in_other_argument = true;
                     other_argument_opening_bracket = text[i] == '}' ? '{' : '[';
 
-                    if (&arguments != null)
-                        arguments.insert (0, text[i] == ']');
+                    arguments.insert (0, text[i] == ']');
                     continue;
                 }
 
