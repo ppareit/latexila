@@ -13,8 +13,6 @@ LaTeXila 2.2
 	- Some problems with the latex and latexmk post processors
 
 - Structure:
-	- When setting a model, expand all only if the tree is not too big
-
 	- Insert in middle is very slow comparated to insert at the end
 	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
 

@@ -480,8 +480,14 @@ public class Structure : VBox
         set_model (null);
         _tree_view.columns_autosize ();
 
+        if (_document_structure != null)
+            _document_structure.notify["parsing-done"].disconnect (on_parsing_done);
+
         if (doc == null)
+        {
+            _document_structure = null;
             return;
+        }
 
         _document_structure = doc.get_structure ();
 
@@ -489,20 +495,27 @@ public class Structure : VBox
             _document_structure.parse ();
 
         if (_document_structure.parsing_done)
-            set_model (_document_structure.get_model ());
+            on_parsing_done ();
+        else
+            _document_structure.notify["parsing-done"].connect (on_parsing_done);
+    }
 
-        _document_structure.notify["parsing-done"].connect (() =>
-        {
-            if (_document_structure.parsing_done)
-                set_model (_document_structure.get_model ());
-        });
+    private void on_parsing_done ()
+    {
+        return_if_fail (_document_structure != null);
+
+        if (_document_structure.parsing_done)
+            set_model (_document_structure.get_model ());
     }
 
     private void set_model (StructureModel? model)
     {
         _model = model;
         _tree_view.set_model (model);
-        _tree_view.expand_all ();
+
+        // expand all can be slow with big documents
+        if (model != null && model.get_nb_items () <= 2000)
+            _tree_view.expand_all ();
 
         populate_simple_list ();
     }

@@ -56,6 +56,7 @@ public class StructureModel : TreeModel, GLib.Object
     private Type[] _column_types;
     private Node<StructData?> _tree;
     private int _stamp;
+    private uint _nb_nodes = 0;
 
     private Gee.ArrayList<unowned Node<StructData?>> _list_labels;
     private Gee.ArrayList<unowned Node<StructData?>> _list_includes;
@@ -343,6 +344,11 @@ public class StructureModel : TreeModel, GLib.Object
     /*************************************************************************/
     // Custom methods
 
+    public uint get_nb_items ()
+    {
+        return _nb_nodes;
+    }
+
     public void add_item_at_end (StructData item)
     {
         /* search the parent, based on the type */
@@ -595,6 +601,8 @@ public class StructureModel : TreeModel, GLib.Object
             TreePath parent_path = get_path (parent_iter);
             row_has_child_toggled (parent_path, parent_iter);
         }
+
+        _nb_nodes++;
     }
 
     private Node<StructData?>? delete_node (Node<StructData?> node)
@@ -615,6 +623,8 @@ public class StructureModel : TreeModel, GLib.Object
             TreePath parent_path = get_path (parent_iter);
             row_has_child_toggled (parent_path, parent_iter);
         }
+
+        _nb_nodes -= node_unlinked.n_nodes (TraverseFlags.ALL);
 
         return node_unlinked;
     }
