@@ -70,6 +70,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private bool first_populate = true;
 
     // useful when text is inserted by the program, not the user
+    // TODO use (un)block_interactive ().
     public bool locked = false;
 
     /* CompletionProvider is a singleton */
