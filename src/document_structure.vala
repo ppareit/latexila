@@ -560,9 +560,11 @@ public class DocumentStructure : GLib.Object
     /*************************************************************************/
     // Actions: cut, copy, delete, select, comment, shift left/right
 
-    public void do_action (StructAction action_type, TreeIter tree_iter)
-        throws StructError
+    public void do_action (StructAction action_type, TreeIter tree_iter,
+        out bool refresh_simple_list) throws StructError
     {
+        refresh_simple_list = false;
+
         /* Comment */
 
         if (action_type == StructAction.COMMENT)
@@ -571,6 +573,7 @@ public class DocumentStructure : GLib.Object
                 throw new StructError.DATA_OUTDATED ("");
 
             _model.delete (tree_iter);
+            refresh_simple_list = true;
             return;
         }
 
@@ -636,7 +639,9 @@ public class DocumentStructure : GLib.Object
             _doc.begin_user_action ();
             _doc.delete (start_iter, end_iter);
             _doc.end_user_action ();
+
             _model.delete (tree_iter);
+            refresh_simple_list = true;
         }
     }
 

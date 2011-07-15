@@ -560,9 +560,12 @@ public class Structure : VBox
 
         return_if_fail (selected_row != -1);
 
+        bool refresh_simple_list = false;
+
         try
         {
-            _document_structure.do_action (action_type, selected_iter);
+            _document_structure.do_action (action_type, selected_iter,
+                out refresh_simple_list);
         }
         catch (StructError e)
         {
@@ -581,7 +584,12 @@ public class Structure : VBox
 
             dialog.run ();
             dialog.destroy ();
+            return;
         }
+
+        // refresh the simple list if needed
+        if (refresh_simple_list)
+            populate_simple_list ();
     }
 
     private static string get_action_name (StructAction action_type)

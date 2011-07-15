@@ -61,7 +61,7 @@ public class StructureModel : TreeModel, GLib.Object
     private Gee.ArrayList<unowned Node<StructData?>> _list_includes;
     private Gee.ArrayList<unowned Node<StructData?>> _list_tables;
     private Gee.ArrayList<unowned Node<StructData?>> _list_figures;
-    private Gee.ArrayList<unowned Node<StructData?>> _list_todo_and_fixme;
+    private Gee.ArrayList<unowned Node<StructData?>> _list_todos_and_fixmes;
 
     public StructureModel ()
     {
@@ -77,12 +77,7 @@ public class StructureModel : TreeModel, GLib.Object
         _tree = new Node<StructData?> (empty_data);
 
         new_stamp ();
-
-        _list_labels            = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_includes          = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_tables            = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_figures           = new Gee.ArrayList<unowned Node<StructData?>> ();
-        _list_todo_and_fixme    = new Gee.ArrayList<unowned Node<StructData?>> ();
+        reset_simple_lists ();
     }
 
     // A new stamp should be generated each time the data in the model change
@@ -463,6 +458,8 @@ public class StructureModel : TreeModel, GLib.Object
 
         unowned Node<StructData?> node = get_node_from_iter (iter);
         delete_node (node);
+
+        regenerate_simple_lists ();
     }
 
     public void shift_right (TreeIter iter)
@@ -722,34 +719,6 @@ public class StructureModel : TreeModel, GLib.Object
             make_children_between_marks (new_node);
     }
 
-    private void insert_node_in_list (Node<StructData?> node, bool at_end)
-    {
-        StructData item = node.data;
-
-        if (Structure.is_section (item.type))
-            return;
-
-        var list = get_list (item.type);
-
-        // if it's an append_item(), append the item to the list too
-        if (at_end)
-        {
-            list.add (node);
-            return;
-        }
-
-        // if the item is inserted in the middle, search where to insert it in the list
-        int mark_pos = get_position_from_mark (item.start_mark);
-        int i;
-        for (i = 0 ; i < list.size ; i++)
-        {
-            int cur_mark_pos = get_position_from_mark (list[i].data.start_mark);
-            if (cur_mark_pos > mark_pos)
-                break;
-        }
-        list.insert (i, node);
-    }
-
     private void make_children_between_marks (Node<StructData?> node)
     {
         StructData data = node.data;
@@ -798,6 +767,7 @@ public class StructureModel : TreeModel, GLib.Object
     public void populate_list (ListStore store, StructType type)
     {
         var list = get_list (type);
+        return_if_fail (list != null);
 
         foreach (unowned Node<StructData?> node in list)
         {
@@ -842,9 +812,69 @@ public class StructureModel : TreeModel, GLib.Object
         return_val_if_reached (-1);
     }
 
-    private Gee.ArrayList<unowned Node<StructData?>> get_list (StructType type)
+    private void insert_node_in_list (Node<StructData?> node, bool at_end)
     {
-        return_val_if_fail (! Structure.is_section (type), null);
+        StructData item = node.data;
+
+        if (Structure.is_section (item.type))
+            return;
+
+        var list = get_list (item.type);
+        return_if_fail (list != null);
+
+        // if it's an append_item(), append the item to the list too
+        if (at_end)
+        {
+            list.add (node);
+            return;
+        }
+
+        // if the item is inserted in the middle, search where to insert it in the list
+        int mark_pos = get_position_from_mark (item.start_mark);
+        int i;
+        for (i = 0 ; i < list.size ; i++)
+        {
+            int cur_mark_pos = get_position_from_mark (list[i].data.start_mark);
+            if (cur_mark_pos > mark_pos)
+                break;
+        }
+        list.insert (i, node);
+    }
+
+    private void regenerate_simple_lists ()
+    {
+        reset_simple_lists ();
+
+        _tree.traverse (TraverseType.PRE_ORDER, TraverseFlags.ALL, -1, (node_param) =>
+        {
+            unowned Node<StructData?> node = (Node<StructData?>) node_param;
+            StructType type = node.data.type;
+            if (! Structure.is_section (type))
+            {
+                var list = get_list (type);
+                return_val_if_fail (list != null, true);
+
+                list.add (node);
+            }
+
+            // continue the traversal
+            return false;
+        });
+    }
+
+    private void reset_simple_lists ()
+    {
+        _list_labels            = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_includes          = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_tables            = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_figures           = new Gee.ArrayList<unowned Node<StructData?>> ();
+        _list_todos_and_fixmes  = new Gee.ArrayList<unowned Node<StructData?>> ();
+    }
+
+    private Gee.ArrayList<unowned Node<StructData?>>? get_list (StructType type)
+    {
+        if (Structure.is_section (type))
+            return null;
 
         switch (type)
         {
@@ -863,10 +893,10 @@ public class StructureModel : TreeModel, GLib.Object
 
             case StructType.TODO:
             case StructType.FIXME:
-                return _list_todo_and_fixme;
+                return _list_todos_and_fixmes;
 
             default:
-                return_val_if_reached (null);
+                return null;
         }
     }
 
