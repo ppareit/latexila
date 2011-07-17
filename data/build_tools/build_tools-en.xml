@@ -1,32 +1,32 @@
-<tools>
+<tools xmlns:its="http://www.w3.org/2005/11/its">
   <!-- Latexmk -->
 
   <tool show="true" extensions=".tex" icon="compile_pdf">
-    <label>LaTeX → PDF (Latexmk)</label>
+    <label its:translate="no">LaTeX → PDF (Latexmk)</label>
     <job mustSucceed="true" postProcessor="latexmk">latexmk -pdf $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
 
   <tool show="true" extensions=".tex" icon="compile_dvi">
-    <label>LaTeX → DVI → PDF (Latexmk)</label>
+    <label its:translate="no">LaTeX → DVI → PDF (Latexmk)</label>
     <job mustSucceed="true" postProcessor="latexmk">latexmk -pdfdvi $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
 
   <tool show="true" extensions=".tex" icon="compile_ps">
-    <label>LaTeX → DVI → PS → PDF (Latexmk)</label>
+    <label its:translate="no">LaTeX → DVI → PS → PDF (Latexmk)</label>
     <job mustSucceed="true" postProcessor="latexmk">latexmk -pdfps $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_dvi">
-    <label>LaTeX → DVI (Latexmk)</label>
+    <label its:translate="no">LaTeX → DVI (Latexmk)</label>
     <job mustSucceed="true" postProcessor="latexmk">latexmk $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.dvi</job>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_ps">
-    <label>LaTeX → DVI → PS (Latexmk)</label>
+    <label its:translate="no">LaTeX → DVI → PS (Latexmk)</label>
     <job mustSucceed="true" postProcessor="latexmk">latexmk -ps $filename</job>
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
@@ -54,7 +54,7 @@
   <!-- Rubber -->
 
   <tool show="false" extensions=".tex" icon="compile_pdf">
-    <label>LaTeX → PDF (Rubber)</label>
+    <label its:translate="no">LaTeX → PDF (Rubber)</label>
     <job mustSucceed="true" postProcessor="rubber">
       rubber --maxerr -1 --short --force --warn all --pdf $filename
     </job>
@@ -62,7 +62,7 @@
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_dvi">
-    <label>LaTeX → DVI (Rubber)</label>
+    <label its:translate="no">LaTeX → DVI (Rubber)</label>
     <job mustSucceed="true" postProcessor="rubber">
       rubber --maxerr -1 --short --force --warn all $filename
     </job>
@@ -70,7 +70,7 @@
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_ps">
-    <label>LaTeX → DVI → PS (Rubber)</label>
+    <label its:translate="no">LaTeX → DVI → PS (Rubber)</label>
     <job mustSucceed="true" postProcessor="rubber">
       rubber --maxerr -1 --short --force --warn all --ps $filename
     </job>
@@ -80,13 +80,13 @@
   <!-- latex, pdflatex -->
 
   <tool show="false" extensions=".tex" icon="compile_pdf">
-    <label>LaTeX → PDF (pdflatex)</label>
+    <label its:translate="no">LaTeX → PDF (pdflatex)</label>
     <description>Create a PDF file from LaTeX sources with the 'pdflatex' command</description>
     <job mustSucceed="true" postProcessor="latex">pdflatex -interaction=nonstopmode $filename</job>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_dvi">
-    <label>LaTeX → DVI (latex)</label>
+    <label its:translate="no">LaTeX → DVI (latex)</label>
     <description>Create a DVI file from LaTeX sources with the 'latex' command</description>
     <job mustSucceed="true" postProcessor="latex">latex -interaction=nonstopmode $filename</job>
   </tool>
@@ -94,13 +94,13 @@
   <!-- BibTeX, MakeIndex -->
 
   <tool show="false" extensions=".tex" icon="gtk-execute">
-    <label>BibTeX</label>
+    <label its:translate="no">BibTeX</label>
     <description>Run BibTeX (bibliography)</description>
     <job mustSucceed="true" postProcessor="all-output">bibtex $shortname.aux</job>
   </tool>
 
   <tool show="false" extensions=".tex" icon="gtk-execute">
-    <label>MakeIndex</label>
+    <label its:translate="no">MakeIndex</label>
     <description>Run MakeIndex</description>
     <job mustSucceed="true" postProcessor="all-output">makeindex $shortname.idx</job>
   </tool>
@@ -108,19 +108,19 @@
   <!-- Convert -->
 
   <tool show="false" extensions=".tex" icon="gtk-convert">
-    <label>DVI → PDF</label>
+    <label its:translate="no">DVI → PDF</label>
     <description>Convert the DVI document to the PDF format</description>
     <job mustSucceed="true" postProcessor="all-output">dvipdf $shortname.dvi</job>
   </tool>
 
   <tool show="false" extensions=".tex" icon="gtk-convert">
-    <label>DVI → PS</label>
+    <label its:translate="no">DVI → PS</label>
     <description>Convert the DVI document to the PostScript format</description>
     <job mustSucceed="true" postProcessor="all-output">dvips $shortname.dvi</job>
   </tool>
 
   <tool show="false" extensions=".tex" icon="gtk-convert">
-    <label>PS → PDF</label>
+    <label its:translate="no">PS → PDF</label>
     <description>Convert the PostScript document to the PDF format</description>
     <job mustSucceed="true" postProcessor="all-output">ps2pdf $shortname.ps</job>
   </tool>
