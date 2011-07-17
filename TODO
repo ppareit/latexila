@@ -6,8 +6,11 @@ See also the Roadmap:
 LaTeXila 2.2
 ============
 
-- Documentation:
-	- use gnome-doc-utils (autotools are required, so bye bye CMake :( )
+- use ITS tool (http://itstool.org/):
+	- for the Mallard doc
+	- for the build tools
+	- for the templates
+	- ...?
 
 - Build Tools:
 	- Some problems with the latex and latexmk post processors
@@ -20,7 +23,7 @@ LaTeXila 2.2
 LaTeXila ≥ 2.4
 ==============
 
-- Auto-completion:
+- Completion:
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)

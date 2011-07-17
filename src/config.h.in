@@ -28,6 +28,5 @@
 #define SCHEMA_DIR		"@SCHEMA_DIR@"
 #define ICONS_DIR		"@ICONS_DIR@"
 #define DESKTOP_SCHEMAS		@DESKTOP_SCHEMAS@
-#define HELP_DIR		"@HELP_DIR@"
 
 #endif /* LATEXILA_CONFIG_H */
