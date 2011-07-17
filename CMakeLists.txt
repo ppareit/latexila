@@ -26,10 +26,8 @@ set (ICONS_DIR "${CMAKE_INSTALL_PREFIX}/share/icons/hicolor")
 
 if (BUILD_VALA)
 	list (APPEND CMAKE_MODULE_PATH "${latexila_SOURCE_DIR}/cmake/vala")
-	include (ValaPrecompile)
-	include (ValaVersion)
-	find_package (Vala REQUIRED)
-	ensure_vala_version ("0.12.1" MINIMUM)
+	find_package (Vala "0.12.1" REQUIRED)
+	include (${VALA_USE_FILE})
 endif ()
 
 find_package (PkgConfig)
