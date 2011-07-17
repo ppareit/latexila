@@ -1,7 +1,9 @@
 #!/bin/sh
 
-itstool -o help.pot C/*.page
+pot_file="help.pot"
+
+itstool -o $pot_file C/*.page
 
 for po_file in *.po; do
-	msgmerge --update --quiet --backup=none $po_file help.pot
+	msgmerge --update --quiet --backup=none $po_file $pot_file
 done

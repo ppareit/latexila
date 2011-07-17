@@ -249,21 +249,19 @@ public class BuildTools
         build_tools = new LinkedList<BuildTool?> ();
 
         // First, try to load the user config file if it exists.
-        // Otherwise try to load the default config file translated.
-        // If the translated file doesn't exist or there is no translation
-        // available, try to load the default file.
+        // Otherwise try to load the default file (from most desirable to least desirable,
+        // depending of the current locale).
 
         File[] files = {};
         files += get_user_config_file ();
-        files += File.new_for_path (Path.build_filename (Config.DATA_DIR, "build_tools",
-            _("build_tools-en.xml"), null));
 
-        File default_file = File.new_for_path (Path.build_filename (Config.DATA_DIR,
-            "build_tools", "build_tools-en.xml", null));
-
-        // if no translation is available, there is only two files to test
-        if (! default_file.equal (files[1]))
-            files += default_file;
+        unowned string[] language_names = Intl.get_language_names ();
+        foreach (string language_name in language_names)
+        {
+            stdout.printf ("language_name: %s\n", language_name);
+            files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
+                "build_tools", language_name, "build_tools.xml"));
+        }
 
         foreach (File file in files)
         {

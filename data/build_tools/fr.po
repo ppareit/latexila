@@ -1,64 +1,66 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LaTeXila 2.1\n"
-"POT-Creation-Date: 2011-07-17 23:53+0200\n"
+"POT-Creation-Date: 2011-07-18 01:01+0200\n"
 "PO-Revision-Date: 2011-07-17 23:59+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: French\n"
 
-#: build_tools-en.xml:37(tool/label)
+#: C/build_tools.xml:37(tool/label)
 msgid "View PDF"
 msgstr "Voir PDF"
 
-#: build_tools-en.xml:38(tool/description)
+#: C/build_tools.xml:38(tool/description)
 msgid "View the PDF file"
 msgstr "Voir le fichier PDF"
 
-#: build_tools-en.xml:43(tool/label)
+#: C/build_tools.xml:43(tool/label)
 msgid "View DVI"
 msgstr "Voir DVI"
 
-#: build_tools-en.xml:44(tool/description)
+#: C/build_tools.xml:44(tool/description)
 msgid "View the DVI file"
 msgstr "Voir le fichier DVI"
 
-#: build_tools-en.xml:49(tool/label)
+#: C/build_tools.xml:49(tool/label)
 msgid "View PS"
 msgstr "Voir PS"
 
-#: build_tools-en.xml:50(tool/description)
+#: C/build_tools.xml:50(tool/description)
 msgid "View the PostScript file"
 msgstr "Voir le fichier PostScript"
 
-#: build_tools-en.xml:84(tool/description)
+#: C/build_tools.xml:84(tool/description)
 msgid "Create a PDF file from LaTeX sources with the 'pdflatex' command"
-msgstr "Créer un fichier PDF à partir des sources LaTeX grâce à la commande « pdflatex »."
+msgstr ""
+"Créer un fichier PDF à partir des sources LaTeX grâce à la commande "
+"« pdflatex »."
 
-#: build_tools-en.xml:90(tool/description)
+#: C/build_tools.xml:90(tool/description)
 msgid "Create a DVI file from LaTeX sources with the 'latex' command"
 msgstr ""
 
-#: build_tools-en.xml:98(tool/description)
+#: C/build_tools.xml:98(tool/description)
 msgid "Run BibTeX (bibliography)"
 msgstr ""
 
-#: build_tools-en.xml:104(tool/description)
+#: C/build_tools.xml:104(tool/description)
 msgid "Run MakeIndex"
 msgstr ""
 
-#: build_tools-en.xml:112(tool/description)
+#: C/build_tools.xml:112(tool/description)
 msgid "Convert the DVI document to the PDF format"
 msgstr ""
 
-#: build_tools-en.xml:118(tool/description)
+#: C/build_tools.xml:118(tool/description)
 msgid "Convert the DVI document to the PostScript format"
 msgstr ""
 
-#: build_tools-en.xml:124(tool/description)
+#: C/build_tools.xml:124(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr ""
-
