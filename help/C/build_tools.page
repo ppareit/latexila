@@ -1,4 +1,5 @@
 <page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
       type="topic"
       id="build_tools">
 
@@ -29,7 +30,7 @@
         <td><p>Command</p></td>
       </tr>
     </thead>
-    <tbody>
+    <tbody its:translate="no">
       <tr>
         <td><p>LaTeX → DVI</p></td>
         <td><p><cmd>latex</cmd></p></td>
@@ -39,7 +40,7 @@
         <td><p><cmd>pdflatex</cmd></p></td>
       </tr>
     </tbody>
-    <tbody>
+    <tbody its:translate="no">
       <tr>
         <td><p>DVI → PDF</p></td>
         <td><p><cmd>dvipdf</cmd></p></td>
@@ -56,18 +57,18 @@
     <tbody>
       <tr>
         <td><p>Bibliography</p></td>
-        <td><p><cmd>bibtex</cmd></p></td>
+        <td its:translate="no"><p><cmd>bibtex</cmd></p></td>
       </tr>
       <tr>
         <td><p>Index</p></td>
-        <td><p><cmd>makeindex</cmd></p></td>
+        <td its:translate="no"><p><cmd>makeindex</cmd></p></td>
       </tr>
     </tbody>
   </table>
 
   <p>Compiling a LaTeX document can involve to execute several low-level commands, in a
   certain order and a certain number of times. Here is an example:</p>
-  <screen>
+  <screen its:translate="no">
 $ latex document.tex
 $ bibtex document.aux
 $ latex document.tex
@@ -176,22 +177,22 @@ $ ps2pdf document.ps</screen>
 
   <terms>
     <item>
-      <title>no-output</title>
+      <title its:translate="no">no-output</title>
       <p>The output is simply not displayed.</p>
     </item>
     <item>
-      <title>all-output</title>
+      <title its:translate="no">all-output</title>
       <p>All the output is displayed, without filter.</p>
     </item>
     <item>
-      <title>latex</title>
+      <title its:translate="no">latex</title>
       <p>Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands.
       There can be three types of errors: critical errors, warnings, or bad-boxes. There
       are also some other useful information: the size of the document, the number of
       pages, and the number of errors.</p>
     </item>
     <item>
-      <title>latexmk</title>
+      <title its:translate="no">latexmk</title>
       <p>Used for the <cmd>latexmk</cmd> command. Internally, this post processor uses
       other ones: <em>latex</em> and <em>all-output</em>.</p>
 
@@ -204,7 +205,7 @@ $ ps2pdf document.ps</screen>
       output.</p>
     </item>
     <item>
-      <title>rubber</title>
+      <title its:translate="no">rubber</title>
       <p>This is the post-processor used for the <cmd>rubber</cmd> command. The errors are
       categorized into two types: bad-boxes, and the others. So, unlike the <em>latex</em>
       post processor, there is no distinction between critical errors and simple
