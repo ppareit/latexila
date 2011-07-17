@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-05-06 21:08+0200\n"
+"POT-Creation-Date: 2011-07-17 14:13+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Vito Fasano <vito.fasano@gmail.com>\n"
 "Language-Team: Italian\n"
@@ -16,50 +16,59 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/search.vala:393
+#: src/preferences_dialog.vala:322
+#, c-format
+msgid "%s [copy]"
+msgstr ""
+
+#: src/search.vala:414
 #, c-format
 msgid "%u matches"
 msgstr "%u corrispondenze"
 
-#: src/search.vala:387
+#: src/search.vala:408
 #, c-format
 msgid "%u of %u"
 msgstr "%u di %u"
 
-#: src/main.vala:64
+#: src/main.vala:65
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr "- Ambiente LaTeX integrato per GNOME"
 
-#: src/main_window.vala:908
+#: src/main_window.vala:973
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Esiste già un file chiamato \"%s\" . Vuoi sostituirlo."
 
-#: src/latex_menu.vala:233
+#: src/latex_menu.vala:232
 msgid "AMS packages"
 msgstr "Pacchetti AMS"
 
-#: src/main_window.vala:133
-#: src/main_window.vala:1794
+#: src/main_window.vala:163 src/main_window.vala:1932
 msgid "About LaTeXila"
 msgstr "Informazioni su LaTeXila"
 
-#: src/latex_menu.vala:243
+#: src/latex_menu.vala:242
 msgid "Abstract - \\begin{abstract}"
 msgstr "Abstract - \\begin{abstract}"
 
-#: src/document_tab.vala:249
+#: src/document_tab.vala:259
 #, c-format
 msgid "Activate '%s'"
 msgstr "Attivato '%s'"
 
-#: src/main_window.vala:112
+#: src/main_window.vala:120
 msgid "Activate next document"
 msgstr "Attivato documento successivo"
 
-#: src/main_window.vala:109
+#: src/main_window.vala:117
 msgid "Activate previous document"
 msgstr "Attivato documento precedente"
+
+#: src/preferences_dialog.vala:548
+#, fuzzy
+msgid "Active"
+msgstr "Attivato '%s'"
 
 #: src/latex_menu.vala:206
 msgid "Acute accent - \\'"
@@ -77,15 +86,15 @@ msgstr "Allinea a sinistra- \\begin{flushleft}"
 msgid "Align Right - \\begin{flushright}"
 msgstr "Allinea a destra - \\begin{flushright}"
 
-#: src/ui/search_and_replace.ui:188
+#: src/ui/search_and_replace.ui:210
 msgid "All"
 msgstr "Tutti"
 
-#: src/ui/preferences_dialog.ui:482
+#: src/ui/preferences_dialog.ui:546
 msgid "Always show all information for the Latexmk post processor"
 msgstr "Mostra sempre tutte le informazioni per Latexmk"
 
-#: src/latex_menu.vala:265
+#: src/latex_menu.vala:264
 msgid "Array of Equations - \\begin{align*}"
 msgstr "Array di Equazioni - \\begin{align*}"
 
@@ -97,15 +106,15 @@ msgstr "Frecce"
 msgid "Article"
 msgstr "Articolo"
 
-#: src/latex_menu.vala:234
+#: src/latex_menu.vala:233
 msgid "Author - \\author"
 msgstr "Autore- \\author"
 
-#: src/ui/preferences_dialog.ui:743
+#: src/ui/preferences_dialog.ui:891
 msgid "Automatically clean-up files after close"
 msgstr "Pulisci automaticamente i file dopo la chiusura"
 
-#: src/ui/preferences_dialog.ui:157
+#: src/ui/preferences_dialog.ui:187
 msgid "Autosave files every"
 msgstr "Salvataggio _automatico del file corrente ogni"
 
@@ -113,7 +122,7 @@ msgstr "Salvataggio _automatico del file corrente ogni"
 msgid "Big skip - \\bigskip"
 msgstr "Big skip - \\bigskip"
 
-#: src/latex_menu.vala:332
+#: src/latex_menu.vala:331
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
 msgstr "Lavagna (solo maiuscole)  - \\mathbb (amsfonts package)"
 
@@ -121,7 +130,7 @@ msgstr "Lavagna (solo maiuscole)  - \\mathbb (amsfonts package)"
 msgid "Bold - \\bfseries"
 msgstr "Bold - \\bfseries"
 
-#: src/latex_menu.vala:324
+#: src/latex_menu.vala:323
 msgid "Bold - \\mathbf"
 msgstr "Bold - \\mathbf"
 
@@ -141,7 +150,7 @@ msgstr "Breve - \\u"
 msgid "Build Tool"
 msgstr "Build Tool"
 
-#: src/ui/preferences_dialog.ui:460
+#: src/ui/preferences_dialog.ui:523
 msgid "Build Tools"
 msgstr "Strumenti Ausiliari"
 
@@ -149,7 +158,7 @@ msgstr "Strumenti Ausiliari"
 msgid "Bulleted List - \\begin{itemize}"
 msgstr "Lista Puntata - \\begin{itemize}"
 
-#: src/latex_menu.vala:330
+#: src/latex_menu.vala:329
 msgid "Calligraphic - \\mathcal"
 msgstr "Calligraphic - \\mathcal"
 
@@ -157,24 +166,28 @@ msgstr "Calligraphic - \\mathcal"
 msgid "Caron - \\v"
 msgstr "Caron - \\v"
 
-#: src/search.vala:175
+#: src/search.vala:177
 msgid "Case sensitive"
 msgstr "Case sensitive"
+
+#: src/latex_menu.vala:217
+#, fuzzy
+msgid "Cedilla - \\c"
+msgstr "Medio - \\:"
 
 #: src/latex_menu.vala:64
 msgid "Center - \\begin{center}"
 msgstr "Centrato - \\begin{center}"
 
-#: src/latex_menu.vala:260
+#: src/latex_menu.vala:259
 msgid "Centered Formula - \\[...\\]"
 msgstr "Formula Centrata -\\[...\\]"
 
-#: src/main_window.vala:123
+#: src/main_window.vala:131
 msgid "Change the main file of the current project"
 msgstr "Cambia il file principale del progetto corrente"
 
-#: src/latex_menu.vala:34
-#: src/structure.vala:454
+#: src/latex_menu.vala:34 src/structure.vala:655
 msgid "Chapter"
 msgstr "Capitolo"
 
@@ -182,7 +195,7 @@ msgstr "Capitolo"
 msgid "Characters Sizes"
 msgstr "Dimensioni Caratteru"
 
-#: src/templates.vala:244
+#: src/templates.vala:268
 msgid "Choose an icon:"
 msgstr "Scegli un icona:"
 
@@ -190,32 +203,31 @@ msgstr "Scegli un icona:"
 msgid "Circumflex accent - \\^"
 msgstr "Accento circonflesso -\\^"
 
-#: src/main_window.vala:95
+#: src/main_window.vala:103
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
 msgstr "Rimuovi i file ausiliari (*.aux, *.log, *.out, *.toc, etc)"
 
-#: src/main_window.vala:94
+#: src/main_window.vala:102
 msgid "Cleanup Build _Files"
 msgstr "Pulisci _File Ausiliari"
 
-#: src/project_dialogs.vala:247
-#: src/project_dialogs.vala:304
+#: src/project_dialogs.vala:247 src/project_dialogs.vala:304
 msgid "Clear All"
 msgstr "Pulisci tutto"
 
-#: src/ui/search_and_replace.ui:27
+#: src/ui/search_and_replace.ui:30
 msgid "Clear Find"
 msgstr "Pulisci Cerca"
 
-#: src/ui/search_and_replace.ui:125
+#: src/ui/search_and_replace.ui:137
 msgid "Clear Replace"
 msgstr "Pulisci Sostituisci"
 
-#: src/ui/search_and_replace.ui:92
+#: src/ui/search_and_replace.ui:101
 msgid "Close"
 msgstr "Chiudi"
 
-#: src/main_window.vala:107
+#: src/main_window.vala:115
 msgid "Close all open files"
 msgstr "Chiude tutti i file aperti"
 
@@ -227,42 +239,55 @@ msgstr "Chiudi documento"
 msgid "Close the current file"
 msgstr "Chiudi il file corrente"
 
-#: src/dialogs.vala:40
-#: src/main_window.vala:743
+#: src/dialogs.vala:40 src/main_window.vala:808
 msgid "Close without Saving"
 msgstr "Chiudi senza salvare"
 
-#: src/structure.vala:157
+#: src/structure.vala:149
 msgid "Collapse All"
 msgstr "_Chiudi tutti"
 
-#: src/ui/preferences_dialog.ui:337
+#: src/ui/preferences_dialog.ui:386
 msgid "Color Scheme"
 msgstr "Schema Colore"
 
-#: src/build_tool_dialog.vala:193
+#: src/build_tool_dialog.vala:194
 msgid "Commands"
 msgstr "Comandi"
 
-#: src/main_window.vala:66
+#: src/main_window.vala:72
 msgid "Comment the selected lines (add the character \"%\")"
 msgstr "Commenta le righe selezionate (aggiungi il carattere \"%\")"
+
+#: src/main_window.vala:148
+#, fuzzy
+msgid "Comment the selected structure item"
+msgstr "Commenta le righe selezionate (aggiungi il carattere \"%\")"
+
+#: src/main_window.vala:78
+msgid "Complete the LaTeX command"
+msgstr ""
 
 #: src/project_dialogs.vala:124
 msgid "Configure Project"
 msgstr "Configura progetto"
 
-#: src/main_window.vala:72
+#: src/main_window.vala:80
 msgid "Configure the application"
 msgstr "Configura l'applicazione"
 
-#: src/latex_menu.vala:237
+#: src/latex_menu.vala:236
 msgid "Content of the document - \\begin{document}"
 msgstr "Crea un nuovo documento -\\begin{document}"
 
 #: src/build_tool_dialog.vala:52
 msgid "Convert"
 msgstr "Converti"
+
+#: src/main_window.vala:141
+#, fuzzy
+msgid "Copy the selected structure item"
+msgstr "Copia la selezione"
 
 #: src/main_window.vala:58
 msgid "Copy the selection"
@@ -272,11 +297,11 @@ msgstr "Copia la selezione"
 msgid "Create _Template From Document..."
 msgstr "Crea _Template dal Documento..."
 
-#: src/ui/preferences_dialog.ui:139
+#: src/ui/preferences_dialog.ui:167
 msgid "Create a backup copy of files before saving"
 msgstr "Crea una copia di backup dei file prima di salvare"
 
-#: src/main_window.vala:121
+#: src/main_window.vala:129
 msgid "Create a new project"
 msgstr "Crea un nuovo progetto"
 
@@ -300,6 +325,11 @@ msgstr "Crea un nuovo documento"
 msgid "Custom list - \\begin{list}"
 msgstr "Lista - \\begin{list}"
 
+#: src/main_window.vala:139
+#, fuzzy
+msgid "Cut the selected structure item"
+msgstr "Cancella testo selezionato"
+
 #: src/main_window.vala:56
 msgid "Cut the selection"
 msgstr "Taglia la selezione"
@@ -308,15 +338,24 @@ msgstr "Taglia la selezione"
 msgid "Default templates"
 msgstr "Template Predefiniti"
 
-#: src/templates.vala:287
+#: src/templates.vala:311
 msgid "Delete Template(s)..."
 msgstr "Cancella Template..."
+
+#: src/ui/preferences_dialog.ui:694
+msgid "Delete one build tool"
+msgstr ""
 
 #: src/main_window.vala:43
 msgid "Delete personal template(s)"
 msgstr "Cancella template personali"
 
-#: src/main_window.vala:62
+#: src/main_window.vala:143
+#, fuzzy
+msgid "Delete the selected structure item"
+msgstr "Cancella testo selezionato"
+
+#: src/main_window.vala:68
 msgid "Delete the selected text"
 msgstr "Cancella testo selezionato"
 
@@ -324,7 +363,7 @@ msgstr "Cancella testo selezionato"
 msgid "Delimiters"
 msgstr "Delimitatori"
 
-#: src/ui/build_tool.ui:89
+#: src/ui/build_tool.ui:129
 msgid "Description"
 msgstr "Descrizione"
 
@@ -332,8 +371,7 @@ msgstr "Descrizione"
 msgid "Description - \\begin{description}"
 msgstr "Descrizione - \\begin{description}"
 
-#: src/project_dialogs.vala:49
-#: src/project_dialogs.vala:209
+#: src/project_dialogs.vala:49 src/project_dialogs.vala:209
 msgid "Directory"
 msgstr "Cartella"
 
@@ -341,7 +379,7 @@ msgstr "Cartella"
 msgid "Directory:"
 msgstr "Cartella:"
 
-#: src/ui/preferences_dialog.ui:29
+#: src/ui/preferences_dialog.ui:45
 msgid "Display line numbers"
 msgstr "Mostra i numeri di riga"
 
@@ -349,7 +387,7 @@ msgstr "Mostra i numeri di riga"
 msgid "Do you really want to clear all projects?"
 msgstr "Vuoi veramente cancellare tutti i progetti?"
 
-#: src/preferences_dialog.vala:322
+#: src/preferences_dialog.vala:374
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
 msgstr "Vuoi veramente cancellare gli strumenti ausiliari \"%s\"?"
@@ -359,55 +397,61 @@ msgstr "Vuoi veramente cancellare gli strumenti ausiliari \"%s\"?"
 msgid "Do you really want to delete the project \"%s\"?"
 msgstr "Vuoi veramente cancellare il progetto \"%s\"?"
 
-#: src/dialogs.vala:229
+#: src/clean_build_files.vala:262
 msgid "Do you really want to delete these files?"
 msgstr "Vuoi veramente cancellare questi files?"
 
-#: src/preferences_dialog.vala:373
+#: src/preferences_dialog.vala:393
 msgid "Do you really want to reset all build tools?"
 msgstr "Vuoi veramente resettare tutti gli strumenti ausiliari?"
 
-#: src/preferences_dialog.vala:117
+#: src/preferences_dialog.vala:118
 msgid "Do you really want to reset all preferences?"
 msgstr "Vuoi veramente resettare tutte le preferenze?"
 
-#: src/document_tab.vala:273
+#: src/document_tab.vala:283
 msgid "Do you want to drop your changes and reload the file?"
 msgstr "Vuoi veramente tralasciare i tuoi cambiamenti e ricaricare il file?"
 
-#: src/document_tab.vala:275
+#: src/document_tab.vala:285
 msgid "Do you want to reload the file?"
 msgstr "Caricare nuovamente il file?"
 
-#: src/latex_menu.vala:229
+#: src/latex_menu.vala:228
 msgid "Document class - \\documentclass"
 msgstr "Document class - \\documentclass"
 
-#: src/main_window.vala:639
+#: src/main_window.vala:700
 msgid "Don't Edit"
 msgstr "Non modificare"
 
-#: src/document.vala:222
+#: src/document.vala:224
 msgid "Don't Save"
 msgstr "Non salvare"
 
 #: src/latex_menu.vala:212
-msgid "Dot - \\."
+#, fuzzy
+msgid "Dot above - \\."
+msgstr "Non -\\."
+
+#: src/latex_menu.vala:219
+#, fuzzy
+msgid "Dot below - \\d"
 msgstr "Non -\\."
 
 #: src/latex_menu.vala:216
 msgid "Double acute accent - \\H"
 msgstr "Accento acuto doppio -\\H"
 
-#: src/main_window.vala:638
+#: src/main_window.vala:699
 msgid "Edit Anyway"
 msgstr "Modifica in qualsiasi modo"
 
-#: src/ui/preferences_dialog.ui:219
+#: src/ui/preferences_dialog.ui:257
 msgid "Editor"
 msgstr "Editor"
 
-#: src/ui/preferences_dialog.ui:283
+#: src/ui/preferences_dialog.ui:326
 msgid "Editor _font: "
 msgstr "Carattere dell'editor:"
 
@@ -419,11 +463,11 @@ msgstr "Enfatizzato - \\emph"
 msgid "Empty"
 msgstr "Vuoto"
 
-#: src/main_window.vala:77
+#: src/main_window.vala:85
 msgid "Enlarge the font"
 msgstr "Allarga il font"
 
-#: src/search.vala:176
+#: src/search.vala:178
 msgid "Entire words only"
 msgstr "Solo parole intere "
 
@@ -431,15 +475,15 @@ msgstr "Solo parole intere "
 msgid "Enumeration - \\begin{enumerate}"
 msgstr "Enumerazione - \\begin{enumerate}"
 
-#: src/document.vala:258
+#: src/document.vala:261
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Errore mentre si cercava di convertire il documento in UTF-8"
 
-#: src/latex_menu.vala:335
+#: src/latex_menu.vala:334
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Euler Fraktur - \\mathfrak (amsfonts package)"
 
-#: src/ui/preferences_dialog.ui:838
+#: src/ui/preferences_dialog.ui:997
 msgid "Except those for clean-up"
 msgstr "Eccetto questi per la pulizia"
 
@@ -447,11 +491,11 @@ msgstr "Eccetto questi per la pulizia"
 msgid "Execute"
 msgstr "Esegui"
 
-#: src/structure.vala:150
+#: src/structure.vala:142
 msgid "Expand All"
 msgstr "Espandi tutto"
 
-#: src/ui/build_tool.ui:137
+#: src/ui/build_tool.ui:191
 msgid "Extensions"
 msgstr "Estenzioni"
 
@@ -459,7 +503,7 @@ msgstr "Estenzioni"
 msgid "F_ont Series"
 msgstr "Lista Caratteri"
 
-#: src/structure.vala:484
+#: src/structure.vala:665
 msgid "Figure"
 msgstr "Immagine"
 
@@ -467,24 +511,23 @@ msgstr "Immagine"
 msgid "Figure - \\begin{figure}"
 msgstr "Figure - \\begin{figure}"
 
-#: src/build_view.vala:136
+#: src/build_view.vala:138
 msgid "File"
 msgstr "File"
 
-#: src/file_browser.vala:389
-#: src/main_window.vala:282
+#: src/file_browser.vala:429 src/main_window.vala:315
 msgid "File Browser"
 msgstr "Esplorazione file"
 
-#: src/ui/preferences_dialog.ui:703
+#: src/ui/preferences_dialog.ui:848
 msgid "File Clean-Up"
 msgstr "Pulizia File"
 
-#: src/file_browser.vala:419
+#: src/file_browser.vala:459
 msgid "File System"
 msgstr "File System"
 
-#: src/ui/build_tool.ui:154
+#: src/ui/build_tool.ui:211
 msgid ""
 "File extensions for which the build tool can be executed.\n"
 "The extensions are separated by spaces."
@@ -492,15 +535,15 @@ msgstr ""
 "Estensioni per le quali è permessa la compilazione.\n"
 "L' estensioni sono separate da spazi."
 
-#: src/structure.vala:487
+#: src/structure.vala:667
 msgid "File included"
 msgstr "File incluso"
 
-#: src/ui/search_and_replace.ui:71
+#: src/ui/search_and_replace.ui:78
 msgid "Find next"
 msgstr "Trova successivo"
 
-#: src/ui/search_and_replace.ui:49
+#: src/ui/search_and_replace.ui:54
 msgid "Find previous"
 msgstr "Trova precedente"
 
@@ -508,11 +551,11 @@ msgstr "Trova precedente"
 msgid "Fo_nt Shape"
 msgstr "Forma Ca_rattere"
 
-#: src/ui/preferences_dialog.ui:240
+#: src/ui/preferences_dialog.ui:279
 msgid "Font"
 msgstr "Font"
 
-#: src/ui/preferences_dialog.ui:388
+#: src/ui/preferences_dialog.ui:443
 msgid "Font & Colors"
 msgstr "Caratteri e Colori"
 
@@ -520,11 +563,11 @@ msgstr "Caratteri e Colori"
 msgid "Footnote"
 msgstr "Note a piè di pagina"
 
-#: src/ui/preferences_dialog.ui:95
+#: src/ui/preferences_dialog.ui:120
 msgid "Forget you are not using tabulations"
 msgstr "Dimentica di non usare le tabulazioni"
 
-#: src/latex_menu.vala:276
+#: src/latex_menu.vala:275
 msgid "Fraction - \\frac{}{}"
 msgstr "Frazione - \\frac{}{}"
 
@@ -532,19 +575,19 @@ msgstr "Frazione - \\frac{}{}"
 msgid "Go to Line:"
 msgstr "Vai alla linea:"
 
-#: src/main_window.vala:90
+#: src/main_window.vala:98
 msgid "Go to a specific line"
 msgstr "Vai alla linea specifica"
 
-#: src/file_browser.vala:106
+#: src/file_browser.vala:107
 msgid "Go to the active document directory"
 msgstr "Vai alla cartella del documento attivo"
 
-#: src/file_browser.vala:104
+#: src/file_browser.vala:105
 msgid "Go to the home directory"
 msgstr "Vai alla cartella home"
 
-#: src/file_browser.vala:105
+#: src/file_browser.vala:106
 msgid "Go to the parent directory"
 msgstr "Vai alla cartella superiore"
 
@@ -556,16 +599,15 @@ msgstr "Accento grave - \\`"
 msgid "Greek"
 msgstr "Greek"
 
-#: src/build_view.vala:152
-#: src/side_panel.vala:75
+#: src/build_view.vala:164 src/side_panel.vala:75
 msgid "Hide panel"
 msgstr "Nascondi pannello"
 
-#: src/ui/preferences_dialog.ui:111
+#: src/ui/preferences_dialog.ui:137
 msgid "Highlight current line"
 msgstr "Evidenzia riga corrente"
 
-#: src/ui/preferences_dialog.ui:125
+#: src/ui/preferences_dialog.ui:152
 msgid "Highlight matching brackets"
 msgstr "Evidenzia parentesi corrispondente"
 
@@ -581,40 +623,46 @@ msgstr "Linea orizzontale - \\hline"
 msgid "Horizontal space - \\hspace"
 msgstr "Spazio orizzontale - \\hspace"
 
-#: src/ui/build_tool.ui:178
+#: src/ui/build_tool.ui:243
 msgid "Icon"
 msgstr "Icona"
 
-#: src/dialogs.vala:131
+#: src/dialogs.vala:132
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Se non si salva, tutte le modifiche andranno perse per sempre."
 
-#: src/document.vala:217
+#: src/document.vala:219
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
-msgstr "Salvare il file può comportare la perdita di tutti i cambiamenti esterni. Salvare lo stesso?"
+msgstr ""
+"Salvare il file può comportare la perdita di tutti i cambiamenti esterni. "
+"Salvare lo stesso?"
+
+#: src/structure.vala:666
+msgid "Image"
+msgstr ""
 
 #: src/document.vala:140
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Impossibile caricare il file '%s'."
 
-#: src/document.vala:234
+#: src/document.vala:236
 msgid "Impossible to save the file."
 msgstr "Impossibile salvare il file."
 
-#: src/latex_menu.vala:248
+#: src/latex_menu.vala:247
 msgid "Include a file - \\input"
 msgstr "Includi un file - \\input"
 
-#: src/latex_menu.vala:245
+#: src/latex_menu.vala:244
 msgid "Include an image (graphicx package) - \\includegraphics"
 msgstr "Inserisci un immagine (pacchetto graphicx) - \\includegraphics"
 
-#: src/ui/preferences_dialog.ui:77
+#: src/ui/preferences_dialog.ui:100
 msgid "Insert spaces instead of tabs"
 msgstr "Inserire _spazi invece di tabulazioni"
 
-#: src/ui/preferences_dialog.ui:407
+#: src/ui/preferences_dialog.ui:463
 msgid "Interactive completion after"
 msgstr "Completamento interattivo dopo"
 
@@ -626,7 +674,7 @@ msgstr "Accenti internazionali"
 msgid "Italic - \\itshape"
 msgstr "Corsivo - \\itshape"
 
-#: src/latex_menu.vala:322
+#: src/latex_menu.vala:321
 msgid "Italic - \\mathit"
 msgstr "Corsivo - \\mathit"
 
@@ -638,28 +686,32 @@ msgstr "Corsivo - \\textit"
 msgid "Job"
 msgstr "Job"
 
-#: src/ui/build_tool.ui:223
+#: src/ui/build_tool.ui:296
 msgid "Jobs"
 msgstr "Jobs"
 
-#: src/main_window.vala:1742
+#: src/main_window.vala:1880
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila è un Ambiente Intregrato per LaTeX per il Desktop GNOME"
 
-#: src/main_window.vala:635
-msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
-msgstr "Il programma ha aperto il file in modalità sola lettura. Modificarlo lo stesso?"
+#: src/main_window.vala:696
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr ""
+"Il programma ha aperto il file in modalità sola lettura. Modificarlo lo "
+"stesso?"
 
-#: src/latex_menu.vala:49
-#: src/structure.vala:472
+#: src/latex_menu.vala:49 src/preferences_dialog.vala:558
+#: src/structure.vala:661
 msgid "Label"
 msgstr "Etichetta"
 
-#: src/latex_menu.vala:367
+#: src/latex_menu.vala:366
 msgid "Large - \\;"
 msgstr "Grande -\\;"
 
-#: src/latex_menu.vala:439
+#: src/latex_menu.vala:438
 msgid "Left Delimiters"
 msgstr "Margine sinistro"
 
@@ -667,7 +719,7 @@ msgstr "Margine sinistro"
 msgid "Letter"
 msgstr "Lettera"
 
-#: src/build_view.vala:138
+#: src/build_view.vala:140
 msgid "Line"
 msgstr "Linea"
 
@@ -697,53 +749,54 @@ msgstr "Posizione per il profetto: %s"
 msgid "Macron - \\="
 msgstr "Macron - \\="
 
-#: src/document_tab.vala:232
-#: src/project_dialogs.vala:51
-#: src/project_dialogs.vala:147
-#: src/project_dialogs.vala:222
+#: src/latex_menu.vala:220
+#, fuzzy
+msgid "Macron below - \\b"
+msgstr "Macron - \\="
+
+#: src/document_tab.vala:233 src/project_dialogs.vala:51
+#: src/project_dialogs.vala:147 src/project_dialogs.vala:222
 msgid "Main File"
 msgstr "File Principale"
 
-#: src/document_tab.vala:235
-#: src/project_dialogs.vala:45
+#: src/document_tab.vala:235 src/project_dialogs.vala:45
 #: src/project_dialogs.vala:144
 msgid "Main File:"
 msgstr "File Principale:"
 
-#: src/latex_menu.vala:239
+#: src/latex_menu.vala:238
 msgid "Make title - \\maketitle"
 msgstr "Make title - \\maketitle"
 
-#: src/main_window.vala:126
-#: src/project_dialogs.vala:189
+#: src/main_window.vala:134 src/project_dialogs.vala:189
 msgid "Manage Projects"
 msgstr "Gestisci Progetti"
 
-#: src/latex_menu.vala:436
+#: src/latex_menu.vala:435
 msgid "Math Environments"
 msgstr "Ambiente matematica"
 
-#: src/latex_menu.vala:318
+#: src/latex_menu.vala:317
 msgid "Math Font _Styles"
 msgstr "_Stile Font Matematico"
 
-#: src/latex_menu.vala:340
+#: src/latex_menu.vala:339
 msgid "Math _Accents"
 msgstr "_Accenti Matematici"
 
-#: src/latex_menu.vala:284
+#: src/latex_menu.vala:283
 msgid "Math _Functions"
 msgstr "_Funzioni Matematiche"
 
-#: src/latex_menu.vala:361
+#: src/latex_menu.vala:360
 msgid "Math _Spaces"
 msgstr "_Spazio matematico"
 
-#: src/latex_menu.vala:258
+#: src/latex_menu.vala:257
 msgid "Mathematical Environment - $...$"
 msgstr "Ambiente Matematico - $...$"
 
-#: src/latex_menu.vala:365
+#: src/latex_menu.vala:364
 msgid "Medium - \\:"
 msgstr "Medio - \\:"
 
@@ -754,10 +807,6 @@ msgstr "Medio - \\mdseries"
 #: src/latex_menu.vala:195
 msgid "Medium skip - \\medskip"
 msgstr "Medium skip - \\medskip"
-
-#: src/structure.vala:275
-msgid "Minimum level"
-msgstr "Livello minimo"
 
 #: src/latex_menu.vala:82
 msgid "Minipage - \\begin{minipage}"
@@ -779,7 +828,7 @@ msgstr "Monospace - \\ttfamily"
 msgid "Most Used"
 msgstr "Più usati"
 
-#: src/main_window.vala:115
+#: src/main_window.vala:123
 msgid "Move the current document to a new window"
 msgstr "Move the current document to a new window"
 
@@ -787,15 +836,15 @@ msgstr "Move the current document to a new window"
 msgid "Multicolumn - \\multicolumn"
 msgstr "Multi-colonna -\\multicolumn"
 
-#: src/build_tool_dialog.vala:198
+#: src/build_tool_dialog.vala:201
 msgid "Must Succeed"
 msgstr "Compilazione Sicura"
 
-#: src/latex_menu.vala:280
+#: src/latex_menu.vala:279
 msgid "N-th Root - \\sqrt[]{}"
 msgstr "Radice n-esima - \\sqrt[]{}"
 
-#: src/templates.vala:233
+#: src/templates.vala:257
 msgid "Name of the new template:"
 msgstr "Crea un nuovo template:"
 
@@ -811,7 +860,7 @@ msgstr "Nuova Riga - \\\\"
 msgid "New Project"
 msgstr "Nuovo progetto"
 
-#: src/templates.vala:222
+#: src/templates.vala:246
 msgid "New Template..."
 msgstr "Nuovo Template..."
 
@@ -823,88 +872,96 @@ msgstr "Nuova _Riga"
 msgid "New _Window"
 msgstr "Nuova _Finestra"
 
+#: src/ui/build_tool.ui:394
+#, fuzzy
+msgid "New command"
+msgstr "Comandi"
+
 #: src/main_window.vala:31
 msgid "New file"
 msgstr "Nuovo file"
 
 #: src/latex_menu.vala:187
-msgid ""
-"New page - \\n"
-"ewpage"
-msgstr ""
-"Nuova pagina - \\n"
-"ewpage"
+msgid "New page - \\newpage"
+msgstr "Nuova pagina - \\newpage"
 
-#: src/ui/preferences_dialog.ui:725
+#: src/clean_build_files.vala:337
+msgid "No build file to clean up."
+msgstr ""
+
+#: src/ui/preferences_dialog.ui:871
 msgid "No confirmation when cleaning-up"
 msgstr "Nessuna conferma quando pulisci"
 
-#: src/completion.vala:291
+#: src/completion.vala:299
 msgid "No matching proposal"
 msgstr "Nessuna corrispondenza proposta"
 
 #: src/latex_menu.vala:201
-msgid ""
-"No paragraph indentation - \\n"
-"oindent"
-msgstr ""
-"Nessuna indentazione del paragrafo - \\n"
-"oindent"
+msgid "No paragraph indentation - \\noindent"
+msgstr "Nessuna indentazione del paragrafo - \\noindent"
 
-#: src/search.vala:389
+#: src/search.vala:410
 msgid "Not found"
 msgstr "Non trovato"
 
-#: src/ui/preferences_dialog.ui:423
+#: src/ui/preferences_dialog.ui:480
 msgid "Number of characters after '\\'"
 msgstr "Numeri di caratteri dopo '\\'"
 
-#: src/ui/preferences_dialog.ui:668
+#: src/ui/preferences_dialog.ui:806
 msgid "Number of most used symbols:"
 msgstr "Numero dei simboli più usati:"
 
-#: src/latex_menu.vala:268
+#: src/latex_menu.vala:267
 msgid "Numbered Array of Equations - \\begin{align}"
 msgstr "Array di Equazioni Numerate - \\begin{align}"
 
-#: src/latex_menu.vala:267
+#: src/latex_menu.vala:266
 msgid "Numbered Array of _Equations - \\begin{align}"
 msgstr "Array di _Equazioni Numerate - \\begin{align}"
 
-#: src/latex_menu.vala:263
+#: src/latex_menu.vala:262
 msgid "Numbered Equation - \\begin{equation}"
 msgstr "Equazione Numerata - \\begin{equation}"
 
-#: src/search.vala:391
+#: src/latex_menu.vala:218
+msgid "Ogonek - \\k"
+msgstr ""
+
+#: src/search.vala:412
 msgid "One match"
 msgstr "Una corrispondenza"
 
-#: src/main_window.vala:1406
+#: src/main_window.vala:1471
 msgid "Open Files"
 msgstr "Apri files"
 
-#: src/main_window.vala:468
+#: src/main_window.vala:519
 msgid "Open _Recent"
 msgstr "Apri _Recente"
 
-#: src/main_window.vala:35
-#: src/main_window.vala:999
+#: src/main_window.vala:35 src/main_window.vala:1064
 msgid "Open a file"
 msgstr "Apri un file"
 
-#: src/main_window.vala:1000
+#: src/main_window.vala:1065
 msgid "Open a recently used file"
 msgstr "Apre un file usato di recente"
 
-#: src/main_window.vala:469
+#: src/main_window.vala:520
 msgid "Open recently used files"
 msgstr "Apre un file usato di recente"
+
+#: src/main_window.vala:159
+msgid "Open the LaTeXila documentation"
+msgstr ""
 
 #: src/symbols.vala:30
 msgid "Operators"
 msgstr "Operatori"
 
-#: src/ui/preferences_dialog.ui:905
+#: src/ui/preferences_dialog.ui:1077
 msgid "Other"
 msgstr "Altro"
 
@@ -916,33 +973,31 @@ msgstr "Page break - \\pagebreak"
 msgid "Page reference to a label"
 msgstr "Pagina referenze all'etichetta"
 
-#: src/latex_menu.vala:42
-#: src/structure.vala:466
+#: src/latex_menu.vala:42 src/structure.vala:659
 msgid "Paragraph"
 msgstr "Paragrafo"
 
-#: src/latex_menu.vala:32
-#: src/structure.vala:451
+#: src/latex_menu.vala:32 src/structure.vala:654
 msgid "Part"
 msgstr "Parte"
 
-#: src/main_window.vala:60
+#: src/main_window.vala:65
 msgid "Paste the clipboard"
 msgstr "Incolla dagli appunti"
 
-#: src/templates.vala:300
+#: src/templates.vala:324
 msgid "Personal templates"
 msgstr "Template personali"
 
-#: src/ui/preferences_dialog.ui:299
+#: src/ui/preferences_dialog.ui:343
 msgid "Pick the editor font"
 msgstr "Scelta del carattere dell'editor"
 
-#: src/ui/build_tool.ui:250
+#: src/ui/build_tool.ui:327
 msgid "Placeholders:"
 msgstr "Segnaposti:"
 
-#: src/build_tool_dialog.vala:206
+#: src/build_tool_dialog.vala:209
 msgid "Post Processor"
 msgstr "Post Processor"
 
@@ -954,7 +1009,7 @@ msgstr "Preferenze"
 msgid "Presentation"
 msgstr "Presentazione"
 
-#: src/ui/preferences_dialog.ui:501
+#: src/ui/preferences_dialog.ui:568
 msgid "Program for viewing documents:"
 msgstr "Programma per la visione dei documenti:"
 
@@ -970,7 +1025,7 @@ msgstr "Citazione - \\begin{quotation}"
 msgid "Quote - \\begin{quote}"
 msgstr "Cita - \\begin{quote}"
 
-#: src/main_window.vala:859
+#: src/main_window.vala:924
 msgid "Read-Only"
 msgstr "Solo lettura"
 
@@ -990,7 +1045,7 @@ msgstr "Riferimento all'etichetta"
 msgid "References"
 msgstr "Riferimenti"
 
-#: src/file_browser.vala:107
+#: src/file_browser.vala:108 src/structure.vala:128
 msgid "Refresh"
 msgstr "Aggiorna"
 
@@ -998,23 +1053,23 @@ msgstr "Aggiorna"
 msgid "Relations"
 msgstr "Relazioni"
 
-#: src/document_tab.vala:278
+#: src/document_tab.vala:289
 msgid "Reload"
 msgstr "Ricarica"
 
-#: src/ui/preferences_dialog.ui:202
+#: src/ui/preferences_dialog.ui:238
 msgid "Reopen files on startup"
 msgstr "Riapri i file all'apertura"
 
-#: src/main_window.vala:913
+#: src/main_window.vala:978
 msgid "Replace"
 msgstr "Sostituisci"
 
-#: src/ui/search_and_replace.ui:169
+#: src/ui/search_and_replace.ui:185
 msgid "Replace All"
 msgstr "Sostituisci tutti"
 
-#: src/ui/search_and_replace.ui:319
+#: src/ui/search_and_replace.ui:356
 msgid "Replace with"
 msgstr "Sostituisci con"
 
@@ -1022,28 +1077,41 @@ msgstr "Sostituisci con"
 msgid "Report"
 msgstr "Report"
 
-#: src/ui/preferences_dialog.ui:611
+#: src/ui/preferences_dialog.ui:707
 msgid "Reset"
 msgstr "Reset"
 
-#: src/preferences_dialog.vala:36
-#: src/preferences_dialog.vala:598
+#: src/preferences_dialog.vala:36 src/preferences_dialog.vala:636
 msgid "Reset All"
 msgstr "Reset Tutto"
 
-#: src/main_window.vala:81
+#: src/ui/preferences_dialog.ui:711
+#, fuzzy
+msgid "Reset all build tools"
+msgstr "Vuoi veramente resettare tutti gli strumenti ausiliari?"
+
+#: src/preferences_dialog.vala:39
+#, fuzzy
+msgid "Reset all preferences"
+msgstr "Riferimenti"
+
+#: src/main_window.vala:89
 msgid "Reset the size of the font"
 msgstr "Resetta la dimensione del font"
 
-#: src/latex_menu.vala:442
+#: src/latex_menu.vala:441
 msgid "Right Delimiters"
 msgstr "Margine Destro"
 
-#: src/latex_menu.vala:395
+#: src/latex_menu.vala:394
 msgid "Right _Delimiters"
 msgstr "Margine _Destro"
 
-#: src/latex_menu.vala:320
+#: src/latex_menu.vala:221
+msgid "Ring - \\r"
+msgstr ""
+
+#: src/latex_menu.vala:319
 msgid "Roman - \\mathrm"
 msgstr "Roman - \\mathrm"
 
@@ -1053,14 +1121,23 @@ msgstr "Roman - \\rmfamily"
 
 #: src/build_tool_runner.vala:313
 msgid "Rubber may not support filenames with spaces (even in a directory)"
-msgstr "Rubber non supporta i nomi dei file che contengono spazi (anche nelle cartelle)"
+msgstr ""
+"Rubber non supporta i nomi dei file che contengono spazi (anche nelle "
+"cartelle)"
 
-#: src/main.vala:75
+#: src/main.vala:76
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
-msgstr "Eseguire '%s --help' per visualizzare un elenco completo delle opzioni disponibili a riga di comando.\n"
+msgstr ""
+"Eseguire '%s --help' per visualizzare un elenco completo delle opzioni "
+"disponibili a riga di comando.\n"
 
-#: src/latex_menu.vala:326
+#: src/main_window.vala:137
+#, fuzzy
+msgid "S_tructure"
+msgstr "Struttura"
+
+#: src/latex_menu.vala:325
 msgid "Sans Serif - \\mathsf"
 msgstr "Sans Serif - \\mathsf"
 
@@ -1072,19 +1149,19 @@ msgstr "Sans Serif - \\sffamily"
 msgid "Sans Serif - \\textsf"
 msgstr "Sans Serif - \\textsf"
 
-#: src/document.vala:220
+#: src/document.vala:222
 msgid "Save Anyway"
 msgstr "_Salva comunque"
 
-#: src/main_window.vala:873
+#: src/main_window.vala:938
 msgid "Save File"
 msgstr "Salva file"
 
-#: src/main_window.vala:105
+#: src/main_window.vala:113
 msgid "Save all open files"
 msgstr "Salva tutti i file aperti"
 
-#: src/main_window.vala:740
+#: src/main_window.vala:805
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Salvare le modifiche al documento \"%s\" prima di chiudere?"
@@ -1097,20 +1174,19 @@ msgstr "Salva il file corrente"
 msgid "Save the current file with a different name"
 msgstr "Salva il file corrente con un nome diverso"
 
-#: src/ui/search_and_replace.ui:250
+#: src/ui/search_and_replace.ui:278
 msgid "Search for"
 msgstr "Cerca "
 
-#: src/main_window.vala:88
+#: src/main_window.vala:96
 msgid "Search for and replace text"
 msgstr "Cerca e sostituisci testo"
 
-#: src/main_window.vala:86
+#: src/main_window.vala:94
 msgid "Search for text"
 msgstr "Cerca testo"
 
-#: src/latex_menu.vala:36
-#: src/structure.vala:457
+#: src/latex_menu.vala:36 src/structure.vala:656
 msgid "Section"
 msgstr "Sezione"
 
@@ -1118,83 +1194,109 @@ msgstr "Sezione"
 msgid "Sectioning"
 msgstr "Sezionamento"
 
+#: src/main_window.vala:145
+msgid "Select the contents of the selected structure item"
+msgstr ""
+
 #: src/dialogs.vala:76
 msgid "Select the documents you want to save:"
 msgstr "S_eleziona i documenti da salvare:"
 
-#: src/main_window.vala:64
+#: src/main_window.vala:70
 msgid "Select the entire document"
 msgstr "Seleziona tutto il documento"
 
-#: src/dialogs.vala:236
+#: src/clean_build_files.vala:270
 msgid "Select the files you want to delete:"
 msgstr "Seleziona i file che vuoi eliminare:"
 
 #: src/main_window.vala:149
+msgid "Shift _Left"
+msgstr ""
+
+#: src/main_window.vala:152
+msgid "Shift _Right"
+msgstr ""
+
+#: src/main_window.vala:150
+msgid "Shift the selected structure item to the left (e.g. section → chapter"
+msgstr ""
+
+#: src/main_window.vala:153
+msgid "Shift the selected structure item to the right (e.g. chapter → section"
+msgstr ""
+
+#: src/main_window.vala:181
 msgid "Show BadBoxes"
 msgstr "Mostra BadBoxe"
 
-#: src/main_window.vala:145
+#: src/main_window.vala:177
 msgid "Show Errors"
 msgstr "Mostra Errori"
 
-#: src/structure.vala:180
+#: src/structure.vala:176
 msgid "Show TODOs and FIXMEs"
 msgstr "Mostra TODO e FIXMEe"
 
-#: src/main_window.vala:147
+#: src/main_window.vala:179
 msgid "Show Warnings"
 msgstr "Mostra Allarmi"
 
-#: src/main_window.vala:148
+#: src/main_window.vala:180
 msgid "Show _BadBoxes"
 msgstr "Mostra _BadBoxe"
 
-#: src/main_window.vala:144
+#: src/main_window.vala:176
 msgid "Show _Errors"
 msgstr "Mostra _Errori"
 
-#: src/main_window.vala:146
+#: src/main_window.vala:178
 msgid "Show _Warnings"
 msgstr "Mostra _Allarmi"
 
-#: src/ui/preferences_dialog.ui:815
+#: src/ui/preferences_dialog.ui:972
 msgid "Show all files"
 msgstr "Mostra tutti i files"
 
-#: src/structure.vala:176
-msgid "Show figures"
+#: src/structure.vala:172
+#, fuzzy
+msgid "Show figures and images"
 msgstr "Mostra immagini"
 
-#: src/structure.vala:168
+#: src/structure.vala:164
 msgid "Show files included"
 msgstr "Mostra file inclusi"
 
-#: src/ui/preferences_dialog.ui:850
+#: src/ui/preferences_dialog.ui:1012
 msgid "Show hidden files (beginning with a dot)"
 msgstr "Mostra file nascosti"
 
-#: src/structure.vala:164
+#: src/structure.vala:160
 msgid "Show labels"
 msgstr "Mostra etichette"
 
-#: src/ui/preferences_dialog.ui:874
+#: src/ui/preferences_dialog.ui:1039
 msgid "Show only files with these extensions"
 msgstr "Mostra solo files con queste estenzioni"
 
-#: src/main_window.vala:141
+#: src/main_window.vala:175
 msgid "Show or hide the bottom panel"
 msgstr "Mostra o nasconde la barra inferiore"
 
-#: src/main_window.vala:143
+#: src/main_window.vala:171
 msgid "Show or hide the edit toolbar"
 msgstr "Mostra o nasconde la barra degli strumenti"
 
-#: src/main_window.vala:139
+#: src/main_window.vala:169
+#, fuzzy
+msgid "Show or hide the main toolbar"
+msgstr "Mostra o nasconde la barra degli strumenti"
+
+#: src/main_window.vala:173
 msgid "Show or hide the side panel"
 msgstr "Mostra o nasconde la barra laterale"
 
-#: src/structure.vala:172
+#: src/structure.vala:168
 msgid "Show tables"
 msgstr "Mostra tabelle"
 
@@ -1202,7 +1304,7 @@ msgstr "Mostra tabelle"
 msgid "Show the application's version"
 msgstr "Mostra la versione dell'applicazione"
 
-#: src/main_window.vala:79
+#: src/main_window.vala:87
 msgid "Shrink the font"
 msgstr "Riduci il font"
 
@@ -1214,7 +1316,7 @@ msgstr "Slanted - \\slshape"
 msgid "Slanted - \\textsl"
 msgstr "Slanted - \\textsl"
 
-#: src/latex_menu.vala:363
+#: src/latex_menu.vala:362
 msgid "Small - \\,"
 msgstr "Piccolo - \\,"
 
@@ -1226,54 +1328,56 @@ msgstr "Maiuscoletto - \\scshape"
 msgid "Small Capitals - \\textsc"
 msgstr "Maiuscoletto"
 
-#: src/latex_menu.vala:278
+#: src/latex_menu.vala:277
 msgid "Square Root - \\sqrt{}"
 msgstr "Radice Quadrata - \\sqrt{}"
 
-#: src/latex_menu.vala:277
+#: src/latex_menu.vala:276
 msgid "Square _Root - \\sqrt{}"
 msgstr "_Radice Quadrata - \\sqrt{}"
 
-#: src/main_window.vala:98
+#: src/main_window.vala:106
 msgid "Stop Execution"
 msgstr "Ferma Esecuzione"
 
-#: src/main_window.vala:285
+#: src/main_window.vala:318
 msgid "Structure"
 msgstr "Struttura"
 
-#: src/latex_menu.vala:273
+#: src/structure.vala:589
+#, c-format
+msgid "Structure action error: %s"
+msgstr ""
+
+#: src/latex_menu.vala:272
 msgid "Su_bscript - __{}"
 msgstr "_Pedice - __{}"
 
-#: src/latex_menu.vala:44
-#: src/structure.vala:469
+#: src/latex_menu.vala:44 src/structure.vala:660
 msgid "Sub-paragraph"
 msgstr "Sotto-paragrafo"
 
-#: src/latex_menu.vala:38
-#: src/structure.vala:460
+#: src/latex_menu.vala:38 src/structure.vala:657
 msgid "Sub-section"
 msgstr "Sottosezione"
 
-#: src/latex_menu.vala:40
-#: src/structure.vala:463
+#: src/latex_menu.vala:40 src/structure.vala:658
 msgid "Sub-sub-section"
 msgstr "Sottosottosezione"
 
-#: src/latex_menu.vala:274
+#: src/latex_menu.vala:273
 msgid "Subscript - _{}"
 msgstr "Pedice - _{}"
 
-#: src/latex_menu.vala:272
+#: src/latex_menu.vala:271
 msgid "Superscript - ^{}"
 msgstr "Apice - ^{}"
 
-#: src/main_window.vala:279
+#: src/main_window.vala:312
 msgid "Symbols"
 msgstr "Symbols"
 
-#: src/ui/preferences_dialog.ui:48
+#: src/ui/preferences_dialog.ui:67
 msgid "Tab width:"
 msgstr "Ampiezza _tabulazione:"
 
@@ -1281,7 +1385,7 @@ msgstr "Ampiezza _tabulazione:"
 msgid "Tabbing - \\begin{tabbing}"
 msgstr "Tabbing - \\begin{tabbing}"
 
-#: src/structure.vala:481
+#: src/structure.vala:664
 msgid "Table"
 msgstr "Tabella"
 
@@ -1289,7 +1393,7 @@ msgstr "Tabella"
 msgid "Table - \\begin{table}"
 msgstr "Tabella - \\begin{table}"
 
-#: src/latex_menu.vala:241
+#: src/latex_menu.vala:240
 msgid "Table of contents - \\tableofcontents"
 msgstr "Table of contents - \\tableofcontents"
 
@@ -1297,7 +1401,7 @@ msgstr "Table of contents - \\tableofcontents"
 msgid "Tabular - \\begin{tabular}"
 msgstr "Tabular - \\begin{tabular}"
 
-#: src/main_window.vala:131
+#: src/main_window.vala:161
 msgid "The Kile LaTeX Reference"
 msgstr "Riferimenti Kile LaTeX"
 
@@ -1305,25 +1409,25 @@ msgstr "Riferimenti Kile LaTeX"
 msgid "The Main File is not in the directory."
 msgstr "The Main File is not in the directory."
 
-#: src/ui/build_tool.ui:261
+#: src/ui/build_tool.ui:339
 msgid "The active document filename"
 msgstr "Il nome del file del documento attivo"
 
-#: src/ui/build_tool.ui:274
+#: src/ui/build_tool.ui:353
 msgid "The active document filename without its extension"
 msgstr "Manca l'estensione al nome del file del documento attivo"
 
-#: src/document_tab.vala:268
+#: src/document_tab.vala:278
 #, c-format
 msgid "The file %s changed on disk."
 msgstr "Il file %s è stato modificato."
 
-#: src/document.vala:215
+#: src/document.vala:216
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Il file %s è stato modificato dall'ultima lettura."
 
-#: src/ui/build_tool.ui:287
+#: src/ui/build_tool.ui:367
 msgid ""
 "The program for viewing documents.\n"
 "Its value can be changed in the preferences dialog."
@@ -1331,26 +1435,42 @@ msgstr ""
 "Il programma per visualizzare documenti. \n"
 "Il suo valore può essere cambiato all'interno delle preferenze."
 
+#: src/structure.vala:594
+msgid "The structure data seems outdated. Please refresh the structure."
+msgstr ""
+
+#: src/document_structure.vala:587
+msgid "The structure item already contains a sub-paragraph."
+msgstr ""
+
 #: src/dialogs.vala:67
 #, c-format
-msgid "There are %d documents with unsaved changes. Save changes before closing?"
-msgstr "C'è %d documento con modifiche non salvate. Salvare le modifiche prima di chiudere?"
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+"C'è %d documento con modifiche non salvate. Salvare le modifiche prima di "
+"chiudere?"
 
 #: src/project_dialogs.vala:109
 #, c-format
 msgid "There is a conflict with the project \"%s\"."
 msgstr "C'è un conflietto con il progetto \"%s\""
 
-#: src/main_window.vala:633
+#: src/main_window.vala:694
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Questo file (%s) è già aperto in un'altra finestra di LaTeXila."
+
+#: src/latex_menu.vala:222
+#, fuzzy
+msgid "Tie - \\t"
+msgstr "Tilde - \\~"
 
 #: src/latex_menu.vala:210
 msgid "Tilde - \\~"
 msgstr "Tilde - \\~"
 
-#: src/latex_menu.vala:235
+#: src/latex_menu.vala:234
 msgid "Title - \\title"
 msgstr "Titolo -\\title"
 
@@ -1358,7 +1478,7 @@ msgstr "Titolo -\\title"
 msgid "Title page - \\begin{titlepage}"
 msgstr "Title page - \\begin{titlepage}"
 
-#: src/ui/search_and_replace.ui:224
+#: src/ui/search_and_replace.ui:248
 msgid "Toggle between search and replace mode"
 msgstr "Alterna tra la modalità di ricerca e sostituzione"
 
@@ -1366,7 +1486,7 @@ msgstr "Alterna tra la modalità di ricerca e sostituzione"
 msgid "Trema - \\\""
 msgstr "Trema - \\\""
 
-#: src/latex_menu.vala:328
+#: src/latex_menu.vala:327
 msgid "Typewriter - \\mathtt"
 msgstr "Typewriter - \\mathtt"
 
@@ -1374,7 +1494,7 @@ msgstr "Typewriter - \\mathtt"
 msgid "Typewriter - \\texttt"
 msgstr "Typewriter - \\texttt"
 
-#: src/main_window.vala:69
+#: src/main_window.vala:75
 msgid "Uncomment the selected lines (remove the character \"%\")"
 msgstr "Uncomment the selected lines (remove the character \"%\")"
 
@@ -1386,7 +1506,7 @@ msgstr "Sottolineato - \\underline"
 msgid "Undo the last action"
 msgstr "Annulla l'ultima azione"
 
-#: src/document.vala:312
+#: src/document.vala:315
 msgid "Unsaved Document"
 msgstr "Documento non salvato"
 
@@ -1394,11 +1514,11 @@ msgstr "Documento non salvato"
 msgid "Upright - \\upshape"
 msgstr "Normale -\\upshape"
 
-#: src/latex_menu.vala:231
+#: src/latex_menu.vala:230
 msgid "Use package - \\usepackage"
 msgstr "Usa il pacchetto - \\usepackage"
 
-#: src/preferences_dialog.vala:452
+#: src/preferences_dialog.vala:472
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr "Usare il carattere a spaziatura fissa di sistema (%s)"
@@ -1427,7 +1547,7 @@ msgstr "Visualizza DVI"
 msgid "View File"
 msgstr "Visualizza file"
 
-#: src/main_window.vala:100
+#: src/main_window.vala:108
 msgid "View Log"
 msgstr "Visualizza Log"
 
@@ -1439,11 +1559,11 @@ msgstr "Visualizza PDF"
 msgid "View PS"
 msgstr "Visualizza PS"
 
-#: src/main_window.vala:99
+#: src/main_window.vala:107
 msgid "View _Log"
 msgstr "Visualizza _Log"
 
-#: src/ui/build_tool.ui:46
+#: src/ui/build_tool.ui:73
 msgid "You can select this arrow and copy/paste it!"
 msgstr "Puoi selezionare questa freccia e copiare/incollare!"
 
@@ -1451,31 +1571,31 @@ msgstr "Puoi selezionare questa freccia e copiare/incollare!"
 msgid "Your personal templates"
 msgstr "I tuoi template personali"
 
-#: src/main_window.vala:76
+#: src/main_window.vala:84
 msgid "Zoom _In"
 msgstr "Ingrandisci"
 
-#: src/main_window.vala:78
+#: src/main_window.vala:86
 msgid "Zoom _Out"
 msgstr "Riduci"
 
-#: src/latex_menu.vala:232
+#: src/latex_menu.vala:231
 msgid "_AMS packages"
 msgstr "Pacchetti _AMS "
 
-#: src/latex_menu.vala:264
+#: src/latex_menu.vala:263
 msgid "_Array of Equations - \\begin{align*}"
 msgstr "_Array di Equazioni - \\begin{align*}"
 
-#: src/main_window.vala:140
+#: src/main_window.vala:174
 msgid "_Bottom panel"
 msgstr "_Pannetto inferiore"
 
-#: src/main_window.vala:93
+#: src/main_window.vala:101
 msgid "_Build"
 msgstr "_Build"
 
-#: src/latex_menu.vala:259
+#: src/latex_menu.vala:258
 msgid "_Centered Formula - \\[...\\]"
 msgstr "Formula _Centrata - \\[...\\]"
 
@@ -1483,23 +1603,33 @@ msgstr "Formula _Centrata - \\[...\\]"
 msgid "_Characters Sizes"
 msgstr "Dimensione _Caratteri"
 
-#: src/main_window.vala:106
+#: src/main_window.vala:114
 msgid "_Close All"
 msgstr "_Chiudi tutti"
 
-#: src/main_window.vala:65
+#: src/main_window.vala:71 src/main_window.vala:147
 msgid "_Comment"
 msgstr "Commenta"
 
-#: src/main_window.vala:122
+#: src/main_window.vala:77
+#, fuzzy
+msgid "_Completion"
+msgstr "Commenta"
+
+#: src/main_window.vala:130
 msgid "_Configure Current Project"
 msgstr "_Configura il Progetto Corrente"
+
+#: src/main_window.vala:158
+#, fuzzy
+msgid "_Contents"
+msgstr "_Documenti"
 
 #: src/main_window.vala:42
 msgid "_Delete Template..."
 msgstr "Elimina Template"
 
-#: src/main_window.vala:103
+#: src/main_window.vala:111
 msgid "_Documents"
 msgstr "_Documenti"
 
@@ -1507,7 +1637,7 @@ msgstr "_Documenti"
 msgid "_Edit"
 msgstr "_Modifica"
 
-#: src/main_window.vala:142
+#: src/main_window.vala:170
 msgid "_Edit Toolbar"
 msgstr "_Modifica Toolbar"
 
@@ -1523,27 +1653,27 @@ msgstr "_Font"
 msgid "_Font Styles"
 msgstr "_Font"
 
-#: src/latex_menu.vala:275
+#: src/latex_menu.vala:274
 msgid "_Fraction - \\frac{}{}"
 msgstr "_Frazione - \\frac{}{}"
 
-#: src/main_window.vala:89
+#: src/main_window.vala:97
 msgid "_Go to Line..."
 msgstr "Vai alla _riga..."
 
-#: src/main_window.vala:129
+#: src/main_window.vala:157
 msgid "_Help"
 msgstr "A_iuto"
 
-#: src/main_window.vala:130
+#: src/main_window.vala:160
 msgid "_LaTeX Reference"
 msgstr "_LaTeX Reference"
 
-#: src/latex_menu.vala:366
+#: src/latex_menu.vala:365
 msgid "_Large"
 msgstr "_Grande"
 
-#: src/latex_menu.vala:373
+#: src/latex_menu.vala:372
 msgid "_Left Delimiters"
 msgstr "Margine _Sinistro"
 
@@ -1551,55 +1681,60 @@ msgstr "Margine _Sinistro"
 msgid "_List Environments"
 msgstr "_Lista degli Ambienti"
 
-#: src/main_window.vala:125
+#: src/main_window.vala:168
+#, fuzzy
+msgid "_Main Toolbar"
+msgstr "_Modifica Toolbar"
+
+#: src/main_window.vala:133
 msgid "_Manage Projects"
 msgstr "_Gestione Progetti"
 
-#: src/latex_menu.vala:252
+#: src/latex_menu.vala:251
 msgid "_Math"
 msgstr "_Matematica"
 
-#: src/latex_menu.vala:256
+#: src/latex_menu.vala:255
 msgid "_Math Environments"
 msgstr "Ambienti _Matematici"
 
-#: src/latex_menu.vala:257
+#: src/latex_menu.vala:256
 msgid "_Mathematical Environment - $...$"
 msgstr "Ambiente _Matematico - $...$"
 
-#: src/latex_menu.vala:364
+#: src/latex_menu.vala:363
 msgid "_Medium"
 msgstr "_Medio"
 
-#: src/latex_menu.vala:227
+#: src/latex_menu.vala:226
 msgid "_Misc"
 msgstr "_Varie"
 
-#: src/main_window.vala:114
+#: src/main_window.vala:122
 msgid "_Move to New Window"
 msgstr "_Sposta in una nuova finestra"
 
-#: src/latex_menu.vala:279
+#: src/latex_menu.vala:278
 msgid "_N-th Root - \\sqrt[]{}"
 msgstr "_Radice n-esima - \\sqrt[]{}"
 
-#: src/main_window.vala:120
+#: src/main_window.vala:128
 msgid "_New Project"
 msgstr "Nuovo Progetto"
 
-#: src/main_window.vala:111
+#: src/main_window.vala:119
 msgid "_Next Document"
 msgstr "Documento s_uccessivo"
 
-#: src/latex_menu.vala:262
+#: src/latex_menu.vala:261
 msgid "_Numbered Equation - \\begin{equation}"
 msgstr "Equazione _Numerata - \\begin{equation}"
 
-#: src/main_window.vala:108
+#: src/main_window.vala:116
 msgid "_Previous Document"
 msgstr "Documento pr_ecedente"
 
-#: src/main_window.vala:119
+#: src/main_window.vala:127
 msgid "_Projects"
 msgstr "_Progetti"
 
@@ -1607,15 +1742,15 @@ msgstr "_Progetti"
 msgid "_References"
 msgstr "_Referenze"
 
-#: src/main_window.vala:80
+#: src/main_window.vala:88
 msgid "_Reset Zoom"
 msgstr "_Reset Zoom"
 
-#: src/main_window.vala:104
+#: src/main_window.vala:112
 msgid "_Save All"
 msgstr "Sal_va tutti"
 
-#: src/main_window.vala:84
+#: src/main_window.vala:92
 msgid "_Search"
 msgstr "_Cerca"
 
@@ -1623,11 +1758,15 @@ msgstr "_Cerca"
 msgid "_Sectioning"
 msgstr "_Sezionamento"
 
-#: src/main_window.vala:138
+#: src/main_window.vala:144
+msgid "_Select"
+msgstr ""
+
+#: src/main_window.vala:172
 msgid "_Side panel"
 msgstr "_Pannello laterale"
 
-#: src/latex_menu.vala:362
+#: src/latex_menu.vala:361
 msgid "_Small"
 msgstr "_Piccolo"
 
@@ -1635,11 +1774,11 @@ msgstr "_Piccolo"
 msgid "_Spacing"
 msgstr "_Spaziatura"
 
-#: src/main_window.vala:97
+#: src/main_window.vala:105
 msgid "_Stop Execution"
 msgstr "_Stop Esecuzione"
 
-#: src/latex_menu.vala:271
+#: src/latex_menu.vala:270
 msgid "_Superscript - ^{}"
 msgstr "_Apice - ^{}"
 
@@ -1647,15 +1786,15 @@ msgstr "_Apice - ^{}"
 msgid "_Tabular"
 msgstr "_Tabular"
 
-#: src/main_window.vala:68
+#: src/main_window.vala:74
 msgid "_Uncomment"
 msgstr "_Decommenta"
 
-#: src/ui/preferences_dialog.ui:262
+#: src/ui/preferences_dialog.ui:302
 msgid "_Use the system fixed width font (%s)"
 msgstr "_Usare il carattere a spaziatura fissa di sistema (%s)"
 
-#: src/main_window.vala:75
+#: src/main_window.vala:83
 msgid "_View"
 msgstr "_Visualizza"
 
@@ -1671,51 +1810,69 @@ msgstr "beamer-it.tex"
 msgid "book-en.tex"
 msgstr "book-it.tex"
 
-#: src/build_tools.vala:251
+#: src/build_tools.vala:259
 msgid "build_tools-en.xml"
 msgstr "build_tools-it.xml"
 
-#: src/preferences_dialog.vala:282
+#: src/preferences_dialog.vala:283
 msgid "character"
 msgstr "Carattere"
 
-#: src/preferences_dialog.vala:282
+#: src/preferences_dialog.vala:283
 msgid "characters"
 msgstr "Caratteri"
 
-#: src/latex_menu.vala:386
+#: src/structure.vala:617
+#, fuzzy
+msgid "comment"
+msgstr "_Decommenta"
+
+#: src/structure.vala:614
+msgid "copy"
+msgstr ""
+
+#: src/structure.vala:613
+#, fuzzy
+msgid "cut"
+msgstr "Esegui"
+
+#: src/structure.vala:615
+msgid "delete"
+msgstr ""
+
+#: src/latex_menu.vala:385
 msgid "left  }"
 msgstr "sinistro }"
 
-#: src/latex_menu.vala:374
+#: src/latex_menu.vala:373
 msgid "left ("
 msgstr "sinistro ("
 
-#: src/latex_menu.vala:382
+#: src/latex_menu.vala:381
 msgid "left )"
 msgstr "sinistro )"
 
-#: src/latex_menu.vala:390
+#: src/latex_menu.vala:389
 msgid "left ."
 msgstr "sinistro ."
 
-#: src/latex_menu.vala:380
+#: src/latex_menu.vala:379
 msgid "left <"
 msgstr "sinistro <"
 
-#: src/latex_menu.vala:388
+#: src/latex_menu.vala:387
 msgid "left >"
 msgstr "sinistro >"
 
-#: src/latex_menu.vala:376
+#: src/latex_menu.vala:375
 msgid "left ["
 msgstr "sinistro ["
 
-#: src/latex_menu.vala:384
+#: src/latex_menu.vala:383
 msgid "left ]"
 msgstr "sinistro ]"
 
-#: src/latex_menu.vala:378
+#: src/latex_menu.vala:377
 msgid "left { "
 msgstr "sinistro {"
 
@@ -1723,11 +1880,11 @@ msgstr "sinistro {"
 msgid "letter-en.tex"
 msgstr "letter-it.tex"
 
-#: src/preferences_dialog.vala:187
+#: src/preferences_dialog.vala:188
 msgid "minute"
 msgstr "minuto"
 
-#: src/preferences_dialog.vala:187
+#: src/preferences_dialog.vala:188
 msgid "minutes"
 msgstr "minuti"
 
@@ -1735,43 +1892,57 @@ msgstr "minuti"
 msgid "report-en.tex"
 msgstr "report-it.tex"
 
-#: src/latex_menu.vala:400
+#: src/latex_menu.vala:399
 msgid "right  }"
 msgstr "destro }"
 
-#: src/latex_menu.vala:404
+#: src/latex_menu.vala:403
 msgid "right ("
 msgstr "destro ("
 
-#: src/latex_menu.vala:396
+#: src/latex_menu.vala:395
 msgid "right )"
 msgstr "destro )"
 
-#: src/latex_menu.vala:412
+#: src/latex_menu.vala:411
 msgid "right ."
 msgstr "destro ."
 
-#: src/latex_menu.vala:410
+#: src/latex_menu.vala:409
 msgid "right <"
 msgstr "destro <"
 
-#: src/latex_menu.vala:402
+#: src/latex_menu.vala:401
 msgid "right >"
 msgstr "destro >"
 
-#: src/latex_menu.vala:406
+#: src/latex_menu.vala:405
 msgid "right ["
 msgstr "destro ["
 
-#: src/latex_menu.vala:398
+#: src/latex_menu.vala:397
 msgid "right ]"
 msgstr "destro ]"
 
-#: src/latex_menu.vala:408
+#: src/latex_menu.vala:407
 msgid "right { "
 msgstr "destro {"
 
-#: src/main_window.vala:1795
+#: src/structure.vala:616
+msgid "select"
+msgstr ""
+
+#: src/structure.vala:618
+msgid "shift left"
+msgstr ""
+
+#: src/structure.vala:619
+msgid "shift right"
+msgstr ""
+
+#: src/main_window.vala:1933
 msgid "translator-credits"
 msgstr "Vito Fasano <vito.fasano@gmail.com>"
 
+#~ msgid "Minimum level"
+#~ msgstr "Livello minimo"
