@@ -1,0 +1,20 @@
+<template xmlns:its="http://www.w3.org/2005/11/its">
+<chunk its:translate="no">
+\documentclass{beamer}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+</chunk>
+<chunk>
+% babel package or equivalent
+</chunk>
+<chunk its:translate="no">
+
+\title{}
+\author{}
+
+\begin{document}
+
+\end{document}
+</chunk>
+</template>

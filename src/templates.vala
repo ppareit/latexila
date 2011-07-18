@@ -46,20 +46,11 @@ public class Templates : GLib.Object
 
         add_template_from_string (default_store, _("Empty"), "empty", "");
 
-        add_template_from_file (default_store, _("Article"), "article",
-            File.new_for_path (Config.DATA_DIR + "/templates/" + _("article-en.tex")));
-
-        add_template_from_file (default_store, _("Report"), "report",
-            File.new_for_path (Config.DATA_DIR + "/templates/" + _("report-en.tex")));
-
-        add_template_from_file (default_store, _("Book"), "book",
-            File.new_for_path (Config.DATA_DIR + "/templates/" + _("book-en.tex")));
-
-        add_template_from_file (default_store, _("Letter"), "letter",
-            File.new_for_path (Config.DATA_DIR + "/templates/" + _("letter-en.tex")));
-
-        add_template_from_file (default_store, _("Presentation"), "beamer",
-            File.new_for_path (Config.DATA_DIR + "/templates/" + _("beamer-en.tex")));
+        add_default_template (_("Article"),         "article",  "article.tex");
+        add_default_template (_("Report"),          "report",   "report.tex");
+        add_default_template (_("Book"),            "book",     "book.tex");
+        add_default_template (_("Letter"),          "letter",   "letter.tex");
+        add_default_template (_("Presentation"),    "beamer",   "beamer.tex");
 
         /* personal templates */
         personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (Gdk.Pixbuf),
@@ -311,7 +302,7 @@ public class Templates : GLib.Object
         Dialog dialog = new Dialog.with_buttons (_("Delete Template(s)..."), parent,
             DialogFlags.NO_SEPARATOR,
             Stock.DELETE, ResponseType.ACCEPT,
-            Stock.OK, ResponseType.REJECT,
+            Stock.CLOSE, ResponseType.REJECT,
             null);
 
         dialog.set_default_size (400, 200);
@@ -392,6 +383,29 @@ public class Templates : GLib.Object
             stderr.printf ("Warning: impossible to load the template \"%s\": %s\n", name,
                 e.message);
         }
+    }
+
+    private void add_default_template (string name, string icon_id, string filename)
+    {
+        File[] files = {};
+
+        unowned string[] language_names = Intl.get_language_names ();
+        foreach (string language_name in language_names)
+        {
+            files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
+                "templates", language_name, filename));
+        }
+
+        foreach (File file in files)
+        {
+            if (! file.query_exists ())
+                continue;
+
+            add_template_from_file (default_store, name, icon_id, file);
+            return;
+        }
+
+        stderr.printf ("Warning: template \"%s\" not found.\n", name);
     }
 
     private IconView create_icon_view (ListStore store)

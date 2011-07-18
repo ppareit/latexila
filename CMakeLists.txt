@@ -71,6 +71,8 @@ link_libraries (
 	${X11_LIBRARIES}
 )
 
+include ("${latexila_SOURCE_DIR}/cmake/itstool.cmake")
+
 add_subdirectory (data)
 add_subdirectory (help)
 add_subdirectory (man)

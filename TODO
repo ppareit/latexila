@@ -6,10 +6,6 @@ See also the Roadmap:
 LaTeXila 2.2
 ============
 
-- use ITS tool (http://itstool.org/):
-	- for the templates
-	- ...?
-
 - Build Tools:
 	- Some problems with the latex and latexmk post processors
 

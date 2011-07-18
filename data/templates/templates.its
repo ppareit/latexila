@@ -1,0 +1,8 @@
+<its:rules
+    xmlns:its="http://www.w3.org/2005/11/its"
+    xmlns:itst="http://itstool.org/extensions/"
+    its:version="1.0">
+
+    <itst:preserveSpaceRule preserveSpace="yes" selector="//chunk" />
+
+</its:rules>
