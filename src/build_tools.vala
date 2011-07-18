@@ -258,7 +258,6 @@ public class BuildTools
         unowned string[] language_names = Intl.get_language_names ();
         foreach (string language_name in language_names)
         {
-            stdout.printf ("language_name: %s\n", language_name);
             files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
                 "build_tools", language_name, "build_tools.xml"));
         }

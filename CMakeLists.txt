@@ -71,13 +71,14 @@ link_libraries (
 	${X11_LIBRARIES}
 )
 
-include_directories (vapi src/C ${latexila_BINARY_DIR}/src)
+add_subdirectory (data)
+add_subdirectory (help)
 add_subdirectory (man)
+add_subdirectory (src/ui)
+
+include_directories (vapi src/C ${latexila_BINARY_DIR}/src)
 if (BUILD_VALA)
 	add_subdirectory (src)
 else ()
 	add_subdirectory (src/C)
 endif ()
-add_subdirectory (src/ui)
-add_subdirectory (data)
-add_subdirectory (help)
