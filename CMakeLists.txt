@@ -11,9 +11,6 @@ set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
 set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
 
-# for debugging
-set (CMAKE_C_FLAGS "-ggdb")
-
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
 set (LOCALE_DIR "${CMAKE_INSTALL_PREFIX}/share/locale")

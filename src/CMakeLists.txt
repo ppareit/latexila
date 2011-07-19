@@ -13,10 +13,6 @@ vala_precompile (
 		x11
 		posix
 
-# for debugging
-	OPTIONS
-		--debug
-
 	CUSTOM_VAPIS
 		${vapi_files}
 	DIRECTORY

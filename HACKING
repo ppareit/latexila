@@ -50,15 +50,13 @@ How to generate the C code from Vala files?
     See the file "INSTALL".
 
 How to debug LaTeXila with gdb?
-    If you are using the master branch, the debug stuff is enabled by default.
-    Here is how you can get the backtrace after a crash:
+    Run CMake with this option: -DCMAKE_BUILD_TYPE=Debug
 
+    Here is how you can get the backtrace after a crash:
     $ gdb ./latexila
     > run
     [segmentation fault]
     > bt
-
-    The debug stuff is disabled in the releases-* branches.
 
 
 Translations
