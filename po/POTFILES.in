@@ -1,0 +1,41 @@
+# List of source files containing translatable strings.
+# Please keep this file sorted alphabetically.
+[encoding: UTF-8]
+src/application.vala
+src/app_settings.vala
+src/build_tool_dialog.vala
+src/build_tool_runner.vala
+src/build_tools.vala
+src/build_view.vala
+src/clean_build_files.vala
+src/completion.vala
+src/custom_statusbar.vala
+src/dialogs.vala
+src/documents_panel.vala
+src/document_structure.vala
+src/document_tab.vala
+src/document.vala
+src/document_view.vala
+src/encodings.vala
+src/file_browser.vala
+src/latex_menu.vala
+src/latex_post_processor.vala
+src/main.vala
+src/main_window.vala
+src/menu_in_toolbar.vala
+src/most_used_symbols.vala
+src/post_processors.vala
+src/preferences_dialog.vala
+src/project_dialogs.vala
+src/projects.vala
+src/search.vala
+src/side_panel.vala
+src/structure_model.vala
+src/structure.vala
+src/symbols.vala
+src/tab_info_bar.vala
+src/templates.vala
+[type: gettext/glade]src/ui/build_tool.ui
+[type: gettext/glade]src/ui/preferences_dialog.ui
+[type: gettext/glade]src/ui/search_and_replace.ui
+src/utils.vala
