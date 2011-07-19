@@ -12,7 +12,7 @@ function (itstool target_name src_dir tmp_dir install_dir)
 	set (all_new_files)
 
 	# Foreach language
-	file (GLOB po_files "${src_dir}/*.po")
+	file (GLOB_RECURSE po_files "${src_dir}/*.po")
 	foreach (po_file ${po_files})
 		# Get the language name
 		get_filename_component (lang ${po_file} NAME_WE)
