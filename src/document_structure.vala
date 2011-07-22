@@ -50,6 +50,14 @@ public class DocumentStructure : GLib.Object
         CAPTION
     }
 
+    // For a figure or table environment, because all the data can not be inserted at once
+    private struct EnvData
+    {
+        TreePath path;
+        StructType type;
+        string? first_caption;
+    }
+
     private unowned Document _doc;
     private int _nb_marks = 0;
     private static const string MARK_NAME_PREFIX = "struct_item_";
@@ -63,8 +71,7 @@ public class DocumentStructure : GLib.Object
 
     private bool _in_verbatim_env = false;
 
-    // we can not take all data for figures and tables at once
-    private StructData? _env_data = null;
+    private EnvData? _last_env_data = null;
 
     private static const int CAPTION_MAX_LENGTH = 60;
 
@@ -108,7 +115,7 @@ public class DocumentStructure : GLib.Object
         // reset
         parsing_done = false;
         _model = new StructureModel ();
-        _env_data = null;
+        _last_env_data = null;
         _start_parsing_line = 0;
 
         _end_document_mark = null;
@@ -410,21 +417,22 @@ public class DocumentStructure : GLib.Object
             create_new_environment (type, iter);
 
         // a caption (we take only the first)
-        else if (type == LowLevelType.CAPTION && _env_data != null
-            && _env_data.text == null)
+        else if (type == LowLevelType.CAPTION && _last_env_data != null
+            && _last_env_data.first_caption == null)
         {
-            string? short_caption = null;
             if (contents.length > CAPTION_MAX_LENGTH)
-                short_caption = contents.substring (0, CAPTION_MAX_LENGTH);
-
-            _env_data.text = short_caption ?? contents;
+                _last_env_data.first_caption = contents.substring (0, CAPTION_MAX_LENGTH);
+            else
+                _last_env_data.first_caption = contents;
         }
 
         // end of a figure or table env
         else if (verify_end_environment_type (type))
         {
-            _env_data.end_mark = create_text_mark_from_iter (iter);
-            add_item_data (_env_data, true);
+            TextMark end_mark = create_text_mark_from_iter (iter);
+            _model.modify_data (_last_env_data.path, _last_env_data.first_caption,
+                end_mark);
+            _last_env_data = null;
         }
 
         // end of the document
@@ -437,32 +445,33 @@ public class DocumentStructure : GLib.Object
         return_if_fail (type == LowLevelType.BEGIN_FIGURE
             || type == LowLevelType.BEGIN_TABLE);
 
-        _env_data = StructData ();
-        _env_data.text = null;
-        _env_data.start_mark = create_text_mark_from_iter (start_iter);
-        _env_data.end_mark = null;
+        _last_env_data = EnvData ();
+        _last_env_data.first_caption = null;
 
         if (type == LowLevelType.BEGIN_TABLE)
-            _env_data.type = StructType.TABLE;
+            _last_env_data.type = StructType.TABLE;
         else
-            _env_data.type = StructType.FIGURE;
+            _last_env_data.type = StructType.FIGURE;
+
+        TreeIter tree_iter = add_item (_last_env_data.type, null, start_iter);
+        _last_env_data.path = _model.get_path (tree_iter);
     }
 
     private bool verify_end_environment_type (LowLevelType type)
     {
-        if (_env_data == null)
+        if (_last_env_data == null)
             return false;
 
         if (type == LowLevelType.END_TABLE)
-            return _env_data.type == StructType.TABLE;
+            return _last_env_data.type == StructType.TABLE;
 
         if (type == LowLevelType.END_FIGURE)
-            return _env_data.type == StructType.FIGURE;
+            return _last_env_data.type == StructType.FIGURE;
 
         return false;
     }
 
-    private void add_item (StructType type, string? text, TextIter start_iter)
+    private TreeIter? add_item (StructType type, string? text, TextIter start_iter)
     {
         StructData data = {};
         data.type = type;
@@ -470,18 +479,15 @@ public class DocumentStructure : GLib.Object
         data.start_mark = create_text_mark_from_iter (start_iter);
         data.end_mark = null;
 
-        add_item_data (data);
+        return add_item_data (data);
     }
 
-    private void add_item_data (StructData data, bool insert_in_middle = false)
+    private TreeIter? add_item_data (StructData data)
     {
         if (data.text == null)
             data.text = "";
 
-        if (insert_in_middle)
-            _model.add_item_in_middle (data);
-        else
-            _model.add_item_at_end (data);
+        return _model.add_item_at_end (data);
     }
 
     private TextMark create_text_mark_from_iter (TextIter iter)

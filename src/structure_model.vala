@@ -349,7 +349,7 @@ public class StructureModel : TreeModel, GLib.Object
         return _nb_nodes;
     }
 
-    public void add_item_at_end (StructData item)
+    public TreeIter? add_item_at_end (StructData item)
     {
         /* search the parent, based on the type */
         unowned Node<StructData?> parent = _tree;
@@ -368,12 +368,13 @@ public class StructureModel : TreeModel, GLib.Object
             parent = last_child;
         }
 
-        append_item (parent, item);
+        return append_item (parent, item);
     }
 
     // In the middle means that we have to find where to insert the data in the tree.
     // If items have to be shifted (for example: insert a chapter in the middle of
     // sections), it will be done by insert_item_at_position().
+    /*
     public void add_item_in_middle (StructData item)
     {
         // if the tree is empty
@@ -432,6 +433,7 @@ public class StructureModel : TreeModel, GLib.Object
             }
         }
     }
+    */
 
     // With the iter returned, we can simply go one line backward and we have the end of
     // the section. If null is returned, the end of the section is the end of the doc.
@@ -466,6 +468,23 @@ public class StructureModel : TreeModel, GLib.Object
         delete_node (node);
 
         regenerate_simple_lists ();
+    }
+
+    public void modify_data (TreePath path, string text, TextMark end_mark)
+    {
+        TreeIter iter;
+        bool iter_is_valid = get_iter (out iter, path);
+        return_if_fail (iter_is_valid);
+
+        unowned Node<StructData?> node = get_node_from_iter (iter);
+
+        // modify data
+        new_stamp ();
+        node.data.text = text;
+        node.data.end_mark = end_mark;
+        row_changed (path, iter);
+
+        make_children_between_marks (node);
     }
 
     public void shift_right (TreeIter iter)
@@ -665,6 +684,7 @@ public class StructureModel : TreeModel, GLib.Object
         }
     }
 
+    /*
     private void insert_item_at_position (StructData item, Node<StructData?> parent,
         int pos)
     {
@@ -705,16 +725,17 @@ public class StructureModel : TreeModel, GLib.Object
 
         insert_item (parent, pos, item);
     }
+    */
 
-    private void append_item (Node<StructData?> parent, StructData item)
+    private TreeIter? append_item (Node<StructData?> parent, StructData item)
     {
-        insert_item (parent, -1, item);
+        return insert_item (parent, -1, item);
     }
 
     // insert the item, and emits the appropriate signals
-    private void insert_item (Node<StructData?> parent, int pos, StructData item)
+    private TreeIter? insert_item (Node<StructData?> parent, int pos, StructData item)
     {
-        return_if_fail (item.text != null);
+        return_val_if_fail (item.text != null, null);
 
         unowned Node<StructData?> new_node = parent.insert_data (pos, item);
         insert_node (new_node);
@@ -723,10 +744,7 @@ public class StructureModel : TreeModel, GLib.Object
         bool append = pos == -1;
         insert_node_in_list (new_node, append);
 
-        // If an end_mark exists, move the items between start_mark and end_mark so this
-        // node is the parent.
-        if (! append)
-            make_children_between_marks (new_node);
+        return create_iter_at_node (new_node);
     }
 
     private void make_children_between_marks (Node<StructData?> node)

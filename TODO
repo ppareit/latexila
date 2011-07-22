@@ -9,10 +9,6 @@ LaTeXila 2.2
 - Build Tools:
 	- Some problems with the latex and latexmk post processors
 
-- Structure:
-	- Insert in middle is very slow comparated to insert at the end
-	  => Insert environments as soon as we find the \begin, and then update the item (or delete it)
-
 
 LaTeXila ≥ 2.4
 ==============
