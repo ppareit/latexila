@@ -57,6 +57,7 @@ public class StructureModel : TreeModel, GLib.Object
     private Node<StructData?> _tree;
     private int _stamp;
     private uint _nb_nodes = 0;
+    private unowned Node<StructData?> _end_node = null;
 
     private Gee.ArrayList<unowned Node<StructData?>> _list_labels;
     private Gee.ArrayList<unowned Node<StructData?>> _list_includes;
@@ -351,89 +352,43 @@ public class StructureModel : TreeModel, GLib.Object
 
     public TreeIter? add_item_at_end (StructData item)
     {
-        /* search the parent, based on the type */
-        unowned Node<StructData?> parent = _tree;
+        // A first implementation used node.last_child (), but this function is O(N)
+        // with N the number of children. This was too slow with some big documents.
+        // Now we keep track of the last node in the tree, so we simply have to traverse
+        // the parents (wich is O(1)).
+
+        // Another improvement is to find the previous sibling instead of the parent,
+        // because when we _append_ a new child, all the children are traversed, which is
+        // O(N). When we insert a node just after another, it's O(1).
+
+        if (_end_node == null)
+            search_end_node ();
+
+        /* Search the previous sibling, or the parent */
         StructType item_depth = item.type;
-
+        unowned Node<StructData?> parent = _end_node;
+        unowned Node<StructData?>? prev_sibling = null;
         while (true)
         {
-            unowned Node<StructData?> last_child = parent.last_child ();
-            if (last_child == null)
+            if (parent == _tree)
                 break;
 
-            StructType cur_depth = last_child.data.type;
-            if (item_depth <= cur_depth || ! Structure.is_section (cur_depth))
+            StructType cur_depth = parent.data.type;
+            if (Structure.is_section (cur_depth) && cur_depth < item_depth)
                 break;
 
-            parent = last_child;
+            prev_sibling = parent;
+            parent = parent.parent;
         }
 
-        return append_item (parent, item);
+        /* Insert the node at the right place */
+        TreeIter? end_iter = insert_item_after (parent, prev_sibling, item);
+
+        if (end_iter != null)
+            _end_node = get_node_from_iter (end_iter);
+
+        return end_iter;
     }
-
-    // In the middle means that we have to find where to insert the data in the tree.
-    // If items have to be shifted (for example: insert a chapter in the middle of
-    // sections), it will be done by insert_item_at_position().
-    /*
-    public void add_item_in_middle (StructData item)
-    {
-        // if the tree is empty
-        if (_tree.is_leaf ())
-        {
-            append_item (_tree, item);
-            return;
-        }
-
-        int pos = get_position_from_mark (item.start_mark);
-        unowned Node<StructData?> cur_parent = _tree;
-        while (true)
-        {
-            unowned Node<StructData?> cur_child = cur_parent.first_child ();
-            int child_index = 0;
-            while (true)
-            {
-                int cur_pos = get_position_from_mark (cur_child.data.start_mark);
-
-                if (cur_pos > pos)
-                {
-                    if (child_index == 0)
-                    {
-                        insert_item_at_position (item, cur_parent, child_index);
-                        return;
-                    }
-
-                    unowned Node<StructData?> prev_child = cur_child.prev_sibling ();
-                    if (prev_child.is_leaf ())
-                    {
-                        insert_item_at_position (item, cur_parent, child_index);
-                        return;
-                    }
-
-                    cur_parent = prev_child;
-                    break;
-                }
-
-                unowned Node<StructData?> next_child = cur_child.next_sibling ();
-
-                // current child is the last child
-                if (next_child == null)
-                {
-                    if (cur_child.is_leaf ())
-                    {
-                        insert_item_at_position (item, cur_parent, child_index + 1);
-                        return;
-                    }
-
-                    cur_parent = cur_child;
-                    break;
-                }
-
-                cur_child = next_child;
-                child_index++;
-            }
-        }
-    }
-    */
 
     // With the iter returned, we can simply go one line backward and we have the end of
     // the section. If null is returned, the end of the section is the end of the doc.
@@ -466,7 +421,7 @@ public class StructureModel : TreeModel, GLib.Object
 
         unowned Node<StructData?> node = get_node_from_iter (iter);
         delete_node (node);
-
+        _end_node = null;
         regenerate_simple_lists ();
     }
 
@@ -684,65 +639,16 @@ public class StructureModel : TreeModel, GLib.Object
         }
     }
 
-    /*
-    private void insert_item_at_position (StructData item, Node<StructData?> parent,
-        int pos)
-    {
-        // If a simple item (not a section) is inserted between sections. For example:
-        // chapter
-        //   section 1
-        //   => insert simple item here
-        //   section 2
-        //
-        // The item's parent will be 'section 1' instead of 'chapter'.
-        if (pos > 0)
-        {
-            unowned Node<StructData?> prev = parent.nth_child (pos - 1);
-            bool prev_is_section = Structure.is_section (prev.data.type);
-            bool item_is_section = Structure.is_section (item.type);
-
-            if (prev_is_section && ! item_is_section)
-            {
-                append_item (prev, item);
-                return;
-            }
-        }
-
-        // If the parent is not a section, insert the item after the parent.
-        // AFAIK, the unique case which can happen is:
-        // section
-        //     figure or table (the parent)
-        //         image, label, etc.
-        //         => insert a figure or a table here
-        //     => it must be inserted here instead
-        if (parent != _tree && ! Structure.is_section (parent.data.type))
-        {
-            unowned Node<StructData?> grand_parent = parent.parent;
-            int parent_pos = grand_parent.child_position (parent);
-            insert_item (grand_parent, parent_pos + 1, item);
-            return;
-        }
-
-        insert_item (parent, pos, item);
-    }
-    */
-
-    private TreeIter? append_item (Node<StructData?> parent, StructData item)
-    {
-        return insert_item (parent, -1, item);
-    }
-
-    // insert the item, and emits the appropriate signals
-    private TreeIter? insert_item (Node<StructData?> parent, int pos, StructData item)
+    private TreeIter? insert_item_after (Node<StructData?> parent,
+        Node<StructData?>? sibling, StructData item)
     {
         return_val_if_fail (item.text != null, null);
 
-        unowned Node<StructData?> new_node = parent.insert_data (pos, item);
-        insert_node (new_node);
+        unowned Node<StructData?> new_node = parent.insert_after (sibling,
+            new Node<StructData?> (item));
 
-        // Store the node to a list, if it's not a section
-        bool append = pos == -1;
-        insert_node_in_list (new_node, append);
+        insert_node (new_node);
+        insert_node_in_list (new_node, true);
 
         return create_iter_at_node (new_node);
     }
@@ -778,6 +684,13 @@ public class StructureModel : TreeModel, GLib.Object
 
             sibling = node.next_sibling ();
         }
+    }
+
+    private void search_end_node ()
+    {
+        _end_node = _tree;
+        while (! _end_node.is_leaf ())
+            _end_node = _end_node.last_child ();
     }
 
     private static int get_position_from_mark (TextMark mark)
