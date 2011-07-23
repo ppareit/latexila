@@ -265,17 +265,45 @@ namespace Utils
         return button;
     }
 
-    public bool char_is_escaped (string text, long index)
+    public bool char_is_escaped (string text, long char_index)
     {
+        return_val_if_fail (char_index < text.length, false);
+
+        int index = (int) char_index;
+        if (! string_get_prev_char (text, ref index, null))
+            return false;
+
         bool escaped = false;
-        for (long i = index - 1 ; i >= 0 ; i--)
+        while (true)
         {
-            if (text[i] == '\\')
-                escaped = ! escaped;
-            else
+            unichar cur_char;
+            bool first_char = ! string_get_prev_char (text, ref index, out cur_char);
+
+            if (cur_char != '\\')
+                break;
+
+            escaped = ! escaped;
+
+            if (first_char)
                 break;
         }
+
         return escaped;
+    }
+
+    // The opposite of string.get_next_char ().
+    // TODO remove this function when it is included upstream
+    // See https://bugzilla.gnome.org/show_bug.cgi?id=655185
+    private bool string_get_prev_char (string str, ref int index, out unichar c)
+    {
+        c = str.get_char (index);
+        if (index <= 0 || c == '\0')
+            return false;
+
+        unowned string str_at_index = (string) ((char*) str + index);
+        unowned string str_prev = str_at_index.prev_char ();
+        index = (int) ((char*) str_prev - (char*) str);
+        return true;
     }
 
     // origin can be equal to common_dir, but target must be different
