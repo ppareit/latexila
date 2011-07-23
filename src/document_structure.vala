@@ -94,14 +94,15 @@ public class DocumentStructure : GLib.Object
             {
                 _chars_regex = new Regex ("\\\\|%");
 
-                _comment_regex =
-                    new Regex ("^(?P<type>TODO|FIXME)[[:space:]:]*(?P<text>.*)$");
+                _comment_regex = new Regex (
+                    "^(?P<type>TODO|FIXME)[[:space:]]+:?[[:space:]]*(?P<text>.*)$",
+                    RegexCompileFlags.OPTIMIZE);
 
                 // the LaTeX command can contain some optional arguments
                 // TODO a better implementation of this regex would be to parse the line
                 // character by character, so we can verify if some chars are escaped.
-                _command_name_regex =
-                    new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[[^\\]]*\\][[:space:]]*)*{");
+                _command_name_regex = new Regex (
+                    "^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[[^\\]]*\\][[:space:]]*)*{");
             }
             catch (RegexError e)
             {
