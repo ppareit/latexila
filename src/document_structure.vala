@@ -230,29 +230,53 @@ public class DocumentStructure : GLib.Object
             return false;
         }
 
-        if (! match_info.matches ())
-            return false;
-
-        int after_char_index;
-        if (! match_info.fetch_pos (0, out start_match_index, out after_char_index))
+        while (match_info.matches ())
         {
-            stderr.printf ("Structure parsing: position can not be fetched\n");
-            return false;
+            int after_char_index;
+            if (! match_info.fetch_pos (0, out start_match_index, out after_char_index))
+            {
+                stderr.printf ("Structure parsing: position can not be fetched\n");
+                return false;
+            }
+
+            if (! Utils.char_is_escaped (line, start_match_index))
+            {
+                string char_matched = match_info.fetch (0);
+
+                // search markup (begin with a backslash)
+                if (char_matched == "\\")
+                {
+                    bool markup_found = search_markup (line, after_char_index, out type,
+                        out contents, out end_match_index);
+
+                    if (markup_found)
+                        return true;
+                }
+
+                // search comments (begin with '%')
+                else
+                {
+                    // It is possible to comment a TODO or a FIXME, for example:
+                    // % %TODO tout doux
+                    // When we find the first '%', we directly return false. The second
+                    // '%' won't be found.
+                    return search_comment (line, after_char_index, out type, out contents,
+                        out end_match_index);
+                }
+            }
+
+            try
+            {
+                match_info.next ();
+            }
+            catch (RegexError e)
+            {
+                stderr.printf ("Structure parsing: %s\n", e.message);
+                break;
+            }
         }
 
-        if (Utils.char_is_escaped (line, start_match_index))
-            return false;
-
-        string char_matched = match_info.fetch (0);
-
-        // search markup (begin with a backslash)
-        if (char_matched == "\\")
-            return search_markup (line, after_char_index, out type, out contents,
-                out end_match_index);
-
-        // search comments (begin with '%')
-        return search_comment (line, after_char_index, out type, out contents,
-            out end_match_index);
+        return false;
     }
 
     private bool search_markup (string line, int after_backslash_index,
