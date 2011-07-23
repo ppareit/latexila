@@ -366,38 +366,42 @@ public class DocumentStructure : GLib.Object
         out int? end_match_index)
     {
         int brace_level = 0;
+        int cur_index = begin_contents_index;
 
-        int line_length = line.length;
-        for (int i = begin_contents_index ; i < line_length ; i++)
+        while (true)
         {
-            if (line[i] == '{' && ! Utils.char_is_escaped (line, i))
-            {
-                brace_level++;
-                continue;
-            }
+            int next_index = cur_index;
+            unichar cur_char;
+            bool end = ! line.get_next_char (ref next_index, out cur_char);
 
-            if (line[i] == '}' && ! Utils.char_is_escaped (line, i))
+            if (cur_char == '{' && ! Utils.char_is_escaped (line, cur_index))
+                brace_level++;
+
+            else if (cur_char == '}' && ! Utils.char_is_escaped (line, cur_index))
             {
                 if (brace_level > 0)
-                {
                     brace_level--;
-                    continue;
-                }
 
                 // found!
-                string contents = line[begin_contents_index : i];
+                else
+                {
+                    string contents = line[begin_contents_index : cur_index];
 
-                // but empty
-                if (contents == "")
-                    return null;
+                    // but empty
+                    if (contents == "")
+                        return null;
 
-                end_match_index = i + 1;
+                    end_match_index = next_index;
 
-                return contents;
+                    return contents;
+                }
             }
-        }
 
-        return null;
+            if (end)
+                return null;
+
+            cur_index = next_index;
+        }
     }
 
     private bool search_comment (string line, int after_percent_index,
