@@ -666,7 +666,7 @@ public class StructureModel : TreeModel, GLib.Object
             new Node<StructData?> (item));
 
         insert_node (new_node);
-        insert_node_in_list (new_node, true);
+        insert_node_in_list (new_node);
 
         return create_iter_at_node (new_node);
     }
@@ -677,20 +677,15 @@ public class StructureModel : TreeModel, GLib.Object
         if (data.end_mark == null)
             return;
 
-        int end_mark_pos = get_position_from_mark (data.end_mark);
-
         unowned Node<StructData?>? sibling = node.next_sibling ();
         while (sibling != null)
         {
             StructData sibling_data = sibling.data;
 
-            // if a section is in an environment, something is broken somewhere
-            // (too much tequila maybe?)
             if (Structure.is_section (sibling_data.type))
                 break;
 
-            int sibling_pos = get_position_from_mark (sibling_data.start_mark);
-            if (end_mark_pos <= sibling_pos)
+            if (compare_nodes (node, sibling) <= 0)
                 break;
 
             // unlink the node
@@ -711,12 +706,26 @@ public class StructureModel : TreeModel, GLib.Object
             _end_node = _end_node.last_child ();
     }
 
-    private static int get_position_from_mark (TextMark mark)
+    // Returns:
+    // -1 if node1 < node2
+    //  0 if node1 = node2
+    // +1 if node1 > node2
+    private static int compare_nodes (Node<StructData?> node1, Node<StructData?> node2)
     {
-        TextIter iter;
-        TextBuffer doc = mark.get_buffer ();
-        doc.get_iter_at_mark (out iter, mark);
-        return iter.get_offset ();
+        TextMark mark1 = node1.data.start_mark;
+        TextMark mark2 = node2.data.start_mark;
+
+        TextBuffer doc = mark1.get_buffer ();
+
+        return_val_if_fail (doc == mark2.get_buffer (), 0);
+
+        TextIter iter1;
+        TextIter iter2;
+
+        doc.get_iter_at_mark (out iter1, mark1);
+        doc.get_iter_at_mark (out iter2, mark2);
+
+        return iter1.compare (iter2);
     }
 
 
@@ -771,7 +780,7 @@ public class StructureModel : TreeModel, GLib.Object
         return_val_if_reached (-1);
     }
 
-    private void insert_node_in_list (Node<StructData?> node, bool at_end)
+    private void insert_node_in_list (Node<StructData?> node)
     {
         StructData item = node.data;
 
@@ -781,23 +790,7 @@ public class StructureModel : TreeModel, GLib.Object
         var list = get_list (item.type);
         return_if_fail (list != null);
 
-        // if it's an append_item(), append the item to the list too
-        if (at_end)
-        {
-            list.add (node);
-            return;
-        }
-
-        // if the item is inserted in the middle, search where to insert it in the list
-        int mark_pos = get_position_from_mark (item.start_mark);
-        int i;
-        for (i = 0 ; i < list.size ; i++)
-        {
-            int cur_mark_pos = get_position_from_mark (list[i].data.start_mark);
-            if (cur_mark_pos > mark_pos)
-                break;
-        }
-        list.insert (i, node);
+        list.add (node);
     }
 
     private void regenerate_simple_lists ()
