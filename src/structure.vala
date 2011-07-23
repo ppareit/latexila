@@ -510,6 +510,9 @@ public class Structure : VBox
 
     private void set_model (StructureModel? model)
     {
+        if (model != null)
+            model.emit_signals = true;
+
         _model = model;
         _tree_view.set_model (model);
 

@@ -53,6 +53,11 @@ public errordomain StructError {
 
 public class StructureModel : TreeModel, GLib.Object
 {
+    // This model is connected to the view only when the parsing is done. So it is useless
+    // to emit signals during the initial parsing. Emitting a signal can be slow, for
+    // example to get the TreePath (a signal parameter), a O(N) GNode function is used...
+    public bool emit_signals { get; set; default = false; }
+
     private Type[] _column_types;
     private Node<StructData?> _tree;
     private int _stamp;
@@ -437,7 +442,9 @@ public class StructureModel : TreeModel, GLib.Object
         new_stamp ();
         node.data.text = text;
         node.data.end_mark = end_mark;
-        row_changed (path, iter);
+
+        if (emit_signals)
+            row_changed (path, iter);
 
         make_children_between_marks (node);
     }
@@ -560,6 +567,10 @@ public class StructureModel : TreeModel, GLib.Object
     private void insert_node (Node<StructData?> node, bool force_first_child = false)
     {
         new_stamp ();
+        _nb_nodes++;
+
+        if (! emit_signals)
+            return;
 
         TreeIter item_iter = create_iter_at_node (node);
         TreePath item_path = get_path (item_iter);
@@ -568,37 +579,44 @@ public class StructureModel : TreeModel, GLib.Object
         // Attention, the row-has-child-toggled signal must be emitted _after_,
         // else there are strange errors.
         unowned Node<StructData?> parent = node.parent;
-        bool first_child = parent != _tree && parent.n_children () == 1;
+        bool first_child = parent != _tree && parent.children == node;
         if (force_first_child || first_child)
         {
             TreeIter parent_iter = create_iter_at_node (parent);
             TreePath parent_path = get_path (parent_iter);
             row_has_child_toggled (parent_path, parent_iter);
         }
-
-        _nb_nodes++;
     }
 
     private Node<StructData?>? delete_node (Node<StructData?> node)
     {
         new_stamp ();
 
-        TreeIter? iter = create_iter_at_node (node);
-        return_val_if_fail (iter != null, null);
-
-        TreePath path = get_path (iter);
-        unowned Node<StructData?> parent = node.parent;
-        Node<StructData?> node_unlinked = node.unlink ();
-        row_deleted (path);
-
-        if (parent != _tree && parent.n_children () == 0)
+        TreePath path = null;
+        unowned Node<StructData?> parent = null;
+        if (emit_signals)
         {
-            TreeIter parent_iter = create_iter_at_node (parent);
-            TreePath parent_path = get_path (parent_iter);
-            row_has_child_toggled (parent_path, parent_iter);
+            TreeIter? iter = create_iter_at_node (node);
+            return_val_if_fail (iter != null, null);
+
+            path = get_path (iter);
+            parent = node.parent;
         }
 
+        Node<StructData?> node_unlinked = node.unlink ();
         _nb_nodes -= node_unlinked.n_nodes (TraverseFlags.ALL);
+
+        if (emit_signals)
+        {
+            row_deleted (path);
+
+            if (parent != _tree && parent.children == null)
+            {
+                TreeIter parent_iter = create_iter_at_node (parent);
+                TreePath parent_path = get_path (parent_iter);
+                row_has_child_toggled (parent_path, parent_iter);
+            }
+        }
 
         return node_unlinked;
     }
