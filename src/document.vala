@@ -381,27 +381,44 @@ public class Document : Gtk.SourceBuffer
             cursor_moved ();
     }
 
-    private void insert_text_at_beginning_of_selected_lines (string text)
-    {
-        TextIter start, end;
-        get_selection_bounds (out start, out end);
-
-        int start_line = start.get_line ();
-        int end_line = end.get_line ();
-
-        begin_user_action ();
-        for (int i = start_line ; i <= end_line ; i++)
-        {
-            TextIter iter;
-            get_iter_at_line (out iter, i);
-            insert (iter, text, -1);
-        }
-        end_user_action ();
-    }
-
     public void comment_selected_lines ()
     {
-        insert_text_at_beginning_of_selected_lines ("% ");
+        TextIter start;
+        TextIter end;
+        get_selection_bounds (out start, out end);
+
+        comment_between (start, end);
+    }
+
+    // comment the lines between start_iter and end_iter included
+    public void comment_between (TextIter start_iter, TextIter? end_iter)
+    {
+        int start_line = start_iter.get_line ();
+        int end_line = start_line;
+
+        if (end_iter != null)
+            end_line = end_iter.get_line ();
+
+        TextIter cur_iter;
+        get_iter_at_line (out cur_iter, start_line);
+
+        begin_user_action ();
+        for (int i = start_line ; i <= end_line ; i++, cur_iter.forward_line ())
+        {
+            // do not comment empty lines
+            if (cur_iter.ends_line ())
+                continue;
+
+            TextIter end_line_iter = cur_iter;
+            end_line_iter.forward_to_line_end ();
+
+            string line_contents = get_text (cur_iter, end_line_iter, false);
+
+            // do not comment lines containing only spaces
+            if (line_contents.strip () != "")
+                insert (cur_iter, "% ", -1);
+        }
+        end_user_action ();
     }
 
     public void uncomment_selected_lines ()

@@ -777,7 +777,7 @@ public class DocumentStructure : GLib.Object
         /* comment a simple item */
         if (! Structure.is_section (type))
         {
-            comment_between (start_iter, end_iter);
+            _doc.comment_between (start_iter, end_iter);
             return true;
         }
 
@@ -820,27 +820,8 @@ public class DocumentStructure : GLib.Object
                 end_iter = null;
         }
 
-        comment_between (start_iter, end_iter);
+        _doc.comment_between (start_iter, end_iter);
         return true;
-    }
-
-    // comment the lines between start_iter and end_iter included
-    private void comment_between (TextIter start_iter, TextIter? end_iter)
-    {
-        int start_line = start_iter.get_line ();
-        int end_line = start_line;
-
-        if (end_iter != null)
-            end_line = end_iter.get_line ();
-
-        _doc.begin_user_action ();
-        for (int line_index = start_line ; line_index <= end_line ; line_index++)
-        {
-            TextIter iter;
-            _doc.get_iter_at_line (out iter, line_index);
-            _doc.insert (iter, "% ", -1);
-        }
-        _doc.end_user_action ();
     }
 
     // Returns true only if the bounds are correctly set.
