@@ -99,18 +99,18 @@ private class RubberPostProcessor : GLib.Object, PostProcessor
 
     public RubberPostProcessor ()
     {
-        if (pattern == null)
+        if (pattern != null)
+            return;
+
+        try
         {
-            try
-            {
-                pattern = new Regex (
-                    "(?P<file>[^:\n]+)(:(?P<line>[0-9\\-]+))?:(?P<text>.+)$",
-                    RegexCompileFlags.MULTILINE);
-            }
-            catch (RegexError e)
-            {
-                stderr.printf ("RubberPostProcessor: %s\n", e.message);
-            }
+            pattern = new Regex (
+                "(?P<file>[^:\n]+)(:(?P<line>[\\d\\-]+))?:(?P<text>.+)$",
+                RegexCompileFlags.MULTILINE | RegexCompileFlags.OPTIMIZE);
+        }
+        catch (RegexError e)
+        {
+            stderr.printf ("RubberPostProcessor: %s\n", e.message);
         }
     }
 
@@ -186,33 +186,33 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
     {
         this.show_all = show_all;
 
-        if (reg_rule == null)
+        if (reg_rule != null)
+            return;
+
+        try
         {
-            try
-            {
-                string reg_rule_str = "^-{12}\n";
-                reg_rule_str += "(?P<line>Run number [0-9]+ of rule '(?P<rule>.*)')\n";
-                reg_rule_str += "(-{12}\n){2}";
-                reg_rule_str += "Running '(?P<cmd>.*)'\n";
-                reg_rule_str += "-{12}\n";
-                reg_rule_str += "Latexmk: applying rule .*\n";
-                reg_rule_str += "(For rule '.*', running .*\n)?";
-                reg_rule_str += "(?P<output>(?U)(.*\n)*)"; // ungreedy
-                reg_rule_str += "(Latexmk:|Rule '.*':)";
+            string reg_rule_str = "^-{12}\\R";
+            reg_rule_str += "(?P<line>Run number \\d+ of rule '(?P<rule>.*)')\\R";
+            reg_rule_str += "(-{12}\\R){2}";
+            reg_rule_str += "Running '(?P<cmd>.*)'\\R";
+            reg_rule_str += "-{12}\\R";
+            reg_rule_str += "Latexmk: applying rule .*\\R";
+            reg_rule_str += "(For rule '.*', running .*\\R)?";
+            reg_rule_str += "(?P<output>(?U)(.*\\R)*)"; // ungreedy
+            reg_rule_str += "(Latexmk:|Rule '.*':)";
 
-                reg_rule = new Regex (reg_rule_str,
-                    RegexCompileFlags.MULTILINE | RegexCompileFlags.OPTIMIZE);
+            reg_rule = new Regex (reg_rule_str,
+                RegexCompileFlags.MULTILINE | RegexCompileFlags.OPTIMIZE);
 
-                string reg_no_rule_str = "^(Latexmk: This is Latexmk.*\n)?";
-                reg_no_rule_str += "(\\*{4} Report bugs.*\n)?";
-                reg_no_rule_str += "(?P<output>(.*\n)*)";
+            string reg_no_rule_str = "^(Latexmk: This is Latexmk.*\\R)?";
+            reg_no_rule_str += "(\\*{4} Report bugs.*\\R)?";
+            reg_no_rule_str += "(?P<output>(.*\\R)*)";
 
-                reg_no_rule = new Regex (reg_no_rule_str, RegexCompileFlags.MULTILINE);
-            }
-            catch (RegexError e)
-            {
-                stderr.printf ("LatexmkPostProcessor: %s\n", e.message);
-            }
+            reg_no_rule = new Regex (reg_no_rule_str, RegexCompileFlags.MULTILINE);
+        }
+        catch (RegexError e)
+        {
+            stderr.printf ("LatexmkPostProcessor: %s\n", e.message);
         }
     }
 

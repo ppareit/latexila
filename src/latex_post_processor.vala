@@ -89,40 +89,40 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
     public LatexPostProcessor ()
     {
-        if (reg_badbox == null)
-        {
-            try
-            {
-                reg_badbox = new Regex ("^(Over|Under)full \\\\[hv]box");
-                reg_badbox_lines = new Regex ("(.*) at lines ([0-9]+)--([0-9]+)");
-                reg_badbox_line = new Regex ("(.*) at line ([0-9]+)");
-                reg_badbox_output =
-                    new Regex ("(.*)has occurred while \\output is active");
-
-                reg_warning =
-                    new Regex ("^(((! )?(La|pdf)TeX)|Package|Class) .*Warning[^:]*:[[:space:]]*(.*)",
-                    RegexCompileFlags.CASELESS);
-                reg_warning_no_file = new Regex ("(No file .*)");
-                reg_warning_line = new Regex ("(.*) on input line ([0-9]+)\\.$");
-                reg_warning_international_line = new Regex ("(.*)([0-9]+)\\.$");
-
-                reg_latex_error = new Regex ("^! LaTeX Error: (.*)$");
-                reg_pdflatex_error = new Regex ("^Error: pdflatex (.*)$");
-                reg_tex_error = new Regex ("^! (.*)\\.$");
-                reg_error_line = new Regex ("^l\\.([0-9]+)(.*)");
-
-                reg_file_pop = new Regex ("(\\) )?:<-$");
-                reg_other_bytes = new Regex ("([0-9]+) bytes");
-
-                reg_spaces = new Regex ("[[:space:]]{2,}");
-            }
-            catch (RegexError e)
-            {
-                stderr.printf ("LatexPostProcessor: %s\n", e.message);
-            }
-        }
-
         reset_msg ();
+
+        if (reg_badbox != null)
+            return;
+
+        try
+        {
+            reg_badbox = new Regex ("^(Over|Under)full \\\\[hv]box");
+            reg_badbox_lines = new Regex ("(.*) at lines (\\d+)--(\\d+)");
+            reg_badbox_line = new Regex ("(.*) at line (\\d+)");
+            reg_badbox_output =
+                new Regex ("(.*)has occurred while \\output is active");
+
+            reg_warning = new Regex (
+                "^(((! )?(La|pdf)TeX)|Package|Class) .*Warning[^:]*:\\s*(.*)",
+                RegexCompileFlags.CASELESS);
+            reg_warning_no_file = new Regex ("(No file .*)");
+            reg_warning_line = new Regex ("(.*) on input line (\\d+)\\.$");
+            reg_warning_international_line = new Regex ("(.*)(\\d+)\\.$");
+
+            reg_latex_error = new Regex ("^! LaTeX Error: (.*)$");
+            reg_pdflatex_error = new Regex ("^Error: pdflatex (.*)$");
+            reg_tex_error = new Regex ("^! (.*)\\.$");
+            reg_error_line = new Regex ("^l\\.(\\d+)(.*)");
+
+            reg_file_pop = new Regex ("(\\) )?:<-$");
+            reg_other_bytes = new Regex ("(\\d+) bytes");
+
+            reg_spaces = new Regex ("\\s{2,}");
+        }
+        catch (RegexError e)
+        {
+            stderr.printf ("LatexPostProcessor: %s\n", e.message);
+        }
     }
 
     public void process (File file, string output, int status)

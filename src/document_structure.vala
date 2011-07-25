@@ -88,26 +88,25 @@ public class DocumentStructure : GLib.Object
     {
         _doc = doc;
 
-        if (_comment_regex == null)
+        if (_chars_regex != null)
+            return;
+
+        try
         {
-            try
-            {
-                _chars_regex = new Regex ("\\\\|%");
+            _chars_regex = new Regex ("\\\\|%");
 
-                _comment_regex = new Regex (
-                    "^(?P<type>TODO|FIXME)[[:space:]]+:?[[:space:]]*(?P<text>.*)$",
-                    RegexCompileFlags.OPTIMIZE);
+            _comment_regex = new Regex ("^(?P<type>TODO|FIXME)\\s+:?\\s*(?P<text>.*)$",
+                RegexCompileFlags.OPTIMIZE);
 
-                // Stop at the first argument, which can be optional (a '[').
-                // To find the first non-optional argument, it's more robust to do it
-                // character by character.
-                _command_name_regex =
-                    new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[|{)");
-            }
-            catch (RegexError e)
-            {
-                stderr.printf ("Structure: %s\n", e.message);
-            }
+            // Stop at the first argument, which can be optional (a '[').
+            // To find the first non-optional argument, it's more robust to do it
+            // character by character.
+            _command_name_regex = new Regex ("^(?P<name>[a-z]+\\*?)\\s*(\\[|{)",
+                RegexCompileFlags.OPTIMIZE);
+        }
+        catch (RegexError e)
+        {
+            stderr.printf ("Structure: %s\n", e.message);
         }
     }
 
