@@ -98,11 +98,11 @@ public class DocumentStructure : GLib.Object
                     "^(?P<type>TODO|FIXME)[[:space:]]+:?[[:space:]]*(?P<text>.*)$",
                     RegexCompileFlags.OPTIMIZE);
 
-                // the LaTeX command can contain some optional arguments
-                // TODO a better implementation of this regex would be to parse the line
-                // character by character, so we can verify if some chars are escaped.
-                _command_name_regex = new Regex (
-                    "^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[[^\\]]*\\][[:space:]]*)*{");
+                // Stop at the first argument, which can be optional (a '[').
+                // To find the first non-optional argument, it's more robust to do it
+                // character by character.
+                _command_name_regex =
+                    new Regex ("^(?P<name>[a-z]+\\*?)[[:space:]]*(\\[|{)");
             }
             catch (RegexError e)
             {
@@ -348,6 +348,7 @@ public class DocumentStructure : GLib.Object
     private string? get_markup_name (string line, int after_backslash_index,
         out int? begin_contents_index = null)
     {
+        /* Get the markup name */
         string after_backslash_text = line.substring (after_backslash_index);
 
         MatchInfo match_info;
@@ -356,9 +357,82 @@ public class DocumentStructure : GLib.Object
 
         int pos;
         match_info.fetch_pos (0, null, out pos);
-        begin_contents_index = pos + after_backslash_index;
+        int begin_first_arg_index = after_backslash_index + pos;
 
-        return match_info.fetch_named ("name");
+        string markup_name = match_info.fetch_named ("name");
+
+        /* Search begin_contents_index */
+        if (search_firt_non_optional_arg (line, begin_first_arg_index - 1,
+            out begin_contents_index))
+        {
+            return markup_name;
+        }
+
+        return null;
+    }
+
+    // line[start_index] must be equal to '{' or '['
+    private bool search_firt_non_optional_arg (string line, int start_index,
+        out int begin_contents_index)
+    {
+        int cur_index = start_index;
+        bool in_optional_arg = false;
+        int additional_bracket_level = 0;
+
+        while (true)
+        {
+            int next_index = cur_index;
+            unichar cur_char;
+            bool end = ! line.get_next_char (ref next_index, out cur_char);
+
+            if (in_optional_arg)
+            {
+                switch (cur_char)
+                {
+                    case ']':
+                        if (! Utils.char_is_escaped (line, cur_index))
+                        {
+                            if (0 < additional_bracket_level)
+                                additional_bracket_level--;
+                            else
+                                in_optional_arg = false;
+                        }
+                        break;
+
+                    case '[':
+                        if (! Utils.char_is_escaped (line, cur_index))
+                            additional_bracket_level++;
+                        break;
+                }
+            }
+
+            // not in an argument
+            else
+            {
+                switch (cur_char)
+                {
+                    case '{':
+                        begin_contents_index = next_index;
+                        return true;
+
+                    case '[':
+                        in_optional_arg = true;
+                        break;
+
+                    case ' ':
+                    case '\t':
+                        break;
+
+                    default:
+                        return false;
+                }
+            }
+
+            if (end)
+                return false;
+
+            cur_index = next_index;
+        }
     }
 
     // Get the contents between '{' and the corresponding '}'.
