@@ -73,7 +73,9 @@ public class DocumentStructure : GLib.Object
 
     private EnvData? _last_env_data = null;
 
-    private static const int CAPTION_MAX_LENGTH = 60;
+    // Only captions, TODOs and FIXMEs are truncated if needed, because the other
+    // items are normally short enough.
+    private static const int ITEM_MAX_LENGTH = 60;
 
     private static const int MAX_NB_LINES_TO_PARSE = 2000;
     private int _start_parsing_line = 0;
@@ -506,8 +508,11 @@ public class DocumentStructure : GLib.Object
             return;
         }
 
+        if (type == LowLevelType.TODO || type == LowLevelType.FIXME)
+            add_item ((StructType) type, truncate (contents) ?? contents, iter);
+
         // the low-level type is common with the high-level type
-        if (type < LowLevelType.NB_COMMON_TYPES)
+        else if (type < LowLevelType.NB_COMMON_TYPES)
             add_item ((StructType) type, contents, iter);
 
         // begin of a verbatim env
@@ -522,10 +527,7 @@ public class DocumentStructure : GLib.Object
         else if (type == LowLevelType.CAPTION && _last_env_data != null
             && _last_env_data.first_caption == null)
         {
-            if (contents.length > CAPTION_MAX_LENGTH)
-                _last_env_data.first_caption = contents.substring (0, CAPTION_MAX_LENGTH);
-            else
-                _last_env_data.first_caption = contents;
+            _last_env_data.first_caption = truncate (contents) ?? contents;
         }
 
         // end of a figure or table env
@@ -613,6 +615,19 @@ public class DocumentStructure : GLib.Object
         }
 
         _nb_marks = 0;
+    }
+
+    // return null if the truncation is not needed
+    private string? truncate (string? text)
+    {
+        if (text == null)
+            return null;
+
+        if (text.char_count () <= ITEM_MAX_LENGTH)
+            return null;
+
+        int index = text.index_of_nth_char (ITEM_MAX_LENGTH);
+        return text.substring (0, index);
     }
 
     private LowLevelType? get_markup_low_level_type (string markup_name)
