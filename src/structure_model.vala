@@ -430,7 +430,7 @@ public class StructureModel : TreeModel, GLib.Object
         regenerate_simple_lists ();
     }
 
-    public void modify_data (TreePath path, string text, TextMark end_mark)
+    public void modify_data (TreePath path, string? text, TextMark end_mark)
     {
         TreeIter iter;
         bool iter_is_valid = get_iter (out iter, path);
@@ -440,7 +440,7 @@ public class StructureModel : TreeModel, GLib.Object
 
         // modify data
         new_stamp ();
-        node.data.text = text;
+        node.data.text = text ?? "";
         node.data.end_mark = end_mark;
 
         if (emit_signals)
