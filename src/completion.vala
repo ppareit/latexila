@@ -118,11 +118,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return "LaTeX";
     }
 
-    public unowned Gdk.Pixbuf? get_icon ()
-    {
-        return null;
-    }
-
     public SourceCompletionActivation get_activation ()
     {
         SourceCompletionActivation ret = SourceCompletionActivation.USER_REQUESTED;
@@ -131,31 +126,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             ret |= SourceCompletionActivation.INTERACTIVE;
 
         return ret;
-    }
-
-    public unowned Gtk.Widget? get_info_widget (SourceCompletionProposal proposal)
-    {
-        return null;
-    }
-
-    public void update_info (SourceCompletionProposal proposal, SourceCompletionInfo info)
-    {
-    }
-
-    public bool get_start_iter (SourceCompletionContext context,
-        SourceCompletionProposal proposal, TextIter iter)
-    {
-        return false;
-    }
-
-    public int get_interactive_delay ()
-    {
-        return -1;
-    }
-
-    public int get_priority ()
-    {
-        return 0;
     }
 
     public bool match (SourceCompletionContext context)
