@@ -36,6 +36,9 @@ public class CustomStatusbar : Statusbar
         cursor_position.pop (0);
         if (line == -1 && col == -1)
             return;
+
+        // Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
+        // "Column". Please, use abbreviations if possible.
         cursor_position.push (0, _("Ln %d, Col %d").printf (line, col));
     }
 }

@@ -665,6 +665,7 @@ public class Structure : VBox
             _names[StructType.TODO]         = "TODO";
             _names[StructType.FIXME]        = "FIXME";
             _names[StructType.TABLE]        = _("Table");
+            // Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
             _names[StructType.FIGURE]       = _("Figure");
             _names[StructType.IMAGE]        = _("Image");
             _names[StructType.INCLUDE]      = _("File included");

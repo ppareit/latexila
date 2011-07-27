@@ -147,10 +147,10 @@ public class MainWindow : Window
         { "StructureComment", null, N_("_Comment"), null,
             N_("Comment the selected structure item"), on_structure_comment },
         { "StructureShiftLeft", Stock.GO_BACK, N_("Shift _Left"), "",
-            N_("Shift the selected structure item to the left (e.g. section → chapter"),
+            N_("Shift the selected structure item to the left (e.g. section → chapter)"),
             on_structure_shift_left },
         { "StructureShiftRight", Stock.GO_FORWARD, N_("Shift _Right"), "",
-            N_("Shift the selected structure item to the right (e.g. chapter → section"),
+            N_("Shift the selected structure item to the right (e.g. chapter → section)"),
             on_structure_shift_right },
 
         // Help

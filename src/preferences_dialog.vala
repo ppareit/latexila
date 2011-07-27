@@ -25,6 +25,8 @@ public class PreferencesDialog : Dialog
     private static PreferencesDialog preferences_dialog = null;
     private ListStore build_tools_store;
 
+    delegate unowned string Plural (ulong n);
+
     private PreferencesDialog ()
     {
         title = _("Preferences");
@@ -185,7 +187,7 @@ public class PreferencesDialog : Dialog
 
         Label autosave_label = (Label) builder.get_object ("autosave_label");
         set_plural (autosave_label, settings, "auto-save-interval",
-            _("minute"), _("minutes"));
+            (n) => ngettext ("minute", "minutes", n));
 
         var reopen_checkbutton = builder.get_object ("reopen_checkbutton");
         settings.bind ("reopen-files", reopen_checkbutton, "active",
@@ -280,7 +282,7 @@ public class PreferencesDialog : Dialog
         Label interactive_comp_label =
             (Label) builder.get_object ("interactive_comp_label");
         set_plural (interactive_comp_label, settings, "interactive-completion-num",
-            _("character"), _("characters"));
+            (n) => ngettext ("character", "characters", n));
 
         var document_view_program = builder.get_object ("document_view_program");
         settings.bind ("document-view-program", document_view_program, "text",
@@ -475,16 +477,17 @@ public class PreferencesDialog : Dialog
     }
 
     private void set_plural (Label label, GLib.Settings settings, string key,
-        string msg_singular, string msg_plural)
+        Plural plural)
     {
         uint val;
         settings.get (key, "u", out val);
-        label.label = val > 1 ? msg_plural : msg_singular;
+        label.label = plural (val);
+
         settings.changed[key].connect ((setting, k) =>
         {
             uint v;
             setting.get (k, "u", out v);
-            label.label = v > 1 ? msg_plural : msg_singular;
+            label.label = plural (v);
         });
     }
 

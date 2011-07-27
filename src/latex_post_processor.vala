@@ -135,11 +135,13 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         foreach (string line in lines)
             latex_output_filter (line);
 
-        // stats
+        // Stats.
+        // Since all the messages printed by the 'latex' or 'pdflatex' command are in
+        // English, it would be strange to have only this one translated.
         msg.message = "%d %s, %d %s, %d %s".printf (
-            nb_errors,   nb_errors   > 1 ? "errors"   : "error",
-            nb_warnings, nb_warnings > 1 ? "warnings" : "warning",
-            nb_badboxes, nb_badboxes > 1 ? "badboxes" : "badbox");
+            nb_errors,   nb_errors   == 1 ? "error"   : "errors",
+            nb_warnings, nb_warnings == 1 ? "warning" : "warnings",
+            nb_badboxes, nb_badboxes == 1 ? "badbox"  : "badboxes");
         msg.message_type = BuildMessageType.OTHER;
         add_msg (false);
     }
