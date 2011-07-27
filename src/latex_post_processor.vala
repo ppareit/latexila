@@ -37,6 +37,11 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
     {
         string filename;
         bool reliable;
+
+        // We also push file which doesn't exist, because the corresponding ')' will pop
+        // it. If we don't push them, wrong files are poped.
+        // Anyway, when a new message is added, we get the last _existing_ file.
+        bool exists;
     }
 
     private const int NO_LINE = -1;
@@ -741,21 +746,28 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         string[] extensions = {".tex", ".ltx", ".latex", ".dtx", ".ins"};
         foreach (string ext in extensions)
         {
-            string tmp = full_path + ext;
-            if (FileUtils.test (tmp, FileTest.IS_REGULAR))
-                return tmp;
+            string path_with_ext = full_path + ext;
+            if (FileUtils.test (path_with_ext, FileTest.IS_REGULAR))
+                return path_with_ext;
         }
 
         return null;
     }
 
+    // Get last existing file pushed on the stack
     private string? get_current_filename ()
     {
-        if (stack_files == null)
-            return null;
+        unowned SList<FileInStack?> stack_file = stack_files;
+        while (stack_file != null)
+        {
+            FileInStack file = stack_file.data;
+            if (file.exists)
+                return file.filename;
 
-        FileInStack file = stack_files.data;
-        return file.filename;
+            stack_file = stack_file.next;
+        }
+
+        return null;
     }
 
     private void push_file_on_stack (string filename, bool reliable)
@@ -771,11 +783,17 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         else
             clean_filename = filename;
 
-        string path = get_path_if_file_exists (clean_filename);
+        string? path = get_path_if_file_exists (clean_filename);
         if (path != null)
+        {
             file.filename = path;
+            file.exists = true;
+        }
         else
+        {
             file.filename = clean_filename;
+            file.exists = false;
+        }
 
         stack_files.prepend (file);
     }
