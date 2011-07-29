@@ -328,8 +328,27 @@ public class BuildToolRunner : GLib.Object
         catch (Error e)
         {
             view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
-            view.add_partition (e.message, PartitionState.FAILED,
-                job_partitions[job_num]);
+
+            Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
+            BuildIssue error_issue = BuildIssue ();
+            error_issue.message = e.message;
+            error_issue.message_type = BuildMessageType.ERROR;
+            error_issue.start_line = -1;
+            issues.add (error_issue);
+
+            // If the command doesn't seem to be installed, display a more understandable
+            // message.
+            if (e is SpawnError.NOENT)
+            {
+                BuildIssue info_issue = BuildIssue ();
+                info_issue.message =
+                    _("%s doesn't seem to be installed.").printf (command[0]);
+                info_issue.message_type = BuildMessageType.OTHER;
+                info_issue.start_line = -1;
+                issues.add (info_issue);
+            }
+
+            view.append_issues (job_partitions[job_num], issues);
 
             if (current_job.must_succeed)
                 failed ();
