@@ -56,7 +56,8 @@ public class BuildView : HBox
         MESSAGE_TYPE,
         WEIGHT,
         BASENAME,
-        FILENAME,
+        PATH,
+        FILE,
         START_LINE,
         END_LINE,
         LINE,
@@ -85,7 +86,8 @@ public class BuildView : HBox
             typeof (BuildMessageType),
             typeof (int),       // weight (normal or bold)
             typeof (string),    // basename
-            typeof (string),    // filename
+            typeof (string),    // path
+            typeof (File),      // file
             typeof (int),       // start line
             typeof (int),       // end line
             typeof (string)     // line (same as start line but for display)
@@ -140,7 +142,7 @@ public class BuildView : HBox
         view.insert_column_with_attributes (-1, _("Line"), new CellRendererText (),
             "text", BuildInfo.LINE);
 
-        view.set_tooltip_column (BuildInfo.FILENAME);
+        view.set_tooltip_column (BuildInfo.PATH);
 
         // selection
         TreeSelection select = view.get_selection ();
@@ -187,20 +189,19 @@ public class BuildView : HBox
             return false;
 
         BuildMessageType msg_type;
-        string filename;
+        File file;
         int start_line, end_line;
 
         model.get (iter,
             BuildInfo.MESSAGE_TYPE, out msg_type,
-            BuildInfo.FILENAME, out filename,
+            BuildInfo.FILE, out file,
             BuildInfo.START_LINE, out start_line,
             BuildInfo.END_LINE, out end_line,
             -1);
 
-        if (msg_type != BuildMessageType.OTHER && filename != null
-            && filename.length > 0)
+        if (msg_type != BuildMessageType.OTHER && file != null)
         {
-            jump_to_file (filename, start_line, end_line);
+            jump_to_file (file, start_line, end_line);
 
             // the row is selected
             return true;
@@ -225,9 +226,8 @@ public class BuildView : HBox
         return true;
     }
 
-    private void jump_to_file (string filename, int start_line, int end_line)
+    private void jump_to_file (File file, int start_line, int end_line)
     {
-        File file = File.new_for_path (filename);
         DocumentTab tab = main_window.open_document (file);
 
         // If the file was not yet opened, it takes some time. If we try to select the
@@ -236,8 +236,7 @@ public class BuildView : HBox
 
         if (start_line != -1)
         {
-            // start_line and end_line begins at 1 (from rubber),
-            // but select_lines() begins at 0 (gtksourceview)
+            // start_line and end_line begins at 1, but select_lines() begins at 0
             int end = end_line != -1 ? end_line - 1 : start_line;
             tab.document.select_lines (start_line - 1, end);
         }
@@ -275,6 +274,15 @@ public class BuildView : HBox
     {
         foreach (BuildIssue issue in issues)
         {
+            File file = null;
+            string path = null;
+
+            if (issue.filename != null)
+            {
+                file = File.new_for_path (issue.filename);
+                path = Utils.replace_home_dir_with_tilde (issue.filename);
+            }
+
             TreeIter iter;
             store.append (out iter, partition_id);
             store.set (iter,
@@ -284,7 +292,8 @@ public class BuildView : HBox
                 BuildInfo.WEIGHT,       400,
                 BuildInfo.BASENAME,     issue.filename != null ?
                                         Path.get_basename (issue.filename) : null,
-                BuildInfo.FILENAME,     issue.filename,
+                BuildInfo.FILE,         file,
+                BuildInfo.PATH,         path,
                 BuildInfo.START_LINE,   issue.start_line,
                 BuildInfo.END_LINE,     issue.end_line,
                 BuildInfo.LINE,         issue.start_line != -1 ?
