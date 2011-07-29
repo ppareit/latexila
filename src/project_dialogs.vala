@@ -30,60 +30,50 @@ namespace ProjectDialogs
             null);
 
         /* create dialog widgets */
-        VBox content_area = (VBox) dialog.get_content_area ();
+        VBox content_area = dialog.get_content_area () as VBox;
 
-        HBox hbox = new HBox (false, 6);
-        VBox vbox1 = new VBox (true, 6);
-        VBox vbox2 = new VBox (true, 6);
-        hbox.pack_start (vbox1, false, false);
-        hbox.pack_start (vbox2);
-        hbox.border_width = 6;
-
-        Label label1 = new Label (null);
-        label1.set_markup ("<b>" + _("Directory:") + "</b>");
-        Label label2 = new Label (null);
-        label2.set_markup ("<b>" + _("Main File:") + "</b>");
-        vbox1.pack_start (label1);
-        vbox1.pack_start (label2);
-
-        FileChooserButton file_chooser_button1 = new FileChooserButton (_("Directory"),
+        // directory
+        FileChooserButton directory_chooser = new FileChooserButton (_("Directory"),
             FileChooserAction.SELECT_FOLDER);
-        FileChooserButton file_chooser_button2 = new FileChooserButton (_("Main File"),
+        directory_chooser.set_size_request (250, -1);
+        Widget component = Utils.get_dialog_component (_("Directory"), directory_chooser);
+        content_area.pack_start (component, false);
+
+        // main file
+        FileChooserButton main_file_chooser = new FileChooserButton (_("Main File"),
             FileChooserAction.OPEN);
+        component = Utils.get_dialog_component (_("Main File"), main_file_chooser);
+        content_area.pack_start (component, false);
 
-        vbox2.pack_start (file_chooser_button1);
-        vbox2.pack_start (file_chooser_button2);
-
-        content_area.pack_start (hbox);
         content_area.show_all ();
 
         /* callbacks */
-        file_chooser_button1.file_set.connect (() =>
+        directory_chooser.file_set.connect (() =>
         {
-            File dir = file_chooser_button1.get_file ();
+            File dir = directory_chooser.get_file ();
             try
             {
-                file_chooser_button2.set_current_folder_file (dir);
+                main_file_chooser.set_current_folder_file (dir);
             }
             catch (Error e) {}
         });
 
         /* if a document is opened, go to the document's directory */
         Document? doc = main_window.active_document;
-        if (doc != null)
+        if (doc != null && doc.location != null)
         {
             try
             {
-                file_chooser_button1.set_file (doc.location.get_parent ());
-                file_chooser_button2.set_file (doc.location);
+                directory_chooser.set_file (doc.location.get_parent ());
+                main_file_chooser.set_file (doc.location);
             }
             catch (GLib.Error e) {}
         }
 
         while (dialog.run () == ResponseType.OK)
         {
-            File? directory = file_chooser_button1.get_file ();
-            File? main_file = file_chooser_button2.get_file ();
+            File? directory = directory_chooser.get_file ();
+            File? main_file = main_file_chooser.get_file ();
 
             if (directory == null || main_file == null)
                 continue;
@@ -129,30 +119,29 @@ namespace ProjectDialogs
             null);
 
         /* create dialog widgets */
-        VBox content_area = (VBox) dialog.get_content_area ();
+        VBox content_area = dialog.get_content_area () as VBox;
 
-        Label location = new Label (_("Location of the project: %s").printf (
-            Utils.replace_home_dir_with_tilde (project.directory.get_parse_name ())
-            + "/"));
+        // directory
+        string project_dir = project.directory.get_parse_name ();
+        project_dir = Utils.replace_home_dir_with_tilde (project_dir) + "/";
+        Label location = new Label (project_dir);
         location.set_line_wrap (true);
 
-        content_area.pack_start (location, false, false, 6);
+        Widget component = Utils.get_dialog_component (_("Location of the project"),
+            location);
+        content_area.pack_start (component, false);
 
-        HBox hbox = new HBox (false, 6);
-        content_area.pack_start (hbox);
-
-        Label label = new Label (_("Main File:"));
-        hbox.pack_start (label, false, false);
-
-        FileChooserButton file_chooser_button = new FileChooserButton (_("Main File"),
+        // main file
+        FileChooserButton main_file_chooser = new FileChooserButton (_("Main File"),
             FileChooserAction.OPEN);
-        hbox.pack_start (file_chooser_button);
+        component = Utils.get_dialog_component (_("Main File"), main_file_chooser);
+        content_area.pack_start (component, false);
 
         content_area.show_all ();
 
         try
         {
-            file_chooser_button.set_file (project.main_file);
+            main_file_chooser.set_file (project.main_file);
         }
         catch (Error e) {}
 
@@ -160,7 +149,7 @@ namespace ProjectDialogs
         bool ret = false;
         while (dialog.run () == ResponseType.OK)
         {
-            File? main_file = file_chooser_button.get_file ();
+            File? main_file = main_file_chooser.get_file ();
 
             if (main_file == null)
                 continue;

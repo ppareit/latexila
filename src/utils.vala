@@ -21,11 +21,8 @@ using Gtk;
 
 namespace Utils
 {
-    public void flush_queue ()
-    {
-        while (Gtk.events_pending ())
-            Gtk.main_iteration ();
-    }
+    /*************************************************************************/
+    // String utilities
 
     public string str_middle_truncate (string str, uint max_length)
     {
@@ -36,6 +33,51 @@ namespace Utils
         int l = str.length;
         return str[0:half_length] + "..." + str[l-half_length:l];
     }
+
+    public bool char_is_escaped (string text, long char_index)
+    {
+        return_val_if_fail (char_index < text.length, false);
+
+        int index = (int) char_index;
+        if (! string_get_prev_char (text, ref index, null))
+            return false;
+
+        bool escaped = false;
+        while (true)
+        {
+            unichar cur_char;
+            bool first_char = ! string_get_prev_char (text, ref index, out cur_char);
+
+            if (cur_char != '\\')
+                break;
+
+            escaped = ! escaped;
+
+            if (first_char)
+                break;
+        }
+
+        return escaped;
+    }
+
+    // The opposite of string.get_next_char ().
+    // TODO remove this function when it is included upstream
+    // See https://bugzilla.gnome.org/show_bug.cgi?id=655185
+    private bool string_get_prev_char (string str, ref int index, out unichar c)
+    {
+        c = str.get_char (index);
+        if (index <= 0 || c == '\0')
+            return false;
+
+        unowned string str_at_index = (string) ((char*) str + index);
+        unowned string str_prev = str_at_index.prev_char ();
+        index = (int) ((char*) str_prev - (char*) str);
+        return true;
+    }
+
+
+    /*************************************************************************/
+    // URI, File or Path utilities
 
     public string replace_home_dir_with_tilde (string uri)
     {
@@ -110,75 +152,6 @@ namespace Utils
         return l;
     }
 
-    public const uint ALL_WORKSPACES = 0xffffff;
-
-    /* Get the workspace the window is on
-     *
-     * This function gets the workspace that the #GtkWindow is visible on,
-     * it returns ALL_WORKSPACES if the window is sticky, or if
-     * the window manager doesn't support this function.
-     */
-    public uint get_window_workspace (Gtk.Window gtkwindow)
-    {
-        return_val_if_fail (gtkwindow.get_realized (), 0);
-
-        uint ret = ALL_WORKSPACES;
-
-        Gdk.Window window = gtkwindow.get_window ();
-        Gdk.Display display = window.get_display ();
-        unowned X.Display x_display = Gdk.x11_display_get_xdisplay (display);
-
-        X.Atom type;
-        int format;
-        ulong nitems;
-        ulong bytes_after;
-        uint *workspace;
-
-        Gdk.error_trap_push ();
-
-        int result = x_display.get_window_property (Gdk.x11_drawable_get_xid (window),
-            Gdk.x11_get_xatom_by_name_for_display (display, "_NET_WM_DESKTOP"),
-            0, long.MAX, false, X.XA_CARDINAL, out type, out format, out nitems,
-            out bytes_after, out workspace);
-
-        int err = Gdk.error_trap_pop ();
-
-        if (err != X.Success || result != X.Success)
-            return ret;
-
-        if (type == X.XA_CARDINAL && format == 32 && nitems > 0)
-            ret = workspace[0];
-
-        X.free (workspace);
-        return ret;
-    }
-
-    public Widget add_scrollbar (Widget child)
-    {
-        ScrolledWindow scrollbar = new ScrolledWindow (null, null);
-        scrollbar.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
-        scrollbar.add (child);
-        return scrollbar;
-    }
-
-    public void print_build_tool (BuildTool build_tool)
-    {
-        stdout.printf ("\n=== Build Tool ===\n");
-        stdout.printf ("desc: %s\n", build_tool.description);
-        stdout.printf ("ext: %s\n", build_tool.extensions);
-        stdout.printf ("label: %s\n", build_tool.label);
-        stdout.printf ("icon: %s\n\n", build_tool.icon);
-
-        foreach (BuildJob build_job in build_tool.jobs)
-        {
-            stdout.printf ("== Build Job ==\n");
-            stdout.printf ("must succeed: %s\n", build_job.must_succeed.to_string ());
-            stdout.printf ("post processor: %s\n",
-                BuildTools.get_post_processor_name_from_type (build_job.post_processor));
-            stdout.printf ("command: %s\n\n", build_job.command);
-        }
-    }
-
     public void delete_file (File file)
     {
         try
@@ -190,120 +163,6 @@ namespace Utils
             stderr.printf ("Warning: delete file \"%s\" failed: %s\n",
                 file.get_parse_name (), e.message);
         }
-    }
-
-    public bool tree_model_iter_prev (TreeModel model, ref TreeIter iter)
-    {
-        TreePath path = model.get_path (iter);
-        if (path.prev ())
-        {
-            bool ret = model.get_iter (out iter, path);
-            return ret;
-        }
-        return false;
-    }
-
-    public void set_entry_error (Widget entry, bool error)
-    {
-        if (error)
-        {
-            Gdk.Color red, white;
-            Gdk.Color.parse ("#FF6666", out red);
-            Gdk.Color.parse ("white", out white);
-            entry.modify_base (StateType.NORMAL, red);
-            entry.modify_text (StateType.NORMAL, white);
-        }
-        else
-        {
-            entry.modify_base (StateType.NORMAL, null);
-            entry.modify_text (StateType.NORMAL, null);
-        }
-    }
-
-    // get indice of selected row in the treeview
-    // returns -1 if no row is selected
-    public int get_selected_row (TreeView view, out TreeIter iter = null)
-    {
-        TreeSelection select = view.get_selection ();
-        if (select.get_selected (null, out iter))
-        {
-            TreeModel model = view.get_model ();
-            TreePath path = model.get_path (iter);
-            return path.get_indices ()[0];
-        }
-        return -1;
-    }
-
-    public Gdk.Pixbuf get_pixbuf_from_stock (string stock_id, Gtk.IconSize size)
-    {
-        Gtk.Invisible w = new Gtk.Invisible ();
-        Gdk.Pixbuf pixbuf = w.render_icon (stock_id, size, "vala");
-        return pixbuf;
-    }
-
-    public Button get_toolbar_button (string stock_id)
-    {
-        return _get_toolbar_button_impl (stock_id, false);
-    }
-
-    public ToggleButton get_toolbar_toggle_button (string stock_id)
-    {
-        return (ToggleButton) _get_toolbar_button_impl (stock_id, true);
-    }
-
-    private Button _get_toolbar_button_impl (string stock_id, bool toggle)
-    {
-        Button button;
-        if (toggle)
-            button = new ToggleButton ();
-        else
-            button = new Button ();
-
-        Image image = new Image.from_stock (stock_id, IconSize.MENU);
-        button.add (image);
-        button.set_relief (ReliefStyle.NONE);
-        return button;
-    }
-
-    public bool char_is_escaped (string text, long char_index)
-    {
-        return_val_if_fail (char_index < text.length, false);
-
-        int index = (int) char_index;
-        if (! string_get_prev_char (text, ref index, null))
-            return false;
-
-        bool escaped = false;
-        while (true)
-        {
-            unichar cur_char;
-            bool first_char = ! string_get_prev_char (text, ref index, out cur_char);
-
-            if (cur_char != '\\')
-                break;
-
-            escaped = ! escaped;
-
-            if (first_char)
-                break;
-        }
-
-        return escaped;
-    }
-
-    // The opposite of string.get_next_char ().
-    // TODO remove this function when it is included upstream
-    // See https://bugzilla.gnome.org/show_bug.cgi?id=655185
-    private bool string_get_prev_char (string str, ref int index, out unichar c)
-    {
-        c = str.get_char (index);
-        if (index <= 0 || c == '\0')
-            return false;
-
-        unowned string str_at_index = (string) ((char*) str + index);
-        unowned string str_prev = str_at_index.prev_char ();
-        index = (int) ((char*) str_prev - (char*) str);
-        return true;
     }
 
     // origin can be equal to common_dir, but target must be different
@@ -372,5 +231,182 @@ namespace Utils
         // add the target basename
         relative_path += target.get_basename ();
         return relative_path;
+    }
+
+
+    /*************************************************************************/
+    // UI stuff
+
+    public Widget add_scrollbar (Widget child)
+    {
+        ScrolledWindow scrollbar = new ScrolledWindow (null, null);
+        scrollbar.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
+        scrollbar.add (child);
+        return scrollbar;
+    }
+
+    public void set_entry_error (Widget entry, bool error)
+    {
+        if (error)
+        {
+            Gdk.Color red, white;
+            Gdk.Color.parse ("#FF6666", out red);
+            Gdk.Color.parse ("white", out white);
+            entry.modify_base (StateType.NORMAL, red);
+            entry.modify_text (StateType.NORMAL, white);
+        }
+        else
+        {
+            entry.modify_base (StateType.NORMAL, null);
+            entry.modify_text (StateType.NORMAL, null);
+        }
+    }
+
+    public bool tree_model_iter_prev (TreeModel model, ref TreeIter iter)
+    {
+        TreePath path = model.get_path (iter);
+        if (path.prev ())
+        {
+            bool ret = model.get_iter (out iter, path);
+            return ret;
+        }
+        return false;
+    }
+
+    // get indice of selected row in the treeview
+    // returns -1 if no row is selected
+    public int get_selected_row (TreeView view, out TreeIter iter = null)
+    {
+        TreeSelection select = view.get_selection ();
+        if (select.get_selected (null, out iter))
+        {
+            TreeModel model = view.get_model ();
+            TreePath path = model.get_path (iter);
+            return path.get_indices ()[0];
+        }
+        return -1;
+    }
+
+    public Gdk.Pixbuf get_pixbuf_from_stock (string stock_id, Gtk.IconSize size)
+    {
+        Gtk.Invisible w = new Gtk.Invisible ();
+        Gdk.Pixbuf pixbuf = w.render_icon (stock_id, size, "vala");
+        return pixbuf;
+    }
+
+    public Button get_toolbar_button (string stock_id)
+    {
+        return _get_toolbar_button_impl (stock_id, false);
+    }
+
+    public ToggleButton get_toolbar_toggle_button (string stock_id)
+    {
+        return (ToggleButton) _get_toolbar_button_impl (stock_id, true);
+    }
+
+    private Button _get_toolbar_button_impl (string stock_id, bool toggle)
+    {
+        Button button;
+        if (toggle)
+            button = new ToggleButton ();
+        else
+            button = new Button ();
+
+        Image image = new Image.from_stock (stock_id, IconSize.MENU);
+        button.add (image);
+        button.set_relief (ReliefStyle.NONE);
+        return button;
+    }
+
+    public Widget get_dialog_component (string title, Widget widget)
+    {
+        VBox vbox = new VBox (false, 6);
+        vbox.border_width = 6;
+
+        // title in bold, left aligned
+        Label label = new Label (null);
+        label.set_markup ("<b>" + title + "</b>");
+        label.xalign = (float) 0.0;
+        vbox.pack_start (label, false, false);
+
+        // left margin for the widget
+        Alignment alignment = new Alignment ((float) 0.5, (float) 0.5, (float) 1.0,
+            (float) 1.0);
+        alignment.left_padding = 12;
+        alignment.add (widget);
+        vbox.pack_start (alignment);
+
+        return vbox;
+    }
+
+
+    /*************************************************************************/
+    // Misc
+
+    public void flush_queue ()
+    {
+        while (Gtk.events_pending ())
+            Gtk.main_iteration ();
+    }
+
+    public const uint ALL_WORKSPACES = 0xffffff;
+
+    /* Get the workspace the window is on
+     *
+     * This function gets the workspace that the #GtkWindow is visible on,
+     * it returns ALL_WORKSPACES if the window is sticky, or if
+     * the window manager doesn't support this function.
+     */
+    public uint get_window_workspace (Gtk.Window gtkwindow)
+    {
+        return_val_if_fail (gtkwindow.get_realized (), 0);
+
+        uint ret = ALL_WORKSPACES;
+
+        Gdk.Window window = gtkwindow.get_window ();
+        Gdk.Display display = window.get_display ();
+        unowned X.Display x_display = Gdk.x11_display_get_xdisplay (display);
+
+        X.Atom type;
+        int format;
+        ulong nitems;
+        ulong bytes_after;
+        uint *workspace;
+
+        Gdk.error_trap_push ();
+
+        int result = x_display.get_window_property (Gdk.x11_drawable_get_xid (window),
+            Gdk.x11_get_xatom_by_name_for_display (display, "_NET_WM_DESKTOP"),
+            0, long.MAX, false, X.XA_CARDINAL, out type, out format, out nitems,
+            out bytes_after, out workspace);
+
+        int err = Gdk.error_trap_pop ();
+
+        if (err != X.Success || result != X.Success)
+            return ret;
+
+        if (type == X.XA_CARDINAL && format == 32 && nitems > 0)
+            ret = workspace[0];
+
+        X.free (workspace);
+        return ret;
+    }
+
+    public void print_build_tool (BuildTool build_tool)
+    {
+        stdout.printf ("\n=== Build Tool ===\n");
+        stdout.printf ("desc: %s\n", build_tool.description);
+        stdout.printf ("ext: %s\n", build_tool.extensions);
+        stdout.printf ("label: %s\n", build_tool.label);
+        stdout.printf ("icon: %s\n\n", build_tool.icon);
+
+        foreach (BuildJob build_job in build_tool.jobs)
+        {
+            stdout.printf ("== Build Job ==\n");
+            stdout.printf ("must succeed: %s\n", build_job.must_succeed.to_string ());
+            stdout.printf ("post processor: %s\n",
+                BuildTools.get_post_processor_name_from_type (build_job.post_processor));
+            stdout.printf ("command: %s\n\n", build_job.command);
+        }
     }
 }

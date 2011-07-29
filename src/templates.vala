@@ -124,14 +124,14 @@ public class Templates : GLib.Object
 
         /* icon view for the default templates */
         IconView icon_view_default_templates = create_icon_view (default_store);
-        Widget component = get_dialog_component (_("Default templates"),
-            icon_view_default_templates);
+        Widget scrollbar = Utils.add_scrollbar (icon_view_default_templates);
+        Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
         vpaned.pack1 (component, true, true);
 
         /* icon view for the personal templates */
         IconView icon_view_personal_templates = create_icon_view (personal_store);
-        component = get_dialog_component (_("Your personal templates"),
-            icon_view_personal_templates);
+        scrollbar = Utils.add_scrollbar (icon_view_personal_templates);
+        component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
         vpaned.pack2 (component, false, true);
 
         content_area.show_all ();
@@ -205,31 +205,6 @@ public class Templates : GLib.Object
         dialog.destroy ();
     }
 
-    private Widget get_dialog_component (string title, Widget widget)
-    {
-        // title in bold at the left
-        // widget is below, with a left margin, with scrollbars
-
-        VBox vbox = new VBox (false, 6);
-
-        Label label = new Label (null);
-        label.set_markup ("<b>" + title + "</b>");
-        label.xalign = (float) 0.0;
-        vbox.pack_start (label, false, false);
-
-        Alignment alignment = new Alignment ((float) 0.5, (float) 0.5, (float) 1.0,
-            (float) 1.0);
-        alignment.left_padding = 12;
-        vbox.pack_start (alignment);
-
-        // with a scrollbar (without that there is a problem for resizing the
-        // dialog, we can make it bigger but not smaller...)
-        Widget scrollbar = Utils.add_scrollbar (widget);
-        alignment.add (scrollbar);
-
-        return vbox;
-    }
-
     public void show_dialog_create (MainWindow parent)
     {
         return_if_fail (parent.active_tab != null);
@@ -239,26 +214,23 @@ public class Templates : GLib.Object
             Stock.CANCEL, ResponseType.REJECT,
             null);
 
-        dialog.set_default_size (400, 330);
+        dialog.set_default_size (420, 370);
 
-        Box content_area = (Box) dialog.get_content_area ();
+        Box content_area = dialog.get_content_area () as Box;
+        content_area.homogeneous = false;
 
         /* name */
-        HBox hbox = new HBox (false, 5);
-        Label label = new Label (_("Name of the new template:"));
         Entry entry = new Entry ();
-
-        hbox.pack_start (label, false, false, 0);
-        hbox.pack_start (entry, false, false, 0);
-        content_area.pack_start (hbox, false, false, 10);
+        Widget component = Utils.get_dialog_component (_("Name of the new template"),
+            entry);
+        content_area.pack_start (component, false);
 
         /* icon */
         // we take the default store because it contains all the icons
         IconView icon_view = create_icon_view (default_store);
         Widget scrollbar = Utils.add_scrollbar (icon_view);
-        Frame frame = new Frame (_("Choose an icon:"));
-        frame.add (scrollbar);
-        content_area.pack_start (frame, true, true, 10);
+        component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
+        content_area.pack_start (component);
 
         content_area.show_all ();
 
@@ -312,8 +284,10 @@ public class Templates : GLib.Object
         /* icon view for the personal templates */
         IconView icon_view = create_icon_view (personal_store);
         icon_view.set_selection_mode (SelectionMode.MULTIPLE);
-        Widget component = get_dialog_component (_("Personal templates"), icon_view);
-        content_area.pack_start (component, true, true, 10);
+        Widget scrollbar = Utils.add_scrollbar (icon_view);
+        Widget component = Utils.get_dialog_component (_("Personal templates"),
+            scrollbar);
+        content_area.pack_start (component);
         content_area.show_all ();
 
         int nb_personal_templates_before = nb_personal_templates;
