@@ -107,9 +107,11 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             reg_badbox_output =
                 new Regex ("(.*)has occurred while \\output is active");
 
-            reg_warning = new Regex (
-                "^(((! )?(La|pdf)TeX)|Package|Class) .*Warning[^:]*:\\s*(.*)",
-                RegexCompileFlags.CASELESS);
+            string warning_str = "^(((! )?(La|pdf)TeX)|Package|Class)";
+            warning_str += "(?P<name>.*) Warning[^:]*:\\s*(?P<contents>.*)";
+            reg_warning = new Regex (warning_str,
+                RegexCompileFlags.CASELESS | RegexCompileFlags.OPTIMIZE);
+
             reg_warning_no_file = new Regex ("(No file .*)");
             reg_warning_line = new Regex ("(.*) on input line (\\d+)\\.$");
             reg_warning_international_line = new Regex ("(.*)(\\d+)\\.$");
@@ -296,17 +298,22 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         switch (status)
         {
             case FilterStatus.START:
-                if (reg_warning.match (line))
+                MatchInfo match_info;
+                if (reg_warning.match (line, 0, out match_info))
                 {
                     msg.message_type = BuildMessageType.WARNING;
 
-                    string[] strings = reg_warning.split (line);
+                    string contents = match_info.fetch_named ("contents");
 
-                    if (detect_warning_line (strings[5], false))
+                    string name = match_info.fetch_named ("name").strip ();
+                    if (name != "")
+                        contents = @"$name: $contents";
+
+                    if (detect_warning_line (contents, false))
                         add_msg ();
                     else
                     {
-                        line_buf = strings[5];
+                        line_buf = contents;
                         nb_lines++;
                     }
 
