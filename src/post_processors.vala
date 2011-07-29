@@ -196,6 +196,7 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
             reg_rule_str += "(-{12}\\R){2}";
             reg_rule_str += "Running '(?P<cmd>.*)'\\R";
             reg_rule_str += "-{12}\\R";
+            reg_rule_str += "((?U)(.*\\R)*)"; // ungreedy
             reg_rule_str += "Latexmk: applying rule .*\\R";
             reg_rule_str += "(For rule '.*', running .*\\R)?";
             reg_rule_str += "(?P<output>(?U)(.*\\R)*)"; // ungreedy
