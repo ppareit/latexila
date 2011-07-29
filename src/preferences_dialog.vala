@@ -273,14 +273,14 @@ public class PreferencesDialog : Dialog
             SettingsBindFlags.DEFAULT);
 
         var interactive_comp_spinbutton =
-            (Widget) builder.get_object ("interactive_comp_spinbutton");
+            builder.get_object ("interactive_comp_spinbutton") as Widget;
         settings.bind ("interactive-completion-num", interactive_comp_spinbutton, "value",
             SettingsBindFlags.DEFAULT);
         set_sensitivity (settings, "interactive-completion",
             interactive_comp_spinbutton);
 
         Label interactive_comp_label =
-            (Label) builder.get_object ("interactive_comp_label");
+            builder.get_object ("interactive_comp_label") as Label;
         set_plural (interactive_comp_label, settings, "interactive-completion-num",
             (n) => ngettext ("character", "characters", n));
 
@@ -292,7 +292,7 @@ public class PreferencesDialog : Dialog
         settings.bind ("latexmk-always-show-all", latexmk_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
 
-        var build_tools_view = (TreeView) builder.get_object ("build_tools_treeview");
+        var build_tools_view = builder.get_object ("build_tools_treeview") as TreeView;
         init_build_tools_treeview (build_tools_view);
 
         Button bt_properties = builder.get_object ("build_tool_properties") as Button;
@@ -624,7 +624,7 @@ public class PreferencesDialog : Dialog
                 BuildToolColumn.SHOW, tool.show,
                 BuildToolColumn.PIXBUF, tool.icon,
                 BuildToolColumn.LABEL, tool.label,
-                BuildToolColumn.DESCRIPTION, tool.description,
+                BuildToolColumn.DESCRIPTION, Markup.escape_text (tool.description),
                 -1);
         }
     }

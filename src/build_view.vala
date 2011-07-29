@@ -281,6 +281,9 @@ public class BuildView : HBox
             {
                 file = File.new_for_path (issue.filename);
                 path = Utils.replace_home_dir_with_tilde (issue.filename);
+
+                // the path is displayed in a tooltip
+                path = Markup.escape_text (path);
             }
 
             TreeIter iter;
