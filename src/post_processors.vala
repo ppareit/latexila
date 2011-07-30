@@ -191,25 +191,26 @@ private class LatexmkPostProcessor : GLib.Object, PostProcessor
 
         try
         {
-            string reg_rule_str = "^-{12}\\R";
+            string ungreedy_lines = "((?U)(.*\\R)*)";
+
+            string reg_rule_str = "-{12}\\R";
             reg_rule_str += "(?P<line>Run number \\d+ of rule '(?P<rule>.*)')\\R";
             reg_rule_str += "(-{12}\\R){2}";
             reg_rule_str += "Running '(?P<cmd>.*)'\\R";
             reg_rule_str += "-{12}\\R";
-            reg_rule_str += "((?U)(.*\\R)*)"; // ungreedy
-            reg_rule_str += "Latexmk: applying rule .*\\R";
+            reg_rule_str += ungreedy_lines;
+            reg_rule_str += "(Latexmk: applying rule .*\\R)+";
             reg_rule_str += "(For rule '.*', running .*\\R)?";
-            reg_rule_str += "(?P<output>(?U)(.*\\R)*)"; // ungreedy
+            reg_rule_str += "(?P<output>" + ungreedy_lines + ")";
             reg_rule_str += "(Latexmk:|Rule '.*':)";
 
-            reg_rule = new Regex (reg_rule_str,
-                RegexCompileFlags.MULTILINE | RegexCompileFlags.OPTIMIZE);
+            reg_rule = new Regex (reg_rule_str, RegexCompileFlags.OPTIMIZE);
 
-            string reg_no_rule_str = "^(Latexmk: This is Latexmk.*\\R)?";
+            string reg_no_rule_str = "(Latexmk: This is Latexmk.*\\R)?";
             reg_no_rule_str += "(\\*{4} Report bugs.*\\R)?";
             reg_no_rule_str += "(?P<output>(.*\\R)*)";
 
-            reg_no_rule = new Regex (reg_no_rule_str, RegexCompileFlags.MULTILINE);
+            reg_no_rule = new Regex (reg_no_rule_str);
         }
         catch (RegexError e)
         {
