@@ -51,6 +51,7 @@ public class BuildToolRunner : GLib.Object
     public BuildToolRunner (File file, BuildTool? tool, BuildView view,
         Gtk.Action action_stop_exec)
     {
+        // FIXME really useful?
         return_if_fail (tool != null);
 
         this.file = file;
@@ -68,7 +69,7 @@ public class BuildToolRunner : GLib.Object
 
         // verify if file extension is allowed for the build tool
         string[] extensions = tool.extensions.split (" ");
-        if (tool.extensions.length > 0
+        if (0 < tool.extensions.length
             && ! (Utils.get_extension (filename) in extensions))
         {
             stderr.printf ("Warning: bad file extension\n");
@@ -252,20 +253,10 @@ public class BuildToolRunner : GLib.Object
                 break;
         }
 
-        post_processor.process (file, output, status);
+        post_processor.set_status (status);
+        post_processor.process (file, output);
 
-        PostProcessorIssues[] all_issues = post_processor.get_issues ();
-        foreach (PostProcessorIssues issues in all_issues)
-        {
-            if (issues.partition_msg != null)
-            {
-                TreeIter iter = view.add_partition (issues.partition_msg,
-                    issues.partition_state, job_partitions[job_num]);
-                view.append_issues (iter, issues.issues);
-            }
-            else
-                view.append_issues (job_partitions[job_num], issues.issues);
-        }
+        view.append_messages (job_partitions[job_num], post_processor.get_messages ());
 
         if (post_processor.successful)
         {
@@ -307,15 +298,14 @@ public class BuildToolRunner : GLib.Object
         if (current_job.post_processor == PostProcessorType.RUBBER
             && filename.contains (" "))
         {
-            Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
-            BuildIssue issue = BuildIssue ();
-            issue.message =
+            BuildMsg message = BuildMsg ();
+            message.text =
                 _("Rubber may not support filenames with spaces (even in a directory)");
-            issue.message_type = BuildMessageType.WARNING;
-            issue.filename = filename;
-            issues.add (issue);
+            message.type = BuildMsgType.WARNING;
+            message.filename = filename;
+            message.lines_set = false;
 
-            view.append_issues (job_partitions[job_num], issues);
+            view.append_single_message (job_partitions[job_num], message);
         }
 
         try
@@ -329,26 +319,23 @@ public class BuildToolRunner : GLib.Object
         {
             view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
 
-            Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
-            BuildIssue error_issue = BuildIssue ();
-            error_issue.message = e.message;
-            error_issue.message_type = BuildMessageType.ERROR;
-            error_issue.start_line = -1;
-            issues.add (error_issue);
+            BuildMsg error_msg = BuildMsg ();
+            error_msg.text = e.message;
+            error_msg.type = BuildMsgType.ERROR;
+            error_msg.lines_set = false;
+            view.append_single_message (job_partitions[job_num], error_msg);
 
             // If the command doesn't seem to be installed, display a more understandable
             // message.
             if (e is SpawnError.NOENT)
             {
-                BuildIssue info_issue = BuildIssue ();
-                info_issue.message =
+                BuildMsg info_msg = BuildMsg ();
+                info_msg.text =
                     _("%s doesn't seem to be installed.").printf (command[0]);
-                info_issue.message_type = BuildMessageType.OTHER;
-                info_issue.start_line = -1;
-                issues.add (info_issue);
+                info_msg.type = BuildMsgType.OTHER;
+                info_msg.lines_set = false;
+                view.append_single_message (job_partitions[job_num], info_msg);
             }
-
-            view.append_issues (job_partitions[job_num], issues);
 
             if (current_job.must_succeed)
                 failed ();

@@ -17,11 +17,8 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-private class LatexPostProcessor : GLib.Object, PostProcessor
+private class LatexPostProcessor : PostProcessor
 {
-    public bool successful { get; protected set; }
-    private Gee.ArrayList<BuildIssue?> issues = new Gee.ArrayList<BuildIssue?> ();
-
     private enum FilterStatus
     {
         START,
@@ -47,7 +44,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
     private const int NO_LINE = -1;
 
     // the current message
-    private BuildIssue msg;
+    private BuildMsg msg;
 
     // if a message is splitted, we enter in a different status, so we fetch the end
     // of the message
@@ -132,9 +129,8 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         }
     }
 
-    public void process (File file, string output, int status)
+    public override void process (File file, string output)
     {
-        successful = status == 0;
         directory_path = file.get_parent ().get_parse_name ();
 
         string[] lines = output.split ("\n");
@@ -145,20 +141,12 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         // Stats.
         // Since all the messages printed by the 'latex' or 'pdflatex' command are in
         // English, it would be strange to have only this one translated.
-        msg.message = "%d %s, %d %s, %d %s".printf (
+        msg.text = "%d %s, %d %s, %d %s".printf (
             nb_errors,   nb_errors   == 1 ? "error"   : "errors",
             nb_warnings, nb_warnings == 1 ? "warning" : "warnings",
             nb_badboxes, nb_badboxes == 1 ? "badbox"  : "badboxes");
-        msg.message_type = BuildMessageType.OTHER;
+        msg.type = BuildMsgType.OTHER;
         add_msg (false);
-    }
-
-    public PostProcessorIssues[] get_issues ()
-    {
-        PostProcessorIssues[] pp_issues = new PostProcessorIssues[1];
-        pp_issues[0].partition_msg = null;
-        pp_issues[0].issues = issues;
-        return pp_issues;
     }
 
     private void latex_output_filter (string line)
@@ -210,7 +198,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 if (! reg_badbox.match (line))
                     return false;
 
-                msg.message_type = BuildMessageType.BADBOX;
+                msg.type = BuildMsgType.BADBOX;
 
                 if (detect_badbox_line (line, false))
                     add_msg ();
@@ -245,7 +233,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         {
             status = FilterStatus.START;
             string[] strings = reg_badbox_lines.split (badbox);
-            msg.message = strings[1];
+            msg.text = strings[1];
             int n1 = int.parse (strings[2]);
             int n2 = int.parse (strings[3]);
 
@@ -267,7 +255,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         {
             status = FilterStatus.START;
             string[] strings = reg_badbox_line.split (badbox);
-            msg.message = strings[1];
+            msg.text = strings[1];
             msg.start_line = int.parse (strings[2]);
             return true;
         }
@@ -276,7 +264,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         {
             status = FilterStatus.START;
             string[] strings = reg_badbox_output.split (badbox);
-            msg.message = strings[1];
+            msg.text = strings[1];
             msg.start_line = NO_LINE;
             return true;
         }
@@ -284,7 +272,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         else if (nb_lines > 4 || current_line_is_empty)
         {
             status = FilterStatus.START;
-            msg.message = badbox;
+            msg.text = badbox;
             msg.start_line = NO_LINE;
             return true;
         }
@@ -301,7 +289,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 MatchInfo match_info;
                 if (reg_warning.match (line, 0, out match_info))
                 {
-                    msg.message_type = BuildMessageType.WARNING;
+                    msg.type = BuildMsgType.WARNING;
 
                     string contents = match_info.fetch_named ("contents");
 
@@ -322,9 +310,9 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
                 else if (reg_warning_no_file.match (line))
                 {
-                    msg.message_type = BuildMessageType.WARNING;
+                    msg.type = BuildMsgType.WARNING;
                     string[] strings = reg_warning_no_file.split (line);
-                    msg.message = strings[1];
+                    msg.text = strings[1];
                     msg.start_line = NO_LINE;
                     add_msg ();
                     return true;
@@ -355,7 +343,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         {
             status = FilterStatus.START;
             string[] strings = reg_warning_line.split (warning);
-            msg.message = strings[1];
+            msg.text = strings[1];
             msg.start_line = int.parse (strings[2]);
             return true;
         }
@@ -364,7 +352,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         {
             status = FilterStatus.START;
             string[] strings = reg_warning_international_line.split (warning);
-            msg.message = strings[1];
+            msg.text = strings[1];
             msg.start_line = int.parse (strings[2]);
             return true;
         }
@@ -372,7 +360,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         else if (warning[warning.length - 1] == '.')
         {
             status = FilterStatus.START;
-            msg.message = warning;
+            msg.text = warning;
             msg.start_line = NO_LINE;
             return true;
         }
@@ -380,7 +368,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         else if (nb_lines > 5 || current_line_is_empty)
         {
             status = FilterStatus.START;
-            msg.message = warning;
+            msg.text = warning;
             msg.start_line = NO_LINE;
             return true;
         }
@@ -420,12 +408,12 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
                 if (found)
                 {
                     nb_lines++;
-                    msg.message_type = BuildMessageType.ERROR;
+                    msg.type = BuildMsgType.ERROR;
 
                     // the message is complete
                     if (line[line.length - 1] == '.')
                     {
-                        msg.message = tmp;
+                        msg.text = tmp;
                         status = FilterStatus.ERROR_SEARCH_LINE;
                     }
                     // the message is splitted
@@ -445,12 +433,12 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
                 if (line[line.length - 1] == '.')
                 {
-                    msg.message = line_buf;
+                    msg.text = line_buf;
                     status = FilterStatus.ERROR_SEARCH_LINE;
                 }
                 else if (nb_lines > 4)
                 {
-                    msg.message = line_buf;
+                    msg.text = line_buf;
                     msg.start_line = NO_LINE;
                     add_msg ();
                     nb_lines = 0;
@@ -494,11 +482,11 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             return false;
 
         msg.start_line = NO_LINE;
-        msg.message_type = BuildMessageType.OTHER;
+        msg.type = BuildMsgType.OTHER;
 
         if (! reg_other_bytes.match (line))
         {
-            msg.message = line;
+            msg.text = line;
             add_msg (false);
             return true;
         }
@@ -512,7 +500,7 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
 
         // do nothing
         if (nb_bytes < 1024)
-            msg.message = line;
+            msg.text = line;
 
         // size in KB (less than 1 MB)
         else if (nb_bytes < 1024 * 1024)
@@ -536,13 +524,13 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
             {
                 string new_line =
                     reg_other_bytes.replace_literal (line, -1, 0, human_size);
-                msg.message = new_line;
+                msg.text = new_line;
             }
 
             // nice try!
             catch (RegexError e)
             {
-                msg.message = line;
+                msg.text = line;
             }
         }
 
@@ -822,8 +810,8 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
     private void add_msg (bool set_filename = true)
     {
         // exclude some useless messages here
-        if (msg.message_type == BuildMessageType.WARNING
-            && msg.message == "There were undefined references.")
+        if (msg.type == BuildMsgType.WARNING
+            && msg.text == "There were undefined references.")
         {
             reset_msg ();
             return;
@@ -836,39 +824,43 @@ private class LatexPostProcessor : GLib.Object, PostProcessor
         {
             // A message on several lines are sometimes indented, so when the lines are
             // catenated there are a lot of spaces. We replace these spaces by one space.
-            msg.message = reg_spaces.replace (msg.message, -1, 0, " ");
+            msg.text = reg_spaces.replace (msg.text, -1, 0, " ");
         }
         catch (RegexError e)
         {
             stderr.printf ("Latex post processor warning: %s\n", e.message);
         }
 
-        switch (msg.message_type)
+        switch (msg.type)
         {
-            case BuildMessageType.BADBOX:
+            case BuildMsgType.BADBOX:
                 nb_badboxes++;
                 break;
 
-            case BuildMessageType.WARNING:
+            case BuildMsgType.WARNING:
                 nb_warnings++;
                 break;
 
-            case BuildMessageType.ERROR:
+            case BuildMsgType.ERROR:
                 nb_errors++;
                 break;
         }
 
-        issues.add (msg);
+        if (msg.start_line != NO_LINE)
+            msg.lines_set = true;
+
+        append_message (msg);
         reset_msg ();
     }
 
     private void reset_msg ()
     {
-        msg = BuildIssue ();
-        msg.message = null;
-        msg.message_type = BuildMessageType.OTHER;
+        msg = BuildMsg ();
+        msg.text = null;
+        msg.type = BuildMsgType.OTHER;
         msg.filename = null;
         msg.start_line = NO_LINE;
         msg.end_line = NO_LINE;
+        msg.lines_set = false;
     }
 }

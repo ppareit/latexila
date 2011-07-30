@@ -27,7 +27,7 @@ public enum PartitionState
     ABORTED
 }
 
-public enum BuildMessageType
+public enum BuildMsgType
 {
     ERROR,
     WARNING,
@@ -35,21 +35,22 @@ public enum BuildMessageType
     OTHER
 }
 
-public struct BuildIssue
+public struct BuildMsg
 {
-    public string message;
-    public BuildMessageType message_type;
+    public string text;
+    public BuildMsgType type;
     public string? filename;
 
-    // no line: -1
-    // if end_line is -1, end_line takes the same value as start_line
+    public bool lines_set;
     public int start_line;
+
+    // if -1, takes the same value as start_line
     public int end_line;
 }
 
 public class BuildView : HBox
 {
-    enum BuildInfo
+    private enum BuildInfo
     {
         ICON,
         MESSAGE,
@@ -68,22 +69,22 @@ public class BuildView : HBox
     public bool show_warnings { get; set; }
     public bool show_badboxes { get; set; }
 
-    private unowned MainWindow main_window;
-    private TreeStore store;
-    private TreeModelFilter filtered_model;
-    private TreeView view;
-    private unowned ToggleAction action_view_bottom_panel;
+    private unowned MainWindow _main_window;
+    private TreeStore _store;
+    private TreeModelFilter _filtered_model;
+    private TreeView _view;
+    private unowned ToggleAction _action_view_bottom_panel;
 
     public BuildView (MainWindow main_window, Toolbar toolbar,
         ToggleAction view_bottom_panel)
     {
-        this.main_window = main_window;
-        this.action_view_bottom_panel = view_bottom_panel;
+        _main_window = main_window;
+        _action_view_bottom_panel = view_bottom_panel;
 
-        store = new TreeStore (BuildInfo.N_COLUMNS,
+        _store = new TreeStore (BuildInfo.N_COLUMNS,
             typeof (string),    // icon (stock-id)
             typeof (string),    // message
-            typeof (BuildMessageType),
+            typeof (BuildMsgType),
             typeof (int),       // weight (normal or bold)
             typeof (string),    // basename
             typeof (string),    // path
@@ -94,31 +95,31 @@ public class BuildView : HBox
         );
 
         /* filter errors/warnings/badboxes */
-        filtered_model = new TreeModelFilter (store, null);
-        filtered_model.set_visible_func ((model, iter) =>
+        _filtered_model = new TreeModelFilter (_store, null);
+        _filtered_model.set_visible_func ((model, iter) =>
         {
-            BuildMessageType msg_type;
+            BuildMsgType msg_type;
             model.get (iter, BuildInfo.MESSAGE_TYPE, out msg_type, -1);
 
             switch (msg_type)
             {
-                case BuildMessageType.ERROR:
+                case BuildMsgType.ERROR:
                     return show_errors;
-                case BuildMessageType.WARNING:
+                case BuildMsgType.WARNING:
                     return show_warnings;
-                case BuildMessageType.BADBOX:
+                case BuildMsgType.BADBOX:
                     return show_badboxes;
                 default:
                     return true;
             }
         });
 
-        this.notify["show-errors"].connect (() => filtered_model.refilter ());
-        this.notify["show-warnings"].connect (() => filtered_model.refilter ());
-        this.notify["show-badboxes"].connect (() => filtered_model.refilter ());
+        this.notify["show-errors"].connect (() => _filtered_model.refilter ());
+        this.notify["show-warnings"].connect (() => _filtered_model.refilter ());
+        this.notify["show-badboxes"].connect (() => _filtered_model.refilter ());
 
         /* create tree view */
-        view = new TreeView.with_model (filtered_model);
+        _view = new TreeView.with_model (_filtered_model);
 
         TreeViewColumn column_job = new TreeViewColumn ();
         column_job.title = _("Job");
@@ -135,17 +136,17 @@ public class BuildView : HBox
         column_job.add_attribute (renderer_text, "text", BuildInfo.MESSAGE);
         column_job.add_attribute (renderer_text, "weight", BuildInfo.WEIGHT);
 
-        view.append_column (column_job);
+        _view.append_column (column_job);
 
-        view.insert_column_with_attributes (-1, _("File"), new CellRendererText (),
+        _view.insert_column_with_attributes (-1, _("File"), new CellRendererText (),
             "text", BuildInfo.BASENAME);
-        view.insert_column_with_attributes (-1, _("Line"), new CellRendererText (),
+        _view.insert_column_with_attributes (-1, _("Line"), new CellRendererText (),
             "text", BuildInfo.LINE);
 
-        view.set_tooltip_column (BuildInfo.PATH);
+        _view.set_tooltip_column (BuildInfo.PATH);
 
         // selection
-        TreeSelection select = view.get_selection ();
+        TreeSelection select = _view.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
         select.set_select_function ((select, model, path, path_currently_selected) =>
         {
@@ -157,7 +158,7 @@ public class BuildView : HBox
         });
 
         // double-click
-        view.row_activated.connect ((path) => select_row (filtered_model, path));
+        _view.row_activated.connect ((path) => select_row (_filtered_model, path));
 
         // close button
         Button close_button = new Button ();
@@ -168,11 +169,11 @@ public class BuildView : HBox
         close_button.clicked.connect (() =>
         {
             this.hide ();
-            action_view_bottom_panel.active = false;
+            _action_view_bottom_panel.active = false;
         });
 
         // with a scrollbar
-        Widget sw = Utils.add_scrollbar (view);
+        Widget sw = Utils.add_scrollbar (_view);
         pack_start (sw);
 
         VBox vbox = new VBox (false, 0);
@@ -188,7 +189,7 @@ public class BuildView : HBox
             // the row is not selected
             return false;
 
-        BuildMessageType msg_type;
+        BuildMsgType msg_type;
         File file;
         int start_line, end_line;
 
@@ -199,7 +200,7 @@ public class BuildView : HBox
             BuildInfo.END_LINE, out end_line,
             -1);
 
-        if (msg_type != BuildMessageType.OTHER && file != null)
+        if (msg_type != BuildMsgType.OTHER && file != null)
         {
             jump_to_file (file, start_line, end_line);
 
@@ -208,14 +209,14 @@ public class BuildView : HBox
         }
 
         // maybe it's a parent, so we can show or hide its children
-        else if (msg_type == BuildMessageType.OTHER)
+        else if (msg_type == BuildMsgType.OTHER)
         {
             if (model.iter_has_child (iter))
             {
-                if (view.is_row_expanded (path))
-                    view.collapse_row (path);
+                if (_view.is_row_expanded (path))
+                    _view.collapse_row (path);
                 else
-                    view.expand_to_path (path);
+                    _view.expand_to_path (path);
 
                 // the row is not selected
                 return false;
@@ -228,7 +229,7 @@ public class BuildView : HBox
 
     private void jump_to_file (File file, int start_line, int end_line)
     {
-        DocumentTab tab = main_window.open_document (file);
+        DocumentTab tab = _main_window.open_document (file);
 
         // If the file was not yet opened, it takes some time. If we try to select the
         // lines when the file is not fully charged, the lines are simply not selected.
@@ -244,67 +245,85 @@ public class BuildView : HBox
 
     public void clear ()
     {
-        store.clear ();
-        view.columns_autosize ();
+        _store.clear ();
+        _view.columns_autosize ();
     }
 
     public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent,
         bool bold = false)
     {
         TreeIter iter;
-        store.append (out iter, parent);
-        store.set (iter,
+        _store.append (out iter, parent);
+        _store.set (iter,
             BuildInfo.ICON,         get_icon_from_state (state),
             BuildInfo.MESSAGE,      msg,
-            BuildInfo.MESSAGE_TYPE, BuildMessageType.OTHER,
+            BuildInfo.MESSAGE_TYPE, BuildMsgType.OTHER,
             BuildInfo.WEIGHT,       bold ? 800 : 400,
             -1);
 
-        view.expand_all ();
+        _view.expand_all ();
 
         return iter;
     }
 
     public void set_partition_state (TreeIter partition_id, PartitionState state)
     {
-        store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state), -1);
+        _store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state), -1);
     }
 
-    public void append_issues (TreeIter partition_id, Gee.ArrayList<BuildIssue?> issues)
+    public void append_messages (TreeIter partition_id, Node<BuildMsg?> messages)
     {
-        foreach (BuildIssue issue in issues)
+        unowned Node<BuildMsg?> cur_node = messages.first_child ();
+        while (cur_node != null)
         {
-            File file = null;
-            string path = null;
-
-            if (issue.filename != null)
-            {
-                file = File.new_for_path (issue.filename);
-                path = Utils.replace_home_dir_with_tilde (issue.filename);
-
-                // the path is displayed in a tooltip
-                path = Markup.escape_text (path);
-            }
-
-            TreeIter iter;
-            store.append (out iter, partition_id);
-            store.set (iter,
-                BuildInfo.ICON,         get_icon_from_msg_type (issue.message_type),
-                BuildInfo.MESSAGE,      issue.message,
-                BuildInfo.MESSAGE_TYPE, issue.message_type,
-                BuildInfo.WEIGHT,       400,
-                BuildInfo.BASENAME,     issue.filename != null ?
-                                        Path.get_basename (issue.filename) : null,
-                BuildInfo.FILE,         file,
-                BuildInfo.PATH,         path,
-                BuildInfo.START_LINE,   issue.start_line,
-                BuildInfo.END_LINE,     issue.end_line,
-                BuildInfo.LINE,         issue.start_line != -1 ?
-                                        issue.start_line.to_string () : null,
-                -1);
+            TreeIter iter = append_single_message (partition_id, cur_node.data);
+            append_messages (iter, cur_node);
+            cur_node = cur_node.next_sibling ();
         }
 
-        view.expand_all ();
+        _view.expand_all ();
+    }
+
+    public TreeIter append_single_message (TreeIter partition_id, BuildMsg message)
+    {
+        File file = null;
+        string path = null;
+
+        if (message.filename != null)
+        {
+            file = File.new_for_path (message.filename);
+            path = Utils.replace_home_dir_with_tilde (message.filename);
+
+            // the path is displayed in a tooltip
+            path = Markup.escape_text (path);
+        }
+
+        int start_line = -1;
+        int end_line = -1;
+        string line_str = null;
+        if (message.lines_set)
+        {
+            start_line = message.start_line;
+            end_line = message.end_line;
+            line_str = start_line.to_string ();
+        }
+
+        TreeIter iter;
+        _store.append (out iter, partition_id);
+        _store.set (iter,
+            BuildInfo.ICON,         get_icon_from_msg_type (message.type),
+            BuildInfo.MESSAGE,      message.text,
+            BuildInfo.MESSAGE_TYPE, message.type,
+            BuildInfo.WEIGHT,       400,
+            BuildInfo.BASENAME,     file != null ? file.get_basename () : null,
+            BuildInfo.FILE,         file,
+            BuildInfo.PATH,         path,
+            BuildInfo.START_LINE,   start_line,
+            BuildInfo.END_LINE,     end_line,
+            BuildInfo.LINE,         line_str,
+            -1);
+
+        return iter;
     }
 
     private string? get_icon_from_state (PartitionState state)
@@ -324,17 +343,17 @@ public class BuildView : HBox
         }
     }
 
-    private string? get_icon_from_msg_type (BuildMessageType type)
+    private string? get_icon_from_msg_type (BuildMsgType type)
     {
         switch (type)
         {
-            case BuildMessageType.ERROR:
+            case BuildMsgType.ERROR:
                 return Stock.DIALOG_ERROR;
-            case BuildMessageType.WARNING:
+            case BuildMsgType.WARNING:
                 return Stock.DIALOG_WARNING;
-            case BuildMessageType.BADBOX:
+            case BuildMsgType.BADBOX:
                 return "badbox";
-            case BuildMessageType.OTHER:
+            case BuildMsgType.OTHER:
                 return null;
             default:
                 return_val_if_reached (null);
@@ -344,6 +363,6 @@ public class BuildView : HBox
     public new void show ()
     {
         base.show ();
-        action_view_bottom_panel.active = true;
+        _action_view_bottom_panel.active = true;
     }
 }
