@@ -277,7 +277,14 @@ public class BuildView : HBox
         while (cur_node != null)
         {
             TreeIter iter = append_single_message (partition_id, cur_node.data);
-            append_messages (iter, cur_node);
+
+            // the node contains children
+            if (cur_node.children != null)
+            {
+                _store.set (iter, BuildInfo.ICON, "completion_choice", -1);
+                append_messages (iter, cur_node);
+            }
+
             cur_node = cur_node.next_sibling ();
         }
 
