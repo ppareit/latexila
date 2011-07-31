@@ -185,8 +185,7 @@ private class LatexmkPostProcessor : PostProcessor
         {
             string ungreedy_lines = "((?U)(.*\\R)*)";
 
-            string reg_rule_str = "-{12}\\R";
-            reg_rule_str += "(?P<title>Run number \\d+ of rule '(?P<rule>.*)')\\R";
+            string reg_rule_str = "(?P<title>Run number \\d+ of rule '(?P<rule>.*)')\\R";
             reg_rule_str += "(-{12}\\R){2}";
             reg_rule_str += "Running '(?P<cmd>.*)'\\R";
             reg_rule_str += "-{12}\\R";
@@ -194,7 +193,8 @@ private class LatexmkPostProcessor : PostProcessor
             reg_rule_str += "(Latexmk: applying rule .*\\R)+";
             reg_rule_str += "(For rule '.*', running .*\\R)?";
             reg_rule_str += "(?P<output>" + ungreedy_lines + ")";
-            reg_rule_str += "(Latexmk:|Rule '.*':)";
+            reg_rule_str += "(?P<latexmk>(Latexmk:|Rule '.*':)" + ungreedy_lines + ")";
+            reg_rule_str += "(-{12}\\R|$)"; // the $ matches only the end of the string
 
             _reg_rule = new Regex (reg_rule_str, RegexCompileFlags.OPTIMIZE);
 
@@ -264,6 +264,16 @@ private class LatexmkPostProcessor : PostProcessor
             else
                 _all_messages.append ((owned) cmd_messages);
 
+            /* Latexmk output */
+            string latexmk_output = match_info.fetch_named ("latexmk");
+            PostProcessor all_output_pp = new AllOutputPostProcessor ();
+            all_output_pp.process (file, latexmk_output);
+            Node<BuildMsg?> latexmk_messages = all_output_pp.get_messages ();
+
+            title_msg.text = _("Latexmk messages");
+            latexmk_messages.data = title_msg;
+            _all_messages.append ((owned) latexmk_messages);
+
             try
             {
                 match_info.next ();
@@ -282,7 +292,8 @@ private class LatexmkPostProcessor : PostProcessor
             latex_pp.process (file, last_latex_output);
             Node<BuildMsg?> latex_messages = latex_pp.get_messages ();
 
-            bool last_cmd_is_latex_cmd = _all_messages.last_child () == last_latex_node;
+            bool last_cmd_is_latex_cmd =
+                _all_messages.last_child ().prev_sibling () == last_latex_node;
 
             // Almost all the time, the user wants to see only the latex output.
             // If an error has occured, we verify if the last command was a latex command.
