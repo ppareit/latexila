@@ -46,6 +46,9 @@ public struct BuildMsg
 
     // if -1, takes the same value as start_line
     public int end_line;
+
+    // if the message have children, show them?
+    public bool expand;
 }
 
 public class BuildView : HBox
@@ -261,7 +264,7 @@ public class BuildView : HBox
             BuildInfo.WEIGHT,       bold ? 800 : 400,
             -1);
 
-        _view.expand_all ();
+        _view.expand_to_path (_store.get_path (iter));
 
         return iter;
     }
@@ -271,24 +274,31 @@ public class BuildView : HBox
         _store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state), -1);
     }
 
-    public void append_messages (TreeIter partition_id, Node<BuildMsg?> messages)
+    public void append_messages (TreeIter parent, Node<BuildMsg?> messages,
+        bool parent_is_partition = true)
     {
         unowned Node<BuildMsg?> cur_node = messages.first_child ();
         while (cur_node != null)
         {
-            TreeIter iter = append_single_message (partition_id, cur_node.data);
+            TreeIter child = append_single_message (parent, cur_node.data);
 
             // the node contains children
             if (cur_node.children != null)
             {
-                _store.set (iter, BuildInfo.ICON, "completion_choice", -1);
-                append_messages (iter, cur_node);
+                _store.set (child, BuildInfo.ICON, "completion_choice", -1);
+                append_messages (child, cur_node, false);
+
+                if (cur_node.data.expand)
+                    _view.expand_to_path (_store.get_path (child));
             }
 
             cur_node = cur_node.next_sibling ();
         }
 
-        _view.expand_all ();
+        // All partitions are expanded, but we must do that when the partition have
+        // children.
+        if (parent_is_partition)
+            _view.expand_row (_store.get_path (parent), false);
     }
 
     public TreeIter append_single_message (TreeIter partition_id, BuildMsg message)

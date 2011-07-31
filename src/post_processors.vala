@@ -249,6 +249,10 @@ private class LatexmkPostProcessor : PostProcessor
             title_msg.lines_set = false;
             title_msg.text = match_info.fetch_named ("title");
 
+            // Do not expand the row, so the user have first a global view of what have
+            // been executed.
+            title_msg.expand = false;
+
             cmd_messages.data = title_msg;
 
             /* command line */
@@ -306,6 +310,9 @@ private class LatexmkPostProcessor : PostProcessor
             {
                 // take the title
                 latex_messages.data = last_latex_node.data;
+
+                // expand only the last latex command
+                latex_messages.data.expand = true;
 
                 // take the command line
                 latex_messages.insert (0, last_latex_node.first_child ().unlink ());
