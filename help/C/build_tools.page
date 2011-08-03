@@ -17,7 +17,7 @@
 <!-- <links type="section" /> -->
 
 <section id="overview">
-  <title>Overview</title>
+  <title>Introduction</title>
 
   <p>Several different tools can be used for a document compilation. There are some
   low-level commands, and two higher-level tools: Latexmk and Rubber.</p>
