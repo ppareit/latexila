@@ -28,3 +28,18 @@ Where to report bugs
 Bugs should be reported on the GNOME bugzilla:
 
     https://bugzilla.gnome.org/browse.cgi?product=latexila
+
+
+Translations
+============
+
+LaTeXila uses ITS Tool for translating XML files. This is used for the
+documentation (in Mallard), the build tools and the templates.
+
+Here is a summary page about the translation status of LaTeXila:
+
+    http://l10n.gnome.org/module/latexila/
+
+If you want to help, see the "How Tos" section of this page:
+
+    https://live.gnome.org/TranslationProject
