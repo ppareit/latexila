@@ -167,6 +167,7 @@ public class MainWindow : Window
     {
         { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
             N_("Show or hide the main toolbar"), on_show_main_toolbar },
+        // Translators: "Edit" here is an adjective.
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
             N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "ViewSidePanel", null, N_("_Side panel"), null,

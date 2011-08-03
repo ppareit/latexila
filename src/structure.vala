@@ -613,12 +613,17 @@ public class Structure : VBox
         if (_action_names == null)
         {
             _action_names = new string[StructAction.NB_ACTIONS];
+            // Translators: it's a verb
             _action_names[StructAction.CUT]         = _("cut");
+            // Translators: it's a verb
             _action_names[StructAction.COPY]        = _("copy");
             _action_names[StructAction.DELETE]      = _("delete");
             _action_names[StructAction.SELECT]      = _("select");
+            // Translators: it's a verb
             _action_names[StructAction.COMMENT]     = _("comment");
+            // Translators: it's a verb
             _action_names[StructAction.SHIFT_LEFT]  = _("shift left");
+            // Translators: it's a verb
             _action_names[StructAction.SHIFT_RIGHT] = _("shift right");
         }
 

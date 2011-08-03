@@ -5,7 +5,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 </chunk>
-<chunk>
+<chunk its:locNote="This must be translated by a usepackage LaTeX command.">
 % babel package or equivalent
 </chunk>
 <chunk its:translate="no">

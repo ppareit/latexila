@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-07-18 01:01+0200\n"
+"POT-Creation-Date: 2011-08-04 00:52+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,11 +34,11 @@ msgid "View the PostScript file"
 msgstr ""
 
 #: C/build_tools.xml:84(tool/description)
-msgid "Create a PDF file from LaTeX sources with the 'pdflatex' command"
+msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
 msgstr ""
 
 #: C/build_tools.xml:90(tool/description)
-msgid "Create a DVI file from LaTeX sources with the 'latex' command"
+msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
 msgstr ""
 
 #: C/build_tools.xml:98(tool/description)
