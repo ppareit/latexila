@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-07-27 14:40+0200\n"
+"POT-Creation-Date: 2011-08-03 21:46+0200\n"
 "PO-Revision-Date: 2011-05-06 21:21+0100\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: French\n"
@@ -16,6 +16,147 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
+msgid "View PDF"
+msgstr "Voir PDF"
+
+#: C/build_tools.xml:38(tool/description)
+msgid "View the PDF file"
+msgstr "Voir le fichier PDF"
+
+#: C/build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:54
+msgid "View DVI"
+msgstr "Voir DVI"
+
+#: C/build_tools.xml:44(tool/description)
+msgid "View the DVI file"
+msgstr "Voir le fichier DVI"
+
+#: C/build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:56
+msgid "View PS"
+msgstr "Voir PS"
+
+#: C/build_tools.xml:50(tool/description)
+msgid "View the PostScript file"
+msgstr "Voir le fichier PostScript"
+
+#: C/build_tools.xml:84(tool/description)
+msgid "Create a PDF file from LaTeX sources with the 'pdflatex' command"
+msgstr ""
+"Créer un fichier PDF à partir des sources LaTeX grâce à la commande "
+"« pdflatex »."
+
+#: C/build_tools.xml:90(tool/description)
+msgid "Create a DVI file from LaTeX sources with the 'latex' command"
+msgstr ""
+
+#: C/build_tools.xml:98(tool/description)
+msgid "Run BibTeX (bibliography)"
+msgstr ""
+
+#: C/build_tools.xml:104(tool/description)
+msgid "Run MakeIndex"
+msgstr ""
+
+#: C/build_tools.xml:112(tool/description)
+msgid "Convert the DVI document to the PDF format"
+msgstr ""
+
+#: C/build_tools.xml:118(tool/description)
+msgid "Convert the DVI document to the PostScript format"
+msgstr ""
+
+#: C/build_tools.xml:124(tool/description)
+msgid "Convert the PostScript document to the PDF format"
+msgstr ""
+
+#: C/article.xml:8(template/chunk) C/beamer.xml:8(template/chunk)
+#: C/book.xml:8(template/chunk) C/report.xml:8(template/chunk)
+#, no-wrap
+msgid ""
+"\n"
+"% babel package or equivalent\n"
+msgstr ""
+"\n"
+"\\usepackage[francais]{babel}\n"
+
+#: C/letter.xml:2(template/chunk)
+#, no-wrap
+msgid ""
+"\n"
+"\\documentclass[a4paper,11pt]{letter}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\n"
+"\\address{Your name\\\\Your address\\\\Your phone number}\n"
+"\\signature{Your name}\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{Destination\\\\Address of the destination\\\\Phone number of the destination}\n"
+"\n"
+"\\opening{Dear Sir,}\n"
+"\n"
+"% corps of the letter\n"
+"\n"
+"\\closing{Yours sincerely,}\n"
+"\n"
+"%\\cc{Other destination}\n"
+"%\\ps{PS: PostScriptum}\n"
+"%\\encl{Enclosures}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
+msgstr ""
+"\n"
+"\\documentclass[11pt]{lettre}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\\usepackage[francais]{babel}\n"
+"\n"
+"% pour enlever le trait de pliage\n"
+"\\makeatletter\n"
+"\\newcommand*{\\NoRule}{\\renewcommand*{\\rule@length}{0}}\n"
+"\\makeatother\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{\n"
+"  Destinataire\\\\\n"
+"  Son adresse\\\\\n"
+"  Son numéro de téléphone\n"
+"}\n"
+"\n"
+"% pas de trait de pliage\n"
+"\\NoRule\n"
+"\n"
+"\\name{Votre nom}\n"
+"\\address{Votre adresse}\n"
+"\\lieu{Lieu de rédaction}\n"
+"\n"
+"\\telephone{Votre numéro de téléphone}\n"
+"%\\notelephone\n"
+"\n"
+"\\fax{Votre numéro de fax}\n"
+"%\\nofax\n"
+"\n"
+"\\email{Votre adresse e-mail}\n"
+"\n"
+"\\opening{Cher destinataire,}\n"
+"\n"
+"% corps de la lettre\n"
+"\n"
+"\\closing{Salutations,}\n"
+"\n"
+"%\\cc{Autres destinataires}\n"
+"%\\ps{PS : PostScriptum}\n"
+"%\\encl{Liste d'objets inclus dans l'enveloppe}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
 
 #: ../src/build_tool_dialog.vala:48
 msgid "Execute"
@@ -28,18 +169,6 @@ msgstr "Convertir"
 #: ../src/build_tool_dialog.vala:53
 msgid "View File"
 msgstr "Visionner le fichier"
-
-#: ../src/build_tool_dialog.vala:54
-msgid "View DVI"
-msgstr "Visionner DVI"
-
-#: ../src/build_tool_dialog.vala:55
-msgid "View PDF"
-msgstr "Visionner PDF"
-
-#: ../src/build_tool_dialog.vala:56
-msgid "View PS"
-msgstr "Visionner PS"
 
 #: ../src/build_tool_dialog.vala:71
 msgid "Build Tool"
@@ -57,25 +186,30 @@ msgstr "Doit réussir"
 msgid "Post Processor"
 msgstr "Post processeur"
 
-#: ../src/build_tool_runner.vala:313
+#: ../src/build_tool_runner.vala:303
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 "Rubber peut ne pas supporter des noms de fichiers avec des espaces (même "
 "dans un répertoire)"
 
-#: ../src/build_view.vala:122
+#: ../src/build_tool_runner.vala:334
+#, c-format
+msgid "%s doesn't seem to be installed."
+msgstr ""
+
+#: ../src/build_view.vala:128
 msgid "Job"
 msgstr "Tâche"
 
-#: ../src/build_view.vala:138
+#: ../src/build_view.vala:144
 msgid "File"
 msgstr "Fichier"
 
-#: ../src/build_view.vala:140
+#: ../src/build_view.vala:146
 msgid "Line"
 msgstr "Ligne"
 
-#: ../src/build_view.vala:164 ../src/side_panel.vala:75
+#: ../src/build_view.vala:170 ../src/side_panel.vala:75
 msgid "Hide panel"
 msgstr "Cacher le panneau"
 
@@ -131,13 +265,14 @@ msgstr ""
 msgid "Close document"
 msgstr "Fermer le document"
 
-#: ../src/document_tab.vala:233 ../src/project_dialogs.vala:51
-#: ../src/project_dialogs.vala:147 ../src/project_dialogs.vala:222
+#. main file
+#: ../src/document_tab.vala:233 ../src/project_dialogs.vala:43
+#: ../src/project_dialogs.vala:45 ../src/project_dialogs.vala:135
+#: ../src/project_dialogs.vala:137 ../src/project_dialogs.vala:211
 msgid "Main File"
 msgstr "Fichier principal"
 
-#: ../src/document_tab.vala:235 ../src/project_dialogs.vala:45
-#: ../src/project_dialogs.vala:144
+#: ../src/document_tab.vala:235
 msgid "Main File:"
 msgstr "Fichier principal :"
 
@@ -1207,7 +1342,7 @@ msgstr "Changer le fichier principal du projet courant"
 msgid "_Manage Projects"
 msgstr "_Gestion des projets"
 
-#: ../src/main_window.vala:134 ../src/project_dialogs.vala:189
+#: ../src/main_window.vala:134 ../src/project_dialogs.vala:178
 msgid "Manage Projects"
 msgstr "Gestion des projets"
 
@@ -1424,6 +1559,10 @@ msgstr ""
 msgid "translator-credits"
 msgstr "Sébastien Wilmet <sebastien.wilmet@gmail.com>"
 
+#: ../src/post_processors.vala:277
+msgid "Latexmk messages"
+msgstr ""
+
 #: ../src/preferences_dialog.vala:32
 msgid "Preferences"
 msgstr "Préférences"
@@ -1483,42 +1622,40 @@ msgstr "Activer '%s'"
 msgid "New Project"
 msgstr "Nouveau projet"
 
-#: ../src/project_dialogs.vala:43
-msgid "Directory:"
-msgstr "Répertoire :"
-
-#: ../src/project_dialogs.vala:49 ../src/project_dialogs.vala:209
+#. directory
+#: ../src/project_dialogs.vala:36 ../src/project_dialogs.vala:39
+#: ../src/project_dialogs.vala:198
 msgid "Directory"
 msgstr "Répertoire"
 
-#: ../src/project_dialogs.vala:109
+#: ../src/project_dialogs.vala:99
 #, c-format
 msgid "There is a conflict with the project \"%s\"."
 msgstr "Il y a un conflit avec le projet \"%s\"."
 
-#: ../src/project_dialogs.vala:124
+#: ../src/project_dialogs.vala:114
 msgid "Configure Project"
 msgstr "Configurer le projet"
 
-#: ../src/project_dialogs.vala:134
-#, c-format
-msgid "Location of the project: %s"
+#: ../src/project_dialogs.vala:130
+#, fuzzy
+msgid "Location of the project"
 msgstr "Emplacement du projet : %s"
 
-#: ../src/project_dialogs.vala:247 ../src/project_dialogs.vala:304
+#: ../src/project_dialogs.vala:236 ../src/project_dialogs.vala:293
 msgid "Clear All"
 msgstr "Effacer tout"
 
-#: ../src/project_dialogs.vala:279
+#: ../src/project_dialogs.vala:268
 #, c-format
 msgid "Do you really want to delete the project \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer le projet \"%s\" ?"
 
-#: ../src/project_dialogs.vala:300
+#: ../src/project_dialogs.vala:289
 msgid "Do you really want to clear all projects?"
 msgstr "Êtes-vous sûr d'effacer tous les projets ?"
 
-#: ../src/project_dialogs.vala:332
+#: ../src/project_dialogs.vala:321
 msgid "The Main File is not in the directory."
 msgstr "Le fichier principal n'est pas dans le répertoire."
 
@@ -1702,31 +1839,33 @@ msgstr "Présentation"
 msgid "New File..."
 msgstr "Nouveau fichier..."
 
-#: ../src/templates.vala:127
+#: ../src/templates.vala:128
 msgid "Default templates"
 msgstr "Modèles par défaut"
 
-#: ../src/templates.vala:133
+#: ../src/templates.vala:134
 msgid "Your personal templates"
 msgstr "Vos modèles personnels"
 
-#: ../src/templates.vala:237
+#: ../src/templates.vala:212
 msgid "New Template..."
 msgstr "Nouveau modèle..."
 
-#: ../src/templates.vala:248
-msgid "Name of the new template:"
+#: ../src/templates.vala:224
+#, fuzzy
+msgid "Name of the new template"
 msgstr "Nom du nouveau modèle :"
 
-#: ../src/templates.vala:259
-msgid "Choose an icon:"
+#: ../src/templates.vala:232
+#, fuzzy
+msgid "Choose an icon"
 msgstr "Choisissez une icône :"
 
-#: ../src/templates.vala:302
+#: ../src/templates.vala:274
 msgid "Delete Template(s)..."
 msgstr "Supprimer des modèles..."
 
-#: ../src/templates.vala:315
+#: ../src/templates.vala:288
 msgid "Personal templates"
 msgstr "Modèles personnels"
 
@@ -1958,3 +2097,6 @@ msgstr "Rechercher"
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
 msgstr "Basculer entre le mode de recherche et de remplacement"
+
+#~ msgid "Directory:"
+#~ msgstr "Répertoire :"
