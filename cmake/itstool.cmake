@@ -1,4 +1,4 @@
-function (itstool target_name src_dir tmp_dir install_dir)
+function (itstool target_name src_dir tmp_dir install_dir po_dir)
 	install (DIRECTORY "${src_dir}/C" DESTINATION ${install_dir})
 
 	# Get list of XML files
@@ -12,7 +12,7 @@ function (itstool target_name src_dir tmp_dir install_dir)
 	set (all_new_files)
 
 	# Foreach language
-	file (GLOB_RECURSE po_files "${src_dir}/*.po")
+	file (GLOB_RECURSE po_files "${po_dir}/*.po")
 	foreach (po_file ${po_files})
 		# Get the language name
 		get_filename_component (lang ${po_file} NAME_WE)

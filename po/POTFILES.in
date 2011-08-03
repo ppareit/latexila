@@ -1,6 +1,8 @@
 # List of source files containing translatable strings.
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
+data/build_tools/build_tools.pot
+data/templates/templates.pot
 src/application.vala
 src/app_settings.vala
 src/build_tool_dialog.vala

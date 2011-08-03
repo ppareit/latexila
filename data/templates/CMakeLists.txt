@@ -1,6 +1,7 @@
 set (src_dir "${latexila_SOURCE_DIR}/data/templates")
 set (tmp_dir "${latexila_BINARY_DIR}/data/templates")
 set (install_dir "${DATA_DIR}/templates")
+set (po_dir "${latexila_SOURCE_DIR}/po")
 
 # Get list of XML files
 file (GLOB path_files "${src_dir}/C/*")
@@ -38,7 +39,7 @@ set (all_new_files ${lang_files})
 # Generate *.tex foreach language
 ###
 
-file (GLOB po_files "${src_dir}/*.po")
+file (GLOB_RECURSE po_files "${po_dir}/*.po")
 foreach (po_file ${po_files})
 	# Get the language name
 	get_filename_component (lang ${po_file} NAME_WE)
