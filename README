@@ -43,3 +43,7 @@ Here is a summary page about the translation status of LaTeXila:
 If you want to help, see the "How Tos" section of this page:
 
     https://live.gnome.org/TranslationProject
+
+For translating the letter template (which require to translate it in one big
+block), there is a helper script in data/templates/tex2po.sh, so you can write
+the letter in a .tex file, with syntaxic color, etc.
