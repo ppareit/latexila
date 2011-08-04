@@ -2,7 +2,7 @@
 
 HELP_ID = latexila
 
-HELP_PAGES = \
+HELP_FILES = \
 	build_tools.page \
 	index.page
 
