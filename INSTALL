@@ -10,11 +10,11 @@ gdk-x11
 x11
 CMake >= 2.6.4
 gettext
+ITS Tool (http://itstool.org/)
 gsettings-desktop-schemas (optional)
 
-If you are installing LaTeXila from a .tar.bz2 or from a 'releases-*' branch,
+If you are installing LaTeXila from a tarball or from a 'releases-*' branch,
 you don't have to install Vala because the C code is already generated.
-Otherwise, see the CMake configuration at the end of this file.
 
 
 Simple install procedure
