@@ -135,7 +135,12 @@ $ ps2pdf document.ps</screen>
   <title>General Configuration</title>
 
   <p>
-    To configure the build tools, open the preferences dialog: <guiseq><gui style="menu">Edit</gui><gui style="menu">Preferences</gui><gui style="tab">LaTeX</gui></guiseq>
+    To configure the build tools, open the preferences dialog:
+    <guiseq>
+      <gui style="menu">Edit</gui>
+      <gui style="menu">Preferences</gui>
+      <gui style="tab">LaTeX</gui>
+    </guiseq>
   </p>
 
   <p>You will see a list with all the build tools. There are check buttons to show or hide
