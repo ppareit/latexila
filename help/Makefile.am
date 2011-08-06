@@ -6,4 +6,4 @@ HELP_FILES = \
 	build_tools.page \
 	index.page
 
-HELP_LINGUAS = de es
+HELP_LINGUAS = de es fr
