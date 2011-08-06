@@ -9,9 +9,9 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-04 14:21+0000\n"
+"POT-Creation-Date: 2011-08-06 16:19+0000\n"
 "PO-Revision-Date: 2011-08-04 17:54+0200\n"
-"Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
+"Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1470,12 +1470,12 @@ msgid "Show Warnings"
 msgstr "Affiche les avertissements"
 
 #: ../src/main_window.vala:181
-msgid "Show _BadBoxes"
-msgstr "Afficher les « _badbox »"
+msgid "Show _Bad Boxes"
+msgstr "Afficher les « _bad box »"
 
 #: ../src/main_window.vala:182
-msgid "Show BadBoxes"
-msgstr "Affiche les erreurs « badbox »"
+msgid "Show Bad Boxes"
+msgstr "Affiche les erreurs « bad box »"
 
 #: ../src/main_window.vala:313
 msgid "Symbols"
