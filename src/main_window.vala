@@ -178,8 +178,8 @@ public class MainWindow : Window
             N_("Show Errors"), on_build_show_errors },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
             N_("Show Warnings"), on_build_show_warnings },
-        { "BuildShowBadBoxes", "badbox", N_("Show _BadBoxes"), null,
-            N_("Show BadBoxes"), on_build_show_badboxes }
+        { "BuildShowBadBoxes", "badbox", N_("Show _Bad Boxes"), null,
+            N_("Show Bad Boxes"), on_build_show_badboxes }
     };
 
     private string file_chooser_current_folder = Environment.get_home_dir ();

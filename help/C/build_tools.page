@@ -97,7 +97,7 @@ $ ps2pdf document.ps</screen>
   <p>Also, Rubber filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd>
   command. As a consequence, when Rubber prints an error, it's more difficult to know
   which type of error it is. If you use Latexmk, errors are categorized into three types:
-  critical errors, simple warnings and bad-boxes (for example when a word exceed the
+  critical errors, simple warnings and bad boxes (for example when a word exceed the
   margin). With Rubber, there is no distinction between critical errors and simple
   warnings. See <link xref="#post-processors" /> for more information.</p>
 
@@ -187,7 +187,7 @@ $ ps2pdf document.ps</screen>
     <item>
       <title its:translate="no">latex</title>
       <p>Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands.
-      There can be three types of errors: critical errors, warnings, or bad-boxes. There
+      There can be three types of errors: critical errors, warnings, or bad boxes. There
       are also some other useful information: the size of the document, the number of
       pages, and the number of errors.</p>
     </item>
@@ -207,7 +207,7 @@ $ ps2pdf document.ps</screen>
     <item>
       <title its:translate="no">rubber</title>
       <p>This is the post-processor used for the <cmd>rubber</cmd> command. The errors are
-      categorized into two types: bad-boxes, and the others. So, unlike the <em>latex</em>
+      categorized into two types: bad boxes, and the others. So, unlike the <em>latex</em>
       post processor, there is no distinction between critical errors and simple
       warnings.</p>
     </item>
