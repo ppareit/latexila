@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-05 15:49+0000\n"
-"PO-Revision-Date: 2011-08-05 21:57+0100\n"
+"POT-Creation-Date: 2011-08-06 16:19+0000\n"
+"PO-Revision-Date: 2011-08-06 21:13+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -173,8 +173,8 @@ msgstr "Post-Prozessor"
 #: ../src/build_tool_runner.vala:303
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
-"Rubber unterstützt keine Dateinamen, die Leerzeichen enthalten (das gilt "
-"auch für Ordner)"
+"Rubber unterstützt keine Dateinamen, die Leerzeichen enthalten (das gilt auch "
+"für Ordner)"
 
 #: ../src/build_tool_runner.vala:334
 #, c-format
@@ -239,8 +239,7 @@ msgstr "Zu speichernde Dokumente auswählen:"
 
 #: ../src/dialogs.vala:132
 msgid "If you don't save, all your changes will be permanently lost."
-msgstr ""
-"Wenn Sie nicht speichern, sind alle Ihre Änderungen für immer verloren."
+msgstr "Wenn Sie nicht speichern, sind alle Ihre Änderungen für immer verloren."
 
 #: ../src/document_structure.vala:710
 msgid "The structure item already contains a sub-paragraph."
@@ -1450,12 +1449,12 @@ msgid "Show Warnings"
 msgstr "Warnungen anzeigen"
 
 #: ../src/main_window.vala:181
-msgid "Show _BadBoxes"
-msgstr "_BadBoxes anzeigen"
+msgid "Show _Bad Boxes"
+msgstr "_Bad Boxes anzeigen"
 
 #: ../src/main_window.vala:182
-msgid "Show BadBoxes"
-msgstr "BadBoxes anzeigen"
+msgid "Show Bad Boxes"
+msgstr "Bad Boxes anzeigen"
 
 #: ../src/main_window.vala:313
 msgid "Symbols"
@@ -1584,8 +1583,7 @@ msgstr "Möchten Sie wirklich das Erstellungswerkzeug »%s« löschen?"
 #: ../src/preferences_dialog.vala:395
 msgid "Do you really want to reset all build tools?"
 msgstr ""
-"Möchten Sie wirklich alle Werkzeuge auf den Auslieferungszustand "
-"zurücksetzen?"
+"Möchten Sie wirklich alle Werkzeuge auf den Auslieferungszustand zurücksetzen?"
 
 #: ../src/preferences_dialog.vala:474
 #, c-format
