@@ -38,6 +38,7 @@
       <description>Whether LaTeXila should automatically save modified files after a time interval. You can set the time interval with the "Autosave Interval" option.</description>
     </key>
     <key name="auto-save-interval" type="u">
+      <range min="1" max="100" />
       <default>10</default>
       <summary>Autosave Interval</summary>
       <description>Number of minutes after which LaTeXila will automatically save modified files. This will only take effect if the "Autosave" option is turned on.</description>
@@ -48,6 +49,7 @@
       <description>Whether LaTeXila should reopen the files that was opened the last time.</description>
     </key>
     <key name="tabs-size" type="u">
+      <range min="1" max="24" />
       <default>2</default>
       <summary>Tab Size</summary>
       <description>Specifies the number of spaces that should be displayed instead of Tab characters.</description>
@@ -77,7 +79,8 @@
       <summary>Highlight Matching Brackets</summary>
       <description>Whether LaTeXila should highlight matching brackets.</description>
     </key>
-    <key name="nb-most-used-symbols" type="i">
+    <key name="nb-most-used-symbols" type="u">
+      <range min="1" max="50" />
       <default>15</default>
       <summary>Number of most used symbols</summary>
     </key>
@@ -130,6 +133,7 @@
       <description>Automatically show commands proposals</description>
     </key>
     <key name="interactive-completion-num" type="u">
+      <range min="0" max="8" />
       <default>2</default>
       <summary>Interactive completion min chars</summary>
       <description>Minimum number of characters after '\' for interactive completion</description>

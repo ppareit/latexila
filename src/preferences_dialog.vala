@@ -149,7 +149,9 @@ public class PreferencesDialog : Dialog
         settings.bind ("display-line-numbers", display_line_nb_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
 
-        var tab_width_spinbutton = builder.get_object ("tab_width_spinbutton");
+        var tab_width_spinbutton =
+            builder.get_object ("tab_width_spinbutton") as SpinButton;
+        set_spin_button_range (tab_width_spinbutton, settings, "tabs-size");
         settings.bind ("tabs-size", tab_width_spinbutton, "value",
             SettingsBindFlags.DEFAULT);
 
@@ -157,7 +159,7 @@ public class PreferencesDialog : Dialog
         settings.bind ("insert-spaces", insert_spaces_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
 
-        Widget forget_no_tabs = (Widget) builder.get_object ("forget_no_tabs");
+        Widget forget_no_tabs = builder.get_object ("forget_no_tabs") as Widget;
         settings.bind ("forget-no-tabs", forget_no_tabs, "active",
             SettingsBindFlags.DEFAULT);
         set_sensitivity (settings, "insert-spaces", forget_no_tabs);
@@ -180,12 +182,14 @@ public class PreferencesDialog : Dialog
         settings.bind ("auto-save", autosave_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
 
-        var autosave_spinbutton = (Widget) builder.get_object ("autosave_spinbutton");
+        var autosave_spinbutton =
+            builder.get_object ("autosave_spinbutton") as SpinButton;
+        set_spin_button_range (autosave_spinbutton, settings, "auto-save-interval");
         settings.bind ("auto-save-interval", autosave_spinbutton, "value",
             SettingsBindFlags.DEFAULT);
         set_sensitivity (settings, "auto-save", autosave_spinbutton);
 
-        Label autosave_label = (Label) builder.get_object ("autosave_label");
+        Label autosave_label = builder.get_object ("autosave_label") as Label;
         set_plural (autosave_label, settings, "auto-save-interval",
             (n) => ngettext ("minute", "minutes", n));
 
@@ -200,7 +204,7 @@ public class PreferencesDialog : Dialog
             new GLib.Settings ("org.gnome.latexila.preferences.editor");
 
         var default_font_checkbutton =
-            (Button) builder.get_object ("default_font_checkbutton");
+            builder.get_object ("default_font_checkbutton") as Button;
         settings.bind ("use-default-font", default_font_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
         set_system_font_label (default_font_checkbutton);
@@ -215,10 +219,10 @@ public class PreferencesDialog : Dialog
         settings.bind ("editor-font", font_button, "font-name",
             SettingsBindFlags.DEFAULT);
 
-        var font_hbox = (Widget) builder.get_object ("font_hbox");
+        var font_hbox = builder.get_object ("font_hbox") as Widget;
         set_sensitivity (settings, "use-default-font", font_hbox, false);
 
-        TreeView schemes_treeview = (TreeView) builder.get_object ("schemes_treeview");
+        TreeView schemes_treeview = builder.get_object ("schemes_treeview") as TreeView;
         string current_scheme_id = settings.get_string ("scheme");
         init_schemes_treeview (schemes_treeview, current_scheme_id);
 
@@ -273,7 +277,9 @@ public class PreferencesDialog : Dialog
             SettingsBindFlags.DEFAULT);
 
         var interactive_comp_spinbutton =
-            builder.get_object ("interactive_comp_spinbutton") as Widget;
+            builder.get_object ("interactive_comp_spinbutton") as SpinButton;
+        set_spin_button_range (interactive_comp_spinbutton, settings,
+            "interactive-completion-num");
         settings.bind ("interactive-completion-num", interactive_comp_spinbutton, "value",
             SettingsBindFlags.DEFAULT);
         set_sensitivity (settings, "interactive-completion",
@@ -413,7 +419,9 @@ public class PreferencesDialog : Dialog
         GLib.Settings fb_settings =
             new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
 
-        var nb_most_used_symbols = builder.get_object ("nb_most_used_symbols");
+        var nb_most_used_symbols =
+            builder.get_object ("nb_most_used_symbols") as SpinButton;
+        set_spin_button_range (nb_most_used_symbols, settings, "nb-most-used-symbols");
         settings.bind ("nb-most-used-symbols", nb_most_used_symbols, "value",
             SettingsBindFlags.DEFAULT);
 
@@ -423,7 +431,7 @@ public class PreferencesDialog : Dialog
             SettingsBindFlags.DEFAULT);
 
         Widget auto_clean_up_checkbutton =
-            (Widget) builder.get_object ("auto_clean_up_checkbutton");
+            builder.get_object ("auto_clean_up_checkbutton") as Widget;
         latex_settings.bind ("automatic-clean", auto_clean_up_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
         set_sensitivity (latex_settings, "no-confirm-clean", auto_clean_up_checkbutton);
@@ -437,7 +445,7 @@ public class PreferencesDialog : Dialog
             SettingsBindFlags.DEFAULT);
 
         Widget vbox_file_browser_show_all =
-            (Widget) builder.get_object ("vbox_file_browser_show_all");
+            builder.get_object ("vbox_file_browser_show_all") as Widget;
         set_sensitivity (fb_settings, "show-all-files", vbox_file_browser_show_all);
 
         var file_browser_except = builder.get_object ("file_browser_except");
@@ -449,7 +457,7 @@ public class PreferencesDialog : Dialog
             SettingsBindFlags.DEFAULT);
 
         Widget file_browser_entry =
-            (Widget) builder.get_object ("file_browser_entry");
+            builder.get_object ("file_browser_entry") as Widget;
         fb_settings.bind ("file-extensions", file_browser_entry, "text",
             SettingsBindFlags.DEFAULT);
         set_sensitivity (fb_settings, "show-all-files", file_browser_entry, false);
@@ -489,6 +497,29 @@ public class PreferencesDialog : Dialog
             setting.get (k, "u", out v);
             label.label = plural (v);
         });
+    }
+
+    private void set_spin_button_range (SpinButton spin_button, GLib.Settings settings,
+        string key)
+    {
+        Variant range = settings.get_range (key);
+
+        string range_type;
+        Variant range_contents;
+        range.get ("(sv)", out range_type, out range_contents);
+
+        return_if_fail (range_type == "range");
+
+        uint min;
+        uint max;
+        range_contents.get ("(uu)", out min, out max);
+
+        uint cur_value;
+        settings.get (key, "u", out cur_value);
+
+        Adjustment adjustment = new Adjustment ((double) cur_value, (double) min,
+            (double) max, 1.0, 0, 0);
+        spin_button.set_adjustment (adjustment);
     }
 
     private enum StyleSchemes

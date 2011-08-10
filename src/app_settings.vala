@@ -94,7 +94,6 @@ public class AppSettings : GLib.Settings
         {
             uint val;
             setting.get (key, "u", out val);
-            val = val.clamp (1, 24);
 
             foreach (DocumentView view in Application.get_default ().get_views ())
                 view.tab_width = val;

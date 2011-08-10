@@ -168,7 +168,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         uint min_nb_chars;
         settings.get ("interactive-completion-num", "u", out min_nb_chars);
-        min_nb_chars = min_nb_chars.clamp (0, 8);
 
         return cmd != null && cmd.length > min_nb_chars;
     }

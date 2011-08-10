@@ -50,7 +50,7 @@ int main (string[] args)
         Config.SCHEMA_DIR != "/usr/share")
     {
         Environment.set_variable ("XDG_DATA_DIRS",
-            "/usr/local/share:/usr/share:" + Config.SCHEMA_DIR, true);
+            Config.SCHEMA_DIR + ":/usr/local/share:/usr/share", true);
     }
 
     /* internationalisation */

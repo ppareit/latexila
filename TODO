@@ -3,12 +3,6 @@ TODO
 See also the Roadmap:
 	http://projects.gnome.org/latexila/#roadmap
 
-LaTeXila 2.2
-============
-
-Translations: integration with GNOME Damned Lies
-
-
 LaTeXila ≥ 2.4
 ==============
 
@@ -28,7 +22,7 @@ LaTeXila ≥ 2.4
 	- Update on the fly the structure when the document is modified. An item can be inserted,
 	  deleted or modified. The simplest way I think is to re-run the parsing only on the modified
 	  lines (with a lower and upper bounds) every 2 seconds for example. This way, we simply
-	  delete all items between the two bounds, and the parsing will re-add them correcly.
+	  delete all items between the two bounds, and the parsing will re-add them correctly.
 
 (-) Edit toolbar: create a custom MenuToolButton:
     Now the icon does nothing when we click on it, we must always click first on the arrow and then select the item.

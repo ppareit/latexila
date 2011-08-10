@@ -71,8 +71,12 @@ public class MostUsedSymbols : GLib.Object
 
     public Iterator<MostUsedSymbol?> iterator ()
     {
-        int max = settings.get_int ("nb-most-used-symbols");
-        var slice = most_used_symbols.slice (0, int.min (max, most_used_symbols.size));
+        uint max;
+        settings.get ("nb-most-used-symbols", "u", out max);
+
+        int slice_max = int.min ((int) max, most_used_symbols.size);
+        var slice = most_used_symbols.slice (0, slice_max);
+
         return (Iterator<MostUsedSymbol?>) slice.iterator ();
     }
 
@@ -85,7 +89,8 @@ public class MostUsedSymbols : GLib.Object
     public void add_symbol (string id, string command, string? package)
     {
         modified = true;
-        int max = settings.get_int ("nb-most-used-symbols");
+        uint max;
+        settings.get ("nb-most-used-symbols", "u", out max);
 
         int i = 0;
         foreach (MostUsedSymbol mus in most_used_symbols)
@@ -99,7 +104,7 @@ public class MostUsedSymbols : GLib.Object
                 {
                     if (i >= max)
                     {
-                        Symbols.remove_most_used_symbol (max - 1);
+                        Symbols.remove_most_used_symbol ((int) max - 1);
                         Symbols.insert_most_used_symbol (new_i, mus);
                     }
                     else
