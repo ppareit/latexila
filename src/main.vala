@@ -45,12 +45,20 @@ const OptionEntry[] options =
 
 int main (string[] args)
 {
-    // for GSettings
-    if (Config.SCHEMA_DIR != "/usr/local/share" &&
-        Config.SCHEMA_DIR != "/usr/share")
+    /* for GSettings: verify system data dirs */
+
+    // We don't use Environment.get_system_data_dirs () because this function store the
+    // value in a cache. If we change the value of the environment variable, the cache is
+    // not modified...
+    string? data_dirs_env = Environment.get_variable ("XDG_DATA_DIRS");
+    if (data_dirs_env == null)
+        data_dirs_env = "/usr/local/share:/usr/share";
+
+    string[] data_dirs = data_dirs_env.split (":");
+    if (! (Config.SCHEMA_DIR in data_dirs))
     {
         Environment.set_variable ("XDG_DATA_DIRS",
-            Config.SCHEMA_DIR + ":/usr/local/share:/usr/share", true);
+            Config.SCHEMA_DIR + ":" + data_dirs_env, true);
     }
 
     /* internationalisation */
