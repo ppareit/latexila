@@ -3,6 +3,19 @@
 # This script migrates the GSettings data that are stored with dconf.
 # Migration: LaTeXila 2.0.x -> 2.2.x
 
+function convert_int_to_uint ()
+{
+	local list="
+		/apps/latexila/preferences/editor/nb-most-used-symbols
+		/apps/latexila/preferences/latex/interactive-completion-num"
+
+	for item in $list; do
+		[ "$1" = "$item" ] && return 0
+	done
+
+	return 1
+}
+
 no_path=false
 if [ "$1" = "" ] || [ "$1" = "--force" ]; then
 	no_path=true
@@ -42,6 +55,11 @@ if [ "${path%/}" = "$path" ]; then
 	new_path="/org/gnome${path#/apps}"
 
 	val=`dconf read $path`
+
+	if convert_int_to_uint $path; then
+		val="uint32 $val"
+	fi
+
 	if [ "$val" != "" ]; then
 		dconf write $new_path "$val"
 	fi
