@@ -12,6 +12,7 @@ CMake >= 2.6.4
 gettext
 ITS Tool (http://itstool.org/)
 gsettings-desktop-schemas (optional)
+Vala >= 0.12.1 (may be optional)
 
 If you are installing LaTeXila from a tarball or from a 'releases-*' branch,
 you don't have to install Vala because the C code is already generated.
@@ -42,10 +43,16 @@ Configuration
 =============
 
 * Change the install directory (by default /usr/local/)
-	run cmake with this option:
+	Run cmake with this option:
 	-DCMAKE_INSTALL_PREFIX=/path/to/install/directory/
 
 * Generate the C code from the Vala files
-	run cmake with this option:
+	Run cmake with this option:
 	-DBUILD_VALA=ON
 
+* Better integration with GNOME, depends on gsettings-desktop-schemas
+	Run cmake with this option:
+	-DWITH_GNOME=ON
+
+	The only use of this is for knowing the system fixed width font (most
+	probably "Monospace 10").

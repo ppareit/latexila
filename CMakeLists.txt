@@ -10,6 +10,8 @@ message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
 set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
+set (WITH_GNOME OFF CACHE BOOL
+	"Use gsettings-desktop-schemas for a better integration with GNOME")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
@@ -35,10 +37,9 @@ pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.26")
 pkg_check_modules (UNIQUE REQUIRED "unique-1.0")
 pkg_check_modules (GDK-X11 REQUIRED "gdk-x11-2.0")
 pkg_check_modules (X11 REQUIRED "x11")
-pkg_check_modules (DESKTOP-SCHEMAS "gsettings-desktop-schemas")
 
-# is there an easier way?
-if (DESKTOP-SCHEMAS_FOUND)
+if (WITH_GNOME)
+	pkg_check_modules (DESKTOP-SCHEMAS REQUIRED "gsettings-desktop-schemas")
 	set (DESKTOP_SCHEMAS "1")
 else ()
 	set (DESKTOP_SCHEMAS "0")
