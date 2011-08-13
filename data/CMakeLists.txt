@@ -1,6 +1,9 @@
 install (FILES "org.gnome.latexila.gschema.xml"
 	DESTINATION "share/glib-2.0/schemas")
-install (SCRIPT "compile-schemas.cmake")
+
+if (COMPILE_SCHEMA)
+	install (SCRIPT "compile-schemas.cmake")
+endif ()
 
 install (FILES "latexhelp.html" DESTINATION ${DATA_DIR})
 install (FILES "completion.xml" DESTINATION ${DATA_DIR})

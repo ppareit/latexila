@@ -12,6 +12,7 @@ set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
 set (WITH_GNOME OFF CACHE BOOL
 	"Use gsettings-desktop-schemas for a better integration with GNOME")
+set (COMPILE_SCHEMA ON CACHE BOOL "Compile the GSettings schema")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")

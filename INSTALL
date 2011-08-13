@@ -42,17 +42,38 @@ $ xargs rm < install_manifest.txt
 Configuration
 =============
 
-* Change the install directory (by default /usr/local/)
+* Change the install directory
+
+	Default value: /usr/local/
+
 	Run cmake with this option:
 	-DCMAKE_INSTALL_PREFIX=/path/to/install/directory/
 
+
 * Generate the C code from the Vala files
+
+	Default value: OFF if tarball or 'releases-*' branch. ON otherwise.
+
 	Run cmake with this option:
 	-DBUILD_VALA=ON
 
+
 * Better integration with GNOME, depends on gsettings-desktop-schemas
+
+	Default value: OFF
+
 	Run cmake with this option:
 	-DWITH_GNOME=ON
 
 	The only use of this is for knowing the system fixed width font (most
 	probably "Monospace 10").
+
+
+* GSettings schema compilation (with glib-compile-schemas)
+
+	Default value: ON
+
+	To disable this option, run cmake with:
+	-DCOMPILE_SCHEMA=OFF
+
+	Useful for packages.
