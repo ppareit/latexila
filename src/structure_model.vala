@@ -685,7 +685,8 @@ public class StructureModel : TreeModel, GLib.Object
             if (Structure.is_section (sibling_data.type))
                 break;
 
-            if (compare_nodes (node, sibling) <= 0)
+            // if the sibling is after the end_mark of the node
+            if (compare_nodes (data.end_mark, sibling_data.start_mark) <= 0)
                 break;
 
             // unlink the node
@@ -710,11 +711,8 @@ public class StructureModel : TreeModel, GLib.Object
     // -1 if node1 < node2
     //  0 if node1 = node2
     // +1 if node1 > node2
-    private static int compare_nodes (Node<StructData?> node1, Node<StructData?> node2)
+    private static int compare_nodes (TextMark mark1, TextMark mark2)
     {
-        TextMark mark1 = node1.data.start_mark;
-        TextMark mark2 = node2.data.start_mark;
-
         TextBuffer doc = mark1.get_buffer ();
 
         return_val_if_fail (doc == mark2.get_buffer (), 0);
