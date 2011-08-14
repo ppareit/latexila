@@ -14,8 +14,8 @@ ITS Tool (http://itstool.org/)
 gsettings-desktop-schemas (optional)
 Vala 0.12.x >= 0.12.1 (may be optional)
 
-If you are installing LaTeXila from a tarball or from a 'releases-*' branch,
-you don't have to install Vala because the C code is already generated.
+If you are installing LaTeXila from a tarball, you don't have to install Vala
+because the C code is already generated.
 
 
 Simple install procedure
@@ -52,7 +52,7 @@ Configuration
 
 * Generate the C code from the Vala files
 
-	Default value: OFF if tarball or 'releases-*' branch. ON otherwise.
+	Default value: OFF in tarballs; ON in Git.
 
 	Run cmake with this option:
 	-DBUILD_VALA=ON

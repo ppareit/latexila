@@ -1,5 +1,20 @@
 LaTeXila NEWS
 
+==============================
+* Release 2.2.0 (Aug 26, 2011)
+==============================
+
+- Integration with GNOME Damned Lies (use ITS Tool, …)
+- Structure: more robust, and more optimized
+- Latexmk post processor: extract Latexmk messages
+- BibTeX and MakeIndex: fix problems for writing *.blg or *.ind files
+- Some UI improvements
+- New CMake options: WITH_GNOME and COMPILE_SCHEMA
+- Open File: filter to show only .tex and .bib files
+- Translation updates: French, German and Spanish
+- Some other little improvements and bug fixes
+
+
 ======================================
 * Release 2.1.1 (July 15, 2011) [beta]
 ======================================
