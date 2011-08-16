@@ -93,19 +93,22 @@ public class Document : Gtk.SourceBuffer
     {
         if (new_file)
             return false;
+
         return base.get_modified ();
     }
 
     public new void insert (TextIter iter, string text, int len)
     {
-        CompletionProvider provider = CompletionProvider.get_default ();
-        provider.locked = true;
+        Gtk.SourceCompletion completion = tab.view.completion;
+        completion.block_interactive ();
+
         base.insert (iter, text, len);
 
-        // HACK: wait one second before delocking completion
+        // HACK: wait one second before delocking completion, it's better than doing a
+        // Utils.flush_queue ().
         Timeout.add_seconds (1, () =>
         {
-            provider.locked = false;
+            completion.unblock_interactive ();
             return false;
         });
     }
