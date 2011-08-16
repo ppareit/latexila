@@ -119,7 +119,7 @@ private class LatexPostProcessor : PostProcessor
             reg_error_line = new Regex ("^l\\.(\\d+)(.*)");
 
             reg_file_pop = new Regex ("(\\) )?:<-$");
-            reg_other_bytes = new Regex ("(\\d+) bytes");
+            reg_other_bytes = new Regex ("(?P<nb>\\d+) bytes");
 
             reg_spaces = new Regex ("\\s{2,}");
         }
@@ -484,54 +484,32 @@ private class LatexPostProcessor : PostProcessor
         msg.start_line = NO_LINE;
         msg.type = BuildMsgType.OTHER;
 
-        if (! reg_other_bytes.match (line))
+        MatchInfo match_info;
+        if (! reg_other_bytes.match (line, 0, out match_info))
         {
             msg.text = line;
             add_msg (false);
             return true;
         }
 
-        /* try to show the file size in a human readable format */
-        string[] strings = reg_other_bytes.split (line);
-        int nb_bytes = int.parse (strings[1]);
+        /* show the file size in a human readable format */
+        string? nb_bytes_str = match_info.fetch_named ("nb");
+        return_val_if_fail (nb_bytes_str != null, false);
 
-        bool replace = false;
-        string human_size = null;
+        int64 nb_bytes = int64.parse (nb_bytes_str);
+        string human_size = format_size_for_display (nb_bytes);
 
-        // do nothing
-        if (nb_bytes < 1024)
+        try
+        {
+            string new_line = reg_other_bytes.replace_literal (line, -1, 0, human_size);
+            msg.text = new_line;
+        }
+
+        // nice try!
+        catch (RegexError e)
+        {
+            warning ("LaTeX post processor: %s", e.message);
             msg.text = line;
-
-        // size in KB (less than 1 MB)
-        else if (nb_bytes < 1024 * 1024)
-        {
-            int nb_kb = nb_bytes / 1024;
-            human_size = "%d KB".printf (nb_kb);
-            replace = true;
-        }
-
-        // size in MB (with one decimal)
-        else
-        {
-            double nb_mb = (double) nb_bytes / (1024.0 * 1024.0);
-            human_size = "%.1f MB".printf (nb_mb);
-            replace = true;
-        }
-
-        if (replace)
-        {
-            try
-            {
-                string new_line =
-                    reg_other_bytes.replace_literal (line, -1, 0, human_size);
-                msg.text = new_line;
-            }
-
-            // nice try!
-            catch (RegexError e)
-            {
-                msg.text = line;
-            }
         }
 
         add_msg (false);
