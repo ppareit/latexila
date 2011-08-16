@@ -82,15 +82,53 @@ public class BuildToolRunner : GLib.Object
         root_partition = view.add_partition (tool.label, PartitionState.RUNNING, null,
             true);
 
-        foreach (BuildJob job in jobs)
-        {
-            string[] command = get_command (job, true);
-            job_partitions += view.add_partition (string.joinv (" ", command),
-                PartitionState.RUNNING, root_partition);
-        }
+        if (! add_job_partitions ())
+            return;
 
         action_stop_exec.set_sensitive (true);
         proceed ();
+    }
+
+    // Returns true on success, false otherwise.
+    private bool add_job_partitions ()
+    {
+        job_num = 0;
+
+        foreach (BuildJob job in jobs)
+        {
+            string[] command;
+
+            try
+            {
+                command = get_command_args (job.command, true);
+            }
+            catch (ShellError e)
+            {
+                TreeIter job_partition = view.add_partition (job.command,
+                    PartitionState.FAILED, root_partition);
+
+                BuildMsg message = BuildMsg ();
+                message.text = "Failed to parse command line:";
+                message.type = BuildMsgType.ERROR;
+                message.lines_set = false;
+                view.append_single_message (job_partition, message);
+
+                message.text = e.message;
+                message.type = BuildMsgType.OTHER;
+                view.append_single_message (job_partition, message);
+
+                failed ();
+                return false;
+            }
+
+            job_partitions += view.add_partition (string.joinv (" ", command),
+                PartitionState.RUNNING, root_partition);
+
+            job_num++;
+        }
+
+        job_num = 0;
+        return true;
     }
 
     private void execute (string[] command, string? working_directory) throws Error
@@ -292,7 +330,20 @@ public class BuildToolRunner : GLib.Object
         output = "";
 
         current_job = jobs.nth_data (job_num);
-        string[] command = get_command (current_job);
+        string[] command;
+
+        try
+        {
+            command = get_command_args (current_job.command);
+        }
+        catch (ShellError e)
+        {
+            // This should never append, since the command has already been parsed for
+            // printing purpose.
+            critical ("Separate command arguments worked the first time…");
+            failed ();
+            return;
+        }
 
         // Attention, rubber doesn't support filenames with spaces, warn the user
         if (current_job.post_processor == PostProcessorType.RUBBER
@@ -347,64 +398,37 @@ public class BuildToolRunner : GLib.Object
         }
     }
 
-    private string[] get_command (BuildJob build_job, bool for_printing = false)
+    private string[] get_command_args (string command_line, bool for_printing = false)
+        throws ShellError
     {
-        string base_filename = file.get_basename ();
-        string base_shortname = Utils.get_shortname (base_filename);
-
+        /* separate arguments */
         string[] command = {};
 
-        if (build_job.command_args != null)
-            command = build_job.command_args;
-
-        /* separate arguments */
-        else
+        try
         {
-            // first, we split the string with a space as delimiter
-            string[] args = build_job.command.split (" ");
+            Shell.parse_argv (command_line, out command);
+        }
+        catch (ShellError e)
+        {
+            warning ("Separate command arguments: %s", e.message);
+            throw e;
+        }
 
-            // but, some arguments that contain spaces begin and end with ' or "
-            string arg_buf = "";
-            string delimiter = null;
-            foreach (string arg in args)
+        /* re-add quotes if needed */
+        if (for_printing)
+        {
+            for (int cmd_num = 0 ; cmd_num < command.length ; cmd_num++)
             {
-                if (delimiter != null)
-                {
-                    arg_buf += " " + arg;
-                    if (! arg.has_suffix (delimiter))
-                        continue;
-
-                    delimiter = null;
-
-                    if (for_printing)
-                        command += arg_buf;
-                    else
-                    {
-                        // We have to remove the delimiters because they are needed only
-                        // when used in a single string. But since here we have an array
-                        // of strings with each argument separated, if we keep the
-                        // delimiters, it doesn't work (maybe it works with some commands,
-                        // but not latexmk in any case).
-                        command += arg_buf[1:arg_buf.length-1];
-                    }
-                    continue;
-                }
-
-                if ((arg.has_prefix ("'") && ! arg.has_suffix ("'")) ||
-                    (arg.has_prefix ("\"") && ! arg.has_suffix ("\"")))
-                {
-                    delimiter = arg[0].to_string ();
-                    arg_buf = arg;
-                    continue;
-                }
-
-                command += arg;
+                string cur_cmd = command[cmd_num];
+                if (cur_cmd.contains (" "))
+                    command[cmd_num] = "\"" + cur_cmd + "\"";
             }
-
-            build_job.command_args = command;
         }
 
         /* replace placeholders */
+        string base_filename = file.get_basename ();
+        string base_shortname = Utils.get_shortname (base_filename);
+
         for (int i = 0 ; i < command.length ; i++)
         {
             if (command[i].contains ("$view"))

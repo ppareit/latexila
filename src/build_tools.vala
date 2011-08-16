@@ -35,7 +35,6 @@ public struct BuildJob
     public bool must_succeed;
     public PostProcessorType post_processor;
     public string command;
-    public string[] command_args;
 }
 
 public struct BuildTool
