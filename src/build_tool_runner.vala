@@ -51,7 +51,8 @@ public class BuildToolRunner : GLib.Object
     public BuildToolRunner (File file, BuildTool? tool, BuildView view,
         Gtk.Action action_stop_exec)
     {
-        // FIXME really useful?
+        // TODO remove this and the '?' when the bug in vala is fixed
+        // https://bugzilla.gnome.org/show_bug.cgi?id=656693
         return_if_fail (tool != null);
 
         this.file = file;

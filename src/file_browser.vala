@@ -259,31 +259,40 @@ public class FileBrowser : VBox
 
             BuildTools build_tools = BuildTools.get_default ();
             string extension = Utils.get_extension (basename);
+            DocType doc_type;
+
             switch (extension)
             {
-            // View DVI
-            case ".dvi":
-                new BuildToolRunner (file, build_tools.get_view_doc (DocType.DVI),
-                    build_view, main_window.get_action_stop_exec ());
-                break;
+                // View DVI
+                case ".dvi":
+                    doc_type = DocType.DVI;
+                    break;
 
-            // View PDF
-            case ".pdf":
-                new BuildToolRunner (file, build_tools.get_view_doc (DocType.PDF),
-                    build_view, main_window.get_action_stop_exec ());
-                break;
+                // View PDF
+                case ".pdf":
+                    doc_type = DocType.PDF;
+                    break;
 
-            // View PS
-            case ".ps":
-                new BuildToolRunner (file, build_tools.get_view_doc (DocType.PS),
-                    build_view, main_window.get_action_stop_exec ());
-                break;
+                // View PS
+                case ".ps":
+                    doc_type = DocType.PS;
+                    break;
 
-            // Open document
-            default:
-                main_window.open_document (file);
-                break;
+                // Open document
+                default:
+                    main_window.open_document (file);
+                    return;
             }
+
+            BuildTool? tool = build_tools.get_view_doc (doc_type);
+            if (tool == null)
+            {
+                warning ("There is no build tool to view the file '%s'", basename);
+                return;
+            }
+
+            new BuildToolRunner (file, tool, build_view,
+                main_window.get_action_stop_exec ());
         });
     }
 

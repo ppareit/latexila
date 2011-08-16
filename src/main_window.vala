@@ -1218,9 +1218,10 @@ public class MainWindow : Window
         return_if_fail (active_document.location != null);
 
         string[] _name = action.name.split ("_");
-        int i = int.parse (_name[1]);
+        int tool_index = int.parse (_name[1]);
 
-        BuildTool tool = BuildTools.get_default ()[i];
+        BuildTool? tool = BuildTools.get_default ()[tool_index];
+        return_if_fail (tool != null);
 
         build_view.show ();
 
