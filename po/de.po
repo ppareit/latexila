@@ -10,14 +10,14 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-06 16:19+0000\n"
+"POT-Creation-Date: 2011-08-16 18:37+0200\n"
 "PO-Revision-Date: 2011-08-06 21:13+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Poedit-Language: German\n"
 "X-Poedit-Country: GERMANY\n"
@@ -173,8 +173,8 @@ msgstr "Post-Prozessor"
 #: ../src/build_tool_runner.vala:303
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
-"Rubber unterstützt keine Dateinamen, die Leerzeichen enthalten (das gilt auch "
-"für Ordner)"
+"Rubber unterstützt keine Dateinamen, die Leerzeichen enthalten (das gilt "
+"auch für Ordner)"
 
 #: ../src/build_tool_runner.vala:334
 #, c-format
@@ -210,7 +210,7 @@ msgstr "Zu löschende Dateien wählen:"
 msgid "No build file to clean up."
 msgstr "Keine erstellte Datei zum Löschen."
 
-#: ../src/completion.vala:269
+#: ../src/completion.vala:267
 msgid "No matching proposal"
 msgstr "Kein passender Vorschlag "
 
@@ -239,7 +239,8 @@ msgstr "Zu speichernde Dokumente auswählen:"
 
 #: ../src/dialogs.vala:132
 msgid "If you don't save, all your changes will be permanently lost."
-msgstr "Wenn Sie nicht speichern, sind alle Ihre Änderungen für immer verloren."
+msgstr ""
+"Wenn Sie nicht speichern, sind alle Ihre Änderungen für immer verloren."
 
 #: ../src/document_structure.vala:710
 msgid "The structure item already contains a sub-paragraph."
@@ -381,7 +382,7 @@ msgstr "Unter-Absatz"
 msgid "_References"
 msgstr "_Referenzen"
 
-#: ../src/latex_menu.vala:49 ../src/preferences_dialog.vala:561
+#: ../src/latex_menu.vala:49 ../src/preferences_dialog.vala:592
 #: ../src/structure.vala:669 ../src/ui/build_tool.ui.h:7
 msgid "Label"
 msgstr "Beschriftung"
@@ -1046,11 +1047,11 @@ msgid "Create a new top-level window in an existing instance of LaTeXila"
 msgstr ""
 "Neues, übergeordnetes Fenster in der aktuellen LaTeXila-Sitzung erstellen"
 
-#: ../src/main.vala:65
+#: ../src/main.vala:73
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr " - Integrierte LaTeX-Umgebung für GNOME"
 
-#: ../src/main.vala:76
+#: ../src/main.vala:84
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
@@ -1395,7 +1396,7 @@ msgstr "_LaTeX-Referenzhandbuch"
 msgid "The Kile LaTeX Reference"
 msgstr "Das Kile-LaTeX-Referenzhandbuch"
 
-#: ../src/main_window.vala:163 ../src/main_window.vala:1933
+#: ../src/main_window.vala:163 ../src/main_window.vala:1950
 msgid "About LaTeXila"
 msgstr "Info zu LaTeXila"
 
@@ -1526,11 +1527,15 @@ msgstr "Eine kürzlich verwendete Datei öffnen"
 msgid "Open Files"
 msgstr "Dateien öffnen"
 
-#: ../src/main_window.vala:1881
+#: ../src/main_window.vala:1496
+msgid "All Files"
+msgstr "Alle Dateien"
+
+#: ../src/main_window.vala:1898
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila ist eine integrierte LaTeX-Umgebung für GNOME"
 
-#: ../src/main_window.vala:1934
+#: ../src/main_window.vala:1951
 msgid "translator-credits"
 msgstr ""
 "Frederik Hahne <frederik.hahne@googlemail.com>\n"
@@ -1546,7 +1551,7 @@ msgid "Preferences"
 msgstr "Einstellungen"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:38 ../src/preferences_dialog.vala:639
+#: ../src/preferences_dialog.vala:38 ../src/preferences_dialog.vala:670
 msgid "Reset All"
 msgstr "Alles zurücksetzen"
 
@@ -1558,39 +1563,40 @@ msgstr "Alle Einstellungen zurücksetzen"
 msgid "Do you really want to reset all preferences?"
 msgstr "Möchten Sie wirklich alle Einstellungen zurücksetzen?"
 
-#: ../src/preferences_dialog.vala:190
+#: ../src/preferences_dialog.vala:194
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "Minute"
 msgstr[1] "Minuten"
 
-#: ../src/preferences_dialog.vala:285
+#: ../src/preferences_dialog.vala:291
 msgid "character"
 msgid_plural "characters"
 msgstr[0] "Zeichen"
 msgstr[1] "Zeichen"
 
-#: ../src/preferences_dialog.vala:324
+#: ../src/preferences_dialog.vala:330
 #, c-format
 msgid "%s [copy]"
 msgstr "%s [Kopie]"
 
-#: ../src/preferences_dialog.vala:376
+#: ../src/preferences_dialog.vala:382
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
 msgstr "Möchten Sie wirklich das Erstellungswerkzeug »%s« löschen?"
 
-#: ../src/preferences_dialog.vala:395
+#: ../src/preferences_dialog.vala:401
 msgid "Do you really want to reset all build tools?"
 msgstr ""
-"Möchten Sie wirklich alle Werkzeuge auf den Auslieferungszustand zurücksetzen?"
+"Möchten Sie wirklich alle Werkzeuge auf den Auslieferungszustand "
+"zurücksetzen?"
 
-#: ../src/preferences_dialog.vala:474
+#: ../src/preferences_dialog.vala:482
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr "Schriftart fester Breite des Systems verwenden (%s)"
 
-#: ../src/preferences_dialog.vala:551
+#: ../src/preferences_dialog.vala:582
 msgid "Active"
 msgstr "Aktiv"
 
@@ -1786,7 +1792,7 @@ msgstr "Verschiedene math. Symbole"
 msgid "Misc text"
 msgstr "Verschiedene Symbole"
 
-#: ../src/symbols.vala:748
+#: ../src/symbols.vala:747
 msgid "Most Used"
 msgstr "Am meisten verwendet"
 
@@ -2071,33 +2077,3 @@ msgstr "Suchen nach"
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
 msgstr "Zwischen Suchen und Ersetzen umschalten"
-
-#~ msgid "Directory:"
-#~ msgstr "Ordner:"
-
-#~ msgid "article-en.tex"
-#~ msgstr "artikel-de.tex"
-
-#~ msgid "beamer-en.tex"
-#~ msgstr "beamer-de.tex"
-
-#~ msgid "book-en.tex"
-#~ msgstr "buch-de.tex"
-
-#~ msgid "build_tools-en.xml"
-#~ msgstr "build_tools-de.xml"
-
-#~ msgid "characters"
-#~ msgstr "Zeichen"
-
-#~ msgid "letter-en.tex"
-#~ msgstr "letter-de.tex"
-
-#~ msgid "minutes"
-#~ msgstr "Minuten"
-
-#~ msgid "report-en.tex"
-#~ msgstr "report-de.tex"
-
-#~ msgid "Minimum level"
-#~ msgstr "Minimale Stufe"

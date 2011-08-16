@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-06 16:19+0000\n"
+"POT-Creation-Date: 2011-08-16 18:37+0200\n"
 "PO-Revision-Date: 2011-08-04 17:54+0200\n"
 "Last-Translator: Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
@@ -231,7 +231,7 @@ msgstr "Sélectionnez les fichiers que vous voulez supprimer :"
 msgid "No build file to clean up."
 msgstr "Aucun fichier de construction à nettoyer."
 
-#: ../src/completion.vala:269
+#: ../src/completion.vala:267
 msgid "No matching proposal"
 msgstr "Pas de proposition correspondante"
 
@@ -403,7 +403,7 @@ msgstr "Sous-paragraphe"
 msgid "_References"
 msgstr "_Références"
 
-#: ../src/latex_menu.vala:49 ../src/preferences_dialog.vala:561
+#: ../src/latex_menu.vala:49 ../src/preferences_dialog.vala:592
 #: ../src/structure.vala:669 ../src/ui/build_tool.ui.h:7
 msgid "Label"
 msgstr "Label"
@@ -1067,11 +1067,11 @@ msgstr "Créer un nouveau document"
 msgid "Create a new top-level window in an existing instance of LaTeXila"
 msgstr "Créer une nouvelle fenêtre dans une instance existante de LaTeXila"
 
-#: ../src/main.vala:65
+#: ../src/main.vala:73
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr "- Environnement LaTeX intégré pour GNOME"
 
-#: ../src/main.vala:76
+#: ../src/main.vala:84
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
@@ -1170,7 +1170,8 @@ msgstr "_Commenter"
 
 #: ../src/main_window.vala:72
 msgid "Comment the selected lines (add the character \"%\")"
-msgstr "Met en commentaire les lignes sélectionnées (ajoute le caractère « % »)"
+msgstr ""
+"Met en commentaire les lignes sélectionnées (ajoute le caractère « % »)"
 
 #: ../src/main_window.vala:74
 msgid "_Uncomment"
@@ -1416,7 +1417,7 @@ msgstr "_Référence LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "La référence LaTeX de Kile"
 
-#: ../src/main_window.vala:163 ../src/main_window.vala:1933
+#: ../src/main_window.vala:163 ../src/main_window.vala:1950
 msgid "About LaTeXila"
 msgstr "À propos de LaTeXila"
 
@@ -1546,11 +1547,15 @@ msgstr "Ouvrir un fichier récemment utilisé"
 msgid "Open Files"
 msgstr "Ouvrir des fichiers"
 
-#: ../src/main_window.vala:1881
+#: ../src/main_window.vala:1496
+msgid "All Files"
+msgstr "Tous les fichiers"
+
+#: ../src/main_window.vala:1898
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila est un environnement LaTeX intégré pour le bureau GNOME."
 
-#: ../src/main_window.vala:1934
+#: ../src/main_window.vala:1951
 msgid "translator-credits"
 msgstr ""
 "Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
@@ -1565,7 +1570,7 @@ msgid "Preferences"
 msgstr "Préférences"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:38 ../src/preferences_dialog.vala:639
+#: ../src/preferences_dialog.vala:38 ../src/preferences_dialog.vala:670
 msgid "Reset All"
 msgstr "Tout réinitialiser"
 
@@ -1577,39 +1582,39 @@ msgstr "Réinitialise toutes les préférences"
 msgid "Do you really want to reset all preferences?"
 msgstr "Êtes-vous sûr de vouloir réinitialiser toutes les préférences ?"
 
-#: ../src/preferences_dialog.vala:190
+#: ../src/preferences_dialog.vala:194
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minute"
 msgstr[1] "minutes"
 
-#: ../src/preferences_dialog.vala:285
+#: ../src/preferences_dialog.vala:291
 msgid "character"
 msgid_plural "characters"
 msgstr[0] "caractère"
 msgstr[1] "caractères"
 
-#: ../src/preferences_dialog.vala:324
+#: ../src/preferences_dialog.vala:330
 #, c-format
 msgid "%s [copy]"
 msgstr "%s [copie]"
 
-#: ../src/preferences_dialog.vala:376
+#: ../src/preferences_dialog.vala:382
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
 msgstr "Êtes-vous sûr de vouloir supprimer l'outil de construction « %s » ?"
 
-#: ../src/preferences_dialog.vala:395
+#: ../src/preferences_dialog.vala:401
 msgid "Do you really want to reset all build tools?"
 msgstr ""
 "Êtes-vous sûr de vouloir réinitialiser tous les outils de construction ?"
 
-#: ../src/preferences_dialog.vala:474
+#: ../src/preferences_dialog.vala:482
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr "Utiliser la police système à chasse fixe (%s)"
 
-#: ../src/preferences_dialog.vala:551
+#: ../src/preferences_dialog.vala:582
 msgid "Active"
 msgstr "Actif"
 
@@ -1805,7 +1810,7 @@ msgstr "Divers math"
 msgid "Misc text"
 msgstr "Divers texte"
 
-#: ../src/symbols.vala:748
+#: ../src/symbols.vala:747
 msgid "Most Used"
 msgstr "Les plus utilisés"
 

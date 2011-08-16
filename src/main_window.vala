@@ -1480,6 +1480,23 @@ public class MainWindow : Window
 
         file_chooser.select_multiple = true;
 
+        // Filter: by default show only .tex and .bib files
+        FileFilter latex_filter = new FileFilter ();
+
+        // TODO for next release (due to string freeze)
+        //latex_filter.set_name (_("All LaTeX Files"));
+        latex_filter.set_name ("*.tex, *.bib");
+
+        latex_filter.add_pattern ("*.tex");
+        latex_filter.add_pattern ("*.bib");
+        file_chooser.add_filter (latex_filter);
+
+        // All files filter
+        FileFilter all_files_filter = new FileFilter ();
+        all_files_filter.set_name (_("All Files"));
+        all_files_filter.add_pattern ("*");
+        file_chooser.add_filter (all_files_filter);
+
         SList<File> files_to_open = null;
         if (file_chooser.run () == ResponseType.ACCEPT)
             files_to_open = file_chooser.get_files ();
