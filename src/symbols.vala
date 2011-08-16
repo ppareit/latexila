@@ -733,8 +733,7 @@ public class Symbols : VBox
                 }
                 catch (Error e)
                 {
-                    stderr.printf ("Warning: impossible to load the symbol: %s\n",
-                        e.message);
+                    warning ("Impossible to load the symbol: %s", e.message);
                     continue;
                 }
             }
@@ -950,7 +949,7 @@ public class Symbols : VBox
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to load the symbol: %s\n", e.message);
+            warning ("Impossible to load the symbol: %s", e.message);
         }
     }
 

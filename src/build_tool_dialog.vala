@@ -106,7 +106,7 @@ private class BuildToolDialog : Dialog
         catch (Error e)
         {
             string message = "Error: %s".printf (e.message);
-            stderr.printf ("%s\n", message);
+            warning ("%s", message);
 
             Label label_error = new Label (message);
             label_error.set_line_wrap (true);

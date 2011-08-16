@@ -72,7 +72,7 @@ public class BuildToolRunner : GLib.Object
         if (0 < tool.extensions.length
             && ! (Utils.get_extension (filename) in extensions))
         {
-            stderr.printf ("Warning: bad file extension\n");
+            warning ("Bad file extension");
             return;
         }
 
@@ -176,11 +176,11 @@ public class BuildToolRunner : GLib.Object
         }
         catch (ConvertError e)
         {
-            stderr.printf ("Read output: convert error: %s\n", e.message);
+            warning ("Read output: convert error: %s", e.message);
         }
         catch (IOChannelError e)
         {
-            stderr.printf ("Read output: IO channel error: %s\n", e.message);
+            warning ("Read output: IO channel error: %s", e.message);
         }
 
         if (length <= 0)
@@ -213,7 +213,7 @@ public class BuildToolRunner : GLib.Object
             if (line_utf8 != null && line_utf8.validate ())
                 output += line_utf8 + "\n";
             else
-                stderr.printf ("Read output failed: %s\n", line);
+                warning ("Read output failed: %s", line);
         }
 
         return true;
@@ -248,7 +248,7 @@ public class BuildToolRunner : GLib.Object
                 post_processor = new RubberPostProcessor ();
                 break;
             default:
-                stderr.printf ("Warning: unknown post processor. Use no-output.");
+                warning ("Unknown post processor. Use no-output.");
                 post_processor = new NoOutputPostProcessor ();
                 break;
         }

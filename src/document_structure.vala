@@ -108,7 +108,7 @@ public class DocumentStructure : GLib.Object
         }
         catch (RegexError e)
         {
-            stderr.printf ("Structure: %s\n", e.message);
+            warning ("Structure: %s", e.message);
         }
     }
 
@@ -200,7 +200,7 @@ public class DocumentStructure : GLib.Object
         if (_measure_parsing_time)
         {
             _timer.stop ();
-            stdout.printf ("Structure parsing took %f seconds\n", _timer.elapsed ());
+            message ("Structure parsing took %f seconds", _timer.elapsed ());
             _timer.reset ();
         }
 
@@ -227,7 +227,7 @@ public class DocumentStructure : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Structure parsing: chars regex: %s\n", e.message);
+            warning ("Structure parsing: chars regex: %s", e.message);
             return false;
         }
 
@@ -236,7 +236,7 @@ public class DocumentStructure : GLib.Object
             int after_char_index;
             if (! match_info.fetch_pos (0, out start_match_index, out after_char_index))
             {
-                stderr.printf ("Structure parsing: position can not be fetched\n");
+                warning ("Structure parsing: position can not be fetched");
                 return false;
             }
 
@@ -272,7 +272,7 @@ public class DocumentStructure : GLib.Object
             }
             catch (RegexError e)
             {
-                stderr.printf ("Structure parsing: %s\n", e.message);
+                warning ("Structure parsing: %s", e.message);
                 break;
             }
         }
@@ -806,7 +806,7 @@ public class DocumentStructure : GLib.Object
         }
         catch (StructError e)
         {
-            stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
+            warning ("Structure: get next sibling or parent: %s", e.message);
             return false;
         }
 
@@ -879,7 +879,7 @@ public class DocumentStructure : GLib.Object
             }
             catch (StructError e)
             {
-                stderr.printf ("Structure: get next sibling or parent: %s\n", e.message);
+                warning ("Structure: get next sibling or parent: %s", e.message);
                 return false;
             }
 

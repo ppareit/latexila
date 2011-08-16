@@ -88,7 +88,7 @@ public class Templates : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: load templates failed: %s\n", e.message);
+            warning ("Load templates failed: %s", e.message);
             return;
         }
     }
@@ -338,8 +338,7 @@ public class Templates : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to load the icon of the template: %s\n",
-                e.message);
+            warning ("Impossible to load the icon of the template: %s", e.message);
         }
     }
 
@@ -354,8 +353,7 @@ public class Templates : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to load the template \"%s\": %s\n", name,
-                e.message);
+            warning ("Impossible to load the template '%s': %s", name, e.message);
         }
     }
 
@@ -379,7 +377,7 @@ public class Templates : GLib.Object
             return;
         }
 
-        stderr.printf ("Warning: template \"%s\" not found.\n", name);
+        warning ("Template '%s' not found.", name);
     }
 
     private IconView create_icon_view (ListStore store)
@@ -426,7 +424,7 @@ public class Templates : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to save templates: %s\n", e.message);
+            warning ("Impossible to save the templates: %s", e.message);
         }
     }
 
@@ -481,7 +479,7 @@ public class Templates : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to save templates: %s\n", e.message);
+            warning ("Impossible to save the templates: %s", e.message);
         }
     }
 
@@ -514,8 +512,7 @@ public class Templates : GLib.Object
             }
             catch (Error e)
             {
-                stderr.printf ("Warning: impossible to save the template: %s\n",
-                    e.message);
+                warning ("Impossible to save the template: %s", e.message);
             }
 
             valid_iter = model.iter_next (ref iter);

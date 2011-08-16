@@ -1731,7 +1731,7 @@ public class MainWindow : Window
         DocumentTab? tab = open_document (file);
 
         if (tab == null)
-            stderr.printf ("Warning: impossible to view log\n");
+            warning ("Impossible to view log");
         else
             tab.document.readonly = true;
     }
@@ -1857,7 +1857,7 @@ public class MainWindow : Window
         }
         catch (Error e)
         {
-            stderr.printf ("Impossible to open the documentation: %s\n", e.message);
+            warning ("Impossible to open the documentation: %s", e.message);
         }
     }
 
@@ -1871,7 +1871,7 @@ public class MainWindow : Window
         }
         catch (Error e)
         {
-            stderr.printf ("Impossible to open the LaTeX reference: %s\n", e.message);
+            warning ("Impossible to open the LaTeX reference: %s", e.message);
         }
     }
 
@@ -1919,7 +1919,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
         }
         catch (Error e)
         {
-            stderr.printf ("Error with the logo: %s\n", e.message);
+            warning ("Logo: %s", e.message);
         }
 
         show_about_dialog (this,

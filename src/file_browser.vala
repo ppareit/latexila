@@ -419,7 +419,7 @@ public class FileBrowser : VBox
         }
         catch (Error e)
         {
-            stderr.printf ("Error: %s\n", e.message);
+            warning ("%s", e.message);
 
             // warning dialog
             MessageDialog dialog = new MessageDialog (main_window,

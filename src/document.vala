@@ -135,7 +135,7 @@ public class Document : Gtk.SourceBuffer
         }
         catch (Error e)
         {
-            stderr.printf ("Error: %s\n", e.message);
+            warning ("%s", e.message);
 
             string primary_msg = _("Impossible to load the file '%s'.")
                 .printf (location.get_parse_name ());
@@ -231,7 +231,7 @@ public class Document : Gtk.SourceBuffer
             }
             else
             {
-                stderr.printf ("Error: %s\n", e.message);
+                warning ("%s", e.message);
 
                 string primary_msg = _("Impossible to save the file.");
                 TabInfoBar infobar = tab.add_message (primary_msg, e.message,

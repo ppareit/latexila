@@ -119,7 +119,7 @@ public class CleanBuildFiles : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Error: clean build files: %s\n", e.message);
+            warning ("Clean build files: %s", e.message);
             return files_to_delete;
         }
 
@@ -133,7 +133,7 @@ public class CleanBuildFiles : GLib.Object
             }
             catch (Error e)
             {
-                stderr.printf ("Error: clean build files: %s\n", e.message);
+                warning ("Clean build files: %s", e.message);
                 break;
             }
 

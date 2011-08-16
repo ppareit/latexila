@@ -285,7 +285,7 @@ public class SearchAndReplace : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Error search and replace: %s\n", e.message);
+            warning ("Search and replace: %s", e.message);
             Label label = new Label (e.message);
             label.set_line_wrap (true);
             widget = label;

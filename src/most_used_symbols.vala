@@ -56,8 +56,7 @@ public class MostUsedSymbols : GLib.Object
         }
         catch (GLib.Error e)
         {
-            stderr.printf ("Warning: impossible to load most used symbols: %s\n",
-                e.message);
+            warning ("Impossible to load the most used symbols: %s", e.message);
         }
     }
 
@@ -254,8 +253,7 @@ public class MostUsedSymbols : GLib.Object
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to save most used symbols: %s\n",
-                e.message);
+            warning ("Impossible to save the most used symbols: %s", e.message);
         }
     }
 }

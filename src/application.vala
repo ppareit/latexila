@@ -162,7 +162,7 @@ public class Application : GLib.Object
             }
             catch (Error e)
             {
-                stderr.printf ("Error with an icon: %s\n", e.message);
+                warning ("Error with an icon: %s", e.message);
             }
         }
 
@@ -344,7 +344,7 @@ public class Application : GLib.Object
             }
             catch (Error e)
             {
-                stderr.printf ("Warning: get theme icon failed: %s\n", e.message);
+                warning ("Get theme icon failed: %s", e.message);
                 continue;
             }
 

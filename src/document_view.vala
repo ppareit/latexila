@@ -74,7 +74,7 @@ public class DocumentView : Gtk.SourceView
         }
         catch (GLib.Error e)
         {
-            stderr.printf ("Error completion: %s\n", e.message);
+            warning ("Completion: %s", e.message);
         }
 
         // smart backspace (if indent with spaces)

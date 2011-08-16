@@ -281,8 +281,7 @@ public class BuildTools
             }
             catch (GLib.Error e)
             {
-                stderr.printf ("Warning: impossible to load build tools: %s\n",
-                    e.message);
+                warning ("Impossible to load build tools: %s", e.message);
             }
         }
     }
@@ -434,7 +433,7 @@ public class BuildTools
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to save build tools: %s\n", e.message);
+            warning ("Impossible to save build tools: %s", e.message);
         }
     }
 

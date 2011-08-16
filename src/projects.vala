@@ -55,8 +55,7 @@ public class Projects
         }
         catch (GLib.Error e)
         {
-            stderr.printf ("Warning: impossible to load projects: %s\n",
-                e.message);
+            warning ("Impossible to load the projects: %s", e.message);
         }
     }
 
@@ -261,8 +260,7 @@ public class Projects
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: impossible to save projects: %s\n",
-                e.message);
+            warning ("Impossible to save the projects: %s", e.message);
         }
     }
 

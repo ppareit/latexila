@@ -101,8 +101,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
         catch (GLib.Error e)
         {
-            stderr.printf ("Warning: impossible to load completion data: %s\n",
-                e.message);
+            warning ("Impossible to load completion data: %s", e.message);
         }
     }
 

@@ -80,7 +80,7 @@ int main (string[] args)
     }
     catch (OptionError e)
     {
-        stderr.printf ("%s\n", e.message);
+        warning ("%s", e.message);
         stderr.printf (_("Run '%s --help' to see a full list of available command line options.\n"),
             args[0]);
         return 1;

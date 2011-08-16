@@ -125,7 +125,7 @@ private class LatexPostProcessor : PostProcessor
         }
         catch (RegexError e)
         {
-            stderr.printf ("LatexPostProcessor: %s\n", e.message);
+            warning ("LatexPostProcessor: %s", e.message);
         }
     }
 
@@ -828,7 +828,7 @@ private class LatexPostProcessor : PostProcessor
         }
         catch (RegexError e)
         {
-            stderr.printf ("Latex post processor warning: %s\n", e.message);
+            warning ("Latex post processor: %s", e.message);
         }
 
         switch (msg.type)

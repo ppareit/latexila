@@ -160,8 +160,7 @@ namespace Utils
         }
         catch (Error e)
         {
-            stderr.printf ("Warning: delete file \"%s\" failed: %s\n",
-                file.get_parse_name (), e.message);
+            warning ("Delete file '%s' failed: %s", file.get_parse_name (), e.message);
         }
     }
 

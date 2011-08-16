@@ -112,7 +112,7 @@ private class RubberPostProcessor : PostProcessor
         }
         catch (RegexError e)
         {
-            stderr.printf ("RubberPostProcessor: %s\n", e.message);
+            warning ("RubberPostProcessor: %s", e.message);
         }
     }
 
@@ -161,7 +161,7 @@ private class RubberPostProcessor : PostProcessor
             }
             catch (RegexError e)
             {
-                stderr.printf ("Warning: RubberPostProcessor: %s\n", e.message);
+                warning ("RubberPostProcessor: %s", e.message);
                 break;
             }
         }
@@ -206,7 +206,7 @@ private class LatexmkPostProcessor : PostProcessor
         }
         catch (RegexError e)
         {
-            stderr.printf ("LatexmkPostProcessor: %s\n", e.message);
+            warning ("LatexmkPostProcessor: %s", e.message);
         }
     }
 
@@ -284,7 +284,7 @@ private class LatexmkPostProcessor : PostProcessor
             }
             catch (RegexError e)
             {
-                stderr.printf ("Warning: LatexmkPostProcessor: %s\n", e.message);
+                warning ("LatexmkPostProcessor: %s", e.message);
                 break;
             }
         }
