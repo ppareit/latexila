@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-08-03 11:06+0000\n"
-"PO-Revision-Date: 2011-08-19 13:32+0200\n"
+"PO-Revision-Date: 2011-08-19 13:40+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -56,7 +56,7 @@ msgstr "Debe tener éxito"
 
 #: ../src/build_tool_dialog.vala:209
 msgid "Post Processor"
-msgstr "Post Procesador"
+msgstr "Post-procesador"
 
 #: ../src/build_tool_runner.vala:303
 msgid "Rubber may not support filenames with spaces (even in a directory)"
