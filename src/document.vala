@@ -119,8 +119,9 @@ public class Document : Gtk.SourceBuffer
 
         try
         {
-            string text;
-            location.load_contents (null, out text, null, out _etag);
+            uint8[] chars;
+            location.load_contents (null, out chars, out _etag);
+            string text = (string) (owned) chars;
 
             if (text.validate ())
                 set_contents (text);

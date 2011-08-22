@@ -23,7 +23,7 @@ public class MainWindow : Window
 {
     // for the menu and the toolbar
     // name, stock_id, label, accelerator, tooltip, callback
-    private const ActionEntry[] action_entries =
+    private const Gtk.ActionEntry[] action_entries =
     {
         // File
         { "File", null, N_("_File") },

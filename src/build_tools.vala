@@ -268,8 +268,9 @@ public class BuildTools
                 if (! file.query_exists ())
                     continue;
 
-                string contents;
-                file.load_contents (null, out contents);
+                uint8[] chars;
+                file.load_contents (null, out chars);
+                string contents = (string) (owned) chars;
 
                 MarkupParser parser =
                     { parser_start, parser_end, parser_text, null, null };

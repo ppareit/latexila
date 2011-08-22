@@ -87,8 +87,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         {
             File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
 
-            string contents;
-            file.load_contents (null, out contents);
+            uint8[] chars;
+            file.load_contents (null, out chars);
+            string contents = (string) (owned) chars;
 
             MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
@@ -131,8 +132,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         bool valid_arg_contents = false;
         show_all_proposals = false;
 
-        TextIter iter = {};
-        context.get_iter (iter);
+        TextIter iter = context.get_iter ();
 
         // if text selected, NO completion
         TextBuffer buf = iter.get_buffer ();
@@ -166,8 +166,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public void populate (SourceCompletionContext context)
     {
-        TextIter iter = {};
-        context.get_iter (iter);
+        TextIter iter = context.get_iter ();
         string? cmd = get_latex_command_at_iter (iter);
 
         bool in_argument = false;

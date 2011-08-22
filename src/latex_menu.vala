@@ -21,7 +21,7 @@ using Gtk;
 
 public class LatexMenu : Gtk.ActionGroup
 {
-    private const ActionEntry[] latex_action_entries =
+    private const Gtk.ActionEntry[] latex_action_entries =
     {
         // LaTeX
         { "Latex", null, "_LaTeX" },

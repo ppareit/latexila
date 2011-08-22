@@ -347,8 +347,9 @@ public class Templates : GLib.Object
     {
         try
         {
-            string contents;
-            file.load_contents (null, out contents, null, null);
+            uint8[] chars;
+            file.load_contents (null, out chars);
+            string contents = (string) (owned) chars;
             add_template_from_string (store, name, icon_id, contents);
         }
         catch (Error e)

@@ -43,8 +43,9 @@ public class Projects
 
         try
         {
-            string contents;
-            file.load_contents (null, out contents);
+            uint8[] chars;
+            file.load_contents (null, out chars);
+            string contents = (string) (owned) chars;
 
             MarkupParser parser = { parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);

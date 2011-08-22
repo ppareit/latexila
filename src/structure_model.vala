@@ -317,9 +317,7 @@ public class StructureModel : TreeModel, GLib.Object
         return true;
     }
 
-    // TODO TreePath -> TreePath? when the next version of Vala is released
-    // See https://bugzilla.gnome.org/show_bug.cgi?id=651871
-    public TreePath get_path (TreeIter iter)
+    public TreePath? get_path (TreeIter iter)
     {
         return_val_if_fail (iter_is_valid (iter), null);
 
@@ -334,16 +332,6 @@ public class StructureModel : TreeModel, GLib.Object
         }
 
         return path;
-    }
-
-    // TODO remove (un)ref_node() when the next version of Vala is released
-    // See https://bugzilla.gnome.org/show_bug.cgi?id=651872
-    public void ref_node (TreeIter iter)
-    {
-    }
-
-    public void unref_node (TreeIter iter)
-    {
     }
 
 
