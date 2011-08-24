@@ -12,7 +12,7 @@ CMake >= 2.6.4
 gettext
 ITS Tool (http://itstool.org/)
 gsettings-desktop-schemas (optional)
-Vala >= 0.12.1 (may be optional)
+Vala 0.12.x >= 0.12.1 (may be optional)
 
 If you are installing LaTeXila from a tarball or from a 'releases-*' branch,
 you don't have to install Vala because the C code is already generated.
