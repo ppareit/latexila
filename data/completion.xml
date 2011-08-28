@@ -408,7 +408,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="mathfrak">
 		<argument label="Formula" />
 	</command>
-	
+
 	<command name="phantom">
 		<argument label="Text" />
 	</command>
@@ -718,10 +718,10 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 	<command name="begin">
 		<argument label="Environment">
 			<choice name="abstract" />
-			<choice name="appendix" />
-			<choice name="array" />
 			<choice name="align" package="amsmath" />
 			<choice name="align*" package="amsmath" />
+			<choice name="appendix" />
+			<choice name="array" />
 			<choice name="Bmatrix" package="amsmath" />
 			<choice name="bmatrix" package="amsmath" />
 			<choice name="cases" package="amsmath" />
@@ -748,35 +748,42 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 				<insert>\item </insert>
 			</choice>
 			<choice name="letter" />
+			<choice name="list" />
 			<choice name="lstlisting" package="listings" />
 			<choice name="math" />
 			<choice name="matrix" package="amsmath" />
+			<choice name="minipage" />
 			<choice name="multicols" package="multicol" />
 			<choice name="overlay" />
 			<choice name="picture" />
 			<choice name="pmatrix" package="amsmath" />
+			<choice name="quote" />
+			<choice name="quotation" />
 			<choice name="slide" />
 			<choice name="smallmatrix" package="amsmath" />
 			<choice name="subarray" package="amsmath" />
 			<choice name="subequations" package="amsmath" />
+			<choice name="tabbing" />
 			<choice name="table" />
 			<choice name="tabular" />
 			<choice name="titlepage" />
 			<choice name="theorem" />
 			<choice name="thebibliography" />
 			<choice name="verbatim" />
+			<choice name="verse" />
 			<choice name="Vmatrix" package="amsmath" />
 			<choice name="vmatrix" package="amsmath" />
-			<choice name="Huge" />
-			<choice name="huge" />
+
+			<choice name="tiny" />
+			<choice name="scriptsize" />
+			<choice name="footnotesize" />
+			<choice name="small" />
+			<choice name="normalsize" />
 			<choice name="large" />
 			<choice name="Large" />
 			<choice name="LARGE" />
-			<choice name="tiny" />
-			<choice name="footnotesize" />
-			<choice name="scriptsize" />
-			<choice name="small" />
-			<choice name="normalsize" />
+			<choice name="huge" />
+			<choice name="Huge" />
 
 			<placeholder key="Newenvironments" />
 		</argument>
