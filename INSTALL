@@ -17,6 +17,9 @@ Vala 0.12.x >= 0.12.1 (may be optional)
 If you are installing LaTeXila from a tarball, you don't have to install Vala
 because the C code is already generated.
 
+You also probably want to install Latexmk or Rubber. Latexmk is used by default
+for compiling documents.
+
 
 Simple install procedure
 ========================
