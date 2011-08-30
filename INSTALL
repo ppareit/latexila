@@ -3,7 +3,7 @@ Requirements
 
 GTK+ >= 2.16
 GtkSourceView >= 2.10
-GLib >= 2.26 (GIO is part of GLib)
+GLib >= 2.28
 libgee
 unique
 gdk-x11
