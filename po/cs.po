@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-14 20:34+0000\n"
+"POT-Creation-Date: 2011-09-05 06:04+0000\n"
 "PO-Revision-Date: 2011-08-18 19:35+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
@@ -170,11 +170,11 @@ msgstr "Musí uspět"
 msgid "Post Processor"
 msgstr "Dodatečné zpracování"
 
-#: ../src/build_tool_runner.vala:303
+#: ../src/build_tool_runner.vala:355
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr "Rubber nemusí podporovat názvy souborů s mezerami (a ani složky)"
 
-#: ../src/build_tool_runner.vala:334
+#: ../src/build_tool_runner.vala:386
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "Vypadá to, že %s není nainstalován."
@@ -210,7 +210,7 @@ msgstr ""
 "Nenalezeny žádné nepotřebné soubory použité při sestavení, které by bylo "
 "možno smazat."
 
-#: ../src/completion.vala:268
+#: ../src/completion.vala:257
 msgid "No matching proposal"
 msgstr "Žádný odpovídající návrh"
 
@@ -280,38 +280,38 @@ msgstr "Chcete soubor znovu načíst?"
 msgid "Reload"
 msgstr "Znovu načíst"
 
-#: ../src/document.vala:140
+#: ../src/document.vala:143
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Soubor „%s“ není možné načíst."
 
-#: ../src/document.vala:216
+#: ../src/document.vala:219
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Soubor „%s“ byl od svého načtení změněn."
 
-#: ../src/document.vala:219
+#: ../src/document.vala:222
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Pokud jej uložíte, budou externě provedené změny ztraceny. Přesto uložit?"
 
-#: ../src/document.vala:222
+#: ../src/document.vala:225
 msgid "Save Anyway"
 msgstr "Přesto uložit"
 
-#: ../src/document.vala:224
+#: ../src/document.vala:227
 msgid "Don't Save"
 msgstr "Neukládat"
 
-#: ../src/document.vala:236
+#: ../src/document.vala:239
 msgid "Impossible to save the file."
 msgstr "Soubor není možné uložit."
 
-#: ../src/document.vala:261
+#: ../src/document.vala:264
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Chyba při pokusu o převod dokumentu do UTF-8"
 
-#: ../src/document.vala:315
+#: ../src/document.vala:318
 msgid "Unsaved Document"
 msgstr "Neuložený dokument"
 
@@ -331,12 +331,12 @@ msgstr "Přejít do složky aktivního dokumentu"
 msgid "Refresh"
 msgstr "Občerstvit"
 
-#: ../src/file_browser.vala:429 ../src/main_window.vala:316
+#: ../src/file_browser.vala:438 ../src/main_window.vala:316
 #: ../src/ui/preferences_dialog.ui.h:12
 msgid "File Browser"
 msgstr "Procházení souborů"
 
-#: ../src/file_browser.vala:459
+#: ../src/file_browser.vala:468
 msgid "File System"
 msgstr "Souborový systém"
 
@@ -1385,7 +1385,7 @@ msgstr "Příručka _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "Příručka Kile LaTeX"
 
-#: ../src/main_window.vala:163 ../src/main_window.vala:1933
+#: ../src/main_window.vala:163 ../src/main_window.vala:1951
 msgid "About LaTeXila"
 msgstr "O aplikaci LaTeXila"
 
@@ -1510,15 +1510,19 @@ msgstr "Nahradit"
 msgid "Open a recently used file"
 msgstr "Otevřít nedávno použité soubory"
 
-#: ../src/main_window.vala:1472
+#: ../src/main_window.vala:1473
 msgid "Open Files"
 msgstr "Otvírání souborů"
 
-#: ../src/main_window.vala:1881
+#: ../src/main_window.vala:1497
+msgid "All Files"
+msgstr "Všechny soubory"
+
+#: ../src/main_window.vala:1899
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je integrované prostředí LaTeX pro GNOME"
 
-#: ../src/main_window.vala:1934
+#: ../src/main_window.vala:1952
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
@@ -1772,7 +1776,7 @@ msgstr "Různé matematické"
 msgid "Misc text"
 msgstr "Různé textové"
 
-#: ../src/symbols.vala:748
+#: ../src/symbols.vala:747
 msgid "Most Used"
 msgstr "Nejpoužívanější"
 
