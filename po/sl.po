@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexila&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-08-29 18:25+0000\n"
-"PO-Revision-Date: 2011-09-06 21:36+0100\n"
+"PO-Revision-Date: 2011-09-06 22:37+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -652,17 +652,14 @@ msgid "Page break - \\pagebreak"
 msgstr "Prelom strani - \\pagebreak"
 
 #: ../src/latex_menu.vala:193
-#, fuzzy
 msgid "Big skip - \\bigskip"
 msgstr "Velik preskok - \\bigskip"
 
 #: ../src/latex_menu.vala:195
-#, fuzzy
 msgid "Medium skip - \\medskip"
 msgstr "Srednji preskok - \\medskip"
 
 #: ../src/latex_menu.vala:197
-#, fuzzy
 msgid "Horizontal space - \\hspace"
 msgstr "Vodoravni prostor - \\hspace"
 
@@ -671,7 +668,6 @@ msgid "Vertical space - \\vspace"
 msgstr "Navpični prostor - \\vspace"
 
 #: ../src/latex_menu.vala:201
-#, fuzzy
 msgid ""
 "No paragraph indentation - \\n"
 "oindent"
@@ -764,12 +760,10 @@ msgid "Use package - \\usepackage"
 msgstr "Uporabi paket - \\usepackage"
 
 #: ../src/latex_menu.vala:231
-#, fuzzy
 msgid "_AMS packages"
 msgstr "Paketi _AMS"
 
 #: ../src/latex_menu.vala:232
-#, fuzzy
 msgid "AMS packages"
 msgstr "Paketi AMS"
 
@@ -786,7 +780,6 @@ msgid "Content of the document - \\begin{document}"
 msgstr "Vsebina dokumenta - \\begin{document}"
 
 #: ../src/latex_menu.vala:238
-#, fuzzy
 msgid "Make title - \\maketitle"
 msgstr "Izdelaj naslov - \\maketitle"
 
@@ -841,22 +834,18 @@ msgid "Numbered Equation - \\begin{equation}"
 msgstr "Oštevilčena enačba - \\begin{equation}"
 
 #: ../src/latex_menu.vala:263
-#, fuzzy
 msgid "_Array of Equations - \\begin{align*}"
 msgstr "_Matrika enačb - \\begin{align*}"
 
 #: ../src/latex_menu.vala:264
-#, fuzzy
 msgid "Array of Equations - \\begin{align*}"
 msgstr "Matrika enačb - \\begin{align*}"
 
 #: ../src/latex_menu.vala:266
-#, fuzzy
 msgid "Numbered Array of _Equations - \\begin{align}"
 msgstr "Oštevilčena matrika _enačb - \\begin{align}"
 
 #: ../src/latex_menu.vala:267
-#, fuzzy
 msgid "Numbered Array of Equations - \\begin{align}"
 msgstr "Oštevilčena matrika enačb - \\begin{align}"
 
@@ -902,20 +891,17 @@ msgstr "N-ti koren - \\sqrt[]{}"
 
 #. Math functions
 #: ../src/latex_menu.vala:283
-#, fuzzy
 msgid "Math _Functions"
 msgstr "Matematične _funkcije"
 
 #. Math Font Styles
 #: ../src/latex_menu.vala:317
-#, fuzzy
 msgid "Math Font _Styles"
 msgstr "Slogi _matematičnih pisav"
 
 #: ../src/latex_menu.vala:319
-#, fuzzy
 msgid "Roman - \\mathrm"
-msgstr "Pisava z nastavki*** - \\mathrm"
+msgstr "Klasična pisava - \\mathrm"
 
 #: ../src/latex_menu.vala:321
 msgid "Italic - \\mathit"
@@ -926,39 +912,32 @@ msgid "Bold - \\mathbf"
 msgstr "Krepko - \\mathbf"
 
 #: ../src/latex_menu.vala:325
-#, fuzzy
 msgid "Sans Serif - \\mathsf"
 msgstr "Pisava brez nastavkov - \\mathsf"
 
 #: ../src/latex_menu.vala:327
-#, fuzzy
 msgid "Typewriter - \\mathtt"
 msgstr "Pisalni stroj - \\mathtt"
 
 #: ../src/latex_menu.vala:329
-#, fuzzy
 msgid "Calligraphic - \\mathcal"
 msgstr "Kaligrafsko - \\mathcal"
 
 #: ../src/latex_menu.vala:331
-#, fuzzy
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
 msgstr "Tabla (samo velike črke)  - \\mathbb (paket amsfonts)"
 
 #: ../src/latex_menu.vala:334
-#, fuzzy
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Euler Fraktur - \\mathfrak (paket amsfonts)"
 
 #. Math Accents
 #: ../src/latex_menu.vala:339
-#, fuzzy
 msgid "Math _Accents"
 msgstr "Matematični po_udarki"
 
 #. Math Spaces
 #: ../src/latex_menu.vala:360
-#, fuzzy
 msgid "Math _Spaces"
 msgstr "Matematični p_resledki"
 
@@ -1310,12 +1289,10 @@ msgid "Stop Execution"
 msgstr "Ustavi izvajanje"
 
 #: ../src/main_window.vala:107
-#, fuzzy
 msgid "View _Log"
 msgstr "Pokaži _dnevnik"
 
 #: ../src/main_window.vala:108
-#, fuzzy
 msgid "View Log"
 msgstr "Pokaži dnevnik"
 
@@ -1736,14 +1713,12 @@ msgid "Line you want to move the cursor to"
 msgstr "Vrstica, v katero želite premakniti kazalko"
 
 #: ../src/search.vala:177
-#, fuzzy
 msgid "Case sensitive"
-msgstr "Razlikovanje malih/velikih črk"
+msgstr "Razlikovanje velikosti črk"
 
 #: ../src/search.vala:178
-#, fuzzy
 msgid "Entire words only"
-msgstr "Samo cele besede"
+msgstr "Le cele besede"
 
 #: ../src/search.vala:408
 #, c-format
@@ -1780,12 +1755,10 @@ msgid "Show files included"
 msgstr "Pokaži vključene datoteke"
 
 #: ../src/structure.vala:168
-#, fuzzy
 msgid "Show tables"
 msgstr "Pokaži razpredelnice"
 
 #: ../src/structure.vala:172
-#, fuzzy
 msgid "Show figures and images"
 msgstr "Pokaži risbe in slike"
 
@@ -1877,17 +1850,14 @@ msgid "Delimiters"
 msgstr "Razmejnice"
 
 #: ../src/symbols.vala:32
-#, fuzzy
 msgid "Misc math"
 msgstr "Razno - matematika"
 
 #: ../src/symbols.vala:33
-#, fuzzy
 msgid "Misc text"
 msgstr "Razno - besedilo"
 
 #: ../src/symbols.vala:747
-#, fuzzy
 msgid "Most Used"
 msgstr "Največ uporabljene"
 
