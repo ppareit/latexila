@@ -334,7 +334,7 @@ public class CleanBuildFiles : GLib.Object
             DialogFlags.DESTROY_WITH_PARENT,
             MessageType.INFO,
             ButtonsType.OK,
-            _("No build file to clean up."));
+            "%s", _("No build file to clean up."));
 
         dialog.run ();
         dialog.destroy ();

@@ -435,7 +435,7 @@ public class FileBrowser : VBox
                 DialogFlags.DESTROY_WITH_PARENT,
                 MessageType.WARNING,
                 ButtonsType.CLOSE,
-                _("File Browser"));
+                "%s", _("File Browser"));
 
             dialog.format_secondary_text ("%s", e.message);
             dialog.run ();
