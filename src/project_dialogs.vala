@@ -286,7 +286,7 @@ namespace ProjectDialogs
                 DialogFlags.DESTROY_WITH_PARENT,
                 MessageType.QUESTION,
                 ButtonsType.NONE,
-                _("Do you really want to clear all projects?"));
+                "%s", _("Do you really want to clear all projects?"));
 
             clear_dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
@@ -318,7 +318,7 @@ namespace ProjectDialogs
             DialogFlags.DESTROY_WITH_PARENT,
             MessageType.ERROR,
             ButtonsType.OK,
-            _("The Main File is not in the directory."));
+            "%s", _("The Main File is not in the directory."));
 
         error_dialog.run ();
         error_dialog.destroy ();

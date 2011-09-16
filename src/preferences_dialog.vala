@@ -663,7 +663,7 @@ public class PreferencesDialog : Dialog
     private Dialog get_reset_all_confirm_dialog (string msg)
     {
         Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
-            MessageType.QUESTION, ButtonsType.NONE, msg);
+            MessageType.QUESTION, ButtonsType.NONE, "%s", msg);
 
         dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
 
