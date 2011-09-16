@@ -25,12 +25,19 @@ set (SCHEMA_DIR "${CMAKE_INSTALL_PREFIX}/share")
 set (ICONS_DIR "${CMAKE_INSTALL_PREFIX}/share/icons/hicolor")
 
 if (BUILD_VALA)
-	list (APPEND CMAKE_MODULE_PATH "${latexila_SOURCE_DIR}/cmake/vala")
-	find_package (Vala "0.12.1" REQUIRED)
-	if (${VALA_VERSION} VERSION_GREATER "0.12.99")
-		message (FATAL_ERROR "Vala 0.12.x required")
+	include ("${latexila_SOURCE_DIR}/cmake/find_vala.cmake")
+	include ("${latexila_SOURCE_DIR}/cmake/use_vala.cmake")
+
+	set (_vala_main_version "0.12")
+	set (_vala_min_version "0.12.1")
+
+	find_vala (${_vala_main_version})
+
+	if ((NOT VALA_FOUND) OR
+	    ("${VALA_VERSION}" VERSION_LESS "${_vala_min_version}"))
+		message (FATAL_ERROR
+			"Vala ${_vala_main_version}.x >= ${_vala_min_version} required")
 	endif ()
-	include (${VALA_USE_FILE})
 endif ()
 
 find_package (PkgConfig)
