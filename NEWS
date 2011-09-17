@@ -1,6 +1,19 @@
 LaTeXila NEWS
 
 ==============================
+* Release 2.2.1 (Sep 17, 2011)
+==============================
+
+- Completion data: add some environments
+- Added Slovenian, Czech, Swedish and Serbian translations
+- Requirements fix: GLib >= 2.28 (instead of 2.26)
+- Compilation: call "valac-0.12" instead of "valac"
+- Bugs fixed:
+  659129: space alone triggers completion with the fr-oss keyboard layout
+  659290: avoid GCC error messages when using -Werror=format-security
+
+
+==============================
 * Release 2.2.0 (Aug 26, 2011)
 ==============================
 
