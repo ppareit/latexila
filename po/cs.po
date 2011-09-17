@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-05 06:04+0000\n"
-"PO-Revision-Date: 2011-08-18 19:35+0200\n"
+"POT-Creation-Date: 2011-09-17 09:21+0000\n"
+"PO-Revision-Date: 2011-09-17 22:26+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -221,7 +221,7 @@ msgstr "Žádný odpovídající návrh"
 msgid "Ln %d, Col %d"
 msgstr "Řá %d, Sl %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:809
+#: ../src/dialogs.vala:40 ../src/main_window.vala:819
 msgid "Close without Saving"
 msgstr "Zavřít bez ukládání"
 
@@ -1069,7 +1069,7 @@ msgstr "No_vé okno"
 msgid "Create a new window"
 msgstr "Vytvořit nové okno"
 
-#: ../src/main_window.vala:35 ../src/main_window.vala:1065
+#: ../src/main_window.vala:35 ../src/main_window.vala:1075
 msgid "Open a file"
 msgstr "Otevřít soubor"
 
@@ -1138,7 +1138,7 @@ msgstr "Smazat vybraný text"
 msgid "Select the entire document"
 msgstr "Vybrat celý dokument"
 
-#: ../src/main_window.vala:71 ../src/main_window.vala:147
+#: ../src/main_window.vala:71 ../src/main_window.vala:145
 msgid "_Comment"
 msgstr "Zako_mentovat"
 
@@ -1154,240 +1154,236 @@ msgstr "_Odkomentovat"
 msgid "Uncomment the selected lines (remove the character \"%\")"
 msgstr "Zrušit označení vybraných řádků jako komentář (odstranit znak „%“)"
 
-#: ../src/main_window.vala:77
-msgid "_Completion"
-msgstr "_Doplnit"
-
 #: ../src/main_window.vala:78
-msgid "Complete the LaTeX command"
-msgstr "Doplnit zbývající část příkazu LaTeX"
-
-#: ../src/main_window.vala:80
 msgid "Configure the application"
 msgstr "Nastavit aplikaci"
 
 #. View
-#: ../src/main_window.vala:83
+#: ../src/main_window.vala:81
 msgid "_View"
 msgstr "_Zobrazit"
 
-#: ../src/main_window.vala:84
+#: ../src/main_window.vala:82
 msgid "Zoom _In"
 msgstr "Př_iblížit"
 
-#: ../src/main_window.vala:85
+#: ../src/main_window.vala:83
 msgid "Enlarge the font"
 msgstr "Zvětšit písmo"
 
-#: ../src/main_window.vala:86
+#: ../src/main_window.vala:84
 msgid "Zoom _Out"
 msgstr "_Oddálit"
 
-#: ../src/main_window.vala:87
+#: ../src/main_window.vala:85
 msgid "Shrink the font"
 msgstr "Zmenšit písmo"
 
-#: ../src/main_window.vala:88
+#: ../src/main_window.vala:86
 msgid "_Reset Zoom"
 msgstr "_Základní přiblížení"
 
-#: ../src/main_window.vala:89
+#: ../src/main_window.vala:87
 msgid "Reset the size of the font"
 msgstr "Vrátit velikost písma na základní"
 
 #. Search
-#: ../src/main_window.vala:92
+#: ../src/main_window.vala:90
 msgid "_Search"
 msgstr "_Hledat"
 
-#: ../src/main_window.vala:94
+#: ../src/main_window.vala:92
 msgid "Search for text"
 msgstr "Hledat text"
 
-#: ../src/main_window.vala:96
+#: ../src/main_window.vala:94
 msgid "Search for and replace text"
 msgstr "Hledat a nahradit text"
 
-#: ../src/main_window.vala:97
+#: ../src/main_window.vala:95
 msgid "_Go to Line..."
 msgstr "_Přejít na řádek…"
 
-#: ../src/main_window.vala:98
+#: ../src/main_window.vala:96
 msgid "Go to a specific line"
 msgstr "Přejít na zadaný řádek"
 
 #. Build
-#: ../src/main_window.vala:101
+#: ../src/main_window.vala:99
 msgid "_Build"
 msgstr "S_estavit"
 
-#: ../src/main_window.vala:102
+#: ../src/main_window.vala:100
 msgid "Cleanup Build _Files"
 msgstr "Vymazat sestavovací _soubory"
 
-#: ../src/main_window.vala:103
+#: ../src/main_window.vala:101
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
 msgstr "Vymazat sestavovací soubory (*.aux, *.log, *.out, *.toc, atd.)"
 
-#: ../src/main_window.vala:105
+#: ../src/main_window.vala:103
 msgid "_Stop Execution"
 msgstr "Za_stavit zpracování"
 
-#: ../src/main_window.vala:106
+#: ../src/main_window.vala:104
 msgid "Stop Execution"
 msgstr "Zastavit zpracování"
 
-#: ../src/main_window.vala:107
+#: ../src/main_window.vala:105
 msgid "View _Log"
 msgstr "Zobrazit protokol"
 
-#: ../src/main_window.vala:108
+#: ../src/main_window.vala:106
 msgid "View Log"
 msgstr "Zobrazit protokol"
 
 #. Documents
-#: ../src/main_window.vala:111
+#: ../src/main_window.vala:109
 msgid "_Documents"
 msgstr "_Dokumenty"
 
-#: ../src/main_window.vala:112
+#: ../src/main_window.vala:110
 msgid "_Save All"
 msgstr "_Uložit vše"
 
-#: ../src/main_window.vala:113
+#: ../src/main_window.vala:111
 msgid "Save all open files"
 msgstr "Uložit všechny otevřené soubory"
 
-#: ../src/main_window.vala:114
+#: ../src/main_window.vala:112
 msgid "_Close All"
 msgstr "Z_avřít vše"
 
-#: ../src/main_window.vala:115
+#: ../src/main_window.vala:113
 msgid "Close all open files"
 msgstr "Zavřít všechny otevřené soubory"
 
-#: ../src/main_window.vala:116
+#: ../src/main_window.vala:114
 msgid "_Previous Document"
 msgstr "_Předchozí dokument"
 
-#: ../src/main_window.vala:117
+#: ../src/main_window.vala:115
 msgid "Activate previous document"
 msgstr "Aktivovat předchozí dokument"
 
-#: ../src/main_window.vala:119
+#: ../src/main_window.vala:117
 msgid "_Next Document"
 msgstr "_Následující dokument"
 
-#: ../src/main_window.vala:120
+#: ../src/main_window.vala:118
 msgid "Activate next document"
 msgstr "Aktivovat následující dokument"
 
-#: ../src/main_window.vala:122
+#: ../src/main_window.vala:120
 msgid "_Move to New Window"
 msgstr "Pře_sunout do nového okna"
 
-#: ../src/main_window.vala:123
+#: ../src/main_window.vala:121
 msgid "Move the current document to a new window"
 msgstr "Přesunout aktuální dokument do nového okna"
 
 #. Projects
-#: ../src/main_window.vala:127
+#: ../src/main_window.vala:125
 msgid "_Projects"
 msgstr "_Projekty"
 
-#: ../src/main_window.vala:128
+#: ../src/main_window.vala:126
 msgid "_New Project"
 msgstr "_Nový projekt"
 
-#: ../src/main_window.vala:129
+#: ../src/main_window.vala:127
 msgid "Create a new project"
 msgstr "Vytvořit nový projekt"
 
-#: ../src/main_window.vala:130
+#: ../src/main_window.vala:128
 msgid "_Configure Current Project"
 msgstr "Nastavit a_ktuální projekt"
 
-#: ../src/main_window.vala:131
+#: ../src/main_window.vala:129
 msgid "Change the main file of the current project"
 msgstr "Změnit hlavní soubor aktuálního projektu"
 
-#: ../src/main_window.vala:133
+#: ../src/main_window.vala:131
 msgid "_Manage Projects"
 msgstr "_Správa projektů"
 
-#: ../src/main_window.vala:134 ../src/project_dialogs.vala:178
+#: ../src/main_window.vala:132 ../src/project_dialogs.vala:178
 msgid "Manage Projects"
 msgstr "Správa projektů"
 
 #. Structure
-#: ../src/main_window.vala:137
+#: ../src/main_window.vala:135
 msgid "S_tructure"
 msgstr "S_truktura"
 
-#: ../src/main_window.vala:139
+#: ../src/main_window.vala:137
 msgid "Cut the selected structure item"
 msgstr "Vyjmout vybranou položku struktury"
 
-#: ../src/main_window.vala:141
+#: ../src/main_window.vala:139
 msgid "Copy the selected structure item"
 msgstr "Kopírovat vybranou položku struktury"
 
-#: ../src/main_window.vala:143
+#: ../src/main_window.vala:141
 msgid "Delete the selected structure item"
 msgstr "Smazat vybranou položku struktury"
 
-#: ../src/main_window.vala:144
+#: ../src/main_window.vala:142
 msgid "_Select"
 msgstr "_Vybrat"
 
-#: ../src/main_window.vala:145
+#: ../src/main_window.vala:143
 msgid "Select the contents of the selected structure item"
 msgstr "Vybrat obsah vybrané položky struktury"
 
-#: ../src/main_window.vala:148
+#: ../src/main_window.vala:146
 msgid "Comment the selected structure item"
 msgstr "Zakomentovat vybranou položku struktury"
 
-#: ../src/main_window.vala:149
+#: ../src/main_window.vala:147
 msgid "Shift _Left"
 msgstr "Posunout v_levo"
 
-#: ../src/main_window.vala:150
+#: ../src/main_window.vala:148
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
 msgstr "Posunout vybranou položku struktury doleva (např. oddíl → kapitola)"
 
-#: ../src/main_window.vala:152
+#: ../src/main_window.vala:150
 msgid "Shift _Right"
 msgstr "Posunout vp_ravo"
 
-#: ../src/main_window.vala:153
+#: ../src/main_window.vala:151
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
 msgstr "Posunout vybranou položku struktury doprava (např. kapitola → oddíl)"
 
 #. Help
-#: ../src/main_window.vala:157
+#: ../src/main_window.vala:155
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: ../src/main_window.vala:158
+#: ../src/main_window.vala:156
 msgid "_Contents"
 msgstr "_Obsah"
 
-#: ../src/main_window.vala:159
+#: ../src/main_window.vala:157
 msgid "Open the LaTeXila documentation"
 msgstr "Otevřít dokumentaci aplikace LaTeXila"
 
-#: ../src/main_window.vala:160
+#: ../src/main_window.vala:158
 msgid "_LaTeX Reference"
 msgstr "Příručka _LaTeX"
 
-#: ../src/main_window.vala:161
+#: ../src/main_window.vala:159
 msgid "The Kile LaTeX Reference"
 msgstr "Příručka Kile LaTeX"
 
-#: ../src/main_window.vala:163 ../src/main_window.vala:1951
+#: ../src/main_window.vala:161 ../src/main_window.vala:1968
 msgid "About LaTeXila"
 msgstr "O aplikaci LaTeXila"
+
+#: ../src/main_window.vala:167
+msgid "Activate or disable the spell checking"
+msgstr "Aktivovat nebo vypnout kontrolu pravopisu"
 
 #: ../src/main_window.vala:168
 msgid "_Main Toolbar"
@@ -1455,20 +1451,20 @@ msgid "Structure"
 msgstr "Struktura"
 
 #. recent documents
-#: ../src/main_window.vala:520
+#: ../src/main_window.vala:530
 msgid "Open _Recent"
 msgstr "Otevřít ne_dávné"
 
-#: ../src/main_window.vala:521
+#: ../src/main_window.vala:531
 msgid "Open recently used files"
 msgstr "Otevřít nedávno použité soubory"
 
-#: ../src/main_window.vala:695
+#: ../src/main_window.vala:705
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Tento soubor (%s) je již otevřen v jiném okně aplikace LaTeXila."
 
-#: ../src/main_window.vala:697
+#: ../src/main_window.vala:707
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1476,53 +1472,53 @@ msgstr ""
 "Aplikace LaTeXila otevřela tento soubor bez umožnění úprav. Přesto jej "
 "chcete upravit?"
 
-#: ../src/main_window.vala:700
+#: ../src/main_window.vala:710
 msgid "Edit Anyway"
 msgstr "Přesto upravit"
 
-#: ../src/main_window.vala:701
+#: ../src/main_window.vala:711
 msgid "Don't Edit"
 msgstr "Neupravovat"
 
-#: ../src/main_window.vala:806
+#: ../src/main_window.vala:816
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Uložit před zavřením změny v dokumentu „%s“?"
 
-#: ../src/main_window.vala:925
+#: ../src/main_window.vala:935
 msgid "Read-Only"
 msgstr "Jen ke čtení"
 
-#: ../src/main_window.vala:939
+#: ../src/main_window.vala:949
 msgid "Save File"
 msgstr "Uložení souboru"
 
-#: ../src/main_window.vala:974
+#: ../src/main_window.vala:984
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Soubor s názvem „%s“ již existuje. Chcete jej nahradit?"
 
-#: ../src/main_window.vala:979 ../src/ui/search_and_replace.ui.h:7
+#: ../src/main_window.vala:989 ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Nahradit"
 
-#: ../src/main_window.vala:1066
+#: ../src/main_window.vala:1076
 msgid "Open a recently used file"
 msgstr "Otevřít nedávno použité soubory"
 
-#: ../src/main_window.vala:1473
+#: ../src/main_window.vala:1483
 msgid "Open Files"
 msgstr "Otvírání souborů"
 
-#: ../src/main_window.vala:1497
+#: ../src/main_window.vala:1507
 msgid "All Files"
 msgstr "Všechny soubory"
 
-#: ../src/main_window.vala:1899
+#: ../src/main_window.vala:1916
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je integrované prostředí LaTeX pro GNOME"
 
-#: ../src/main_window.vala:1952
+#: ../src/main_window.vala:1969
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
