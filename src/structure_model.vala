@@ -228,6 +228,8 @@ public class StructureModel : TreeModel, GLib.Object
 
     public bool iter_children (out TreeIter iter, TreeIter? parent)
     {
+        iter = TreeIter ();
+
         unowned Node<StructData?> node;
         if (parent == null)
             node = _tree;
@@ -259,6 +261,8 @@ public class StructureModel : TreeModel, GLib.Object
 
     public bool iter_nth_child (out TreeIter iter, TreeIter? parent, int n)
     {
+        iter = TreeIter ();
+
         unowned Node<StructData?> node;
         if (parent == null)
             node = _tree;
@@ -280,6 +284,8 @@ public class StructureModel : TreeModel, GLib.Object
 
     public bool iter_parent (out TreeIter iter, TreeIter child)
     {
+        iter = TreeIter ();
+
         return_val_if_fail (iter_is_valid (child), false);
 
         unowned Node<StructData?> node = get_node_from_iter (child);
@@ -298,6 +304,8 @@ public class StructureModel : TreeModel, GLib.Object
 
     public bool get_iter (out TreeIter iter, TreePath path)
     {
+        iter = TreeIter ();
+
         int depth = path.get_depth ();
         return_val_if_fail (1 <= depth, false);
 

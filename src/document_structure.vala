@@ -219,6 +219,11 @@ public class DocumentStructure : GLib.Object
         out LowLevelType? type, out string? contents,
         out int? start_match_index, out int? end_match_index)
     {
+        type = null;
+        contents = null;
+        start_match_index = null;
+        end_match_index = null;
+
         /* search the character '\' or '%' */
         MatchInfo match_info;
         try
@@ -283,6 +288,10 @@ public class DocumentStructure : GLib.Object
     private bool search_markup (string line, int after_backslash_index,
         out LowLevelType? type, out string? contents, out int? end_match_index)
     {
+        type = null;
+        contents = null;
+        end_match_index = null;
+
         /* get markup name */
         int? begin_contents_index;
         string? name = get_markup_name (line, after_backslash_index,
@@ -312,6 +321,8 @@ public class DocumentStructure : GLib.Object
     private bool search_env (string line, int begin_contents_index, bool is_begin_env,
         out LowLevelType? type, out int? end_match_index)
     {
+        type = null;
+
         string? contents = get_markup_contents (line, begin_contents_index,
             out end_match_index);
 
@@ -349,6 +360,8 @@ public class DocumentStructure : GLib.Object
     private string? get_markup_name (string line, int after_backslash_index,
         out int? begin_contents_index = null)
     {
+        begin_contents_index = null;
+
         /* Get the markup name */
         string after_backslash_text = line.substring (after_backslash_index);
 
@@ -376,6 +389,8 @@ public class DocumentStructure : GLib.Object
     private bool search_firt_non_optional_arg (string line, int start_index,
         out int begin_contents_index)
     {
+        begin_contents_index = 0;
+
         int cur_index = start_index;
         bool in_optional_arg = false;
         int additional_bracket_level = 0;
@@ -440,6 +455,8 @@ public class DocumentStructure : GLib.Object
     private string? get_markup_contents (string line, int begin_contents_index,
         out int? end_match_index)
     {
+        end_match_index = null;
+
         int brace_level = 0;
         int cur_index = begin_contents_index;
 
@@ -482,6 +499,10 @@ public class DocumentStructure : GLib.Object
     private bool search_comment (string line, int after_percent_index,
         out LowLevelType? type, out string? contents, out int? end_match_index)
     {
+        type = null;
+        contents = null;
+        end_match_index = null;
+
         string text_after = line.substring (after_percent_index).strip ();
 
         MatchInfo match_info;
@@ -920,6 +941,8 @@ public class DocumentStructure : GLib.Object
     private bool get_low_level_item_bounds (StructType item_type, string item_contents,
         TextIter start_match_iter, bool is_start, out TextIter? end_match_iter)
     {
+        end_match_iter = null;
+
         int line_num = start_match_iter.get_line ();
         string line = get_document_line_contents (line_num);
 

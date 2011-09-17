@@ -87,6 +87,8 @@ public class Projects
     // returns true if project successfully added
     public bool add (Project new_project, out File conflict_file)
     {
+        conflict_file = null;
+
         foreach (Project project in projects)
         {
             if (conflict (project.directory, new_project.directory))

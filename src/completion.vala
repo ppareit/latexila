@@ -760,6 +760,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                                             out string argument_contents = null,
                                             out bool valid_arg_contents = null)
     {
+        cmd_name = null;
+        argument_contents = null;
+
         string text = get_text_line_at_iter (iter);
 
         bool fetch_argument_contents = true;

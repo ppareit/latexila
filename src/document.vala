@@ -591,6 +591,8 @@ public class Document : Gtk.SourceBuffer
     public void set_search_text (string text, bool case_sensitive, bool entire_word,
         out uint nb_matches, out uint num_match, bool select = true)
     {
+        num_match = 0;
+
         // connect signals
         if (search_text == null)
         {
@@ -782,6 +784,9 @@ public class Document : Gtk.SourceBuffer
     private bool iter_forward_search (TextIter start, TextIter? end,
         out TextIter match_start, out TextIter match_end)
     {
+        match_start = TextIter ();
+        match_end = TextIter ();
+
         bool found = false;
         while (! found)
         {
@@ -804,6 +809,9 @@ public class Document : Gtk.SourceBuffer
     private bool iter_backward_search (TextIter start, TextIter? end,
         out TextIter match_start, out TextIter match_end)
     {
+        match_start = TextIter ();
+        match_end = TextIter ();
+
         bool found = false;
         while (! found)
         {
