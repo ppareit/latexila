@@ -1345,7 +1345,7 @@ public class MainWindow : Window
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
             "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean", "BuildViewLog",
-            "ProjectsConfigCurrent", "FileCreateTemplate", "EditCompletion"
+            "ProjectsConfigCurrent", "FileCreateTemplate"
         };
 
         foreach (string file_action in file_actions)
