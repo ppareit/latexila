@@ -23,8 +23,8 @@ public class DocumentView : Gtk.SourceView
 {
     public const double SCROLL_MARGIN = 0.02;
 
-    private GLib.Settings editor_settings;
-    private Pango.FontDescription font_desc;
+    private GLib.Settings _editor_settings;
+    private Pango.FontDescription _font_desc;
 
     public DocumentView (Document doc)
     {
@@ -40,21 +40,21 @@ public class DocumentView : Gtk.SourceView
         indent_width = -1;
 
         /* settings */
-        editor_settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
+        _editor_settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
 
         set_font_from_settings ();
 
         // tab width
         uint tmp;
-        editor_settings.get ("tabs-size", "u", out tmp);
+        _editor_settings.get ("tabs-size", "u", out tmp);
         tab_width = tmp;
 
-        insert_spaces_instead_of_tabs = editor_settings.get_boolean ("insert-spaces");
-        show_line_numbers = editor_settings.get_boolean ("display-line-numbers");
-        highlight_current_line = editor_settings.get_boolean ("highlight-current-line");
+        insert_spaces_instead_of_tabs = _editor_settings.get_boolean ("insert-spaces");
+        show_line_numbers = _editor_settings.get_boolean ("display-line-numbers");
+        highlight_current_line = _editor_settings.get_boolean ("highlight-current-line");
         doc.highlight_matching_brackets =
-            editor_settings.get_boolean ("bracket-matching");
-        doc.set_style_scheme_from_string (editor_settings.get_string ("scheme"));
+            _editor_settings.get_boolean ("bracket-matching");
+        doc.set_style_scheme_from_string (_editor_settings.get_string ("scheme"));
         set_smart_home_end (SourceSmartHomeEndType.AFTER);
 
         // completion
@@ -79,6 +79,10 @@ public class DocumentView : Gtk.SourceView
 
         // smart backspace (if indent with spaces)
         key_press_event.connect (on_backspace);
+
+        // spell checking
+        if (_editor_settings.get_boolean ("spell-checking"))
+            activate_spell_checking ();
     }
 
     public void scroll_to_cursor (double margin = 0.25)
@@ -154,32 +158,32 @@ public class DocumentView : Gtk.SourceView
     public void set_font_from_settings ()
     {
         string font;
-        if (editor_settings.get_boolean ("use-default-font"))
+        if (_editor_settings.get_boolean ("use-default-font"))
             font = AppSettings.get_default ().system_font;
         else
-            font = editor_settings.get_string ("editor-font");
+            font = _editor_settings.get_string ("editor-font");
 
         set_font_from_string (font);
     }
 
     public void set_font_from_string (string font)
     {
-        font_desc = Pango.FontDescription.from_string (font);
-        modify_font (font_desc);
+        _font_desc = Pango.FontDescription.from_string (font);
+        modify_font (_font_desc);
     }
 
     public void enlarge_font ()
     {
         // this is not saved in the settings
-        font_desc.set_size (font_desc.get_size () + Pango.SCALE);
-        modify_font (font_desc);
+        _font_desc.set_size (_font_desc.get_size () + Pango.SCALE);
+        modify_font (_font_desc);
     }
 
     public void shrink_font ()
     {
         // this is not saved in the settings
-        font_desc.set_size (font_desc.get_size () - Pango.SCALE);
-        modify_font (font_desc);
+        _font_desc.set_size (_font_desc.get_size () - Pango.SCALE);
+        modify_font (_font_desc);
     }
 
     public string get_indentation_style ()
@@ -189,14 +193,36 @@ public class DocumentView : Gtk.SourceView
         return "\t";
     }
 
+    public void activate_spell_checking ()
+    {
+        disable_spell_checking ();
+
+        try
+        {
+            // Will try the best language depending on the LANG environment variable.
+            new GtkSpell.attach (this, null);
+        }
+        catch (GtkspellError e)
+        {
+            warning ("Spell error: %s", e.message);
+        }
+    }
+
+    public void disable_spell_checking ()
+    {
+        GtkSpell? spell = GtkSpell.get_from_text_view (this);
+        if (spell != null)
+            spell.detach ();
+    }
+
     private bool on_backspace (Gdk.EventKey event)
     {
         // See GDK_KEY_BackSpace in gdk/gdkkeysyms.h (not available in Vala)
 
         // TODO~ connect/disconnect the signal when settings in gsettings change
         // note: this function will be removed when latexila will become a Gedit plugin...
-        if (! editor_settings.get_boolean ("insert-spaces")
-            || ! editor_settings.get_boolean ("forget-no-tabs")
+        if (! _editor_settings.get_boolean ("insert-spaces")
+            || ! _editor_settings.get_boolean ("forget-no-tabs")
             || event.keyval != 0xff08
             || buffer.has_selection
             || tab_width == 1)

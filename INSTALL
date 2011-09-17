@@ -6,6 +6,7 @@ GtkSourceView >= 2.10
 GLib >= 2.28
 libgee
 unique
+GtkSpell
 gdk-x11
 x11
 CMake >= 2.6.4

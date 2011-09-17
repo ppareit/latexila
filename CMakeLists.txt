@@ -43,6 +43,7 @@ endif ()
 find_package (PkgConfig)
 pkg_check_modules (GTK REQUIRED "gtk+-2.0 >= 2.16")
 pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-2.0 >= 2.10")
+pkg_check_modules (GTKSPELL REQUIRED "gtkspell-2.0")
 pkg_check_modules (GEE REQUIRED "gee-1.0")
 pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.28")
 pkg_check_modules (UNIQUE REQUIRED "unique-1.0")
@@ -63,6 +64,7 @@ add_definitions (-include config.h)
 add_definitions (
 	${GTK_CFLAGS}
 	${GTKSOURCEVIEW_CFLAGS}
+	${GTKSPELL_CFLAGS}
 	${GEE_CFLAGS}
 	${GIO_CFLAGS}
 	${UNIQUE_CFLAGS}
@@ -73,6 +75,7 @@ add_definitions (
 link_libraries (
 	${GTK_LIBRARIES}
 	${GTKSOURCEVIEW_LIBRARIES}
+	${GTKSPELL_LIBRARIES}
 	${GEE_LIBRARIES}
 	${GIO_LIBRARIES}
 	${UNIQUE_LIBRARIES}

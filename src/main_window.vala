@@ -165,6 +165,8 @@ public class MainWindow : Window
 
     private const ToggleActionEntry[] toggle_action_entries =
     {
+        { "EditSpellChecking", Stock.SPELL_CHECK, null, "",
+            N_("Activate or disable the spell checking"), on_spell_checking },
         { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
             N_("Show or hide the main toolbar"), on_show_main_toolbar },
         // Translators: "Edit" here is an adjective.
@@ -426,6 +428,16 @@ public class MainWindow : Window
 
         set_file_actions_sensitivity (false);
         set_documents_move_to_new_window_sensitivity (false);
+
+        // spell checking
+        ToggleAction spell_checking_action =
+            action_group.get_action ("EditSpellChecking") as ToggleAction;
+
+        GLib.Settings editor_settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.editor");
+
+        editor_settings.bind ("spell-checking", spell_checking_action, "active",
+            SettingsBindFlags.DEFAULT);
 
         /* packing widgets */
         VBox main_vbox = new VBox (false, 0);
@@ -1634,6 +1646,19 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         active_view.show_completion ();
+    }
+
+    public void on_spell_checking (Gtk.Action action)
+    {
+        bool activate = (action as ToggleAction).active;
+
+        foreach (DocumentView view in get_views ())
+        {
+            if (activate)
+                view.activate_spell_checking ();
+            else
+                view.disable_spell_checking ();
+        }
     }
 
     public void on_open_preferences ()
