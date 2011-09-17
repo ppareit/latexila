@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-08-29 18:25+0000\n"
-"PO-Revision-Date: 2011-09-17 11:46+0100\n"
+"POT-Creation-Date: 2011-09-17 09:50+0000\n"
+"PO-Revision-Date: 2011-09-17 11:51+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -225,7 +225,7 @@ msgid "Ln %d, Col %d"
 msgstr "Vr. %d, st. %d"
 
 #: ../src/dialogs.vala:40
-#: ../src/main_window.vala:809
+#: ../src/main_window.vala:819
 msgid "Close without Saving"
 msgstr "Zapri brez shranjevanja"
 
@@ -1094,7 +1094,7 @@ msgid "Create a new window"
 msgstr "Ustvari novo okno"
 
 #: ../src/main_window.vala:35
-#: ../src/main_window.vala:1065
+#: ../src/main_window.vala:1075
 msgid "Open a file"
 msgstr "Odpri datoteko"
 
@@ -1164,7 +1164,7 @@ msgid "Select the entire document"
 msgstr "Izberi celoten dokument"
 
 #: ../src/main_window.vala:71
-#: ../src/main_window.vala:147
+#: ../src/main_window.vala:145
 msgid "_Comment"
 msgstr "_Komentiraj"
 
@@ -1180,242 +1180,238 @@ msgstr "_Odstrani komentar"
 msgid "Uncomment the selected lines (remove the character \"%\")"
 msgstr "Odkomentiraj izbrane vrstice (odstrani znak \"%\")"
 
-#: ../src/main_window.vala:77
-msgid "_Completion"
-msgstr "_Dokončanje"
-
 #: ../src/main_window.vala:78
-msgid "Complete the LaTeX command"
-msgstr "Dokončaj ukaz LaTeX"
-
-#: ../src/main_window.vala:80
 msgid "Configure the application"
 msgstr "Prilagodite program"
 
 #. View
-#: ../src/main_window.vala:83
+#: ../src/main_window.vala:81
 msgid "_View"
 msgstr "Pogl_ed"
 
-#: ../src/main_window.vala:84
+#: ../src/main_window.vala:82
 msgid "Zoom _In"
 msgstr "_Približaj"
 
-#: ../src/main_window.vala:85
+#: ../src/main_window.vala:83
 msgid "Enlarge the font"
 msgstr "Povečaj pisavo"
 
-#: ../src/main_window.vala:86
+#: ../src/main_window.vala:84
 msgid "Zoom _Out"
 msgstr "_Oddalji"
 
-#: ../src/main_window.vala:87
+#: ../src/main_window.vala:85
 msgid "Shrink the font"
 msgstr "Pomanjšaj pisavo"
 
-#: ../src/main_window.vala:88
+#: ../src/main_window.vala:86
 msgid "_Reset Zoom"
 msgstr "_Ponastavi približanje"
 
-#: ../src/main_window.vala:89
+#: ../src/main_window.vala:87
 msgid "Reset the size of the font"
 msgstr "Ponastavi velikost pisave"
 
 #. Search
-#: ../src/main_window.vala:92
+#: ../src/main_window.vala:90
 msgid "_Search"
 msgstr "_Poišči"
 
-#: ../src/main_window.vala:94
+#: ../src/main_window.vala:92
 msgid "Search for text"
 msgstr "Poišči besedilo"
 
-#: ../src/main_window.vala:96
+#: ../src/main_window.vala:94
 msgid "Search for and replace text"
 msgstr "Poišči in zamenjaj besedilo"
 
-#: ../src/main_window.vala:97
+#: ../src/main_window.vala:95
 msgid "_Go to Line..."
 msgstr "Pojdi v _vrstico ..."
 
-#: ../src/main_window.vala:98
+#: ../src/main_window.vala:96
 msgid "Go to a specific line"
 msgstr "Pojdi v določeno vrstico"
 
 #. Build
-#: ../src/main_window.vala:101
+#: ../src/main_window.vala:99
 msgid "_Build"
 msgstr "_Izgradi"
 
-#: ../src/main_window.vala:102
+#: ../src/main_window.vala:100
 msgid "Cleanup Build _Files"
 msgstr "Počisti datoteke izgradnje"
 
-#: ../src/main_window.vala:103
+#: ../src/main_window.vala:101
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
 msgstr "Počisti datoteke izgradenj (*.aux, *.log, *.out, *.toc, etc)"
 
-#: ../src/main_window.vala:105
+#: ../src/main_window.vala:103
 msgid "_Stop Execution"
 msgstr "_Ustavi izvajanje"
 
-#: ../src/main_window.vala:106
+#: ../src/main_window.vala:104
 msgid "Stop Execution"
 msgstr "Ustavi izvajanje"
 
-#: ../src/main_window.vala:107
+#: ../src/main_window.vala:105
 msgid "View _Log"
 msgstr "Pokaži _dnevnik"
 
-#: ../src/main_window.vala:108
+#: ../src/main_window.vala:106
 msgid "View Log"
 msgstr "Pokaži dnevnik"
 
 #. Documents
-#: ../src/main_window.vala:111
+#: ../src/main_window.vala:109
 msgid "_Documents"
 msgstr "_Dokumenti"
 
-#: ../src/main_window.vala:112
+#: ../src/main_window.vala:110
 msgid "_Save All"
 msgstr "Shrani _vse"
 
-#: ../src/main_window.vala:113
+#: ../src/main_window.vala:111
 msgid "Save all open files"
 msgstr "Shrani vse odprte datoteke"
 
-#: ../src/main_window.vala:114
+#: ../src/main_window.vala:112
 msgid "_Close All"
 msgstr "_Zapri vse"
 
-#: ../src/main_window.vala:115
+#: ../src/main_window.vala:113
 msgid "Close all open files"
 msgstr "Zapri vse odprte datoteke"
 
-#: ../src/main_window.vala:116
+#: ../src/main_window.vala:114
 msgid "_Previous Document"
 msgstr "_Predhodni dokument"
 
-#: ../src/main_window.vala:117
+#: ../src/main_window.vala:115
 msgid "Activate previous document"
 msgstr "Pokaži predhodni dokument"
 
-#: ../src/main_window.vala:119
+#: ../src/main_window.vala:117
 msgid "_Next Document"
 msgstr "_Naslednji dokument"
 
-#: ../src/main_window.vala:120
+#: ../src/main_window.vala:118
 msgid "Activate next document"
 msgstr "Pokaži naslednji dokument"
 
-#: ../src/main_window.vala:122
+#: ../src/main_window.vala:120
 msgid "_Move to New Window"
 msgstr "_Premakni v novo okno"
 
-#: ../src/main_window.vala:123
+#: ../src/main_window.vala:121
 msgid "Move the current document to a new window"
 msgstr "Premakni trenutni dokument v novo okno"
 
 #. Projects
-#: ../src/main_window.vala:127
+#: ../src/main_window.vala:125
 msgid "_Projects"
 msgstr "_Projekti"
 
-#: ../src/main_window.vala:128
+#: ../src/main_window.vala:126
 msgid "_New Project"
 msgstr "_Nov projekt"
 
-#: ../src/main_window.vala:129
+#: ../src/main_window.vala:127
 msgid "Create a new project"
 msgstr "Ustvari nov projekt"
 
-#: ../src/main_window.vala:130
+#: ../src/main_window.vala:128
 msgid "_Configure Current Project"
 msgstr "_Prilagodi trenutni projekt"
 
-#: ../src/main_window.vala:131
+#: ../src/main_window.vala:129
 msgid "Change the main file of the current project"
 msgstr "Spremeni glavno datoteko trenutnega projekta"
 
-#: ../src/main_window.vala:133
+#: ../src/main_window.vala:131
 msgid "_Manage Projects"
 msgstr "_Upravljaj s projekti"
 
-#: ../src/main_window.vala:134
+#: ../src/main_window.vala:132
 #: ../src/project_dialogs.vala:178
 msgid "Manage Projects"
 msgstr "Upravljaj s projekti"
 
 #. Structure
-#: ../src/main_window.vala:137
+#: ../src/main_window.vala:135
 msgid "S_tructure"
 msgstr "_Zgradba"
 
-#: ../src/main_window.vala:139
+#: ../src/main_window.vala:137
 msgid "Cut the selected structure item"
 msgstr "Izreži izbrani predmet zgradbe"
 
-#: ../src/main_window.vala:141
+#: ../src/main_window.vala:139
 msgid "Copy the selected structure item"
 msgstr "Kopiraj izbrani predmet zgradbe"
 
-#: ../src/main_window.vala:143
+#: ../src/main_window.vala:141
 msgid "Delete the selected structure item"
 msgstr "Izbriši izbrani predmet zgradbe"
 
-#: ../src/main_window.vala:144
+#: ../src/main_window.vala:142
 msgid "_Select"
 msgstr "_Izberi"
 
-#: ../src/main_window.vala:145
+#: ../src/main_window.vala:143
 msgid "Select the contents of the selected structure item"
 msgstr "Izberite vsebino izbranega predmeta zgradbe"
 
-#: ../src/main_window.vala:148
+#: ../src/main_window.vala:146
 msgid "Comment the selected structure item"
 msgstr "Dodaj opombo izbranemu predmetu zgradbe"
 
-#: ../src/main_window.vala:149
+#: ../src/main_window.vala:147
 msgid "Shift _Left"
 msgstr "Pomakni _levo"
 
-#: ../src/main_window.vala:150
+#: ../src/main_window.vala:148
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
 msgstr "Pomakni izbrani predmet zgradbe v levo (npr. odsek → poglavje)"
 
-#: ../src/main_window.vala:152
+#: ../src/main_window.vala:150
 msgid "Shift _Right"
 msgstr "Pomakni _desno"
 
-#: ../src/main_window.vala:153
+#: ../src/main_window.vala:151
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
 msgstr "Pomakni izbrani predmet zgradbe v desno (npr. poglavje → odsek)"
 
 #. Help
-#: ../src/main_window.vala:157
+#: ../src/main_window.vala:155
 msgid "_Help"
 msgstr "Po_moč"
 
-#: ../src/main_window.vala:158
+#: ../src/main_window.vala:156
 msgid "_Contents"
 msgstr "_Vsebina"
 
-#: ../src/main_window.vala:159
+#: ../src/main_window.vala:157
 msgid "Open the LaTeXila documentation"
 msgstr "Odpri dokumentacijo programa LaTeXila"
 
-#: ../src/main_window.vala:160
+#: ../src/main_window.vala:158
 msgid "_LaTeX Reference"
 msgstr "Sklic _LaTeX"
 
-#: ../src/main_window.vala:161
+#: ../src/main_window.vala:159
 msgid "The Kile LaTeX Reference"
 msgstr "Sklicni Kile LaTeX"
 
-#: ../src/main_window.vala:163
-#: ../src/main_window.vala:1951
+#: ../src/main_window.vala:161
+#: ../src/main_window.vala:1968
 msgid "About LaTeXila"
 msgstr "O programu LaTeXila"
+
+#: ../src/main_window.vala:167
+msgid "Activate or disable the spell checking"
+msgstr "Omogoči ali onemogoči črkovanje"
 
 #: ../src/main_window.vala:168
 msgid "_Main Toolbar"
@@ -1483,71 +1479,71 @@ msgid "Structure"
 msgstr "Zgradba"
 
 #. recent documents
-#: ../src/main_window.vala:520
+#: ../src/main_window.vala:530
 msgid "Open _Recent"
 msgstr "Odpri _nedavne"
 
-#: ../src/main_window.vala:521
+#: ../src/main_window.vala:531
 msgid "Open recently used files"
 msgstr "Odpri nedavno uporabljene datoteke"
 
-#: ../src/main_window.vala:695
+#: ../src/main_window.vala:705
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ta datoteka (%s) je že odprta v drugem oknu programa LaTeXila."
 
-#: ../src/main_window.vala:697
+#: ../src/main_window.vala:707
 msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
 msgstr "S programom LaTeXila je odprt ta primerek datoteke v načinu, ki ne dopušča urejanja. Ali jo želite vseeno urejati?"
 
-#: ../src/main_window.vala:700
+#: ../src/main_window.vala:710
 msgid "Edit Anyway"
 msgstr "Vseeno uredi"
 
-#: ../src/main_window.vala:701
+#: ../src/main_window.vala:711
 msgid "Don't Edit"
 msgstr "Ne urejaj"
 
-#: ../src/main_window.vala:806
+#: ../src/main_window.vala:816
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Ali želite shraniti spremembe v dokumentu \"%s\", preden ga zaprete?"
 
-#: ../src/main_window.vala:925
+#: ../src/main_window.vala:935
 msgid "Read-Only"
 msgstr "Samo za branje"
 
-#: ../src/main_window.vala:939
+#: ../src/main_window.vala:949
 msgid "Save File"
 msgstr "Shrani datoteko"
 
-#: ../src/main_window.vala:974
+#: ../src/main_window.vala:984
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Datoteka z imenom \"%s\" že obstaja. Ali jo želite zamenjati?"
 
-#: ../src/main_window.vala:979
+#: ../src/main_window.vala:989
 #: ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Zamenjaj"
 
-#: ../src/main_window.vala:1066
+#: ../src/main_window.vala:1076
 msgid "Open a recently used file"
 msgstr "Odpri nedavno uporabljeno datoteko"
 
-#: ../src/main_window.vala:1473
+#: ../src/main_window.vala:1483
 msgid "Open Files"
 msgstr "Odpri datoteke"
 
-#: ../src/main_window.vala:1497
+#: ../src/main_window.vala:1507
 msgid "All Files"
 msgstr "Vse datoteke"
 
-#: ../src/main_window.vala:1899
+#: ../src/main_window.vala:1916
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je okolje LaTeX s podporo za namizje GNOME"
 
-#: ../src/main_window.vala:1952
+#: ../src/main_window.vala:1969
 msgid "translator-credits"
 msgstr "Matej Urbančič, Martin Srebotnjak"
 
@@ -2091,3 +2087,8 @@ msgstr "Poišči"
 msgid "Toggle between search and replace mode"
 msgstr "Preklopi med iskalnim in zamenjalnim načinom"
 
+#~ msgid "_Completion"
+#~ msgstr "_Dokončanje"
+
+#~ msgid "Complete the LaTeX command"
+#~ msgstr "Dokončaj ukaz LaTeX"
