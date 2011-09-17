@@ -10,13 +10,13 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexila&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2011-08-29 18:25+0000\n"
-"PO-Revision-Date: 2011-09-06 22:37+0100\n"
+"PO-Revision-Date: 2011-09-17 11:46+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0)\n"
 "X-Poedit-Language: Slovenian\n"
 "X-Poedit-Country: Slovenia\n"
@@ -171,14 +171,12 @@ msgid "Must Succeed"
 msgstr "Mora uspeti"
 
 #: ../src/build_tool_dialog.vala:209
-#, fuzzy
 msgid "Post Processor"
-msgstr "Po-procesor"
+msgstr "Poopravilnik"
 
 #: ../src/build_tool_runner.vala:355
-#, fuzzy
 msgid "Rubber may not support filenames with spaces (even in a directory)"
-msgstr "Rubber morda ne podpira imen datotek s presledki (celo v mapi)"
+msgstr "Program Rubber morda ne podpira imen datotek s presledki (celo v mapi)"
 
 #: ../src/build_tool_runner.vala:386
 #, c-format
@@ -200,7 +198,7 @@ msgstr "Črta"
 #: ../src/build_view.vala:170
 #: ../src/side_panel.vala:75
 msgid "Hide panel"
-msgstr "Skrij pladenj"
+msgstr "Skrij pult"
 
 #: ../src/clean_build_files.vala:262
 msgid "Do you really want to delete these files?"
@@ -212,14 +210,12 @@ msgid "Select the files you want to delete:"
 msgstr "Izberite datoteke, ki jih želite izbrisati:"
 
 #: ../src/clean_build_files.vala:337
-#, fuzzy
 msgid "No build file to clean up."
-msgstr "Ni datotek gradenj, ki bi jih lahko očistili."
+msgstr "Ni datotek izgradnje za čiščenje."
 
 #: ../src/completion.vala:257
-#, fuzzy
 msgid "No matching proposal"
-msgstr "Ni zadetkov iskanja"
+msgstr "Ni skladnih predlogov"
 
 #. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
 #. "Column". Please, use abbreviations if possible.
@@ -236,7 +232,7 @@ msgstr "Zapri brez shranjevanja"
 #: ../src/dialogs.vala:67
 #, c-format
 msgid "There are %d documents with unsaved changes. Save changes before closing?"
-msgstr "Odprtih je %d dokumentov s spremenjeno vsebino. Ali jih želite shraniti pred zaprtjem?"
+msgstr "Odprtih je %d dokumentov s spremenjeno vsebino. Ali jih želite shraniti pred zapiranjem?"
 
 #: ../src/dialogs.vala:76
 msgid "Select the documents you want to save:"
@@ -247,9 +243,8 @@ msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Če sprememb ne shranite, bodo trajno izgubljene."
 
 #: ../src/document_structure.vala:710
-#, fuzzy
 msgid "The structure item already contains a sub-paragraph."
-msgstr "Element strukture že vsebuje pododstavek."
+msgstr "Predmet zgradbe že vključuje podrejeni odstavek."
 
 #: ../src/document_tab.vala:175
 msgid "Close document"
@@ -270,9 +265,9 @@ msgid "Main File:"
 msgstr "Glavna datoteka:"
 
 #: ../src/document_tab.vala:259
-#, fuzzy, c-format
+#, c-format
 msgid "Activate '%s'"
-msgstr "Aktiviraj '%s'"
+msgstr "Omogoči '%s'"
 
 #: ../src/document_tab.vala:278
 #, c-format
@@ -319,7 +314,7 @@ msgstr "Datoteke ni mogoče shraniti."
 
 #: ../src/document.vala:264
 msgid "Error trying to convert the document to UTF-8"
-msgstr "Napaka pri poskusu pretvorbe datoteke v UTF-8."
+msgstr "Napaka med poskusom pretvorbe datoteke v UTF-8."
 
 #: ../src/document.vala:318
 msgid "Unsaved Document"
@@ -354,9 +349,8 @@ msgstr "Datotečni sistem"
 
 #. LaTeX: Sectioning
 #: ../src/latex_menu.vala:30
-#, fuzzy
 msgid "_Sectioning"
-msgstr "_Rezanje"
+msgstr "_Razdeljevanje"
 
 #: ../src/latex_menu.vala:32
 #: ../src/structure.vala:662
@@ -375,15 +369,13 @@ msgstr "Odsek"
 
 #: ../src/latex_menu.vala:38
 #: ../src/structure.vala:665
-#, fuzzy
 msgid "Sub-section"
-msgstr "Pod-odsek/Podrazdelek***"
+msgstr "Pod-odsek"
 
 #: ../src/latex_menu.vala:40
 #: ../src/structure.vala:666
-#, fuzzy
 msgid "Sub-sub-section"
-msgstr "Pod-pod-odsek/Podpodrazdelek***"
+msgstr "Pod-pod-odsek"
 
 #: ../src/latex_menu.vala:42
 #: ../src/structure.vala:667
@@ -392,7 +384,6 @@ msgstr "Odstavek"
 
 #: ../src/latex_menu.vala:44
 #: ../src/structure.vala:668
-#, fuzzy
 msgid "Sub-paragraph"
 msgstr "Pododstavek"
 
@@ -409,12 +400,10 @@ msgid "Label"
 msgstr "Oznaka"
 
 #: ../src/latex_menu.vala:51
-#, fuzzy
 msgid "Reference to a label"
 msgstr "Sklic na oznako"
 
 #: ../src/latex_menu.vala:53
-#, fuzzy
 msgid "Page reference to a label"
 msgstr "Sklic strani na oznako"
 
@@ -427,9 +416,8 @@ msgid "Footnote"
 msgstr "Sprotna opomba"
 
 #: ../src/latex_menu.vala:59
-#, fuzzy
 msgid "Reference to a bibliography item"
-msgstr "Sklic na element bibliografije"
+msgstr "Sklic na predmet bibliografije"
 
 #: ../src/latex_menu.vala:64
 msgid "Center - \\begin{center}"
@@ -592,17 +580,14 @@ msgstr "Majhne velike črke - \\scshape"
 
 #. Tabular
 #: ../src/latex_menu.vala:167
-#, fuzzy
 msgid "_Tabular"
 msgstr "_Tabularično"
 
 #: ../src/latex_menu.vala:169
-#, fuzzy
 msgid "Tabbing - \\begin{tabbing}"
 msgstr "Tabeliranje - \\begin{tabbing}"
 
 #: ../src/latex_menu.vala:171
-#, fuzzy
 msgid "Tabular - \\begin{tabular}"
 msgstr "Tabularično - \\begin{tabular}"
 
@@ -692,10 +677,10 @@ msgstr "Krativec - \\`"
 msgid "Circumflex accent - \\^"
 msgstr "Cirkumfleks - \\^"
 
+# Preglas?
 #: ../src/latex_menu.vala:209
-#, fuzzy
 msgid "Trema - \\\""
-msgstr "Trepetec*** - \\\""
+msgstr "Trepetec - \\\""
 
 #: ../src/latex_menu.vala:210
 msgid "Tilde - \\~"
@@ -714,9 +699,8 @@ msgid "Caron - \\v"
 msgstr "Strešica - \\v"
 
 #: ../src/latex_menu.vala:214
-#, fuzzy
 msgid "Breve - \\u"
-msgstr "Krativec*** - \\u"
+msgstr "Krativec - \\u"
 
 #: ../src/latex_menu.vala:216
 msgid "Double acute accent - \\H"
@@ -967,9 +951,8 @@ msgstr "Veliki - \\;"
 
 #. Left Delimiters
 #: ../src/latex_menu.vala:372
-#, fuzzy
 msgid "_Left Delimiters"
-msgstr "_Leve razmejnice"
+msgstr "_Levi razmejilniki"
 
 #: ../src/latex_menu.vala:373
 msgid "left ("
@@ -1009,9 +992,8 @@ msgstr "leva ."
 
 #. Right Delimiters
 #: ../src/latex_menu.vala:394
-#, fuzzy
 msgid "Right _Delimiters"
-msgstr "_Desne razmejnice"
+msgstr "_Desni razmejilniki"
 
 #: ../src/latex_menu.vala:395
 msgid "right )"
@@ -1050,9 +1032,8 @@ msgid "right ."
 msgstr "desna ."
 
 #: ../src/latex_menu.vala:426
-#, fuzzy
 msgid "Sectioning"
-msgstr "Rezanje"
+msgstr "Razdeljevanje"
 
 #: ../src/latex_menu.vala:429
 msgid "Characters Sizes"
@@ -1063,19 +1044,16 @@ msgid "References"
 msgstr "Sklici"
 
 #: ../src/latex_menu.vala:435
-#, fuzzy
 msgid "Math Environments"
 msgstr "Matematična okolja"
 
 #: ../src/latex_menu.vala:438
-#, fuzzy
 msgid "Left Delimiters"
-msgstr "Leve razmejnice"
+msgstr "Levi razmejilniki"
 
 #: ../src/latex_menu.vala:441
-#, fuzzy
 msgid "Right Delimiters"
-msgstr "Desne razmejnice"
+msgstr "Desni razmejilniki"
 
 #: ../src/main.vala:32
 msgid "Show the application's version"
@@ -1090,9 +1068,8 @@ msgid "Create a new top-level window in an existing instance of LaTeXila"
 msgstr "Ustvari novo vrhnje okno v obstoječem oknu LaTeXila"
 
 #: ../src/main.vala:73
-#, fuzzy
 msgid "- Integrated LaTeX Environment for GNOME"
-msgstr "- integrirano okolje LaTeX za namizje GNOME"
+msgstr "- okolje LaTeX s podporo za namizje GNOME"
 
 #: ../src/main.vala:84
 #, c-format
@@ -1237,9 +1214,8 @@ msgid "Shrink the font"
 msgstr "Pomanjšaj pisavo"
 
 #: ../src/main_window.vala:88
-#, fuzzy
 msgid "_Reset Zoom"
-msgstr "_Ponastavi pogled/povečavo***"
+msgstr "_Ponastavi približanje"
 
 #: ../src/main_window.vala:89
 msgid "Reset the size of the font"
@@ -1273,12 +1249,11 @@ msgstr "_Izgradi"
 
 #: ../src/main_window.vala:102
 msgid "Cleanup Build _Files"
-msgstr "Počisti datoteke gradnje"
+msgstr "Počisti datoteke izgradnje"
 
 #: ../src/main_window.vala:103
-#, fuzzy
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
-msgstr "Počisti datoteke gradenj (*.aux, *.log, *.out, *.toc, etc)"
+msgstr "Počisti datoteke izgradenj (*.aux, *.log, *.out, *.toc, etc)"
 
 #: ../src/main_window.vala:105
 msgid "_Stop Execution"
@@ -1322,18 +1297,16 @@ msgid "_Previous Document"
 msgstr "_Predhodni dokument"
 
 #: ../src/main_window.vala:117
-#, fuzzy
 msgid "Activate previous document"
-msgstr "Aktiviraj prejšnji dokument"
+msgstr "Pokaži predhodni dokument"
 
 #: ../src/main_window.vala:119
 msgid "_Next Document"
 msgstr "_Naslednji dokument"
 
 #: ../src/main_window.vala:120
-#, fuzzy
 msgid "Activate next document"
-msgstr "Aktiviraj naslednji dokument"
+msgstr "Pokaži naslednji dokument"
 
 #: ../src/main_window.vala:122
 msgid "_Move to New Window"
@@ -1375,58 +1348,48 @@ msgstr "Upravljaj s projekti"
 
 #. Structure
 #: ../src/main_window.vala:137
-#, fuzzy
 msgid "S_tructure"
-msgstr "S_truktura"
+msgstr "_Zgradba"
 
 #: ../src/main_window.vala:139
-#, fuzzy
 msgid "Cut the selected structure item"
-msgstr "Izreži izbrani element strukture"
+msgstr "Izreži izbrani predmet zgradbe"
 
 #: ../src/main_window.vala:141
-#, fuzzy
 msgid "Copy the selected structure item"
-msgstr "Kopiraj izbrani element strukture"
+msgstr "Kopiraj izbrani predmet zgradbe"
 
 #: ../src/main_window.vala:143
-#, fuzzy
 msgid "Delete the selected structure item"
-msgstr "Izbriši izbrani element strukture"
+msgstr "Izbriši izbrani predmet zgradbe"
 
 #: ../src/main_window.vala:144
 msgid "_Select"
 msgstr "_Izberi"
 
 #: ../src/main_window.vala:145
-#, fuzzy
 msgid "Select the contents of the selected structure item"
-msgstr "Izberite vsebino izbranega elementa strukture"
+msgstr "Izberite vsebino izbranega predmeta zgradbe"
 
 #: ../src/main_window.vala:148
-#, fuzzy
 msgid "Comment the selected structure item"
-msgstr "Komentiraj izbrani element strukture"
+msgstr "Dodaj opombo izbranemu predmetu zgradbe"
 
 #: ../src/main_window.vala:149
-#, fuzzy
 msgid "Shift _Left"
 msgstr "Pomakni _levo"
 
 #: ../src/main_window.vala:150
-#, fuzzy
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
-msgstr "Pomakni izbrani element strukture levo (npr. odsek → poglavje)"
+msgstr "Pomakni izbrani predmet zgradbe v levo (npr. odsek → poglavje)"
 
 #: ../src/main_window.vala:152
-#, fuzzy
 msgid "Shift _Right"
 msgstr "Pomakni _desno"
 
 #: ../src/main_window.vala:153
-#, fuzzy
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
-msgstr "Pomakni izbrani element strukture desno (npr. poglavje → odsek)"
+msgstr "Pomakni izbrani predmet zgradbe v desno (npr. poglavje → odsek)"
 
 #. Help
 #: ../src/main_window.vala:157
@@ -1438,7 +1401,6 @@ msgid "_Contents"
 msgstr "_Vsebina"
 
 #: ../src/main_window.vala:159
-#, fuzzy
 msgid "Open the LaTeXila documentation"
 msgstr "Odpri dokumentacijo programa LaTeXila"
 
@@ -1447,9 +1409,8 @@ msgid "_LaTeX Reference"
 msgstr "Sklic _LaTeX"
 
 #: ../src/main_window.vala:161
-#, fuzzy
 msgid "The Kile LaTeX Reference"
-msgstr "Sklicn Kile LaTeX"
+msgstr "Sklicni Kile LaTeX"
 
 #: ../src/main_window.vala:163
 #: ../src/main_window.vala:1951
@@ -1474,24 +1435,20 @@ msgid "Show or hide the edit toolbar"
 msgstr "Pokaži ali skrij orodno vrstico urejanja"
 
 #: ../src/main_window.vala:173
-#, fuzzy
 msgid "_Side panel"
-msgstr "Stranski _pladenj"
+msgstr "Stranski _pult"
 
 #: ../src/main_window.vala:174
-#, fuzzy
 msgid "Show or hide the side panel"
-msgstr "Pokaži ali skrij stranski pladenj"
+msgstr "Pokaži ali skrij stranski pult"
 
 #: ../src/main_window.vala:175
-#, fuzzy
 msgid "_Bottom panel"
 msgstr "_Spodnji pult"
 
 #: ../src/main_window.vala:176
-#, fuzzy
 msgid "Show or hide the bottom panel"
-msgstr "Pokaži ali skrij spodnji pladenj"
+msgstr "Pokaži ali skrij spodnji pult"
 
 #: ../src/main_window.vala:177
 msgid "Show _Errors"
@@ -1510,12 +1467,10 @@ msgid "Show Warnings"
 msgstr "Pokaži opozorila"
 
 #: ../src/main_window.vala:181
-#, fuzzy
 msgid "Show _Bad Boxes"
 msgstr "Pokaži sla_be okvirje"
 
 #: ../src/main_window.vala:182
-#, fuzzy
 msgid "Show Bad Boxes"
 msgstr "Pokaži slabe okvirje"
 
@@ -1542,9 +1497,8 @@ msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ta datoteka (%s) je že odprta v drugem oknu programa LaTeXila."
 
 #: ../src/main_window.vala:697
-#, fuzzy
 msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
-msgstr "LaTeXila je odprl ta primer datoteke v načinu, ki ne dopušča urejanja. Ali jo želite vseeno urejati?"
+msgstr "S programom LaTeXila je odprt ta primerek datoteke v načinu, ki ne dopušča urejanja. Ali jo želite vseeno urejati?"
 
 #: ../src/main_window.vala:700
 msgid "Edit Anyway"
@@ -1590,9 +1544,8 @@ msgid "All Files"
 msgstr "Vse datoteke"
 
 #: ../src/main_window.vala:1899
-#, fuzzy
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
-msgstr "LaTeXila je integrirano okolje LaTeX za namizje GNOME"
+msgstr "LaTeXila je okolje LaTeX s podporo za namizje GNOME"
 
 #: ../src/main_window.vala:1952
 msgid "translator-credits"
@@ -1642,14 +1595,13 @@ msgid "%s [copy]"
 msgstr "%s [kopija]"
 
 #: ../src/preferences_dialog.vala:382
-#, fuzzy, c-format
+#, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
-msgstr "Resnično želite izbrisati orodje za gradnjo \"%s\"?"
+msgstr "Ali res želite izbrisati orodje za iz gradnjo \"%s\"?"
 
 #: ../src/preferences_dialog.vala:401
-#, fuzzy
 msgid "Do you really want to reset all build tools?"
-msgstr "Resnično želite ponastaviti vsa orodja za gradnjo?"
+msgstr "Ali res želite ponastaviti vsa orodja za izgradnjo?"
 
 #: ../src/preferences_dialog.vala:482
 #, c-format
@@ -1672,7 +1624,7 @@ msgid "Directory"
 msgstr "Mapa"
 
 #: ../src/project_dialogs.vala:99
-#, fuzzy, c-format
+#, c-format
 msgid "There is a conflict with the project \"%s\"."
 msgstr "Obstaja spor s projektom \"%s\"."
 
@@ -1681,7 +1633,6 @@ msgid "Configure Project"
 msgstr "Prilagodi projekt"
 
 #: ../src/project_dialogs.vala:130
-#, fuzzy
 msgid "Location of the project"
 msgstr "Mesto projekta"
 
@@ -1696,9 +1647,8 @@ msgid "Do you really want to delete the project \"%s\"?"
 msgstr "Ali resnično želite izbrisati projekt \"%s\"?"
 
 #: ../src/project_dialogs.vala:289
-#, fuzzy
 msgid "Do you really want to clear all projects?"
-msgstr "Resnično želite počistiti vse projekte?"
+msgstr "Ali res želite počistiti vse projekte?"
 
 #: ../src/project_dialogs.vala:321
 msgid "The Main File is not in the directory."
@@ -1762,20 +1712,20 @@ msgstr "Pokaži razpredelnice"
 msgid "Show figures and images"
 msgstr "Pokaži risbe in slike"
 
+# TODO programiranje 'znane napake'
+# FIXME programiranje 'cilji'
 #: ../src/structure.vala:176
-#, fuzzy
 msgid "Show TODOs and FIXMEs"
 msgstr "Pokaži cilje in znane napake"
 
 #: ../src/structure.vala:592
-#, fuzzy, c-format
+#, c-format
 msgid "Structure action error: %s"
-msgstr "Napake dejanja strukture: %s"
+msgstr "Napaka dejanja zgradbe: %s"
 
 #: ../src/structure.vala:597
-#, fuzzy
 msgid "The structure data seems outdated. Please refresh the structure."
-msgstr "Podatki o strukturi se zdijo zastareli. Osvežite strukturo."
+msgstr "Podatki o zgradbi so videti zastareli. Osvežite zgradbo."
 
 #. Translators: it's a verb
 #: ../src/structure.vala:617
@@ -1845,9 +1795,8 @@ msgid "Operators"
 msgstr "Operatorji"
 
 #: ../src/symbols.vala:31
-#, fuzzy
 msgid "Delimiters"
-msgstr "Razmejnice"
+msgstr "Razmejilniki"
 
 #: ../src/symbols.vala:32
 msgid "Misc math"
@@ -1926,13 +1875,12 @@ msgid "Extensions"
 msgstr "Razširitve"
 
 #: ../src/ui/build_tool.ui.h:3
-#, fuzzy
 msgid ""
 "File extensions for which the build tool can be executed.\n"
 "The extensions are separated by spaces."
 msgstr ""
-"Končnice datotek, za katere lahko izvrši orodje gradnje.\n"
-"Končnice so ločene s presledki."
+"Pripona datotek, ki omogočajo zagon orodja izgradnje.\n"
+"Pripone so ločene s presledki."
 
 #: ../src/ui/build_tool.ui.h:5
 msgid "Icon"
@@ -1956,7 +1904,7 @@ msgstr "Ime datoteke dejavnega dokumenta"
 
 #: ../src/ui/build_tool.ui.h:11
 msgid "The active document filename without its extension"
-msgstr "Ime datoteke dejavnega dokumenta brez končnice"
+msgstr "Ime datoteke dejavnega dokumenta brez pripone"
 
 #: ../src/ui/build_tool.ui.h:12
 msgid ""
@@ -1971,23 +1919,20 @@ msgid "You can select this arrow and copy/paste it!"
 msgstr "To puščico lahko izberete in jo kopirate/prilepite!"
 
 #: ../src/ui/preferences_dialog.ui.h:1
-#, fuzzy
 msgid "Always show all information for the Latexmk post processor"
-msgstr "Vedno prikaži vse podatke o po-procesorju Latexmk"
+msgstr "Vedno prikaži vse podatke poopravilnika Latexmk"
 
 #: ../src/ui/preferences_dialog.ui.h:2
-#, fuzzy
 msgid "Automatically clean-up files after close"
-msgstr "Samodejno počisti datoteke po zaprtju"
+msgstr "Samodejno počisti datoteke po zapiranju"
 
 #: ../src/ui/preferences_dialog.ui.h:3
 msgid "Autosave files every"
 msgstr "Samodejno shrani datoteke vsakih"
 
 #: ../src/ui/preferences_dialog.ui.h:4
-#, fuzzy
 msgid "Build Tools"
-msgstr "Orodja za gradnjo"
+msgstr "Orodja za izgradnjo"
 
 #: ../src/ui/preferences_dialog.ui.h:5
 msgid "Color Scheme"
@@ -1998,9 +1943,8 @@ msgid "Create a backup copy of files before saving"
 msgstr "Pred shranjevanjem ustvari varnostne kopije datotek"
 
 #: ../src/ui/preferences_dialog.ui.h:7
-#, fuzzy
 msgid "Delete one build tool"
-msgstr "Izbriši eno orodje za gradnje"
+msgstr "Izbriši eno orodje za izgradnje"
 
 #: ../src/ui/preferences_dialog.ui.h:8
 msgid "Display line numbers"
@@ -2019,7 +1963,6 @@ msgid "Except those for clean-up"
 msgstr "Razen tistih za čiščenje"
 
 #: ../src/ui/preferences_dialog.ui.h:13
-#, fuzzy
 msgid "File Clean-Up"
 msgstr "Čiščenje datoteke"
 
@@ -2048,9 +1991,8 @@ msgid "Insert spaces instead of tabs"
 msgstr "Namesto tabulatorjev vstavi presledke"
 
 #: ../src/ui/preferences_dialog.ui.h:20
-#, fuzzy
 msgid "Interactive completion after"
-msgstr "Interaktivno dopolnjevanje po"
+msgstr "Odzivno dopolnjevanje po"
 
 #: ../src/ui/preferences_dialog.ui.h:21
 msgid "No confirmation when cleaning-up"
@@ -2061,7 +2003,6 @@ msgid "Number of characters after '\\'"
 msgstr "Število znakov po '\\'"
 
 #: ../src/ui/preferences_dialog.ui.h:23
-#, fuzzy
 msgid "Number of most used symbols:"
 msgstr "Število najbolj pogosto uporabljanih simbolov:"
 
@@ -2086,9 +2027,8 @@ msgid "Reset"
 msgstr "Ponastavi"
 
 #: ../src/ui/preferences_dialog.ui.h:29
-#, fuzzy
 msgid "Reset all build tools"
-msgstr "Ponastavi vsa orodja za gradnjo"
+msgstr "Ponastavi vsa orodja za izgradnjo"
 
 #: ../src/ui/preferences_dialog.ui.h:30
 msgid "Show all files"
@@ -2100,7 +2040,7 @@ msgstr "Pokaži skrite datoteke (ki se začenjajo s piko)"
 
 #: ../src/ui/preferences_dialog.ui.h:32
 msgid "Show only files with these extensions"
-msgstr "Pokaži le datoteke s temi končnicami"
+msgstr "Pokaži le datoteke s temi priponami"
 
 #: ../src/ui/preferences_dialog.ui.h:33
 msgid "Tab width:"
@@ -2116,14 +2056,12 @@ msgid "All"
 msgstr "Vse"
 
 #: ../src/ui/search_and_replace.ui.h:2
-#, fuzzy
 msgid "Clear Find"
 msgstr "Počisti iskani niz"
 
 #: ../src/ui/search_and_replace.ui.h:3
-#, fuzzy
 msgid "Clear Replace"
-msgstr "Počisti zamenjavo"
+msgstr "Počisti polje zamenjave"
 
 #: ../src/ui/search_and_replace.ui.h:4
 msgid "Close"
@@ -2150,7 +2088,6 @@ msgid "Search for"
 msgstr "Poišči"
 
 #: ../src/ui/search_and_replace.ui.h:11
-#, fuzzy
 msgid "Toggle between search and replace mode"
-msgstr "Preklopi med iskalnim in menjalnim načinom"
+msgstr "Preklopi med iskalnim in zamenjalnim načinom"
 
