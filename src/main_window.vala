@@ -74,8 +74,6 @@ public class MainWindow : Window
         { "EditUncomment", null, N_("_Uncomment"), "<Shift><Control>M",
             N_("Uncomment the selected lines (remove the character \"%\")"),
             on_edit_uncomment },
-        { "EditCompletion", null, N_("_Completion"), "<Control>space",
-            N_("Complete the LaTeX command"), on_edit_completion },
         { "EditPreferences", Stock.PREFERENCES, null, null,
             N_("Configure the application"), on_open_preferences },
 
@@ -1640,12 +1638,6 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         active_document.uncomment_selected_lines ();
-    }
-
-    public void on_edit_completion ()
-    {
-        return_if_fail (active_tab != null);
-        active_view.show_completion ();
     }
 
     public void on_spell_checking (Gtk.Action action)
