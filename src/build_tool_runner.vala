@@ -48,13 +48,9 @@ public class BuildToolRunner : GLib.Object
 
     public signal void finished ();
 
-    public BuildToolRunner (File file, BuildTool? tool, BuildView view,
+    public BuildToolRunner (File file, BuildTool tool, BuildView view,
         Gtk.Action action_stop_exec)
     {
-        // TODO remove this and the '?' when the bug in vala is fixed
-        // https://bugzilla.gnome.org/show_bug.cgi?id=656693
-        return_if_fail (tool != null);
-
         this.file = file;
         this.compilation = tool.compilation;
         this.action_stop_exec = action_stop_exec;
