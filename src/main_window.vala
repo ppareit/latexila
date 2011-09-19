@@ -1493,11 +1493,7 @@ public class MainWindow : Window
 
         // Filter: by default show only .tex and .bib files
         FileFilter latex_filter = new FileFilter ();
-
-        // TODO for next release (due to string freeze)
-        //latex_filter.set_name (_("All LaTeX Files"));
-        latex_filter.set_name ("*.tex, *.bib");
-
+        latex_filter.set_name (_("All LaTeX Files"));
         latex_filter.add_pattern ("*.tex");
         latex_filter.add_pattern ("*.bib");
         file_chooser.add_filter (latex_filter);
