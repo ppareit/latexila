@@ -216,8 +216,9 @@ msgid ""
 "\"tab\">LaTeX</gui> </guiseq>"
 msgstr ""
 "Para configurar as ferramentas de construción, abra o diálogo de "
-"preferencias: <guiseq> <gui style=\"menu\">Editar </gui>Preferencias<gui "
-"style=\"menu\"> </gui>LaTex<gui style=\"tab\"> </gui>"
+"preferencias: <guiseq> <gui style=\"menu\">Editar </gui> <gui "
+"style=\"menu\">Preferencias</gui> <gui style=\"tab\">LaTeX</gui>"
+" </guiseq>"
 
 #: C/build_tools.page:146(section/p)
 msgid ""
