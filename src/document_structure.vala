@@ -1131,7 +1131,7 @@ public class DocumentStructure : GLib.Object
             after_backslash_index + markup_name.length);
 
         _doc.delete (begin_markup_name_iter, end_markup_name_iter);
-        _doc.insert (begin_markup_name_iter, new_markup_name, -1);
+        _doc.insert (ref begin_markup_name_iter, new_markup_name, -1);
         doc_modified = true;
 
         /* Do the same for all the children */

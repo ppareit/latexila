@@ -27,204 +27,204 @@ public class LatexMenu : Gtk.ActionGroup
         { "Latex", null, "_LaTeX" },
 
         // LaTeX: Sectioning
-	    { "Sectioning", "sectioning-section", N_("_Sectioning") },
-	    { "SectioningPart", "sectioning-part", "\\_part", null,
-		    N_("Part"), on_sectioning_part },
-	    { "SectioningChapter", "sectioning-chapter", "\\_chapter", null,
-		    N_("Chapter"), on_sectioning_chapter },
-	    { "SectioningSection", "sectioning-section", "\\_section", null,
-		    N_("Section"), on_sectioning_section },
-	    { "SectioningSubsection", "sectioning-subsection", "\\s_ubsection", null,
-		    N_("Sub-section"), on_sectioning_subsection },
-	    { "SectioningSubsubsection", "sectioning-subsubsection", "\\su_bsubsection",
-	        null, N_("Sub-sub-section"), on_sectioning_subsubsection },
-	    { "SectioningParagraph", "sectioning-paragraph", "\\p_aragraph", null,
-		    N_("Paragraph"), on_sectioning_paragraph },
-	    { "SectioningSubparagraph", "sectioning-paragraph", "\\subpa_ragraph", null,
-		    N_("Sub-paragraph"), on_sectioning_subparagraph },
+        { "Sectioning", "sectioning-section", N_("_Sectioning") },
+        { "SectioningPart", "sectioning-part", "\\_part", null,
+            N_("Part"), on_sectioning_part },
+        { "SectioningChapter", "sectioning-chapter", "\\_chapter", null,
+            N_("Chapter"), on_sectioning_chapter },
+        { "SectioningSection", "sectioning-section", "\\_section", null,
+            N_("Section"), on_sectioning_section },
+        { "SectioningSubsection", "sectioning-subsection", "\\s_ubsection", null,
+            N_("Sub-section"), on_sectioning_subsection },
+        { "SectioningSubsubsection", "sectioning-subsubsection", "\\su_bsubsection",
+            null, N_("Sub-sub-section"), on_sectioning_subsubsection },
+        { "SectioningParagraph", "sectioning-paragraph", "\\p_aragraph", null,
+            N_("Paragraph"), on_sectioning_paragraph },
+        { "SectioningSubparagraph", "sectioning-paragraph", "\\subpa_ragraph", null,
+            N_("Sub-paragraph"), on_sectioning_subparagraph },
 
         // LaTeX: References
-	    { "References", "references", N_("_References") },
-	    { "ReferencesLabel", null, "\\_label", null,
-	        N_("Label"), on_ref_label },
-	    { "ReferencesRef", null, "\\_ref", null,
-	        N_("Reference to a label"), on_ref_ref },
-	    { "ReferencesPageref", null, "\\_pageref", null,
-	        N_("Page reference to a label"), on_ref_pageref },
-	    { "ReferencesIndex", null, "\\_index", null,
-	        N_("Add a word to the index"), on_ref_index },
-	    { "ReferencesFootnote", null, "\\_footnote", null,
-	        N_("Footnote"), on_ref_footnote },
-	    { "ReferencesCite", null, "\\_cite", null,
-	        N_("Reference to a bibliography item"), on_ref_cite },
+        { "References", "references", N_("_References") },
+        { "ReferencesLabel", null, "\\_label", null,
+            N_("Label"), on_ref_label },
+        { "ReferencesRef", null, "\\_ref", null,
+            N_("Reference to a label"), on_ref_ref },
+        { "ReferencesPageref", null, "\\_pageref", null,
+            N_("Page reference to a label"), on_ref_pageref },
+        { "ReferencesIndex", null, "\\_index", null,
+            N_("Add a word to the index"), on_ref_index },
+        { "ReferencesFootnote", null, "\\_footnote", null,
+            N_("Footnote"), on_ref_footnote },
+        { "ReferencesCite", null, "\\_cite", null,
+            N_("Reference to a bibliography item"), on_ref_cite },
 
         // LaTeX: Environments
-	    { "Environments", Stock.JUSTIFY_CENTER, "_Environments" },
-	    { "EnvCenter", Stock.JUSTIFY_CENTER, "\\begin{_center}", null,
-		    N_("Center - \\begin{center}"), on_env_center },
-	    { "EnvLeft", Stock.JUSTIFY_LEFT, "\\begin{flush_left}", null,
-		    N_("Align Left - \\begin{flushleft}"), on_env_left },
-	    { "EnvRight", Stock.JUSTIFY_RIGHT, "\\begin{flush_right}", null,
-		    N_("Align Right - \\begin{flushright}"), on_env_right },
-		{ "EnvFigure", "insert-image", "\\begin{_figure}", null,
-		    N_("Figure - \\begin{figure}"), on_env_figure },
-		{ "EnvTable", null, "\\begin{_table}", null,
-		    N_("Table - \\begin{table}"), on_env_table },
-		{ "EnvQuote", null, "\\begin{_quote}", null,
-		    N_("Quote - \\begin{quote}"), on_env_quote },
-	    { "EnvQuotation", null, "\\begin{qu_otation}", null,
-		    N_("Quotation - \\begin{quotation}"), on_env_quotation },
-	    { "EnvVerse", null, "\\begin{_verse}", null,
-		    N_("Verse - \\begin{verse}"), on_env_verse },
-		{ "EnvVerbatim", null, "\\begin{ver_batim}", null,
-		    N_("Verbatim - \\begin{verbatim}"), on_env_verbatim },
-	    { "EnvMinipage", null, "\\begin{_minipage}", null,
-		    N_("Minipage - \\begin{minipage}"), on_env_minipage },
-		{ "EnvTitlepage", null, "\\begin{titlepage}", null,
-		    N_("Title page - \\begin{titlepage}"), on_env_titlepage },
+        { "Environments", Stock.JUSTIFY_CENTER, "_Environments" },
+        { "EnvCenter", Stock.JUSTIFY_CENTER, "\\begin{_center}", null,
+            N_("Center - \\begin{center}"), on_env_center },
+        { "EnvLeft", Stock.JUSTIFY_LEFT, "\\begin{flush_left}", null,
+            N_("Align Left - \\begin{flushleft}"), on_env_left },
+        { "EnvRight", Stock.JUSTIFY_RIGHT, "\\begin{flush_right}", null,
+            N_("Align Right - \\begin{flushright}"), on_env_right },
+        { "EnvFigure", "insert-image", "\\begin{_figure}", null,
+            N_("Figure - \\begin{figure}"), on_env_figure },
+        { "EnvTable", null, "\\begin{_table}", null,
+            N_("Table - \\begin{table}"), on_env_table },
+        { "EnvQuote", null, "\\begin{_quote}", null,
+            N_("Quote - \\begin{quote}"), on_env_quote },
+        { "EnvQuotation", null, "\\begin{qu_otation}", null,
+            N_("Quotation - \\begin{quotation}"), on_env_quotation },
+        { "EnvVerse", null, "\\begin{_verse}", null,
+            N_("Verse - \\begin{verse}"), on_env_verse },
+        { "EnvVerbatim", null, "\\begin{ver_batim}", null,
+            N_("Verbatim - \\begin{verbatim}"), on_env_verbatim },
+        { "EnvMinipage", null, "\\begin{_minipage}", null,
+            N_("Minipage - \\begin{minipage}"), on_env_minipage },
+        { "EnvTitlepage", null, "\\begin{titlepage}", null,
+            N_("Title page - \\begin{titlepage}"), on_env_titlepage },
 
         // LaTeX: list environments
-	    { "ListEnvironments", "list-enumerate", N_("_List Environments") },
-	    { "ListEnvItemize", "list-itemize", "\\begin{_itemize}", null,
-		    N_("Bulleted List - \\begin{itemize}"), on_list_env_itemize },
-	    { "ListEnvEnumerate", "list-enumerate", "\\begin{_enumerate}", null,
-		    N_("Enumeration - \\begin{enumerate}"), on_list_env_enumerate },
-	    { "ListEnvDescription", "list-description", "\\begin{_description}", null,
-		    N_("Description - \\begin{description}"), on_list_env_description },
-		{ "ListEnvList", null, "\\begin{_list}", null,
-		    N_("Custom list - \\begin{list}"), on_list_env_list },
-	    { "ListEnvItem", "list-item", "\\i_tem", "<Alt><Shift>H",
-		    N_("List item - \\item"), on_list_env_item },
+        { "ListEnvironments", "list-enumerate", N_("_List Environments") },
+        { "ListEnvItemize", "list-itemize", "\\begin{_itemize}", null,
+            N_("Bulleted List - \\begin{itemize}"), on_list_env_itemize },
+        { "ListEnvEnumerate", "list-enumerate", "\\begin{_enumerate}", null,
+            N_("Enumeration - \\begin{enumerate}"), on_list_env_enumerate },
+        { "ListEnvDescription", "list-description", "\\begin{_description}", null,
+            N_("Description - \\begin{description}"), on_list_env_description },
+        { "ListEnvList", null, "\\begin{_list}", null,
+            N_("Custom list - \\begin{list}"), on_list_env_list },
+        { "ListEnvItem", "list-item", "\\i_tem", "<Alt><Shift>H",
+            N_("List item - \\item"), on_list_env_item },
 
         // LaTeX: character sizes
-	    { "CharacterSize", "character-size", N_("_Characters Sizes") },
-	    { "CharacterSizeTiny", null, "_tiny", null,
-		    "tiny", on_size_tiny },
-	    { "CharacterSizeScriptsize", null, "_scriptsize", null,
-		    "scriptsize", on_size_scriptsize },
-	    { "CharacterSizeFootnotesize", null, "_footnotesize", null,
-		    "footnotesize", on_size_footnotesize },
-	    { "CharacterSizeSmall", null, "s_mall", null,
-		    "small", on_size_small },
-	    { "CharacterSizeNormalsize", null, "_normalsize", null,
-		    "normalsize", on_size_normalsize },
-	    { "CharacterSizelarge", null, "_large", null,
-		    "large", on_size_large },
-	    { "CharacterSizeLarge", null, "L_arge", null,
-		    "Large", on_size_Large },
-	    { "CharacterSizeLARGE", null, "LA_RGE", null,
-		    "LARGE", on_size_LARGE },
-	    { "CharacterSizehuge", null, "_huge", null,
-		    "huge", on_size_huge },
-	    { "CharacterSizeHuge", null, "H_uge", null,
-		    "Huge", on_size_Huge },
+        { "CharacterSize", "character-size", N_("_Characters Sizes") },
+        { "CharacterSizeTiny", null, "_tiny", null,
+            "tiny", on_size_tiny },
+        { "CharacterSizeScriptsize", null, "_scriptsize", null,
+            "scriptsize", on_size_scriptsize },
+        { "CharacterSizeFootnotesize", null, "_footnotesize", null,
+            "footnotesize", on_size_footnotesize },
+        { "CharacterSizeSmall", null, "s_mall", null,
+            "small", on_size_small },
+        { "CharacterSizeNormalsize", null, "_normalsize", null,
+            "normalsize", on_size_normalsize },
+        { "CharacterSizelarge", null, "_large", null,
+            "large", on_size_large },
+        { "CharacterSizeLarge", null, "L_arge", null,
+            "Large", on_size_Large },
+        { "CharacterSizeLARGE", null, "LA_RGE", null,
+            "LARGE", on_size_LARGE },
+        { "CharacterSizehuge", null, "_huge", null,
+            "huge", on_size_huge },
+        { "CharacterSizeHuge", null, "H_uge", null,
+            "Huge", on_size_Huge },
 
         // LaTeX: font styles
-	    { "FontStyles", "bold", N_("_Font Styles") },
-	    { "Bold", "bold", "\\text_bf", "<Alt><Shift>B",
-		    N_("Bold - \\textbf"), on_text_bold },
-	    { "Italic", "italic", "\\text_it", "<Alt><Shift>I",
-		    N_("Italic - \\textit"), on_text_italic },
-	    { "Typewriter", "typewriter", "\\text_tt", "<Alt><Shift>T",
-		    N_("Typewriter - \\texttt"), on_text_typewriter },
-		{ "Slanted", "slanted", "\\text_sl", "<Alt><Shift>S",
-		    N_("Slanted - \\textsl"), on_text_slanted },
-	    { "SmallCaps", "small_caps", "\\texts_c", "<Alt><Shift>C",
-		    N_("Small Capitals - \\textsc"), on_text_small_caps },
-		{ "SansSerif", "sans_serif", "\\texts_f", null,
-		    N_("Sans Serif - \\textsf"), on_text_sans_serif },
-		{ "Emph", null, "\\_emph", null,
-		    N_("Emphasized - \\emph"), on_text_emph },
-	    { "Underline", "underline", "\\_underline", null,
-		    N_("Underline - \\underline"), on_text_underline },
+        { "FontStyles", "bold", N_("_Font Styles") },
+        { "Bold", "bold", "\\text_bf", "<Alt><Shift>B",
+            N_("Bold - \\textbf"), on_text_bold },
+        { "Italic", "italic", "\\text_it", "<Alt><Shift>I",
+            N_("Italic - \\textit"), on_text_italic },
+        { "Typewriter", "typewriter", "\\text_tt", "<Alt><Shift>T",
+            N_("Typewriter - \\texttt"), on_text_typewriter },
+        { "Slanted", "slanted", "\\text_sl", "<Alt><Shift>S",
+            N_("Slanted - \\textsl"), on_text_slanted },
+        { "SmallCaps", "small_caps", "\\texts_c", "<Alt><Shift>C",
+            N_("Small Capitals - \\textsc"), on_text_small_caps },
+        { "SansSerif", "sans_serif", "\\texts_f", null,
+            N_("Sans Serif - \\textsf"), on_text_sans_serif },
+        { "Emph", null, "\\_emph", null,
+            N_("Emphasized - \\emph"), on_text_emph },
+        { "Underline", "underline", "\\_underline", null,
+            N_("Underline - \\underline"), on_text_underline },
 
-	    { "FontFamily", null, N_("_Font Family") },
-	    { "FontFamilyRoman", "roman", "\\_rmfamily", null,
-		    N_("Roman - \\rmfamily"), on_text_font_family_roman },
-	    { "FontFamilySansSerif", "sans_serif", "\\_sffamily", null,
-		    N_("Sans Serif - \\sffamily"), on_text_font_family_sans_serif },
-	    { "FontFamilyMonospace", "typewriter", "\\_ttfamily", null,
-		    N_("Monospace - \\ttfamily"), on_text_font_family_monospace },
+        { "FontFamily", null, N_("_Font Family") },
+        { "FontFamilyRoman", "roman", "\\_rmfamily", null,
+            N_("Roman - \\rmfamily"), on_text_font_family_roman },
+        { "FontFamilySansSerif", "sans_serif", "\\_sffamily", null,
+            N_("Sans Serif - \\sffamily"), on_text_font_family_sans_serif },
+        { "FontFamilyMonospace", "typewriter", "\\_ttfamily", null,
+            N_("Monospace - \\ttfamily"), on_text_font_family_monospace },
 
-	    { "FontSeries", null, N_("F_ont Series") },
-	    { "FontSeriesMedium", "roman", "\\_mdseries", null,
-		    N_("Medium - \\mdseries"), on_text_font_series_medium },
-	    { "FontSeriesBold", "bold", "\\_bfseries", null,
-		    N_("Bold - \\bfseries"), on_text_font_series_bold },
+        { "FontSeries", null, N_("F_ont Series") },
+        { "FontSeriesMedium", "roman", "\\_mdseries", null,
+            N_("Medium - \\mdseries"), on_text_font_series_medium },
+        { "FontSeriesBold", "bold", "\\_bfseries", null,
+            N_("Bold - \\bfseries"), on_text_font_series_bold },
 
-	    { "FontShape", null, N_("Fo_nt Shape") },
-	    { "FontShapeUpright", "roman", "\\_upshape", null,
-		    N_("Upright - \\upshape"), on_text_font_shape_upright },
-	    { "FontShapeItalic", "italic", "\\_itshape", null,
-		    N_("Italic - \\itshape"), on_text_font_shape_italic },
-	    { "FontShapeSlanted", "slanted", "\\_slshape", null,
-		    N_("Slanted - \\slshape"), on_text_font_shape_slanted },
-	    { "FontShapeSmallCaps", "small_caps", "\\s_cshape", null,
-		    N_("Small Capitals - \\scshape"), on_text_font_shape_small_caps },
+        { "FontShape", null, N_("Fo_nt Shape") },
+        { "FontShapeUpright", "roman", "\\_upshape", null,
+            N_("Upright - \\upshape"), on_text_font_shape_upright },
+        { "FontShapeItalic", "italic", "\\_itshape", null,
+            N_("Italic - \\itshape"), on_text_font_shape_italic },
+        { "FontShapeSlanted", "slanted", "\\_slshape", null,
+            N_("Slanted - \\slshape"), on_text_font_shape_slanted },
+        { "FontShapeSmallCaps", "small_caps", "\\s_cshape", null,
+            N_("Small Capitals - \\scshape"), on_text_font_shape_small_caps },
 
-		// Tabular
+        // Tabular
 
-		{ "Tabular", "table", N_("_Tabular") },
-		{ "TabularTabbing", null, "\\begin{ta_bbing}", null,
-		    N_("Tabbing - \\begin{tabbing}"), on_tabular_tabbing },
-		{ "TabularTabular", null, "\\begin{_tabular}", null,
-		    N_("Tabular - \\begin{tabular}"), on_tabular_tabular },
-		{ "TabularMulticolumn", null, "\\_multicolumn", null,
-		    N_("Multicolumn - \\multicolumn"), on_tabular_multicolumn },
-		{ "TabularHline", null, "\\_hline", null,
-		    N_("Horizontal line - \\hline"), on_tabular_hline },
-		{ "TabularVline", null, "\\_vline", null,
-		    N_("Vertical line - \\vline"), on_tabular_vline },
-		{ "TabularCline", null, "\\_cline", null,
-		    N_("Horizontal line (columns specified) - \\cline"), on_tabular_cline },
+        { "Tabular", "table", N_("_Tabular") },
+        { "TabularTabbing", null, "\\begin{ta_bbing}", null,
+            N_("Tabbing - \\begin{tabbing}"), on_tabular_tabbing },
+        { "TabularTabular", null, "\\begin{_tabular}", null,
+            N_("Tabular - \\begin{tabular}"), on_tabular_tabular },
+        { "TabularMulticolumn", null, "\\_multicolumn", null,
+            N_("Multicolumn - \\multicolumn"), on_tabular_multicolumn },
+        { "TabularHline", null, "\\_hline", null,
+            N_("Horizontal line - \\hline"), on_tabular_hline },
+        { "TabularVline", null, "\\_vline", null,
+            N_("Vertical line - \\vline"), on_tabular_vline },
+        { "TabularCline", null, "\\_cline", null,
+            N_("Horizontal line (columns specified) - \\cline"), on_tabular_cline },
 
-		// Spacing
+        // Spacing
 
-		{ "Spacing", null, N_("_Spacing") },
-		{ "SpacingNewLine", null, N_("New _Line"), null,
-		    N_("New Line - \\\\"), on_spacing_new_line },
-		{ "SpacingNewPage", null, "\\new_page", null,
-		    N_("New page - \\newpage"), on_spacing_new_page },
-		{ "SpacingLineBreak", null, "\\l_inebreak", null,
-		    N_("Line break - \\linebreak"), on_spacing_line_break },
-		{ "SpacingPageBreak", null, "\\p_agebreak", null,
-		    N_("Page break - \\pagebreak"), on_spacing_page_break },
-		{ "SpacingBigSkip", null, "\\_bigskip", null,
-		    N_("Big skip - \\bigskip"), on_spacing_bigskip },
-		{ "SpacingMedSkip", null, "\\_medskip", null,
-		    N_("Medium skip - \\medskip"), on_spacing_medskip },
-		{ "SpacingHSpace", null, "\\_hspace", null,
-		    N_("Horizontal space - \\hspace"), on_spacing_hspace },
-		{ "SpacingVSpace", null, "\\_vspace", null,
-		    N_("Vertical space - \\vspace"), on_spacing_vspace },
-		{ "SpacingNoIndent", null, "\\_noindent", null,
-		    N_("No paragraph indentation - \\noindent"), on_spacing_noindent },
+        { "Spacing", null, N_("_Spacing") },
+        { "SpacingNewLine", null, N_("New _Line"), null,
+            N_("New Line - \\\\"), on_spacing_new_line },
+        { "SpacingNewPage", null, "\\new_page", null,
+            N_("New page - \\newpage"), on_spacing_new_page },
+        { "SpacingLineBreak", null, "\\l_inebreak", null,
+            N_("Line break - \\linebreak"), on_spacing_line_break },
+        { "SpacingPageBreak", null, "\\p_agebreak", null,
+            N_("Page break - \\pagebreak"), on_spacing_page_break },
+        { "SpacingBigSkip", null, "\\_bigskip", null,
+            N_("Big skip - \\bigskip"), on_spacing_bigskip },
+        { "SpacingMedSkip", null, "\\_medskip", null,
+            N_("Medium skip - \\medskip"), on_spacing_medskip },
+        { "SpacingHSpace", null, "\\_hspace", null,
+            N_("Horizontal space - \\hspace"), on_spacing_hspace },
+        { "SpacingVSpace", null, "\\_vspace", null,
+            N_("Vertical space - \\vspace"), on_spacing_vspace },
+        { "SpacingNoIndent", null, "\\_noindent", null,
+            N_("No paragraph indentation - \\noindent"), on_spacing_noindent },
 
-		// International accents
+        // International accents
 
-		{ "Accents", null, N_("International _Accents") },
-		{ "Accent0", "accent0", "\\'", null, N_("Acute accent - \\'"), on_accent0 },
-		{ "Accent1", "accent1", "\\`", null, N_("Grave accent - \\`"), on_accent1 },
-		{ "Accent2", "accent2", "\\^", null, N_("Circumflex accent - \\^"), on_accent2 },
-		{ "Accent3", "accent3", "\\\"", null, N_("Trema - \\\""), on_accent3 },
-		{ "Accent4", "accent4", "\\~", null, N_("Tilde - \\~"), on_accent4 },
-		{ "Accent5", "accent5", "\\=", null, N_("Macron - \\="), on_accent5 },
-		{ "Accent6", "accent6", "\\.", null, N_("Dot above - \\."), on_accent6 },
-		{ "Accent7", "accent7", "\\v", null, N_("Caron - \\v"), on_accent7 },
-		{ "Accent8", "accent8", "\\u", null, N_("Breve - \\u"), on_accent8 },
-		{ "Accent9", "accent9", "\\H", null,
-		    N_("Double acute accent - \\H"), on_accent9 },
-		{ "Accent10", "accent10", "\\c", null, N_("Cedilla - \\c"), on_accent10 },
-		{ "Accent11", "accent11", "\\k", null, N_("Ogonek - \\k"), on_accent11 },
-		{ "Accent12", "accent12", "\\d", null, N_("Dot below - \\d"), on_accent12 },
-		{ "Accent13", "accent13", "\\b", null, N_("Macron below - \\b"), on_accent13 },
-		{ "Accent14", "accent14", "\\r", null, N_("Ring - \\r"), on_accent14 },
-		{ "Accent15", "accent15", "\\t", null, N_("Tie - \\t"), on_accent15 },
+        { "Accents", null, N_("International _Accents") },
+        { "Accent0", "accent0", "\\'", null, N_("Acute accent - \\'"), on_accent0 },
+        { "Accent1", "accent1", "\\`", null, N_("Grave accent - \\`"), on_accent1 },
+        { "Accent2", "accent2", "\\^", null, N_("Circumflex accent - \\^"), on_accent2 },
+        { "Accent3", "accent3", "\\\"", null, N_("Trema - \\\""), on_accent3 },
+        { "Accent4", "accent4", "\\~", null, N_("Tilde - \\~"), on_accent4 },
+        { "Accent5", "accent5", "\\=", null, N_("Macron - \\="), on_accent5 },
+        { "Accent6", "accent6", "\\.", null, N_("Dot above - \\."), on_accent6 },
+        { "Accent7", "accent7", "\\v", null, N_("Caron - \\v"), on_accent7 },
+        { "Accent8", "accent8", "\\u", null, N_("Breve - \\u"), on_accent8 },
+        { "Accent9", "accent9", "\\H", null,
+            N_("Double acute accent - \\H"), on_accent9 },
+        { "Accent10", "accent10", "\\c", null, N_("Cedilla - \\c"), on_accent10 },
+        { "Accent11", "accent11", "\\k", null, N_("Ogonek - \\k"), on_accent11 },
+        { "Accent12", "accent12", "\\d", null, N_("Dot below - \\d"), on_accent12 },
+        { "Accent13", "accent13", "\\b", null, N_("Macron below - \\b"), on_accent13 },
+        { "Accent14", "accent14", "\\r", null, N_("Ring - \\r"), on_accent14 },
+        { "Accent15", "accent15", "\\t", null, N_("Tie - \\t"), on_accent15 },
 
-		// Others
+        // Others
 
         { "LatexMisc", null, N_("_Misc") },
-		{ "LatexDocumentClass", null, "\\_documentclass", null,
+        { "LatexDocumentClass", null, "\\_documentclass", null,
             N_("Document class - \\documentclass"), on_documentclass },
         { "LatexUsepackage", null, "\\_usepackage", null,
             N_("Use package - \\usepackage"), on_usepackage },
@@ -248,35 +248,35 @@ public class LatexMenu : Gtk.ActionGroup
 
         // LaTeX: math
 
-	    { "Math", null, N_("_Math") },
+        { "Math", null, N_("_Math") },
 
         // Math Environments
 
-	    { "MathEnvironments", null, N_("_Math Environments") },
-	    { "MathEnvNormal", "math", N_("_Mathematical Environment - $...$"),
-	        "<Alt><Shift>M", N_("Mathematical Environment - $...$"), on_math_env_normal },
-	    { "MathEnvCentered", "math-centered", N_("_Centered Formula - \\[...\\]"),
-	        "<Alt><Shift>E", N_("Centered Formula - \\[...\\]"), on_math_env_centered },
-	    { "MathEnvNumbered", "math-numbered",
-	        N_("_Numbered Equation - \\begin{equation}"), null,
-		    N_("Numbered Equation - \\begin{equation}"), on_math_env_numbered },
-	    { "MathEnvArray", "math-array", N_("_Array of Equations - \\begin{align*}"), null,
-		    N_("Array of Equations - \\begin{align*}"), on_math_env_array },
-	    { "MathEnvNumberedArray", "math-numbered-array",
-	        N_("Numbered Array of _Equations - \\begin{align}"), null,
-		    N_("Numbered Array of Equations - \\begin{align}"),
-		    on_math_env_numbered_array },
+        { "MathEnvironments", null, N_("_Math Environments") },
+        { "MathEnvNormal", "math", N_("_Mathematical Environment - $...$"),
+            "<Alt><Shift>M", N_("Mathematical Environment - $...$"), on_math_env_normal },
+        { "MathEnvCentered", "math-centered", N_("_Centered Formula - \\[...\\]"),
+            "<Alt><Shift>E", N_("Centered Formula - \\[...\\]"), on_math_env_centered },
+        { "MathEnvNumbered", "math-numbered",
+            N_("_Numbered Equation - \\begin{equation}"), null,
+            N_("Numbered Equation - \\begin{equation}"), on_math_env_numbered },
+        { "MathEnvArray", "math-array", N_("_Array of Equations - \\begin{align*}"), null,
+            N_("Array of Equations - \\begin{align*}"), on_math_env_array },
+        { "MathEnvNumberedArray", "math-numbered-array",
+            N_("Numbered Array of _Equations - \\begin{align}"), null,
+            N_("Numbered Array of Equations - \\begin{align}"),
+            on_math_env_numbered_array },
 
-	    { "MathSuperscript", "math-superscript", N_("_Superscript - ^{}"), null,
-		    N_("Superscript - ^{}"), on_math_superscript },
-	    { "MathSubscript", "math-subscript", N_("Su_bscript - __{}"), null,
-		    N_("Subscript - _{}"), on_math_subscript },
-	    { "MathFrac", "math-frac", N_("_Fraction - \\frac{}{}"), "<Alt><Shift>F",
-		    N_("Fraction - \\frac{}{}"), on_math_frac },
-	    { "MathSquareRoot", "math-square-root", N_("Square _Root - \\sqrt{}"), null,
-		    N_("Square Root - \\sqrt{}"), on_math_square_root },
-	    { "MathNthRoot", "math-nth-root", N_("_N-th Root - \\sqrt[]{}"), null,
-		    N_("N-th Root - \\sqrt[]{}"), on_math_nth_root },
+        { "MathSuperscript", "math-superscript", N_("_Superscript - ^{}"), null,
+            N_("Superscript - ^{}"), on_math_superscript },
+        { "MathSubscript", "math-subscript", N_("Su_bscript - __{}"), null,
+            N_("Subscript - _{}"), on_math_subscript },
+        { "MathFrac", "math-frac", N_("_Fraction - \\frac{}{}"), "<Alt><Shift>F",
+            N_("Fraction - \\frac{}{}"), on_math_frac },
+        { "MathSquareRoot", "math-square-root", N_("Square _Root - \\sqrt{}"), null,
+            N_("Square Root - \\sqrt{}"), on_math_square_root },
+        { "MathNthRoot", "math-nth-root", N_("_N-th Root - \\sqrt[]{}"), null,
+            N_("N-th Root - \\sqrt[]{}"), on_math_nth_root },
 
         // Math functions
 
@@ -369,47 +369,47 @@ public class LatexMenu : Gtk.ActionGroup
 
         // Left Delimiters
 
-	    { "MathLeftDelimiters", "delimiters-left", N_("_Left Delimiters") },
-	    { "MathLeftDelimiter1", null, N_("left ("), null,
-		    null, on_math_left_delimiter_1 },
-	    { "MathLeftDelimiter2", null, N_("left ["), null,
-		    null, on_math_left_delimiter_2 },
-	    { "MathLeftDelimiter3", null, N_("left { "), null,
-		    null, on_math_left_delimiter_3 },
-	    { "MathLeftDelimiter4", null, N_("left <"), null,
-		    null, on_math_left_delimiter_4 },
-	    { "MathLeftDelimiter5", null, N_("left )"), null,
-		    null, on_math_left_delimiter_5 },
-	    { "MathLeftDelimiter6", null, N_("left ]"), null,
-		    null, on_math_left_delimiter_6 },
-	    { "MathLeftDelimiter7", null, N_("left  }"), null,
-		    null, on_math_left_delimiter_7 },
-	    { "MathLeftDelimiter8", null, N_("left >"), null,
-		    null, on_math_left_delimiter_8 },
-	    { "MathLeftDelimiter9", null, N_("left ."), null,
-		    null, on_math_left_delimiter_9 },
+        { "MathLeftDelimiters", "delimiters-left", N_("_Left Delimiters") },
+        { "MathLeftDelimiter1", null, N_("left ("), null,
+            null, on_math_left_delimiter_1 },
+        { "MathLeftDelimiter2", null, N_("left ["), null,
+            null, on_math_left_delimiter_2 },
+        { "MathLeftDelimiter3", null, N_("left { "), null,
+            null, on_math_left_delimiter_3 },
+        { "MathLeftDelimiter4", null, N_("left <"), null,
+            null, on_math_left_delimiter_4 },
+        { "MathLeftDelimiter5", null, N_("left )"), null,
+            null, on_math_left_delimiter_5 },
+        { "MathLeftDelimiter6", null, N_("left ]"), null,
+            null, on_math_left_delimiter_6 },
+        { "MathLeftDelimiter7", null, N_("left  }"), null,
+            null, on_math_left_delimiter_7 },
+        { "MathLeftDelimiter8", null, N_("left >"), null,
+            null, on_math_left_delimiter_8 },
+        { "MathLeftDelimiter9", null, N_("left ."), null,
+            null, on_math_left_delimiter_9 },
 
         // Right Delimiters
 
-	    { "MathRightDelimiters", "delimiters-right", N_("Right _Delimiters") },
-	    { "MathRightDelimiter1", null, N_("right )"), null,
-		    null, on_math_right_delimiter_1 },
-	    { "MathRightDelimiter2", null, N_("right ]"), null,
-		    null, on_math_right_delimiter_2 },
-	    { "MathRightDelimiter3", null, N_("right  }"), null,
-		    null, on_math_right_delimiter_3 },
-	    { "MathRightDelimiter4", null, N_("right >"), null,
-		    null, on_math_right_delimiter_4 },
-	    { "MathRightDelimiter5", null, N_("right ("), null,
-		    null, on_math_right_delimiter_5 },
-	    { "MathRightDelimiter6", null, N_("right ["), null,
-		    null, on_math_right_delimiter_6 },
-	    { "MathRightDelimiter7", null, N_("right { "), null,
-		    null, on_math_right_delimiter_7 },
-	    { "MathRightDelimiter8", null, N_("right <"), null,
-		    null, on_math_right_delimiter_8 },
-	    { "MathRightDelimiter9", null, N_("right ."), null,
-		    null, on_math_right_delimiter_9 }
+        { "MathRightDelimiters", "delimiters-right", N_("Right _Delimiters") },
+        { "MathRightDelimiter1", null, N_("right )"), null,
+            null, on_math_right_delimiter_1 },
+        { "MathRightDelimiter2", null, N_("right ]"), null,
+            null, on_math_right_delimiter_2 },
+        { "MathRightDelimiter3", null, N_("right  }"), null,
+            null, on_math_right_delimiter_3 },
+        { "MathRightDelimiter4", null, N_("right >"), null,
+            null, on_math_right_delimiter_4 },
+        { "MathRightDelimiter5", null, N_("right ("), null,
+            null, on_math_right_delimiter_5 },
+        { "MathRightDelimiter6", null, N_("right ["), null,
+            null, on_math_right_delimiter_6 },
+        { "MathRightDelimiter7", null, N_("right { "), null,
+            null, on_math_right_delimiter_7 },
+        { "MathRightDelimiter8", null, N_("right <"), null,
+            null, on_math_right_delimiter_8 },
+        { "MathRightDelimiter9", null, N_("right ."), null,
+            null, on_math_right_delimiter_9 }
     };
 
     private unowned MainWindow main_window;
@@ -435,13 +435,13 @@ public class LatexMenu : Gtk.ActionGroup
             _("Math Environments"), "math");
 
         Gtk.Action math_left_del = get_menu_tool_action ("MathLeftDelimitersToolItem",
-			_("Left Delimiters"), "delimiters-left");
+            _("Left Delimiters"), "delimiters-left");
 
-		Gtk.Action math_right_del = get_menu_tool_action ("MathRightDelimitersToolItem",
-			_("Right Delimiters"), "delimiters-right");
+        Gtk.Action math_right_del = get_menu_tool_action ("MathRightDelimitersToolItem",
+            _("Right Delimiters"), "delimiters-right");
 
-		add_actions (latex_action_entries, this);
-		add_action (sectioning);
+        add_actions (latex_action_entries, this);
+        add_action (sectioning);
         add_action (sizes);
         add_action (references);
         add_action (math_env);
@@ -463,12 +463,12 @@ public class LatexMenu : Gtk.ActionGroup
         return_if_fail (main_window.active_tab != null);
         Document active_document = main_window.active_document;
 
-	    // we don't use the insert and selection_bound marks because we don't
-	    // know the order. With gtk_text_buffer_get_selection_bounds, we are certain
-	    // that "start" points to the start of the selection, where we must insert
-	    // "text_before".
+        // we don't use the insert and selection_bound marks because we don't
+        // know the order. With gtk_text_buffer_get_selection_bounds, we are certain
+        // that "start" points to the start of the selection, where we must insert
+        // "text_before".
 
-	    TextIter start, end;
+        TextIter start, end;
         bool text_selected = active_document.get_selection_bounds (out start, out end);
 
         // take into account the current indentation
@@ -489,38 +489,38 @@ public class LatexMenu : Gtk.ActionGroup
 
         active_document.begin_user_action ();
 
-	    // insert around the selected text
-	    // move the cursor to the end
-	    if (text_selected)
-	    {
-	        TextMark mark_end = active_document.create_mark (null, end, false);
-            active_document.insert (start, text_before2 ?? text_before, -1);
+        // insert around the selected text
+        // move the cursor to the end
+        if (text_selected)
+        {
+            TextMark mark_end = active_document.create_mark (null, end, false);
+            active_document.insert (ref start, text_before2 ?? text_before, -1);
             active_document.get_iter_at_mark (out end, mark_end);
-            active_document.insert (end, text_after2 ?? text_after, -1);
+            active_document.insert (ref end, text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out end, mark_end);
-		    active_document.select_range (end, end);
-	    }
+            active_document.select_range (end, end);
+        }
 
-	    // no selection
-	    else if (text_if_no_selection != null)
-	        active_document.insert_at_cursor (text_if_no_selection, -1);
+        // no selection
+        else if (text_if_no_selection != null)
+            active_document.insert_at_cursor (text_if_no_selection, -1);
 
-	    // no selection
-	    // move the cursor between the 2 texts inserted
-	    else
-	    {
-	        active_document.insert_at_cursor (text_before2 ?? text_before, -1);
+        // no selection
+        // move the cursor between the 2 texts inserted
+        else
+        {
+            active_document.insert_at_cursor (text_before2 ?? text_before, -1);
 
-		    TextIter between;
-		    active_document.get_iter_at_mark (out between, active_document.get_insert ());
-		    TextMark mark = active_document.create_mark (null, between, true);
+            TextIter between;
+            active_document.get_iter_at_mark (out between, active_document.get_insert ());
+            TextMark mark = active_document.create_mark (null, between, true);
 
             active_document.insert_at_cursor (text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out between, mark);
-		    active_document.select_range (between, between);
-	    }
+            active_document.select_range (between, between);
+        }
 
         active_document.end_user_action ();
     }
@@ -981,35 +981,35 @@ public class LatexMenu : Gtk.ActionGroup
         text_buffer_insert ("\\H{", "}");
     }
 
-	public void on_accent10 ()
-	{
-	    text_buffer_insert ("\\c{", "}");
-	}
+    public void on_accent10 ()
+    {
+        text_buffer_insert ("\\c{", "}");
+    }
 
-	public void on_accent11 ()
-	{
-	    text_buffer_insert ("\\k{", "}");
-	}
+    public void on_accent11 ()
+    {
+        text_buffer_insert ("\\k{", "}");
+    }
 
-	public void on_accent12 ()
-	{
-	    text_buffer_insert ("\\d{", "}");
-	}
+    public void on_accent12 ()
+    {
+        text_buffer_insert ("\\d{", "}");
+    }
 
-	public void on_accent13 ()
-	{
-	    text_buffer_insert ("\\b{", "}");
-	}
+    public void on_accent13 ()
+    {
+        text_buffer_insert ("\\b{", "}");
+    }
 
-	public void on_accent14 ()
-	{
-	    text_buffer_insert ("\\r{", "}");
-	}
+    public void on_accent14 ()
+    {
+        text_buffer_insert ("\\r{", "}");
+    }
 
-	public void on_accent15 ()
-	{
-	    text_buffer_insert ("\\t{", "}");
-	}
+    public void on_accent15 ()
+    {
+        text_buffer_insert ("\\t{", "}");
+    }
 
     /* Others */
 

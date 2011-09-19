@@ -313,7 +313,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         TextBuffer doc = iter.get_buffer ();
         doc.begin_user_action ();
-        doc.insert (iter, text_to_insert, -1);
+        doc.insert (ref iter, text_to_insert, -1);
         doc.end_user_action ();
 
         // where to place the cursor?
@@ -341,7 +341,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         TextBuffer doc = iter.get_buffer ();
         doc.begin_user_action ();
-        doc.insert (iter, text_to_insert, -1);
+        doc.insert (ref iter, text_to_insert, -1);
 
         // close environment: \begin{env} => \end{env}
         if (cmd_name == "\\begin")
@@ -388,7 +388,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         if (! found)
-            doc.insert (iter, "}", -1);
+            doc.insert (ref iter, "}", -1);
         else
             iter.forward_chars ((int) i + 1);
 
@@ -409,13 +409,13 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         Document document = (Document) doc;
         string indent = document.tab.view.get_indentation_style ();
 
-        doc.insert (iter, @"\n$current_indent$indent", -1);
+        doc.insert (ref iter, @"\n$current_indent$indent", -1);
         if (environment != null && environment.insert != null)
-            doc.insert (iter, environment.insert, -1);
+            doc.insert (ref iter, environment.insert, -1);
         TextMark cursor_pos = doc.create_mark (null, iter, true);
         if (environment != null && environment.insert_after != null)
-            doc.insert (iter, environment.insert_after, -1);
-        doc.insert (iter, @"\n$current_indent\\end{" + env_name + "}", -1);
+            doc.insert (ref iter, environment.insert_after, -1);
+        doc.insert (ref iter, @"\n$current_indent\\end{" + env_name + "}", -1);
 
         doc.get_iter_at_mark (out iter, cursor_pos);
         doc.place_cursor (iter);

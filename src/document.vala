@@ -97,12 +97,12 @@ public class Document : Gtk.SourceBuffer
         return base.get_modified ();
     }
 
-    public new void insert (TextIter iter, string text, int len)
+    public new void insert (ref TextIter iter, string text, int len)
     {
         Gtk.SourceCompletion completion = tab.view.completion;
         completion.block_interactive ();
 
-        base.insert (iter, text, len);
+        base.insert (ref iter, text, len);
 
         // HACK: wait one second before delocking completion, it's better than doing a
         // Utils.flush_queue ().
@@ -420,7 +420,7 @@ public class Document : Gtk.SourceBuffer
 
             // do not comment lines containing only spaces
             if (line_contents.strip () != "")
-                insert (cur_iter, "% ", -1);
+                insert (ref cur_iter, "% ", -1);
         }
         end_user_action ();
     }
@@ -1111,7 +1111,7 @@ public class Document : Gtk.SourceBuffer
 
         begin_user_action ();
         this.delete (start, end);
-        this.insert (start, text, -1);
+        this.insert (ref start, text, -1);
         end_user_action ();
 
         // if the next match was directly after the previous, don't search forward
@@ -1133,7 +1133,7 @@ public class Document : Gtk.SourceBuffer
         while (iter_forward_search (start, null, out match_start, out match_end))
         {
             this.delete (match_start, match_end);
-            this.insert (match_start, text, -1);
+            this.insert (ref match_start, text, -1);
             start = match_start;
         }
 
