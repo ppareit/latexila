@@ -81,3 +81,17 @@ Configuration
 	-DCOMPILE_SCHEMA=OFF
 
 	Useful for packages.
+
+
+* Set a custom Vala compiler
+
+	By default, the right "valac-X.Y" is searched in the directories listed
+	by the PATH environment variable. If Vala 0.12 is required for example,
+	CMake search the binary "valac-0.12".
+
+	But if you want to use another valac binary located in a strange
+	directory, you can run cmake with:
+	-DVALAC=/path/to/your/valac
+
+	Pay attention that if you use this option, there is no check to see if
+	you specify the right version of Vala.

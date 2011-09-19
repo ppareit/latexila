@@ -13,6 +13,7 @@ set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
 set (WITH_GNOME OFF CACHE BOOL
 	"Use gsettings-desktop-schemas for a better integration with GNOME")
 set (COMPILE_SCHEMA ON CACHE BOOL "Compile the GSettings schema")
+set (VALAC "" CACHE FILEPATH "The valac executable to use")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
@@ -31,12 +32,17 @@ if (BUILD_VALA)
 	set (_vala_main_version "0.12")
 	set (_vala_min_version "0.12.1")
 
-	find_vala (${_vala_main_version})
+	if (VALAC)
+		message (STATUS "Use custom valac: ${VALAC}")
+		set (VALA_EXECUTABLE ${VALAC})
+	else ()
+		find_vala (${_vala_main_version})
 
-	if ((NOT VALA_FOUND) OR
-	    ("${VALA_VERSION}" VERSION_LESS "${_vala_min_version}"))
-		message (FATAL_ERROR
-			"Vala ${_vala_main_version}.x >= ${_vala_min_version} required")
+		if ((NOT VALA_FOUND) OR
+		    ("${VALA_VERSION}" VERSION_LESS "${_vala_min_version}"))
+			message (FATAL_ERROR
+				"Vala ${_vala_main_version}.x >= ${_vala_min_version} required")
+		endif ()
 	endif ()
 endif ()
 
