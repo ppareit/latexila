@@ -45,7 +45,7 @@ public struct BuildTool
     public string icon;
     public bool show;
     public bool compilation;
-    public unowned GLib.List<BuildJob?> jobs;
+    public ArrayList<BuildJob?> jobs;
 }
 
 public enum DocType
@@ -58,7 +58,7 @@ public enum DocType
 
 public class BuildTools
 {
-    private static BuildTools instance = null;
+    private static BuildTools _instance = null;
 
     private static string[] _post_processor_names =
     {
@@ -69,11 +69,11 @@ public class BuildTools
         "rubber"
     };
 
-    private LinkedList<BuildTool?> build_tools;
-    private BuildTool cur_tool;
-    private BuildJob cur_job;
+    private LinkedList<BuildTool?> _build_tools;
+    private BuildTool _cur_tool;
+    private BuildJob _cur_job;
 
-    private bool modified = false;
+    private bool _modified = false;
 
     private BuildTools ()
     {
@@ -82,20 +82,20 @@ public class BuildTools
 
     public static BuildTools get_default ()
     {
-        if (instance == null)
-            instance = new BuildTools ();
-        return instance;
+        if (_instance == null)
+            _instance = new BuildTools ();
+        return _instance;
     }
 
     public BuildTool? get (int id)
     {
-        return_val_if_fail (id >= 0 && id < build_tools.size, null);
-        return build_tools[id];
+        return_val_if_fail (id >= 0 && id < _build_tools.size, null);
+        return _build_tools[id];
     }
 
     public Iterator<BuildTool?> iterator ()
     {
-        return (Iterator<BuildTool?>) build_tools.iterator ();
+        return (Iterator<BuildTool?>) _build_tools.iterator ();
     }
 
     public BuildTool? get_view_doc (DocType type)
@@ -106,7 +106,7 @@ public class BuildTools
         icon[DocType.PS] = "view_ps";
 
         // we take the first match
-        foreach (BuildTool build_tool in build_tools)
+        foreach (BuildTool build_tool in _build_tools)
         {
             if (build_tool.icon == icon[type])
                 return build_tool;
@@ -117,7 +117,7 @@ public class BuildTools
 
     public bool is_empty ()
     {
-        return build_tools.size == 0;
+        return _build_tools.size == 0;
     }
 
     public void move_up (int num)
@@ -128,51 +128,51 @@ public class BuildTools
 
     public void move_down (int num)
     {
-        return_if_fail (num < build_tools.size - 1);
+        return_if_fail (num < _build_tools.size - 1);
         swap (num, num + 1);
     }
 
     private void swap (int num1, int num2)
     {
-        return_if_fail (build_tools != null);
+        return_if_fail (_build_tools != null);
 
-        BuildTool tool = build_tools.get (num1);
-        build_tools.remove_at (num1);
-        build_tools.insert (num2, tool);
+        BuildTool tool = _build_tools.get (num1);
+        _build_tools.remove_at (num1);
+        _build_tools.insert (num2, tool);
         update_all_menus ();
     }
 
     public void delete (int num)
     {
-        return_if_fail (build_tools != null);
+        return_if_fail (_build_tools != null);
 
-        return_if_fail (num >= 0 && num < build_tools.size);
-        build_tools.remove_at (num);
+        return_if_fail (num >= 0 && num < _build_tools.size);
+        _build_tools.remove_at (num);
         update_all_menus ();
     }
 
     public void add (BuildTool tool)
     {
-        return_if_fail (build_tools != null);
+        return_if_fail (_build_tools != null);
 
-        insert (build_tools.size, tool);
+        insert (_build_tools.size, tool);
     }
 
     public void insert (int pos, BuildTool tool)
     {
-        return_if_fail (build_tools != null);
-        return_if_fail (0 <= pos && pos <= build_tools.size);
+        return_if_fail (_build_tools != null);
+        return_if_fail (0 <= pos && pos <= _build_tools.size);
 
         tool.compilation = is_compilation (tool.icon);
-        build_tools.insert (pos, tool);
+        _build_tools.insert (pos, tool);
         update_all_menus ();
     }
 
     public void update (int num, BuildTool tool, bool keep_show = false)
     {
-        return_if_fail (build_tools != null);
-        return_if_fail (num >= 0 && num < build_tools.size);
-        BuildTool current_tool = build_tools.get (num);
+        return_if_fail (_build_tools != null);
+        return_if_fail (num >= 0 && num < _build_tools.size);
+        BuildTool current_tool = _build_tools.get (num);
 
         if (keep_show)
             tool.show = current_tool.show;
@@ -180,8 +180,8 @@ public class BuildTools
         if (! is_equal (current_tool, tool))
         {
             tool.compilation = is_compilation (tool.icon);
-            build_tools.remove_at (num);
-            build_tools.insert (num, tool);
+            _build_tools.remove_at (num);
+            _build_tools.insert (num, tool);
             update_all_menus ();
         }
     }
@@ -202,13 +202,13 @@ public class BuildTools
             || tool1.description != tool2.description
             || tool1.extensions != tool2.extensions
             || tool1.icon != tool2.icon
-            || tool1.jobs.length () != tool2.jobs.length ())
+            || tool1.jobs.size != tool2.jobs.size)
             return false;
 
-        for (uint i = 0 ; i < tool1.jobs.length () ; i++)
+        for (int job_num = 0 ; job_num < tool1.jobs.size ; job_num++)
         {
-            BuildJob job1 = tool1.jobs.nth_data (i);
-            BuildJob job2 = tool2.jobs.nth_data (i);
+            BuildJob job1 = tool1.jobs[job_num];
+            BuildJob job2 = tool2.jobs[job_num];
 
             if (job1.command != job2.command
                 || job1.must_succeed != job2.must_succeed
@@ -223,14 +223,14 @@ public class BuildTools
     private void print_summary ()
     {
         stdout.printf ("\n=== build tools summary ===\n");
-        foreach (BuildTool tool in build_tools)
+        foreach (BuildTool tool in _build_tools)
             stdout.printf ("%s\n", tool.label);
     }
     */
 
     private void update_all_menus ()
     {
-        modified = true;
+        _modified = true;
         foreach (MainWindow window in Application.get_default ().windows)
             window.update_build_tools_menu ();
     }
@@ -245,7 +245,7 @@ public class BuildTools
 
     private void load ()
     {
-        build_tools = new LinkedList<BuildTool?> ();
+        _build_tools = new LinkedList<BuildTool?> ();
 
         // First, try to load the user config file if it exists.
         // Otherwise try to load the default file (from most desirable to least desirable,
@@ -297,21 +297,23 @@ public class BuildTools
                 return;
 
             case "tool":
-                cur_tool = BuildTool ();
-                cur_tool.compilation = false;
+                _cur_tool = BuildTool ();
+                _cur_tool.compilation = false;
+                _cur_tool.jobs = new ArrayList<BuildJob?> ();
+
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "show":
-                            cur_tool.show = bool.parse (attr_values[i]);
+                            _cur_tool.show = bool.parse (attr_values[i]);
                             break;
                         case "extensions":
-                            cur_tool.extensions = attr_values[i];
+                            _cur_tool.extensions = attr_values[i];
                             break;
                         case "icon":
-                            cur_tool.icon = attr_values[i];
-                            cur_tool.compilation = is_compilation (attr_values[i]);
+                            _cur_tool.icon = attr_values[i];
+                            _cur_tool.compilation = is_compilation (attr_values[i]);
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -321,16 +323,16 @@ public class BuildTools
                 break;
 
             case "job":
-                cur_job = BuildJob ();
+                _cur_job = BuildJob ();
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "mustSucceed":
-                            cur_job.must_succeed = bool.parse (attr_values[i]);
+                            _cur_job.must_succeed = bool.parse (attr_values[i]);
                             break;
                         case "postProcessor":
-                            cur_job.post_processor = get_post_processor_type_from_name (
+                            _cur_job.post_processor = get_post_processor_type_from_name (
                                 attr_values[i]);
                             break;
                         default:
@@ -357,13 +359,13 @@ public class BuildTools
 
             case "tool":
                 // the description is optional
-                if (cur_tool.description == null)
-                    cur_tool.description = cur_tool.label;
-                build_tools.add (cur_tool);
+                if (_cur_tool.description == null)
+                    _cur_tool.description = _cur_tool.label;
+                _build_tools.add (_cur_tool);
                 break;
 
             case "job":
-                cur_tool.jobs.append (cur_job);
+                _cur_tool.jobs.add (_cur_job);
                 break;
 
             default:
@@ -378,26 +380,26 @@ public class BuildTools
         switch (context.get_element ())
         {
             case "job":
-                cur_job.command = text.strip ();
+                _cur_job.command = text.strip ();
                 break;
             case "label":
-                cur_tool.label = text.strip ();
+                _cur_tool.label = text.strip ();
                 break;
             case "description":
-                cur_tool.description = text.strip ();
+                _cur_tool.description = text.strip ();
                 break;
         }
     }
 
     public void save ()
     {
-        return_if_fail (build_tools != null);
+        return_if_fail (_build_tools != null);
 
-        if (! modified)
+        if (! _modified)
             return;
 
         string content = "<tools>";
-        foreach (BuildTool tool in build_tools)
+        foreach (BuildTool tool in _build_tools)
         {
             content += "\n  <tool show=\"%s\" extensions=\"%s\" icon=\"%s\">\n".printf (
                 tool.show.to_string (), tool.extensions, tool.icon);

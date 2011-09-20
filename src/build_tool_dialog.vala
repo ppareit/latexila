@@ -404,7 +404,7 @@ private class BuildToolDialog : Dialog
                 job.command = command.strip ();
                 job.post_processor = BuildTools.get_post_processor_type_from_name (
                     post_processor_name);
-                tool.jobs.append (job);
+                tool.jobs.add (job);
 
                 valid = jobs_store.iter_next (ref iter);
             }

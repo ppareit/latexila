@@ -39,9 +39,9 @@ public class BuildToolRunner : GLib.Object
     private string shortname;
     private string directory;
 
-    private unowned List<BuildJob?> jobs;
+    private unowned Gee.ArrayList<BuildJob?> jobs;
     private int job_num = 0;
-    private unowned BuildJob current_job;
+    private BuildJob current_job;
 
     private TreeIter root_partition;
     private TreeIter[] job_partitions;
@@ -315,7 +315,7 @@ public class BuildToolRunner : GLib.Object
     private void proceed ()
     {
         // all jobs executed, finished
-        if (job_num >= jobs.length ())
+        if (job_num >= jobs.size)
         {
             view.set_partition_state (root_partition, PartitionState.SUCCEEDED);
             action_stop_exec.set_sensitive (false);
@@ -326,7 +326,7 @@ public class BuildToolRunner : GLib.Object
         // reset output because it's the same variable for all jobs
         output = "";
 
-        current_job = jobs.nth_data (job_num);
+        current_job = jobs[job_num];
         string[] command;
 
         try
