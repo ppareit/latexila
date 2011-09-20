@@ -358,19 +358,19 @@ public class Document : Gtk.SourceBuffer
         if (location == null)
             return false;
 
-		string current_etag = null;
-		try
-		{
-			FileInfo file_info = location.query_info (FILE_ATTRIBUTE_ETAG_VALUE,
-			    FileQueryInfoFlags.NONE, null);
-			current_etag = file_info.get_etag ();
-		}
-		catch (GLib.Error e)
-		{
-			return false;
-		}
+        string current_etag = null;
+        try
+        {
+            FileInfo file_info = location.query_info (FILE_ATTRIBUTE_ETAG_VALUE,
+                FileQueryInfoFlags.NONE, null);
+            current_etag = file_info.get_etag ();
+        }
+        catch (GLib.Error e)
+        {
+            return false;
+        }
 
-		return current_etag != null && current_etag != _etag;
+        return current_etag != null && current_etag != _etag;
     }
 
     public void set_style_scheme_from_string (string scheme_id)

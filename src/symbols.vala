@@ -928,11 +928,11 @@ public class Symbols : VBox
             Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (symbol.filename);
 
             // some characters ('<' for example) generate errors for the tooltip,
-	        // so we must escape it
-	        string tooltip = Markup.escape_text (symbol.latex_command);
+            // so we must escape it
+            string tooltip = Markup.escape_text (symbol.latex_command);
 
-	        if (symbol.package_required != null)
-	            tooltip += " (package %s)".printf (symbol.package_required);
+            if (symbol.package_required != null)
+                tooltip += " (package %s)".printf (symbol.package_required);
 
             TreeIter iter;
             if (index == -1)
