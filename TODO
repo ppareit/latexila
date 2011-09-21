@@ -3,6 +3,20 @@ TODO
 See also the Roadmap:
 	http://projects.gnome.org/latexila/#roadmap
 
+LaTeXila 2.4
+============
+
+- Add XeLaTeX to the build tools, example:
+	$ latexmk -pdf -e '$pdflatex=q/xelatex %O %S/' $filename
+
+- Propose the GtkSpell vapi upstream
+
+- Migrate to GTK+ 3.0
+  I wanted to make the migration for the 2.2 release but GtkSourceView 3.0 have removed the
+  gtk_source_completion_info_set_sizing() function.
+  Also, GTK 3 widgets are a lot bigger, it doesn't fit well with LaTeXila.
+
+
 LaTeXila ≥ 2.4
 ==============
 
@@ -10,11 +24,9 @@ LaTeXila ≥ 2.4
 	- show details by default
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)
-
-- Migrate to GTK+ 3.0
-  I wanted to make the migration for the 2.2 release but GtkSourceView 3.0 have removed the
-  gtk_source_completion_info_set_sizing() function.
-  Also, GTK 3 widgets are a lot bigger, it doesn't fit well with LaTeXila.
+	- Insert an image easily. Instead of a wizzard, the approach is to have very good
+	  completion of \begin{figure}[here], \includegraphics[here]{and here}, and automatically
+	  complete the label with the filename of the image.
 
 (-) Structure:
 	- Select the current section or item when the document cursor moves
