@@ -648,7 +648,7 @@ public class Structure : VBox
             _icons[StructType.TABLE]        = "table";
             _icons[StructType.FIGURE]       = "image";
             _icons[StructType.IMAGE]        = "image";
-            _icons[StructType.INCLUDE]      = "tree_include";
+            _icons[StructType.INCLUDE]      = Stock.FILE;
         }
 
         return _icons[type];

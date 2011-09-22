@@ -170,7 +170,6 @@ public class Application : GLib.Object
 
         register_my_stock_icons ();
         add_theme_icon_to_stock ("image-x-generic", "image");
-        add_theme_icon_to_stock ("text-x-generic", "tree_include");
 
         AppSettings.get_default ();
         create_window ();
