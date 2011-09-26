@@ -382,6 +382,7 @@ private class BuildToolDialog : Dialog
             tool.description =
                 entry_desc.text.strip () == "" ? tool.label : entry_desc.text.strip ();
             tool.extensions = entry_extensions.text.strip ();
+            tool.jobs = new Gee.ArrayList<BuildJob?> ();
 
             combobox_icon.get_active_iter (out iter);
             TreeModel model = combobox_icon.get_model ();
