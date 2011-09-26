@@ -6,9 +6,6 @@ See also the Roadmap:
 LaTeXila 2.4
 ============
 
-- Add XeLaTeX to the build tools, example:
-	$ latexmk -pdf -e '$pdflatex=q/xelatex %O %S/' $filename
-
 - Migrate to GTK+ 3.0
   I wanted to make the migration for the 2.2 release but GtkSourceView 3.0 have removed the
   gtk_source_completion_info_set_sizing() function.

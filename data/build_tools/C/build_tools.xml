@@ -31,6 +31,14 @@
     <job mustSucceed="true" postProcessor="no-output">$view $shortname.ps</job>
   </tool>
 
+  <tool show="false" extensions=".tex" icon="compile_pdf">
+    <label its:translate="no">XeTeX → PDF (Latexmk)</label>
+    <job mustSucceed="true" postProcessor="latexmk">
+      latexmk -pdf -e &apos;$pdflatex=q/xelatex %O %S/&apos; $filename
+    </job>
+    <job mustSucceed="true" postProcessor="no-output">$view $shortname.pdf</job>
+  </tool>
+
   <!-- View DVI/PDF/PS -->
 
   <tool show="true" extensions=".tex .pdf" icon="view_pdf">
