@@ -1450,12 +1450,12 @@ public class LatexMenu : Gtk.ActionGroup
 
     public void on_math_right_delimiter_1 ()
     {
-        text_buffer_insert ("\\right( ", "");
+        text_buffer_insert ("\\right) ", "");
     }
 
     public void on_math_right_delimiter_2 ()
     {
-        text_buffer_insert ("\\right[ ", "");
+        text_buffer_insert ("\\right] ", "");
     }
 
     public void on_math_right_delimiter_3 ()
@@ -1470,12 +1470,12 @@ public class LatexMenu : Gtk.ActionGroup
 
     public void on_math_right_delimiter_5 ()
     {
-        text_buffer_insert ("\\right) ", "");
+        text_buffer_insert ("\\right( ", "");
     }
 
     public void on_math_right_delimiter_6 ()
     {
-        text_buffer_insert ("\\right] ", "");
+        text_buffer_insert ("\\right[ ", "");
     }
 
     public void on_math_right_delimiter_7 ()
