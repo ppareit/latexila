@@ -776,7 +776,7 @@ public class Symbols : VBox
         categories_view.set_pixbuf_column (CategoryColumn.ICON);
         categories_view.set_text_column (CategoryColumn.NAME);
         categories_view.set_selection_mode (SelectionMode.SINGLE);
-        categories_view.set_orientation (Orientation.HORIZONTAL);
+        categories_view.set_item_orientation (Orientation.HORIZONTAL);
         categories_view.spacing = 5;
         categories_view.row_spacing = 0;
         categories_view.column_spacing = 0;

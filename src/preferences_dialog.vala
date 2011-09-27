@@ -30,7 +30,6 @@ public class PreferencesDialog : Dialog
     private PreferencesDialog ()
     {
         title = _("Preferences");
-        has_separator = false;
         destroy_with_parent = true;
         border_width = 5;
 

@@ -237,8 +237,6 @@ public class CleanBuildFiles : GLib.Object
             Stock.DELETE, ResponseType.ACCEPT,
             null);
 
-        dialog.has_separator = false;
-
         HBox hbox = new HBox (false, 12);
         hbox.border_width = 5;
         VBox content_area = dialog.get_content_area () as VBox;

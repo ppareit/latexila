@@ -42,8 +42,6 @@ namespace Dialogs
             Stock.SAVE, ResponseType.ACCEPT,
             null);
 
-        dialog.has_separator = false;
-
         HBox hbox = new HBox (false, 12);
         hbox.border_width = 5;
         VBox content_area = (VBox) dialog.get_content_area ();

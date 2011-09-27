@@ -69,7 +69,6 @@ private class BuildToolDialog : Dialog
         add_button (Stock.CANCEL, ResponseType.CANCEL);
         add_button (Stock.OK, ResponseType.OK);
         title = _("Build Tool");
-        has_separator = false;
         destroy_with_parent = true;
         border_width = 5;
 

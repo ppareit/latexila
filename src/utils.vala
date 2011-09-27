@@ -364,7 +364,7 @@ namespace Utils
 
         Gdk.Window window = gtkwindow.get_window ();
         Gdk.Display display = window.get_display ();
-        unowned X.Display x_display = Gdk.x11_display_get_xdisplay (display);
+        unowned X.Display x_display = Gdk.X11Display.get_xdisplay (display);
 
         X.Atom type;
         int format;
@@ -374,7 +374,7 @@ namespace Utils
 
         Gdk.error_trap_push ();
 
-        int result = x_display.get_window_property (Gdk.x11_drawable_get_xid (window),
+        int result = x_display.get_window_property (Gdk.X11Window.get_xid (window),
             Gdk.x11_get_xatom_by_name_for_display (display, "_NET_WM_DESKTOP"),
             0, long.MAX, false, X.XA_CARDINAL, out type, out format, out nitems,
             out bytes_after, out workspace);

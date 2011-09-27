@@ -586,15 +586,15 @@ public class MainWindow : Window
         update_build_tools_menu ();
     }
 
-    private void on_menu_item_select (Item proxy)
+    private void on_menu_item_select (MenuItem proxy)
     {
-        Gtk.Action action = ((MenuItem) proxy).get_related_action ();
+        Gtk.Action action = proxy.get_related_action ();
         return_if_fail (action != null);
         if (action.tooltip != null)
             statusbar.push (tip_message_cid, action.tooltip);
     }
 
-    private void on_menu_item_deselect (Item proxy)
+    private void on_menu_item_deselect (MenuItem proxy)
     {
         statusbar.pop (tip_message_cid);
     }
