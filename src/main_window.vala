@@ -1911,19 +1911,6 @@ public class MainWindow : Window
         string comments =
             _("LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop");
         string copyright = "Copyright (C) 2009-2011 Sébastien Wilmet";
-        string licence =
-"""LaTeXila is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-LaTeXila is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
 
         string website = "http://projects.gnome.org/latexila/";
 
@@ -1938,8 +1925,8 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
             "Ann Melnichuk <melnichu@qtp.ufl.edu>",
             "Eric Forgeot <e.forgeot@laposte.net>",
             "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
-            "The Kile Team: http://kile.sourceforge.net/",
-            "Gedit LaTeX Plugin: http://www.michaels-website.de/gedit-latex-plugin/",
+            "The Kile Team http://kile.sourceforge.net/",
+            "Gedit LaTeX Plugin http://live.gnome.org/Gedit/LaTeXPlugin",
             null
         };
 
@@ -1960,7 +1947,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.""";
             "artists", artists,
             "comments", comments,
             "copyright", copyright,
-            "license", licence,
+            "license-type", License.GPL_3_0,
             "title", _("About LaTeXila"),
             "translator-credits", _("translator-credits"),
             "website", website,
