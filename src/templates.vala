@@ -41,7 +41,7 @@ public class Templates : GLib.Object
     private Templates ()
     {
         /* default templates */
-        default_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (Gdk.Pixbuf),
+        default_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
             typeof (string), typeof (string), typeof (string));
 
         add_template_from_string (default_store, _("Empty"), "empty", "");
@@ -53,7 +53,7 @@ public class Templates : GLib.Object
         add_default_template (_("Presentation"),    "beamer",   "beamer.tex");
 
         /* personal templates */
-        personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (Gdk.Pixbuf),
+        personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
             typeof (string), typeof (string), typeof (string));
         nb_personal_templates = 0;
 
@@ -322,24 +322,14 @@ public class Templates : GLib.Object
     private void add_template_from_string (ListStore store, string name, string icon_id,
         string contents)
     {
-        try
-        {
-            Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (Config.DATA_DIR
-                + "/images/templates/" + icon_id + ".png");
-
-            TreeIter iter;
-            store.append (out iter);
-            store.set (iter,
-                TemplateColumn.PIXBUF, pixbuf,
-                TemplateColumn.ICON_ID, icon_id,
-                TemplateColumn.NAME, name,
-                TemplateColumn.CONTENTS, contents,
-                -1);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to load the icon of the template: %s", e.message);
-        }
+        TreeIter iter;
+        store.append (out iter);
+        store.set (iter,
+            TemplateColumn.PIXBUF, get_theme_icon (icon_id),
+            TemplateColumn.ICON_ID, icon_id,
+            TemplateColumn.NAME, name,
+            TemplateColumn.CONTENTS, contents,
+            -1);
     }
 
     private void add_template_from_file (ListStore store, string name, string icon_id,
@@ -385,8 +375,27 @@ public class Templates : GLib.Object
     {
         IconView icon_view = new IconView.with_model (store);
         icon_view.set_selection_mode (SelectionMode.SINGLE);
-        icon_view.set_text_column (TemplateColumn.NAME);
-        icon_view.set_pixbuf_column (TemplateColumn.PIXBUF);
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        pixbuf_renderer.stock_size = IconSize.DIALOG;
+        pixbuf_renderer.xalign = (float) 0.5;
+        pixbuf_renderer.yalign = (float) 1.0;
+        icon_view.pack_start (pixbuf_renderer, false);
+        icon_view.set_attributes (pixbuf_renderer,
+            "icon-name", TemplateColumn.PIXBUF,
+            null);
+
+        // We also use a CellRenderer for the text column, because with set_text_column()
+        // the text is not centered (when a CellRenderer is used for the pixbuf).
+        CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.alignment = Pango.Alignment.CENTER;
+        text_renderer.wrap_mode = Pango.WrapMode.WORD;
+        text_renderer.xalign = (float) 0.5;
+        text_renderer.yalign = (float) 0.0;
+        icon_view.pack_end (text_renderer, false);
+        icon_view.set_attributes (text_renderer,
+            "text", TemplateColumn.NAME,
+            null);
 
         return icon_view;
     }
@@ -518,6 +527,40 @@ public class Templates : GLib.Object
 
             valid_iter = model.iter_next (ref iter);
             i++;
+        }
+    }
+
+    // For compatibility reasons. 'icon_id' is the string stored in the rc file,
+    // and the return value is the theme icon name used for the pixbuf.
+    // If we store directly the theme icon names in the rc file, old rc files must be
+    // modified via a script for example, but it's simpler like that.
+    // TODO: for the 3.0 version, we can store directly theme icon names.
+    private string? get_theme_icon (string icon_id)
+    {
+        switch (icon_id)
+        {
+            case "empty":
+                // Same as Stock.NEW (but it's the theme icon name)
+                return "document-new";
+
+            case "article":
+                // Same as Stock.FILE
+                return "text-x-generic";
+
+            case "report":
+                return "x-office-document";
+
+            case "book":
+                return "accessories-dictionary";
+
+            case "letter":
+                return "emblem-mail";
+
+            case "beamer":
+                return "x-office-presentation";
+
+            default:
+                return_val_if_reached (null);
         }
     }
 }
