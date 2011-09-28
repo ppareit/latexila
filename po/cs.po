@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-17 09:21+0000\n"
-"PO-Revision-Date: 2011-09-17 22:26+0200\n"
+"POT-Creation-Date: 2011-09-19 12:48+0000\n"
+"PO-Revision-Date: 2011-09-28 07:27+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -1377,7 +1377,7 @@ msgstr "Příručka _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "Příručka Kile LaTeX"
 
-#: ../src/main_window.vala:161 ../src/main_window.vala:1968
+#: ../src/main_window.vala:161 ../src/main_window.vala:1964
 msgid "About LaTeXila"
 msgstr "O aplikaci LaTeXila"
 
@@ -1510,15 +1510,20 @@ msgstr "Otevřít nedávno použité soubory"
 msgid "Open Files"
 msgstr "Otvírání souborů"
 
-#: ../src/main_window.vala:1507
+#: ../src/main_window.vala:1496
+#| msgid "All Files"
+msgid "All LaTeX Files"
+msgstr "Všechny soubory LaTeX"
+
+#: ../src/main_window.vala:1503
 msgid "All Files"
 msgstr "Všechny soubory"
 
-#: ../src/main_window.vala:1916
+#: ../src/main_window.vala:1912
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je integrované prostředí LaTeX pro GNOME"
 
-#: ../src/main_window.vala:1969
+#: ../src/main_window.vala:1965
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
