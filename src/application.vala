@@ -336,10 +336,13 @@ public class Application : GLib.Object
 
         foreach (Gtk.IconSize size in sizes)
         {
+            int nb_pixels;
+            Gtk.icon_size_lookup (size, out nb_pixels, null);
+
             Gdk.Pixbuf pixbuf = null;
             try
             {
-                pixbuf = theme.load_icon (icon_name, size, 0);
+                pixbuf = theme.load_icon (icon_name, nb_pixels, 0);
             }
             catch (Error e)
             {
