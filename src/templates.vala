@@ -540,11 +540,10 @@ public class Templates : GLib.Object
         switch (icon_id)
         {
             case "empty":
-                // Same as Stock.NEW (but it's the theme icon name)
-                return "document-new";
+                return "text-x-preview";
 
             case "article":
-                // Same as Stock.FILE
+                // Same as Stock.FILE (but it's the theme icon name)
                 return "text-x-generic";
 
             case "report":
