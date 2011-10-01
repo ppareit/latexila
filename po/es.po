@@ -2,21 +2,22 @@
 # Copyright (C) 2010-2011 Matias De la Puente
 # This file is distributed under the same license as the latexila package.
 # Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
+# Jorge González <jorgegonz@svn.gnome.org>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-17 09:21+0000\n"
-"PO-Revision-Date: 2011-09-18 20:02+0200\n"
-"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-09-19 10:42+0000\n"
+"PO-Revision-Date: 2011-10-01 14:08+0200\n"
+"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
 msgid "View PDF"
@@ -216,7 +217,7 @@ msgstr "No hay propuesta equivalente"
 msgid "Ln %d, Col %d"
 msgstr "Ln %d, Col %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:819
+#: ../src/dialogs.vala:40 ../src/main_window.vala:807
 msgid "Close without Saving"
 msgstr "Cerrar sin guardar"
 
@@ -238,7 +239,7 @@ msgstr "Si no guarda, todos sus cambios se perderán permanentemente."
 
 #: ../src/document_structure.vala:710
 msgid "The structure item already contains a sub-paragraph."
-msgstr ""
+msgstr "El elemento de estructura ya contiene un subpárrafo."
 
 #: ../src/document_tab.vala:175
 msgid "Close document"
@@ -329,7 +330,7 @@ msgstr "Ir a la carpeta del documento activo"
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/file_browser.vala:438 ../src/main_window.vala:316
+#: ../src/file_browser.vala:438 ../src/main_window.vala:314
 #: ../src/ui/preferences_dialog.ui.h:12
 msgid "File Browser"
 msgstr "Explorador de archivos"
@@ -489,9 +490,8 @@ msgid "Italic - \\textit"
 msgstr "Cursiva: \\textit"
 
 #: ../src/latex_menu.vala:129
-#, fuzzy
 msgid "Typewriter - \\texttt"
-msgstr "Máquina de escribir: - \\texttt"
+msgstr "Máquina de escribir: \\texttt"
 
 #: ../src/latex_menu.vala:131
 #, fuzzy
@@ -499,9 +499,8 @@ msgid "Slanted - \\textsl"
 msgstr "Inclinado: \\textsl"
 
 #: ../src/latex_menu.vala:133
-#, fuzzy
 msgid "Small Capitals - \\textsc"
-msgstr "Versalitas: \\testsc"
+msgstr "Mayúsculas pequeñas: \\testsc"
 
 #: ../src/latex_menu.vala:135
 msgid "Sans Serif - \\textsf"
@@ -532,9 +531,8 @@ msgid "Monospace - \\ttfamily"
 msgstr "Monospace: \\ttfamily"
 
 #: ../src/latex_menu.vala:149
-#, fuzzy
 msgid "F_ont Series"
-msgstr "_Serie de tipografías"
+msgstr "_Series de tipografías"
 
 #: ../src/latex_menu.vala:151
 msgid "Medium - \\mdseries"
@@ -563,9 +561,8 @@ msgid "Slanted - \\slshape"
 msgstr "Inclinado: \\slshape"
 
 #: ../src/latex_menu.vala:163
-#, fuzzy
 msgid "Small Capitals - \\scshape"
-msgstr "Versalitas: \\scshape"
+msgstr "Mayúsculas pequeñas: \\scshape"
 
 #. Tabular
 #: ../src/latex_menu.vala:167
@@ -672,9 +669,8 @@ msgid "Macron - \\="
 msgstr "Macrón: \\="
 
 #: ../src/latex_menu.vala:212
-#, fuzzy
 msgid "Dot above - \\."
-msgstr "Punto: \\."
+msgstr "Punto por encima: \\."
 
 #: ../src/latex_menu.vala:213
 msgid "Caron - \\v"
@@ -698,9 +694,8 @@ msgid "Ogonek - \\k"
 msgstr ""
 
 #: ../src/latex_menu.vala:219
-#, fuzzy
 msgid "Dot below - \\d"
-msgstr "Punto: \\."
+msgstr "Punto por debajo: \\d"
 
 #: ../src/latex_menu.vala:220
 #, fuzzy
@@ -709,7 +704,7 @@ msgstr "Macron: \\="
 
 #: ../src/latex_menu.vala:221
 msgid "Ring - \\r"
-msgstr ""
+msgstr "Anillo: \\r"
 
 #: ../src/latex_menu.vala:222
 msgid "Tie - \\t"
@@ -770,7 +765,6 @@ msgstr "Incluir un archivo: \\input"
 
 #. LaTeX: math
 #: ../src/latex_menu.vala:251
-#, fuzzy
 msgid "_Math"
 msgstr "_Matemáticas"
 
@@ -886,7 +880,6 @@ msgid "Sans Serif - \\mathsf"
 msgstr "Sans Serif: \\mathsf"
 
 #: ../src/latex_menu.vala:327
-#, fuzzy
 msgid "Typewriter - \\mathtt"
 msgstr "Máquina de escribir: \\mathtt"
 
@@ -1084,7 +1077,7 @@ msgstr "_Ventana nueva"
 msgid "Create a new window"
 msgstr "Crear una ventana nueva"
 
-#: ../src/main_window.vala:35 ../src/main_window.vala:1075
+#: ../src/main_window.vala:35 ../src/main_window.vala:1063
 msgid "Open a file"
 msgstr "Abrir un archivo"
 
@@ -1332,19 +1325,16 @@ msgid "S_tructure"
 msgstr "Es_tructura"
 
 #: ../src/main_window.vala:137
-#, fuzzy
 msgid "Cut the selected structure item"
-msgstr "Borrar el texto elegido"
+msgstr "Cortar el elemento de estructura seleccionado"
 
 #: ../src/main_window.vala:139
-#, fuzzy
 msgid "Copy the selected structure item"
-msgstr "Copiar la selección"
+msgstr "Copiar el elemento de estructura seleccionado"
 
 #: ../src/main_window.vala:141
-#, fuzzy
 msgid "Delete the selected structure item"
-msgstr "Borrar el texto elegido"
+msgstr "Eliminar el elemento de estructura seleccionado"
 
 #: ../src/main_window.vala:142
 msgid "_Select"
@@ -1352,16 +1342,15 @@ msgstr "_Seleccionar"
 
 #: ../src/main_window.vala:143
 msgid "Select the contents of the selected structure item"
-msgstr ""
+msgstr "Seleccionar el contenido del elemento de estructura seleccionado"
 
 #: ../src/main_window.vala:146
-#, fuzzy
 msgid "Comment the selected structure item"
-msgstr "Comentar las líneas elegidas (agregar el caracter \"%\")"
+msgstr "Comentar el elemento de estructura seleccionado"
 
 #: ../src/main_window.vala:147
 msgid "Shift _Left"
-msgstr ""
+msgstr "Desplazar a la i_zquierda"
 
 #: ../src/main_window.vala:148
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
@@ -1369,7 +1358,7 @@ msgstr ""
 
 #: ../src/main_window.vala:150
 msgid "Shift _Right"
-msgstr ""
+msgstr "Desplazar a la _derecha"
 
 #: ../src/main_window.vala:151
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
@@ -1396,96 +1385,90 @@ msgstr "Referencia de _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "La referencia de LaTeX de Kile"
 
-#: ../src/main_window.vala:161 ../src/main_window.vala:1968
+#: ../src/main_window.vala:161 ../src/main_window.vala:1943
 msgid "About LaTeXila"
 msgstr "Acerca de LaTeXila"
 
-#: ../src/main_window.vala:167
-msgid "Activate or disable the spell checking"
-msgstr "Activar o desactivar la corrección ortográfica"
-
-#: ../src/main_window.vala:168
+#: ../src/main_window.vala:166
 msgid "_Main Toolbar"
 msgstr "Barra de _herramientas principal"
 
-#: ../src/main_window.vala:169
+#: ../src/main_window.vala:167
 msgid "Show or hide the main toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas principal"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:171
+#: ../src/main_window.vala:169
 msgid "_Edit Toolbar"
 msgstr "_Editar la barra de herramientas"
 
-#: ../src/main_window.vala:172
+#: ../src/main_window.vala:170
 msgid "Show or hide the edit toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas de edición"
 
-#: ../src/main_window.vala:173
+#: ../src/main_window.vala:171
 msgid "_Side panel"
 msgstr "Panel _lateral"
 
-#: ../src/main_window.vala:174
+#: ../src/main_window.vala:172
 msgid "Show or hide the side panel"
 msgstr "Mostrar u ocultar el panel lateral"
 
-#: ../src/main_window.vala:175
+#: ../src/main_window.vala:173
 msgid "_Bottom panel"
 msgstr "Panel _inferior"
 
-#: ../src/main_window.vala:176
+#: ../src/main_window.vala:174
 msgid "Show or hide the bottom panel"
 msgstr "Mostrar u ocultar el panel inferior"
 
-#: ../src/main_window.vala:177
+#: ../src/main_window.vala:175
 msgid "Show _Errors"
 msgstr "Mostrar _errores"
 
-#: ../src/main_window.vala:178
+#: ../src/main_window.vala:176
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: ../src/main_window.vala:179
+#: ../src/main_window.vala:177
 msgid "Show _Warnings"
 msgstr "Mostrar _advertencias"
 
-#: ../src/main_window.vala:180
+#: ../src/main_window.vala:178
 msgid "Show Warnings"
 msgstr "Mostrar advertencias"
 
-#: ../src/main_window.vala:181
-#, fuzzy
+#: ../src/main_window.vala:179
 msgid "Show _Bad Boxes"
-msgstr "Mostrar _BadBoxes"
+msgstr "Mostrar _Bad Boxes"
 
-#: ../src/main_window.vala:182
-#, fuzzy
+#: ../src/main_window.vala:180
 msgid "Show Bad Boxes"
-msgstr "Mostrar BadBoxes"
+msgstr "Mostrar Bad Boxes"
 
-#: ../src/main_window.vala:313
+#: ../src/main_window.vala:311
 msgid "Symbols"
 msgstr "Símbolos"
 
-#: ../src/main_window.vala:319
+#: ../src/main_window.vala:317
 msgid "Structure"
 msgstr "Estructura"
 
 #. recent documents
-#: ../src/main_window.vala:530
+#: ../src/main_window.vala:518
 msgid "Open _Recent"
 msgstr "Abir _reciente"
 
-#: ../src/main_window.vala:531
+#: ../src/main_window.vala:519
 msgid "Open recently used files"
 msgstr "Abrir archivos usados recientemente"
 
-#: ../src/main_window.vala:705
+#: ../src/main_window.vala:693
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Este archivo (%s) ya esta abierto en otra ventana de LaTeXila."
 
-#: ../src/main_window.vala:707
+#: ../src/main_window.vala:695
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1493,53 +1476,53 @@ msgstr ""
 "LaTeXila abrió esta instancia del archivo en una forma no editable.¿Quiere "
 "editarlo de todas formas?"
 
-#: ../src/main_window.vala:710
+#: ../src/main_window.vala:698
 msgid "Edit Anyway"
 msgstr "Editar de todas formas"
 
-#: ../src/main_window.vala:711
+#: ../src/main_window.vala:699
 msgid "Don't Edit"
 msgstr "No editar"
 
-#: ../src/main_window.vala:816
+#: ../src/main_window.vala:804
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "¿Guardar los cambios del documento «%s» antes de cerrar?"
 
-#: ../src/main_window.vala:935
+#: ../src/main_window.vala:923
 msgid "Read-Only"
 msgstr "Sólo lectura"
 
-#: ../src/main_window.vala:949
+#: ../src/main_window.vala:937
 msgid "Save File"
 msgstr "Guardar Archivo"
 
-#: ../src/main_window.vala:984
+#: ../src/main_window.vala:972
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Ya existe un archivo llamado «%s». ¿Quiere reemplazarlo?"
 
-#: ../src/main_window.vala:989 ../src/ui/search_and_replace.ui.h:7
+#: ../src/main_window.vala:977 ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Reemplazar"
 
-#: ../src/main_window.vala:1076
+#: ../src/main_window.vala:1064
 msgid "Open a recently used file"
 msgstr "Abrir un archivo usado recientemente"
 
-#: ../src/main_window.vala:1483
+#: ../src/main_window.vala:1471
 msgid "Open Files"
 msgstr "Abrir archivos"
 
-#: ../src/main_window.vala:1507
+#: ../src/main_window.vala:1495
 msgid "All Files"
 msgstr "Todos los archivos"
 
-#: ../src/main_window.vala:1916
+#: ../src/main_window.vala:1891
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila es un entorno LaTeX Integrado para el escritorio GNOME"
 
-#: ../src/main_window.vala:1969
+#: ../src/main_window.vala:1944
 msgid "translator-credits"
 msgstr ""
 "Daniel Mustieles García <daniel.mustieles@gmail.com>, 2011\n"
@@ -1706,7 +1689,7 @@ msgstr "Mostrar TODO y FIXME"
 #: ../src/structure.vala:592
 #, c-format
 msgid "Structure action error: %s"
-msgstr ""
+msgstr "Error de acción de la estructura: %s"
 
 #: ../src/structure.vala:597
 msgid "The structure data seems outdated. Please refresh the structure."
@@ -1737,15 +1720,13 @@ msgstr "comentario"
 
 #. Translators: it's a verb
 #: ../src/structure.vala:625
-#, fuzzy
 msgid "shift left"
-msgstr "mayúsculas izquierda"
+msgstr "desplazar a la izquierda"
 
 #. Translators: it's a verb
 #: ../src/structure.vala:627
-#, fuzzy
 msgid "shift right"
-msgstr "mayúsculas derecha"
+msgstr "desplazar a la derecha"
 
 #: ../src/structure.vala:672
 msgid "Table"
@@ -1786,12 +1767,10 @@ msgid "Delimiters"
 msgstr "Delimitadores"
 
 #: ../src/symbols.vala:32
-#, fuzzy
 msgid "Misc math"
 msgstr "Matemática varios"
 
 #: ../src/symbols.vala:33
-#, fuzzy
 msgid "Misc text"
 msgstr "Texto varios"
 
@@ -2050,7 +2029,6 @@ msgid "Clear Find"
 msgstr "Limpiar búsqueda"
 
 #: ../src/ui/search_and_replace.ui.h:3
-#, fuzzy
 msgid "Clear Replace"
 msgstr "Limpiar reemplazo"
 
@@ -2081,6 +2059,9 @@ msgstr "Buscar"
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
 msgstr "Conmutar entre modo de búsqueda y de reemplazo"
+
+#~ msgid "Activate or disable the spell checking"
+#~ msgstr "Activar o desactivar la corrección ortográfica"
 
 #~ msgid "_Completion"
 #~ msgstr "_Completado"
