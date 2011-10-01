@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-19 10:42+0000\n"
-"PO-Revision-Date: 2011-10-01 14:08+0200\n"
+"POT-Creation-Date: 2011-10-01 12:16+0000\n"
+"PO-Revision-Date: 2011-10-01 18:35+0200\n"
 "Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
 "Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -84,7 +84,7 @@ msgstr ""
 
 #. There is a helper script in data/templates/tex2po.sh
 #: C/letter.xml:2(template/chunk)
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "\n"
 "\\documentclass[a4paper,11pt]{letter}\n"
@@ -132,7 +132,7 @@ msgstr ""
 "\\closing{Saludos cordiales,}\n"
 "\n"
 "%\\cc{Otro destinatario}\n"
-"%\\ps{PD: Post Data}\n"
+"%\\ps{PD: post-data}\n"
 "%\\encl{Adjuntos}\n"
 "\n"
 "\\end{letter}\n"
@@ -166,13 +166,13 @@ msgstr "Debe tener éxito"
 msgid "Post Processor"
 msgstr "Post-procesador"
 
-#: ../src/build_tool_runner.vala:355
+#: ../src/build_tool_runner.vala:351
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 "Puede que Rubber no soporte nombres de archivos con espacios (incluso en una "
 "carpeta)"
 
-#: ../src/build_tool_runner.vala:386
+#: ../src/build_tool_runner.vala:382
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "parece que %s no está instalado."
@@ -206,7 +206,7 @@ msgstr "Seleccione los archivos que quiere eliminar:"
 msgid "No build file to clean up."
 msgstr "Ningún archivo de construcción que limpiar."
 
-#: ../src/completion.vala:257
+#: ../src/completion.vala:256
 msgid "No matching proposal"
 msgstr "No hay propuesta equivalente"
 
@@ -217,7 +217,7 @@ msgstr "No hay propuesta equivalente"
 msgid "Ln %d, Col %d"
 msgstr "Ln %d, Col %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:807
+#: ../src/dialogs.vala:40 ../src/main_window.vala:819
 msgid "Close without Saving"
 msgstr "Cerrar sin guardar"
 
@@ -237,7 +237,7 @@ msgstr "Seleccione los documentos que quiere guardar:"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Si no guarda, todos sus cambios se perderán permanentemente."
 
-#: ../src/document_structure.vala:710
+#: ../src/document_structure.vala:731
 msgid "The structure item already contains a sub-paragraph."
 msgstr "El elemento de estructura ya contiene un subpárrafo."
 
@@ -278,39 +278,39 @@ msgstr "¿Quiere volver a cargar el archivo?"
 msgid "Reload"
 msgstr "Recargar"
 
-#: ../src/document.vala:143
+#: ../src/document.vala:144
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "No es posible cargar el archivo «%s»."
 
-#: ../src/document.vala:219
+#: ../src/document.vala:220
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "El archivo %s se ha modificado desde que lo leyó."
 
-#: ../src/document.vala:222
+#: ../src/document.vala:223
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Si lo guarda, todos los cambios externos se perderán. ¿Quiere guardarlo de "
 "todas formas?"
 
-#: ../src/document.vala:225
+#: ../src/document.vala:226
 msgid "Save Anyway"
 msgstr "Guardar de todas formas"
 
-#: ../src/document.vala:227
+#: ../src/document.vala:228
 msgid "Don't Save"
 msgstr "No guardar"
 
-#: ../src/document.vala:239
+#: ../src/document.vala:240
 msgid "Impossible to save the file."
 msgstr "No es posible guardar el archivo."
 
-#: ../src/document.vala:264
+#: ../src/document.vala:265
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Error al tratar de convertir el documento a UTF-8"
 
-#: ../src/document.vala:318
+#: ../src/document.vala:319
 msgid "Unsaved Document"
 msgstr "Documento no guardado"
 
@@ -330,7 +330,7 @@ msgstr "Ir a la carpeta del documento activo"
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/file_browser.vala:438 ../src/main_window.vala:314
+#: ../src/file_browser.vala:438 ../src/main_window.vala:316
 #: ../src/ui/preferences_dialog.ui.h:12
 msgid "File Browser"
 msgstr "Explorador de archivos"
@@ -1077,7 +1077,7 @@ msgstr "_Ventana nueva"
 msgid "Create a new window"
 msgstr "Crear una ventana nueva"
 
-#: ../src/main_window.vala:35 ../src/main_window.vala:1063
+#: ../src/main_window.vala:35 ../src/main_window.vala:1075
 msgid "Open a file"
 msgstr "Abrir un archivo"
 
@@ -1385,90 +1385,94 @@ msgstr "Referencia de _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "La referencia de LaTeX de Kile"
 
-#: ../src/main_window.vala:161 ../src/main_window.vala:1943
+#: ../src/main_window.vala:161 ../src/main_window.vala:1964
 msgid "About LaTeXila"
 msgstr "Acerca de LaTeXila"
 
-#: ../src/main_window.vala:166
+#: ../src/main_window.vala:167
+msgid "Activate or disable the spell checking"
+msgstr "Activar o desactivar la corrección ortográfica"
+
+#: ../src/main_window.vala:168
 msgid "_Main Toolbar"
 msgstr "Barra de _herramientas principal"
 
-#: ../src/main_window.vala:167
+#: ../src/main_window.vala:169
 msgid "Show or hide the main toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas principal"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:169
+#: ../src/main_window.vala:171
 msgid "_Edit Toolbar"
 msgstr "_Editar la barra de herramientas"
 
-#: ../src/main_window.vala:170
+#: ../src/main_window.vala:172
 msgid "Show or hide the edit toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas de edición"
 
-#: ../src/main_window.vala:171
+#: ../src/main_window.vala:173
 msgid "_Side panel"
 msgstr "Panel _lateral"
 
-#: ../src/main_window.vala:172
+#: ../src/main_window.vala:174
 msgid "Show or hide the side panel"
 msgstr "Mostrar u ocultar el panel lateral"
 
-#: ../src/main_window.vala:173
+#: ../src/main_window.vala:175
 msgid "_Bottom panel"
 msgstr "Panel _inferior"
 
-#: ../src/main_window.vala:174
+#: ../src/main_window.vala:176
 msgid "Show or hide the bottom panel"
 msgstr "Mostrar u ocultar el panel inferior"
 
-#: ../src/main_window.vala:175
+#: ../src/main_window.vala:177
 msgid "Show _Errors"
 msgstr "Mostrar _errores"
 
-#: ../src/main_window.vala:176
+#: ../src/main_window.vala:178
 msgid "Show Errors"
 msgstr "Mostrar errores"
 
-#: ../src/main_window.vala:177
+#: ../src/main_window.vala:179
 msgid "Show _Warnings"
 msgstr "Mostrar _advertencias"
 
-#: ../src/main_window.vala:178
+#: ../src/main_window.vala:180
 msgid "Show Warnings"
 msgstr "Mostrar advertencias"
 
-#: ../src/main_window.vala:179
+#: ../src/main_window.vala:181
 msgid "Show _Bad Boxes"
 msgstr "Mostrar _Bad Boxes"
 
-#: ../src/main_window.vala:180
+#: ../src/main_window.vala:182
 msgid "Show Bad Boxes"
 msgstr "Mostrar Bad Boxes"
 
-#: ../src/main_window.vala:311
+#: ../src/main_window.vala:313
 msgid "Symbols"
 msgstr "Símbolos"
 
-#: ../src/main_window.vala:317
+#: ../src/main_window.vala:319
 msgid "Structure"
 msgstr "Estructura"
 
 #. recent documents
-#: ../src/main_window.vala:518
+#: ../src/main_window.vala:530
 msgid "Open _Recent"
 msgstr "Abir _reciente"
 
-#: ../src/main_window.vala:519
+#: ../src/main_window.vala:531
 msgid "Open recently used files"
 msgstr "Abrir archivos usados recientemente"
 
-#: ../src/main_window.vala:693
+#: ../src/main_window.vala:705
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Este archivo (%s) ya esta abierto en otra ventana de LaTeXila."
 
-#: ../src/main_window.vala:695
+#: ../src/main_window.vala:707
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1476,53 +1480,58 @@ msgstr ""
 "LaTeXila abrió esta instancia del archivo en una forma no editable.¿Quiere "
 "editarlo de todas formas?"
 
-#: ../src/main_window.vala:698
+#: ../src/main_window.vala:710
 msgid "Edit Anyway"
 msgstr "Editar de todas formas"
 
-#: ../src/main_window.vala:699
+#: ../src/main_window.vala:711
 msgid "Don't Edit"
 msgstr "No editar"
 
-#: ../src/main_window.vala:804
+#: ../src/main_window.vala:816
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "¿Guardar los cambios del documento «%s» antes de cerrar?"
 
-#: ../src/main_window.vala:923
+#: ../src/main_window.vala:935
 msgid "Read-Only"
 msgstr "Sólo lectura"
 
-#: ../src/main_window.vala:937
+#: ../src/main_window.vala:949
 msgid "Save File"
 msgstr "Guardar Archivo"
 
-#: ../src/main_window.vala:972
+#: ../src/main_window.vala:984
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Ya existe un archivo llamado «%s». ¿Quiere reemplazarlo?"
 
-#: ../src/main_window.vala:977 ../src/ui/search_and_replace.ui.h:7
+#: ../src/main_window.vala:989 ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Reemplazar"
 
-#: ../src/main_window.vala:1064
+#: ../src/main_window.vala:1076
 msgid "Open a recently used file"
 msgstr "Abrir un archivo usado recientemente"
 
-#: ../src/main_window.vala:1471
+#: ../src/main_window.vala:1483
 msgid "Open Files"
 msgstr "Abrir archivos"
 
-#: ../src/main_window.vala:1495
+#: ../src/main_window.vala:1496
+#| msgid "All Files"
+msgid "All LaTeX Files"
+msgstr "Todos los archivos de LaTeX"
+
+#: ../src/main_window.vala:1503
 msgid "All Files"
 msgstr "Todos los archivos"
 
-#: ../src/main_window.vala:1891
+#: ../src/main_window.vala:1912
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila es un entorno LaTeX Integrado para el escritorio GNOME"
 
-#: ../src/main_window.vala:1944
+#: ../src/main_window.vala:1965
 msgid "translator-credits"
 msgstr ""
 "Daniel Mustieles García <daniel.mustieles@gmail.com>, 2011\n"
@@ -2059,9 +2068,6 @@ msgstr "Buscar"
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
 msgstr "Conmutar entre modo de búsqueda y de reemplazo"
-
-#~ msgid "Activate or disable the spell checking"
-#~ msgstr "Activar o desactivar la corrección ortográfica"
 
 #~ msgid "_Completion"
 #~ msgstr "_Completado"
