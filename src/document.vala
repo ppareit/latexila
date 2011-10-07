@@ -474,7 +474,7 @@ public class Document : Gtk.SourceBuffer
 
             get_iter_at_line_offset (out start, i, start_delete);
             get_iter_at_line_offset (out end, i, stop_delete);
-            this.delete (start, end);
+            this.delete (ref start, ref end);
         }
 
         end_user_action ();
@@ -1110,7 +1110,7 @@ public class Document : Gtk.SourceBuffer
         get_iter_at_mark (out end, get_mark ("search_selected_end"));
 
         begin_user_action ();
-        this.delete (start, end);
+        this.delete (ref start, ref end);
         this.insert (ref start, text, -1);
         end_user_action ();
 
@@ -1132,7 +1132,7 @@ public class Document : Gtk.SourceBuffer
 
         while (iter_forward_search (start, null, out match_start, out match_end))
         {
-            this.delete (match_start, match_end);
+            this.delete (ref match_start, ref match_end);
             this.insert (ref match_start, text, -1);
             start = match_start;
         }

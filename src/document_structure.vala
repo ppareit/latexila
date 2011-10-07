@@ -781,7 +781,7 @@ public class DocumentStructure : GLib.Object
         if (action_type == StructAction.DELETE || action_type == StructAction.CUT)
         {
             _doc.begin_user_action ();
-            _doc.delete (start_iter, end_iter);
+            _doc.delete (ref start_iter, ref end_iter);
             _doc.end_user_action ();
 
             _model.delete (tree_iter);
@@ -1130,7 +1130,7 @@ public class DocumentStructure : GLib.Object
         _doc.get_iter_at_line_index (out end_markup_name_iter, line_num,
             after_backslash_index + markup_name.length);
 
-        _doc.delete (begin_markup_name_iter, end_markup_name_iter);
+        _doc.delete (ref begin_markup_name_iter, ref end_markup_name_iter);
         _doc.insert (ref begin_markup_name_iter, new_markup_name, -1);
         doc_modified = true;
 
