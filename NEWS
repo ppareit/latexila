@@ -1,5 +1,15 @@
 LaTeXila NEWS
 
+=============================
+* Release 2.2.2 (Oct 8, 2011)
+=============================
+
+- Avoid critical messages about a GtkAction
+- Fix the right math delimiters
+- Added Galician translation
+- Updated Slovenian, Czech, Spanish translations
+
+
 ==============================
 * Release 2.2.1 (Sep 17, 2011)
 ==============================
