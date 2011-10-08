@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-08 19:38+0200\n"
-"PO-Revision-Date: 2011-10-08 20:41+0100\n"
+"POT-Creation-Date: 2011-10-09 00:51+0200\n"
+"PO-Revision-Date: 2011-10-09 01:05+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: \n"
@@ -169,11 +169,11 @@ msgstr ""
 msgid "Post Processor"
 msgstr ""
 
-#: ../src/build_tool_runner.vala:351
+#: ../src/build_tool_runner.vala:355
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 
-#: ../src/build_tool_runner.vala:382
+#: ../src/build_tool_runner.vala:386
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "%s verkar inte vara installerad."
@@ -208,7 +208,7 @@ msgstr "Välj filer som du vill ta bort:"
 msgid "No build file to clean up."
 msgstr ""
 
-#: ../src/completion.vala:256
+#: ../src/completion.vala:257
 msgid "No matching proposal"
 msgstr ""
 
@@ -220,7 +220,7 @@ msgid "Ln %d, Col %d"
 msgstr "Rad %d, Kol %d"
 
 #: ../src/dialogs.vala:40
-#: ../src/main_window.vala:819
+#: ../src/main_window.vala:807
 msgid "Close without Saving"
 msgstr "Stäng utan att spara"
 
@@ -237,7 +237,7 @@ msgstr "Välj de dokument som du vill spara:"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Om du inte sparar så kommer alla dina ändringar att gå förlorade."
 
-#: ../src/document_structure.vala:731
+#: ../src/document_structure.vala:710
 msgid "The structure item already contains a sub-paragraph."
 msgstr ""
 
@@ -281,37 +281,37 @@ msgstr "Vill du läsa om filen?"
 msgid "Reload"
 msgstr "Läs om"
 
-#: ../src/document.vala:144
+#: ../src/document.vala:143
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Omöjligt att läsa in filen \"%s\"."
 
-#: ../src/document.vala:220
+#: ../src/document.vala:219
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Filen %s har ändrats sedan den lästes in."
 
-#: ../src/document.vala:223
+#: ../src/document.vala:222
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr "Om du sparar den så kan alla externa ändringar gå förlorade. Spara den ändå?"
 
-#: ../src/document.vala:226
+#: ../src/document.vala:225
 msgid "Save Anyway"
 msgstr "Spara ändå"
 
-#: ../src/document.vala:228
+#: ../src/document.vala:227
 msgid "Don't Save"
 msgstr "Spara inte"
 
-#: ../src/document.vala:240
+#: ../src/document.vala:239
 msgid "Impossible to save the file."
 msgstr "Omöjligt att spara filen."
 
-#: ../src/document.vala:265
+#: ../src/document.vala:264
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Fel vid försök att konvertera dokumentet till UTF-8"
 
-#: ../src/document.vala:319
+#: ../src/document.vala:318
 msgid "Unsaved Document"
 msgstr "Osparat dokument"
 
@@ -333,7 +333,7 @@ msgid "Refresh"
 msgstr "Uppdatera"
 
 #: ../src/file_browser.vala:438
-#: ../src/main_window.vala:316
+#: ../src/main_window.vala:314
 #: ../src/ui/preferences_dialog.ui.h:12
 msgid "File Browser"
 msgstr "Filbläddrare"
@@ -396,15 +396,15 @@ msgstr "Etikett"
 
 #: ../src/latex_menu.vala:51
 msgid "Reference to a label"
-msgstr ""
+msgstr "Referens till en etikett"
 
 #: ../src/latex_menu.vala:53
 msgid "Page reference to a label"
-msgstr ""
+msgstr "Sidreferens till en etikett"
 
 #: ../src/latex_menu.vala:55
 msgid "Add a word to the index"
-msgstr ""
+msgstr "Lägg till ett ord i indexet"
 
 #: ../src/latex_menu.vala:57
 msgid "Footnote"
@@ -416,27 +416,27 @@ msgstr ""
 
 #: ../src/latex_menu.vala:64
 msgid "Center - \\begin{center}"
-msgstr ""
+msgstr "Centrera - \\begin{center}"
 
 #: ../src/latex_menu.vala:66
 msgid "Align Left - \\begin{flushleft}"
-msgstr ""
+msgstr "Vänsterjustera - \\begin{flushleft}"
 
 #: ../src/latex_menu.vala:68
 msgid "Align Right - \\begin{flushright}"
-msgstr ""
+msgstr "Högerjustera - \\begin{flushright}"
 
 #: ../src/latex_menu.vala:70
 msgid "Figure - \\begin{figure}"
-msgstr ""
+msgstr "Figur - \\begin{figure}"
 
 #: ../src/latex_menu.vala:72
 msgid "Table - \\begin{table}"
-msgstr ""
+msgstr "Tabell - \\begin{table}"
 
 #: ../src/latex_menu.vala:74
 msgid "Quote - \\begin{quote}"
-msgstr ""
+msgstr "Citat - \\begin{quote}"
 
 #: ../src/latex_menu.vala:76
 msgid "Quotation - \\begin{quotation}"
@@ -444,7 +444,7 @@ msgstr ""
 
 #: ../src/latex_menu.vala:78
 msgid "Verse - \\begin{verse}"
-msgstr ""
+msgstr "Vers - \\begin{verse}"
 
 #: ../src/latex_menu.vala:80
 msgid "Verbatim - \\begin{verbatim}"
@@ -456,7 +456,7 @@ msgstr ""
 
 #: ../src/latex_menu.vala:84
 msgid "Title page - \\begin{titlepage}"
-msgstr ""
+msgstr "Titelsida - \\begin{titlepage}"
 
 #. LaTeX: list environments
 #: ../src/latex_menu.vala:87
@@ -473,11 +473,11 @@ msgstr ""
 
 #: ../src/latex_menu.vala:93
 msgid "Description - \\begin{description}"
-msgstr ""
+msgstr "Beskrivning - \\begin{description}"
 
 #: ../src/latex_menu.vala:95
 msgid "Custom list - \\begin{list}"
-msgstr ""
+msgstr "Anpassad lista - \\begin{list}"
 
 #: ../src/latex_menu.vala:97
 msgid "List item - \\item"
@@ -515,7 +515,7 @@ msgstr ""
 
 #: ../src/latex_menu.vala:135
 msgid "Sans Serif - \\textsf"
-msgstr ""
+msgstr "Sans Serif - \\textsf"
 
 #: ../src/latex_menu.vala:137
 msgid "Emphasized - \\emph"
@@ -523,7 +523,7 @@ msgstr ""
 
 #: ../src/latex_menu.vala:139
 msgid "Underline - \\underline"
-msgstr ""
+msgstr "Understruken - \\underline"
 
 #: ../src/latex_menu.vala:141
 msgid "_Font Family"
@@ -733,15 +733,15 @@ msgstr "Dokumentklass - \\documentclass"
 
 #: ../src/latex_menu.vala:230
 msgid "Use package - \\usepackage"
-msgstr ""
+msgstr "Använd paket - \\usepackage"
 
 #: ../src/latex_menu.vala:231
 msgid "_AMS packages"
-msgstr ""
+msgstr "_AMS-paket"
 
 #: ../src/latex_menu.vala:232
 msgid "AMS packages"
-msgstr ""
+msgstr "AMS-paket"
 
 #: ../src/latex_menu.vala:233
 msgid "Author - \\author"
@@ -769,7 +769,7 @@ msgstr ""
 
 #: ../src/latex_menu.vala:244
 msgid "Include an image (graphicx package) - \\includegraphics"
-msgstr ""
+msgstr "Inkludera en bild (graphicx-paket) - \\includegraphics"
 
 #: ../src/latex_menu.vala:247
 msgid "Include a file - \\input"
@@ -881,19 +881,19 @@ msgstr ""
 
 #: ../src/latex_menu.vala:321
 msgid "Italic - \\mathit"
-msgstr ""
+msgstr "Kursiv - \\mathit"
 
 #: ../src/latex_menu.vala:323
 msgid "Bold - \\mathbf"
-msgstr ""
+msgstr "Fet - \\mathbf"
 
 #: ../src/latex_menu.vala:325
 msgid "Sans Serif - \\mathsf"
-msgstr ""
+msgstr "Sans Serif - \\mathsf"
 
 #: ../src/latex_menu.vala:327
 msgid "Typewriter - \\mathtt"
-msgstr ""
+msgstr "Skrivmaskin - \\mathtt"
 
 #: ../src/latex_menu.vala:329
 msgid "Calligraphic - \\mathcal"
@@ -1086,7 +1086,7 @@ msgid "Create a new window"
 msgstr "Skapa ett nytt fönster"
 
 #: ../src/main_window.vala:35
-#: ../src/main_window.vala:1075
+#: ../src/main_window.vala:1063
 msgid "Open a file"
 msgstr "Öppna en fil"
 
@@ -1162,19 +1162,19 @@ msgstr "_Kommentera"
 
 #: ../src/main_window.vala:72
 msgid "Comment the selected lines (add the character \"%\")"
-msgstr ""
+msgstr "Kommentera markerade rader (lägg till tecknet \"%\")"
 
 #: ../src/main_window.vala:74
 msgid "_Uncomment"
-msgstr ""
+msgstr "Avk_ommentera"
 
 #: ../src/main_window.vala:75
 msgid "Uncomment the selected lines (remove the character \"%\")"
-msgstr ""
+msgstr "Avkommentera markerade rader (ta bort tecknet \"%\")"
 
 #: ../src/main_window.vala:78
 msgid "Configure the application"
-msgstr ""
+msgstr "Konfigurera programmet"
 
 #. View
 #: ../src/main_window.vala:81
@@ -1187,7 +1187,7 @@ msgstr "Zooma _in"
 
 #: ../src/main_window.vala:83
 msgid "Enlarge the font"
-msgstr ""
+msgstr "Förstora typsnittet"
 
 #: ../src/main_window.vala:84
 msgid "Zoom _Out"
@@ -1195,7 +1195,7 @@ msgstr "Zooma _ut"
 
 #: ../src/main_window.vala:85
 msgid "Shrink the font"
-msgstr ""
+msgstr "Förminska typsnittet"
 
 #: ../src/main_window.vala:86
 msgid "_Reset Zoom"
@@ -1203,7 +1203,7 @@ msgstr "_Återställ zoom"
 
 #: ../src/main_window.vala:87
 msgid "Reset the size of the font"
-msgstr ""
+msgstr "Återställ storleken för typsnittet"
 
 #. Search
 #: ../src/main_window.vala:90
@@ -1216,7 +1216,7 @@ msgstr "Sök efter text"
 
 #: ../src/main_window.vala:94
 msgid "Search for and replace text"
-msgstr ""
+msgstr "Sök efter och ersätt text"
 
 #: ../src/main_window.vala:95
 msgid "_Go to Line..."
@@ -1298,7 +1298,7 @@ msgstr "_Flytta till nytt fönster"
 
 #: ../src/main_window.vala:121
 msgid "Move the current document to a new window"
-msgstr ""
+msgstr "Flytta aktuellt dokument till ett nytt fönster"
 
 #. Projects
 #: ../src/main_window.vala:125
@@ -1315,7 +1315,7 @@ msgstr "Skapa ett nytt projekt"
 
 #: ../src/main_window.vala:128
 msgid "_Configure Current Project"
-msgstr ""
+msgstr "_Konfigurera aktuellt projekt"
 
 #: ../src/main_window.vala:129
 msgid "Change the main file of the current project"
@@ -1333,7 +1333,7 @@ msgstr "Hantera projekt"
 #. Structure
 #: ../src/main_window.vala:135
 msgid "S_tructure"
-msgstr ""
+msgstr "S_truktur"
 
 #: ../src/main_window.vala:137
 msgid "Cut the selected structure item"
@@ -1390,156 +1390,148 @@ msgstr "Öppna dokumentation för LaTeXila"
 
 #: ../src/main_window.vala:158
 msgid "_LaTeX Reference"
-msgstr ""
+msgstr "_LaTeX-referens"
 
 #: ../src/main_window.vala:159
 msgid "The Kile LaTeX Reference"
 msgstr ""
 
 #: ../src/main_window.vala:161
-#: ../src/main_window.vala:1964
+#: ../src/main_window.vala:1943
 msgid "About LaTeXila"
 msgstr "Om LaTeXila"
 
-#: ../src/main_window.vala:167
-msgid "Activate or disable the spell checking"
-msgstr ""
-
-#: ../src/main_window.vala:168
+#: ../src/main_window.vala:166
 msgid "_Main Toolbar"
-msgstr ""
+msgstr "_Huvudverktygsrad"
 
-#: ../src/main_window.vala:169
+#: ../src/main_window.vala:167
 msgid "Show or hide the main toolbar"
-msgstr ""
+msgstr "Visa eller dölj huvudverktygsraden"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:171
+#: ../src/main_window.vala:169
 msgid "_Edit Toolbar"
 msgstr ""
 
-#: ../src/main_window.vala:172
+#: ../src/main_window.vala:170
 msgid "Show or hide the edit toolbar"
 msgstr ""
 
-#: ../src/main_window.vala:173
+#: ../src/main_window.vala:171
 msgid "_Side panel"
 msgstr "_Sidopanel"
 
-#: ../src/main_window.vala:174
+#: ../src/main_window.vala:172
 msgid "Show or hide the side panel"
 msgstr "Visa eller dölj sidopanelen"
 
-#: ../src/main_window.vala:175
+#: ../src/main_window.vala:173
 msgid "_Bottom panel"
-msgstr ""
+msgstr "_Nederpanel"
+
+#: ../src/main_window.vala:174
+msgid "Show or hide the bottom panel"
+msgstr "Visa eller dölj nederpanelen"
+
+#: ../src/main_window.vala:175
+msgid "Show _Errors"
+msgstr "Visa _fel"
 
 #: ../src/main_window.vala:176
-msgid "Show or hide the bottom panel"
-msgstr ""
+msgid "Show Errors"
+msgstr "Visa fel"
 
 #: ../src/main_window.vala:177
-msgid "Show _Errors"
-msgstr ""
-
-#: ../src/main_window.vala:178
-msgid "Show Errors"
-msgstr ""
-
-#: ../src/main_window.vala:179
 msgid "Show _Warnings"
 msgstr "Visa _varningar"
 
-#: ../src/main_window.vala:180
+#: ../src/main_window.vala:178
 msgid "Show Warnings"
 msgstr "Visa varningar"
 
-#: ../src/main_window.vala:181
+#: ../src/main_window.vala:179
 msgid "Show _Bad Boxes"
 msgstr ""
 
-#: ../src/main_window.vala:182
+#: ../src/main_window.vala:180
 msgid "Show Bad Boxes"
 msgstr ""
 
-#: ../src/main_window.vala:313
+#: ../src/main_window.vala:311
 msgid "Symbols"
 msgstr "Symboler"
 
-#: ../src/main_window.vala:319
+#: ../src/main_window.vala:317
 msgid "Structure"
-msgstr ""
+msgstr "Struktur"
 
 #. recent documents
-#: ../src/main_window.vala:530
+#: ../src/main_window.vala:518
 msgid "Open _Recent"
 msgstr "Öppna _tidigare"
 
-#: ../src/main_window.vala:531
+#: ../src/main_window.vala:519
 msgid "Open recently used files"
-msgstr ""
+msgstr "Öppna tidigare använda filer"
 
-#: ../src/main_window.vala:705
+#: ../src/main_window.vala:693
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
-msgstr ""
+msgstr "Denna fil (%s) är redan öppnad i ett annat LaTeXila-fönster."
 
-#: ../src/main_window.vala:707
+#: ../src/main_window.vala:695
 msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
 msgstr ""
 
-#: ../src/main_window.vala:710
+#: ../src/main_window.vala:698
 msgid "Edit Anyway"
 msgstr "Redigera ändå"
 
-#: ../src/main_window.vala:711
+#: ../src/main_window.vala:699
 msgid "Don't Edit"
 msgstr "Redigera inte"
 
-#: ../src/main_window.vala:816
+#: ../src/main_window.vala:804
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
-msgstr ""
+msgstr "Spara ändringar i dokumentet \"%s\" innan stängning?"
 
-#: ../src/main_window.vala:935
+#: ../src/main_window.vala:923
 msgid "Read-Only"
 msgstr "Skrivskyddad"
 
-#: ../src/main_window.vala:949
+#: ../src/main_window.vala:937
 msgid "Save File"
 msgstr "Spara fil"
 
-#: ../src/main_window.vala:984
+#: ../src/main_window.vala:972
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
-msgstr ""
+msgstr "En fil med namnet \"%s\" finns redan. Vill du ersätta den?"
 
-#: ../src/main_window.vala:989
+#: ../src/main_window.vala:977
 #: ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Ersätt"
 
-#: ../src/main_window.vala:1076
+#: ../src/main_window.vala:1064
 msgid "Open a recently used file"
 msgstr "Öppna en tidigare använd fil"
 
-#: ../src/main_window.vala:1483
+#: ../src/main_window.vala:1471
 msgid "Open Files"
 msgstr "Öppna filer"
 
-#: ../src/main_window.vala:1496
-msgid "All LaTeX Files"
-msgstr "Alla LaTeX-filer"
-
-#: ../src/main_window.vala:1503
+#: ../src/main_window.vala:1495
 msgid "All Files"
 msgstr "Alla filer"
 
-#: ../src/main_window.vala:1912
+#: ../src/main_window.vala:1891
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
-msgstr ""
+msgstr "LaTeXila är en Integrerad LaTeX-miljö för GNOME-skrivbordet"
 
-#: ../src/main_window.vala:1965
+#: ../src/main_window.vala:1944
 msgid "translator-credits"
 msgstr ""
 "Daniel Nylander <po@danielnylander.se>\n"
@@ -1549,7 +1541,7 @@ msgstr ""
 
 #: ../src/post_processors.vala:277
 msgid "Latexmk messages"
-msgstr ""
+msgstr "Latexmk-meddelanden"
 
 #: ../src/preferences_dialog.vala:32
 msgid "Preferences"
@@ -1589,7 +1581,7 @@ msgstr "%s [kopia]"
 #: ../src/preferences_dialog.vala:382
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
-msgstr ""
+msgstr "Vill du verkligen ta bort byggverktyget \"%s\"?"
 
 #: ../src/preferences_dialog.vala:401
 msgid "Do you really want to reset all build tools?"
@@ -1622,21 +1614,21 @@ msgstr ""
 
 #: ../src/project_dialogs.vala:114
 msgid "Configure Project"
-msgstr ""
+msgstr "Konfigurera projektet"
 
 #: ../src/project_dialogs.vala:130
 msgid "Location of the project"
-msgstr ""
+msgstr "Platsen för projektet"
 
 #: ../src/project_dialogs.vala:236
 #: ../src/project_dialogs.vala:293
 msgid "Clear All"
-msgstr ""
+msgstr "Töm allt"
 
 #: ../src/project_dialogs.vala:268
 #, c-format
 msgid "Do you really want to delete the project \"%s\"?"
-msgstr ""
+msgstr "Vill du verkligen ta bort projektet \"%s\"?"
 
 #: ../src/project_dialogs.vala:289
 msgid "Do you really want to clear all projects?"
@@ -1682,19 +1674,19 @@ msgstr "%u sökträffar"
 
 #: ../src/structure.vala:142
 msgid "Expand All"
-msgstr ""
+msgstr "Fäll ut alla"
 
 #: ../src/structure.vala:149
 msgid "Collapse All"
-msgstr ""
+msgstr "Fäll in alla"
 
 #: ../src/structure.vala:160
 msgid "Show labels"
-msgstr ""
+msgstr "Visa etiketter"
 
 #: ../src/structure.vala:164
 msgid "Show files included"
-msgstr ""
+msgstr "Visa inkluderade filer"
 
 #: ../src/structure.vala:168
 msgid "Show tables"
@@ -1738,7 +1730,7 @@ msgstr ""
 #. Translators: it's a verb
 #: ../src/structure.vala:623
 msgid "comment"
-msgstr ""
+msgstr "kommentera"
 
 #. Translators: it's a verb
 #: ../src/structure.vala:625
@@ -1765,11 +1757,11 @@ msgstr "Bild"
 
 #: ../src/structure.vala:676
 msgid "File included"
-msgstr ""
+msgstr "Fil inkluderad"
 
 #: ../src/symbols.vala:26
 msgid "Greek"
-msgstr ""
+msgstr "Grekiska"
 
 #. when we drink too much tequila we walk like this arrow...
 #: ../src/symbols.vala:28
@@ -1782,23 +1774,23 @@ msgstr "Relationer"
 
 #: ../src/symbols.vala:30
 msgid "Operators"
-msgstr ""
+msgstr "Operatorer"
 
 #: ../src/symbols.vala:31
 msgid "Delimiters"
-msgstr ""
+msgstr "Avgränsare"
 
 #: ../src/symbols.vala:32
 msgid "Misc math"
-msgstr ""
+msgstr "Diverse matte"
 
 #: ../src/symbols.vala:33
 msgid "Misc text"
-msgstr ""
+msgstr "Diverse text"
 
 #: ../src/symbols.vala:747
 msgid "Most Used"
-msgstr ""
+msgstr "Mest använda"
 
 #: ../src/templates.vala:47
 msgid "Empty"
@@ -1842,7 +1834,7 @@ msgstr "Ny mall..."
 
 #: ../src/templates.vala:224
 msgid "Name of the new template"
-msgstr ""
+msgstr "Namn på nya mallen"
 
 #: ../src/templates.vala:232
 msgid "Choose an icon"
@@ -1850,11 +1842,11 @@ msgstr "Välj en ikon"
 
 #: ../src/templates.vala:274
 msgid "Delete Template(s)..."
-msgstr ""
+msgstr "Ta bort mall(ar)..."
 
 #: ../src/templates.vala:288
 msgid "Personal templates"
-msgstr ""
+msgstr "Personliga mallar"
 
 #: ../src/ui/build_tool.ui.h:1
 msgid "Description"
@@ -1862,7 +1854,7 @@ msgstr "Beskrivning"
 
 #: ../src/ui/build_tool.ui.h:2
 msgid "Extensions"
-msgstr ""
+msgstr "Filändelser"
 
 #: ../src/ui/build_tool.ui.h:3
 msgid ""
@@ -1914,11 +1906,11 @@ msgstr ""
 
 #: ../src/ui/preferences_dialog.ui.h:3
 msgid "Autosave files every"
-msgstr ""
+msgstr "Spara automatiskt filer var"
 
 #: ../src/ui/preferences_dialog.ui.h:4
 msgid "Build Tools"
-msgstr ""
+msgstr "Byggverktyg"
 
 #: ../src/ui/preferences_dialog.ui.h:5
 msgid "Color Scheme"
@@ -1926,15 +1918,15 @@ msgstr "Färgschema"
 
 #: ../src/ui/preferences_dialog.ui.h:6
 msgid "Create a backup copy of files before saving"
-msgstr ""
+msgstr "Skapa en säkerhetskopia av filer innan sparning"
 
 #: ../src/ui/preferences_dialog.ui.h:7
 msgid "Delete one build tool"
-msgstr ""
+msgstr "Ta bort ett byggverktyg"
 
 #: ../src/ui/preferences_dialog.ui.h:8
 msgid "Display line numbers"
-msgstr ""
+msgstr "Visa radnummer"
 
 #: ../src/ui/preferences_dialog.ui.h:9
 msgid "Editor"
@@ -1954,31 +1946,31 @@ msgstr ""
 
 #: ../src/ui/preferences_dialog.ui.h:14
 msgid "Font"
-msgstr ""
+msgstr "Typsnitt"
 
 #: ../src/ui/preferences_dialog.ui.h:15
 msgid "Font & Colors"
-msgstr ""
+msgstr "Typsnitt och färger"
 
 #: ../src/ui/preferences_dialog.ui.h:16
 msgid "Forget you are not using tabulations"
-msgstr ""
+msgstr "Glöm att du inte använder tabulatorer"
 
 #: ../src/ui/preferences_dialog.ui.h:17
 msgid "Highlight current line"
-msgstr ""
+msgstr "Färgmarkera aktuell rad"
 
 #: ../src/ui/preferences_dialog.ui.h:18
 msgid "Highlight matching brackets"
-msgstr ""
+msgstr "Färgmarkera matchade hakparanteser"
 
 #: ../src/ui/preferences_dialog.ui.h:19
 msgid "Insert spaces instead of tabs"
-msgstr ""
+msgstr "Infoga blanksteg istället för tabulatorer"
 
 #: ../src/ui/preferences_dialog.ui.h:20
 msgid "Interactive completion after"
-msgstr ""
+msgstr "Interaktiv komplettering efter"
 
 #: ../src/ui/preferences_dialog.ui.h:21
 msgid "No confirmation when cleaning-up"
@@ -1986,11 +1978,11 @@ msgstr ""
 
 #: ../src/ui/preferences_dialog.ui.h:22
 msgid "Number of characters after '\\'"
-msgstr ""
+msgstr "Antal tecken efter \"\\""
 
 #: ../src/ui/preferences_dialog.ui.h:23
 msgid "Number of most used symbols:"
-msgstr ""
+msgstr "Antalet mest använda symboler:"
 
 #: ../src/ui/preferences_dialog.ui.h:24
 msgid "Other"
@@ -2002,11 +1994,11 @@ msgstr ""
 
 #: ../src/ui/preferences_dialog.ui.h:26
 msgid "Program for viewing documents:"
-msgstr ""
+msgstr "Program för att visa dokument:"
 
 #: ../src/ui/preferences_dialog.ui.h:27
 msgid "Reopen files on startup"
-msgstr ""
+msgstr "Öppna filer igen vid uppstart"
 
 #: ../src/ui/preferences_dialog.ui.h:28
 msgid "Reset"
@@ -2018,19 +2010,19 @@ msgstr ""
 
 #: ../src/ui/preferences_dialog.ui.h:30
 msgid "Show all files"
-msgstr ""
+msgstr "Visa alla filer"
 
 #: ../src/ui/preferences_dialog.ui.h:31
 msgid "Show hidden files (beginning with a dot)"
-msgstr ""
+msgstr "Visa dolda filer (som börjar med en punkt)"
 
 #: ../src/ui/preferences_dialog.ui.h:32
 msgid "Show only files with these extensions"
-msgstr ""
+msgstr "Visa endast filer med dessa filändelser"
 
 #: ../src/ui/preferences_dialog.ui.h:33
 msgid "Tab width:"
-msgstr ""
+msgstr "Tabulatorbredd:"
 
 #: ../src/ui/preferences_dialog.ui.h:35
 #, no-c-format
@@ -2039,7 +2031,7 @@ msgstr ""
 
 #: ../src/ui/search_and_replace.ui.h:1
 msgid "All"
-msgstr ""
+msgstr "Alla"
 
 #: ../src/ui/search_and_replace.ui.h:2
 msgid "Clear Find"
@@ -2076,4 +2068,7 @@ msgstr "Sök efter"
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
 msgstr ""
+
+#~ msgid "All LaTeX Files"
+#~ msgstr "Alla LaTeX-filer"
 
