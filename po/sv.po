@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-10-09 00:51+0200\n"
-"PO-Revision-Date: 2011-10-09 01:06+0100\n"
+"POT-Creation-Date: 2011-10-09 10:30+0200\n"
+"PO-Revision-Date: 2011-10-09 10:34+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: \n"
@@ -1412,11 +1412,11 @@ msgstr "Visa eller dölj huvudverktygsraden"
 #. Translators: "Edit" here is an adjective.
 #: ../src/main_window.vala:169
 msgid "_Edit Toolbar"
-msgstr ""
+msgstr "R_edigeringsverktygsrad"
 
 #: ../src/main_window.vala:170
 msgid "Show or hide the edit toolbar"
-msgstr ""
+msgstr "Visa eller dölj redigeringsverktygsraden"
 
 #: ../src/main_window.vala:171
 msgid "_Side panel"
@@ -1610,7 +1610,7 @@ msgstr "Katalog"
 #: ../src/project_dialogs.vala:99
 #, c-format
 msgid "There is a conflict with the project \"%s\"."
-msgstr ""
+msgstr "Det finns en konflikt med projektet \"%s\"."
 
 #: ../src/project_dialogs.vala:114
 msgid "Configure Project"
@@ -1698,7 +1698,7 @@ msgstr "Visa figurer och bilder"
 
 #: ../src/structure.vala:176
 msgid "Show TODOs and FIXMEs"
-msgstr ""
+msgstr "Visa TODO och FIXME"
 
 #: ../src/structure.vala:592
 #, c-format
@@ -1894,7 +1894,7 @@ msgstr ""
 
 #: ../src/ui/build_tool.ui.h:14
 msgid "You can select this arrow and copy/paste it!"
-msgstr ""
+msgstr "Du kan välja denna pil och kopiera/klistra in den!"
 
 #: ../src/ui/preferences_dialog.ui.h:1
 msgid "Always show all information for the Latexmk post processor"
@@ -1986,7 +1986,7 @@ msgstr "Antalet mest använda symboler:"
 
 #: ../src/ui/preferences_dialog.ui.h:24
 msgid "Other"
-msgstr ""
+msgstr "Övrigt"
 
 #: ../src/ui/preferences_dialog.ui.h:25
 msgid "Pick the editor font"
@@ -2027,7 +2027,7 @@ msgstr "Tabulatorbredd:"
 #: ../src/ui/preferences_dialog.ui.h:35
 #, no-c-format
 msgid "_Use the system fixed width font (%s)"
-msgstr ""
+msgstr "A_nvänd systemets typsnitt med fast bredd (%s)"
 
 #: ../src/ui/search_and_replace.ui.h:1
 msgid "All"
@@ -2035,11 +2035,11 @@ msgstr "Alla"
 
 #: ../src/ui/search_and_replace.ui.h:2
 msgid "Clear Find"
-msgstr ""
+msgstr "Töm sökning"
 
 #: ../src/ui/search_and_replace.ui.h:3
 msgid "Clear Replace"
-msgstr ""
+msgstr "Töm ersättning"
 
 #: ../src/ui/search_and_replace.ui.h:4
 msgid "Close"
@@ -2067,7 +2067,7 @@ msgstr "Sök efter"
 
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
-msgstr ""
+msgstr "Växla mellan sök- och ersättningsläge"
 
 #~ msgid "All LaTeX Files"
 #~ msgstr "Alla LaTeX-filer"
