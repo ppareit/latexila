@@ -6,11 +6,14 @@ See also the Roadmap:
 LaTeXila 2.4
 ============
 
-- Migrate to GTK+ 3.0
-  I wanted to make the migration for the 2.2 release but GtkSourceView 3.0 have removed the
-  gtk_source_completion_info_set_sizing() function.
-  Also, GTK 3 widgets are a lot bigger, it doesn't fit well with LaTeXila.
-
+- Migrate to GTK+ 3.2, GtkSourceView 3, etc:
+	- GtkBox -> GtkGrid
+	- right click on document tab (the gray zone is ugly)
+	- remove the border of toolbars
+	- reduce some widgets sizes (some are too big)
+	- use GtkApplication instead of Unique
+	- test dev version of GtkSpell
+	- replace gtk_source_completion_info_set_sizing()
 
 LaTeXila ≥ 2.4
 ==============
