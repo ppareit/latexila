@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: latexila\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2011-10-09 10:30+0200\n"
-"PO-Revision-Date: 2011-10-09 10:34+0100\n"
+"PO-Revision-Date: 2011-10-09 10:35+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "Language: \n"
@@ -1529,7 +1529,7 @@ msgstr "Alla filer"
 
 #: ../src/main_window.vala:1891
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
-msgstr "LaTeXila är en Integrerad LaTeX-miljö för GNOME-skrivbordet"
+msgstr "LaTeXila är en integrerad LaTeX-miljö för GNOME-skrivbordet"
 
 #: ../src/main_window.vala:1944
 msgid "translator-credits"
