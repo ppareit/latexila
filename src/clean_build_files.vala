@@ -238,7 +238,6 @@ public class CleanBuildFiles : GLib.Object
             null);
 
         Grid grid = new Grid ();
-        grid.set_orientation (Orientation.HORIZONTAL);
         grid.set_column_spacing (12);
         grid.set_row_spacing (8);
         grid.border_width = 5;
@@ -248,14 +247,14 @@ public class CleanBuildFiles : GLib.Object
 
         /* image */
         Image image = new Image.from_stock (Stock.DIALOG_WARNING, IconSize.DIALOG);
-        image.set_alignment ((float) 0.5, (float) 0.0);
+        image.set_valign (Align.START);
         grid.attach (image, 0, 0, 1, 3);
 
         /* primary label */
         Label primary_label = new Label (null);
         primary_label.set_line_wrap (true);
         primary_label.set_use_markup (true);
-        primary_label.set_alignment ((float) 0.0, (float) 0.5);
+        primary_label.set_halign (Align.START);
         primary_label.set_selectable (true);
         primary_label.margin_bottom = 4;
         primary_label.set_markup ("<span weight=\"bold\" size=\"larger\">"
@@ -266,7 +265,7 @@ public class CleanBuildFiles : GLib.Object
         /* secondary label */
         Label select_label = new Label (_("Select the files you want to delete:"));
         select_label.set_line_wrap (true);
-        select_label.set_alignment ((float) 0.0, (float) 0.5);
+        select_label.set_halign (Align.START);
         grid.attach (select_label, 1, 1, 1, 1);
 
         /* list of files with a scrollbar */
