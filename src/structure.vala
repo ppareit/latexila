@@ -89,7 +89,6 @@ public class Structure : Grid
 
     public Structure (MainWindow main_window, UIManager ui_manager)
     {
-//        GLib.Object (spacing: 3);
         orientation = Orientation.VERTICAL;
         row_spacing = 3;
         _main_window = main_window;

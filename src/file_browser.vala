@@ -52,7 +52,6 @@ public class FileBrowser : Grid
 
     public FileBrowser (MainWindow main_window)
     {
-//        GLib.Object (spacing: 3);
         row_spacing = 3;
         orientation = Orientation.VERTICAL;
         this.main_window = main_window;

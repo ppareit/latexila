@@ -19,28 +19,31 @@
 
 using Gtk;
 
-public class GotoLine : HBox
+public class GotoLine : Grid
 {
     private unowned MainWindow main_window;
     private Entry entry;
 
     public GotoLine (MainWindow main_window)
     {
+        orientation = Orientation.HORIZONTAL;
+        set_column_spacing (3);
         this.main_window = main_window;
-        spacing = 3;
 
         Button close_button = new Button ();
-        pack_start (close_button, false, false, 0);
+        add (close_button);
         close_button.set_relief (ReliefStyle.NONE);
         Image img = new Image.from_stock (Stock.CLOSE, IconSize.MENU);
         close_button.add (img);
         close_button.clicked.connect (() => hide ());
 
         Label label = new Label (_("Go to Line:"));
-        pack_start (label, false, false, 2);
+        label.margin_left = 2;
+        label.margin_right = 2;
+        add (label);
 
         entry = new Entry ();
-        pack_start (entry, false, false, 0);
+        add (entry);
         entry.set_icon_from_stock (EntryIconPosition.SECONDARY, Stock.JUMP_TO);
         entry.set_icon_activatable (EntryIconPosition.SECONDARY, true);
         entry.set_tooltip_text (_("Line you want to move the cursor to"));
@@ -102,7 +105,7 @@ public class SearchAndReplace : GLib.Object
     private Entry entry_replace;
     private Frame frame_replace;
 
-    private HBox hbox_replace;
+    private Box hbox_replace;
 
     private CheckMenuItem check_case_sensitive;
     private CheckMenuItem check_entire_word;
@@ -159,7 +162,7 @@ public class SearchAndReplace : GLib.Object
             Button button_replace_all =
                 (Button) builder.get_object ("button_replace_all");
 
-            hbox_replace = (HBox) builder.get_object ("hbox_replace");
+            hbox_replace = builder.get_object ("hbox_replace") as Box;
 
             Button button_previous = (Button) builder.get_object ("button_previous");
             Button button_next = (Button) builder.get_object ("button_next");
