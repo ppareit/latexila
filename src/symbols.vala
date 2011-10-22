@@ -19,7 +19,7 @@
 
 using Gtk;
 
-public class Symbols : VBox
+public class Symbols : Grid
 {
     private const CategoryInfo[] categories =
     {
@@ -765,6 +765,7 @@ public class Symbols : VBox
             stores_initialized = true;
         }
 
+        orientation = Orientation.VERTICAL;
         this.main_window = main_window;
         create_icon_views ();
     }
@@ -781,7 +782,7 @@ public class Symbols : VBox
         categories_view.row_spacing = 0;
         categories_view.column_spacing = 0;
 
-        pack_start (categories_view, false, false, 0);
+        add (categories_view);
         categories_view.show ();
 
         /* show the symbols */
@@ -794,12 +795,14 @@ public class Symbols : VBox
         symbol_view.column_spacing = 0;
 
         Widget sw = Utils.add_scrollbar (symbol_view);
-        pack_start (sw);
+        sw.expand = true;
+        add (sw);
         sw.show_all ();
 
         /* clear button (for most used symbols) */
         Button button = new Button.from_stock (Stock.CLEAR);
-        pack_start (button, false, false, 2);
+        button.margin = 2;
+        add (button);
 
         /* signals */
         button.clicked.connect (() =>
