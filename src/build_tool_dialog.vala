@@ -79,7 +79,7 @@ private class BuildToolDialog : Dialog
             builder.add_from_file (path);
 
             // get objects
-            VBox main_vbox = (VBox) builder.get_object ("main_vbox");
+            Box main_vbox = builder.get_object ("main_vbox") as Box;
             main_vbox.unparent ();
 
             entry_label = (Entry) builder.get_object ("entry_label");
@@ -94,8 +94,8 @@ private class BuildToolDialog : Dialog
             button_down = (Button) builder.get_object ("button_down");
 
             // packing widget
-            Box content_area = (Box) get_content_area ();
-            content_area.pack_start (main_vbox, true, true, 0);
+            Box content_area = get_content_area () as Box;
+            content_area.pack_start (main_vbox);
             content_area.show_all ();
 
             init_icon_treeview ();
@@ -109,7 +109,7 @@ private class BuildToolDialog : Dialog
 
             Label label_error = new Label (message);
             label_error.set_line_wrap (true);
-            Box content_area = (Box) get_content_area ();
+            Box content_area = get_content_area () as Box;
             content_area.pack_start (label_error, true, true, 0);
             content_area.show_all ();
         }

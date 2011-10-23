@@ -438,12 +438,14 @@ public class MainWindow : Window
             SettingsBindFlags.DEFAULT);
 
         /* packing widgets */
-        VBox main_vbox = new VBox (false, 0);
-        main_vbox.pack_start (menu, false, false, 0);
-        main_vbox.pack_start (main_toolbar, false, false, 0);
-        main_vbox.pack_start (edit_toolbar, false, false, 0);
+        Grid main_vgrid = new Grid ();
+        main_vgrid.orientation = Orientation.VERTICAL;
 
-        main_vbox.show ();
+        main_vgrid.add (menu);
+        main_vgrid.add (main_toolbar);
+        main_vgrid.add (edit_toolbar);
+
+        main_vgrid.show ();
         menu.show_all ();
         main_toolbar.show_all ();
 
@@ -452,16 +454,18 @@ public class MainWindow : Window
         // right: documents panel, search and replace, log zone, ...
         main_hpaned = new HPaned ();
         main_hpaned.set_position (settings.get_int ("side-panel-size"));
-        main_vbox.pack_start (main_hpaned);
+        main_vgrid.add (main_hpaned);
         main_hpaned.show ();
 
-        // vbox source view: documents panel, goto line, search and replace
-        VBox vbox_source_view = new VBox (false, 2);
-        vbox_source_view.pack_start (documents_panel);
-        vbox_source_view.pack_start (goto_line, false, false, 0);
-        vbox_source_view.pack_start (search_and_replace.get_widget (), false, false);
+        // vgrid source view: documents panel, goto line, search and replace
+        Grid vgrid_source_view = new Grid ();
+        vgrid_source_view.orientation = Orientation.VERTICAL;
+        vgrid_source_view.set_row_spacing (2);
+        vgrid_source_view.add (documents_panel);
+        vgrid_source_view.add (goto_line);
+        vgrid_source_view.add (search_and_replace.get_widget ());
 
-        vbox_source_view.show ();
+        vgrid_source_view.show ();
         documents_panel.show_all ();
 
         // vertical pane
@@ -471,7 +475,7 @@ public class MainWindow : Window
         vpaned.set_position (settings.get_int ("vertical-paned-position"));
 
         // when we resize the window, the bottom panel keeps the same height
-        vpaned.pack1 (vbox_source_view, true, true);
+        vpaned.pack1 (vgrid_source_view, true, true);
         vpaned.pack2 (build_view, false, true);
 
         main_hpaned.add1 (side_panel);
@@ -480,10 +484,10 @@ public class MainWindow : Window
         side_panel.show ();
         vpaned.show ();
 
-        main_vbox.pack_end (statusbar, false, false, 0);
+        main_vgrid.add (statusbar);
         statusbar.show_all ();
 
-        add (main_vbox);
+        add (main_vgrid);
         show ();
         show_or_hide_widgets ();
         show_or_hide_build_messages ();

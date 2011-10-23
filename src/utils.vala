@@ -319,23 +319,23 @@ namespace Utils
 
     public Widget get_dialog_component (string title, Widget widget)
     {
-        VBox vbox = new VBox (false, 6);
-        vbox.border_width = 6;
+        Grid grid = new Grid ();
+        grid.orientation = Orientation.VERTICAL;
+        grid.set_row_spacing (6);
+        grid.border_width = 6;
 
         // title in bold, left aligned
         Label label = new Label (null);
         label.set_markup ("<b>" + title + "</b>");
-        label.xalign = (float) 0.0;
-        vbox.pack_start (label, false, false);
+        label.set_halign (Align.START);
+        grid.add (label);
 
         // left margin for the widget
-        Alignment alignment = new Alignment ((float) 0.5, (float) 0.5, (float) 1.0,
-            (float) 1.0);
-        alignment.left_padding = 12;
-        alignment.add (widget);
-        vbox.pack_start (alignment);
+        widget.set_margin_left (12);
+        widget.set_hexpand (true);
+        grid.add (widget);
 
-        return vbox;
+        return grid;
     }
 
 
