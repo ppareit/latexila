@@ -86,7 +86,8 @@ public class PreferencesDialog : Dialog
         init_other_tab (builder);
 
         // pack notebook
-        var notebook = (Notebook) builder.get_object ("notebook");
+        Notebook notebook = builder.get_object ("notebook") as Notebook;
+        notebook.unparent ();
         Box content_area = (Box) get_content_area ();
         content_area.pack_start (notebook);
     }
@@ -443,17 +444,18 @@ public class PreferencesDialog : Dialog
         fb_settings.bind ("show-all-files", file_browser_show_all, "active",
             SettingsBindFlags.DEFAULT);
 
-        Widget vbox_file_browser_show_all =
-            builder.get_object ("vbox_file_browser_show_all") as Widget;
-        set_sensitivity (fb_settings, "show-all-files", vbox_file_browser_show_all);
-
-        var file_browser_except = builder.get_object ("file_browser_except");
+        Widget file_browser_except =
+            builder.get_object ("file_browser_except") as Widget;
         fb_settings.bind ("show-all-files-except", file_browser_except, "active",
             SettingsBindFlags.DEFAULT);
 
-        var file_browser_show_hidden = builder.get_object ("file_browser_show_hidden");
+        Widget file_browser_show_hidden =
+            builder.get_object ("file_browser_show_hidden") as Widget;
         fb_settings.bind ("show-hidden-files", file_browser_show_hidden, "active",
             SettingsBindFlags.DEFAULT);
+
+        set_sensitivity (fb_settings, "show-all-files", file_browser_except);
+        set_sensitivity (fb_settings, "show-all-files", file_browser_show_hidden);
 
         Widget file_browser_entry =
             builder.get_object ("file_browser_entry") as Widget;
