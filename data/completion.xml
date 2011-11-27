@@ -740,6 +740,8 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="equation" />
 			<choice name="figure" />
 			<choice name="figure*" />
+			<choice name="wrapfigure" package="wrapfig" />
+			<choice name="wraptable" package="wrapfig" />
 			<choice name="flushleft" />
 			<choice name="flushright" />
 			<choice name="frame" />
@@ -747,6 +749,7 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="itemize">
 				<insert>\item </insert>
 			</choice>
+			<choice name="landscape" package="pdflscape" />
 			<choice name="letter" />
 			<choice name="list" />
 			<choice name="lstlisting" package="listings" />
@@ -820,11 +823,12 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 
 	<command name="usepackage">
 		<argument label="Options" type="optional" />
-		<argument label="Package">
+		<argument label="Packages">
 			<choice name="amsfonts" />
 			<choice name="amsmath" />
 			<choice name="amssymb" />
 			<choice name="babel" />
+			<choice name="cancel" />
 			<choice name="color" />
 			<choice name="colortbl" />
 			<choice name="fancyhdr" />
@@ -840,12 +844,15 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 			<choice name="moreverb" />
 			<choice name="multicol" />
 			<choice name="multirow" />
+			<choice name="pdflscape" />
 			<choice name="pdfpages" />
 			<choice name="tabularx" />
 			<choice name="units" />
 			<choice name="url" />
 			<choice name="xcolor" />
+			<choice name="wrapfig" />
 		</argument>
+		<argument label="Version" type="optional" />
 	</command>
 
 	<command name="include">
@@ -1496,6 +1503,15 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="EvenRowColor">
 			<placeholder key="Colors" />
 		</argument>
+	</command>
+
+	<!-- cancel -->
+	<command name="cancel" package="cancel" />
+	<command name="bcancel" package="cancel" />
+	<command name="xcancel" package="cancel" />
+	<command name="cancelto" package="cancel">
+		<argument label="Value" />
+		<argument label="Expression" />
 	</command>
 
 </commands>
