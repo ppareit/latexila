@@ -427,6 +427,16 @@ public class MainWindow : Window
         set_file_actions_sensitivity (false);
         set_documents_move_to_new_window_sensitivity (false);
 
+        // drag-n-drop support of files
+        Gtk.drag_dest_set (this, DestDefaults.ALL, {}, Gdk.DragAction.COPY);
+        Gtk.drag_dest_add_uri_targets (this);
+        drag_data_received.connect ((dc, x, y, selection_data, info, time) =>
+        {
+            Application app = Application.get_default ();
+            app.open_documents (selection_data.get_uris ());
+            Gtk.drag_finish (dc, true, true, time);
+        });
+
         // spell checking
         ToggleAction spell_checking_action =
             action_group.get_action ("EditSpellChecking") as ToggleAction;
