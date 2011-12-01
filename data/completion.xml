@@ -371,6 +371,11 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Formula" />
 	</command>
 
+	<command name="stackrel">
+		<argument label="Above" />
+		<argument label="RelationalOperator" />
+	</command>
+
 	<command name="acute">
 		<argument label="Text" />
 	</command>
