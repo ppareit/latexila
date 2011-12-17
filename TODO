@@ -1,7 +1,7 @@
 TODO
 
 See also the Roadmap:
-	http://projects.gnome.org/latexila/#roadmap
+	https://live.gnome.org/latexila-roadmap
 
 The Roadmap is less detailed, but have a long-term view.
 The TODO is more detailed, but focus more on the short-term.
@@ -9,23 +9,13 @@ The TODO is more detailed, but focus more on the short-term.
 LaTeXila 2.4
 ============
 
-- Do not migrate to GTK+ 3 [done]
-	It's more work than expected. Unless there is a motivated contributor,
-	(see the gnome-3 branch) the next 2.x versions of LaTeXila will continue
-	to use GTK+ 2.
-
-	For people using GNOME 3, I think it's not an important issue.
-
-	The plan is to do the migration to both a gedit plugin and (obviously)
-	to GTK+ 3 at the same time for LaTeXila 3.0 (when gedit supports profiles).
-
 - Possibility to compile an unsaved LaTeX file, to test easily some code without
   the need to save it in a temporary file that we have to delete just after the test,
   and that we don't delete anyway.
 
   The unsaved file would simply be saved somewhere in /tmp/.
 
-- Completion:
+- Improve completion:
 	- complete placeholders (\ref, \cite, ...)
 	  (take into account all *.tex, *.bib, ... files of the project)
 
@@ -33,7 +23,12 @@ LaTeXila 2.4
 LaTeXila ≥ 2.4
 ==============
 
-- Completion:
+- Migrate to GTK+ 3 [in progress]
+	- It's not a high priority, since it's not a big issue for GNOME 3 users,
+	  but it would be nice. The problem is that it involves a lot of work,
+	  more than expected. See the branch gnome-3.
+
+- Improve completion:
 	- show details by default (now we have to click on the button to see
 	  the details)
 
