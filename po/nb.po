@@ -9,10 +9,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila 0.x\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-09-17 13:42+0200\n"
-"PO-Revision-Date: 2011-09-17 13:58+0200\n"
+"POT-Creation-Date: 2011-12-19 09:37+0100\n"
+"PO-Revision-Date: 2011-12-19 09:39+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
-"Language-Team: Norwegian Bokmål <i18n-nb@lister.ping.uio.no>\n"
+"Language-Team: Norwegian bokmål <i18n-nb@lister.ping.uio.no>\n"
 "Language: nb\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -61,16 +61,15 @@ msgstr ""
 
 #: C/build_tools.xml:112(tool/description)
 msgid "Convert the DVI document to the PDF format"
-msgstr ""
+msgstr "Konverter DVI-dokument til PDF-format"
 
 #: C/build_tools.xml:118(tool/description)
 msgid "Convert the DVI document to the PostScript format"
-msgstr ""
+msgstr "Konverter DVI-dokument til PostScript-format"
 
 #: C/build_tools.xml:124(tool/description)
-#, fuzzy
 msgid "Convert the PostScript document to the PDF format"
-msgstr "Flytt aktivt dokument til et nytt vindu"
+msgstr "Konverter PostScript-dokument til PDF-format"
 
 #. This must be translated by a usepackage LaTeX command.
 #: C/article.xml:8(template/chunk) C/beamer.xml:8(template/chunk)
@@ -140,11 +139,11 @@ msgstr "Må fullføre"
 msgid "Post Processor"
 msgstr ""
 
-#: ../src/build_tool_runner.vala:355
+#: ../src/build_tool_runner.vala:351
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 
-#: ../src/build_tool_runner.vala:386
+#: ../src/build_tool_runner.vala:382
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr ""
@@ -178,7 +177,7 @@ msgstr "Velg filene du vil slette:"
 msgid "No build file to clean up."
 msgstr ""
 
-#: ../src/completion.vala:257
+#: ../src/completion.vala:256
 msgid "No matching proposal"
 msgstr ""
 
@@ -189,7 +188,7 @@ msgstr ""
 msgid "Ln %d, Col %d"
 msgstr "  Ln. %d, Kol. %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:809
+#: ../src/dialogs.vala:40 ../src/main_window.vala:829
 msgid "Close without Saving"
 msgstr "Lukk uten å lagre"
 
@@ -209,7 +208,7 @@ msgstr "Velg dokumentene du vil lagre:"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Hvis du ikke lagrer vil alle endringene gå tapt."
 
-#: ../src/document_structure.vala:710
+#: ../src/document_structure.vala:731
 msgid "The structure item already contains a sub-paragraph."
 msgstr ""
 
@@ -250,38 +249,38 @@ msgstr "Vil du laste filen på nytt?"
 msgid "Reload"
 msgstr "Last på nytt"
 
-#: ../src/document.vala:143
-#, fuzzy, c-format
+#: ../src/document.vala:144
+#, c-format
 msgid "Impossible to load the file '%s'."
-msgstr "Kunne ikke finne filen %s."
+msgstr "Kunne ikke laste filen «%s»."
 
-#: ../src/document.vala:219
+#: ../src/document.vala:220
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Fil %s er endret siden den ble lest."
 
-#: ../src/document.vala:222
+#: ../src/document.vala:223
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Hvis du lagrer den kan alle eksterne endringer gå tapt. Lagre den likevel?"
 
-#: ../src/document.vala:225
+#: ../src/document.vala:226
 msgid "Save Anyway"
 msgstr "Lagre likevel"
 
-#: ../src/document.vala:227
+#: ../src/document.vala:228
 msgid "Don't Save"
 msgstr "Ikke lagre"
 
-#: ../src/document.vala:239
+#: ../src/document.vala:240
 msgid "Impossible to save the file."
 msgstr "Kan ikke lagre filen."
 
-#: ../src/document.vala:264
+#: ../src/document.vala:265
 msgid "Error trying to convert the document to UTF-8"
 msgstr ""
 
-#: ../src/document.vala:318
+#: ../src/document.vala:319
 msgid "Unsaved Document"
 msgstr "Ikke-lagret dokument"
 
@@ -678,7 +677,7 @@ msgstr ""
 #. Others
 #: ../src/latex_menu.vala:226
 msgid "_Misc"
-msgstr ""
+msgstr "_Forskjellig"
 
 #: ../src/latex_menu.vala:228
 msgid "Document class - \\documentclass"
@@ -698,11 +697,11 @@ msgstr ""
 
 #: ../src/latex_menu.vala:233
 msgid "Author - \\author"
-msgstr ""
+msgstr "Forfatter - \\author"
 
 #: ../src/latex_menu.vala:234
 msgid "Title - \\title"
-msgstr ""
+msgstr "Tittel - \\title"
 
 #: ../src/latex_menu.vala:236
 #, fuzzy
@@ -1047,7 +1046,7 @@ msgstr "_Flytt til nytt vindu"
 msgid "Create a new window"
 msgstr "Åpne et nytt vindu"
 
-#: ../src/main_window.vala:35 ../src/main_window.vala:1065
+#: ../src/main_window.vala:35 ../src/main_window.vala:1085
 msgid "Open a file"
 msgstr "Åpne en fil"
 
@@ -1119,7 +1118,7 @@ msgstr "Slett valgt tekst"
 msgid "Select the entire document"
 msgstr "Velg hele dokumentet"
 
-#: ../src/main_window.vala:71 ../src/main_window.vala:147
+#: ../src/main_window.vala:71 ../src/main_window.vala:145
 msgid "_Comment"
 msgstr ""
 
@@ -1136,258 +1135,253 @@ msgstr "_Dokumenter"
 msgid "Uncomment the selected lines (remove the character \"%\")"
 msgstr ""
 
-#: ../src/main_window.vala:77
-#, fuzzy
-msgid "_Completion"
-msgstr "Kopier utvalget"
-
 #: ../src/main_window.vala:78
-msgid "Complete the LaTeX command"
-msgstr ""
-
-#: ../src/main_window.vala:80
 msgid "Configure the application"
 msgstr "Konfigurer applikasjonen"
 
 #. View
-#: ../src/main_window.vala:83
+#: ../src/main_window.vala:81
 msgid "_View"
 msgstr "_Vis"
 
-#: ../src/main_window.vala:84
+#: ../src/main_window.vala:82
 #, fuzzy
 msgid "Zoom _In"
 msgstr "Zoom 1:1"
 
-#: ../src/main_window.vala:85
+#: ../src/main_window.vala:83
 msgid "Enlarge the font"
 msgstr ""
 
-#: ../src/main_window.vala:86
+#: ../src/main_window.vala:84
 msgid "Zoom _Out"
 msgstr "Zoom _ut"
 
-#: ../src/main_window.vala:87
+#: ../src/main_window.vala:85
 #, fuzzy
 msgid "Shrink the font"
 msgstr "Velg skrift for redigering"
 
-#: ../src/main_window.vala:88
+#: ../src/main_window.vala:86
 msgid "_Reset Zoom"
 msgstr ""
 
-#: ../src/main_window.vala:89
+#: ../src/main_window.vala:87
 #, fuzzy
 msgid "Reset the size of the font"
 msgstr "Gå tilbake til lagret versjon av filen"
 
 #. Search
-#: ../src/main_window.vala:92
+#: ../src/main_window.vala:90
 msgid "_Search"
 msgstr "_Søk"
 
-#: ../src/main_window.vala:94
+#: ../src/main_window.vala:92
 msgid "Search for text"
 msgstr "Søk etter tekst"
 
-#: ../src/main_window.vala:96
+#: ../src/main_window.vala:94
 msgid "Search for and replace text"
 msgstr "Søk etter og erstatt tekst"
 
-#: ../src/main_window.vala:97
+#: ../src/main_window.vala:95
 #, fuzzy
 msgid "_Go to Line..."
 msgstr "Gå til _linje ……"
 
-#: ../src/main_window.vala:98
+#: ../src/main_window.vala:96
 msgid "Go to a specific line"
 msgstr "Gå til en spesifikk linje"
 
 #. Build
-#: ../src/main_window.vala:101
+#: ../src/main_window.vala:99
 #, fuzzy
 msgid "_Build"
 msgstr "Bygg"
 
-#: ../src/main_window.vala:102
+#: ../src/main_window.vala:100
 msgid "Cleanup Build _Files"
 msgstr ""
 
-#: ../src/main_window.vala:103
+#: ../src/main_window.vala:101
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
 msgstr ""
 
-#: ../src/main_window.vala:105
+#: ../src/main_window.vala:103
 msgid "_Stop Execution"
 msgstr "_Stopp kjøring"
 
-#: ../src/main_window.vala:106
+#: ../src/main_window.vala:104
 msgid "Stop Execution"
 msgstr "Stopp kjøring"
 
-#: ../src/main_window.vala:107
+#: ../src/main_window.vala:105
 msgid "View _Log"
 msgstr "Vis _logg"
 
-#: ../src/main_window.vala:108
+#: ../src/main_window.vala:106
 msgid "View Log"
 msgstr "Vis logg"
 
 #. Documents
-#: ../src/main_window.vala:111
+#: ../src/main_window.vala:109
 msgid "_Documents"
 msgstr "_Dokumenter"
 
-#: ../src/main_window.vala:112
+#: ../src/main_window.vala:110
 msgid "_Save All"
 msgstr "L_agre alle"
 
-#: ../src/main_window.vala:113
+#: ../src/main_window.vala:111
 msgid "Save all open files"
 msgstr "Lagre alle åpne filer"
 
-#: ../src/main_window.vala:114
+#: ../src/main_window.vala:112
 msgid "_Close All"
 msgstr "_Lukk alle"
 
-#: ../src/main_window.vala:115
+#: ../src/main_window.vala:113
 msgid "Close all open files"
 msgstr "Lukk alle åpne filer"
 
-#: ../src/main_window.vala:116
+#: ../src/main_window.vala:114
 msgid "_Previous Document"
 msgstr "_Forrige dokument"
 
-#: ../src/main_window.vala:117
+#: ../src/main_window.vala:115
 msgid "Activate previous document"
 msgstr "Aktiver forrige dokument"
 
-#: ../src/main_window.vala:119
+#: ../src/main_window.vala:117
 #, fuzzy
 msgid "_Next Document"
 msgstr "N_este dokument"
 
-#: ../src/main_window.vala:120
+#: ../src/main_window.vala:118
 msgid "Activate next document"
 msgstr "Aktiver forrige dokument"
 
-#: ../src/main_window.vala:122
+#: ../src/main_window.vala:120
 msgid "_Move to New Window"
 msgstr "_Flytt til nytt vindu"
 
-#: ../src/main_window.vala:123
+#: ../src/main_window.vala:121
 msgid "Move the current document to a new window"
 msgstr "Flytt aktivt dokument til et nytt vindu"
 
 #. Projects
-#: ../src/main_window.vala:127
+#: ../src/main_window.vala:125
 msgid "_Projects"
 msgstr "_Prosjekter"
 
-#: ../src/main_window.vala:128
+#: ../src/main_window.vala:126
 msgid "_New Project"
 msgstr "_Nytt prosjekt"
 
-#: ../src/main_window.vala:129
+#: ../src/main_window.vala:127
 #, fuzzy
 msgid "Create a new project"
 msgstr "Opprett et nytt dokument"
 
-#: ../src/main_window.vala:130
+#: ../src/main_window.vala:128
 msgid "_Configure Current Project"
 msgstr ""
 
-#: ../src/main_window.vala:131
+#: ../src/main_window.vala:129
 #, fuzzy
 msgid "Change the main file of the current project"
 msgstr "Sett språk for aktivt dokument"
 
-#: ../src/main_window.vala:133
+#: ../src/main_window.vala:131
 #, fuzzy
 msgid "_Manage Projects"
 msgstr "Håndter tekstblokker"
 
-#: ../src/main_window.vala:134 ../src/project_dialogs.vala:178
+#: ../src/main_window.vala:132 ../src/project_dialogs.vala:178
 #, fuzzy
 msgid "Manage Projects"
 msgstr "Håndter tekstblokker"
 
 #. Structure
-#: ../src/main_window.vala:137
+#: ../src/main_window.vala:135
 msgid "S_tructure"
 msgstr ""
 
-#: ../src/main_window.vala:139
+#: ../src/main_window.vala:137
 #, fuzzy
 msgid "Cut the selected structure item"
 msgstr "Slett valgt tekst"
 
-#: ../src/main_window.vala:141
+#: ../src/main_window.vala:139
 #, fuzzy
 msgid "Copy the selected structure item"
 msgstr "Kopier utvalget"
 
-#: ../src/main_window.vala:143
+#: ../src/main_window.vala:141
 #, fuzzy
 msgid "Delete the selected structure item"
 msgstr "Slett valgt tekst"
 
-#: ../src/main_window.vala:144
+#: ../src/main_window.vala:142
 msgid "_Select"
 msgstr "_Velg"
 
-#: ../src/main_window.vala:145
+#: ../src/main_window.vala:143
 #, fuzzy
 msgid "Select the contents of the selected structure item"
 msgstr "Bytt mellom store og små bokstaver for valgt tekst"
 
-#: ../src/main_window.vala:148
+#: ../src/main_window.vala:146
 #, fuzzy
 msgid "Comment the selected structure item"
 msgstr "Slett valgt tekst"
 
-#: ../src/main_window.vala:149
+#: ../src/main_window.vala:147
 msgid "Shift _Left"
 msgstr ""
 
-#: ../src/main_window.vala:150
+#: ../src/main_window.vala:148
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
 msgstr ""
 
-#: ../src/main_window.vala:152
+#: ../src/main_window.vala:150
 msgid "Shift _Right"
 msgstr ""
 
-#: ../src/main_window.vala:153
+#: ../src/main_window.vala:151
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
 msgstr ""
 
 #. Help
-#: ../src/main_window.vala:157
+#: ../src/main_window.vala:155
 msgid "_Help"
 msgstr "_Hjelp"
 
-#: ../src/main_window.vala:158
+#: ../src/main_window.vala:156
 msgid "_Contents"
 msgstr "_Innhold"
 
-#: ../src/main_window.vala:159
+#: ../src/main_window.vala:157
 #, fuzzy
 msgid "Open the LaTeXila documentation"
 msgstr "Åpne en terminal i dokumentkatalogen"
 
-#: ../src/main_window.vala:160
+#: ../src/main_window.vala:158
 #, fuzzy
 msgid "_LaTeX Reference"
 msgstr "Bruk_ervalg"
 
-#: ../src/main_window.vala:161
+#: ../src/main_window.vala:159
 msgid "The Kile LaTeX Reference"
 msgstr ""
 
-#: ../src/main_window.vala:163 ../src/main_window.vala:1951
+#: ../src/main_window.vala:161 ../src/main_window.vala:1974
 msgid "About LaTeXila"
 msgstr "Om LaTeXila"
+
+#: ../src/main_window.vala:167
+msgid "Activate or disable the spell checking"
+msgstr ""
 
 #: ../src/main_window.vala:168
 #, fuzzy
@@ -1463,21 +1457,21 @@ msgid "Structure"
 msgstr "Struktur"
 
 #. recent documents
-#: ../src/main_window.vala:520
+#: ../src/main_window.vala:540
 msgid "Open _Recent"
 msgstr ""
 
-#: ../src/main_window.vala:521
+#: ../src/main_window.vala:541
 #, fuzzy
 msgid "Open recently used files"
 msgstr "Åpne nylig brukt fil"
 
-#: ../src/main_window.vala:695
+#: ../src/main_window.vala:715
 #, fuzzy, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Denne filen (%s) er allerede åpen i et annet gedit vindu."
 
-#: ../src/main_window.vala:697
+#: ../src/main_window.vala:717
 #, fuzzy
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
@@ -1486,54 +1480,59 @@ msgstr ""
 "gedit åpnet denne instansen av filen uten mulighet for redigering. Vil du "
 "redigere den likevel?"
 
-#: ../src/main_window.vala:700
+#: ../src/main_window.vala:720
 msgid "Edit Anyway"
 msgstr "Rediger likevel"
 
-#: ../src/main_window.vala:701
+#: ../src/main_window.vala:721
 msgid "Don't Edit"
 msgstr "Ikke rediger"
 
-#: ../src/main_window.vala:806
+#: ../src/main_window.vala:826
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Lagre endringene i dokument «%s» før programmet lukkes?"
 
-#: ../src/main_window.vala:925
+#: ../src/main_window.vala:945
 msgid "Read-Only"
 msgstr "Skrivebeskyttet"
 
-#: ../src/main_window.vala:939
+#: ../src/main_window.vala:959
 msgid "Save File"
 msgstr "Lagre alle"
 
-#: ../src/main_window.vala:974
+#: ../src/main_window.vala:994
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr ""
 
-#: ../src/main_window.vala:979 ../src/ui/search_and_replace.ui.h:7
+#: ../src/main_window.vala:999 ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Erstatt"
 
-#: ../src/main_window.vala:1066
+#: ../src/main_window.vala:1086
 msgid "Open a recently used file"
 msgstr "Åpne nylig brukt fil"
 
-#: ../src/main_window.vala:1473
+#: ../src/main_window.vala:1493
 msgid "Open Files"
 msgstr "Åpne filer"
 
-#: ../src/main_window.vala:1497
+#: ../src/main_window.vala:1506
+#, fuzzy
+msgid "All LaTeX Files"
+msgstr "Alle filer"
+
+#: ../src/main_window.vala:1513
 msgid "All Files"
 msgstr "Alle filer"
 
-#: ../src/main_window.vala:1899
+#: ../src/main_window.vala:1922
 #, fuzzy
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "gedit er en liten og lett tekst editor for GNOME skrivebordet"
 
-#: ../src/main_window.vala:1952
+#: ../src/main_window.vala:1975
 msgid "translator-credits"
 msgstr ""
 "Kjartan Maraas <kmaraas@gnome.org>\n"
@@ -2081,4 +2080,4 @@ msgstr "Søk etter"
 
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
-msgstr ""
+msgstr "Bytt mellom søk- og erstattmodus"
