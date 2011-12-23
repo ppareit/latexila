@@ -497,7 +497,7 @@ private class LatexPostProcessor : PostProcessor
         return_val_if_fail (nb_bytes_str != null, false);
 
         int64 nb_bytes = int64.parse (nb_bytes_str);
-        string human_size = format_size_for_display (nb_bytes);
+        string human_size = format_size (nb_bytes);
 
         try
         {
