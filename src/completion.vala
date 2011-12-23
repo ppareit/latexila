@@ -151,17 +151,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             return true;
         }
 
-        if (! settings.get_boolean ("interactive-completion")
-            || (in_argument && ! valid_arg_contents))
+        if (! settings.get_boolean ("interactive-completion"))
             return false;
 
-        if (in_argument && valid_arg_contents)
-            return true;
+        if (in_argument)
+            return valid_arg_contents;
 
         uint min_nb_chars;
         settings.get ("interactive-completion-num", "u", out min_nb_chars);
 
-        return cmd != null && cmd.length > min_nb_chars;
+        return cmd != null && min_nb_chars < cmd.length;
     }
 
     public void populate (SourceCompletionContext context)
@@ -761,87 +760,90 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                                             out bool valid_arg_contents = null)
     {
         cmd_name = null;
-        argument_contents = null;
-
-        string text = get_text_line_at_iter (iter);
-
-        bool fetch_argument_contents = true;
-        long index_start_argument_contents = -1;
-        bool in_other_argument = false;
-        char other_argument_opening_bracket = '{';
-
         arguments = new Gee.ArrayList<bool> ();
+        argument_contents = null;
         valid_arg_contents = true;
 
-        for (long i = text.length - 1 ; i >= 0 ; i--)
+        string text = get_text_line_at_iter (iter);
+        long end_pos = text.length - 1;
+
+        /* Fetch the argument contents */
+        long opening_bracket_pos = -1;
+
+        for (long cur_pos = end_pos ; 0 <= cur_pos ; cur_pos--)
         {
-            if (fetch_argument_contents)
+            bool opening_bracket = (text[cur_pos] == '{' || text[cur_pos] == '[')
+                && ! Utils.char_is_escaped (text, cur_pos);
+
+            // end of argument contents
+            if (opening_bracket)
             {
-                // end of argument content
-                if ((text[i] == '{' || text[i] == '[')
-                    && ! Utils.char_is_escaped (text, i))
-                {
-                    arguments.insert (0, text[i] == '[');
+                opening_bracket_pos = cur_pos;
+                arguments.insert (0, text[cur_pos] == '[');
 
-                    if (index_start_argument_contents != -1)
-                        argument_contents =
-                            text[index_start_argument_contents : text.length];
+                if (cur_pos < end_pos)
+                    argument_contents = text[cur_pos + 1 : end_pos + 1];
 
-                    // argument contents fetched
-                    fetch_argument_contents = false;
-                    continue;
-                }
-
-                // invalid argument content (no choice available)
-                if (! text[i].isalpha () && text[i] != '*')
-                    valid_arg_contents = false;
-
-                index_start_argument_contents = i;
+                break;
             }
 
-            else if (in_other_argument)
+            // invalid argument contents (no choice available)
+            if (! text[cur_pos].isalpha () && text[cur_pos] != '*')
+                valid_arg_contents = false;
+        }
+
+        // not in an argument
+        if (opening_bracket_pos <= 0)
+            return false;
+
+        /* Traverse the previous arguments, and find the command name */
+        bool in_prev_arg = false;
+        char prev_arg_opening_bracket = '{';
+
+        for (long cur_pos = opening_bracket_pos - 1 ; 0 <= cur_pos ; cur_pos--)
+        {
+            if (in_prev_arg)
             {
-                if (text[i] == other_argument_opening_bracket)
-                    in_other_argument = Utils.char_is_escaped (text, i);
+                if (text[cur_pos] == prev_arg_opening_bracket)
+                    in_prev_arg = Utils.char_is_escaped (text, cur_pos);
                 continue;
             }
 
-            // Maybe between two arguments,
+            // We are maybe between two arguments,
             // or between the first argument and the command name,
             // or we were not in a latex command argument.
-            else
+
+            if (text[cur_pos].isspace ())
+                continue;
+
+            // last character of the command name
+            if (text[cur_pos].isalpha () || text[cur_pos] == '*')
             {
-                if (text[i].isspace ())
-                    continue;
-
-                // last character of the command name
-                if (text[i].isalpha () || text[i] == '*')
-                {
-                    cmd_name = get_latex_command_at_index (text, i);
-                    return cmd_name != null;
-                }
-
-                // maybe the end of another argument
-                if (text[i] == '}' || text[i] == ']')
-                {
-                    if (Utils.char_is_escaped (text, i))
-                        return false;
-
-                    in_other_argument = true;
-                    other_argument_opening_bracket = text[i] == '}' ? '{' : '[';
-
-                    arguments.insert (0, text[i] == ']');
-                    continue;
-                }
-
-                return false;
+                cmd_name = get_latex_command_at_index (text, cur_pos);
+                return cmd_name != null;
             }
+
+            // maybe the end of a previous argument
+            if (text[cur_pos] == '}' || text[cur_pos] == ']')
+            {
+                if (Utils.char_is_escaped (text, cur_pos))
+                    return false;
+
+                in_prev_arg = true;
+                prev_arg_opening_bracket = text[cur_pos] == '}' ? '{' : '[';
+
+                arguments.insert (0, text[cur_pos] == ']');
+                continue;
+            }
+
+            return false;
         }
 
         return false;
     }
 
     // static because of bug #627736
+    // (and also because it's more efficient)
     private static int compare_proposals (SourceCompletionItem a, SourceCompletionItem b)
     {
         return a.text.collate (b.text);
