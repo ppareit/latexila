@@ -1,23 +1,23 @@
 # Spanish translations for latexila package.
 # Copyright (C) 2010-2011 Matias De la Puente
 # This file is distributed under the same license as the latexila package.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 # Jorge González <jorgegonz@svn.gnome.org>, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-19 10:42+0000\n"
-"PO-Revision-Date: 2011-10-01 14:08+0200\n"
-"Last-Translator: Jorge González <jorgegonz@svn.gnome.org>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"POT-Creation-Date: 2011-12-19 08:33+0000\n"
+"PO-Revision-Date: 2011-12-23 17:00+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
 msgid "View PDF"
@@ -84,7 +84,7 @@ msgstr ""
 
 #. There is a helper script in data/templates/tex2po.sh
 #: C/letter.xml:2(template/chunk)
-#, fuzzy, no-wrap
+#, no-wrap
 msgid ""
 "\n"
 "\\documentclass[a4paper,11pt]{letter}\n"
@@ -132,7 +132,7 @@ msgstr ""
 "\\closing{Saludos cordiales,}\n"
 "\n"
 "%\\cc{Otro destinatario}\n"
-"%\\ps{PD: Post Data}\n"
+"%\\ps{PD: post-data}\n"
 "%\\encl{Adjuntos}\n"
 "\n"
 "\\end{letter}\n"
@@ -494,9 +494,8 @@ msgid "Typewriter - \\texttt"
 msgstr "Máquina de escribir: \\texttt"
 
 #: ../src/latex_menu.vala:131
-#, fuzzy
 msgid "Slanted - \\textsl"
-msgstr "Inclinado: \\textsl"
+msgstr "Inclinada: \\textsl"
 
 #: ../src/latex_menu.vala:133
 msgid "Small Capitals - \\textsc"
@@ -547,18 +546,16 @@ msgid "Fo_nt Shape"
 msgstr "For_ma de la tipografía"
 
 #: ../src/latex_menu.vala:157
-#, fuzzy
 msgid "Upright - \\upshape"
-msgstr "Vertical: \\upshape"
+msgstr "Dunhill: \\upshape"
 
 #: ../src/latex_menu.vala:159
 msgid "Italic - \\itshape"
 msgstr "Cursiva: \\itshape"
 
 #: ../src/latex_menu.vala:161
-#, fuzzy
 msgid "Slanted - \\slshape"
-msgstr "Inclinado: \\slshape"
+msgstr "Inclinada: \\slshape"
 
 #: ../src/latex_menu.vala:163
 msgid "Small Capitals - \\scshape"
@@ -656,9 +653,8 @@ msgid "Circumflex accent - \\^"
 msgstr "Acento circunflejo: \\^"
 
 #: ../src/latex_menu.vala:209
-#, fuzzy
 msgid "Trema - \\\""
-msgstr "Trema: \\\""
+msgstr "Diéresis: \\\""
 
 #: ../src/latex_menu.vala:210
 msgid "Tilde - \\~"
@@ -677,7 +673,6 @@ msgid "Caron - \\v"
 msgstr "Carón: \\v"
 
 #: ../src/latex_menu.vala:214
-#, fuzzy
 msgid "Breve - \\u"
 msgstr "Breve: \\u"
 
@@ -691,16 +686,15 @@ msgstr "Cedilla: \\:"
 
 #: ../src/latex_menu.vala:218
 msgid "Ogonek - \\k"
-msgstr ""
+msgstr "Colita: \\k"
 
 #: ../src/latex_menu.vala:219
 msgid "Dot below - \\d"
 msgstr "Punto por debajo: \\d"
 
 #: ../src/latex_menu.vala:220
-#, fuzzy
 msgid "Macron below - \\b"
-msgstr "Macron: \\="
+msgstr "Macrón por debajo: \\b"
 
 #: ../src/latex_menu.vala:221
 msgid "Ring - \\r"
@@ -1355,6 +1349,8 @@ msgstr "Desplazar a la i_zquierda"
 #: ../src/main_window.vala:148
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
 msgstr ""
+"Desplazar la estructura seleccionada un elemento a la izquierda (ej. sección "
+"→ capítulo)"
 
 #: ../src/main_window.vala:150
 msgid "Shift _Right"
@@ -1363,6 +1359,8 @@ msgstr "Desplazar a la _derecha"
 #: ../src/main_window.vala:151
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
 msgstr ""
+"Desplazar la estructura seleccionada un elemento a la derecha (ej. capítulo "
+"→ sección)"
 
 #. Help
 #: ../src/main_window.vala:155
@@ -2098,3 +2096,6 @@ msgstr "Conmutar entre modo de búsqueda y de reemplazo"
 
 #~ msgid "Minimum level"
 #~ msgstr "Nivel mínimo"
+
+#~ msgid "All LaTeX Files"
+#~ msgstr "Todos los archivos de LaTeX"
