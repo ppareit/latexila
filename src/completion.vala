@@ -43,44 +43,45 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string? insert_after;
     }
 
-    private static CompletionProvider instance = null;
-    private List<SourceCompletionItem> proposals;
-    private Gee.HashMap<string, CompletionCommand?> commands;
-    // contains only environments that have extra info
-    private Gee.HashMap<string, CompletionChoice?> environments;
+    private static CompletionProvider _instance = null;
 
-    private GLib.Settings settings;
+    private GLib.Settings _settings;
+
+    private List<SourceCompletionItem> _proposals;
+    private Gee.HashMap<string, CompletionCommand?> _commands;
+    // contains only environments that have extra info
+    private Gee.HashMap<string, CompletionChoice?> _environments;
 
     // while parsing, keep track of current command/argument/choice
-    private CompletionCommand current_command;
-    private CompletionArgument current_arg;
-    private CompletionChoice current_choice;
+    private CompletionCommand _current_command;
+    private CompletionArgument _current_arg;
+    private CompletionChoice _current_choice;
 
-    private bool show_all_proposals = false;
+    private bool _show_all_proposals = false;
 
-    private Gdk.Pixbuf icon_normal_cmd;
-    private Gdk.Pixbuf icon_normal_choice;
-    private Gdk.Pixbuf icon_package_required;
+    private Gdk.Pixbuf _icon_normal_cmd;
+    private Gdk.Pixbuf _icon_normal_choice;
+    private Gdk.Pixbuf _icon_package_required;
 
-    private SourceCompletionInfo calltip_window = null;
-    private Label calltip_window_label = null;
+    private SourceCompletionInfo _calltip_window = null;
+    private Label _calltip_window_label = null;
 
     // HACK: match () is called one time and then populate () is called each time a new
     // character is typed (and also just after match () was called).
-    private bool first_populate = true;
+    private bool _first_populate = true;
 
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
-        settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        commands = new Gee.HashMap<string, CompletionCommand?> ();
-        environments = new Gee.HashMap<string, CompletionChoice?> ();
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
+        _commands = new Gee.HashMap<string, CompletionCommand?> ();
+        _environments = new Gee.HashMap<string, CompletionChoice?> ();
 
         // icons
-        icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
-        icon_normal_choice = Utils.get_pixbuf_from_stock ("completion_choice",
+        _icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
+        _icon_normal_choice = Utils.get_pixbuf_from_stock ("completion_choice",
             IconSize.MENU);
-        icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
+        _icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
             IconSize.MENU);
 
         try
@@ -94,7 +95,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
-            proposals.sort ((CompareFunc) compare_proposals);
+            _proposals.sort ((CompareFunc) compare_proposals);
         }
         catch (GLib.Error e)
         {
@@ -104,9 +105,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public static CompletionProvider get_default ()
     {
-        if (instance == null)
-            instance = new CompletionProvider ();
-        return instance;
+        if (_instance == null)
+            _instance = new CompletionProvider ();
+        return _instance;
     }
 
     public string get_name ()
@@ -118,7 +119,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         SourceCompletionActivation ret = SourceCompletionActivation.USER_REQUESTED;
 
-        if (settings.get_boolean ("interactive-completion"))
+        if (_settings.get_boolean ("interactive-completion"))
             ret |= SourceCompletionActivation.INTERACTIVE;
 
         return ret;
@@ -126,11 +127,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public bool match (SourceCompletionContext context)
     {
-        first_populate = true;
+        _first_populate = true;
 
         bool in_argument = false;
         bool valid_arg_contents = false;
-        show_all_proposals = false;
+        _show_all_proposals = false;
 
         TextIter iter = context.get_iter ();
 
@@ -147,18 +148,18 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         if (context.activation == SourceCompletionActivation.USER_REQUESTED)
         {
-            show_all_proposals = cmd == null && ! in_argument;
+            _show_all_proposals = cmd == null && ! in_argument;
             return true;
         }
 
-        if (! settings.get_boolean ("interactive-completion"))
+        if (! _settings.get_boolean ("interactive-completion"))
             return false;
 
         if (in_argument)
             return valid_arg_contents;
 
         uint min_nb_chars;
-        settings.get ("interactive-completion-num", "u", out min_nb_chars);
+        _settings.get ("interactive-completion-num", "u", out min_nb_chars);
 
         return cmd != null && min_nb_chars < cmd.length;
     }
@@ -179,22 +180,22 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 out argument_contents, out valid_arg_contents);
 
         // clear
-        if ((! show_all_proposals && cmd == null && ! in_argument)
+        if ((! _show_all_proposals && cmd == null && ! in_argument)
             || (context.activation == SourceCompletionActivation.INTERACTIVE
-                && ! settings.get_boolean ("interactive-completion"))
-            || (in_argument && ! commands.has_key (cmd_name)))
+                && ! _settings.get_boolean ("interactive-completion"))
+            || (in_argument && ! _commands.has_key (cmd_name)))
         {
             clear_context (context);
-            first_populate = false;
+            _first_populate = false;
             return;
         }
 
         // show all proposals
-        if (show_all_proposals || cmd == "\\")
+        if (_show_all_proposals || cmd == "\\")
         {
-            show_all_proposals = false;
-            context.add_proposals ((SourceCompletionProvider) this, proposals, true);
-            first_populate = false;
+            _show_all_proposals = false;
+            context.add_proposals ((SourceCompletionProvider) this, _proposals, true);
+            _first_populate = false;
             return;
         }
 
@@ -204,13 +205,13 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // try to complete a command
         if (! in_argument)
         {
-            proposals_to_filter = proposals;
+            proposals_to_filter = _proposals;
             prefix = cmd;
         }
         // try to complete a command argument choice
-        else if (valid_arg_contents && commands.has_key (cmd_name))
+        else if (valid_arg_contents && _commands.has_key (cmd_name))
         {
-            proposals_to_filter = get_argument_proposals (commands[cmd_name], arguments);
+            proposals_to_filter = get_argument_proposals (_commands[cmd_name], arguments);
             prefix = argument_contents ?? "";
         }
 
@@ -227,9 +228,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 return;
             }
 
-            if (first_populate)
+            if (_first_populate)
             {
-                CompletionCommand command = commands[cmd_name];
+                CompletionCommand command = _commands[cmd_name];
                 int num = get_argument_num (command.args, arguments);
                 if (num != -1)
                 {
@@ -270,7 +271,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         context.add_proposals ((SourceCompletionProvider) this, filtered_proposals,
             true);
 
-        first_populate = false;
+        _first_populate = false;
     }
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
@@ -401,7 +402,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string current_indent = doc.get_current_indentation (line);
 
         /* get current choice */
-        CompletionChoice? environment = environments[env_name];
+        CompletionChoice? environment = _environments[env_name];
 
         /* close environment */
 
@@ -423,16 +424,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private void init_calltip_window ()
     {
         Application app = Application.get_default ();
-        calltip_window = new SourceCompletionInfo ();
-        calltip_window.set_transient_for (app.active_window);
-        calltip_window.set_sizing (800, 200, true, true);
-        calltip_window_label = new Label (null);
-        calltip_window.set_widget (calltip_window_label);
+        _calltip_window = new SourceCompletionInfo ();
+        _calltip_window.set_transient_for (app.active_window);
+        _calltip_window.set_sizing (800, 200, true, true);
+        _calltip_window_label = new Label (null);
+        _calltip_window.set_widget (_calltip_window_label);
     }
 
     private void show_calltip_info (string markup)
     {
-        if (calltip_window == null)
+        if (_calltip_window == null)
             init_calltip_window ();
 
         MainWindow win = Application.get_default ().active_window;
@@ -453,19 +454,19 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             }
         }
 
-        calltip_window_label.set_markup (markup);
+        _calltip_window_label.set_markup (markup);
 
-        calltip_window.set_transient_for (win);
-        calltip_window.move_to_iter (win.active_view, pos);
-        calltip_window.show_all ();
+        _calltip_window.set_transient_for (win);
+        _calltip_window.move_to_iter (win.active_view, pos);
+        _calltip_window.show_all ();
     }
 
     public void hide_calltip_window ()
     {
-        if (calltip_window == null)
+        if (_calltip_window == null)
             return;
 
-        calltip_window.hide ();
+        _calltip_window.hide ();
     }
 
     private void parser_start (MarkupParseContext context, string name,
@@ -477,16 +478,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 break;
 
             case "command":
-                current_command = CompletionCommand ();
+                _current_command = CompletionCommand ();
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "name":
-                            current_command.name = "\\" + attr_values[i];
+                            _current_command.name = "\\" + attr_values[i];
                             break;
                         case "package":
-                            current_command.package = attr_values[i];
+                            _current_command.package = attr_values[i];
                             break;
                         case "environment":
                             break;
@@ -498,17 +499,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 break;
 
             case "argument":
-                current_arg = CompletionArgument ();
-                current_arg.optional = false;
+                _current_arg = CompletionArgument ();
+                _current_arg.optional = false;
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "label":
-                            current_arg.label = attr_values[i];
+                            _current_arg.label = attr_values[i];
                             break;
                         case "type":
-                            current_arg.optional = attr_values[i] == "optional";
+                            _current_arg.optional = attr_values[i] == "optional";
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -518,16 +519,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 break;
 
             case "choice":
-                current_choice = CompletionChoice ();
+                _current_choice = CompletionChoice ();
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "name":
-                            current_choice.name = attr_values[i];
+                            _current_choice.name = attr_values[i];
                             break;
                         case "package":
-                            current_choice.package = attr_values[i];
+                            _current_choice.package = attr_values[i];
                             break;
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
@@ -557,28 +558,29 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         switch (name)
         {
             case "command":
-                Gdk.Pixbuf pixbuf = current_command.package != null
-                    ? icon_package_required : icon_normal_cmd;
-                var item = new SourceCompletionItem (current_command.name,
-                    get_command_text (current_command),
+                Gdk.Pixbuf pixbuf = _current_command.package != null
+                    ? _icon_package_required : _icon_normal_cmd;
+                var item = new SourceCompletionItem (_current_command.name,
+                    get_command_text (_current_command),
                     pixbuf,
-                    get_command_info (current_command));
+                    get_command_info (_current_command));
 
-                proposals.append (item);
+                _proposals.append (item);
 
                 // we don't need to store commands that have no argument
-                if (current_command.args.length > 0)
-                    commands[current_command.name] = current_command;
+                if (_current_command.args.length > 0)
+                    _commands[_current_command.name] = _current_command;
                 break;
 
             case "argument":
-                current_command.args += current_arg;
+                _current_command.args += _current_arg;
                 break;
 
             case "choice":
-                current_arg.choices += current_choice;
-                if (current_choice.insert != null || current_choice.insert_after != null)
-                    environments[current_choice.name] = current_choice;
+                _current_arg.choices += _current_choice;
+                if (_current_choice.insert != null
+                    || _current_choice.insert_after != null)
+                    _environments[_current_choice.name] = _current_choice;
                 break;
         }
     }
@@ -589,11 +591,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         switch (context.get_element ())
         {
             case "insert":
-                current_choice.insert = text;
+                _current_choice.insert = text;
                 break;
 
             case "insert_after":
-                current_choice.insert_after = text;
+                _current_choice.insert_after = text;
                 break;
         }
     }
@@ -620,10 +622,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             if (choice.package != null)
             {
                 info2 = info + "\nPackage: " + choice.package;
-                pixbuf = icon_package_required;
+                pixbuf = _icon_package_required;
             }
             else
-                pixbuf = icon_normal_choice;
+                pixbuf = _icon_normal_choice;
 
             SourceCompletionItem item = new SourceCompletionItem (
                 choice.name, choice.name, pixbuf, info2 ?? info);
