@@ -74,8 +74,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private CompletionProvider ()
     {
         _settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        _commands = new Gee.HashMap<string, CompletionCommand?> ();
-        _environments = new Gee.HashMap<string, CompletionChoice?> ();
 
         // icons
         _icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
@@ -84,23 +82,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         _icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
             IconSize.MENU);
 
-        try
-        {
-            File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
-
-            uint8[] chars;
-            file.load_contents (null, out chars);
-            string contents = (string) (owned) chars;
-
-            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
-            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
-            context.parse (contents, -1);
-            _proposals.sort ((CompareFunc) compare_proposals);
-        }
-        catch (GLib.Error e)
-        {
-            warning ("Impossible to load completion data: %s", e.message);
-        }
+        load_data ();
     }
 
     public static CompletionProvider get_default ()
@@ -469,137 +451,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         _calltip_window.hide ();
     }
 
-    private void parser_start (MarkupParseContext context, string name,
-        string[] attr_names, string[] attr_values) throws MarkupError
-    {
-        switch (name)
-        {
-            case "commands":
-                break;
-
-            case "command":
-                _current_command = CompletionCommand ();
-                for (int i = 0 ; i < attr_names.length ; i++)
-                {
-                    switch (attr_names[i])
-                    {
-                        case "name":
-                            _current_command.name = "\\" + attr_values[i];
-                            break;
-                        case "package":
-                            _current_command.package = attr_values[i];
-                            break;
-                        case "environment":
-                            break;
-                        default:
-                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
-                                "unknown command attribute \"" + attr_names[i] + "\"");
-                    }
-                }
-                break;
-
-            case "argument":
-                _current_arg = CompletionArgument ();
-                _current_arg.optional = false;
-                for (int i = 0 ; i < attr_names.length ; i++)
-                {
-                    switch (attr_names[i])
-                    {
-                        case "label":
-                            _current_arg.label = attr_values[i];
-                            break;
-                        case "type":
-                            _current_arg.optional = attr_values[i] == "optional";
-                            break;
-                        default:
-                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
-                                "unknown argument attribute \"" + attr_names[i] + "\"");
-                    }
-                }
-                break;
-
-            case "choice":
-                _current_choice = CompletionChoice ();
-                for (int i = 0 ; i < attr_names.length ; i++)
-                {
-                    switch (attr_names[i])
-                    {
-                        case "name":
-                            _current_choice.name = attr_values[i];
-                            break;
-                        case "package":
-                            _current_choice.package = attr_values[i];
-                            break;
-                        default:
-                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
-                                "unknown choice attribute \"" + attr_names[i] + "\"");
-                    }
-                }
-                break;
-
-            // insert and insert_after don't contain any attributes, but
-            // contain content, which is parsed in parser_text()
-            case "insert":
-            case "insert_after":
-                break;
-
-            case "placeholder":
-            case "component":
-                break;
-
-            default:
-                throw new MarkupError.UNKNOWN_ELEMENT (
-                    "unknown element \"" + name + "\"");
-        }
-    }
-
-    private void parser_end (MarkupParseContext context, string name) throws MarkupError
-    {
-        switch (name)
-        {
-            case "command":
-                Gdk.Pixbuf pixbuf = _current_command.package != null
-                    ? _icon_package_required : _icon_normal_cmd;
-                var item = new SourceCompletionItem (_current_command.name,
-                    get_command_text (_current_command),
-                    pixbuf,
-                    get_command_info (_current_command));
-
-                _proposals.append (item);
-
-                // we don't need to store commands that have no argument
-                if (_current_command.args.length > 0)
-                    _commands[_current_command.name] = _current_command;
-                break;
-
-            case "argument":
-                _current_command.args += _current_arg;
-                break;
-
-            case "choice":
-                _current_arg.choices += _current_choice;
-                if (_current_choice.insert != null
-                    || _current_choice.insert_after != null)
-                    _environments[_current_choice.name] = _current_choice;
-                break;
-        }
-    }
-
-    private void parser_text (MarkupParseContext context, string text, size_t text_len)
-        throws MarkupError
-    {
-        switch (context.get_element ())
-        {
-            case "insert":
-                _current_choice.insert = text;
-                break;
-
-            case "insert_after":
-                _current_choice.insert_after = text;
-                break;
-        }
-    }
-
     private unowned List<SourceCompletionItem>? get_argument_proposals (
         CompletionCommand cmd, Gee.ArrayList<bool> arguments)
     {
@@ -861,6 +712,194 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // see bug #618004
         List<SourceCompletionItem> empty_proposals = null;
         context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
+    }
+
+    /*************************************************************************/
+    // Load the data contained in the XML file
+
+    private void load_data ()
+    {
+        _commands = new Gee.HashMap<string, CompletionCommand?> ();
+        _environments = new Gee.HashMap<string, CompletionChoice?> ();
+
+        try
+        {
+            File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
+
+            uint8[] chars;
+            file.load_contents (null, out chars);
+            string contents = (string) (owned) chars;
+
+            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
+            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+            _proposals.sort ((CompareFunc) compare_proposals);
+        }
+        catch (GLib.Error e)
+        {
+            warning ("Impossible to load completion data: %s", e.message);
+        }
+    }
+
+    private void parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "commands":
+                break;
+
+            case "command":
+                parser_add_command (attr_names, attr_values);
+                break;
+
+            case "argument":
+                parser_add_argument (attr_names, attr_values);
+                break;
+
+            case "choice":
+                parser_add_choice (attr_names, attr_values);
+                break;
+
+            // insert and insert_after don't contain any attributes, but
+            // contain content, which is parsed in parser_text()
+            case "insert":
+            case "insert_after":
+                break;
+
+            // not yet supported
+            case "placeholder":
+            case "component":
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private void parser_add_command (string[] attr_names, string[] attr_values)
+        throws MarkupError
+    {
+        _current_command = CompletionCommand ();
+        for (int attr_num = 0 ; attr_num < attr_names.length ; attr_num++)
+        {
+            switch (attr_names[attr_num])
+            {
+                case "name":
+                    _current_command.name = "\\" + attr_values[attr_num];
+                    break;
+
+                case "package":
+                    _current_command.package = attr_values[attr_num];
+                    break;
+
+                // not yet supported
+                case "environment":
+                    break;
+
+                default:
+                    throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                        "unknown command attribute \"" + attr_names[attr_num] + "\"");
+            }
+        }
+    }
+
+    private void parser_add_argument (string[] attr_names, string[] attr_values)
+        throws MarkupError
+    {
+        _current_arg = CompletionArgument ();
+        _current_arg.optional = false;
+
+        for (int attr_num = 0 ; attr_num < attr_names.length ; attr_num++)
+        {
+            switch (attr_names[attr_num])
+            {
+                case "label":
+                    _current_arg.label = attr_values[attr_num];
+                    break;
+
+                case "type":
+                    _current_arg.optional = attr_values[attr_num] == "optional";
+                    break;
+
+                default:
+                    throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                        "unknown argument attribute \"" + attr_names[attr_num] + "\"");
+            }
+        }
+    }
+
+    private void parser_add_choice (string[] attr_names, string[] attr_values)
+        throws MarkupError
+    {
+        _current_choice = CompletionChoice ();
+
+        for (int attr_num = 0 ; attr_num < attr_names.length ; attr_num++)
+        {
+            switch (attr_names[attr_num])
+            {
+                case "name":
+                    _current_choice.name = attr_values[attr_num];
+                    break;
+
+                case "package":
+                    _current_choice.package = attr_values[attr_num];
+                    break;
+
+                default:
+                    throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                        "unknown choice attribute \"" + attr_names[attr_num] + "\"");
+            }
+        }
+    }
+
+    private void parser_end (MarkupParseContext context, string name) throws MarkupError
+    {
+        switch (name)
+        {
+            case "command":
+                Gdk.Pixbuf pixbuf = _current_command.package != null
+                    ? _icon_package_required : _icon_normal_cmd;
+
+                var item = new SourceCompletionItem (_current_command.name,
+                    get_command_text (_current_command),
+                    pixbuf,
+                    get_command_info (_current_command));
+
+                _proposals.append (item);
+
+                // we don't need to store commands that have no argument
+                if (0 < _current_command.args.length)
+                    _commands[_current_command.name] = _current_command;
+                break;
+
+            case "argument":
+                _current_command.args += _current_arg;
+                break;
+
+            case "choice":
+                _current_arg.choices += _current_choice;
+                if (_current_choice.insert != null
+                    || _current_choice.insert_after != null)
+                    _environments[_current_choice.name] = _current_choice;
+                break;
+        }
+    }
+
+    private void parser_text (MarkupParseContext context, string text, size_t text_len)
+        throws MarkupError
+    {
+        switch (context.get_element ())
+        {
+            case "insert":
+                _current_choice.insert = text;
+                break;
+
+            case "insert_after":
+                _current_choice.insert_after = text;
+                break;
+        }
     }
 
     /*
