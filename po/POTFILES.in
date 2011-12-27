@@ -3,7 +3,6 @@
 [encoding: UTF-8]
 data/build_tools/build_tools.pot
 data/templates/templates.pot
-src/application.vala
 src/app_settings.vala
 src/build_tool_dialog.vala
 src/build_tool_runner.vala
@@ -20,6 +19,7 @@ src/document.vala
 src/document_view.vala
 src/encodings.vala
 src/file_browser.vala
+src/latexila.vala
 src/latex_menu.vala
 src/latex_post_processor.vala
 src/main.vala
