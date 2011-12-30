@@ -15,6 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors: Sébastien Wilmet
+ *          Pieter Pareit
  */
 
 using Gtk;
@@ -57,18 +60,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private CompletionArgument _current_arg;
     private CompletionChoice _current_choice;
 
-    private bool _show_all_proposals = false;
-
-    private Gdk.Pixbuf _icon_normal_cmd;
-    private Gdk.Pixbuf _icon_normal_choice;
+    private Gdk.Pixbuf _icon_cmd;
+    private Gdk.Pixbuf _icon_choice;
     private Gdk.Pixbuf _icon_package_required;
 
     private SourceCompletionInfo _calltip_window = null;
     private Label _calltip_window_label = null;
-
-    // HACK: match () is called one time and then populate () is called each time a new
-    // character is typed (and also just after match () was called).
-    private bool _first_populate = true;
 
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
@@ -76,9 +73,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         _settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
 
         // icons
-        _icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
-        _icon_normal_choice = Utils.get_pixbuf_from_stock ("completion_choice",
-            IconSize.MENU);
+        _icon_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
+        _icon_choice = Utils.get_pixbuf_from_stock ("completion_choice", IconSize.MENU);
         _icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
             IconSize.MENU);
 
@@ -89,6 +85,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         if (_instance == null)
             _instance = new CompletionProvider ();
+
         return _instance;
     }
 
@@ -99,22 +96,15 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public SourceCompletionActivation get_activation ()
     {
-        SourceCompletionActivation ret = SourceCompletionActivation.USER_REQUESTED;
-
-        if (_settings.get_boolean ("interactive-completion"))
-            ret |= SourceCompletionActivation.INTERACTIVE;
-
-        return ret;
+        // This function is called only once, so if we disable interactive
+        // completion here, there would be a problem because in this case,
+        // if the user enables the option, it will take effect only on restart.
+        return SourceCompletionActivation.USER_REQUESTED
+            | SourceCompletionActivation.INTERACTIVE;
     }
 
     public bool match (SourceCompletionContext context)
     {
-        _first_populate = true;
-
-        bool in_argument = false;
-        bool valid_arg_contents = false;
-        _show_all_proposals = false;
-
         TextIter iter = context.get_iter ();
 
         // if text selected, NO completion
@@ -122,22 +112,23 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (buf.has_selection)
             return false;
 
-        string? cmd = get_latex_command_at_iter (iter);
-
-        if (cmd == null)
-            in_argument = in_latex_command_argument (iter, null, null, null,
-                out valid_arg_contents);
-
+        /* Activation: user request */
         if (context.activation == SourceCompletionActivation.USER_REQUESTED)
-        {
-            _show_all_proposals = cmd == null && ! in_argument;
             return true;
-        }
 
+        /* Activation: interactive */
         if (! _settings.get_boolean ("interactive-completion"))
             return false;
 
-        if (in_argument)
+        string? cmd = get_latex_command_at_iter (iter);
+        bool in_arg = false;
+        bool valid_arg_contents = false;
+
+        if (cmd == null)
+            in_arg = in_latex_command_argument (iter, null, null, null,
+                out valid_arg_contents);
+
+        if (in_arg)
             return valid_arg_contents;
 
         uint min_nb_chars;
@@ -149,81 +140,100 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     public void populate (SourceCompletionContext context)
     {
         TextIter iter = context.get_iter ();
-        string? cmd = get_latex_command_at_iter (iter);
 
-        bool in_argument = false;
-        string cmd_name = null;
+        /* The cursor is in a command name */
+        string? cmd = get_latex_command_at_iter (iter);
+        if (cmd != null)
+        {
+            populate_command (context, cmd);
+            return;
+        }
+
+        /* The cursor is probably in a command's argument */
+
+        string arg_cmd = null;
         Gee.ArrayList<bool> arguments = new Gee.ArrayList<bool> ();
-        string argument_contents = null;
+        string arg_contents = null;
         bool valid_arg_contents = false;
 
-        if (cmd == null)
-            in_argument = in_latex_command_argument (iter, out cmd_name, out arguments,
-                out argument_contents, out valid_arg_contents);
+        bool in_arg = in_latex_command_argument (iter, out arg_cmd, out arguments,
+            out arg_contents, out valid_arg_contents);
 
-        // clear
-        if ((! _show_all_proposals && cmd == null && ! in_argument)
-            || (context.activation == SourceCompletionActivation.INTERACTIVE
-                && ! _settings.get_boolean ("interactive-completion"))
-            || (in_argument && ! _commands.has_key (cmd_name)))
+        bool user_request =
+            context.activation == SourceCompletionActivation.USER_REQUESTED;
+        if (! in_arg)
         {
-            clear_context (context);
-            _first_populate = false;
+            if (user_request)
+                show_all_proposals (context);
+            else
+                show_no_proposals (context);
             return;
         }
 
-        // show all proposals
-        if (_show_all_proposals || cmd == "\\")
+        /* OK, we are in an argument */
+
+        // invalid argument's command
+        if (! _commands.has_key (arg_cmd))
         {
-            _show_all_proposals = false;
-            context.add_proposals ((SourceCompletionProvider) this, _proposals, true);
-            _first_populate = false;
+            show_no_proposals (context);
             return;
         }
 
-        // filter proposals
         unowned List<SourceCompletionItem> proposals_to_filter = null;
-        string prefix = null;
-        // try to complete a command
-        if (! in_argument)
-        {
-            proposals_to_filter = _proposals;
-            prefix = cmd;
-        }
-        // try to complete a command argument choice
-        else if (valid_arg_contents && _commands.has_key (cmd_name))
-        {
-            proposals_to_filter = get_argument_proposals (_commands[cmd_name], arguments);
-            prefix = argument_contents ?? "";
-        }
 
-        // show calltip?
-        if (in_argument && proposals_to_filter == null)
-        {
-            // show calltip only on user request
-            // Attention, clear the context before comparing the activation is not a
-            // really good idea... ;)
-            if (context.activation == SourceCompletionActivation.INTERACTIVE)
-            {
-                clear_context (context);
-                hide_calltip_window ();
-                return;
-            }
+        if (valid_arg_contents)
+            proposals_to_filter = get_argument_proposals (_commands[arg_cmd], arguments);
 
-            if (_first_populate)
-            {
-                CompletionCommand command = _commands[cmd_name];
-                int num = get_argument_num (command.args, arguments);
-                if (num != -1)
-                {
-                    string info = get_command_info (command, num);
-                    show_calltip_info (info);
-                }
-                return;
-            }
+        if (proposals_to_filter == null)
+        {
+            if (user_request)
+                show_calltip (arg_cmd, arguments);
+            else
+                show_no_proposals (context);
+            return;
         }
 
-        hide_calltip_window ();
+        show_filtered_proposals (context, proposals_to_filter, arg_contents);
+    }
+
+    private void populate_command (SourceCompletionContext context, string cmd)
+    {
+        if (cmd == "\\")
+        {
+            show_all_proposals (context);
+            return;
+        }
+
+        show_filtered_proposals (context, _proposals, cmd);
+    }
+
+    private void show_no_proposals (SourceCompletionContext context)
+    {
+        // FIXME: maybe this method is not sure, because sometimes segfault occur,
+        // but it's really difficult to diagnose...
+        // see bug #618004
+
+        // The second argument can not be null so we use a variable...
+        // The vapi should be fixed.
+        List<SourceCompletionItem> empty_proposals = null;
+        context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
+    }
+
+    private void show_all_proposals (SourceCompletionContext context)
+    {
+        context.add_proposals ((SourceCompletionProvider) this, _proposals, true);
+    }
+
+    private void show_filtered_proposals (SourceCompletionContext context,
+        List<SourceCompletionItem> proposals_to_filter, string? prefix)
+    {
+        // No filtering needed.
+        if (prefix == null || prefix == "")
+        {
+            context.add_proposals ((SourceCompletionProvider) this,
+                proposals_to_filter, true);
+            return;
+        }
 
         List<SourceCompletionItem> filtered_proposals = null;
         foreach (SourceCompletionItem item in proposals_to_filter)
@@ -232,28 +242,33 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 filtered_proposals.prepend (item);
         }
 
-        // no match, show a message so the completion widget doesn't disappear
-        if (filtered_proposals == null)
+        // Since we have prepend items we must reverse the list to keep the proposals
+        // in ascending order.
+        if (filtered_proposals != null)
+            filtered_proposals.reverse ();
+
+        // No match, show a message so the completion widget doesn't disappear.
+        else
         {
             var dummy_proposal = new SourceCompletionItem (_("No matching proposal"),
                 "", null, null);
             filtered_proposals.prepend (dummy_proposal);
         }
 
-        // Since we have prepend items we must reverse the list to keep the proposals
-        // in ascending order.
-        // FIXME maybe it's better to sort the proposals in descending order so when
-        // we prepend items it's in ascending order and we avoid reversing the list each
-        // time. But when we have to display all proposals (see above) it takes more time,
-        // but generally that occurs less often unless the minimum number of chars for
-        // interactive completion is 0.
-        else
-            filtered_proposals.reverse ();
+        context.add_proposals ((SourceCompletionProvider) this, filtered_proposals, true);
+    }
 
-        context.add_proposals ((SourceCompletionProvider) this, filtered_proposals,
-            true);
+    private void show_calltip (string arg_cmd, Gee.ArrayList<bool> arguments)
+    {
+        return_if_fail (_commands.has_key (arg_cmd));
 
-        _first_populate = false;
+        CompletionCommand command = _commands[arg_cmd];
+        int num = get_argument_num (command.args, arguments);
+        if (num != -1)
+        {
+            string info = get_command_info (command, num);
+            show_calltip_info (info);
+        }
     }
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
@@ -267,16 +282,16 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // if it's an argument choice
         if (cmd == null && text[0] != '\\')
         {
-            string cmd_name = null;
-            string argument_contents = null;
+            string arg_cmd = null;
+            string arg_contents = null;
 
-            bool in_argument = in_latex_command_argument (iter, out cmd_name, null,
-                out argument_contents);
+            bool in_arg = in_latex_command_argument (iter, out arg_cmd, null,
+                out arg_contents);
 
-            if (in_argument)
+            if (in_arg)
             {
-                activate_proposal_argument_choice (proposal, iter, cmd_name,
-                    argument_contents);
+                activate_proposal_argument_choice (proposal, iter, arg_cmd,
+                    arg_contents);
                 return true;
             }
         }
@@ -314,11 +329,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     }
 
     private void activate_proposal_argument_choice (SourceCompletionProposal proposal,
-        TextIter iter, string cmd_name, string? argument_contents)
+        TextIter iter, string arg_cmd, string? arg_contents)
     {
         string text = proposal.get_text ();
 
-        long index_start = argument_contents != null ? argument_contents.length : 0;
+        long index_start = arg_contents != null ? arg_contents.length : 0;
         string text_to_insert = text[index_start : text.length];
 
         TextBuffer doc = iter.get_buffer ();
@@ -326,7 +341,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         doc.insert (ref iter, text_to_insert, -1);
 
         // close environment: \begin{env} => \end{env}
-        if (cmd_name == "\\begin")
+        if (arg_cmd == "\\begin")
             close_environment (text, iter);
 
         // TODO place cursor, go to next argument, if any
@@ -476,7 +491,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 pixbuf = _icon_package_required;
             }
             else
-                pixbuf = _icon_normal_choice;
+                pixbuf = _icon_choice;
 
             SourceCompletionItem item = new SourceCompletionItem (
                 choice.name, choice.name, pixbuf, info2 ?? info);
@@ -607,14 +622,14 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
      * Returns true if iter is in a latex command argument.
      */
     private bool in_latex_command_argument (TextIter iter,
-                                            out string cmd_name = null,
+                                            out string arg_cmd = null,
                                             out Gee.ArrayList<bool> arguments = null,
-                                            out string argument_contents = null,
+                                            out string arg_contents = null,
                                             out bool valid_arg_contents = null)
     {
-        cmd_name = null;
+        arg_cmd = null;
         arguments = new Gee.ArrayList<bool> ();
-        argument_contents = null;
+        arg_contents = null;
         valid_arg_contents = true;
 
         string text = get_text_line_at_iter (iter);
@@ -635,7 +650,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 arguments.insert (0, text[cur_pos] == '[');
 
                 if (cur_pos < end_pos)
-                    argument_contents = text[cur_pos + 1 : end_pos + 1];
+                    arg_contents = text[cur_pos + 1 : end_pos + 1];
 
                 break;
             }
@@ -672,8 +687,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             // last character of the command name
             if (text[cur_pos].isalpha () || text[cur_pos] == '*')
             {
-                cmd_name = get_latex_command_at_index (text, cur_pos);
-                return cmd_name != null;
+                arg_cmd = get_latex_command_at_index (text, cur_pos);
+                return arg_cmd != null;
             }
 
             // maybe the end of a previous argument
@@ -700,18 +715,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private static int compare_proposals (SourceCompletionItem a, SourceCompletionItem b)
     {
         return a.text.collate (b.text);
-    }
-
-    private void clear_context (SourceCompletionContext context)
-    {
-        // the second argument can not be null so we use a variable...
-        // the vapi should be fixed
-
-        // FIXME: maybe this method is not sure, because sometimes segfault occur,
-        // but it's really difficult to diagnose...
-        // see bug #618004
-        List<SourceCompletionItem> empty_proposals = null;
-        context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
     }
 
     /*************************************************************************/
@@ -860,7 +863,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         {
             case "command":
                 Gdk.Pixbuf pixbuf = _current_command.package != null
-                    ? _icon_package_required : _icon_normal_cmd;
+                    ? _icon_package_required : _icon_cmd;
 
                 var item = new SourceCompletionItem (_current_command.name,
                     get_command_text (_current_command),
@@ -869,7 +872,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
                 _proposals.append (item);
 
-                // we don't need to store commands that have no argument
+                // We don't need to store commands that have no arguments,
+                // they are only in _proposals, it's sufficient.
                 if (0 < _current_command.args.length)
                     _commands[_current_command.name] = _current_command;
                 break;
