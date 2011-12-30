@@ -112,29 +112,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (buf.has_selection)
             return false;
 
-        /* Activation: user request */
-        if (context.activation == SourceCompletionActivation.USER_REQUESTED)
+        if (is_user_request (context))
             return true;
 
-        /* Activation: interactive */
-        if (! _settings.get_boolean ("interactive-completion"))
-            return false;
-
-        string? cmd = get_latex_command_at_iter (iter);
-        bool in_arg = false;
-        bool valid_arg_contents = false;
-
-        if (cmd == null)
-            in_arg = in_latex_command_argument (iter, null, null, null,
-                out valid_arg_contents);
-
-        if (in_arg)
-            return valid_arg_contents;
-
-        uint min_nb_chars;
-        _settings.get ("interactive-completion-num", "u", out min_nb_chars);
-
-        return cmd != null && min_nb_chars < cmd.length;
+        // Since get_activation() is not dynamic, we do that here.
+        return _settings.get_boolean ("interactive-completion");
     }
 
     public void populate (SourceCompletionContext context)
@@ -159,8 +141,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         bool in_arg = in_latex_command_argument (iter, out arg_cmd, out arguments,
             out arg_contents, out valid_arg_contents);
 
-        bool user_request =
-            context.activation == SourceCompletionActivation.USER_REQUESTED;
+        bool user_request = is_user_request (context);
         if (! in_arg)
         {
             if (user_request)
@@ -198,6 +179,18 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private void populate_command (SourceCompletionContext context, string cmd)
     {
+        if (! is_user_request (context))
+        {
+            uint min_nb_chars;
+            _settings.get ("interactive-completion-num", "u", out min_nb_chars);
+
+            if (cmd.length <= min_nb_chars)
+            {
+                show_no_proposals (context);
+                return;
+            }
+        }
+
         if (cmd == "\\")
         {
             show_all_proposals (context);
@@ -207,6 +200,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         show_filtered_proposals (context, _proposals, cmd);
     }
 
+    private bool is_user_request (SourceCompletionContext context)
+    {
+        return context.activation == SourceCompletionActivation.USER_REQUESTED;
+    }
+
+    // It has the same effect as returning false in match().
     private void show_no_proposals (SourceCompletionContext context)
     {
         // FIXME: maybe this method is not sure, because sometimes segfault occur,
