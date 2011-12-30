@@ -46,6 +46,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string? insert_after;
     }
 
+    struct ArgumentContext
+    {
+        string cmd_name;
+        string arg_contents;
+
+        // After the command name, list the arguments types encountered.
+        // The last one is the argument where the cursor is.
+        // The value is 'true' for an optional argument.
+        Gee.ArrayList<bool> args_types;
+    }
+
     private static CompletionProvider _instance = null;
 
     private GLib.Settings _settings;
@@ -123,58 +134,30 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         TextIter iter = context.get_iter ();
 
-        /* The cursor is in a command name */
+        // Is the cursor in a command name?
         string? cmd = get_latex_command_at_iter (iter);
+
         if (cmd != null)
         {
             populate_command (context, cmd);
             return;
         }
 
-        /* The cursor is probably in a command's argument */
+        // Is the cursor in a command's argument?
+        ArgumentContext info;
+        bool in_arg = in_latex_command_argument (iter, out info);
 
-        string arg_cmd = null;
-        Gee.ArrayList<bool> arguments = new Gee.ArrayList<bool> ();
-        string arg_contents = null;
-        bool valid_arg_contents = false;
-
-        bool in_arg = in_latex_command_argument (iter, out arg_cmd, out arguments,
-            out arg_contents, out valid_arg_contents);
-
-        bool user_request = is_user_request (context);
-        if (! in_arg)
+        if (in_arg)
         {
-            if (user_request)
-                show_all_proposals (context);
-            else
-                show_no_proposals (context);
+            populate_argument (context, info);
             return;
         }
 
-        /* OK, we are in an argument */
-
-        // invalid argument's command
-        if (! _commands.has_key (arg_cmd))
-        {
+        // Neither in a command name, nor an argument.
+        if (is_user_request (context))
+            show_all_proposals (context);
+        else
             show_no_proposals (context);
-            return;
-        }
-
-        unowned List<SourceCompletionItem> proposals_to_filter = null;
-
-        if (valid_arg_contents)
-            proposals_to_filter = get_argument_proposals (_commands[arg_cmd], arguments);
-
-        if (proposals_to_filter == null)
-        {
-            if (user_request)
-                show_calltip (arg_cmd, arguments);
-            else
-                show_no_proposals (context);
-            return;
-        }
-
-        show_filtered_proposals (context, proposals_to_filter, arg_contents);
     }
 
     private void populate_command (SourceCompletionContext context, string cmd)
@@ -198,6 +181,30 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
 
         show_filtered_proposals (context, _proposals, cmd);
+    }
+
+    private void populate_argument (SourceCompletionContext context, ArgumentContext info)
+    {
+        // invalid argument's command
+        if (! _commands.has_key (info.cmd_name))
+        {
+            show_no_proposals (context);
+            return;
+        }
+
+        unowned List<SourceCompletionItem> proposals_to_filter =
+            get_argument_proposals (info);
+
+        if (proposals_to_filter == null)
+        {
+            if (is_user_request (context))
+                show_calltip (info.cmd_name, info.args_types);
+            else
+                show_no_proposals (context);
+            return;
+        }
+
+        show_filtered_proposals (context, proposals_to_filter, info.arg_contents);
     }
 
     private bool is_user_request (SourceCompletionContext context)
@@ -281,16 +288,14 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // if it's an argument choice
         if (cmd == null && text[0] != '\\')
         {
-            string arg_cmd = null;
-            string arg_contents = null;
+            ArgumentContext info;
 
-            bool in_arg = in_latex_command_argument (iter, out arg_cmd, null,
-                out arg_contents);
+            bool in_arg = in_latex_command_argument (iter, out info);
 
             if (in_arg)
             {
-                activate_proposal_argument_choice (proposal, iter, arg_cmd,
-                    arg_contents);
+                activate_proposal_argument_choice (proposal, iter, info.cmd_name,
+                    info.arg_contents);
                 return true;
             }
         }
@@ -466,14 +471,14 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     }
 
     private unowned List<SourceCompletionItem>? get_argument_proposals (
-        CompletionCommand cmd, Gee.ArrayList<bool> arguments)
+        ArgumentContext arg_info)
     {
-        if (cmd.args.length == 0)
-            return null;
+        return_val_if_fail (_commands.has_key (arg_info.cmd_name), null);
 
-        string info = get_command_info (cmd);
+        CompletionCommand cmd = _commands[arg_info.cmd_name];
+        string cmd_info = get_command_info (cmd);
 
-        int num = get_argument_num (cmd.args, arguments);
+        int num = get_argument_num (cmd.args, arg_info.args_types);
         if (num == -1)
             return null;
 
@@ -482,18 +487,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         foreach (CompletionChoice choice in arg.choices)
         {
-            string info2 = null;
             Gdk.Pixbuf pixbuf;
             if (choice.package != null)
             {
-                info2 = info + "\nPackage: " + choice.package;
+                cmd_info += "\nPackage: " + choice.package;
                 pixbuf = _icon_package_required;
             }
             else
                 pixbuf = _icon_choice;
 
             SourceCompletionItem item = new SourceCompletionItem (
-                choice.name, choice.name, pixbuf, info2 ?? info);
+                choice.name, choice.name, pixbuf, cmd_info);
             items.prepend (item);
         }
 
@@ -504,17 +508,23 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return items;
     }
 
+    /* Get argument number (begins at 1).
+     * 'all_args': all the possible arguments of a LaTeX command.
+     * 'args': the encounter arguments, beginning just after the command name.
+     * Returns -1 if it doesn't match.
+     */
     private int get_argument_num (CompletionArgument[] all_args,
         Gee.ArrayList<bool> args)
     {
-        return_val_if_fail (args.size <= all_args.length, -1);
+        if (all_args.length < args.size)
+            return -1;
 
         int num = 0;
         foreach (bool arg in args)
         {
             while (true)
             {
-                if (num >= all_args.length)
+                if (all_args.length <= num)
                     return -1;
 
                 if (all_args[num].optional == arg)
@@ -608,28 +618,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return null;
     }
 
-    /* Are we in a latex command argument?
-     * If yes, we also want to know:
-     *     - the command name
-     *     - the arguments: true if optional
-     *       The last argument is the one where we are.
-     *       We use an ArrayList because a dynamic array as an out param is not supported.
-     *     - the current argument contents
-     *     - if the argument contents is valid, i.e. if some choices could exist.
-     *       Valid chars are letters and '*'. If the argument contents contains other char
-     *       it is considered as not valid because no choice contain such chars.
-     * Returns true if iter is in a latex command argument.
-     */
-    private bool in_latex_command_argument (TextIter iter,
-                                            out string arg_cmd = null,
-                                            out Gee.ArrayList<bool> arguments = null,
-                                            out string arg_contents = null,
-                                            out bool valid_arg_contents = null)
+    private bool in_latex_command_argument (TextIter iter, out ArgumentContext info)
     {
-        arg_cmd = null;
-        arguments = new Gee.ArrayList<bool> ();
-        arg_contents = null;
-        valid_arg_contents = true;
+        info = ArgumentContext ();
+        info.cmd_name = null;
+        info.arg_contents = null;
+        info.args_types = new Gee.ArrayList<bool> ();
 
         string text = get_text_line_at_iter (iter);
         long end_pos = text.length - 1;
@@ -646,17 +640,13 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             if (opening_bracket)
             {
                 opening_bracket_pos = cur_pos;
-                arguments.insert (0, text[cur_pos] == '[');
+                info.args_types.insert (0, text[cur_pos] == '[');
 
                 if (cur_pos < end_pos)
-                    arg_contents = text[cur_pos + 1 : end_pos + 1];
+                    info.arg_contents = text[cur_pos + 1 : end_pos + 1];
 
                 break;
             }
-
-            // invalid argument contents (no choice available)
-            if (! text[cur_pos].isalpha () && text[cur_pos] != '*')
-                valid_arg_contents = false;
         }
 
         // not in an argument
@@ -686,8 +676,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             // last character of the command name
             if (text[cur_pos].isalpha () || text[cur_pos] == '*')
             {
-                arg_cmd = get_latex_command_at_index (text, cur_pos);
-                return arg_cmd != null;
+                info.cmd_name = get_latex_command_at_index (text, cur_pos);
+                return info.cmd_name != null;
             }
 
             // maybe the end of a previous argument
@@ -699,7 +689,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 in_prev_arg = true;
                 prev_arg_opening_bracket = text[cur_pos] == '}' ? '{' : '[';
 
-                arguments.insert (0, text[cur_pos] == ']');
+                info.args_types.insert (0, text[cur_pos] == ']');
                 continue;
             }
 
