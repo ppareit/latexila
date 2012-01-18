@@ -366,22 +366,23 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         string? cmd = get_latex_command_at_iter (iter);
 
-        // if it's an argument choice
-        if (cmd == null && text[0] != '\\')
+        /* Command name */
+        if (cmd != null || text.has_prefix ("\\"))
+            activate_proposal_command_name (proposal, iter, cmd);
+
+        /* Argument choice */
+        else
         {
             ArgumentContext info;
-
-            bool in_arg = in_latex_command_argument (iter, out info);
-
-            if (in_arg)
+            if (in_latex_command_argument (iter, out info))
             {
                 activate_proposal_argument_choice (proposal, iter, info.cmd_name,
                     info.arg_contents);
-                return true;
             }
+            else
+                warning ("Not in a LaTeX command argument.");
         }
 
-        activate_proposal_command_name (proposal, iter, cmd);
         return true;
     }
 
@@ -393,23 +394,25 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         long index_start = cmd != null ? cmd.length : 0;
         string text_to_insert = text[index_start : text.length];
 
+        /* Insert the text */
         TextBuffer doc = iter.get_buffer ();
+        TextMark old_pos_mark = doc.create_mark (null, iter, true);
+
         doc.begin_user_action ();
         doc.insert (ref iter, text_to_insert, -1);
         doc.end_user_action ();
 
-        // where to place the cursor?
-        int i;
-        for (i = 0 ; i < text_to_insert.length ; i++)
-        {
-            if (text_to_insert[i] == '{')
-                break;
-        }
+        /* Cursor position */
+        TextIter old_pos_iter;
+        doc.get_iter_at_mark (out old_pos_iter, old_pos_mark);
+        doc.delete_mark (old_pos_mark);
+        TextIter match_end;
 
-        if (i < text_to_insert.length)
+        if (old_pos_iter.forward_search ("{",
+            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
+            null, out match_end, iter))
         {
-            if (iter.backward_chars ((int) text_to_insert.length - i - 1))
-                doc.place_cursor (iter);
+            doc.place_cursor (match_end);
         }
     }
 
