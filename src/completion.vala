@@ -321,10 +321,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return_if_fail (_commands.has_key (arg_cmd));
 
         CompletionCommand command = _commands[arg_cmd];
-        int num = get_argument_num (command.args, arguments);
-        if (num != -1)
+        int arg_num = get_argument_num (command.args, arguments);
+        if (arg_num != -1)
         {
-            string info = get_command_info (command, num);
+            string info = get_command_info (command, arg_num);
             show_calltip_info (info);
         }
     }
@@ -334,28 +334,18 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (_calltip_window == null)
             init_calltip_window ();
 
-        MainWindow win = Latexila.get_default ().active_window;
-
-        // calltip at a fixed place (after the '{' or '[' of the current arg)
-        TextIter pos;
-        TextBuffer buffer = win.active_view.buffer;
-        buffer.get_iter_at_mark (out pos, buffer.get_insert ());
-        string text = get_text_line_at_iter (pos);
-        for (long i = text.length - 1 ; i >= 0 ; i--)
-        {
-            if (text[i] == '[' || text[i] == '{')
-            {
-                if (Utils.char_is_escaped (text, i))
-                    continue;
-                pos.backward_chars ((int) (text.length - 1 - i));
-                break;
-            }
-        }
-
         _calltip_window_label.set_markup (markup);
 
-        _calltip_window.set_transient_for (win);
-        _calltip_window.move_to_iter (win.active_view, pos);
+        MainWindow window = Latexila.get_default ().active_window;
+        _calltip_window.set_transient_for (window);
+
+        // Calltip at a fixed place (after the '{' or '[' of the current argument).
+        TextIter cursor_pos;
+        TextBuffer buffer = window.active_view.buffer;
+        buffer.get_iter_at_mark (out cursor_pos, buffer.get_insert ());
+        TextIter begin_arg_pos = get_begin_arg_pos (cursor_pos);
+        _calltip_window.move_to_iter (window.active_view, begin_arg_pos);
+
         _calltip_window.show_all ();
     }
 
@@ -515,6 +505,34 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     /*************************************************************************/
     // Parsing
+
+    // Get the position of the beginning of the argument. For example:
+    // \blah{foobar}
+    // The iter will be between the '{' and the 'f'.
+    private TextIter get_begin_arg_pos (TextIter in_arg_pos)
+    {
+        string text = get_text_line_at_iter (in_arg_pos);
+        int cur_index = text.length - 1;
+        int prev_index = cur_index;
+        unichar cur_char;
+
+        while (Utils.string_get_prev_char (text, ref prev_index, out cur_char))
+        {
+            if ((cur_char == '[' || cur_char == '{')
+                && ! Utils.char_is_escaped (text, cur_index))
+            {
+                break;
+            }
+
+            cur_index = prev_index;
+        }
+
+        TextIter begin_arg_pos = in_arg_pos;
+        begin_arg_pos.set_visible_line_index (cur_index);
+        begin_arg_pos.forward_char ();
+
+        return begin_arg_pos;
+    }
 
     private string? get_latex_command_at_iter (TextIter iter)
     {
