@@ -211,33 +211,34 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     }
 
     private unowned List<SourceCompletionItem>? get_argument_proposals (
-        ArgumentContext arg_info)
+        ArgumentContext arg_context)
     {
-        return_val_if_fail (_commands.has_key (arg_info.cmd_name), null);
+        return_val_if_fail (_commands.has_key (arg_context.cmd_name), null);
 
-        CompletionCommand cmd = _commands[arg_info.cmd_name];
+        CompletionCommand cmd = _commands[arg_context.cmd_name];
         string cmd_info = get_command_info (cmd);
 
-        int num = get_argument_num (cmd.args, arg_info.args_types);
-        if (num == -1)
+        int arg_num = get_argument_num (cmd.args, arg_context.args_types);
+        if (arg_num == -1)
             return null;
 
-        CompletionArgument arg = cmd.args[num - 1];
+        CompletionArgument arg = cmd.args[arg_num - 1];
         unowned List<SourceCompletionItem> items = null;
 
         foreach (CompletionChoice choice in arg.choices)
         {
             Gdk.Pixbuf pixbuf;
+            string? arg_info = null;
             if (choice.package != null)
             {
-                cmd_info += "\nPackage: " + choice.package;
                 pixbuf = _icon_package_required;
+                arg_info = cmd_info + "\nPackage: " + choice.package;
             }
             else
                 pixbuf = _icon_choice;
 
             SourceCompletionItem item = new SourceCompletionItem (
-                choice.name, choice.name, pixbuf, cmd_info);
+                choice.name, choice.name, pixbuf, arg_info ?? cmd_info);
             items.prepend (item);
         }
 
