@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -130,6 +130,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return _settings.get_boolean ("interactive-completion");
     }
 
+    /*************************************************************************/
+    // Populate: match() has returned true, now show the matches.
+
     public void populate (SourceCompletionContext context)
     {
         TextIter iter = context.get_iter ();
@@ -198,7 +201,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (proposals_to_filter == null)
         {
             if (is_user_request (context))
-                show_calltip (info.cmd_name, info.args_types);
+                show_calltip_cmd_prototype (info.cmd_name, info.args_types);
             else
                 show_no_proposals (context);
             return;
@@ -207,9 +210,42 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         show_filtered_proposals (context, proposals_to_filter, info.arg_contents);
     }
 
-    private bool is_user_request (SourceCompletionContext context)
+    private unowned List<SourceCompletionItem>? get_argument_proposals (
+        ArgumentContext arg_info)
     {
-        return context.activation == SourceCompletionActivation.USER_REQUESTED;
+        return_val_if_fail (_commands.has_key (arg_info.cmd_name), null);
+
+        CompletionCommand cmd = _commands[arg_info.cmd_name];
+        string cmd_info = get_command_info (cmd);
+
+        int num = get_argument_num (cmd.args, arg_info.args_types);
+        if (num == -1)
+            return null;
+
+        CompletionArgument arg = cmd.args[num - 1];
+        unowned List<SourceCompletionItem> items = null;
+
+        foreach (CompletionChoice choice in arg.choices)
+        {
+            Gdk.Pixbuf pixbuf;
+            if (choice.package != null)
+            {
+                cmd_info += "\nPackage: " + choice.package;
+                pixbuf = _icon_package_required;
+            }
+            else
+                pixbuf = _icon_choice;
+
+            SourceCompletionItem item = new SourceCompletionItem (
+                choice.name, choice.name, pixbuf, cmd_info);
+            items.prepend (item);
+        }
+
+        if (items == null)
+            return null;
+
+        items.sort ((CompareFunc) compare_proposals);
+        return items;
     }
 
     // It has the same effect as returning false in match().
@@ -264,7 +300,22 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         context.add_proposals ((SourceCompletionProvider) this, filtered_proposals, true);
     }
 
-    private void show_calltip (string arg_cmd, Gee.ArrayList<bool> arguments)
+    /*************************************************************************/
+    // Calltip: completion information, but without proposals
+
+    private void init_calltip_window ()
+    {
+        Latexila app = Latexila.get_default ();
+        _calltip_window = new SourceCompletionInfo ();
+        _calltip_window.set_transient_for (app.active_window);
+        _calltip_window.set_sizing (800, 200, true, true);
+        _calltip_window_label = new Label (null);
+        _calltip_window.set_widget (_calltip_window_label);
+    }
+
+    // Show the LaTeX command prototype, with the current argument in bold.
+    private void show_calltip_cmd_prototype (string arg_cmd,
+        Gee.ArrayList<bool> arguments)
     {
         return_if_fail (_commands.has_key (arg_cmd));
 
@@ -276,6 +327,45 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             show_calltip_info (info);
         }
     }
+
+    private void show_calltip_info (string markup)
+    {
+        if (_calltip_window == null)
+            init_calltip_window ();
+
+        MainWindow win = Latexila.get_default ().active_window;
+
+        // calltip at a fixed place (after the '{' or '[' of the current arg)
+        TextIter pos;
+        TextBuffer buffer = win.active_view.buffer;
+        buffer.get_iter_at_mark (out pos, buffer.get_insert ());
+        string text = get_text_line_at_iter (pos);
+        for (long i = text.length - 1 ; i >= 0 ; i--)
+        {
+            if (text[i] == '[' || text[i] == '{')
+            {
+                if (Utils.char_is_escaped (text, i))
+                    continue;
+                pos.backward_chars ((int) (text.length - 1 - i));
+                break;
+            }
+        }
+
+        _calltip_window_label.set_markup (markup);
+
+        _calltip_window.set_transient_for (win);
+        _calltip_window.move_to_iter (win.active_view, pos);
+        _calltip_window.show_all ();
+    }
+
+    public void hide_calltip_window ()
+    {
+        if (_calltip_window != null)
+            _calltip_window.hide ();
+    }
+
+    /*************************************************************************/
+    // Activate a proposal: the user has e.g. pressed Enter on a proposal.
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
     {
@@ -358,7 +448,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private void close_environment (string env_name, TextIter iter)
     {
-        // two cases are supported here:
+        // Two cases are supported here:
         // - \begin{env[iter]} : the iter is between the end of env_name and '}'
         //                       (spaces can be present between iter and '}')
         // - \begin{env[iter]  : the iter is at the end of env_name, but the '}' has not
@@ -422,179 +512,13 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         doc.place_cursor (iter);
     }
 
-    private void init_calltip_window ()
-    {
-        Latexila app = Latexila.get_default ();
-        _calltip_window = new SourceCompletionInfo ();
-        _calltip_window.set_transient_for (app.active_window);
-        _calltip_window.set_sizing (800, 200, true, true);
-        _calltip_window_label = new Label (null);
-        _calltip_window.set_widget (_calltip_window_label);
-    }
-
-    private void show_calltip_info (string markup)
-    {
-        if (_calltip_window == null)
-            init_calltip_window ();
-
-        MainWindow win = Latexila.get_default ().active_window;
-
-        // calltip at a fixed place (after the '{' or '[' of the current arg)
-        TextIter pos;
-        TextBuffer buffer = win.active_view.buffer;
-        buffer.get_iter_at_mark (out pos, buffer.get_insert ());
-        string text = get_text_line_at_iter (pos);
-        for (long i = text.length - 1 ; i >= 0 ; i--)
-        {
-            if (text[i] == '[' || text[i] == '{')
-            {
-                if (Utils.char_is_escaped (text, i))
-                    continue;
-                pos.backward_chars ((int) (text.length - 1 - i));
-                break;
-            }
-        }
-
-        _calltip_window_label.set_markup (markup);
-
-        _calltip_window.set_transient_for (win);
-        _calltip_window.move_to_iter (win.active_view, pos);
-        _calltip_window.show_all ();
-    }
-
-    public void hide_calltip_window ()
-    {
-        if (_calltip_window == null)
-            return;
-
-        _calltip_window.hide ();
-    }
-
-    private unowned List<SourceCompletionItem>? get_argument_proposals (
-        ArgumentContext arg_info)
-    {
-        return_val_if_fail (_commands.has_key (arg_info.cmd_name), null);
-
-        CompletionCommand cmd = _commands[arg_info.cmd_name];
-        string cmd_info = get_command_info (cmd);
-
-        int num = get_argument_num (cmd.args, arg_info.args_types);
-        if (num == -1)
-            return null;
-
-        CompletionArgument arg = cmd.args[num - 1];
-        unowned List<SourceCompletionItem> items = null;
-
-        foreach (CompletionChoice choice in arg.choices)
-        {
-            Gdk.Pixbuf pixbuf;
-            if (choice.package != null)
-            {
-                cmd_info += "\nPackage: " + choice.package;
-                pixbuf = _icon_package_required;
-            }
-            else
-                pixbuf = _icon_choice;
-
-            SourceCompletionItem item = new SourceCompletionItem (
-                choice.name, choice.name, pixbuf, cmd_info);
-            items.prepend (item);
-        }
-
-        if (items == null)
-            return null;
-
-        items.sort ((CompareFunc) compare_proposals);
-        return items;
-    }
-
-    /* Get argument number (begins at 1).
-     * 'all_args': all the possible arguments of a LaTeX command.
-     * 'args': the encounter arguments, beginning just after the command name.
-     * Returns -1 if it doesn't match.
-     */
-    private int get_argument_num (CompletionArgument[] all_args,
-        Gee.ArrayList<bool> args)
-    {
-        if (all_args.length < args.size)
-            return -1;
-
-        int num = 0;
-        foreach (bool arg in args)
-        {
-            while (true)
-            {
-                if (all_args.length <= num)
-                    return -1;
-
-                if (all_args[num].optional == arg)
-                    break;
-
-                // missing non-optional argument
-                else if (! all_args[num].optional)
-                    return -1;
-
-                num++;
-            }
-            num++;
-        }
-
-        // first = 1
-        return num;
-    }
-
-    private string get_command_text (CompletionCommand cmd)
-    {
-        string text_to_insert = cmd.name;
-        foreach (CompletionArgument arg in cmd.args)
-        {
-            if (! arg.optional)
-                text_to_insert += "{}";
-        }
-        return text_to_insert;
-    }
-
-    private string get_command_info (CompletionCommand cmd, int num = -1)
-    {
-        string info = cmd.name;
-        int i = 1;
-        foreach (CompletionArgument arg in cmd.args)
-        {
-            if (num == i)
-                info += "<b>";
-
-            if (arg.optional)
-                info += "[" + arg.label + "]";
-            else
-                info += "{" + arg.label + "}";
-
-            if (num == i)
-                info += "</b>";
-            i++;
-        }
-
-        if (cmd.package != null)
-            info += "\nPackage: " + cmd.package;
-
-        return info;
-    }
+    /*************************************************************************/
+    // Parsing
 
     private string? get_latex_command_at_iter (TextIter iter)
     {
         string text = get_text_line_at_iter (iter);
         return get_latex_command_at_index (text, text.length - 1);
-    }
-
-    // get the text between the beginning of the iter line and the iter position
-    private string get_text_line_at_iter (TextIter iter)
-    {
-        int line = iter.get_line ();
-        TextBuffer doc = iter.get_buffer ();
-
-        TextIter iter_start;
-        doc.get_iter_at_line (out iter_start, line);
-
-        return doc.get_text (iter_start, iter, false);
     }
 
     private string? get_latex_command_at_index (string text, long index)
@@ -699,12 +623,126 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return false;
     }
 
+    /*************************************************************************/
+    // Various utilities functions
+
+    private bool is_user_request (SourceCompletionContext context)
+    {
+        return context.activation == SourceCompletionActivation.USER_REQUESTED;
+    }
+
     // static because of bug #627736
     // (and also because it's more efficient)
     private static int compare_proposals (SourceCompletionItem a, SourceCompletionItem b)
     {
         return a.text.collate (b.text);
     }
+
+    // Get the text between the beginning of the iter line and the iter position.
+    private string get_text_line_at_iter (TextIter iter)
+    {
+        int line = iter.get_line ();
+        TextBuffer doc = iter.get_buffer ();
+
+        TextIter iter_start;
+        doc.get_iter_at_line (out iter_start, line);
+
+        return doc.get_text (iter_start, iter, false);
+    }
+
+    // Get the command information: the prototype, and the package required if a package
+    // is required. In the prototype, the argument number 'num' is in bold.
+    // By default, no argument is in bold.
+    private string get_command_info (CompletionCommand cmd, int num = -1)
+    {
+        string info = cmd.name;
+        int i = 1;
+        foreach (CompletionArgument arg in cmd.args)
+        {
+            if (num == i)
+                info += "<b>";
+
+            if (arg.optional)
+                info += "[" + arg.label + "]";
+            else
+                info += "{" + arg.label + "}";
+
+            if (num == i)
+                info += "</b>";
+            i++;
+        }
+
+        if (cmd.package != null)
+            info += "\nPackage: " + cmd.package;
+
+        return info;
+    }
+
+    /* Get argument number (begins at 1).
+     * 'all_args': all the possible arguments of a LaTeX command.
+     * 'args': the encounter arguments, beginning just after the command name.
+     * Returns -1 if it doesn't match.
+     */
+    private int get_argument_num (CompletionArgument[] all_args,
+        Gee.ArrayList<bool> args)
+    {
+        if (all_args.length < args.size)
+            return -1;
+
+        int num = 0;
+        foreach (bool arg in args)
+        {
+            while (true)
+            {
+                if (all_args.length <= num)
+                    return -1;
+
+                if (all_args[num].optional == arg)
+                    break;
+
+                // missing non-optional argument
+                else if (! all_args[num].optional)
+                    return -1;
+
+                num++;
+            }
+            num++;
+        }
+
+        // first = 1
+        return num;
+    }
+
+    private string get_command_text_to_insert (CompletionCommand cmd)
+    {
+        string text_to_insert = cmd.name;
+        foreach (CompletionArgument arg in cmd.args)
+        {
+            if (! arg.optional)
+                text_to_insert += "{}";
+        }
+        return text_to_insert;
+    }
+
+    /*
+    private void print_command_args (CompletionCommandArgs cmd_args)
+    {
+        stdout.printf ("\n=== COMMAND ARGS ===\n");
+        foreach (unowned List<SourceCompletionItem> items in cmd_args.optional_args)
+        {
+            stdout.printf ("= optional arg =\n");
+            foreach (SourceCompletionItem item in items)
+                stdout.printf ("%s\n", item.label);
+        }
+
+        foreach (unowned List<SourceCompletionItem> items in cmd_args.args)
+        {
+            stdout.printf ("= normal arg =\n");
+            foreach (SourceCompletionItem item in items)
+                stdout.printf ("%s\n", item.label);
+        }
+    }
+    */
 
     /*************************************************************************/
     // Load the data contained in the XML file
@@ -855,7 +893,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                     ? _icon_package_required : _icon_cmd;
 
                 var item = new SourceCompletionItem (_current_command.name,
-                    get_command_text (_current_command),
+                    get_command_text_to_insert (_current_command),
                     pixbuf,
                     get_command_info (_current_command));
 
@@ -894,24 +932,4 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 break;
         }
     }
-
-    /*
-    private void print_command_args (CompletionCommandArgs cmd_args)
-    {
-        stdout.printf ("\n=== COMMAND ARGS ===\n");
-        foreach (unowned List<SourceCompletionItem> items in cmd_args.optional_args)
-        {
-            stdout.printf ("= optional arg =\n");
-            foreach (SourceCompletionItem item in items)
-                stdout.printf ("%s\n", item.label);
-        }
-
-        foreach (unowned List<SourceCompletionItem> items in cmd_args.args)
-        {
-            stdout.printf ("= normal arg =\n");
-            foreach (SourceCompletionItem item in items)
-                stdout.printf ("%s\n", item.label);
-        }
-    }
-    */
 }
