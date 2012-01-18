@@ -499,7 +499,8 @@ public class LatexMenu : Gtk.ActionGroup
             active_document.insert (ref end, text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out end, mark_end);
-            active_document.select_range (end, end);
+            active_document.delete_mark (mark_end);
+            active_document.place_cursor (end);
         }
 
         // no selection
@@ -519,7 +520,8 @@ public class LatexMenu : Gtk.ActionGroup
             active_document.insert_at_cursor (text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out between, mark);
-            active_document.select_range (between, between);
+            active_document.delete_mark (mark);
+            active_document.place_cursor (between);
         }
 
         active_document.end_user_action ();
