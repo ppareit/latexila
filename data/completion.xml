@@ -2,6 +2,7 @@
 This file is part of the Gedit LaTeX Plugin
 
 Copyright (C) 2010 Michael Zeising
+              2010-2012 Sébastien Wilmet
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public Licence as published by the Free Software
@@ -16,7 +17,154 @@ details.
 You should have received a copy of the GNU General Public Licence along with
 this program; if not, write to the Free Software Foundation, Inc., 51 Franklin
 Street, Fifth Floor, Boston, MA  02110-1301, USA
+
+Authors: Michael Zeising
+         Sébastien Wilmet
+         Pieter Pareit
+
+Summary of this file's format
+=============================
+
+Note: if something is said to be not yet supported, it means that it is
+present in this file, but not implemented in the Vala code (it's simply
+ignored).
+
+Why some things are not yet supported? Because this file comes from the
+gedit LaTeX plugin.
+
+<commands>
+==========
+
+There is only one big <commands> markup, which contains only <command>'s:
+
+	<commands>
+		<command …>
+			…
+		</command>
+
+		<command … />
+	</commands>
+
+<command>
+=========
+
+A <command> markup can have these attributes:
+	- name (obligatory);
+	- package: the name of the package, if a package is required;
+	- environment: if a command can be used only inside one specific
+	  environment, the name of this environment (not yet supported).
+
+Example:
+	<command name="varnothing" package="amssymb" />
+
+A <command> markup can contain one or several <argument> markup(s).
+
+<argument>
+==========
+
+An <argument> can have these attributes:
+	- label: the "title" of the argument (obligatory);
+	- type:
+		- "optional": the argument is delimited by square
+		  brackets.
+		- "vector": the argument is delimited by parentheses
+		  (not yet supported).
+		- … (can be extended).
+
+If the type is not specified, it is a mandatory argument, and is
+delimited by braces.
+
+Example:
+	\usepackage[options]{package-name}[version]
+
+	<command name="usepackage">
+		<argument label="Options" type="optional" />
+		<argument label="Packages" />
+		<argument label="Version" type="optional" />
+	</command>
+
+	(It's a simplified version of usepackage, there are no choices.)
+
+An <argument> can contain these markups:
+	- choice: if the argument's content can only be one of several
+	  choices;
+
+	- placeholder;
+
+	- component: same as 'choice', but for arguments with the type
+	  "vector" (not yet supported).
+
+<choice>
+========
+
+A <choice> can contain these attributes:
+	- name (obligatory);
+	- package.
+
+Example:
+	<command name="begin">
+		<argument label="Environment">
+			<choice name="abstract" />
+			<choice name="matrix" package="amsmath" />
+			<choice name="minipage" />
+			…
+		</argument>
+	</command>
+
+A <choice> can contain these markups:
+	- insert;
+	- insert_after.
+
+This is used yet only for list environments, for example:
+
+	\begin{description}
+	  \item[] 
+	\end{description}
+
+	The cursor is placed inside the square brackets.
+	The \end{description} is inserted automatically, but this
+	behavior is not described in this XML file.
+
+	<command name="begin">
+		<argument label="Environment">
+			<choice name="description">
+				<insert>\item[</insert>
+				<insert_after>] </insert_after>
+			</choice>
+		</argument>
+	</command>
+
+<placeholder>
+=============
+
+Unfortunately not yet supported.
+
+It's for more complex contents, that can be dynamic and specific to the
+document that is currently edited. It is also useful for avoiding to
+copy/paste the same data at different places. The contents is determined
+in the Vala code.
+
+A <placeholder> have only one attribute: key.
+
+The value of the 'key' can be:
+	- Newenvironments
+	- OpenEnvironment
+	- TexFiles
+	- ImageFiles
+	- BibFiles
+	- Bibitems
+	- Labels
+	- Colors
+	- … (can be extended)
+
+Example:
+	<command name="ref">
+		<argument label="Name">
+			<placeholder key="Labels" />
+		</argument>
+	</command>
 -->
+
 <commands>
 	<!-- hyperref -->
 	<command name="href" package="hyperref">
@@ -1518,5 +1666,4 @@ Street, Fifth Floor, Boston, MA  02110-1301, USA
 		<argument label="Value" />
 		<argument label="Expression" />
 	</command>
-
 </commands>
