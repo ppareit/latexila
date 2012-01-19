@@ -560,77 +560,80 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         info.args_types = new Gee.ArrayList<bool> ();
 
         string text = get_text_line_to_iter (iter);
-        long end_pos = text.length - 1;
+        int last_index = text.length;
+        int cur_index = last_index;
 
-        /* Fetch the argument contents */
-        long opening_bracket_pos = -1;
-
-        for (long cur_pos = end_pos ; 0 <= cur_pos ; cur_pos--)
+        /* Fetch the argument's contents */
+        while (true)
         {
-            bool opening_bracket = (text[cur_pos] == '{' || text[cur_pos] == '[')
-                && ! Utils.char_is_escaped (text, cur_pos);
+            int prev_index = cur_index;
+            unichar cur_char;
+            bool first_char = ! Utils.string_get_prev_char (text,
+                ref prev_index, out cur_char);
 
-            // end of argument contents
-            if (opening_bracket)
+            // End of the argument's contents.
+            bool opening_bracket = cur_char == '{' || cur_char == '[';
+            if (opening_bracket && ! Utils.char_is_escaped (text, cur_index))
             {
-                opening_bracket_pos = cur_pos;
-                info.args_types.insert (0, text[cur_pos] == '[');
-
-                if (cur_pos < end_pos)
-                    info.arg_contents = text[cur_pos + 1 : end_pos + 1];
-
+                info.args_types.insert (0, cur_char == '[');
+                info.arg_contents = text[cur_index + 1 : last_index];
+                cur_index = prev_index;
                 break;
             }
-        }
 
-        // not in an argument
-        if (opening_bracket_pos <= 0)
-            return false;
+            // Not in an argument.
+            if (first_char)
+                return false;
+
+            cur_index = prev_index;
+        }
 
         /* Traverse the previous arguments, and find the command name */
         bool in_prev_arg = false;
-        char prev_arg_opening_bracket = '{';
+        unichar prev_arg_opening_bracket = '{';
 
-        for (long cur_pos = opening_bracket_pos - 1 ; 0 <= cur_pos ; cur_pos--)
+        while (true)
         {
+            int prev_index = cur_index;
+            unichar cur_char;
+            bool first_char = ! Utils.string_get_prev_char (text,
+                ref prev_index, out cur_char);
+
+            // In the contents of a previous argument.
             if (in_prev_arg)
             {
-                if (text[cur_pos] == prev_arg_opening_bracket)
-                    in_prev_arg = Utils.char_is_escaped (text, cur_pos);
-                continue;
+                if (cur_char == prev_arg_opening_bracket)
+                    in_prev_arg = Utils.char_is_escaped (text, cur_index);
             }
 
-            // We are maybe between two arguments,
-            // or between the first argument and the command name,
-            // or we were not in a latex command argument.
-
-            if (text[cur_pos].isspace ())
-                continue;
-
-            // last character of the command name
-            if (text[cur_pos].isalpha () || text[cur_pos] == '*')
+            // Maybe the end of a previous argument.
+            else if (cur_char == '}' || cur_char == ']')
             {
-                info.cmd_name = get_latex_command_at_index (text, (int) cur_pos + 1);
-                return info.cmd_name != null;
-            }
-
-            // maybe the end of a previous argument
-            if (text[cur_pos] == '}' || text[cur_pos] == ']')
-            {
-                if (Utils.char_is_escaped (text, cur_pos))
+                if (Utils.char_is_escaped (text, cur_index))
                     return false;
 
                 in_prev_arg = true;
-                prev_arg_opening_bracket = text[cur_pos] == '}' ? '{' : '[';
+                prev_arg_opening_bracket = cur_char == '}' ? '{' : '[';
 
-                info.args_types.insert (0, text[cur_pos] == ']');
-                continue;
+                info.args_types.insert (0, cur_char == ']');
             }
 
-            return false;
-        }
+            // Maybe the last character of the command name.
+            else if (cur_char.isalpha () || cur_char == '*')
+            {
+                info.cmd_name = get_latex_command_at_index (text, cur_index + 1);
+                return info.cmd_name != null;
+            }
 
-        return false;
+            // Spaces are allowed between arguments.
+            else if (! cur_char.isspace ())
+                return false;
+
+            if (first_char)
+                return false;
+
+            cur_index = prev_index;
+        }
     }
 
     /*************************************************************************/
