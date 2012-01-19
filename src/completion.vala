@@ -442,70 +442,32 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private void close_environment (string env_name, TextIter iter)
     {
-        // Two cases are supported here:
-        // - \begin{env[iter]} : the iter is between the end of env_name and '}'
-        //                       (spaces can be present between iter and '}')
-        // - \begin{env[iter]  : the iter is at the end of env_name, but the '}' has not
-        //                       been inserted (the user has written "\begin{" without
-        //                       auto-completion)
+        Document doc = iter.get_buffer () as Document;
 
-        /* check if '}' is present */
-
-        // get text between iter and end of line
-        int line = iter.get_line ();
-        Document doc = (Document) iter.get_buffer ();
-        TextIter end_iter;
-        doc.get_iter_at_line (out end_iter, line + 1);
-        string text = doc.get_text (iter, end_iter, false);
-
-        bool found = false;
-        long i;
-        for (i = 0 ; i < text.length ; i++)
-        {
-            if (text[i] == '}')
-            {
-                found = true;
-                break;
-            }
-            if (text[i].isspace ())
-                continue;
-            break;
-        }
-
-        if (! found)
-            doc.insert (ref iter, "}", -1);
+        // Close the bracket if needed.
+        if (iter.get_char () == '}')
+            iter.forward_char ();
         else
-            iter.forward_chars ((int) i + 1);
+            doc.insert (ref iter, "}", -1);
 
-        /* get current indentation */
+        string cur_indent = doc.get_current_indentation (iter);
+        string indent = doc.tab.view.get_indentation_style ();
 
-        // for example ("X" are spaces to take into account):
-        // some text
-        // \begin{figure}
-        // XX\begin{center[enter]
+        CompletionChoice? env = _environments[env_name];
 
-        string current_indent = doc.get_current_indentation (line);
+        doc.insert (ref iter, @"\n$cur_indent$indent", -1);
 
-        /* get current choice */
-        CompletionChoice? environment = _environments[env_name];
-
-        /* close environment */
-
-        Document document = (Document) doc;
-        string indent = document.tab.view.get_indentation_style ();
-
-        doc.insert (ref iter, @"\n$current_indent$indent", -1);
-
-        if (environment != null && environment.insert != null)
-            doc.insert (ref iter, environment.insert, -1);
+        if (env != null && env.insert != null)
+            doc.insert (ref iter, env.insert, -1);
 
         TextMark cursor_pos = doc.create_mark (null, iter, true);
 
-        if (environment != null && environment.insert_after != null)
-            doc.insert (ref iter, environment.insert_after, -1);
+        if (env != null && env.insert_after != null)
+            doc.insert (ref iter, env.insert_after, -1);
 
-        doc.insert (ref iter, @"\n$current_indent\\end{" + env_name + "}", -1);
+        doc.insert (ref iter, @"\n$cur_indent\\end{$env_name}", -1);
 
+        // Place the cursor.
         doc.get_iter_at_mark (out iter, cursor_pos);
         doc.delete_mark (cursor_pos);
         doc.place_cursor (iter);
@@ -519,7 +481,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     // The iter will be between the '{' and the 'f'.
     private TextIter get_begin_arg_pos (TextIter in_arg_pos)
     {
-        string text = get_text_line_at_iter (in_arg_pos);
+        string text = get_text_line_to_iter (in_arg_pos);
         int cur_index = text.length - 1;
         int prev_index = cur_index;
         unichar cur_char;
@@ -544,7 +506,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private string? get_latex_command_at_iter (TextIter iter)
     {
-        string text = get_text_line_at_iter (iter);
+        string text = get_text_line_to_iter (iter);
         return get_latex_command_at_index (text, text.length - 1);
     }
 
@@ -576,7 +538,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         info.arg_contents = null;
         info.args_types = new Gee.ArrayList<bool> ();
 
-        string text = get_text_line_at_iter (iter);
+        string text = get_text_line_to_iter (iter);
         long end_pos = text.length - 1;
 
         /* Fetch the argument contents */
@@ -665,8 +627,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return a.text.collate (b.text);
     }
 
-    // Get the text between the beginning of the iter line and the iter position.
-    private string get_text_line_at_iter (TextIter iter)
+    // Get the text between the start of the line and the iter.
+    private string get_text_line_to_iter (TextIter iter)
     {
         int line = iter.get_line ();
         TextBuffer doc = iter.get_buffer ();

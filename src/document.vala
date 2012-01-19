@@ -553,19 +553,22 @@ public class Document : Gtk.SourceBuffer
         return path.has_suffix (".tex");
     }
 
-    public string get_current_indentation (int line)
+    public string get_current_indentation (TextIter iter)
     {
         TextIter start_iter, end_iter;
+        int line = iter.get_line ();
         get_iter_at_line (out start_iter, line);
         get_iter_at_line (out end_iter, line + 1);
 
         string text = get_text (start_iter, end_iter, false);
-
         string current_indent = "";
-        for (long i = 0 ; i < text.length ; i++)
+
+        int index = 0;
+        unichar cur_char;
+        while (text.get_next_char (ref index, out cur_char))
         {
-            if (text[i] == ' ' || text[i] == '\t')
-                current_indent += text[i].to_string ();
+            if (cur_char == ' ' || cur_char == '\t')
+                current_indent += cur_char.to_string ();
             else
                 break;
         }
