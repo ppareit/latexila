@@ -482,7 +482,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private TextIter get_begin_arg_pos (TextIter in_arg_pos)
     {
         string text = get_text_line_to_iter (in_arg_pos);
-        int cur_index = text.length - 1;
+        int cur_index = text.length;
         int prev_index = cur_index;
         unichar cur_char;
 
@@ -507,25 +507,46 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private string? get_latex_command_at_iter (TextIter iter)
     {
         string text = get_text_line_to_iter (iter);
-        return get_latex_command_at_index (text, text.length - 1);
+        return get_latex_command_at_index (text, text.length);
     }
 
-    private string? get_latex_command_at_index (string text, long index)
+    // Get the LaTeX command found before 'index'. For example:
+    // text: "foobar \usepackage{blah}"
+    // text[index]: '{'
+    // returns: "\usepackage"
+    private string? get_latex_command_at_index (string text, int index)
     {
-        return_val_if_fail (text.length > index, null);
+        return_val_if_fail (index <= text.length, null);
 
-        for (long i = index ; i >= 0 ; i--)
+        // Skip the last character (the '{' in the above example).
+        int cur_index = index;
+        if (! Utils.string_get_prev_char (text, ref cur_index, null))
+            return null;
+
+        while (true)
         {
-            if (text[i] == '\\')
+            unichar cur_char;
+            int prev_index = cur_index;
+            bool first_char = ! Utils.string_get_prev_char (text,
+                ref prev_index, out cur_char);
+
+            if (cur_char == '\\')
             {
-                // if the backslash is escaped, it's not a latex command
-                if (Utils.char_is_escaped (text, i))
+                // If the backslash is escaped, it's not a LaTeX command.
+                if (Utils.char_is_escaped (text, cur_index))
                     break;
 
-                return text[i : index + 1];
+                return text[cur_index : index];
             }
-            if (! text[i].isalpha () && text[i] != '*')
+
+            // A LaTeX command contains only normal letters and '*'.
+            if (! cur_char.isalpha () && cur_char != '*')
                 break;
+
+            if (first_char)
+                break;
+
+            cur_index = prev_index;
         }
 
         return null;
@@ -589,7 +610,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             // last character of the command name
             if (text[cur_pos].isalpha () || text[cur_pos] == '*')
             {
-                info.cmd_name = get_latex_command_at_index (text, cur_pos);
+                info.cmd_name = get_latex_command_at_index (text, (int) cur_pos + 1);
                 return info.cmd_name != null;
             }
 

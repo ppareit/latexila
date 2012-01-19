@@ -66,7 +66,7 @@ namespace Utils
     public bool string_get_prev_char (string str, ref int index, out unichar c)
     {
         c = str.get_char (index);
-        if (index <= 0 || c == '\0')
+        if (index <= 0)
             return false;
 
         unowned string str_at_index = (string) ((char*) str + index);
