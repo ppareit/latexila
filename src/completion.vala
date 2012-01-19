@@ -664,15 +664,15 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     }
 
     // Get the command information: the prototype, and the package required if a package
-    // is required. In the prototype, the argument number 'num' is in bold.
+    // is required. In the prototype, the current argument ('cur_arg') is in bold.
     // By default, no argument is in bold.
-    private string get_command_info (CompletionCommand cmd, int num = -1)
+    private string get_command_info (CompletionCommand cmd, int cur_arg = -1)
     {
         string info = cmd.name;
-        int i = 1;
+        int arg_num = 1;
         foreach (CompletionArgument arg in cmd.args)
         {
-            if (num == i)
+            if (arg_num == cur_arg)
                 info += "<b>";
 
             if (arg.optional)
@@ -680,9 +680,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             else
                 info += "{" + arg.label + "}";
 
-            if (num == i)
+            if (arg_num == cur_arg)
                 info += "</b>";
-            i++;
+
+            arg_num++;
         }
 
         if (cmd.package != null)
