@@ -170,6 +170,7 @@ public class Latexila : GLib.Object
 
         register_my_stock_icons ();
         add_theme_icon_to_stock ("image-x-generic", "image");
+        add_theme_icon_to_stock ("x-office-presentation", "presentation");
 
         AppSettings.get_default ();
         create_window ();

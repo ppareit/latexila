@@ -875,10 +875,13 @@ Example:
 			<choice name="align*" package="amsmath" />
 			<choice name="appendix" />
 			<choice name="array" />
+			<choice name="block" />
 			<choice name="Bmatrix" package="amsmath" />
 			<choice name="bmatrix" package="amsmath" />
 			<choice name="cases" package="amsmath" />
 			<choice name="center" />
+			<choice name="columns" />
+			<choice name="column" />
 			<choice name="document" />
 			<choice name="description">
 				<insert>\item[</insert>

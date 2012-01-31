@@ -184,6 +184,12 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
         <menuitem action="TabularCline" />
       </menu>
 
+      <menu action="Presentation">
+        <menuitem action="PresentationFrame" />
+        <menuitem action="PresentationBlock" />
+        <menuitem action="PresentationColumns" />
+      </menu>
+
       <menu action="Spacing">
         <menuitem action="SpacingNewLine" />
         <menuitem action="SpacingNewPage" />
@@ -456,6 +462,16 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <separator />
 
     <toolitem action="EnvFigure" />
+
+    <separator />
+
+    <toolitem action="PresentationToolItem">
+      <menu action="Presentation">
+        <menuitem action="PresentationFrame" />
+        <menuitem action="PresentationBlock" />
+        <menuitem action="PresentationColumns" />
+      </menu>
+    </toolitem>
 
     <separator />
 
