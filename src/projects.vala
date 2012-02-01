@@ -44,7 +44,7 @@ public class Projects
         try
         {
             uint8[] chars;
-            file.load_contents (null, out chars);
+            file.load_contents (null, out chars, null);
             string contents = (string) (owned) chars;
 
             MarkupParser parser = { parser_start, null, null, null, null };
@@ -258,7 +258,7 @@ public class Projects
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (content, content.length, null, false,
+            file.replace_contents (content.data, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

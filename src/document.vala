@@ -205,7 +205,7 @@ public class Document : Gtk.SourceBuffer
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            location.replace_contents (text, text.length, etag, make_backup,
+            location.replace_contents (text.data, etag, make_backup,
                 FileCreateFlags.NONE, out _etag, null);
 
             set_modified (false);
@@ -271,7 +271,7 @@ public class Document : Gtk.SourceBuffer
         string content_type = null;
         try
         {
-            FileInfo info = location.query_info (FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+            FileInfo info = location.query_info (FileAttribute.STANDARD_CONTENT_TYPE,
                 FileQueryInfoFlags.NONE, null);
             content_type = info.get_content_type ();
         }
@@ -361,7 +361,7 @@ public class Document : Gtk.SourceBuffer
         string current_etag = null;
         try
         {
-            FileInfo file_info = location.query_info (FILE_ATTRIBUTE_ETAG_VALUE,
+            FileInfo file_info = location.query_info (FileAttribute.ETAG_VALUE,
                 FileQueryInfoFlags.NONE, null);
             current_etag = file_info.get_etag ();
         }

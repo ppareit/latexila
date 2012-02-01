@@ -269,7 +269,7 @@ public class BuildTools
                     continue;
 
                 uint8[] chars;
-                file.load_contents (null, out chars);
+                file.load_contents (null, out chars, null);
                 string contents = (string) (owned) chars;
 
                 MarkupParser parser =
@@ -430,7 +430,7 @@ public class BuildTools
                 parent.make_directory_with_parents ();
 
             // a backup is made
-            file.replace_contents (content, content.length, null, true,
+            file.replace_contents (content.data, null, true,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

@@ -771,7 +771,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
 
             uint8[] chars;
-            file.load_contents (null, out chars);
+            file.load_contents (null, out chars, null);
             string contents = (string) (owned) chars;
 
             MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
