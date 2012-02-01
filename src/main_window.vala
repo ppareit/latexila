@@ -288,7 +288,7 @@ public class MainWindow : Window
         documents_panel = new DocumentsPanel (this);
         documents_panel.right_click.connect ((event) =>
         {
-            Menu popup_menu = (Menu) ui_manager.get_widget ("/NotebookPopup");
+            Gtk.Menu popup_menu = ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
             popup_menu.popup (null, null, null, event.button, event.time);
         });
 
@@ -568,9 +568,9 @@ public class MainWindow : Window
         // show tooltips in the statusbar
         ui_manager.connect_proxy.connect ((action, p) =>
         {
-            if (p is MenuItem)
+            if (p is Gtk.MenuItem)
             {
-                MenuItem proxy = (MenuItem) p;
+                Gtk.MenuItem proxy = p as Gtk.MenuItem;
                 proxy.select.connect (on_menu_item_select);
                 proxy.deselect.connect (on_menu_item_deselect);
             }
@@ -578,9 +578,9 @@ public class MainWindow : Window
 
         ui_manager.disconnect_proxy.connect ((action, p) =>
         {
-            if (p is MenuItem)
+            if (p is Gtk.MenuItem)
             {
-                MenuItem proxy = (MenuItem) p;
+                Gtk.MenuItem proxy = p as Gtk.MenuItem;
                 proxy.select.disconnect (on_menu_item_select);
                 proxy.deselect.disconnect (on_menu_item_deselect);
             }
@@ -598,7 +598,7 @@ public class MainWindow : Window
 
     private void on_menu_item_select (Item proxy)
     {
-        Gtk.Action action = ((MenuItem) proxy).get_related_action ();
+        Gtk.Action action = ((Gtk.MenuItem) proxy).get_related_action ();
         return_if_fail (action != null);
         if (action.tooltip != null)
             statusbar.push (tip_message_cid, action.tooltip);

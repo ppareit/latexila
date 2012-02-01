@@ -173,7 +173,7 @@ public class SearchAndReplace : GLib.Object
             eventbox_label2.modify_bg (StateType.NORMAL, white);
 
             /* options menu */
-            Menu menu = new Menu ();
+            Gtk.Menu menu = new Gtk.Menu ();
             check_case_sensitive = new CheckMenuItem.with_label (_("Case sensitive"));
             check_entire_word = new CheckMenuItem.with_label (_("Entire words only"));
             menu.append (check_case_sensitive);

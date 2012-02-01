@@ -58,7 +58,7 @@ public enum StructAction
 public class Structure : VBox
 {
     private unowned MainWindow _main_window;
-    private Menu _popup_menu;
+    private Gtk.Menu _popup_menu;
     private Gtk.Action _action_all_menu;
     private Gtk.Action _action_cut;
     private Gtk.Action _action_copy;
@@ -92,7 +92,7 @@ public class Structure : VBox
         GLib.Object (spacing: 3);
         _main_window = main_window;
 
-        _popup_menu = (Menu) ui_manager.get_widget ("/StructurePopup");
+        _popup_menu = ui_manager.get_widget ("/StructurePopup") as Gtk.Menu;
         _action_all_menu = ui_manager.get_action ("/MainMenu/Structure");
         _action_cut = ui_manager.get_action ("/StructurePopup/StructureCut");
         _action_copy = ui_manager.get_action ("/StructurePopup/StructureCopy");
