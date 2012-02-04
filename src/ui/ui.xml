@@ -457,7 +457,6 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <toolitem action="ListEnvItemize" />
     <toolitem action="ListEnvEnumerate" />
     <toolitem action="ListEnvDescription" />
-    <toolitem action="ListEnvItem" />
 
     <separator />
 
@@ -490,33 +489,6 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <separator />
     <toolitem action="MathFrac" />
     <toolitem action="MathSquareRoot" />
-    <separator />
-    <toolitem action="MathLeftDelimitersToolItem">
-      <menu action="MathLeftDelimiters">
-        <menuitem action="MathLeftDelimiter1" />
-        <menuitem action="MathLeftDelimiter2" />
-        <menuitem action="MathLeftDelimiter3" />
-        <menuitem action="MathLeftDelimiter4" />
-        <menuitem action="MathLeftDelimiter5" />
-        <menuitem action="MathLeftDelimiter6" />
-        <menuitem action="MathLeftDelimiter7" />
-        <menuitem action="MathLeftDelimiter8" />
-        <menuitem action="MathLeftDelimiter9" />
-      </menu>
-    </toolitem>
-    <toolitem action="MathRightDelimitersToolItem">
-      <menu action="MathRightDelimiters">
-        <menuitem action="MathRightDelimiter1" />
-        <menuitem action="MathRightDelimiter2" />
-        <menuitem action="MathRightDelimiter3" />
-        <menuitem action="MathRightDelimiter4" />
-        <menuitem action="MathRightDelimiter5" />
-        <menuitem action="MathRightDelimiter6" />
-        <menuitem action="MathRightDelimiter7" />
-        <menuitem action="MathRightDelimiter8" />
-        <menuitem action="MathRightDelimiter9" />
-      </menu>
-    </toolitem>
   </toolbar>
 
   <toolbar name="BuildToolbar">
