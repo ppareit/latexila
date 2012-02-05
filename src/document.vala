@@ -205,7 +205,7 @@ public class Document : Gtk.SourceBuffer
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            location.replace_contents (text, text.length, etag, make_backup,
+            location.replace_contents (text.data, etag, make_backup,
                 FileCreateFlags.NONE, out _etag, null);
 
             set_modified (false);
@@ -271,7 +271,7 @@ public class Document : Gtk.SourceBuffer
         string content_type = null;
         try
         {
-            FileInfo info = location.query_info (FILE_ATTRIBUTE_STANDARD_CONTENT_TYPE,
+            FileInfo info = location.query_info (FileAttribute.STANDARD_CONTENT_TYPE,
                 FileQueryInfoFlags.NONE, null);
             content_type = info.get_content_type ();
         }
@@ -328,7 +328,7 @@ public class Document : Gtk.SourceBuffer
 
         // get all unsaved document numbers
         uint[] all_nums = {};
-        foreach (Document doc in Application.get_default ().get_documents ())
+        foreach (Document doc in Latexila.get_default ().get_documents ())
         {
             // avoid infinite loop
             if (doc == this)
@@ -361,7 +361,7 @@ public class Document : Gtk.SourceBuffer
         string current_etag = null;
         try
         {
-            FileInfo file_info = location.query_info (FILE_ATTRIBUTE_ETAG_VALUE,
+            FileInfo file_info = location.query_info (FileAttribute.ETAG_VALUE,
                 FileQueryInfoFlags.NONE, null);
             current_etag = file_info.get_etag ();
         }
@@ -395,12 +395,13 @@ public class Document : Gtk.SourceBuffer
     }
 
     // comment the lines between start_iter and end_iter included
-    public void comment_between (TextIter start_iter, TextIter? end_iter)
+    public void comment_between (TextIter start_iter, TextIter end_iter,
+        bool end_iter_set = true)
     {
         int start_line = start_iter.get_line ();
         int end_line = start_line;
 
-        if (end_iter != null)
+        if (end_iter_set)
             end_line = end_iter.get_line ();
 
         TextIter cur_iter;
@@ -553,19 +554,22 @@ public class Document : Gtk.SourceBuffer
         return path.has_suffix (".tex");
     }
 
-    public string get_current_indentation (int line)
+    public string get_current_indentation (TextIter iter)
     {
         TextIter start_iter, end_iter;
+        int line = iter.get_line ();
         get_iter_at_line (out start_iter, line);
         get_iter_at_line (out end_iter, line + 1);
 
         string text = get_text (start_iter, end_iter, false);
-
         string current_indent = "";
-        for (long i = 0 ; i < text.length ; i++)
+
+        int index = 0;
+        unichar cur_char;
+        while (text.get_next_char (ref index, out cur_char))
         {
-            if (text[i] == ' ' || text[i] == '\t')
-                current_indent += text[i].to_string ();
+            if (cur_char == ' ' || cur_char == '\t')
+                current_indent += cur_char.to_string ();
             else
                 break;
         }

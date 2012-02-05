@@ -17,7 +17,7 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class Application : GLib.Object
+public class Latexila : GLib.Object
 {
     struct StockIcon
     {
@@ -119,14 +119,14 @@ public class Application : GLib.Object
     };
 
     public static int NEW_WINDOW = 1;
-    private static Application instance = null;
+    private static Latexila instance = null;
     public unowned List<MainWindow> windows { get; private set; }
     public MainWindow active_window { get; private set; }
 
-    /* Application is a singleton
-     * We must use Application.get_default ()
+    /* Latexila is a singleton
+     * We must use Latexila.get_default ()
      */
-    private Application ()
+    private Latexila ()
     {
         windows = new List<MainWindow> ();
 
@@ -170,15 +170,16 @@ public class Application : GLib.Object
 
         register_my_stock_icons ();
         add_theme_icon_to_stock ("image-x-generic", "image");
+        add_theme_icon_to_stock ("x-office-presentation", "presentation");
 
         AppSettings.get_default ();
         create_window ();
     }
 
-    public static Application get_default ()
+    public static Latexila get_default ()
     {
         if (instance == null)
-            instance = new Application ();
+            instance = new Latexila ();
         return instance;
     }
 

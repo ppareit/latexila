@@ -1,5 +1,19 @@
 LaTeXila NEWS
 
+==============================
+* Release 2.3.0 (Nov 26, 2011)
+==============================
+
+- Spell checking with GtkSpell
+- Build Tools: add XeTeX -> PDF with Latexmk
+- Improve figure environment insertion
+- Templates: better icons
+- Added Esperanto translation
+- Updated Swedish, French and German translations
+- New CMake option: VALAC
+- Switch to Vala 0.14
+
+
 =============================
 * Release 2.2.2 (Oct 8, 2011)
 =============================

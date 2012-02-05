@@ -359,7 +359,7 @@ public class SearchAndReplace : GLib.Object
         frame_find.add (grid_find);
 
         /* Options menu */
-        Menu menu = new Menu ();
+        Gtk.Menu menu = new Gtk.Menu ();
         _check_case_sensitive = new CheckMenuItem.with_label (_("Case sensitive"));
         _check_entire_word = new CheckMenuItem.with_label (_("Entire words only"));
         menu.append (_check_case_sensitive);

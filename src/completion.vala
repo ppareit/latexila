@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Authors: Sébastien Wilmet
+ *          Pieter Pareit
  */
 
 using Gtk;
@@ -43,70 +46,58 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         string? insert_after;
     }
 
-    private static CompletionProvider instance = null;
-    private List<SourceCompletionItem> proposals;
-    private Gee.HashMap<string, CompletionCommand?> commands;
-    // contains only environments that have extra info
-    private Gee.HashMap<string, CompletionChoice?> environments;
+    struct ArgumentContext
+    {
+        string cmd_name;
+        string arg_contents;
 
-    private GLib.Settings settings;
+        // After the command name, list the arguments types encountered.
+        // The last one is the argument where the cursor is.
+        // The value is 'true' for an optional argument.
+        Gee.ArrayList<bool> args_types;
+    }
+
+    private static CompletionProvider _instance = null;
+
+    private GLib.Settings _settings;
+
+    private List<SourceCompletionItem> _proposals;
+    private Gee.HashMap<string, CompletionCommand?> _commands;
+    // contains only environments that have extra info
+    private Gee.HashMap<string, CompletionChoice?> _environments;
 
     // while parsing, keep track of current command/argument/choice
-    private CompletionCommand current_command;
-    private CompletionArgument current_arg;
-    private CompletionChoice current_choice;
+    private CompletionCommand _current_command;
+    private CompletionArgument _current_arg;
+    private CompletionChoice _current_choice;
 
-    private bool show_all_proposals = false;
+    private Gdk.Pixbuf _icon_cmd;
+    private Gdk.Pixbuf _icon_choice;
+    private Gdk.Pixbuf _icon_package_required;
 
-    private Gdk.Pixbuf icon_normal_cmd;
-    private Gdk.Pixbuf icon_normal_choice;
-    private Gdk.Pixbuf icon_package_required;
-
-    private SourceCompletionInfo calltip_window = null;
-    private Label calltip_window_label = null;
-
-    // HACK: match () is called one time and then populate () is called each time a new
-    // character is typed (and also just after match () was called).
-    private bool first_populate = true;
+    private SourceCompletionInfo _calltip_window = null;
+    private Label _calltip_window_label = null;
 
     /* CompletionProvider is a singleton */
     private CompletionProvider ()
     {
-        settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        commands = new Gee.HashMap<string, CompletionCommand?> ();
-        environments = new Gee.HashMap<string, CompletionChoice?> ();
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
 
         // icons
-        icon_normal_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
-        icon_normal_choice = Utils.get_pixbuf_from_stock ("completion_choice",
+        _icon_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
+        _icon_choice = Utils.get_pixbuf_from_stock ("completion_choice", IconSize.MENU);
+        _icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
             IconSize.MENU);
-        icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
-            IconSize.MENU);
 
-        try
-        {
-            File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
-
-            uint8[] chars;
-            file.load_contents (null, out chars);
-            string contents = (string) (owned) chars;
-
-            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
-            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
-            context.parse (contents, -1);
-            proposals.sort ((CompareFunc) compare_proposals);
-        }
-        catch (GLib.Error e)
-        {
-            warning ("Impossible to load completion data: %s", e.message);
-        }
+        load_data ();
     }
 
     public static CompletionProvider get_default ()
     {
-        if (instance == null)
-            instance = new CompletionProvider ();
-        return instance;
+        if (_instance == null)
+            _instance = new CompletionProvider ();
+
+        return _instance;
     }
 
     public string get_name ()
@@ -116,22 +107,15 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public SourceCompletionActivation get_activation ()
     {
-        SourceCompletionActivation ret = SourceCompletionActivation.USER_REQUESTED;
-
-        if (settings.get_boolean ("interactive-completion"))
-            ret |= SourceCompletionActivation.INTERACTIVE;
-
-        return ret;
+        // This function is called only once, so if we disable interactive
+        // completion here, there would be a problem because in this case,
+        // if the user enables the option, it will take effect only on restart.
+        return SourceCompletionActivation.USER_REQUESTED
+            | SourceCompletionActivation.INTERACTIVE;
     }
 
     public bool match (SourceCompletionContext context)
     {
-        first_populate = true;
-
-        bool in_argument = false;
-        bool valid_arg_contents = false;
-        show_all_proposals = false;
-
         TextIter iter = context.get_iter ();
 
         // if text selected, NO completion
@@ -139,109 +123,160 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (buf.has_selection)
             return false;
 
-        string? cmd = get_latex_command_at_iter (iter);
-
-        if (cmd == null)
-            in_argument = in_latex_command_argument (iter, null, null, null,
-                out valid_arg_contents);
-
-        if (context.activation == SourceCompletionActivation.USER_REQUESTED)
-        {
-            show_all_proposals = cmd == null && ! in_argument;
-            return true;
-        }
-
-        if (! settings.get_boolean ("interactive-completion")
-            || (in_argument && ! valid_arg_contents))
-            return false;
-
-        if (in_argument && valid_arg_contents)
+        if (is_user_request (context))
             return true;
 
-        uint min_nb_chars;
-        settings.get ("interactive-completion-num", "u", out min_nb_chars);
-
-        return cmd != null && cmd.length > min_nb_chars;
+        // Since get_activation() is not dynamic, we do that here.
+        return _settings.get_boolean ("interactive-completion");
     }
+
+    /*************************************************************************/
+    // Populate: match() has returned true, now show the matches.
 
     public void populate (SourceCompletionContext context)
     {
         TextIter iter = context.get_iter ();
+
+        // Is the cursor in a command name?
         string? cmd = get_latex_command_at_iter (iter);
 
-        bool in_argument = false;
-        string cmd_name = null;
-        Gee.ArrayList<bool> arguments = new Gee.ArrayList<bool> ();
-        string argument_contents = null;
-        bool valid_arg_contents = false;
-
-        if (cmd == null)
-            in_argument = in_latex_command_argument (iter, out cmd_name, out arguments,
-                out argument_contents, out valid_arg_contents);
-
-        // clear
-        if ((! show_all_proposals && cmd == null && ! in_argument)
-            || (context.activation == SourceCompletionActivation.INTERACTIVE
-                && ! settings.get_boolean ("interactive-completion"))
-            || (in_argument && ! commands.has_key (cmd_name)))
+        if (cmd != null)
         {
-            clear_context (context);
-            first_populate = false;
+            populate_command (context, cmd);
             return;
         }
 
-        // show all proposals
-        if (show_all_proposals || cmd == "\\")
+        // Is the cursor in a command's argument?
+        ArgumentContext info;
+        bool in_arg = in_latex_command_argument (iter, out info);
+
+        if (in_arg)
         {
-            show_all_proposals = false;
-            context.add_proposals ((SourceCompletionProvider) this, proposals, true);
-            first_populate = false;
+            populate_argument (context, info);
             return;
         }
 
-        // filter proposals
-        unowned List<SourceCompletionItem> proposals_to_filter = null;
-        string prefix = null;
-        // try to complete a command
-        if (! in_argument)
-        {
-            proposals_to_filter = proposals;
-            prefix = cmd;
-        }
-        // try to complete a command argument choice
-        else if (valid_arg_contents && commands.has_key (cmd_name))
-        {
-            proposals_to_filter = get_argument_proposals (commands[cmd_name], arguments);
-            prefix = argument_contents ?? "";
-        }
+        // Neither in a command name, nor an argument.
+        if (is_user_request (context))
+            show_all_proposals (context);
+        else
+            show_no_proposals (context);
+    }
 
-        // show calltip?
-        if (in_argument && proposals_to_filter == null)
+    private void populate_command (SourceCompletionContext context, string cmd)
+    {
+        if (! is_user_request (context))
         {
-            // show calltip only on user request
-            // Attention, clear the context before comparing the activation is not a
-            // really good idea... ;)
-            if (context.activation == SourceCompletionActivation.INTERACTIVE)
-            {
-                clear_context (context);
-                hide_calltip_window ();
-                return;
-            }
+            uint min_nb_chars;
+            _settings.get ("interactive-completion-num", "u", out min_nb_chars);
 
-            if (first_populate)
+            if (cmd.length <= min_nb_chars)
             {
-                CompletionCommand command = commands[cmd_name];
-                int num = get_argument_num (command.args, arguments);
-                if (num != -1)
-                {
-                    string info = get_command_info (command, num);
-                    show_calltip_info (info);
-                }
+                show_no_proposals (context);
                 return;
             }
         }
 
-        hide_calltip_window ();
+        if (cmd == "\\")
+        {
+            show_all_proposals (context);
+            return;
+        }
+
+        show_filtered_proposals (context, _proposals, cmd);
+    }
+
+    private void populate_argument (SourceCompletionContext context, ArgumentContext info)
+    {
+        // invalid argument's command
+        if (! _commands.has_key (info.cmd_name))
+        {
+            show_no_proposals (context);
+            return;
+        }
+
+        unowned List<SourceCompletionItem> proposals_to_filter =
+            get_argument_proposals (info);
+
+        if (proposals_to_filter == null)
+        {
+            if (is_user_request (context))
+                show_calltip_cmd_prototype (info.cmd_name, info.args_types);
+            else
+                show_no_proposals (context);
+            return;
+        }
+
+        show_filtered_proposals (context, proposals_to_filter, info.arg_contents);
+    }
+
+    private unowned List<SourceCompletionItem>? get_argument_proposals (
+        ArgumentContext arg_context)
+    {
+        return_val_if_fail (_commands.has_key (arg_context.cmd_name), null);
+
+        CompletionCommand cmd = _commands[arg_context.cmd_name];
+        string cmd_info = get_command_info (cmd);
+
+        int arg_num = get_argument_num (cmd.args, arg_context.args_types);
+        if (arg_num == -1)
+            return null;
+
+        CompletionArgument arg = cmd.args[arg_num - 1];
+        unowned List<SourceCompletionItem> items = null;
+
+        foreach (CompletionChoice choice in arg.choices)
+        {
+            Gdk.Pixbuf pixbuf;
+            string? arg_info = null;
+            if (choice.package != null)
+            {
+                pixbuf = _icon_package_required;
+                arg_info = cmd_info + "\nPackage: " + choice.package;
+            }
+            else
+                pixbuf = _icon_choice;
+
+            SourceCompletionItem item = new SourceCompletionItem (
+                choice.name, choice.name, pixbuf, arg_info ?? cmd_info);
+            items.prepend (item);
+        }
+
+        if (items == null)
+            return null;
+
+        items.sort ((CompareFunc) compare_proposals);
+        return items;
+    }
+
+    // It has the same effect as returning false in match().
+    private void show_no_proposals (SourceCompletionContext context)
+    {
+        // FIXME: maybe this method is not sure, because sometimes segfault occur,
+        // but it's really difficult to diagnose...
+        // see bug #618004
+
+        // The second argument can not be null so we use a variable...
+        // The vapi should be fixed.
+        List<SourceCompletionItem> empty_proposals = null;
+        context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
+    }
+
+    private void show_all_proposals (SourceCompletionContext context)
+    {
+        context.add_proposals ((SourceCompletionProvider) this, _proposals, true);
+    }
+
+    private void show_filtered_proposals (SourceCompletionContext context,
+        List<SourceCompletionItem> proposals_to_filter, string? prefix)
+    {
+        // No filtering needed.
+        if (prefix == null || prefix == "")
+        {
+            context.add_proposals ((SourceCompletionProvider) this,
+                proposals_to_filter, true);
+            return;
+        }
 
         List<SourceCompletionItem> filtered_proposals = null;
         foreach (SourceCompletionItem item in proposals_to_filter)
@@ -250,29 +285,78 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 filtered_proposals.prepend (item);
         }
 
-        // no match, show a message so the completion widget doesn't disappear
-        if (filtered_proposals == null)
+        // Since we have prepend items we must reverse the list to keep the proposals
+        // in ascending order.
+        if (filtered_proposals != null)
+            filtered_proposals.reverse ();
+
+        // No match, show a message so the completion widget doesn't disappear.
+        else
         {
             var dummy_proposal = new SourceCompletionItem (_("No matching proposal"),
                 "", null, null);
             filtered_proposals.prepend (dummy_proposal);
         }
 
-        // Since we have prepend items we must reverse the list to keep the proposals
-        // in ascending order.
-        // FIXME maybe it's better to sort the proposals in descending order so when
-        // we prepend items it's in ascending order and we avoid reversing the list each
-        // time. But when we have to display all proposals (see above) it takes more time,
-        // but generally that occurs less often unless the minimum number of chars for
-        // interactive completion is 0.
-        else
-            filtered_proposals.reverse ();
-
-        context.add_proposals ((SourceCompletionProvider) this, filtered_proposals,
-            true);
-
-        first_populate = false;
+        context.add_proposals ((SourceCompletionProvider) this, filtered_proposals, true);
     }
+
+    /*************************************************************************/
+    // Calltip: completion information, but without proposals
+
+    private void init_calltip_window ()
+    {
+        Latexila app = Latexila.get_default ();
+        _calltip_window = new SourceCompletionInfo ();
+        _calltip_window.set_transient_for (app.active_window);
+//        _calltip_window.set_sizing (800, 200, true, true);
+        _calltip_window_label = new Label (null);
+        _calltip_window.set_widget (_calltip_window_label);
+    }
+
+    // Show the LaTeX command prototype, with the current argument in bold.
+    private void show_calltip_cmd_prototype (string arg_cmd,
+        Gee.ArrayList<bool> arguments)
+    {
+        return_if_fail (_commands.has_key (arg_cmd));
+
+        CompletionCommand command = _commands[arg_cmd];
+        int arg_num = get_argument_num (command.args, arguments);
+        if (arg_num != -1)
+        {
+            string info = get_command_info (command, arg_num);
+            show_calltip_info (info);
+        }
+    }
+
+    private void show_calltip_info (string markup)
+    {
+        if (_calltip_window == null)
+            init_calltip_window ();
+
+        _calltip_window_label.set_markup (markup);
+
+        MainWindow window = Latexila.get_default ().active_window;
+        _calltip_window.set_transient_for (window);
+
+        // Calltip at a fixed place (after the '{' or '[' of the current argument).
+        TextIter cursor_pos;
+        TextBuffer buffer = window.active_view.buffer;
+        buffer.get_iter_at_mark (out cursor_pos, buffer.get_insert ());
+        TextIter begin_arg_pos = get_begin_arg_pos (cursor_pos);
+        _calltip_window.move_to_iter (window.active_view, begin_arg_pos);
+
+        _calltip_window.show_all ();
+    }
+
+    public void hide_calltip_window ()
+    {
+        if (_calltip_window != null)
+            _calltip_window.hide ();
+    }
+
+    /*************************************************************************/
+    // Activate a proposal: the user has e.g. pressed Enter on a proposal.
 
     public bool activate_proposal (SourceCompletionProposal proposal, TextIter iter)
     {
@@ -282,24 +366,23 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         string? cmd = get_latex_command_at_iter (iter);
 
-        // if it's an argument choice
-        if (cmd == null && text[0] != '\\')
+        /* Command name */
+        if (cmd != null || text.has_prefix ("\\"))
+            activate_proposal_command_name (proposal, iter, cmd);
+
+        /* Argument choice */
+        else
         {
-            string cmd_name = null;
-            string argument_contents = null;
-
-            bool in_argument = in_latex_command_argument (iter, out cmd_name, null,
-                out argument_contents);
-
-            if (in_argument)
+            ArgumentContext info;
+            if (in_latex_command_argument (iter, out info))
             {
-                activate_proposal_argument_choice (proposal, iter, cmd_name,
-                    argument_contents);
-                return true;
+                activate_proposal_argument_choice (proposal, iter, info.cmd_name,
+                    info.arg_contents);
             }
+            else
+                warning ("Not in a LaTeX command argument.");
         }
 
-        activate_proposal_command_name (proposal, iter, cmd);
         return true;
     }
 
@@ -311,32 +394,34 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         long index_start = cmd != null ? cmd.length : 0;
         string text_to_insert = text[index_start : text.length];
 
+        /* Insert the text */
         TextBuffer doc = iter.get_buffer ();
+        TextMark old_pos_mark = doc.create_mark (null, iter, true);
+
         doc.begin_user_action ();
         doc.insert (ref iter, text_to_insert, -1);
         doc.end_user_action ();
 
-        // where to place the cursor?
-        int i;
-        for (i = 0 ; i < text_to_insert.length ; i++)
-        {
-            if (text_to_insert[i] == '{')
-                break;
-        }
+        /* Cursor position */
+        TextIter old_pos_iter;
+        doc.get_iter_at_mark (out old_pos_iter, old_pos_mark);
+        doc.delete_mark (old_pos_mark);
+        TextIter match_end;
 
-        if (i < text_to_insert.length)
+        if (old_pos_iter.forward_search ("{",
+            TextSearchFlags.TEXT_ONLY | TextSearchFlags.VISIBLE_ONLY,
+            null, out match_end, iter))
         {
-            if (iter.backward_chars ((int) text_to_insert.length - i - 1))
-                doc.place_cursor (iter);
+            doc.place_cursor (match_end);
         }
     }
 
     private void activate_proposal_argument_choice (SourceCompletionProposal proposal,
-        TextIter iter, string cmd_name, string? argument_contents)
+        TextIter iter, string arg_cmd, string? arg_contents)
     {
         string text = proposal.get_text ();
 
-        long index_start = argument_contents != null ? argument_contents.length : 0;
+        long index_start = arg_contents != null ? arg_contents.length : 0;
         string text_to_insert = text[index_start : text.length];
 
         TextBuffer doc = iter.get_buffer ();
@@ -344,7 +429,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         doc.insert (ref iter, text_to_insert, -1);
 
         // close environment: \begin{env} => \end{env}
-        if (cmd_name == "\\begin")
+        if (arg_cmd == "\\begin")
             close_environment (text, iter);
 
         // TODO place cursor, go to next argument, if any
@@ -357,298 +442,273 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private void close_environment (string env_name, TextIter iter)
     {
-        // two cases are supported here:
-        // - \begin{env[iter]} : the iter is between the end of env_name and '}'
-        //                       (spaces can be present between iter and '}')
-        // - \begin{env[iter]  : the iter is at the end of env_name, but the '}' has not
-        //                       been inserted (the user has written "\begin{" without
-        //                       auto-completion)
+        Document doc = iter.get_buffer () as Document;
 
-        /* check if '}' is present */
-
-        // get text between iter and end of line
-        int line = iter.get_line ();
-        Document doc = (Document) iter.get_buffer ();
-        TextIter end_iter;
-        doc.get_iter_at_line (out end_iter, line + 1);
-        string text = doc.get_text (iter, end_iter, false);
-
-        bool found = false;
-        long i;
-        for (i = 0 ; i < text.length ; i++)
-        {
-            if (text[i] == '}')
-            {
-                found = true;
-                break;
-            }
-            if (text[i].isspace ())
-                continue;
-            break;
-        }
-
-        if (! found)
-            doc.insert (ref iter, "}", -1);
+        // Close the bracket if needed.
+        if (iter.get_char () == '}')
+            iter.forward_char ();
         else
-            iter.forward_chars ((int) i + 1);
+            doc.insert (ref iter, "}", -1);
 
-        /* get current indentation */
+        string cur_indent = doc.get_current_indentation (iter);
+        string indent = doc.tab.view.get_indentation_style ();
 
-        // for example ("X" are spaces to take into account):
-        // some text
-        // \begin{figure}
-        // XX\begin{center[enter]
+        CompletionChoice? env = _environments[env_name];
 
-        string current_indent = doc.get_current_indentation (line);
+        doc.insert (ref iter, @"\n$cur_indent$indent", -1);
 
-        /* get current choice */
-        CompletionChoice? environment = environments[env_name];
+        if (env != null && env.insert != null)
+            doc.insert (ref iter, env.insert, -1);
 
-        /* close environment */
-
-        Document document = (Document) doc;
-        string indent = document.tab.view.get_indentation_style ();
-
-        doc.insert (ref iter, @"\n$current_indent$indent", -1);
-        if (environment != null && environment.insert != null)
-            doc.insert (ref iter, environment.insert, -1);
         TextMark cursor_pos = doc.create_mark (null, iter, true);
-        if (environment != null && environment.insert_after != null)
-            doc.insert (ref iter, environment.insert_after, -1);
-        doc.insert (ref iter, @"\n$current_indent\\end{" + env_name + "}", -1);
 
+        if (env != null && env.insert_after != null)
+            doc.insert (ref iter, env.insert_after, -1);
+
+        doc.insert (ref iter, @"\n$cur_indent\\end{$env_name}", -1);
+
+        // Place the cursor.
         doc.get_iter_at_mark (out iter, cursor_pos);
+        doc.delete_mark (cursor_pos);
         doc.place_cursor (iter);
     }
 
-    private void init_calltip_window ()
+    /*************************************************************************/
+    // Parsing
+
+    // Get the position of the beginning of the argument. For example:
+    // \blah{foobar}
+    // The iter will be between the '{' and the 'f'.
+    private TextIter get_begin_arg_pos (TextIter in_arg_pos)
     {
-        Application app = Application.get_default ();
-        calltip_window = new SourceCompletionInfo ();
-        calltip_window.set_transient_for (app.active_window);
-//        calltip_window.set_sizing (800, 200, true, true);
-        calltip_window_label = new Label (null);
-        calltip_window.set_widget (calltip_window_label);
-    }
+        string text = get_text_line_to_iter (in_arg_pos);
+        int cur_index = text.length;
+        int prev_index = cur_index;
+        unichar cur_char;
 
-    private void show_calltip_info (string markup)
-    {
-        if (calltip_window == null)
-            init_calltip_window ();
-
-        MainWindow win = Application.get_default ().active_window;
-
-        // calltip at a fixed place (after the '{' or '[' of the current arg)
-        TextIter pos;
-        TextBuffer buffer = win.active_view.buffer;
-        buffer.get_iter_at_mark (out pos, buffer.get_insert ());
-        string text = get_text_line_at_iter (pos);
-        for (long i = text.length - 1 ; i >= 0 ; i--)
+        while (Utils.string_get_prev_char (text, ref prev_index, out cur_char))
         {
-            if (text[i] == '[' || text[i] == '{')
+            if ((cur_char == '[' || cur_char == '{')
+                && ! Utils.char_is_escaped (text, cur_index))
             {
-                if (Utils.char_is_escaped (text, i))
-                    continue;
-                pos.backward_chars ((int) (text.length - 1 - i));
                 break;
             }
+
+            cur_index = prev_index;
         }
 
-        calltip_window_label.set_markup (markup);
+        TextIter begin_arg_pos = in_arg_pos;
+        begin_arg_pos.set_visible_line_index (cur_index);
+        begin_arg_pos.forward_char ();
 
-        calltip_window.set_transient_for (win);
-        calltip_window.move_to_iter (win.active_view, pos);
-        calltip_window.show_all ();
+        return begin_arg_pos;
     }
 
-    public void hide_calltip_window ()
+    private string? get_latex_command_at_iter (TextIter iter)
     {
-        if (calltip_window == null)
-            return;
-
-        calltip_window.hide ();
+        string text = get_text_line_to_iter (iter);
+        return get_latex_command_at_index (text, text.length);
     }
 
-    private void parser_start (MarkupParseContext context, string name,
-        string[] attr_names, string[] attr_values) throws MarkupError
+    // Get the LaTeX command found before 'index'. For example:
+    // text: "foobar \usepackage{blah}"
+    // text[index]: '{'
+    // returns: "\usepackage"
+    private string? get_latex_command_at_index (string text, int index)
     {
-        switch (name)
-        {
-            case "commands":
-                break;
+        return_val_if_fail (index <= text.length, null);
 
-            case "command":
-                current_command = CompletionCommand ();
-                for (int i = 0 ; i < attr_names.length ; i++)
-                {
-                    switch (attr_names[i])
-                    {
-                        case "name":
-                            current_command.name = "\\" + attr_values[i];
-                            break;
-                        case "package":
-                            current_command.package = attr_values[i];
-                            break;
-                        case "environment":
-                            break;
-                        default:
-                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
-                                "unknown command attribute \"" + attr_names[i] + "\"");
-                    }
-                }
-                break;
-
-            case "argument":
-                current_arg = CompletionArgument ();
-                current_arg.optional = false;
-                for (int i = 0 ; i < attr_names.length ; i++)
-                {
-                    switch (attr_names[i])
-                    {
-                        case "label":
-                            current_arg.label = attr_values[i];
-                            break;
-                        case "type":
-                            current_arg.optional = attr_values[i] == "optional";
-                            break;
-                        default:
-                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
-                                "unknown argument attribute \"" + attr_names[i] + "\"");
-                    }
-                }
-                break;
-
-            case "choice":
-                current_choice = CompletionChoice ();
-                for (int i = 0 ; i < attr_names.length ; i++)
-                {
-                    switch (attr_names[i])
-                    {
-                        case "name":
-                            current_choice.name = attr_values[i];
-                            break;
-                        case "package":
-                            current_choice.package = attr_values[i];
-                            break;
-                        default:
-                            throw new MarkupError.UNKNOWN_ATTRIBUTE (
-                                "unknown choice attribute \"" + attr_names[i] + "\"");
-                    }
-                }
-                break;
-
-            // insert and insert_after don't contain any attributes, but
-            // contain content, which is parsed in parser_text()
-            case "insert":
-            case "insert_after":
-                break;
-
-            case "placeholder":
-            case "component":
-                break;
-
-            default:
-                throw new MarkupError.UNKNOWN_ELEMENT (
-                    "unknown element \"" + name + "\"");
-        }
-    }
-
-    private void parser_end (MarkupParseContext context, string name) throws MarkupError
-    {
-        switch (name)
-        {
-            case "command":
-                Gdk.Pixbuf pixbuf = current_command.package != null
-                    ? icon_package_required : icon_normal_cmd;
-                var item = new SourceCompletionItem (current_command.name,
-                    get_command_text (current_command),
-                    pixbuf,
-                    get_command_info (current_command));
-
-                proposals.append (item);
-
-                // we don't need to store commands that have no argument
-                if (current_command.args.length > 0)
-                    commands[current_command.name] = current_command;
-                break;
-
-            case "argument":
-                current_command.args += current_arg;
-                break;
-
-            case "choice":
-                current_arg.choices += current_choice;
-                if (current_choice.insert != null || current_choice.insert_after != null)
-                    environments[current_choice.name] = current_choice;
-                break;
-        }
-    }
-
-    private void parser_text (MarkupParseContext context, string text, size_t text_len)
-        throws MarkupError
-    {
-        switch (context.get_element ())
-        {
-            case "insert":
-                current_choice.insert = text;
-                break;
-
-            case "insert_after":
-                current_choice.insert_after = text;
-                break;
-        }
-    }
-
-    private unowned List<SourceCompletionItem>? get_argument_proposals (
-        CompletionCommand cmd, Gee.ArrayList<bool> arguments)
-    {
-        if (cmd.args.length == 0)
+        // Skip the last character (the '{' in the above example).
+        int cur_index = index;
+        if (! Utils.string_get_prev_char (text, ref cur_index, null))
             return null;
 
-        string info = get_command_info (cmd);
-
-        int num = get_argument_num (cmd.args, arguments);
-        if (num == -1)
-            return null;
-
-        CompletionArgument arg = cmd.args[num - 1];
-        unowned List<SourceCompletionItem> items = null;
-
-        foreach (CompletionChoice choice in arg.choices)
+        while (true)
         {
-            string info2 = null;
-            Gdk.Pixbuf pixbuf;
-            if (choice.package != null)
+            unichar cur_char;
+            int prev_index = cur_index;
+            bool first_char = ! Utils.string_get_prev_char (text,
+                ref prev_index, out cur_char);
+
+            if (cur_char == '\\')
             {
-                info2 = info + "\nPackage: " + choice.package;
-                pixbuf = icon_package_required;
+                // If the backslash is escaped, it's not a LaTeX command.
+                if (Utils.char_is_escaped (text, cur_index))
+                    break;
+
+                return text[cur_index : index];
             }
+
+            // A LaTeX command contains only normal letters and '*'.
+            if (! cur_char.isalpha () && cur_char != '*')
+                break;
+
+            if (first_char)
+                break;
+
+            cur_index = prev_index;
+        }
+
+        return null;
+    }
+
+    private bool in_latex_command_argument (TextIter iter, out ArgumentContext info)
+    {
+        info = ArgumentContext ();
+        info.cmd_name = null;
+        info.arg_contents = null;
+        info.args_types = new Gee.ArrayList<bool> ();
+
+        string text = get_text_line_to_iter (iter);
+        int last_index = text.length;
+        int cur_index = last_index;
+
+        /* Fetch the argument's contents */
+        while (true)
+        {
+            int prev_index = cur_index;
+            unichar cur_char;
+            bool first_char = ! Utils.string_get_prev_char (text,
+                ref prev_index, out cur_char);
+
+            // End of the argument's contents.
+            bool opening_bracket = cur_char == '{' || cur_char == '[';
+            if (opening_bracket && ! Utils.char_is_escaped (text, cur_index))
+            {
+                info.args_types.insert (0, cur_char == '[');
+                info.arg_contents = text[cur_index + 1 : last_index];
+                cur_index = prev_index;
+                break;
+            }
+
+            // Not in an argument.
+            if (first_char)
+                return false;
+
+            cur_index = prev_index;
+        }
+
+        /* Traverse the previous arguments, and find the command name */
+        bool in_prev_arg = false;
+        unichar prev_arg_opening_bracket = '{';
+
+        while (true)
+        {
+            int prev_index = cur_index;
+            unichar cur_char;
+            bool first_char = ! Utils.string_get_prev_char (text,
+                ref prev_index, out cur_char);
+
+            // In the contents of a previous argument.
+            if (in_prev_arg)
+            {
+                if (cur_char == prev_arg_opening_bracket)
+                    in_prev_arg = Utils.char_is_escaped (text, cur_index);
+            }
+
+            // Maybe the end of a previous argument.
+            else if (cur_char == '}' || cur_char == ']')
+            {
+                if (Utils.char_is_escaped (text, cur_index))
+                    return false;
+
+                in_prev_arg = true;
+                prev_arg_opening_bracket = cur_char == '}' ? '{' : '[';
+
+                info.args_types.insert (0, cur_char == ']');
+            }
+
+            // Maybe the last character of the command name.
+            else if (cur_char.isalpha () || cur_char == '*')
+            {
+                info.cmd_name = get_latex_command_at_index (text, cur_index + 1);
+                return info.cmd_name != null;
+            }
+
+            // Spaces are allowed between arguments.
+            else if (! cur_char.isspace ())
+                return false;
+
+            if (first_char)
+                return false;
+
+            cur_index = prev_index;
+        }
+    }
+
+    /*************************************************************************/
+    // Various utilities functions
+
+    private bool is_user_request (SourceCompletionContext context)
+    {
+        return context.activation == SourceCompletionActivation.USER_REQUESTED;
+    }
+
+    // static because of bug #627736
+    // (and also because it's more efficient)
+    private static int compare_proposals (SourceCompletionItem a, SourceCompletionItem b)
+    {
+        return a.text.collate (b.text);
+    }
+
+    // Get the text between the start of the line and the iter.
+    private string get_text_line_to_iter (TextIter iter)
+    {
+        int line = iter.get_line ();
+        TextBuffer doc = iter.get_buffer ();
+
+        TextIter iter_start;
+        doc.get_iter_at_line (out iter_start, line);
+
+        return doc.get_text (iter_start, iter, false);
+    }
+
+    // Get the command information: the prototype, and the package required if a package
+    // is required. In the prototype, the current argument ('cur_arg') is in bold.
+    // By default, no argument is in bold.
+    private string get_command_info (CompletionCommand cmd, int cur_arg = -1)
+    {
+        string info = cmd.name;
+        int arg_num = 1;
+        foreach (CompletionArgument arg in cmd.args)
+        {
+            if (arg_num == cur_arg)
+                info += "<b>";
+
+            if (arg.optional)
+                info += "[" + arg.label + "]";
             else
-                pixbuf = icon_normal_choice;
+                info += "{" + arg.label + "}";
 
-            SourceCompletionItem item = new SourceCompletionItem (
-                choice.name, choice.name, pixbuf, info2 ?? info);
-            items.prepend (item);
+            if (arg_num == cur_arg)
+                info += "</b>";
+
+            arg_num++;
         }
 
-        if (items == null)
-            return null;
+        if (cmd.package != null)
+            info += "\nPackage: " + cmd.package;
 
-        items.sort ((CompareFunc) compare_proposals);
-        return items;
+        return info;
     }
 
+    /* Get argument number (begins at 1).
+     * 'all_args': all the possible arguments of a LaTeX command.
+     * 'args': the encounter arguments, beginning just after the command name.
+     * Returns -1 if it doesn't match.
+     */
     private int get_argument_num (CompletionArgument[] all_args,
         Gee.ArrayList<bool> args)
     {
-        return_val_if_fail (args.size <= all_args.length, -1);
+        if (all_args.length < args.size)
+            return -1;
 
         int num = 0;
         foreach (bool arg in args)
         {
             while (true)
             {
-                if (num >= all_args.length)
+                if (all_args.length <= num)
                     return -1;
 
                 if (all_args[num].optional == arg)
@@ -667,7 +727,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return num;
     }
 
-    private string get_command_text (CompletionCommand cmd)
+    private string get_command_text_to_insert (CompletionCommand cmd)
     {
         string text_to_insert = cmd.name;
         foreach (CompletionArgument arg in cmd.args)
@@ -676,187 +736,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
                 text_to_insert += "{}";
         }
         return text_to_insert;
-    }
-
-    private string get_command_info (CompletionCommand cmd, int num = -1)
-    {
-        string info = cmd.name;
-        int i = 1;
-        foreach (CompletionArgument arg in cmd.args)
-        {
-            if (num == i)
-                info += "<b>";
-
-            if (arg.optional)
-                info += "[" + arg.label + "]";
-            else
-                info += "{" + arg.label + "}";
-
-            if (num == i)
-                info += "</b>";
-            i++;
-        }
-
-        if (cmd.package != null)
-            info += "\nPackage: " + cmd.package;
-
-        return info;
-    }
-
-    private string? get_latex_command_at_iter (TextIter iter)
-    {
-        string text = get_text_line_at_iter (iter);
-        return get_latex_command_at_index (text, text.length - 1);
-    }
-
-    // get the text between the beginning of the iter line and the iter position
-    private string get_text_line_at_iter (TextIter iter)
-    {
-        int line = iter.get_line ();
-        TextBuffer doc = iter.get_buffer ();
-
-        TextIter iter_start;
-        doc.get_iter_at_line (out iter_start, line);
-
-        return doc.get_text (iter_start, iter, false);
-    }
-
-    private string? get_latex_command_at_index (string text, long index)
-    {
-        return_val_if_fail (text.length > index, null);
-
-        for (long i = index ; i >= 0 ; i--)
-        {
-            if (text[i] == '\\')
-            {
-                // if the backslash is escaped, it's not a latex command
-                if (Utils.char_is_escaped (text, i))
-                    break;
-
-                return text[i : index + 1];
-            }
-            if (! text[i].isalpha () && text[i] != '*')
-                break;
-        }
-
-        return null;
-    }
-
-    /* Are we in a latex command argument?
-     * If yes, we also want to know:
-     *     - the command name
-     *     - the arguments: true if optional
-     *       The last argument is the one where we are.
-     *       We use an ArrayList because a dynamic array as an out param is not supported.
-     *     - the current argument contents
-     *     - if the argument contents is valid, i.e. if some choices could exist.
-     *       Valid chars are letters and '*'. If the argument contents contains other char
-     *       it is considered as not valid because no choice contain such chars.
-     * Returns true if iter is in a latex command argument.
-     */
-    private bool in_latex_command_argument (TextIter iter,
-                                            out string cmd_name = null,
-                                            out Gee.ArrayList<bool> arguments = null,
-                                            out string argument_contents = null,
-                                            out bool valid_arg_contents = null)
-    {
-        cmd_name = null;
-        argument_contents = null;
-
-        string text = get_text_line_at_iter (iter);
-
-        bool fetch_argument_contents = true;
-        long index_start_argument_contents = -1;
-        bool in_other_argument = false;
-        char other_argument_opening_bracket = '{';
-
-        arguments = new Gee.ArrayList<bool> ();
-        valid_arg_contents = true;
-
-        for (long i = text.length - 1 ; i >= 0 ; i--)
-        {
-            if (fetch_argument_contents)
-            {
-                // end of argument content
-                if ((text[i] == '{' || text[i] == '[')
-                    && ! Utils.char_is_escaped (text, i))
-                {
-                    arguments.insert (0, text[i] == '[');
-
-                    if (index_start_argument_contents != -1)
-                        argument_contents =
-                            text[index_start_argument_contents : text.length];
-
-                    // argument contents fetched
-                    fetch_argument_contents = false;
-                    continue;
-                }
-
-                // invalid argument content (no choice available)
-                if (! text[i].isalpha () && text[i] != '*')
-                    valid_arg_contents = false;
-
-                index_start_argument_contents = i;
-            }
-
-            else if (in_other_argument)
-            {
-                if (text[i] == other_argument_opening_bracket)
-                    in_other_argument = Utils.char_is_escaped (text, i);
-                continue;
-            }
-
-            // Maybe between two arguments,
-            // or between the first argument and the command name,
-            // or we were not in a latex command argument.
-            else
-            {
-                if (text[i].isspace ())
-                    continue;
-
-                // last character of the command name
-                if (text[i].isalpha () || text[i] == '*')
-                {
-                    cmd_name = get_latex_command_at_index (text, i);
-                    return cmd_name != null;
-                }
-
-                // maybe the end of another argument
-                if (text[i] == '}' || text[i] == ']')
-                {
-                    if (Utils.char_is_escaped (text, i))
-                        return false;
-
-                    in_other_argument = true;
-                    other_argument_opening_bracket = text[i] == '}' ? '{' : '[';
-
-                    arguments.insert (0, text[i] == ']');
-                    continue;
-                }
-
-                return false;
-            }
-        }
-
-        return false;
-    }
-
-    // static because of bug #627736
-    private static int compare_proposals (SourceCompletionItem a, SourceCompletionItem b)
-    {
-        return a.text.collate (b.text);
-    }
-
-    private void clear_context (SourceCompletionContext context)
-    {
-        // the second argument can not be null so we use a variable...
-        // the vapi should be fixed
-
-        // FIXME: maybe this method is not sure, because sometimes segfault occur,
-        // but it's really difficult to diagnose...
-        // see bug #618004
-        List<SourceCompletionItem> empty_proposals = null;
-        context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
     }
 
     /*
@@ -878,4 +757,193 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         }
     }
     */
+
+    /*************************************************************************/
+    // Load the data contained in the XML file
+
+    private void load_data ()
+    {
+        _commands = new Gee.HashMap<string, CompletionCommand?> ();
+        _environments = new Gee.HashMap<string, CompletionChoice?> ();
+
+        try
+        {
+            File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
+
+            uint8[] chars;
+            file.load_contents (null, out chars, null);
+            string contents = (string) (owned) chars;
+
+            MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
+            MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+            _proposals.sort ((CompareFunc) compare_proposals);
+        }
+        catch (GLib.Error e)
+        {
+            warning ("Impossible to load completion data: %s", e.message);
+        }
+    }
+
+    private void parser_start (MarkupParseContext context, string name,
+        string[] attr_names, string[] attr_values) throws MarkupError
+    {
+        switch (name)
+        {
+            case "commands":
+                break;
+
+            case "command":
+                parser_add_command (attr_names, attr_values);
+                break;
+
+            case "argument":
+                parser_add_argument (attr_names, attr_values);
+                break;
+
+            case "choice":
+                parser_add_choice (attr_names, attr_values);
+                break;
+
+            // insert and insert_after don't contain any attributes, but
+            // contain content, which is parsed in parser_text()
+            case "insert":
+            case "insert_after":
+                break;
+
+            // not yet supported
+            case "placeholder":
+            case "component":
+                break;
+
+            default:
+                throw new MarkupError.UNKNOWN_ELEMENT (
+                    "unknown element \"" + name + "\"");
+        }
+    }
+
+    private void parser_add_command (string[] attr_names, string[] attr_values)
+        throws MarkupError
+    {
+        _current_command = CompletionCommand ();
+        for (int attr_num = 0 ; attr_num < attr_names.length ; attr_num++)
+        {
+            switch (attr_names[attr_num])
+            {
+                case "name":
+                    _current_command.name = "\\" + attr_values[attr_num];
+                    break;
+
+                case "package":
+                    _current_command.package = attr_values[attr_num];
+                    break;
+
+                // not yet supported
+                case "environment":
+                    break;
+
+                default:
+                    throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                        "unknown command attribute \"" + attr_names[attr_num] + "\"");
+            }
+        }
+    }
+
+    private void parser_add_argument (string[] attr_names, string[] attr_values)
+        throws MarkupError
+    {
+        _current_arg = CompletionArgument ();
+        _current_arg.optional = false;
+
+        for (int attr_num = 0 ; attr_num < attr_names.length ; attr_num++)
+        {
+            switch (attr_names[attr_num])
+            {
+                case "label":
+                    _current_arg.label = attr_values[attr_num];
+                    break;
+
+                case "type":
+                    _current_arg.optional = attr_values[attr_num] == "optional";
+                    break;
+
+                default:
+                    throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                        "unknown argument attribute \"" + attr_names[attr_num] + "\"");
+            }
+        }
+    }
+
+    private void parser_add_choice (string[] attr_names, string[] attr_values)
+        throws MarkupError
+    {
+        _current_choice = CompletionChoice ();
+
+        for (int attr_num = 0 ; attr_num < attr_names.length ; attr_num++)
+        {
+            switch (attr_names[attr_num])
+            {
+                case "name":
+                    _current_choice.name = attr_values[attr_num];
+                    break;
+
+                case "package":
+                    _current_choice.package = attr_values[attr_num];
+                    break;
+
+                default:
+                    throw new MarkupError.UNKNOWN_ATTRIBUTE (
+                        "unknown choice attribute \"" + attr_names[attr_num] + "\"");
+            }
+        }
+    }
+
+    private void parser_end (MarkupParseContext context, string name) throws MarkupError
+    {
+        switch (name)
+        {
+            case "command":
+                Gdk.Pixbuf pixbuf = _current_command.package != null
+                    ? _icon_package_required : _icon_cmd;
+
+                var item = new SourceCompletionItem (_current_command.name,
+                    get_command_text_to_insert (_current_command),
+                    pixbuf,
+                    get_command_info (_current_command));
+
+                _proposals.append (item);
+
+                // We don't need to store commands that have no arguments,
+                // they are only in _proposals, it's sufficient.
+                if (0 < _current_command.args.length)
+                    _commands[_current_command.name] = _current_command;
+                break;
+
+            case "argument":
+                _current_command.args += _current_arg;
+                break;
+
+            case "choice":
+                _current_arg.choices += _current_choice;
+                if (_current_choice.insert != null
+                    || _current_choice.insert_after != null)
+                    _environments[_current_choice.name] = _current_choice;
+                break;
+        }
+    }
+
+    private void parser_text (MarkupParseContext context, string text, size_t text_len)
+        throws MarkupError
+    {
+        switch (context.get_element ())
+        {
+            case "insert":
+                _current_choice.insert = text;
+                break;
+
+            case "insert_after":
+                _current_choice.insert_after = text;
+                break;
+        }
+    }
 }

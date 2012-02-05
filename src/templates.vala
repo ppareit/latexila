@@ -336,7 +336,7 @@ public class Templates : GLib.Object
         try
         {
             uint8[] chars;
-            file.load_contents (null, out chars);
+            file.load_contents (null, out chars, null);
             string contents = (string) (owned) chars;
             add_template_from_string (store, name, icon_id, contents);
         }
@@ -427,7 +427,7 @@ public class Templates : GLib.Object
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (contents, contents.length, null, false,
+            file.replace_contents (contents.data, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)
@@ -482,7 +482,7 @@ public class Templates : GLib.Object
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (key_file_data, key_file_data.length, null, false,
+            file.replace_contents (key_file_data.data, null, false,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)
@@ -515,7 +515,7 @@ public class Templates : GLib.Object
                 if (parent != null && ! parent.query_exists ())
                     parent.make_directory_with_parents ();
 
-                file.replace_contents (contents, contents.length, null, false,
+                file.replace_contents (contents.data, null, false,
                     FileCreateFlags.NONE, null, null);
             }
             catch (Error e)

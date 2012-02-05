@@ -288,7 +288,7 @@ public class MainWindow : Window
         documents_panel = new DocumentsPanel (this);
         documents_panel.right_click.connect ((event) =>
         {
-            Menu popup_menu = (Menu) ui_manager.get_widget ("/NotebookPopup");
+            Gtk.Menu popup_menu = ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
             popup_menu.popup (null, null, null, event.button, event.time);
         });
 
@@ -427,6 +427,16 @@ public class MainWindow : Window
         set_file_actions_sensitivity (false);
         set_documents_move_to_new_window_sensitivity (false);
 
+        // drag-n-drop support of files
+        Gtk.drag_dest_set (this, DestDefaults.ALL, {}, Gdk.DragAction.COPY);
+        Gtk.drag_dest_add_uri_targets (this);
+        drag_data_received.connect ((dc, x, y, selection_data, info, time) =>
+        {
+            Latexila app = Latexila.get_default ();
+            app.open_documents (selection_data.get_uris ());
+            Gtk.drag_finish (dc, true, true, time);
+        });
+
         // spell checking
         ToggleAction spell_checking_action =
             action_group.get_action ("EditSpellChecking") as ToggleAction;
@@ -562,9 +572,9 @@ public class MainWindow : Window
         // show tooltips in the statusbar
         ui_manager.connect_proxy.connect ((action, p) =>
         {
-            if (p is MenuItem)
+            if (p is Gtk.MenuItem)
             {
-                MenuItem proxy = (MenuItem) p;
+                Gtk.MenuItem proxy = p as Gtk.MenuItem;
                 proxy.select.connect (on_menu_item_select);
                 proxy.deselect.connect (on_menu_item_deselect);
             }
@@ -572,9 +582,9 @@ public class MainWindow : Window
 
         ui_manager.disconnect_proxy.connect ((action, p) =>
         {
-            if (p is MenuItem)
+            if (p is Gtk.MenuItem)
             {
-                MenuItem proxy = (MenuItem) p;
+                Gtk.MenuItem proxy = p as Gtk.MenuItem;
                 proxy.select.disconnect (on_menu_item_select);
                 proxy.deselect.disconnect (on_menu_item_deselect);
             }
@@ -590,7 +600,7 @@ public class MainWindow : Window
         update_build_tools_menu ();
     }
 
-    private void on_menu_item_select (MenuItem proxy)
+    private void on_menu_item_select (Gtk.MenuItem proxy)
     {
         Gtk.Action action = proxy.get_related_action ();
         return_if_fail (action != null);
@@ -598,7 +608,7 @@ public class MainWindow : Window
             statusbar.push (tip_message_cid, action.tooltip);
     }
 
-    private void on_menu_item_deselect (MenuItem proxy)
+    private void on_menu_item_deselect (Gtk.MenuItem proxy)
     {
         statusbar.pop (tip_message_cid);
     }
@@ -687,7 +697,7 @@ public class MainWindow : Window
     public DocumentTab? open_document (File location, bool jump_to = true)
     {
         /* check if the document is already opened */
-        foreach (MainWindow w in Application.get_default ().windows)
+        foreach (MainWindow w in Latexila.get_default ().windows)
         {
             foreach (Document doc in w.get_documents ())
             {
@@ -1167,7 +1177,7 @@ public class MainWindow : Window
 
     private void move_tab_to_new_window (DocumentTab tab)
     {
-        MainWindow new_window = Application.get_default ().create_window ();
+        MainWindow new_window = Latexila.get_default ().create_window ();
         DocumentView view = tab.view;
         documents_panel.remove_tab (tab);
 
@@ -1250,7 +1260,7 @@ public class MainWindow : Window
             // save all the documents belonging to the project
             else
             {
-                List<Document> docs = Application.get_default ().get_documents ();
+                List<Document> docs = Latexila.get_default ().get_documents ();
                 foreach (Document doc in docs)
                 {
                     if (doc.project_id == project_id)
@@ -1479,7 +1489,7 @@ public class MainWindow : Window
 
     public void on_new_window ()
     {
-        Application.get_default ().create_window ();
+        Latexila.get_default ().create_window ();
     }
 
     public void on_file_open ()

@@ -111,7 +111,7 @@ int main (string[] args)
 //    }
 //
 //    Unique.App app = new Unique.App ("org.gnome.latexila", null);
-//    app.add_command ("new_window", Application.NEW_WINDOW);
+//    app.add_command ("new_window", Latexila.NEW_WINDOW);
 //
 //    if (app.is_running)
 //    {
@@ -119,7 +119,7 @@ int main (string[] args)
 //        bool ok = true;
 //        if (option_new_window)
 //        {
-//            Unique.Response resp = app.send_message (Application.NEW_WINDOW, null);
+//            Unique.Response resp = app.send_message (Latexila.NEW_WINDOW, null);
 //            ok = resp == Unique.Response.OK;
 //        }
 //        if (ok && command_open)
@@ -144,7 +144,7 @@ int main (string[] args)
 //    }
 
     /* start a new application */
-    Application latexila = Application.get_default ();
+    Latexila latexila = Latexila.get_default ();
 
     /* reopen files on startup */
     GLib.Settings editor_settings =

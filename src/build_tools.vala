@@ -231,7 +231,7 @@ public class BuildTools
     private void update_all_menus ()
     {
         _modified = true;
-        foreach (MainWindow window in Application.get_default ().windows)
+        foreach (MainWindow window in Latexila.get_default ().windows)
             window.update_build_tools_menu ();
     }
 
@@ -269,7 +269,7 @@ public class BuildTools
                     continue;
 
                 uint8[] chars;
-                file.load_contents (null, out chars);
+                file.load_contents (null, out chars, null);
                 string contents = (string) (owned) chars;
 
                 MarkupParser parser =
@@ -430,7 +430,7 @@ public class BuildTools
                 parent.make_directory_with_parents ();
 
             // a backup is made
-            file.replace_contents (content, content.length, null, true,
+            file.replace_contents (content.data, null, true,
                 FileCreateFlags.NONE, null, null);
         }
         catch (Error e)

@@ -83,6 +83,17 @@ public class LatexMenu : Gtk.ActionGroup
         { "EnvTitlepage", null, "\\begin{titlepage}", null,
             N_("Title page - \\begin{titlepage}"), on_env_titlepage },
 
+
+        // LaTeX: Presentation
+        { "Presentation", "presentation", "_Presentation" },
+        { "PresentationFrame", null, "\\begin{frame}", null,
+            N_("Frame - \\begin{frame}"), on_present_frame },
+        { "PresentationBlock", null, "\\begin{block}", null,
+            N_("Block - \\begin{block}"), on_present_block },
+        { "PresentationColumns", null, "\\begin{columns}", null,
+            N_("Two columns - \\begin{columns}"), on_present_columns },
+
+
         // LaTeX: list environments
         { "ListEnvironments", "list-enumerate", N_("_List Environments") },
         { "ListEnvItemize", "list-itemize", "\\begin{_itemize}", null,
@@ -431,6 +442,9 @@ public class LatexMenu : Gtk.ActionGroup
         Gtk.Action references = get_menu_tool_action ("ReferencesToolItem",
             _("References"), "references");
 
+        Gtk.Action presentation_env = get_menu_tool_action ("PresentationToolItem",
+            _("Presentation Environments"), "presentation");
+
         Gtk.Action math_env = get_menu_tool_action ("MathEnvironmentsToolItem",
             _("Math Environments"), "math");
 
@@ -444,6 +458,7 @@ public class LatexMenu : Gtk.ActionGroup
         add_action (sectioning);
         add_action (sizes);
         add_action (references);
+        add_action (presentation_env);
         add_action (math_env);
         add_action (math_left_del);
         add_action (math_right_del);
@@ -477,8 +492,7 @@ public class LatexMenu : Gtk.ActionGroup
 
         if (text_before.contains ("\n") || text_after.contains ("\n"))
         {
-            string current_indent =
-                active_document.get_current_indentation (start.get_line ());
+            string current_indent = active_document.get_current_indentation (start);
 
             if (current_indent != "")
             {
@@ -499,7 +513,8 @@ public class LatexMenu : Gtk.ActionGroup
             active_document.insert (ref end, text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out end, mark_end);
-            active_document.select_range (end, end);
+            active_document.delete_mark (mark_end);
+            active_document.place_cursor (end);
         }
 
         // no selection
@@ -519,7 +534,8 @@ public class LatexMenu : Gtk.ActionGroup
             active_document.insert_at_cursor (text_after2 ?? text_after, -1);
 
             active_document.get_iter_at_mark (out between, mark);
-            active_document.select_range (between, between);
+            active_document.delete_mark (mark);
+            active_document.place_cursor (between);
         }
 
         active_document.end_user_action ();
@@ -1009,6 +1025,35 @@ public class LatexMenu : Gtk.ActionGroup
     public void on_accent15 ()
     {
         text_buffer_insert ("\\t{", "}");
+    }
+
+    /* Presentation */
+
+    public void on_present_frame ()
+    {
+        string indent = get_indentation ();
+        string begin_frame = "\\begin{frame}\n"
+                           + @"$indent\\frametitle{}\n"
+                           + @"$indent\\framesubtitle{}\n";
+        string end_frame = "\n\\end{frame}";
+        text_buffer_insert (begin_frame, end_frame);
+    }
+
+    public void on_present_columns ()
+    {
+        string indent = get_indentation ();
+        string begin_columns = "\\begin{columns}\n"
+                             + @"$indent\\begin{column}{.5\\textwidth}\n";
+        string end_columns = @"\n$indent\\end{column}\n"
+                           + @"$indent\\begin{column}{.5\\textwidth}\n\n"
+                           + @"$indent\\end{column}\n"
+                           + "\\end{columns}";
+        text_buffer_insert (begin_columns, end_columns);
+    }
+
+    public void on_present_block ()
+    {
+        text_buffer_insert ("\\begin{block}{}\n","\n\\end{block}");
     }
 
     /* Others */

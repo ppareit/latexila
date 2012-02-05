@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.6.4)
 project ("latexila" C)
 
 set (APP_NAME "LaTeXila")
-set (APP_VERSION "2.3.0")
+set (APP_VERSION "2.3.1")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
@@ -29,8 +29,8 @@ if (BUILD_VALA)
 	include ("${latexila_SOURCE_DIR}/cmake/find_vala.cmake")
 	include ("${latexila_SOURCE_DIR}/cmake/use_vala.cmake")
 
-	set (_vala_main_version "0.14")
-	set (_vala_min_version "0.14.1")
+	set (_vala_main_version "0.16")
+	set (_vala_min_version "0.15.1")
 
 	if (VALAC)
 		message (STATUS "Use custom valac: ${VALAC}")
