@@ -416,7 +416,7 @@ msgid ""
 "style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </guiseq>"
 msgstr ""
 "La corrección ortográfica se puede activar o desactivar mediante el menú: "
-"<guiseq> <gui style=\"menu\">Edit<ar/gui> <gui style=\"menu\">Corrección "
+"<guiseq> <gui style=\"menu\">Edit</gui> <gui style=\"menu\">Corrección "
 "ortográfica</gui> </guiseq>"
 
 #: C/spell_checking.page:26(section/p)
