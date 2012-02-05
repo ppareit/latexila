@@ -803,17 +803,21 @@ public class DocumentStructure : GLib.Object
             -1);
 
         TextIter start_iter;
-        TextIter? end_iter = null;
+        TextIter end_iter = {};
+        bool end_iter_set = false;
 
         _doc.get_iter_at_mark (out start_iter, start_mark);
 
         if (end_mark != null)
+        {
             _doc.get_iter_at_mark (out end_iter, end_mark);
+            end_iter_set = true;
+        }
 
         /* comment a simple item */
         if (! Structure.is_section (type))
         {
-            _doc.comment_between (start_iter, end_iter);
+            _doc.comment_between (start_iter, end_iter, end_iter_set);
             return true;
         }
 
@@ -838,6 +842,7 @@ public class DocumentStructure : GLib.Object
         {
             bool end_of_file;
             end_iter = get_end_document_iter (out end_of_file);
+            end_iter_set = true;
             go_one_line_backward = ! end_of_file;
         }
 
@@ -848,15 +853,16 @@ public class DocumentStructure : GLib.Object
                 -1);
 
             _doc.get_iter_at_mark (out end_iter, end_mark);
+            end_iter_set = true;
         }
 
         if (go_one_line_backward)
         {
             if (! end_iter.backward_line ())
-                end_iter = null;
+                end_iter_set = false;
         }
 
-        _doc.comment_between (start_iter, end_iter);
+        _doc.comment_between (start_iter, end_iter, end_iter_set);
         return true;
     }
 

@@ -395,12 +395,13 @@ public class Document : Gtk.SourceBuffer
     }
 
     // comment the lines between start_iter and end_iter included
-    public void comment_between (TextIter start_iter, TextIter? end_iter)
+    public void comment_between (TextIter start_iter, TextIter end_iter,
+        bool end_iter_set = true)
     {
         int start_line = start_iter.get_line ();
         int end_line = start_line;
 
-        if (end_iter != null)
+        if (end_iter_set)
             end_line = end_iter.get_line ();
 
         TextIter cur_iter;
