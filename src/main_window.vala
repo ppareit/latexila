@@ -1254,6 +1254,9 @@ public class MainWindow : Window
                         doc.save ();
                 }
             }
+
+            // Ensure that the files are correctly saved before the compilation.
+            Utils.flush_queue ();
         }
 
         File main_file = active_document.get_main_file ();
