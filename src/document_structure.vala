@@ -752,8 +752,8 @@ public class DocumentStructure : GLib.Object
 
         /* Select, copy, cut and delete */
 
-        TextIter? start_iter;
-        TextIter? end_iter;
+        TextIter start_iter;
+        TextIter end_iter;
         bool found = get_exact_item_bounds (tree_iter, out start_iter, out end_iter);
 
         if (! found)
@@ -867,8 +867,8 @@ public class DocumentStructure : GLib.Object
     }
 
     // Returns true only if the bounds are correctly set.
-    private bool get_exact_item_bounds (TreeIter tree_iter, out TextIter? start_iter,
-        out TextIter? end_iter)
+    private bool get_exact_item_bounds (TreeIter tree_iter, out TextIter start_iter,
+        out TextIter end_iter)
     {
         /* get item data */
         StructType item_type;
@@ -945,9 +945,9 @@ public class DocumentStructure : GLib.Object
     }
 
     private bool get_low_level_item_bounds (StructType item_type, string item_contents,
-        TextIter start_match_iter, bool is_start, out TextIter? end_match_iter)
+        TextIter start_match_iter, bool is_start, out TextIter end_match_iter)
     {
-        end_match_iter = null;
+        end_match_iter = {};
 
         int line_num = start_match_iter.get_line ();
         string line = get_document_line_contents (line_num);
@@ -1049,10 +1049,8 @@ public class DocumentStructure : GLib.Object
 
     // If there are some spaces between the beginning of the line and the iter, move
     // the iter at the beginning of the line.
-    private void backward_indentation (ref TextIter? iter)
+    private void backward_indentation (ref TextIter iter)
     {
-        return_if_fail (iter != null);
-
         if (iter.starts_line ())
             return;
 
