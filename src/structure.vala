@@ -78,7 +78,9 @@ public class Structure : VBox
     private TreeView _list_view;
     private Widget _list_view_sw;
     private ListStore _list_store;
-    private StructType[] _current_list_types;
+    // A simple list can contain several types (e.g. TODOs and FIXMEs), but it's easier
+    // to store only one type. See get_simple_list_types().
+    private StructType _current_list_type;
     private bool _list_is_hidden = true;
 
     private bool _first_select = true;
@@ -156,23 +158,23 @@ public class Structure : VBox
         hbox.pack_start (sep, false);
 
         // simple list buttons
-        ToggleButton toggle_button = create_simple_list_button ({ StructType.LABEL },
+        ToggleButton toggle_button = create_simple_list_button (StructType.LABEL,
             _("Show labels"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_simple_list_button ({ StructType.INCLUDE },
+        toggle_button = create_simple_list_button (StructType.INCLUDE,
             _("Show files included"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_simple_list_button ({ StructType.TABLE },
+        toggle_button = create_simple_list_button (StructType.TABLE,
             _("Show tables"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_simple_list_button (
-            { StructType.FIGURE, StructType.IMAGE }, _("Show figures and images"));
+        toggle_button = create_simple_list_button (StructType.FIGURE,
+            _("Show figures and images"));
         hbox.pack_start (toggle_button);
 
-        toggle_button = create_simple_list_button ({ StructType.TODO, StructType.FIXME },
+        toggle_button = create_simple_list_button (StructType.TODO,
             _("Show TODOs and FIXMEs"));
         hbox.pack_start (toggle_button);
     }
@@ -180,14 +182,9 @@ public class Structure : VBox
     // Only one button can be activated at the same time.
     // If no button is selected, the simple list is hidden.
     // If a button is selected, the simple list contains only items specified by 'types'.
-    private ToggleButton? create_simple_list_button (StructType[] types, string tooltip)
+    private ToggleButton? create_simple_list_button (StructType type, string tooltip)
     {
-        return_val_if_fail (types.length > 0, null);
-
-        StructType main_type = types[0];
-        ToggleButton button =
-            Utils.get_toolbar_toggle_button (get_icon_from_type (main_type));
-
+        ToggleButton button = Utils.get_toolbar_toggle_button (get_icon_from_type (type));
         button.tooltip_text = tooltip;
 
         _simple_list_buttons += button;
@@ -196,7 +193,7 @@ public class Structure : VBox
         {
             if (! button.get_active ())
             {
-                if (! _list_is_hidden && main_type in _current_list_types)
+                if (! _list_is_hidden && type == _current_list_type)
                 {
                     _list_is_hidden = true;
                     _list_view_sw.hide ();
@@ -204,7 +201,7 @@ public class Structure : VBox
                 return;
             }
 
-            _current_list_types = types;
+            _current_list_type = type;
             _list_is_hidden = false;
             _list_view_sw.show_all ();
             populate_simple_list ();
@@ -229,7 +226,7 @@ public class Structure : VBox
         if (_model == null || _list_is_hidden)
             return;
 
-        _model.populate_list (_list_store, _current_list_types[0]);
+        _model.populate_list (_list_store, _current_list_type);
 
         /* select an item if needed */
 
@@ -384,7 +381,7 @@ public class Structure : VBox
         int row_num = list_path.get_indices ()[0];
 
         TreePath? tree_path =
-            _model.get_tree_path_from_list_num (_current_list_types[0], row_num);
+            _model.get_tree_path_from_list_num (_current_list_type, row_num);
 
         return_val_if_fail (tree_path != null, false);
 
@@ -454,7 +451,10 @@ public class Structure : VBox
         StructType type;
         _model.get (tree_iter, StructColumn.TYPE, out type, -1);
 
-        if (! (type in _current_list_types))
+        Gee.ArrayList<StructType> current_list_types =
+            get_simple_list_types (_current_list_type);
+
+        if (! current_list_types.contains (type))
             return;
 
         int row_num = _model.get_list_num_from_tree_iter (tree_iter);
@@ -468,6 +468,36 @@ public class Structure : VBox
         list_select.select_path (list_path);
 
         _list_view.scroll_to_cell (list_path, null, false, 0, 0);
+    }
+
+    // A simple list can contain several different item types.
+    // For example, the list of TODOs and FIXMEs.
+    private Gee.ArrayList<StructType> get_simple_list_types (StructType type)
+    {
+        return_val_if_fail (! is_section (type), null);
+
+        Gee.ArrayList<StructType> types = new Gee.ArrayList<StructType> ();
+
+        switch (type)
+        {
+            case StructType.FIGURE:
+            case StructType.IMAGE:
+                types.add (StructType.FIGURE);
+                types.add (StructType.IMAGE);
+                break;
+
+            case StructType.TODO:
+            case StructType.FIXME:
+                types.add (StructType.TODO);
+                types.add (StructType.FIXME);
+                break;
+
+            default:
+                types.add (type);
+                break;
+        }
+
+        return types;
     }
 
     private void show_active_document ()
