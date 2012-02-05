@@ -1,0 +1,41 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="topic"
+      id="projects">
+
+<info>
+  <link type="guide" xref="index" />
+</info>
+
+<title>Projects</title>
+
+<synopsis>
+  <p>When a LaTeX document is split into several *.tex files, creating a project
+  is useful.</p>
+</synopsis>
+
+<section>
+  <title>Manage projects</title>
+
+  <p>
+    All actions related to projects are located in the <gui style="menu">Projects</gui>
+    menu. A project contain only two pieces of information:
+  </p>
+  <list>
+    <item><p>The directory where the project is located.</p></item>
+    <item><p>The main *.tex file.</p></item>
+  </list>
+
+  <p>
+    As a consequence, a directory can contain only one project, which is quite logical.
+  </p>
+</section>
+
+<section>
+  <title>Usefulness of projects</title>
+  <list>
+    <item><p>A <link xref="build_tools">build tool</link> is executed on the
+    project's main file.</p></item>
+  </list>
+</section>
+</page>

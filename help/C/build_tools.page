@@ -121,7 +121,7 @@ $ ps2pdf document.ps</screen>
   </list>
 
   <p>The build tool is executed on the currently opened file. If the file belongs to a
-  project, it is executed on the project's main file.</p>
+  <link xref="projects">project</link>, it is executed on the project's main file.</p>
 
   <note style="important">
     <title>Hidden Build Tools</title>
