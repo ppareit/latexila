@@ -1,0 +1,45 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="topic"
+      id="structure">
+
+<info>
+  <link type="guide" xref="index" />
+</info>
+
+<title>Document's Structure</title>
+
+<synopsis>
+  <p>The list of chapters, sections, sub-sections and other things like tables,
+  figures, … of a document, to easily navigate in it.</p>
+</synopsis>
+
+<section>
+  <title>Display the structure</title>
+
+  <p>
+    The structure can be displayed in the side panel. If the side panel is hidden,
+    go to
+    <guiseq>
+      <gui style="menu">View</gui>
+      <gui style="menu">Side panel</gui>
+    </guiseq>.
+  </p>
+
+  <p>
+    The structure's content is not automatically updated. That's why there is a refresh
+    button. If text is inserted in the document, the position of an item (e.g. a section)
+    remains correct, as far as the item is still there, and is not modified.
+  </p>
+</section>
+
+<section>
+  <title>Actions</title>
+
+  <p>
+    Some actions such as "cut", "copy" or "comment" can be performed on a
+    structure's item. Either by a right click, or via the
+    <gui style="menu">Structure</gui> menu.
+  </p>
+</section>
+</page>

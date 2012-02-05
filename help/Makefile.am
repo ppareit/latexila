@@ -7,6 +7,7 @@ HELP_FILES = \
 	completion.page		\
 	index.page		\
 	projects.page		\
-	spell_checking.page
+	spell_checking.page	\
+	structure.page
 
 HELP_LINGUAS = cs de es fr gl
