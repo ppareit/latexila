@@ -68,7 +68,6 @@ public class BuildView : Grid
         N_COLUMNS
     }
 
-    public bool show_errors { get; set; }
     public bool show_warnings { get; set; }
     public bool show_badboxes { get; set; }
 
@@ -107,8 +106,6 @@ public class BuildView : Grid
 
             switch (msg_type)
             {
-                case BuildMsgType.ERROR:
-                    return show_errors;
                 case BuildMsgType.WARNING:
                     return show_warnings;
                 case BuildMsgType.BADBOX:
@@ -118,7 +115,6 @@ public class BuildView : Grid
             }
         });
 
-        this.notify["show-errors"].connect (() => _filtered_model.refilter ());
         this.notify["show-warnings"].connect (() => _filtered_model.refilter ());
         this.notify["show-badboxes"].connect (() => _filtered_model.refilter ());
 

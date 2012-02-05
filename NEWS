@@ -1,5 +1,23 @@
 LaTeXila NEWS
 
+=============================
+* Release 2.3.1 (Feb 5, 2012)
+=============================
+
+- More completion data
+- Support drag and drop of a list of files
+- Completion: code clean-up
+- Beamer environments: frame, block, columns, column
+  (in the LaTeX menu and in the edit toolbar)
+- Fix bug for structure actions 'delete' and 'cut'
+- Add Simplified Chinese, Norwegian bokmål translations
+- Updated Spanish translation
+
+Thanks to:
+Aron Xu, Daniel Mustieles, Erwan Bousse, Kjartan Maraas, Pieter Pareit,
+Piotr Drąg
+
+
 ==============================
 * Release 2.3.0 (Nov 26, 2011)
 ==============================
@@ -12,6 +30,18 @@ LaTeXila NEWS
 - Updated Swedish, French and German translations
 - New CMake option: VALAC
 - Switch to Vala 0.14
+
+
+=============================
+* Release 2.2.3 (Feb 5, 2012)
+=============================
+
+- Added Esperanto and Norwegian bokmål translations
+- Updated Swedish, German and Spanish translations
+
+Thanks to:
+Daniel Mustieles, Daniel Nylander, Kjartan Maraas, Kristjan SCHMIDT,
+Mario Blättermann
 
 
 =============================

@@ -116,10 +116,6 @@
       <summary>Side panel component</summary>
       <description>Side panel active component. 0: Symbols. 1: File browser.</description>
     </key>
-    <key name="show-build-errors" type="b">
-      <default>true</default>
-      <summary>Show build output errors</summary>
-    </key>
     <key name="show-build-warnings" type="b">
       <default>true</default>
       <summary>Show build output warnings</summary>

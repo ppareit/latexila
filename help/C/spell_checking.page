@@ -1,0 +1,49 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="topic"
+      id="spell_checking">
+
+<info>
+  <link type="guide" xref="index" />
+</info>
+
+<title>Spell Checking</title>
+
+<synopsis>
+  <p>The purpose is to correct spelling mistakes easily.</p>
+</synopsis>
+
+<section>
+  <title>Use the spell checking</title>
+  <p>
+    The spell checking can be activated or disabled via the menu:
+    <guiseq>
+      <gui style="menu">Edit</gui>
+      <gui style="menu">Spell Check</gui>
+    </guiseq>
+  </p>
+
+  <p>
+    Once the spell checking is activated, the misspelled words will be underlined in red.
+    A right click on a misspelled word will show proposals.
+  </p>
+
+  <p>To change the language, do a right click on the document.</p>
+</section>
+
+<section>
+  <title>Dictionaries</title>
+  <p>
+    <link href="http://gtkspell.sourceforge.net/">GtkSpell</link>
+    is used for the spell checking in LaTeXila. GtkSpell uses
+    <link href="http://www.abisource.com/projects/enchant/">Enchant</link>,
+    which uses one or several backends such as Hunspell or Aspell for the dictionaries.
+  </p>
+
+  <p>
+    So if there is no dictionary for your language, try to know which backend is used by
+    Enchant on your system, and install the dictionary for this backend.
+    There are most probably packages available for your Linux distribution.
+  </p>
+</section>
+</page>

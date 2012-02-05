@@ -2,13 +2,13 @@
 # Copyright (C) 2011 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2011-08-06 16:19+0000\n"
-"PO-Revision-Date: 2011-08-08 10:46+0200\n"
+"POT-Creation-Date: 2012-02-05 17:54+0000\n"
+"PO-Revision-Date: 2012-02-05 20:13+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -211,10 +211,6 @@ msgid "General Configuration"
 msgstr "Configuración general"
 
 #: C/build_tools.page:137(section/p)
-#| msgid ""
-#| "To configure the build tools, open the preferences dialog: <guiseq><gui "
-#| "style=\"menu\">Edit</gui><gui style=\"menu\">Preferences</gui><gui style="
-#| "\"tab\">LaTeX</gui></guiseq>"
 msgid ""
 "To configure the build tools, open the preferences dialog: <guiseq> <gui "
 "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
@@ -352,3 +348,112 @@ msgstr ""
 "errores se categorizan en dos tipos: «bad boxes» y los otros. Por lo que, a "
 "diferencia del post-procesador <em>latex</em>, no hay distinción entre "
 "errores críticos y advertencias simples."
+
+#: C/completion.page:10(page/title)
+msgid "Completion of LaTeX commands"
+msgstr "Completado de comandos de LaTeX"
+
+#: C/completion.page:13(synopsis/p)
+msgid ""
+"The purpose is to facilitate the writing of LaTeX commands, by showing "
+"proposals."
+msgstr ""
+"El propósito es facilitar la escritura de comandos de LaTeX, mostrando "
+"propuestas."
+
+#: C/completion.page:17(section/title)
+msgid "Interactive completion"
+msgstr "Completado interactivo"
+
+#: C/completion.page:18(section/p)
+#| msgid ""
+#| "To configure the build tools, open the preferences dialog: <guiseq> <gui "
+#| "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui "
+#| "style=\"tab\">LaTeX</gui> </guiseq>"
+msgid ""
+"By default, when a LaTeX command is typed, proposals will be shown after two "
+"characters. This can be configured in the preferences dialog: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
+"\"tab\">LaTeX</gui> </guiseq>"
+msgstr ""
+"De manera predeterminada, cuando se escribe un comando de LaTeX, las "
+"propuestas se muestran después de dos caracteres. Esto se puede configurar "
+"en el diálogo de preferencias: <guiseq> <gui style=\"menu\">Editar</gui> "
+"<gui style=\"menu\">Preferencias</gui> <gui style=\"tab\">LaTeX</gui> </"
+"guiseq>"
+
+#: C/completion.page:30(section/title)
+msgid "Manual completion"
+msgstr "Completado manual"
+
+#: C/completion.page:31(section/p)
+msgid ""
+"At any time, press <keyseq> <key>Ctrl</key> <key>Space</key> </keyseq> to "
+"show proposals."
+msgstr ""
+"En cualquier momento, pulse <keyseq> <key>Ctrl</key> <key>Espacio</key> </"
+"keyseq> para mostrar las propuestas."
+
+#: C/spell_checking.page:10(page/title)
+msgid "Spell Checking"
+msgstr "Revisión ortográfica"
+
+#: C/spell_checking.page:13(synopsis/p)
+msgid "The purpose is to correct spelling mistakes easily."
+msgstr "El propósito es corregir los errores ortográficos fácilmente."
+
+#: C/spell_checking.page:17(section/title)
+msgid "Use the spell checking"
+msgstr "Usar la corrección ortográfica"
+
+#: C/spell_checking.page:18(section/p)
+#| msgid ""
+#| "To configure the build tools, open the preferences dialog: <guiseq> <gui "
+#| "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui "
+#| "style=\"tab\">LaTeX</gui> </guiseq>"
+msgid ""
+"The spell checking can be activated or disabled via the menu: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </guiseq>"
+msgstr ""
+"La corrección ortográfica se puede activar o desactivar mediante el menú: "
+"<guiseq> <gui style=\"menu\">Edit</gui> <gui style=\"menu\">Corrección "
+"ortográfica</gui> </guiseq>"
+
+#: C/spell_checking.page:26(section/p)
+msgid ""
+"Once the spell checking is activated, the misspelled words will be "
+"underlined in red. A right click on a misspelled word will show proposals."
+msgstr ""
+"Una vez que la revisión ortográfica esté activada, las palabras mal escritas "
+"se subrayarán en rojo. Una pulsación con el botón derecho sobre la palabra "
+"mal escrita mostrará las propuestas."
+
+#: C/spell_checking.page:31(section/p)
+msgid "To change the language, do a right click on the document."
+msgstr "Para cambiar el idioma, pulse con el botón derecho en el documento."
+
+#: C/spell_checking.page:35(section/title)
+msgid "Dictionaries"
+msgstr "Diccionarios"
+
+#: C/spell_checking.page:36(section/p)
+msgid ""
+"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> is used for "
+"the spell checking in LaTeXila. GtkSpell uses <link href=\"http://www."
+"abisource.com/projects/enchant/\">Enchant</link>, which uses one or several "
+"backends such as Hunspell or Aspell for the dictionaries."
+msgstr ""
+"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> se usa para "
+"comprobar la ortografía en LaTeXila. GtkSpell usa <link href=\"http://www."
+"abisource.com/projects/enchant/\">Enchant</link>, que usa uno de los "
+"diversos «backends», tales como Hunspell o Aspell para los diccionarios."
+
+#: C/spell_checking.page:43(section/p)
+msgid ""
+"So if there is no dictionary for your language, try to know which backend is "
+"used by Enchant on your system, and install the dictionary for this backend. "
+"There are most probably packages available for your Linux distribution."
+msgstr ""
+"Si no hay un diccionario para su idioma, trate de averiguar qué «backend» "
+"usa Enchant en su sistema, e instale el backend para este backend. "
+"Probablemente haya paquetes disponibles para su distribución de Linux."

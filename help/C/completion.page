@@ -1,0 +1,40 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="topic"
+      id="completion">
+
+<info>
+  <link type="guide" xref="index" />
+</info>
+
+<title>Completion of LaTeX commands</title>
+
+<synopsis>
+  <p>The purpose is to facilitate the writing of LaTeX commands, by showing proposals.</p>
+</synopsis>
+
+<section>
+  <title>Interactive completion</title>
+  <p>
+    By default, when a LaTeX command is typed, proposals will be shown after two
+    characters. This can be configured in the preferences dialog:
+    <guiseq>
+      <gui style="menu">Edit</gui>
+      <gui style="menu">Preferences</gui>
+      <gui style="tab">LaTeX</gui>
+    </guiseq>
+  </p>
+</section>
+
+<section>
+  <title>Manual completion</title>
+  <p>
+    At any time, press
+    <keyseq>
+      <key>Ctrl</key>
+      <key>Space</key>
+    </keyseq>
+    to show proposals.
+  </p>
+</section>
+</page>

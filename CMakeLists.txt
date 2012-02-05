@@ -3,7 +3,7 @@ cmake_minimum_required (VERSION 2.6.4)
 project ("latexila" C)
 
 set (APP_NAME "LaTeXila")
-set (APP_VERSION "2.3.1")
+set (APP_VERSION "2.3.2")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
