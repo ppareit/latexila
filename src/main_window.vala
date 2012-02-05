@@ -174,8 +174,6 @@ public class MainWindow : Window
             N_("Show or hide the side panel"), on_show_side_panel },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), on_show_bottom_panel },
-        { "BuildShowErrors", Stock.DIALOG_ERROR, N_("Show _Errors"), null,
-            N_("Show Errors"), on_build_show_errors },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
             N_("Show Warnings"), on_build_show_warnings },
         { "BuildShowBadBoxes", "badbox", N_("Show _Bad Boxes"), null,
@@ -652,21 +650,17 @@ public class MainWindow : Window
     private void show_or_hide_build_messages ()
     {
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-        bool show_errors = settings.get_boolean ("show-build-errors");
         bool show_warnings = settings.get_boolean ("show-build-warnings");
         bool show_badboxes = settings.get_boolean ("show-build-badboxes");
 
-        build_view.show_errors = show_errors;
         build_view.show_warnings = show_warnings;
         build_view.show_badboxes = show_badboxes;
 
-        ToggleAction action = (ToggleAction) action_group.get_action ("BuildShowErrors");
-        action.set_active (show_errors);
-
-        action = (ToggleAction) action_group.get_action ("BuildShowWarnings");
+        ToggleAction action =
+            action_group.get_action ("BuildShowWarnings") as ToggleAction;
         action.set_active (show_warnings);
 
-        action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
+        action = action_group.get_action ("BuildShowBadBoxes") as ToggleAction;
         action.set_active (show_badboxes);
     }
 
@@ -1154,9 +1148,6 @@ public class MainWindow : Window
         settings_ui.set_boolean ("bottom-panel-visible", action.active);
 
         settings_ui.set_int ("side-panel-component", side_panel.get_active_component ());
-
-        action = (ToggleAction) action_group.get_action ("BuildShowErrors");
-        settings_ui.set_boolean ("show-build-errors", action.active);
 
         action = (ToggleAction) action_group.get_action ("BuildShowWarnings");
         settings_ui.set_boolean ("show-build-warnings", action.active);
@@ -1775,11 +1766,6 @@ public class MainWindow : Window
             warning ("Impossible to view log");
         else
             tab.document.readonly = true;
-    }
-
-    public void on_build_show_errors (Gtk.Action action)
-    {
-        build_view.show_errors = ((ToggleAction) action).active;
     }
 
     public void on_build_show_warnings (Gtk.Action action)

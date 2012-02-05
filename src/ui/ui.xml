@@ -79,7 +79,6 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <menuitem action="BuildStopExecution" />
       <menuitem action="BuildViewLog" />
       <separator />
-      <menuitem action="BuildShowErrors" />
       <menuitem action="BuildShowWarnings" />
       <menuitem action="BuildShowBadBoxes" />
     </menu>
@@ -494,7 +493,6 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
   <toolbar name="BuildToolbar">
     <toolitem action="BuildStopExecution" />
     <toolitem action="BuildViewLog" />
-    <toolitem action="BuildShowErrors" />
     <toolitem action="BuildShowWarnings" />
     <toolitem action="BuildShowBadBoxes" />
   </toolbar>
