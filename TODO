@@ -6,29 +6,15 @@ See also the Roadmap:
 The Roadmap is less detailed, but have a long-term view.
 The TODO is more detailed, but focus more on the short-term.
 
-LaTeXila 2.4
-============
-
-- Possibility to compile an unsaved LaTeX file, to test easily some code without
-  the need to save it in a temporary file that we have to delete just after the test,
-  and that we don't delete anyway.
-
-  The unsaved file would simply be saved somewhere in /tmp/.
-
-- Improve completion:
-	- complete placeholders (\ref, \cite, ...)
-	  (take into account all *.tex, *.bib, ... files of the project)
-
-
-LaTeXila ≥ 2.4
-==============
-
 - Migrate to GTK+ 3 [in progress]
 	- It's not a high priority, since it's not a big issue for GNOME 3 users,
 	  but it would be nice. The problem is that it involves a lot of work,
 	  more than expected. See the branch gnome-3.
 
 - Improve completion:
+	- complete placeholders (\ref, \cite, ...)
+	  (take into account all *.tex, *.bib, ... files of the project)
+
 	- show details by default (now we have to click on the button to see
 	  the details)
 

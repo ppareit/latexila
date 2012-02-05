@@ -1226,7 +1226,6 @@ public class MainWindow : Window
     private void build_tools_menu_activate (Gtk.Action action)
     {
         return_if_fail (active_tab != null);
-        return_if_fail (active_document.location != null);
 
         string[] _name = action.name.split ("_");
         int tool_index = int.parse (_name[1]);
@@ -1234,11 +1233,20 @@ public class MainWindow : Window
         BuildTool? tool = BuildTools.get_default ()[tool_index];
         return_if_fail (tool != null);
 
+        if (! tool.compilation)
+            return_if_fail (active_document.location != null);
+
         build_view.show ();
 
         // save the document if it's a compilation (e.g. with rubber)
         if (tool.compilation)
         {
+            if (active_document.location == null)
+            {
+                bool tmp_location_set = active_document.set_tmp_location ();
+                return_if_fail (tmp_location_set);
+            }
+
             int project_id = active_document.project_id;
 
             if (project_id == -1)
@@ -1406,7 +1414,7 @@ public class MainWindow : Window
         Gtk.Action clean_action = action_group.get_action ("BuildClean");
         Gtk.Action view_log_action = action_group.get_action ("BuildViewLog");
 
-        if (active_tab == null || active_document.get_main_file () == null)
+        if (active_tab == null)
         {
             build_tools_action_group.set_sensitive (false);
             clean_action.set_sensitive (false);
@@ -1417,28 +1425,41 @@ public class MainWindow : Window
         // we must set the _action group_ sensitive and then set the sensitivity for each
         // action of the action group
         build_tools_action_group.set_sensitive (true);
+
         bool is_tex = active_document.is_main_file_a_tex_file ();
         clean_action.set_sensitive (is_tex);
         view_log_action.set_sensitive (is_tex);
 
-        string path = active_document.get_main_file ().get_parse_name ();
-        string ext = Utils.get_extension (path);
+        bool unsaved_doc = active_document.location == null;
+        string ext = "";
+        if (! unsaved_doc)
+        {
+            string path = active_document.get_main_file ().get_parse_name ();
+            ext = Utils.get_extension (path);
+        }
 
-        int i = 0;
+        int tool_num = 0;
         foreach (BuildTool tool in BuildTools.get_default ())
         {
             if (! tool.show)
             {
-                i++;
+                tool_num++;
                 continue;
             }
 
-            string[] extensions = tool.extensions.split (" ");
-            bool sensitive = tool.extensions.length == 0 || ext in extensions;
+            Gtk.Action action =
+                build_tools_action_group.get_action (@"BuildTool_$tool_num");
 
-            Gtk.Action action = build_tools_action_group.get_action (@"BuildTool_$i");
-            action.set_sensitive (sensitive);
-            i++;
+            if (unsaved_doc)
+                action.set_sensitive (tool.compilation);
+            else
+            {
+                string[] extensions = tool.extensions.split (" ");
+                bool sensitive = tool.extensions.length == 0 || ext in extensions;
+                action.set_sensitive (sensitive);
+            }
+
+            tool_num++;
         }
     }
 
