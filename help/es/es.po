@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2012-02-05 17:54+0000\n"
-"PO-Revision-Date: 2012-02-05 20:13+0100\n"
+"POT-Creation-Date: 2012-02-05 21:00+0000\n"
+"PO-Revision-Date: 2012-02-06 10:23+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,7 +23,7 @@ msgstr "Ayuda de LaTeXila"
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
 msgid "translator-credits"
-msgstr "Daniel Mustieles <daniel.mustieles@gmail.com>, 2011"
+msgstr "Daniel Mustieles <daniel.mustieles@gmail.com>, 2011-2012"
 
 #: C/build_tools.page:10(page/title)
 msgid "Build Tools"
@@ -184,13 +184,17 @@ msgid "Use the shortcut: <key>F2</key> → <key>F11</key>."
 msgstr "Use el atajo de teclado: <key>F2</key> → <key>F11</key>."
 
 #: C/build_tools.page:123(section/p)
+#| msgid ""
+#| "The build tool is executed on the currently opened file. If the file "
+#| "belongs to a project, it is executed on the project's main file."
 msgid ""
 "The build tool is executed on the currently opened file. If the file belongs "
-"to a project, it is executed on the project's main file."
+"to a <link xref=\"projects\">project</link>, it is executed on the project's "
+"main file."
 msgstr ""
 "La herramienta de construcción se ejecute sobre el archivo abierto "
-"actualmente. Si el archivo pertenece a un proyecto, se ejecuta sobre el "
-"archivo principal del proyecto."
+"actualmente. Si el archivo pertenece a un <link xref=\"projects\">proyecto</"
+"link>, se ejecuta sobre el archivo principal del proyecto."
 
 #: C/build_tools.page:127(note/title)
 msgid "Hidden Build Tools"
@@ -366,10 +370,6 @@ msgid "Interactive completion"
 msgstr "Completado interactivo"
 
 #: C/completion.page:18(section/p)
-#| msgid ""
-#| "To configure the build tools, open the preferences dialog: <guiseq> <gui "
-#| "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui "
-#| "style=\"tab\">LaTeX</gui> </guiseq>"
 msgid ""
 "By default, when a LaTeX command is typed, proposals will be shown after two "
 "characters. This can be configured in the preferences dialog: <guiseq> <gui "
@@ -394,6 +394,59 @@ msgstr ""
 "En cualquier momento, pulse <keyseq> <key>Ctrl</key> <key>Espacio</key> </"
 "keyseq> para mostrar las propuestas."
 
+#: C/projects.page:10(page/title)
+msgid "Projects"
+msgstr "Proyectos"
+
+#: C/projects.page:13(synopsis/p)
+msgid ""
+"When a LaTeX document is split into several *.tex files, creating a project "
+"is useful."
+msgstr ""
+"Cuando un documento LaTeX se divide en varios archivos *tex, es útil crear "
+"un proyecto."
+
+#: C/projects.page:18(section/title)
+msgid "Manage projects"
+msgstr "Gestionar proyectos"
+
+#: C/projects.page:20(section/p)
+msgid ""
+"All actions related to projects are located in the <gui style=\"menu"
+"\">Projects</gui> menu. A project contain only two pieces of information:"
+msgstr ""
+"Todas las acciones relacionadas con los proyectos se encuentran en el menú "
+"<gui style=\"menu\">Proyectos</gui>. Un proyecto sólo contiene dos "
+"fragmentos de información:"
+
+#: C/projects.page:25(item/p)
+msgid "The directory where the project is located."
+msgstr "La carpeta en la que se encuentra el proyecto."
+
+#: C/projects.page:26(item/p)
+msgid "The main *.tex file."
+msgstr "El archivo *.tex principal."
+
+#: C/projects.page:29(section/p)
+msgid ""
+"As a consequence, a directory can contain only one project, which is quite "
+"logical."
+msgstr ""
+"Por lo tanto, una carpeta sólo puede contener un proyecto, lo que resulta "
+"bastante lógico."
+
+#: C/projects.page:35(section/title)
+msgid "Usefulness of projects"
+msgstr "Utilidad de los proyectos"
+
+#: C/projects.page:37(item/p)
+msgid ""
+"A <link xref=\"build_tools\">build tool</link> is executed on the project's "
+"main file."
+msgstr ""
+"Se ejecuta una <link xref=\"build_tools\">herramienta de construcción</link> "
+"sobre el archivo principal del proyecto."
+
 #: C/spell_checking.page:10(page/title)
 msgid "Spell Checking"
 msgstr "Revisión ortográfica"
@@ -407,10 +460,6 @@ msgid "Use the spell checking"
 msgstr "Usar la corrección ortográfica"
 
 #: C/spell_checking.page:18(section/p)
-#| msgid ""
-#| "To configure the build tools, open the preferences dialog: <guiseq> <gui "
-#| "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui "
-#| "style=\"tab\">LaTeX</gui> </guiseq>"
 msgid ""
 "The spell checking can be activated or disabled via the menu: <guiseq> <gui "
 "style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </guiseq>"
@@ -454,6 +503,63 @@ msgid ""
 "used by Enchant on your system, and install the dictionary for this backend. "
 "There are most probably packages available for your Linux distribution."
 msgstr ""
-"Si no hay un diccionario para su idioma, trate de averiguar qué «backend» "
-"usa Enchant en su sistema, e instale el backend para este backend. "
-"Probablemente haya paquetes disponibles para su distribución de Linux."
+"Si no hay un diccionario para su idioma, trate de averiguar qué «backend» usa "
+"Enchant en su sistema, e instale el backend para este backend. Probablemente "
+"haya paquetes disponibles para su distribución de Linux."
+
+#: C/structure.page:10(page/title)
+msgid "Document's Structure"
+msgstr "Estructura del documento"
+
+#: C/structure.page:13(synopsis/p)
+msgid ""
+"The list of chapters, sections, sub-sections and other things like tables, "
+"figures, … of a document, to easily navigate in it."
+msgstr ""
+"La lista de capítulos, secciones, subsecciones y otros elementos tales como "
+"tablas, figuras, etc de un documento, para navegar fácilmente por ellos."
+
+#: C/structure.page:18(section/title)
+msgid "Display the structure"
+msgstr "Mostrar la estructura"
+
+#: C/structure.page:20(section/p)
+#| msgid ""
+#| "The spell checking can be activated or disabled via the menu: <guiseq> "
+#| "<gui style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </"
+#| "guiseq>"
+msgid ""
+"The structure can be displayed in the side panel. If the side panel is "
+"hidden, go to <guiseq> <gui style=\"menu\">View</gui> <gui style=\"menu"
+"\">Side panel</gui> </guiseq>."
+msgstr ""
+"La estructura se puede mostrar en el panel lateral. Si el panel lateral está "
+"oculto, vaya a<guiseq> <gui style=\"menu\">Ver</gui> <gui style=\"menu"
+"\">Panel lateral</gui> </guiseq>"
+
+#: C/structure.page:29(section/p)
+msgid ""
+"The structure's content is not automatically updated. That's why there is a "
+"refresh button. If text is inserted in the document, the position of an item "
+"(e.g. a section) remains correct, as far as the item is still there, and is "
+"not modified."
+msgstr ""
+"El contenido de la estructura no se actualiza automáticamente. Esto es por "
+"lo que hay un botón para actualizar. Si el texto insertado en el documento, "
+"la posición de un elemento (ej. una sección) sigue siendo correcta, en la "
+"medida en la que el artículo está todavía allí, y no se modifica."
+
+#: C/structure.page:37(section/title)
+#| msgid "Dictionaries"
+msgid "Actions"
+msgstr "Acciones"
+
+#: C/structure.page:39(section/p)
+msgid ""
+"Some actions such as \"cut\", \"copy\" or \"comment\" can be performed on a "
+"structure's item. Either by a right click, or via the <gui style=\"menu"
+"\">Structure</gui> menu."
+msgstr ""
+"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en una "
+"estructura. Se puede hacer pulsando con el botón derecho o mediante el menú "
+"<gui style=\"menu\">Estructura</gui>."
