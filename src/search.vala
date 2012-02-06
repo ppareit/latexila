@@ -108,7 +108,7 @@ public class SearchAndReplace : GLib.Object
     private CheckMenuItem _check_case_sensitive;
     private CheckMenuItem _check_entire_word;
 
-    private int min_nb_chars_for_incremental_search = 3;
+    private int min_nb_chars_for_inc_search = 3;
 
     private enum Mode
     {
@@ -198,6 +198,14 @@ public class SearchAndReplace : GLib.Object
         _replace_grid.add (button_replace);
         _replace_grid.add (button_replace_all);
 
+        /* Buttons initial sensitivity */
+        button_clear_find.sensitive = false;
+        button_previous.sensitive = false;
+        button_next.sensitive = false;
+        button_replace.sensitive = false;
+        button_replace_all.sensitive = false;
+        button_clear_replace.sensitive = false;
+
         /* signal handlers */
 
         _button_arrow.clicked.connect (() =>
@@ -247,7 +255,7 @@ public class SearchAndReplace : GLib.Object
                 _label_find_error.hide ();
                 clear_search ();
             }
-            else if (_entry_find.text_length >= min_nb_chars_for_incremental_search)
+            else if (_entry_find.text_length >= min_nb_chars_for_inc_search)
                 set_search_text ();
         });
 
@@ -271,16 +279,15 @@ public class SearchAndReplace : GLib.Object
 
         _entry_find.key_press_event.connect ((event) =>
         {
-            // See GDK_KEY_* in gdk/gdkkeysyms.h (not available in Vala)
             switch (event.keyval)
             {
-                case 0xff09:    // GDK_KEY_Tab
+                case Gdk.Key.Tab:
                     // TAB in find => go to replace
                     show_search_and_replace ();
                     _entry_replace.grab_focus ();
                     return true;
 
-                case 0xff1b:    // GDK_KEY_Escape
+                case Gdk.Key.Escape:
                     // Escape in find => select text and hide search
                     select_selected_search_text ();
                     hide ();
@@ -381,6 +388,7 @@ public class SearchAndReplace : GLib.Object
         Button button = new Button ();
         Image image = new Image.from_stock (stock_id, IconSize.MENU);
         button.add (image);
+        button.set_relief (ReliefStyle.NONE);
         return button;
     }
 
