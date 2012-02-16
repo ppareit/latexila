@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,9 +100,6 @@ public class SearchAndReplace : GLib.Object
     private Arrow _arrow;
 
     private Entry _entry_find;
-    private Label _label_find_normal;
-    private Label _label_find_error;
-
     private Entry _entry_replace;
 
     private CheckMenuItem _check_case_sensitive;
@@ -137,8 +134,8 @@ public class SearchAndReplace : GLib.Object
     public SearchAndReplace (MainWindow main_window)
     {
         _main_window = main_window;
-
         _main_grid = new Grid ();
+        _main_grid.set_column_spacing (3);
 
         /* Arrow */
         _button_arrow = new Button ();
@@ -147,8 +144,13 @@ public class SearchAndReplace : GLib.Object
         _main_grid.attach (_button_arrow, 0, 0, 1, 1);
 
         /* Find entry */
-        Frame frame_find = get_find_entry ();
-        _main_grid.attach (frame_find, 1, 0, 1, 1);
+        Grid find_grid = new Grid ();
+        find_grid.set_orientation (Orientation.HORIZONTAL);
+        find_grid.set_column_spacing (2);
+        _main_grid.attach (find_grid, 1, 0, 1, 1);
+
+        init_find_entry ();
+        find_grid.add (_entry_find);
 
         /* Buttons at the right of the find entry */
         Button button_clear_find = get_button (Stock.CLEAR);
@@ -156,26 +158,26 @@ public class SearchAndReplace : GLib.Object
         Button button_next = get_button (Stock.GO_DOWN);
         Button button_close = get_button (Stock.CLOSE);
 
-        _main_grid.attach (button_clear_find, 2, 0, 1, 1);
-        _main_grid.attach (button_previous, 3, 0, 1, 1);
-        _main_grid.attach (button_next, 4, 0, 1, 1);
-        _main_grid.attach (button_close, 5, 0, 1, 1);
+        find_grid.add (button_clear_find);
+        find_grid.add (button_previous);
+        find_grid.add (button_next);
+        find_grid.add (button_close);
+
+        button_clear_find.sensitive = false;
+        button_previous.sensitive = false;
+        button_next.sensitive = false;
 
         /* Replace entry */
         _replace_grid = new Grid ();
         _replace_grid.set_orientation (Orientation.HORIZONTAL);
-        _main_grid.attach (_replace_grid, 1, 1, 5, 1);
-
-        Frame frame_replace = new Frame (null);
-        frame_replace.width_request = 350;
+        _replace_grid.set_column_spacing (2);
+        _main_grid.attach (_replace_grid, 1, 1, 1, 1);
 
         _entry_replace = new Entry ();
-        _entry_replace.has_frame = false;
         _entry_replace.set_tooltip_text (_("Replace with"));
         _entry_replace.can_focus = true;
-
-        frame_replace.add (_entry_replace);
-        _replace_grid.add (frame_replace);
+        _entry_replace.set_width_chars (25);
+        _replace_grid.add (_entry_replace);
 
         /* Buttons at the right of the replace entry */
         Button button_clear_replace = get_button (Stock.CLEAR);
@@ -183,6 +185,7 @@ public class SearchAndReplace : GLib.Object
 
         // replace all: image + label
         Button button_replace_all = new Button ();
+        button_replace_all.set_relief (ReliefStyle.NONE);
         Grid replace_all_grid = new Grid ();
         replace_all_grid.set_orientation (Orientation.HORIZONTAL);
         replace_all_grid.set_column_spacing (8);
@@ -198,13 +201,9 @@ public class SearchAndReplace : GLib.Object
         _replace_grid.add (button_replace);
         _replace_grid.add (button_replace_all);
 
-        /* Buttons initial sensitivity */
-        button_clear_find.sensitive = false;
-        button_previous.sensitive = false;
-        button_next.sensitive = false;
+        button_clear_replace.sensitive = false;
         button_replace.sensitive = false;
         button_replace_all.sensitive = false;
-        button_clear_replace.sensitive = false;
 
         /* signal handlers */
 
@@ -250,11 +249,7 @@ public class SearchAndReplace : GLib.Object
             button_replace_all.sensitive = sensitive;
 
             if (_entry_find.text_length == 0)
-            {
-                _label_find_normal.hide ();
-                _label_find_error.hide ();
                 clear_search ();
-            }
             else if (_entry_find.text_length >= min_nb_chars_for_inc_search)
                 set_search_text ();
         });
@@ -289,7 +284,7 @@ public class SearchAndReplace : GLib.Object
 
                 case Gdk.Key.Escape:
                     // Escape in find => select text and hide search
-                    select_selected_search_text ();
+                    select_current_match ();
                     hide ();
                     return true;
 
@@ -302,68 +297,15 @@ public class SearchAndReplace : GLib.Object
         _main_grid.hide ();
     }
 
-    /* Find entry, with two labels for displaying some information */
-    private Frame get_find_entry ()
+    /* Find entry */
+    private void init_find_entry ()
     {
-        Frame frame_find = new Frame (null);
-        frame_find.shadow_type = ShadowType.IN;
-        frame_find.width_request = 350;
-
-        Grid grid_find = new Grid ();
-        grid_find.set_orientation (Orientation.HORIZONTAL);
-
-        /* Entry */
         _entry_find = new Entry ();
-        _entry_find.set_has_frame (false);
         _entry_find.primary_icon_stock = Stock.PROPERTIES;
         _entry_find.primary_icon_activatable = true;
         _entry_find.set_tooltip_text (_("Search for"));
         _entry_find.can_focus = true;
-        grid_find.add (_entry_find);
-
-        /* "Normal" information (number of matches, etc.) */
-        EventBox eventbox_normal = new EventBox ();
-        _label_find_normal = new Label (null);
-
-        Pango.AttrList attributes = new Pango.AttrList ();
-
-        // foreground: light gray (#AAAA AAAA AAAA)
-        Pango.Attribute attr_foreground = Pango.attr_foreground_new (43690, 43690, 43690);
-        attributes.insert ((owned) attr_foreground);
-
-        // background: white
-        Pango.Attribute attr_background = Pango.attr_background_new (65535, 65535, 65535);
-        attributes.insert ((owned) attr_background);
-
-        _label_find_normal.set_attributes (attributes);
-        eventbox_normal.add (_label_find_normal);
-        grid_find.add (eventbox_normal);
-
-        /* "Error" information (text not found, etc.) */
-        EventBox eventbox_error = new EventBox ();
-        _label_find_error = new Label (null);
-
-        attributes = new Pango.AttrList ();
-
-        // foreground: white
-        attr_foreground = Pango.attr_foreground_new (65535, 65535, 65535);
-        attributes.insert ((owned) attr_foreground);
-
-        // background: red (#CCCC 0000 0000)
-        attr_background = Pango.attr_background_new (52428, 0, 0);
-        attributes.insert ((owned) attr_background);
-
-        _label_find_error.set_attributes (attributes);
-        eventbox_error.add (_label_find_error);
-        grid_find.add (eventbox_error);
-
-        // eventboxes style
-        Gdk.Color white;
-        Gdk.Color.parse ("white", out white);
-        eventbox_normal.modify_bg (StateType.NORMAL, white);
-        eventbox_error.modify_bg (StateType.NORMAL, white);
-
-        frame_find.add (grid_find);
+        _entry_find.set_width_chars (25);
 
         /* Options menu */
         Gtk.Menu menu = new Gtk.Menu ();
@@ -375,12 +317,9 @@ public class SearchAndReplace : GLib.Object
 
         _entry_find.icon_press.connect ((icon_pos, event) =>
         {
-            // options menu
             if (icon_pos == EntryIconPosition.PRIMARY)
                 menu.popup (null, null, null, event.button.button, event.button.time);
         });
-
-        return frame_find;
     }
 
     private Button get_button (string stock_id)
@@ -415,8 +354,6 @@ public class SearchAndReplace : GLib.Object
         return_if_fail (_main_window.active_tab != null);
 
         _main_grid.show_all ();
-        _label_find_normal.hide ();
-        _label_find_error.hide ();
         _entry_find.grab_focus ();
         set_replace_sensitivity ();
 
@@ -430,7 +367,7 @@ public class SearchAndReplace : GLib.Object
             _entry_find.text = doc.get_text (start, end, false);
         }
 
-        _main_window.notify["active-document"].connect (active_document_changed);
+        _main_window.notify["active-document"].connect (set_replace_sensitivity);
     }
 
     public void hide ()
@@ -442,23 +379,7 @@ public class SearchAndReplace : GLib.Object
         if (_main_window.active_view != null)
             _main_window.active_view.grab_focus ();
 
-        _main_window.notify["active-document"].disconnect (active_document_changed);
-    }
-
-    private void set_label_text (string text, bool error)
-    {
-        if (error)
-        {
-            _label_find_error.set_text (text);
-            _label_find_error.show ();
-            _label_find_normal.hide ();
-        }
-        else
-        {
-            _label_find_normal.set_text (text);
-            _label_find_normal.show ();
-            _label_find_error.hide ();
-        }
+        _main_window.notify["active-document"].disconnect (set_replace_sensitivity);
     }
 
     private void set_search_text (bool select = true)
@@ -474,22 +395,22 @@ public class SearchAndReplace : GLib.Object
                 clear_search ();
 
             _working_document = _main_window.active_document;
-            _working_document.search_info_updated.connect (on_search_info_updated);
         }
 
-        uint nb_matches, num_match;
-        _working_document.set_search_text (_entry_find.text, case_sensitive, entire_word,
-            out nb_matches, out num_match, select);
+        uint nb_matches;
 
-        on_search_info_updated (nb_matches != 0, nb_matches, num_match);
+        _working_document.set_search_text (_entry_find.text, case_sensitive,
+            entire_word, out nb_matches, null, select);
+
+        Utils.set_entry_error (_entry_find, nb_matches == 0);
     }
 
-    private void select_selected_search_text ()
+    private void select_current_match ()
     {
         return_if_fail (_main_window.active_document != null);
 
         if (_working_document != null);
-            _working_document.select_selected_search_text ();
+            _working_document.select_current_match ();
     }
 
     private void search_forward ()
@@ -499,33 +420,13 @@ public class SearchAndReplace : GLib.Object
         _working_document.search_forward ();
     }
 
-    private void on_search_info_updated (bool selected, uint nb_matches, uint num_match)
-    {
-        if (selected)
-            set_label_text (_("%u of %u").printf (num_match, nb_matches), false);
-        else if (nb_matches == 0)
-            set_label_text (_("Not found"), true);
-        else if (nb_matches == 1)
-            set_label_text (_("One match"), false);
-        else
-            set_label_text (_("%u matches").printf (nb_matches), false);
-    }
-
     private void clear_search ()
     {
         if (_working_document != null)
         {
             _working_document.clear_search ();
-            _working_document.search_info_updated.disconnect (on_search_info_updated);
             _working_document = null;
         }
-    }
-
-    private void active_document_changed ()
-    {
-        _label_find_normal.hide ();
-        _label_find_error.hide ();
-        set_replace_sensitivity ();
     }
 
     private void set_replace_sensitivity ()

@@ -667,7 +667,7 @@ public class Document : Gtk.SourceBuffer
             clear_search_tags ();
     }
 
-    public void select_selected_search_text ()
+    public void select_current_match ()
     {
         TextIter start, end;
         get_iter_at_mark (out start, get_mark ("search_selected_start"));

@@ -246,19 +246,12 @@ namespace Utils
 
     public void set_entry_error (Widget entry, bool error)
     {
+        StyleContext context = entry.get_style_context ();
+
         if (error)
-        {
-            Gdk.Color red, white;
-            Gdk.Color.parse ("#FF6666", out red);
-            Gdk.Color.parse ("white", out white);
-            entry.modify_base (StateType.NORMAL, red);
-            entry.modify_text (StateType.NORMAL, white);
-        }
+            context.add_class ("not-found");
         else
-        {
-            entry.modify_base (StateType.NORMAL, null);
-            entry.modify_text (StateType.NORMAL, null);
-        }
+            context.remove_class ("not-found");
     }
 
     public bool tree_model_iter_prev (TreeModel model, ref TreeIter iter)
