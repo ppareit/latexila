@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,20 +22,20 @@ using Gee;
 
 private class BuildToolDialog : Dialog
 {
-    private static BuildToolDialog instance = null;
+    private static BuildToolDialog _instance = null;
 
-    private Entry entry_label;
-    private Entry entry_desc;
-    private Entry entry_extensions;
-    private ComboBox combobox_icon;
-    private Entry entry_command;
-    private Button button_add;
-    private TreeView treeview_jobs;
-    private Button button_delete;
-    private Button button_up;
-    private Button button_down;
+    private Entry _entry_label;
+    private Entry _entry_desc;
+    private Entry _entry_extensions;
+    private ComboBox _combobox_icon;
+    private Entry _entry_command;
+    private Button _button_add;
+    private TreeView _treeview_jobs;
+    private Button _button_delete;
+    private Button _button_up;
+    private Button _button_down;
 
-    private ListStore jobs_store;
+    private ListStore _jobs_store;
 
     struct IconColumn
     {
@@ -43,7 +43,7 @@ private class BuildToolDialog : Dialog
         public string label;
     }
 
-    private const IconColumn[] icons =
+    private const IconColumn[] _icons =
     {
         { Stock.EXECUTE, N_("Execute") },
         { "compile_dvi", "LaTeX → DVI" },
@@ -82,16 +82,16 @@ private class BuildToolDialog : Dialog
             Box main_vbox = builder.get_object ("main_vbox") as Box;
             main_vbox.unparent ();
 
-            entry_label = (Entry) builder.get_object ("entry_label");
-            entry_desc = (Entry) builder.get_object ("entry_desc");
-            entry_extensions = (Entry) builder.get_object ("entry_extensions");
-            combobox_icon = (ComboBox) builder.get_object ("combobox_icon");
-            entry_command = (Entry) builder.get_object ("entry_command");
-            button_add = (Button) builder.get_object ("button_add");
-            treeview_jobs = (TreeView) builder.get_object ("treeview_jobs");
-            button_delete = (Button) builder.get_object ("button_delete");
-            button_up = (Button) builder.get_object ("button_up");
-            button_down = (Button) builder.get_object ("button_down");
+            _entry_label = (Entry) builder.get_object ("entry_label");
+            _entry_desc = (Entry) builder.get_object ("entry_desc");
+            _entry_extensions = (Entry) builder.get_object ("entry_extensions");
+            _combobox_icon = (ComboBox) builder.get_object ("combobox_icon");
+            _entry_command = (Entry) builder.get_object ("entry_command");
+            _button_add = (Button) builder.get_object ("button_add");
+            _treeview_jobs = (TreeView) builder.get_object ("treeview_jobs");
+            _button_delete = (Button) builder.get_object ("button_delete");
+            _button_up = (Button) builder.get_object ("button_up");
+            _button_down = (Button) builder.get_object ("button_down");
 
             // packing widget
             Box content_area = get_content_area () as Box;
@@ -117,24 +117,24 @@ private class BuildToolDialog : Dialog
 
     public static bool show_me (Window parent, int num)
     {
-        if (instance == null)
+        if (_instance == null)
         {
-            instance = new BuildToolDialog ();
+            _instance = new BuildToolDialog ();
 
             // FIXME how to connect Widget.destroyed?
-            instance.destroy.connect (() =>
+            _instance.destroy.connect (() =>
             {
-                if (instance != null)
-                    instance = null;
+                if (_instance != null)
+                    _instance = null;
             });
         }
 
-        if (parent != instance.get_transient_for ())
-            instance.set_transient_for (parent);
+        if (parent != _instance.get_transient_for ())
+            _instance.set_transient_for (parent);
 
-        instance.present ();
-        instance.init (num);
-        return instance.run_me (num);
+        _instance.present ();
+        _instance.init (num);
+        return _instance.run_me (num);
     }
 
     private void init_icon_treeview ()
@@ -142,7 +142,7 @@ private class BuildToolDialog : Dialog
         ListStore icon_store = new ListStore (2, typeof (string), typeof (string));
 
         // fill icon store
-        foreach (IconColumn icon in icons)
+        foreach (IconColumn icon in _icons)
         {
             TreeIter iter;
             icon_store.append (out iter);
@@ -150,26 +150,26 @@ private class BuildToolDialog : Dialog
         }
 
         // init combobox
-        combobox_icon.set_model (icon_store);
+        _combobox_icon.set_model (icon_store);
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        combobox_icon.pack_start (pixbuf_renderer, false);
-        combobox_icon.set_attributes (pixbuf_renderer, "stock-id", 0, null);
+        _combobox_icon.pack_start (pixbuf_renderer, false);
+        _combobox_icon.set_attributes (pixbuf_renderer, "stock-id", 0, null);
 
         CellRendererText text_renderer = new CellRendererText ();
-        combobox_icon.pack_start (text_renderer, true);
-        combobox_icon.set_attributes (text_renderer, "text", 1, null);
+        _combobox_icon.pack_start (text_renderer, true);
+        _combobox_icon.set_attributes (text_renderer, "text", 1, null);
     }
 
     private void init_jobs_treeview ()
     {
-        jobs_store = new ListStore (JobColumn.N_COLUMNS,
+        _jobs_store = new ListStore (JobColumn.N_COLUMNS,
             typeof (string),    // command
             typeof (bool),      // must succeed
             typeof (string)     // post processor
             );
 
-        treeview_jobs.set_model (jobs_store);
+        _treeview_jobs.set_model (_jobs_store);
 
         /* post processor list store */
 
@@ -193,11 +193,11 @@ private class BuildToolDialog : Dialog
         TreeViewColumn column = new TreeViewColumn.with_attributes (_("Commands"),
             text_renderer, "text", JobColumn.COMMAND, null);
         column.set_resizable (true);
-        treeview_jobs.append_column (column);
+        _treeview_jobs.append_column (column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
         toggle_renderer.activatable = true;
-        treeview_jobs.insert_column_with_attributes (-1, _("Must Succeed"),
+        _treeview_jobs.insert_column_with_attributes (-1, _("Must Succeed"),
             toggle_renderer, "active", JobColumn.MUST_SUCCEED, null);
 
         CellRendererCombo combo_renderer = new CellRendererCombo ();
@@ -205,7 +205,7 @@ private class BuildToolDialog : Dialog
         combo_renderer.model = post_processor_store;
         combo_renderer.text_column = 0;
         combo_renderer.has_entry = false;
-        treeview_jobs.insert_column_with_attributes (-1, _("Post Processor"),
+        _treeview_jobs.insert_column_with_attributes (-1, _("Post Processor"),
             combo_renderer, "text", JobColumn.POST_PROCESSOR, null);
 
         /* callbacks */
@@ -213,129 +213,129 @@ private class BuildToolDialog : Dialog
         text_renderer.edited.connect ((path_string, new_text) =>
         {
             TreeIter iter;
-            jobs_store.get_iter_from_string (out iter, path_string);
-            jobs_store.set (iter, JobColumn.COMMAND, new_text, -1);
+            _jobs_store.get_iter_from_string (out iter, path_string);
+            _jobs_store.set (iter, JobColumn.COMMAND, new_text, -1);
         });
 
         toggle_renderer.toggled.connect ((path_string) =>
         {
             TreeIter iter;
-            jobs_store.get_iter_from_string (out iter, path_string);
+            _jobs_store.get_iter_from_string (out iter, path_string);
             bool val;
-            TreeModel model = (TreeModel) jobs_store;
+            TreeModel model = (TreeModel) _jobs_store;
             model.get (iter, JobColumn.MUST_SUCCEED, out val, -1);
-            jobs_store.set (iter, JobColumn.MUST_SUCCEED, ! val, -1);
+            _jobs_store.set (iter, JobColumn.MUST_SUCCEED, ! val, -1);
         });
 
         combo_renderer.edited.connect ((path_string, new_text) =>
         {
             TreeIter iter;
-            jobs_store.get_iter_from_string (out iter, path_string);
-            jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text, -1);
+            _jobs_store.get_iter_from_string (out iter, path_string);
+            _jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text, -1);
         });
     }
 
     private void init_actions ()
     {
-        button_add.clicked.connect (on_command_add);
-        entry_command.activate.connect (on_command_add);
+        _button_add.clicked.connect (on_command_add);
+        _entry_command.activate.connect (on_command_add);
 
-        button_delete.clicked.connect (() =>
+        _button_delete.clicked.connect (() =>
         {
             TreeIter iter;
-            int i = Utils.get_selected_row (treeview_jobs, out iter);
+            int i = Utils.get_selected_row (_treeview_jobs, out iter);
             if (i != -1)
-                jobs_store.remove (iter);
+                _jobs_store.remove (iter);
         });
 
-        button_up.clicked.connect (() =>
+        _button_up.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (treeview_jobs, out iter1);
+            int i = Utils.get_selected_row (_treeview_jobs, out iter1);
             if (i != -1 && i > 0)
             {
                 iter2 = iter1;
-                if (Utils.tree_model_iter_prev (jobs_store, ref iter2))
-                    jobs_store.swap (iter1, iter2);
+                if (Utils.tree_model_iter_prev (_jobs_store, ref iter2))
+                    _jobs_store.swap (iter1, iter2);
             }
         });
 
-        button_down.clicked.connect (() =>
+        _button_down.clicked.connect (() =>
         {
             TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (treeview_jobs, out iter1);
+            int i = Utils.get_selected_row (_treeview_jobs, out iter1);
             if (i != -1)
             {
                 iter2 = iter1;
-                if (jobs_store.iter_next (ref iter2))
-                    jobs_store.swap (iter1, iter2);
+                if (_jobs_store.iter_next (ref iter2))
+                    _jobs_store.swap (iter1, iter2);
             }
         });
     }
 
     private void on_command_add ()
     {
-        if (entry_command.text.strip () == "")
+        if (_entry_command.text.strip () == "")
             return;
 
         TreeIter iter;
-        jobs_store.append (out iter);
-        jobs_store.set (iter,
-            JobColumn.COMMAND, entry_command.text,
+        _jobs_store.append (out iter);
+        _jobs_store.set (iter,
+            JobColumn.COMMAND, _entry_command.text,
             JobColumn.MUST_SUCCEED, true,
             JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
                 PostProcessorType.NO_OUTPUT),
             -1);
-        entry_command.text = "";
+        _entry_command.text = "";
     }
 
     private void init (int num)
     {
-        entry_command.text = "";
-        jobs_store.clear ();
-        Utils.set_entry_error (entry_label, false);
-        Utils.set_entry_error (entry_command, false);
+        _entry_command.text = "";
+        _jobs_store.clear ();
+        Utils.set_entry_error (_entry_label, false);
+        Utils.set_entry_error (_entry_command, false);
 
         if (num == -1)
-            instance.init_new_build_tool ();
+            _instance.init_new_build_tool ();
         else
-            instance.init_with_build_tool (BuildTools.get_default ()[num]);
+            _instance.init_with_build_tool (BuildTools.get_default ()[num]);
 
-        treeview_jobs.columns_autosize ();
+        _treeview_jobs.columns_autosize ();
     }
 
     private void init_new_build_tool ()
     {
-        entry_label.text = "";
-        entry_desc.text = "";
-        entry_extensions.text = ".tex";
-        combobox_icon.set_active (0);
+        _entry_label.text = "";
+        _entry_desc.text = "";
+        _entry_extensions.text = ".tex";
+        _combobox_icon.set_active (0);
     }
 
     private void init_with_build_tool (BuildTool tool)
     {
-        entry_label.text = tool.label;
-        entry_desc.text = tool.description;
-        entry_extensions.text = tool.extensions;
+        _entry_label.text = tool.label;
+        _entry_desc.text = tool.description;
+        _entry_extensions.text = tool.extensions;
 
         // set icon
-        combobox_icon.set_active (0);
-        for (int i = 0 ; i < icons.length ; i++)
+        _combobox_icon.set_active (0);
+        for (int i = 0 ; i < _icons.length ; i++)
         {
-            if (icons[i].stock_id == tool.icon)
+            if (_icons[i].stock_id == tool.icon)
             {
-                combobox_icon.set_active (i);
+                _combobox_icon.set_active (i);
                 break;
             }
         }
 
         // jobs
-        jobs_store.clear ();
+        _jobs_store.clear ();
         foreach (BuildJob job in tool.jobs)
         {
             TreeIter iter;
-            jobs_store.append (out iter);
-            jobs_store.set (iter,
+            _jobs_store.append (out iter);
+            _jobs_store.set (iter,
                 JobColumn.COMMAND, job.command,
                 JobColumn.MUST_SUCCEED, job.must_succeed,
                 JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
@@ -353,23 +353,23 @@ private class BuildToolDialog : Dialog
             bool ok = true;
 
             // no label
-            if (entry_label.text.strip () == "")
+            if (_entry_label.text.strip () == "")
             {
-                Utils.set_entry_error (entry_label, true);
+                Utils.set_entry_error (_entry_label, true);
                 ok = false;
             }
             else
-                Utils.set_entry_error (entry_label, false);
+                Utils.set_entry_error (_entry_label, false);
 
             // no job
             TreeIter iter;
-            if (! jobs_store.get_iter_first (out iter))
+            if (! _jobs_store.get_iter_first (out iter))
             {
-                Utils.set_entry_error (entry_command, true);
+                Utils.set_entry_error (_entry_command, true);
                 ok = false;
             }
             else
-                Utils.set_entry_error (entry_command, false);
+                Utils.set_entry_error (_entry_command, false);
 
             if (! ok)
                 continue;
@@ -377,18 +377,18 @@ private class BuildToolDialog : Dialog
             /* generate a new build tool */
 
             BuildTool tool = BuildTool ();
-            tool.label = entry_label.text.strip ();
+            tool.label = _entry_label.text.strip ();
             tool.description =
-                entry_desc.text.strip () == "" ? tool.label : entry_desc.text.strip ();
-            tool.extensions = entry_extensions.text.strip ();
+                _entry_desc.text.strip () == "" ? tool.label : _entry_desc.text.strip ();
+            tool.extensions = _entry_extensions.text.strip ();
             tool.jobs = new Gee.ArrayList<BuildJob?> ();
 
-            combobox_icon.get_active_iter (out iter);
-            TreeModel model = combobox_icon.get_model ();
+            _combobox_icon.get_active_iter (out iter);
+            TreeModel model = _combobox_icon.get_model ();
             model.get (iter, 0, out tool.icon, -1);
 
-            model = treeview_jobs.get_model ();
-            bool valid = jobs_store.get_iter_first (out iter);
+            model = _treeview_jobs.get_model ();
+            bool valid = _jobs_store.get_iter_first (out iter);
             while (valid)
             {
                 BuildJob job = BuildJob ();
@@ -406,7 +406,7 @@ private class BuildToolDialog : Dialog
                     post_processor_name);
                 tool.jobs.add (job);
 
-                valid = jobs_store.iter_next (ref iter);
+                valid = _jobs_store.iter_next (ref iter);
             }
 
             /* update build tools settings */
