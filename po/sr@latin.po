@@ -1,23 +1,22 @@
 # Language latexila translations for F package.
 # Copyright (C) 2011 THE F'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the F package.
-# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011.
+# Miroslav Nikolić <miroslavnikolic@rocketmail.com>, 2011, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: F 677-CF0E\n"
-"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
-"product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2011-09-06 20:40+0000\n"
-"PO-Revision-Date: 2011-09-07 09:16+0200\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexi"
+"la&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-02-05 14:55+0000\n"
+"PO-Revision-Date: 2012-02-26 17:13+0200\n"
 "Last-Translator: Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
+"Language: sr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: sr\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
-"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: Virtaal 0.7.0\n"
+"Plural-Forms: nplurals=4; plural=n==1? 3 : n%10==1 && n%100!=11 ? 0 : "
+"n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 "X-Project-Style: gnome\n"
 
 #: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
@@ -167,29 +166,29 @@ msgstr "Mora uspeti"
 msgid "Post Processor"
 msgstr "Post procesor"
 
-#: ../src/build_tool_runner.vala:355
+#: ../src/build_tool_runner.vala:351
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr ""
 "Ruber možda ne podržava nazive datoteka sa razmacima (čak i u direktorijumu)"
 
-#: ../src/build_tool_runner.vala:386
+#: ../src/build_tool_runner.vala:382
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "„%s“ izgleda da nije instaliran."
 
-#: ../src/build_view.vala:128
+#: ../src/build_view.vala:124
 msgid "Job"
 msgstr "Posao"
 
-#: ../src/build_view.vala:144
+#: ../src/build_view.vala:140
 msgid "File"
 msgstr "Datoteka"
 
-#: ../src/build_view.vala:146
+#: ../src/build_view.vala:142
 msgid "Line"
 msgstr "Red"
 
-#: ../src/build_view.vala:170 ../src/side_panel.vala:75
+#: ../src/build_view.vala:166 ../src/side_panel.vala:75
 msgid "Hide panel"
 msgstr "Sakrijte površ"
 
@@ -206,7 +205,7 @@ msgstr "Izaberite datoteke koje želite da obrišete:"
 msgid "No build file to clean up."
 msgstr "Nema datoteke izgradnje za čišćenje."
 
-#: ../src/completion.vala:257
+#: ../src/completion.vala:296
 msgid "No matching proposal"
 msgstr "Nema predloga poklapanja"
 
@@ -217,7 +216,7 @@ msgstr "Nema predloga poklapanja"
 msgid "Ln %d, Col %d"
 msgstr "Red %d, kolona %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:809
+#: ../src/dialogs.vala:40 ../src/main_window.vala:823
 msgid "Close without Saving"
 msgstr "Zatvori bez čuvanja"
 
@@ -235,7 +234,7 @@ msgstr "Izaberite dokumente koje želite da sačuvate:"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Ukoliko ne sačuvate, sve vaše izmene će biti trajno odbačene."
 
-#: ../src/document_structure.vala:710
+#: ../src/document_structure.vala:731
 msgid "The structure item already contains a sub-paragraph."
 msgstr "Stavka strukture već sadrži pod-pasus."
 
@@ -276,39 +275,39 @@ msgstr "Da li želite ponovo da učitate datoteku?"
 msgid "Reload"
 msgstr "Učitaj"
 
-#: ../src/document.vala:143
+#: ../src/document.vala:144
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Učitavanje datoteke „%s“ nije moguće."
 
-#: ../src/document.vala:219
+#: ../src/document.vala:220
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Datoteka „%s“ je izmenjena nakon što ste je pročitali."
 
-#: ../src/document.vala:222
+#: ../src/document.vala:223
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Ako je sačuvate, sve spoljne izmene mogu biti izgubljene. Sačuvaćete je i "
 "pored toga?"
 
-#: ../src/document.vala:225
+#: ../src/document.vala:226
 msgid "Save Anyway"
 msgstr "Sačuvaj ipak"
 
-#: ../src/document.vala:227
+#: ../src/document.vala:228
 msgid "Don't Save"
 msgstr "Nemoj čuvati"
 
-#: ../src/document.vala:239
+#: ../src/document.vala:240
 msgid "Impossible to save the file."
 msgstr "Nije moguće sačuvati datoteku."
 
-#: ../src/document.vala:264
+#: ../src/document.vala:265
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Greška prilikom pokušaja pretvaranja dokumenta u UTF-8"
 
-#: ../src/document.vala:318
+#: ../src/document.vala:319
 msgid "Unsaved Document"
 msgstr "Nesačuvan dokument"
 
@@ -328,7 +327,7 @@ msgstr "Idite na direktorijum aktivnog dokumenta"
 msgid "Refresh"
 msgstr "Osvežite spisak"
 
-#: ../src/file_browser.vala:438 ../src/main_window.vala:316
+#: ../src/file_browser.vala:438 ../src/main_window.vala:314
 #: ../src/ui/preferences_dialog.ui.h:12
 msgid "File Browser"
 msgstr "Preglednik datoteka"
@@ -444,586 +443,606 @@ msgstr "Mini strana — \\begin{minipage}"
 msgid "Title page - \\begin{titlepage}"
 msgstr "Naslovna strana — \\begin{titlepage}"
 
+#: ../src/latex_menu.vala:90
+#| msgid "Figure - \\begin{figure}"
+msgid "Frame - \\begin{frame}"
+msgstr "Kadar — \\begin{frame}"
+
+#: ../src/latex_menu.vala:92
+#| msgid "Table - \\begin{table}"
+msgid "Block - \\begin{block}"
+msgstr "Blok — \\begin{block}"
+
+#: ../src/latex_menu.vala:94
+#| msgid "Custom list - \\begin{list}"
+msgid "Two columns - \\begin{columns}"
+msgstr "Dva stupca — \\begin{columns}"
+
 #. LaTeX: list environments
-#: ../src/latex_menu.vala:87
+#: ../src/latex_menu.vala:98
 msgid "_List Environments"
 msgstr "Okruženja _spiska"
 
-#: ../src/latex_menu.vala:89
+#: ../src/latex_menu.vala:100
 msgid "Bulleted List - \\begin{itemize}"
 msgstr "Tačkasti spisak — \\begin{itemize}"
 
-#: ../src/latex_menu.vala:91
+#: ../src/latex_menu.vala:102
 msgid "Enumeration - \\begin{enumerate}"
 msgstr "Nabrajanje — \\begin{enumerate}"
 
-#: ../src/latex_menu.vala:93
+#: ../src/latex_menu.vala:104
 msgid "Description - \\begin{description}"
 msgstr "Opis — \\begin{description}"
 
-#: ../src/latex_menu.vala:95
+#: ../src/latex_menu.vala:106
 msgid "Custom list - \\begin{list}"
 msgstr "Proizvoljni spisak — \\begin{list}"
 
-#: ../src/latex_menu.vala:97
+#: ../src/latex_menu.vala:108
 msgid "List item - \\item"
 msgstr "Stavka spiska — \\item"
 
 #. LaTeX: character sizes
-#: ../src/latex_menu.vala:100
+#: ../src/latex_menu.vala:111
 msgid "_Characters Sizes"
 msgstr "Veličine _znakova"
 
 #. LaTeX: font styles
-#: ../src/latex_menu.vala:123
+#: ../src/latex_menu.vala:134
 msgid "_Font Styles"
 msgstr "_Izgled slovnog lika"
 
-#: ../src/latex_menu.vala:125
+#: ../src/latex_menu.vala:136
 msgid "Bold - \\textbf"
 msgstr "Podebljano — \\textbf"
 
-#: ../src/latex_menu.vala:127
+#: ../src/latex_menu.vala:138
 msgid "Italic - \\textit"
 msgstr "Pisano — \\textit"
 
-#: ../src/latex_menu.vala:129
+#: ../src/latex_menu.vala:140
 msgid "Typewriter - \\texttt"
 msgstr "Pisaća mašina — \\texttt"
 
-#: ../src/latex_menu.vala:131
+#: ../src/latex_menu.vala:142
 msgid "Slanted - \\textsl"
 msgstr "Iskošeno — \\textsl"
 
-#: ../src/latex_menu.vala:133
+#: ../src/latex_menu.vala:144
 msgid "Small Capitals - \\textsc"
 msgstr "Mala početna slova — \\textsc"
 
-#: ../src/latex_menu.vala:135
+#: ../src/latex_menu.vala:146
 msgid "Sans Serif - \\textsf"
 msgstr "Bez serifni — \\textsf"
 
-#: ../src/latex_menu.vala:137
+#: ../src/latex_menu.vala:148
 msgid "Emphasized - \\emph"
 msgstr "Istaknuto — \\emph"
 
-#: ../src/latex_menu.vala:139
+#: ../src/latex_menu.vala:150
 msgid "Underline - \\underline"
 msgstr "Podvučeno — \\underline"
 
-#: ../src/latex_menu.vala:141
+#: ../src/latex_menu.vala:152
 msgid "_Font Family"
 msgstr "_Grupa slovnog lika"
 
-#: ../src/latex_menu.vala:143
+#: ../src/latex_menu.vala:154
 msgid "Roman - \\rmfamily"
 msgstr "Rimski — \\rmfamily"
 
-#: ../src/latex_menu.vala:145
+#: ../src/latex_menu.vala:156
 msgid "Sans Serif - \\sffamily"
 msgstr "Bez serifni — \\sffamily"
 
-#: ../src/latex_menu.vala:147
+#: ../src/latex_menu.vala:158
 msgid "Monospace - \\ttfamily"
 msgstr "Monospejs — \\ttfamily"
 
-#: ../src/latex_menu.vala:149
+#: ../src/latex_menu.vala:160
 msgid "F_ont Series"
 msgstr "_Serija slovnog lika"
 
-#: ../src/latex_menu.vala:151
+#: ../src/latex_menu.vala:162
 msgid "Medium - \\mdseries"
 msgstr "Srednji — \\mdseries"
 
-#: ../src/latex_menu.vala:153
+#: ../src/latex_menu.vala:164
 msgid "Bold - \\bfseries"
 msgstr "Podebljan — \\bfseries"
 
-#: ../src/latex_menu.vala:155
+#: ../src/latex_menu.vala:166
 msgid "Fo_nt Shape"
 msgstr "_Oblik slovnog lika"
 
-#: ../src/latex_menu.vala:157
+#: ../src/latex_menu.vala:168
 msgid "Upright - \\upshape"
 msgstr "Uspravan — \\upshape"
 
-#: ../src/latex_menu.vala:159
+#: ../src/latex_menu.vala:170
 msgid "Italic - \\itshape"
 msgstr "Pisan — \\itshape"
 
-#: ../src/latex_menu.vala:161
+#: ../src/latex_menu.vala:172
 msgid "Slanted - \\slshape"
 msgstr "Iskošen — \\slshape"
 
-#: ../src/latex_menu.vala:163
+#: ../src/latex_menu.vala:174
 msgid "Small Capitals - \\scshape"
 msgstr "Mala početna slova — \\scshape"
 
 #. Tabular
-#: ../src/latex_menu.vala:167
+#: ../src/latex_menu.vala:178
 msgid "_Tabular"
 msgstr "_Tabela"
 
-#: ../src/latex_menu.vala:169
+#: ../src/latex_menu.vala:180
 msgid "Tabbing - \\begin{tabbing}"
 msgstr "Tabeliranje — \\begin{tabbing}"
 
-#: ../src/latex_menu.vala:171
+#: ../src/latex_menu.vala:182
 msgid "Tabular - \\begin{tabular}"
 msgstr "Tabela — \\begin{tabular}"
 
-#: ../src/latex_menu.vala:173
+#: ../src/latex_menu.vala:184
 msgid "Multicolumn - \\multicolumn"
 msgstr "Više kolona — \\multicolumn"
 
-#: ../src/latex_menu.vala:175
+#: ../src/latex_menu.vala:186
 msgid "Horizontal line - \\hline"
 msgstr "Vodoravna linija — \\hline"
 
-#: ../src/latex_menu.vala:177
+#: ../src/latex_menu.vala:188
 msgid "Vertical line - \\vline"
 msgstr "Uspravna linija — \\vline"
 
-#: ../src/latex_menu.vala:179
+#: ../src/latex_menu.vala:190
 msgid "Horizontal line (columns specified) - \\cline"
 msgstr "Vodoravna linija (navedene kolone) — \\cline"
 
 #. Spacing
-#: ../src/latex_menu.vala:183
+#: ../src/latex_menu.vala:194
 msgid "_Spacing"
 msgstr "_Razmaci"
 
-#: ../src/latex_menu.vala:184
+#: ../src/latex_menu.vala:195
 msgid "New _Line"
 msgstr "Novi re_d"
 
-#: ../src/latex_menu.vala:185
+#: ../src/latex_menu.vala:196
 msgid "New Line - \\\\"
 msgstr "Novi red — \\\\"
 
-#: ../src/latex_menu.vala:187
+#: ../src/latex_menu.vala:198
 msgid "New page - \\newpage"
 msgstr "Nova stranica — \\newpage"
 
-#: ../src/latex_menu.vala:189
+#: ../src/latex_menu.vala:200
 msgid "Line break - \\linebreak"
 msgstr "Prelom reda — \\linebreak"
 
-#: ../src/latex_menu.vala:191
+#: ../src/latex_menu.vala:202
 msgid "Page break - \\pagebreak"
 msgstr "Prelom stranice — \\pagebreak"
 
-#: ../src/latex_menu.vala:193
+#: ../src/latex_menu.vala:204
 msgid "Big skip - \\bigskip"
 msgstr "Veliko preskakanje — \\bigskip"
 
-#: ../src/latex_menu.vala:195
+#: ../src/latex_menu.vala:206
 msgid "Medium skip - \\medskip"
 msgstr "Srednje preskakanje — \\medskip"
 
-#: ../src/latex_menu.vala:197
+#: ../src/latex_menu.vala:208
 msgid "Horizontal space - \\hspace"
 msgstr "Vodoravni razmak — \\hspace"
 
-#: ../src/latex_menu.vala:199
+#: ../src/latex_menu.vala:210
 msgid "Vertical space - \\vspace"
 msgstr "Uspravni razmak — \\vspace"
 
-#: ../src/latex_menu.vala:201
+#: ../src/latex_menu.vala:212
 msgid "No paragraph indentation - \\noindent"
 msgstr "Bez uvlačenja pasusa — \\noindent"
 
 #. International accents
-#: ../src/latex_menu.vala:205
+#: ../src/latex_menu.vala:216
 msgid "International _Accents"
 msgstr "Međunarodni _naglasci"
 
-#: ../src/latex_menu.vala:206
+#: ../src/latex_menu.vala:217
 msgid "Acute accent - \\'"
 msgstr "Dugouzlazni — \\'"
 
-#: ../src/latex_menu.vala:207
+#: ../src/latex_menu.vala:218
 msgid "Grave accent - \\`"
 msgstr "Kratkouzlazni — \\`"
 
-#: ../src/latex_menu.vala:208
+#: ../src/latex_menu.vala:219
 msgid "Circumflex accent - \\^"
 msgstr "Dugosilazni — \\^"
 
-#: ../src/latex_menu.vala:209
+#: ../src/latex_menu.vala:220
 msgid "Trema - \\\""
 msgstr "Kratkosilazni — \\\""
 
-#: ../src/latex_menu.vala:210
+#: ../src/latex_menu.vala:221
 msgid "Tilde - \\~"
 msgstr "Tilda — \\~"
 
-#: ../src/latex_menu.vala:211
+#: ../src/latex_menu.vala:222
 msgid "Macron - \\="
 msgstr "Makron — \\="
 
-#: ../src/latex_menu.vala:212
+#: ../src/latex_menu.vala:223
 msgid "Dot above - \\."
 msgstr "Gornja tačka — \\."
 
-#: ../src/latex_menu.vala:213
+#: ../src/latex_menu.vala:224
 msgid "Caron - \\v"
 msgstr "Karon — \\v"
 
-#: ../src/latex_menu.vala:214
+#: ../src/latex_menu.vala:225
 msgid "Breve - \\u"
 msgstr "Breve — \\u"
 
-#: ../src/latex_menu.vala:216
+#: ../src/latex_menu.vala:227
 msgid "Double acute accent - \\H"
 msgstr "Dvostruki dugouzlazni - \\H"
 
-#: ../src/latex_menu.vala:217
+#: ../src/latex_menu.vala:228
 msgid "Cedilla - \\c"
 msgstr "Sedilja — \\c"
 
-#: ../src/latex_menu.vala:218
+#: ../src/latex_menu.vala:229
 msgid "Ogonek - \\k"
 msgstr "Ogonek — \\k"
 
-#: ../src/latex_menu.vala:219
+#: ../src/latex_menu.vala:230
 msgid "Dot below - \\d"
 msgstr "Donja tačka — \\d"
 
-#: ../src/latex_menu.vala:220
+#: ../src/latex_menu.vala:231
 msgid "Macron below - \\b"
 msgstr "Donji makron — \\b"
 
-#: ../src/latex_menu.vala:221
+#: ../src/latex_menu.vala:232
 msgid "Ring - \\r"
 msgstr "Kružić — \\r"
 
-#: ../src/latex_menu.vala:222
+#: ../src/latex_menu.vala:233
 msgid "Tie - \\t"
 msgstr "Veza — \\t"
 
 #. Others
-#: ../src/latex_menu.vala:226
+#: ../src/latex_menu.vala:237
 msgid "_Misc"
 msgstr "_Razno"
 
-#: ../src/latex_menu.vala:228
+#: ../src/latex_menu.vala:239
 msgid "Document class - \\documentclass"
 msgstr "Klasa dokumenta — \\documentclass"
 
-#: ../src/latex_menu.vala:230
+#: ../src/latex_menu.vala:241
 msgid "Use package - \\usepackage"
 msgstr "Koristi paket — \\usepackage"
 
-#: ../src/latex_menu.vala:231
+#: ../src/latex_menu.vala:242
 msgid "_AMS packages"
 msgstr "_AMS paketi"
 
-#: ../src/latex_menu.vala:232
+#: ../src/latex_menu.vala:243
 msgid "AMS packages"
 msgstr "AMS paketi"
 
-#: ../src/latex_menu.vala:233
+#: ../src/latex_menu.vala:244
 msgid "Author - \\author"
 msgstr "Autor — \\author"
 
-#: ../src/latex_menu.vala:234
+#: ../src/latex_menu.vala:245
 msgid "Title - \\title"
 msgstr "Naslov — \\title"
 
-#: ../src/latex_menu.vala:236
+#: ../src/latex_menu.vala:247
 msgid "Content of the document - \\begin{document}"
 msgstr "Sadržaj dokumenta — \\begin{document}"
 
-#: ../src/latex_menu.vala:238
+#: ../src/latex_menu.vala:249
 msgid "Make title - \\maketitle"
 msgstr "Napravi naslov — \\maketitle"
 
-#: ../src/latex_menu.vala:240
+#: ../src/latex_menu.vala:251
 msgid "Table of contents - \\tableofcontents"
 msgstr "Sadržaj — \\tableofcontents"
 
-#: ../src/latex_menu.vala:242
+#: ../src/latex_menu.vala:253
 msgid "Abstract - \\begin{abstract}"
 msgstr "Sažetak — \\begin{abstract}"
 
-#: ../src/latex_menu.vala:244
+#: ../src/latex_menu.vala:255
 msgid "Include an image (graphicx package) - \\includegraphics"
 msgstr "Uključi sliku (paket „graphicx“) — \\includegraphics"
 
-#: ../src/latex_menu.vala:247
+#: ../src/latex_menu.vala:258
 msgid "Include a file - \\input"
 msgstr "Uključi datoteku — \\input"
 
 #. LaTeX: math
-#: ../src/latex_menu.vala:251
+#: ../src/latex_menu.vala:262
 msgid "_Math"
 msgstr "_Matematika"
 
 #. Math Environments
-#: ../src/latex_menu.vala:255
+#: ../src/latex_menu.vala:266
 msgid "_Math Environments"
 msgstr "_Matematička okruženja"
 
-#: ../src/latex_menu.vala:256
+#: ../src/latex_menu.vala:267
 msgid "_Mathematical Environment - $...$"
 msgstr "_Matematičko okruženje — $...$"
 
-#: ../src/latex_menu.vala:257
+#: ../src/latex_menu.vala:268
 msgid "Mathematical Environment - $...$"
 msgstr "Matematičko okruženje — $...$"
 
-#: ../src/latex_menu.vala:258
+#: ../src/latex_menu.vala:269
 msgid "_Centered Formula - \\[...\\]"
 msgstr "_Centrirana formula — \\[...\\]"
 
-#: ../src/latex_menu.vala:259
+#: ../src/latex_menu.vala:270
 msgid "Centered Formula - \\[...\\]"
 msgstr "Centrirana formula — \\[...\\]"
 
-#: ../src/latex_menu.vala:261
+#: ../src/latex_menu.vala:272
 msgid "_Numbered Equation - \\begin{equation}"
 msgstr "_Numerisana jednačina — \\begin{equation}"
 
-#: ../src/latex_menu.vala:262
+#: ../src/latex_menu.vala:273
 msgid "Numbered Equation - \\begin{equation}"
 msgstr "Numerisana jednačina — \\begin{equation}"
 
-#: ../src/latex_menu.vala:263
+#: ../src/latex_menu.vala:274
 msgid "_Array of Equations - \\begin{align*}"
 msgstr "Ni_z jednačina — \\begin{align*}"
 
-#: ../src/latex_menu.vala:264
+#: ../src/latex_menu.vala:275
 msgid "Array of Equations - \\begin{align*}"
 msgstr "Niz jednačina — \\begin{align*}"
 
-#: ../src/latex_menu.vala:266
+#: ../src/latex_menu.vala:277
 msgid "Numbered Array of _Equations - \\begin{align}"
 msgstr "Numerisani niz _jednačina — \\begin{align}"
 
-#: ../src/latex_menu.vala:267
+#: ../src/latex_menu.vala:278
 msgid "Numbered Array of Equations - \\begin{align}"
 msgstr "Numerisani niz jednačina — \\begin{align}"
 
-#: ../src/latex_menu.vala:270
+#: ../src/latex_menu.vala:281
 msgid "_Superscript - ^{}"
 msgstr "_Eksponent — ^{}"
 
-#: ../src/latex_menu.vala:271
+#: ../src/latex_menu.vala:282
 msgid "Superscript - ^{}"
 msgstr "Eksponent — ^{}"
 
-#: ../src/latex_menu.vala:272
+#: ../src/latex_menu.vala:283
 msgid "Su_bscript - __{}"
 msgstr "_Indeks — _{}"
 
-#: ../src/latex_menu.vala:273
+#: ../src/latex_menu.vala:284
 msgid "Subscript - _{}"
 msgstr "Indeks — _{}"
 
-#: ../src/latex_menu.vala:274
+#: ../src/latex_menu.vala:285
 msgid "_Fraction - \\frac{}{}"
 msgstr "_Razlomak — \\frac{}{}"
 
-#: ../src/latex_menu.vala:275
+#: ../src/latex_menu.vala:286
 msgid "Fraction - \\frac{}{}"
 msgstr "Razlomak — \\frac{}{}"
 
-#: ../src/latex_menu.vala:276
+#: ../src/latex_menu.vala:287
 msgid "Square _Root - \\sqrt{}"
 msgstr "Kvadratni _koren — \\sqrt{}"
 
-#: ../src/latex_menu.vala:277
+#: ../src/latex_menu.vala:288
 msgid "Square Root - \\sqrt{}"
 msgstr "Kvadratni koren — \\sqrt{}"
 
-#: ../src/latex_menu.vala:278
+#: ../src/latex_menu.vala:289
 msgid "_N-th Root - \\sqrt[]{}"
 msgstr "_N-ti koren — \\sqrt[]{}"
 
-#: ../src/latex_menu.vala:279
+#: ../src/latex_menu.vala:290
 msgid "N-th Root - \\sqrt[]{}"
 msgstr "N-ti koren — \\sqrt[]{}"
 
 #. Math functions
-#: ../src/latex_menu.vala:283
+#: ../src/latex_menu.vala:294
 msgid "Math _Functions"
 msgstr "Matematičke _funkcije"
 
 #. Math Font Styles
-#: ../src/latex_menu.vala:317
+#: ../src/latex_menu.vala:328
 msgid "Math Font _Styles"
 msgstr "_Izgled matematičkih slovnih likova"
 
-#: ../src/latex_menu.vala:319
+#: ../src/latex_menu.vala:330
 msgid "Roman - \\mathrm"
 msgstr "Rimski — \\mathrm"
 
-#: ../src/latex_menu.vala:321
+#: ../src/latex_menu.vala:332
 msgid "Italic - \\mathit"
 msgstr "Pisani — \\mathit"
 
-#: ../src/latex_menu.vala:323
+#: ../src/latex_menu.vala:334
 msgid "Bold - \\mathbf"
 msgstr "Podebljani — \\mathbf"
 
-#: ../src/latex_menu.vala:325
+#: ../src/latex_menu.vala:336
 msgid "Sans Serif - \\mathsf"
 msgstr "Bez serifni — \\mathsf"
 
-#: ../src/latex_menu.vala:327
+#: ../src/latex_menu.vala:338
 msgid "Typewriter - \\mathtt"
 msgstr "Pisaća mašina — \\mathtt"
 
-#: ../src/latex_menu.vala:329
+#: ../src/latex_menu.vala:340
 msgid "Calligraphic - \\mathcal"
 msgstr "Kaligrafski — \\mathcal"
 
-#: ../src/latex_menu.vala:331
+#: ../src/latex_menu.vala:342
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
 msgstr "Tabla (samo velika slova) — \\mathbb (paket „amsfonts“)"
 
-#: ../src/latex_menu.vala:334
+#: ../src/latex_menu.vala:345
 msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
 msgstr "Ojler Fraktur — \\mathfrak (paket „amsfonts“)"
 
 #. Math Accents
-#: ../src/latex_menu.vala:339
+#: ../src/latex_menu.vala:350
 msgid "Math _Accents"
 msgstr "Matematički _naglasci"
 
 #. Math Spaces
-#: ../src/latex_menu.vala:360
+#: ../src/latex_menu.vala:371
 msgid "Math _Spaces"
 msgstr "Matematički _razmaci"
 
-#: ../src/latex_menu.vala:361
+#: ../src/latex_menu.vala:372
 msgid "_Small"
 msgstr "_Mali"
 
-#: ../src/latex_menu.vala:362
+#: ../src/latex_menu.vala:373
 msgid "Small - \\,"
 msgstr "Mali — \\,"
 
-#: ../src/latex_menu.vala:363
+#: ../src/latex_menu.vala:374
 msgid "_Medium"
 msgstr "_Srednji"
 
-#: ../src/latex_menu.vala:364
+#: ../src/latex_menu.vala:375
 msgid "Medium - \\:"
 msgstr "Srednji — \\:"
 
-#: ../src/latex_menu.vala:365
+#: ../src/latex_menu.vala:376
 msgid "_Large"
 msgstr "_Veliki"
 
-#: ../src/latex_menu.vala:366
+#: ../src/latex_menu.vala:377
 msgid "Large - \\;"
 msgstr "Veliki — \\;"
 
 #. Left Delimiters
-#: ../src/latex_menu.vala:372
+#: ../src/latex_menu.vala:383
 msgid "_Left Delimiters"
 msgstr "_Levi graničnici"
 
-#: ../src/latex_menu.vala:373
+#: ../src/latex_menu.vala:384
 msgid "left ("
 msgstr "leva ("
 
-#: ../src/latex_menu.vala:375
+#: ../src/latex_menu.vala:386
 msgid "left ["
 msgstr "leva ["
 
-#: ../src/latex_menu.vala:377
+#: ../src/latex_menu.vala:388
 msgid "left { "
 msgstr "leva { "
 
-#: ../src/latex_menu.vala:379
+#: ../src/latex_menu.vala:390
 msgid "left <"
 msgstr "levi <"
 
-#: ../src/latex_menu.vala:381
+#: ../src/latex_menu.vala:392
 msgid "left )"
 msgstr "leva )"
 
-#: ../src/latex_menu.vala:383
+#: ../src/latex_menu.vala:394
 msgid "left ]"
 msgstr "leva ]"
 
-#: ../src/latex_menu.vala:385
+#: ../src/latex_menu.vala:396
 msgid "left  }"
 msgstr "leva  }"
 
-#: ../src/latex_menu.vala:387
+#: ../src/latex_menu.vala:398
 msgid "left >"
 msgstr "levi >"
 
-#: ../src/latex_menu.vala:389
+#: ../src/latex_menu.vala:400
 msgid "left ."
 msgstr "leva ."
 
 #. Right Delimiters
-#: ../src/latex_menu.vala:394
+#: ../src/latex_menu.vala:405
 msgid "Right _Delimiters"
 msgstr "_Desni graničnici"
 
-#: ../src/latex_menu.vala:395
+#: ../src/latex_menu.vala:406
 msgid "right )"
 msgstr "desna )"
 
-#: ../src/latex_menu.vala:397
+#: ../src/latex_menu.vala:408
 msgid "right ]"
 msgstr "desna ]"
 
-#: ../src/latex_menu.vala:399
+#: ../src/latex_menu.vala:410
 msgid "right  }"
 msgstr "desna  }"
 
-#: ../src/latex_menu.vala:401
+#: ../src/latex_menu.vala:412
 msgid "right >"
 msgstr "desni >"
 
-#: ../src/latex_menu.vala:403
+#: ../src/latex_menu.vala:414
 msgid "right ("
 msgstr "desna ("
 
-#: ../src/latex_menu.vala:405
+#: ../src/latex_menu.vala:416
 msgid "right ["
 msgstr "desna ["
 
-#: ../src/latex_menu.vala:407
+#: ../src/latex_menu.vala:418
 msgid "right { "
 msgstr "desna { "
 
-#: ../src/latex_menu.vala:409
+#: ../src/latex_menu.vala:420
 msgid "right <"
 msgstr "desni <"
 
-#: ../src/latex_menu.vala:411
+#: ../src/latex_menu.vala:422
 msgid "right ."
 msgstr "desna ."
 
-#: ../src/latex_menu.vala:426
+#: ../src/latex_menu.vala:437
 msgid "Sectioning"
 msgstr "Odeljci"
 
-#: ../src/latex_menu.vala:429
+#: ../src/latex_menu.vala:440
 msgid "Characters Sizes"
 msgstr "Veličine znakova"
 
-#: ../src/latex_menu.vala:432
+#: ../src/latex_menu.vala:443
 msgid "References"
 msgstr "Reference"
 
-#: ../src/latex_menu.vala:435
+#: ../src/latex_menu.vala:446
+#| msgid "Math Environments"
+msgid "Presentation Environments"
+msgstr "Prezentaciona okruženja"
+
+#: ../src/latex_menu.vala:449
 msgid "Math Environments"
 msgstr "Matematička okruženja"
 
-#: ../src/latex_menu.vala:438
+#: ../src/latex_menu.vala:452
 msgid "Left Delimiters"
 msgstr "Levi graničnici"
 
-#: ../src/latex_menu.vala:441
+#: ../src/latex_menu.vala:455
 msgid "Right Delimiters"
 msgstr "Desni graničnici"
 
@@ -1067,7 +1086,7 @@ msgstr "Novi _prozor"
 msgid "Create a new window"
 msgstr "Napravite novi prozor"
 
-#: ../src/main_window.vala:35 ../src/main_window.vala:1065
+#: ../src/main_window.vala:35 ../src/main_window.vala:1079
 msgid "Open a file"
 msgstr "Otvorite datoteku"
 
@@ -1136,7 +1155,7 @@ msgstr "Obrišite izabrani tekst"
 msgid "Select the entire document"
 msgstr "Izaberite čitav dokument"
 
-#: ../src/main_window.vala:71 ../src/main_window.vala:147
+#: ../src/main_window.vala:71 ../src/main_window.vala:145
 msgid "_Comment"
 msgstr "_Dodaj primedbu"
 
@@ -1152,240 +1171,236 @@ msgstr "U_kloni primedbu"
 msgid "Uncomment the selected lines (remove the character \"%\")"
 msgstr "Uklonite primedbu sa izabranih redova (uklonite znak „%“)"
 
-#: ../src/main_window.vala:77
-msgid "_Completion"
-msgstr "_Dovršavanje"
-
 #: ../src/main_window.vala:78
-msgid "Complete the LaTeX command"
-msgstr "Dovršite LaTeKs naredbu"
-
-#: ../src/main_window.vala:80
 msgid "Configure the application"
 msgstr "Podesite program"
 
 #. View
-#: ../src/main_window.vala:83
+#: ../src/main_window.vala:81
 msgid "_View"
 msgstr "Pre_gled"
 
-#: ../src/main_window.vala:84
+#: ../src/main_window.vala:82
 msgid "Zoom _In"
 msgstr "U_većaj"
 
-#: ../src/main_window.vala:85
+#: ../src/main_window.vala:83
 msgid "Enlarge the font"
 msgstr "Uvećajte slovni lik"
 
-#: ../src/main_window.vala:86
+#: ../src/main_window.vala:84
 msgid "Zoom _Out"
 msgstr "U_manji"
 
-#: ../src/main_window.vala:87
+#: ../src/main_window.vala:85
 msgid "Shrink the font"
 msgstr "Umanjite slovni lik"
 
-#: ../src/main_window.vala:88
+#: ../src/main_window.vala:86
 msgid "_Reset Zoom"
 msgstr "Vra_ti uvećanje"
 
-#: ../src/main_window.vala:89
+#: ../src/main_window.vala:87
 msgid "Reset the size of the font"
 msgstr "Vratite veličinu slovnog lika"
 
 #. Search
-#: ../src/main_window.vala:92
+#: ../src/main_window.vala:90
 msgid "_Search"
 msgstr "_Nađi"
 
-#: ../src/main_window.vala:94
+#: ../src/main_window.vala:92
 msgid "Search for text"
 msgstr "Potražite tekst"
 
-#: ../src/main_window.vala:96
+#: ../src/main_window.vala:94
 msgid "Search for and replace text"
 msgstr "Potražite i zamenite tekst"
 
-#: ../src/main_window.vala:97
+#: ../src/main_window.vala:95
 msgid "_Go to Line..."
 msgstr "_Idi na red..."
 
-#: ../src/main_window.vala:98
+#: ../src/main_window.vala:96
 msgid "Go to a specific line"
 msgstr "Idite na određeni red u tekstu"
 
 #. Build
-#: ../src/main_window.vala:101
+#: ../src/main_window.vala:99
 msgid "_Build"
 msgstr "_Izgradnja"
 
-#: ../src/main_window.vala:102
+#: ../src/main_window.vala:100
 msgid "Cleanup Build _Files"
 msgstr "Očisti _datoteke izgradnje"
 
-#: ../src/main_window.vala:103
+#: ../src/main_window.vala:101
 msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
 msgstr "Očistite datoteke izgradnje (*.aux, *.log, *.out, *.toc, etc)"
 
-#: ../src/main_window.vala:105
+#: ../src/main_window.vala:103
 msgid "_Stop Execution"
 msgstr "_Zaustavi izvršavanje"
 
-#: ../src/main_window.vala:106
+#: ../src/main_window.vala:104
 msgid "Stop Execution"
 msgstr "Zaustavite izvršavanje"
 
-#: ../src/main_window.vala:107
+#: ../src/main_window.vala:105
 msgid "View _Log"
 msgstr "_Pregledaj dnevnik"
 
-#: ../src/main_window.vala:108
+#: ../src/main_window.vala:106
 msgid "View Log"
 msgstr "Pregledajte dnevnik"
 
 #. Documents
-#: ../src/main_window.vala:111
+#: ../src/main_window.vala:109
 msgid "_Documents"
 msgstr "Do_kumenta"
 
-#: ../src/main_window.vala:112
+#: ../src/main_window.vala:110
 msgid "_Save All"
 msgstr "_Sačuvaj sve"
 
-#: ../src/main_window.vala:113
+#: ../src/main_window.vala:111
 msgid "Save all open files"
 msgstr "Sačuvajte sve otvorene datoteke"
 
-#: ../src/main_window.vala:114
+#: ../src/main_window.vala:112
 msgid "_Close All"
 msgstr "_Zatvori sve"
 
-#: ../src/main_window.vala:115
+#: ../src/main_window.vala:113
 msgid "Close all open files"
 msgstr "Zatvorite sve otvorene datoteke"
 
-#: ../src/main_window.vala:116
+#: ../src/main_window.vala:114
 msgid "_Previous Document"
 msgstr "_Prethodni dokument"
 
-#: ../src/main_window.vala:117
+#: ../src/main_window.vala:115
 msgid "Activate previous document"
 msgstr "Prikažite prethodni dokument"
 
-#: ../src/main_window.vala:119
+#: ../src/main_window.vala:117
 msgid "_Next Document"
 msgstr "_Sledeći dokument"
 
-#: ../src/main_window.vala:120
+#: ../src/main_window.vala:118
 msgid "Activate next document"
 msgstr "Prikažite naredni dokument"
 
-#: ../src/main_window.vala:122
+#: ../src/main_window.vala:120
 msgid "_Move to New Window"
 msgstr "Pre_mesti u novi prozor"
 
-#: ../src/main_window.vala:123
+#: ../src/main_window.vala:121
 msgid "Move the current document to a new window"
 msgstr "Premestite trenutni dokument u novi prozor"
 
 #. Projects
-#: ../src/main_window.vala:127
+#: ../src/main_window.vala:125
 msgid "_Projects"
 msgstr "Pr_ojekti"
 
-#: ../src/main_window.vala:128
+#: ../src/main_window.vala:126
 msgid "_New Project"
 msgstr "_Novi projekat"
 
-#: ../src/main_window.vala:129
+#: ../src/main_window.vala:127
 msgid "Create a new project"
 msgstr "Napravite novi projekat"
 
-#: ../src/main_window.vala:130
+#: ../src/main_window.vala:128
 msgid "_Configure Current Project"
 msgstr "Podesi _tekući projekat"
 
-#: ../src/main_window.vala:131
+#: ../src/main_window.vala:129
 msgid "Change the main file of the current project"
 msgstr "Izmenite glavnu datoteku tekućeg projekta"
 
-#: ../src/main_window.vala:133
+#: ../src/main_window.vala:131
 msgid "_Manage Projects"
 msgstr "_Upravljaj projektima"
 
-#: ../src/main_window.vala:134 ../src/project_dialogs.vala:178
+#: ../src/main_window.vala:132 ../src/project_dialogs.vala:178
 msgid "Manage Projects"
 msgstr "Upravljajte projektima"
 
 #. Structure
-#: ../src/main_window.vala:137
+#: ../src/main_window.vala:135
 msgid "S_tructure"
 msgstr "S_truktura"
 
-#: ../src/main_window.vala:139
+#: ../src/main_window.vala:137
 msgid "Cut the selected structure item"
 msgstr "Isecite stavku izabrane strukture"
 
-#: ../src/main_window.vala:141
+#: ../src/main_window.vala:139
 msgid "Copy the selected structure item"
 msgstr "Umnožite stavku izabrane strukture"
 
-#: ../src/main_window.vala:143
+#: ../src/main_window.vala:141
 msgid "Delete the selected structure item"
 msgstr "Obrišite stavku izabrane strukture"
 
-#: ../src/main_window.vala:144
+#: ../src/main_window.vala:142
 msgid "_Select"
 msgstr "_Izaberi"
 
-#: ../src/main_window.vala:145
+#: ../src/main_window.vala:143
 msgid "Select the contents of the selected structure item"
 msgstr "Izaberite sadržaj stavke izabrane strukture"
 
-#: ../src/main_window.vala:148
+#: ../src/main_window.vala:146
 msgid "Comment the selected structure item"
 msgstr "Dodajte primedbu stavci izabrane strukture"
 
-#: ../src/main_window.vala:149
+#: ../src/main_window.vala:147
 msgid "Shift _Left"
 msgstr "Pomeri u_levo"
 
-#: ../src/main_window.vala:150
+#: ../src/main_window.vala:148
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
 msgstr "Pomerite stavku izabrane strukture na levo (npr. odeljak → poglavlje)"
 
-#: ../src/main_window.vala:152
+#: ../src/main_window.vala:150
 msgid "Shift _Right"
 msgstr "Pomeri u_desno"
 
-#: ../src/main_window.vala:153
+#: ../src/main_window.vala:151
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
 msgstr "Pomerite stavku izabrane strukture na desno (npr. poglavlje → odeljak)"
 
 #. Help
-#: ../src/main_window.vala:157
+#: ../src/main_window.vala:155
 msgid "_Help"
 msgstr "_Pomoć"
 
-#: ../src/main_window.vala:158
+#: ../src/main_window.vala:156
 msgid "_Contents"
 msgstr "_Sadržaj"
 
-#: ../src/main_window.vala:159
+#: ../src/main_window.vala:157
 msgid "Open the LaTeXila documentation"
 msgstr "Otvorite dokumentaciju LaTeKsile"
 
-#: ../src/main_window.vala:160
+#: ../src/main_window.vala:158
 msgid "_LaTeX Reference"
 msgstr "_LaTeKs podsetnik"
 
-#: ../src/main_window.vala:161
+#: ../src/main_window.vala:159
 msgid "The Kile LaTeX Reference"
 msgstr "Kile LaTeKs podsetnik"
 
-#: ../src/main_window.vala:163 ../src/main_window.vala:1951
+#: ../src/main_window.vala:161 ../src/main_window.vala:1960
 msgid "About LaTeXila"
 msgstr "O LaTeKsili"
+
+#: ../src/main_window.vala:167
+msgid "Activate or disable the spell checking"
+msgstr "Uključite ili isključite proveru pisanja"
 
 #: ../src/main_window.vala:168
 msgid "_Main Toolbar"
@@ -1421,52 +1436,44 @@ msgid "Show or hide the bottom panel"
 msgstr "Prikažite ili sakrijte donju površ"
 
 #: ../src/main_window.vala:177
-msgid "Show _Errors"
-msgstr "Prikaži _greške"
-
-#: ../src/main_window.vala:178
-msgid "Show Errors"
-msgstr "Prikažite greške"
-
-#: ../src/main_window.vala:179
 msgid "Show _Warnings"
 msgstr "Prikaži _upozorenja"
 
-#: ../src/main_window.vala:180
+#: ../src/main_window.vala:178
 msgid "Show Warnings"
 msgstr "Prikažite upozorenja"
 
-#: ../src/main_window.vala:181
+#: ../src/main_window.vala:179
 msgid "Show _Bad Boxes"
 msgstr "Prikaži _loša polja"
 
-#: ../src/main_window.vala:182
+#: ../src/main_window.vala:180
 msgid "Show Bad Boxes"
 msgstr "Prikažite loša polja"
 
-#: ../src/main_window.vala:313
+#: ../src/main_window.vala:311
 msgid "Symbols"
 msgstr "Simboli"
 
-#: ../src/main_window.vala:319
+#: ../src/main_window.vala:317
 msgid "Structure"
 msgstr "Struktura"
 
 #. recent documents
-#: ../src/main_window.vala:520
+#: ../src/main_window.vala:538
 msgid "Open _Recent"
 msgstr "O_tvori skorašnji dokument"
 
-#: ../src/main_window.vala:521
+#: ../src/main_window.vala:539
 msgid "Open recently used files"
 msgstr "Otvorite nedavno korišćene datoteke"
 
-#: ../src/main_window.vala:695
+#: ../src/main_window.vala:709
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ova datoteka (%s) je već otvorena u drugom prozoru LaTeKsile."
 
-#: ../src/main_window.vala:697
+#: ../src/main_window.vala:711
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1474,53 +1481,58 @@ msgstr ""
 "LaTeKsila je otvorio ovaj primerak dokumenta na način u kome menjanje sadržaja "
 "nije moguće. Da li i pored toga želite da menjate sadržaj?"
 
-#: ../src/main_window.vala:700
+#: ../src/main_window.vala:714
 msgid "Edit Anyway"
 msgstr "Ipak uredi"
 
-#: ../src/main_window.vala:701
+#: ../src/main_window.vala:715
 msgid "Don't Edit"
 msgstr "Ne uređuj"
 
-#: ../src/main_window.vala:806
+#: ../src/main_window.vala:820
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Da sačuvam izmene u dokumentu „%s“ pre zatvaranja?"
 
-#: ../src/main_window.vala:925
+#: ../src/main_window.vala:939
 msgid "Read-Only"
 msgstr "Samo čitanje"
 
-#: ../src/main_window.vala:939
+#: ../src/main_window.vala:953
 msgid "Save File"
 msgstr "Sačuvajte datoteku"
 
-#: ../src/main_window.vala:974
+#: ../src/main_window.vala:988
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Datoteka „%s“ već postoji. Da li želite da je zamenite?"
 
-#: ../src/main_window.vala:979 ../src/ui/search_and_replace.ui.h:7
+#: ../src/main_window.vala:993 ../src/ui/search_and_replace.ui.h:7
 msgid "Replace"
 msgstr "Zameni"
 
-#: ../src/main_window.vala:1066
+#: ../src/main_window.vala:1080
 msgid "Open a recently used file"
 msgstr "Otvorite nedavno korišćenu datoteku"
 
-#: ../src/main_window.vala:1473
+#: ../src/main_window.vala:1484
 msgid "Open Files"
 msgstr "Otvorite datoteku"
 
 #: ../src/main_window.vala:1497
+#| msgid "All Files"
+msgid "All LaTeX Files"
+msgstr "Sve LaTeKs datoteke"
+
+#: ../src/main_window.vala:1504
 msgid "All Files"
 msgstr "Sve datoteke"
 
-#: ../src/main_window.vala:1899
+#: ../src/main_window.vala:1908
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeKsila je integrisano LaTeKs okruženje za radnu površ Gnoma"
 
-#: ../src/main_window.vala:1952
+#: ../src/main_window.vala:1961
 msgid "translator-credits"
 msgstr ""
 "Miroslav Nikolić <miroslavnikolic@rocketmail.com>\n"
@@ -1554,6 +1566,7 @@ msgid_plural "minutes"
 msgstr[0] "minut"
 msgstr[1] "minuta"
 msgstr[2] "minuta"
+msgstr[3] "minut"
 
 #: ../src/preferences_dialog.vala:291
 msgid "character"
@@ -1561,6 +1574,7 @@ msgid_plural "characters"
 msgstr[0] "znak"
 msgstr[1] "znaka"
 msgstr[2] "znakova"
+msgstr[3] "znak"
 
 #: ../src/preferences_dialog.vala:330
 #, c-format
@@ -1925,7 +1939,7 @@ msgstr "Uređivač"
 
 #: ../src/ui/preferences_dialog.ui.h:10
 msgid "Editor _font: "
-msgstr "Slovni lik _uređivača:"
+msgstr "Slovni lik _uređivača: "
 
 #: ../src/ui/preferences_dialog.ui.h:11
 msgid "Except those for clean-up"
@@ -2059,3 +2073,15 @@ msgstr "Upišite izraz za pretragu"
 #: ../src/ui/search_and_replace.ui.h:11
 msgid "Toggle between search and replace mode"
 msgstr "Prebacite između režima pretrage i zamene"
+
+#~ msgid "_Completion"
+#~ msgstr "_Dovršavanje"
+
+#~ msgid "Complete the LaTeX command"
+#~ msgstr "Dovršite LaTeKs naredbu"
+
+#~ msgid "Show _Errors"
+#~ msgstr "Prikaži _greške"
+
+#~ msgid "Show Errors"
+#~ msgstr "Prikažite greške"

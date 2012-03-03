@@ -587,6 +587,28 @@ public class Document : Gtk.SourceBuffer
         return _structure;
     }
 
+    public bool set_tmp_location ()
+    {
+        /* Create a temporary directory (most probably in /tmp/) */
+        string template = "latexila-XXXXXX";
+        string tmp_dir;
+
+        try
+        {
+            tmp_dir = MyDirUtils.make_tmp (template);
+        }
+        catch (FileError e)
+        {
+            warning ("Impossible to create temporary directory: %s", e.message);
+            return false;
+        }
+
+        /* Set the location as 'tmp.tex' in the temporary directory */
+        this.location = File.new_for_path (Path.build_filename (tmp_dir, "tmp.tex"));
+
+        return true;
+    }
+
 
     /***************
      *    SEARCH

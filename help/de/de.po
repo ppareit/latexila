@@ -1,12 +1,12 @@
 # German translation of the latexila documentation.
-# Mario Blättermann <mariobl@freenet.de>, 2011.
+# Mario Blättermann <mario.blaettermann@gmail.com>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2011-09-19 10:10+0000\n"
-"PO-Revision-Date: 2011-10-20 21:51+0100\n"
-"Last-Translator: Mario Blättermann <mariobl@freenet.de>\n"
+"POT-Creation-Date: 2012-02-05 20:27+0000\n"
+"PO-Revision-Date: 2012-03-03 21:54+0100\n"
+"Last-Translator: Mario Blättermann <mario.blaettermann@gmail.com>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +22,7 @@ msgstr "Hilfe zu LaTeXila"
 #. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
 msgctxt "_"
 msgid "translator-credits"
-msgstr "Mario Blättermann <mariobl@freenet.de>, 2011"
+msgstr "Mario Blättermann <mario.blaettermann@gmail.com>, 2011, 2012"
 
 #: C/build_tools.page:10(page/title)
 msgid "Build Tools"
@@ -188,11 +188,12 @@ msgstr "Verwenden Sie die Tastenkürzel: <key>F2</key> → <key>F11</key>."
 #: C/build_tools.page:123(section/p)
 msgid ""
 "The build tool is executed on the currently opened file. If the file belongs "
-"to a project, it is executed on the project's main file."
+"to a <link xref=\"projects\">project</link>, it is executed on the project's "
+"main file."
 msgstr ""
 "Das Erstellungswerkzeug wird auf die aktuell geöffnete Datei angewendet. "
-"Falls die Datei zu einem Projekt gehört, wird die Hauptdatei des Projekts "
-"verwendet."
+"Falls die Datei zu einem <link xref=\"projects\">Projekt</link> gehört, wird "
+"die Hauptdatei des Projekts verwendet."
 
 #: C/build_tools.page:127(note/title)
 msgid "Hidden Build Tools"
@@ -355,3 +356,209 @@ msgstr ""
 "Gegensatz zum Nachbearbeitungswerkzeug <em>latex</em>, keinen Unterschied "
 "zwischen kritischen Fehlern und einfachen Warnungen."
 
+#: C/completion.page:10(page/title)
+msgid "Completion of LaTeX commands"
+msgstr "Vervollständigung von LaTeX-Befehlen"
+
+#: C/completion.page:13(synopsis/p)
+msgid ""
+"The purpose is to facilitate the writing of LaTeX commands, by showing "
+"proposals."
+msgstr ""
+"Ziel ist es, das Schreiben von LaTeX-Befehlen durch Anzeige von Vorschlägen "
+"zu erleichtern."
+
+#: C/completion.page:17(section/title)
+msgid "Interactive completion"
+msgstr "Interaktive Vervollständigung"
+
+#: C/completion.page:18(section/p)
+msgid ""
+"By default, when a LaTeX command is typed, proposals will be shown after two "
+"characters. This can be configured in the preferences dialog: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
+"\"tab\">LaTeX</gui> </guiseq>"
+msgstr ""
+"Standardmäßig werden nach der Eingabe der ersten zwei Zeichen eines Befehls "
+"Vorschläge angezeigt. Im Menü <guiseq><gui style=\"menu\">Bearbeiten</"
+"gui><gui style=\"menu\">Einstellungen</gui><gui style=\"tab\">LaTeX</gui> </"
+"guiseq> können Sie dieses Verhalten einrichten."
+
+#: C/completion.page:30(section/title)
+msgid "Manual completion"
+msgstr "Manuelle Vervollständigung"
+
+#: C/completion.page:31(section/p)
+msgid ""
+"At any time, press <keyseq> <key>Ctrl</key> <key>Space</key> </keyseq> to "
+"show proposals."
+msgstr ""
+"Sie können jederzeit <keyseq> <key>Strg</key> <key>Leertaste</key> </keyseq> "
+"drücken, um Vorschläge anzeigen zu lassen."
+
+#: C/projects.page:10(page/title)
+msgid "Projects"
+msgstr "Projekte"
+
+#: C/projects.page:13(synopsis/p)
+msgid ""
+"When a LaTeX document is split into several *.tex files, creating a project "
+"is useful."
+msgstr ""
+"Wenn ein LaTex-Dokument in verschiedene *.tex-Dateien unterteilt wird, ist es "
+"sinnvoll, ein Projekt anzulegen."
+
+#: C/projects.page:18(section/title)
+msgid "Manage projects"
+msgstr "Projekte verwalten"
+
+#: C/projects.page:20(section/p)
+msgid ""
+"All actions related to projects are located in the <gui style=\"menu"
+"\">Projects</gui> menu. A project contain only two pieces of information:"
+msgstr ""
+"Alle auf Projekte bezogenen Aktionen finden Sie im Menü <gui style=\"menu"
+"\">Projekte</gui>. Ein Projekt enthält lediglich zwei Informationen:"
+
+#: C/projects.page:25(item/p)
+msgid "The directory where the project is located."
+msgstr "Den Ordner, in welchem sich das Projekt befindet."
+
+#: C/projects.page:26(item/p)
+msgid "The main *.tex file."
+msgstr "Die *.tex-Hauptdatei."
+
+#: C/projects.page:29(section/p)
+msgid ""
+"As a consequence, a directory can contain only one project, which is quite "
+"logical."
+msgstr "Konsequenterweise kann ein Ordner nur ein einziges Projekt enthalten."
+
+#: C/projects.page:35(section/title)
+msgid "Usefulness of projects"
+msgstr "Nutzen von Projekten"
+
+#: C/projects.page:37(item/p)
+msgid ""
+"A <link xref=\"build_tools\">build tool</link> is executed on the project's "
+"main file."
+msgstr ""
+"Ein <link xref=\"build_tools\">Erstellungswerkzeug</link> wird auf die "
+"Hauptdatei eines Projekts angewendet."
+
+#: C/spell_checking.page:10(page/title)
+msgid "Spell Checking"
+msgstr "Rechtschreibprüfung"
+
+#: C/spell_checking.page:13(synopsis/p)
+msgid "The purpose is to correct spelling mistakes easily."
+msgstr "Ziel ist es, Rechtschreibfehler leicht korrigieren zu können."
+
+#: C/spell_checking.page:17(section/title)
+msgid "Use the spell checking"
+msgstr "Die Rechtschreibprüfung verwenden"
+
+#: C/spell_checking.page:18(section/p)
+msgid ""
+"The spell checking can be activated or disabled via the menu: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </guiseq>"
+msgstr ""
+"Die Rechtschreibprüfung kann im Menü aktiviert oder deaktiviert werden. "
+"Wählen Sie hierzu <guiseq> <gui style=\"menu\">Bearbeiten</gui> <gui style="
+"\"menu\">Rechtschreibprüfung</gui> </guiseq>."
+
+#: C/spell_checking.page:26(section/p)
+msgid ""
+"Once the spell checking is activated, the misspelled words will be underlined "
+"in red. A right click on a misspelled word will show proposals."
+msgstr ""
+"Sobald die Rechtschreibprüfung aktiviert ist, werden falsch geschriebene "
+"Wörter rot unterstrichen dargestellt. Klicken Sie mit der rechten Maustaste "
+"auf eines der falsch geschriebenen Wörter, um Vorschläge anzeigen zu lassen."
+
+#: C/spell_checking.page:31(section/p)
+msgid "To change the language, do a right click on the document."
+msgstr ""
+"Um die Sprache zu ändern, klicken Sie mit der rechten Maustaste in das "
+"Dokument."
+
+#: C/spell_checking.page:35(section/title)
+msgid "Dictionaries"
+msgstr "Wörterbücher"
+
+#: C/spell_checking.page:36(section/p)
+msgid ""
+"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> is used for "
+"the spell checking in LaTeXila. GtkSpell uses <link href=\"http://www."
+"abisource.com/projects/enchant/\">Enchant</link>, which uses one or several "
+"backends such as Hunspell or Aspell for the dictionaries."
+msgstr ""
+"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> wird für die "
+"Rechtschreibprüfung in LaTeXila verwendet. GtkSpell benutzt <link href="
+"\"http://www.abisource.com/projects/enchant/\">Enchant</link>, welches eines "
+"von verschiedenen Backends wie Hunspell oder Aspell als Wörterbuch verwendet."
+
+#: C/spell_checking.page:43(section/p)
+msgid ""
+"So if there is no dictionary for your language, try to know which backend is "
+"used by Enchant on your system, and install the dictionary for this backend. "
+"There are most probably packages available for your Linux distribution."
+msgstr ""
+"Falls für Ihre Sprache kein Wörterbuch verfügbar ist, versuchen Sie "
+"herauszufinden, welches Backend auf Ihrem System von Enchant verwendet wird "
+"und installieren Sie das Wörterbuch für das Backend. In den meisten Fällen "
+"werden Sie ein  entsprechendes Paket für Ihre Linux-Distribution finden."
+
+#: C/structure.page:10(page/title)
+msgid "Document's Structure"
+msgstr "Dokumentstruktur"
+
+#: C/structure.page:13(synopsis/p)
+msgid ""
+"The list of chapters, sections, sub-sections and other things like tables, "
+"figures, … of a document, to easily navigate in it."
+msgstr ""
+"Die Liste der Kapitel, Abschnitte, Unterabschnitte und weiterer Objekte wie "
+"Tabellen, Abbildungen usw. eines Dokuments, durch die leicht navigiert werden "
+"kann."
+
+#: C/structure.page:18(section/title)
+msgid "Display the structure"
+msgstr "Die Struktur anzeigen"
+
+#: C/structure.page:20(section/p)
+msgid ""
+"The structure can be displayed in the side panel. If the side panel is "
+"hidden, go to <guiseq> <gui style=\"menu\">View</gui> <gui style=\"menu"
+"\">Side panel</gui> </guiseq>."
+msgstr ""
+"Die Struktur kann in der Seitenleiste angezeigt werden. Falls die "
+"Seitenleiste verborgen ist, wählen Sie <guiseq> <gui style=\"menu\">Ansicht</"
+"gui> <gui style=\"menu\">Seitenleiste</gui> </guiseq>."
+
+#: C/structure.page:29(section/p)
+msgid ""
+"The structure's content is not automatically updated. That's why there is a "
+"refresh button. If text is inserted in the document, the position of an item "
+"(e.g. a section) remains correct, as far as the item is still there, and is "
+"not modified."
+msgstr ""
+"Der Inhalt der Struktur wird nicht automatisch aktualisiert. Dafür gibt es "
+"einen <gui>Aktualisieren</gui>-Knopf. Wenn Text in das Dokument eingefügt "
+"wird, dann erscheint die Position eines Objekts (beispielsweise eines "
+"Abschnitts) korrekt, sofern sich das Objekt noch immer dort befindet und "
+"nicht verändert wurde."
+
+#: C/structure.page:37(section/title)
+msgid "Actions"
+msgstr "Aktionen"
+
+#: C/structure.page:39(section/p)
+msgid ""
+"Some actions such as \"cut\", \"copy\" or \"comment\" can be performed on a "
+"structure's item. Either by a right click, or via the <gui style=\"menu"
+"\">Structure</gui> menu."
+msgstr ""
+"Einige Aktionen, wie Ausschneiden, Kopieren oder Kommentieren können auf ein "
+"Element einer Struktur angewendet werden, entweder durch einen Klick mit der "
+"rechten Maustaste oder über das Menü <gui style=\"menu\">Struktur</gui>."
