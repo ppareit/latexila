@@ -212,7 +212,7 @@ public class MainWindow : Window
     {
         get
         {
-            if (documents_panel.get_n_pages () == 0)
+            if (documents_panel == null || documents_panel.get_n_pages () == 0)
                 return null;
             return documents_panel.active_tab;
         }
@@ -1221,6 +1221,7 @@ public class MainWindow : Window
         }
 
         build_tools_menu_ui_id = id;
+        update_build_tools_sensitivity ();
     }
 
     private void build_tools_menu_activate (Gtk.Action action)
