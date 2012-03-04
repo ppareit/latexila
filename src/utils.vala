@@ -310,7 +310,7 @@ namespace Utils
         return button;
     }
 
-    public Widget get_dialog_component (string title, Widget widget)
+    public Grid get_dialog_component (string title, Widget widget)
     {
         Grid grid = new Grid ();
         grid.orientation = Orientation.VERTICAL;
@@ -325,7 +325,6 @@ namespace Utils
 
         // left margin for the widget
         widget.set_margin_left (12);
-        widget.set_hexpand (true);
         grid.add (widget);
 
         return grid;

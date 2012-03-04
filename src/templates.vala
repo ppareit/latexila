@@ -124,12 +124,14 @@ public class Templates : GLib.Object
         /* icon view for the default templates */
         IconView icon_view_default_templates = create_icon_view (default_store);
         Widget scrollbar = Utils.add_scrollbar (icon_view_default_templates);
+        scrollbar.hexpand = true;
         Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
         vpaned.pack1 (component, true, true);
 
         /* icon view for the personal templates */
         IconView icon_view_personal_templates = create_icon_view (personal_store);
         scrollbar = Utils.add_scrollbar (icon_view_personal_templates);
+        scrollbar.hexpand = true;
         component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
         vpaned.pack2 (component, false, true);
 
@@ -220,6 +222,7 @@ public class Templates : GLib.Object
 
         /* name */
         Entry entry = new Entry ();
+        entry.hexpand = true;
         Widget component = Utils.get_dialog_component (_("Name of the new template"),
             entry);
         content_area.pack_start (component, false);
@@ -228,6 +231,7 @@ public class Templates : GLib.Object
         // we take the default store because it contains all the icons
         IconView icon_view = create_icon_view (default_store);
         Widget scrollbar = Utils.add_scrollbar (icon_view);
+        scrollbar.expand = true;
         component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
         content_area.pack_start (component);
 
@@ -283,6 +287,7 @@ public class Templates : GLib.Object
         IconView icon_view = create_icon_view (personal_store);
         icon_view.set_selection_mode (SelectionMode.MULTIPLE);
         Widget scrollbar = Utils.add_scrollbar (icon_view);
+        scrollbar.hexpand = true;
         Widget component = Utils.get_dialog_component (_("Personal templates"),
             scrollbar);
         content_area.pack_start (component);
