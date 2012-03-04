@@ -115,13 +115,12 @@ private class BuildToolDialog : Dialog
         }
     }
 
-    public static bool show_me (Window parent, int num)
+    public static bool show_me (Window parent, int build_tool_num)
     {
         if (_instance == null)
         {
             _instance = new BuildToolDialog ();
 
-            // FIXME how to connect Widget.destroyed?
             _instance.destroy.connect (() =>
             {
                 if (_instance != null)
@@ -133,8 +132,8 @@ private class BuildToolDialog : Dialog
             _instance.set_transient_for (parent);
 
         _instance.present ();
-        _instance.init (num);
-        return _instance.run_me (num);
+        _instance.init (build_tool_num);
+        return _instance.run_me (build_tool_num);
     }
 
     private void init_icon_treeview ()
@@ -289,17 +288,17 @@ private class BuildToolDialog : Dialog
         _entry_command.text = "";
     }
 
-    private void init (int num)
+    private void init (int build_tool_num)
     {
         _entry_command.text = "";
         _jobs_store.clear ();
         Utils.set_entry_error (_entry_label, false);
         Utils.set_entry_error (_entry_command, false);
 
-        if (num == -1)
+        if (build_tool_num == -1)
             _instance.init_new_build_tool ();
         else
-            _instance.init_with_build_tool (BuildTools.get_default ()[num]);
+            _instance.init_with_build_tool (BuildTools.get_default ()[build_tool_num]);
 
         _treeview_jobs.columns_autosize ();
     }
@@ -344,7 +343,8 @@ private class BuildToolDialog : Dialog
         }
     }
 
-    private bool run_me (int num)
+    // Returns true if the build tool is correctly updated or created.
+    private bool run_me (int build_tool_num)
     {
         while (run () == ResponseType.OK)
         {
@@ -410,13 +410,13 @@ private class BuildToolDialog : Dialog
             }
 
             /* update build tools settings */
-            if (num == -1)
+            if (build_tool_num == -1)
             {
                 tool.show = true;
                 BuildTools.get_default ().add (tool);
             }
             else
-                BuildTools.get_default ().update (num, tool, true);
+                BuildTools.get_default ().update (build_tool_num, tool, true);
 
             hide ();
             return true;
