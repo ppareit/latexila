@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,12 +21,12 @@ using Gtk;
 
 public class Templates : GLib.Object
 {
-    private static Templates templates = null;
-    private ListStore default_store;
-    private ListStore personal_store;
-    private int nb_personal_templates;
-    private string rc_file;
-    private string rc_dir;
+    private static Templates _instance = null;
+    private ListStore _default_store;
+    private ListStore _personal_store;
+    private int _nb_personal_templates;
+    private string _rc_file;
+    private string _rc_dir;
 
     private enum TemplateColumn
     {
@@ -41,10 +41,10 @@ public class Templates : GLib.Object
     private Templates ()
     {
         /* default templates */
-        default_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
+        _default_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
             typeof (string), typeof (string), typeof (string));
 
-        add_template_from_string (default_store, _("Empty"), "empty", "");
+        add_template_from_string (_default_store, _("Empty"), "empty", "");
 
         add_default_template (_("Article"),         "article",  "article.tex");
         add_default_template (_("Report"),          "report",   "report.tex");
@@ -53,37 +53,37 @@ public class Templates : GLib.Object
         add_default_template (_("Presentation"),    "beamer",   "beamer.tex");
 
         /* personal templates */
-        personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
+        _personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
             typeof (string), typeof (string), typeof (string));
-        nb_personal_templates = 0;
+        _nb_personal_templates = 0;
 
-        rc_file = Path.build_filename (Environment.get_user_data_dir (), "latexila",
+        _rc_file = Path.build_filename (Environment.get_user_data_dir (), "latexila",
             "templatesrc", null);
-        rc_dir = Path.build_filename (Environment.get_user_data_dir (), "latexila", null);
+        _rc_dir = Path.build_filename (Environment.get_user_data_dir (), "latexila", null);
 
         // if the rc file doesn't exist, there is no personal template
-        if (! File.new_for_path (rc_file).query_exists ())
+        if (! File.new_for_path (_rc_file).query_exists ())
             return;
 
         try
         {
             // load the key file
             KeyFile key_file = new KeyFile ();
-            key_file.load_from_file (rc_file, KeyFileFlags.NONE);
+            key_file.load_from_file (_rc_file, KeyFileFlags.NONE);
 
             // get names and icons
             string[] names = key_file.get_string_list (Config.APP_NAME, "names");
             string[] icons = key_file.get_string_list (Config.APP_NAME, "icons");
 
-            nb_personal_templates = names.length;
+            _nb_personal_templates = names.length;
 
-            for (int i = 0 ; i < nb_personal_templates ; i++)
+            for (int i = 0 ; i < _nb_personal_templates ; i++)
             {
-                File file = File.new_for_path ("%s/%d.tex".printf (rc_dir, i));
+                File file = File.new_for_path ("%s/%d.tex".printf (_rc_dir, i));
                 if (! file.query_exists ())
                     continue;
 
-                add_template_from_file (personal_store, names[i], icons[i], file);
+                add_template_from_file (_personal_store, names[i], icons[i], file);
             }
         }
         catch (Error e)
@@ -95,9 +95,9 @@ public class Templates : GLib.Object
 
     public static Templates get_default ()
     {
-        if (templates == null)
-            templates = new Templates ();
-        return templates;
+        if (_instance == null)
+            _instance = new Templates ();
+        return _instance;
     }
 
     public void show_dialog_new (MainWindow parent)
@@ -123,13 +123,13 @@ public class Templates : GLib.Object
         vpaned.position = settings.get_int ("new-file-dialog-paned-position");
 
         /* icon view for the default templates */
-        IconView icon_view_default_templates = create_icon_view (default_store);
+        IconView icon_view_default_templates = create_icon_view (_default_store);
         Widget scrollbar = Utils.add_scrollbar (icon_view_default_templates);
         Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
         vpaned.pack1 (component, true, true);
 
         /* icon view for the personal templates */
-        IconView icon_view_personal_templates = create_icon_view (personal_store);
+        IconView icon_view_personal_templates = create_icon_view (_personal_store);
         scrollbar = Utils.add_scrollbar (icon_view_personal_templates);
         component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
         vpaned.pack2 (component, false, true);
@@ -150,13 +150,13 @@ public class Templates : GLib.Object
 
         icon_view_default_templates.item_activated.connect ((path) =>
         {
-            open_template (parent, default_store, path);
+            open_template (parent, _default_store, path);
             close_dialog_new (dialog, vpaned);
         });
 
         icon_view_personal_templates.item_activated.connect ((path) =>
         {
-            open_template (parent, personal_store, path);
+            open_template (parent, _personal_store, path);
             close_dialog_new (dialog, vpaned);
         });
 
@@ -164,14 +164,14 @@ public class Templates : GLib.Object
         {
             List<TreePath> selected_items =
                 icon_view_default_templates.get_selected_items ();
-            TreeModel model = (TreeModel) default_store;
+            TreeModel model = (TreeModel) _default_store;
 
             // if no item is selected in the default templates, maybe one item is
             // selected in the personal templates
             if (selected_items.length () == 0)
             {
                 selected_items = icon_view_personal_templates.get_selected_items ();
-                model = (TreeModel) personal_store;
+                model = (TreeModel) _personal_store;
             }
 
             TreePath path = (TreePath) selected_items.nth_data (0);
@@ -227,7 +227,7 @@ public class Templates : GLib.Object
 
         /* icon */
         // we take the default store because it contains all the icons
-        IconView icon_view = create_icon_view (default_store);
+        IconView icon_view = create_icon_view (_default_store);
         Widget scrollbar = Utils.add_scrollbar (icon_view);
         component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
         content_area.pack_start (component);
@@ -246,7 +246,7 @@ public class Templates : GLib.Object
             if (selected_items.length () == 0)
                 continue;
 
-            nb_personal_templates++;
+            _nb_personal_templates++;
 
             // get the contents
             TextIter start, end;
@@ -254,14 +254,14 @@ public class Templates : GLib.Object
             string contents = parent.active_document.get_text (start, end, false);
 
             // get the icon id
-            TreeModel model = (TreeModel) default_store;
+            TreeModel model = (TreeModel) _default_store;
             TreePath path = selected_items.nth_data (0);
             TreeIter iter;
             string icon_id;
             model.get_iter (out iter, path);
             model.get (iter, TemplateColumn.ICON_ID, out icon_id, -1);
 
-            add_template_from_string (personal_store, entry.text, icon_id, contents);
+            add_template_from_string (_personal_store, entry.text, icon_id, contents);
             add_personal_template (contents);
             break;
         }
@@ -282,7 +282,7 @@ public class Templates : GLib.Object
         Box content_area = (Box) dialog.get_content_area ();
 
         /* icon view for the personal templates */
-        IconView icon_view = create_icon_view (personal_store);
+        IconView icon_view = create_icon_view (_personal_store);
         icon_view.set_selection_mode (SelectionMode.MULTIPLE);
         Widget scrollbar = Utils.add_scrollbar (icon_view);
         Widget component = Utils.get_dialog_component (_("Personal templates"),
@@ -290,12 +290,12 @@ public class Templates : GLib.Object
         content_area.pack_start (component);
         content_area.show_all ();
 
-        int nb_personal_templates_before = nb_personal_templates;
+        int nb_personal_templates_before = _nb_personal_templates;
 
         while (dialog.run () == ResponseType.ACCEPT)
         {
             List<TreePath> selected_items = icon_view.get_selected_items ();
-            TreeModel model = (TreeModel) personal_store;
+            TreeModel model = (TreeModel) _personal_store;
 
             uint nb_selected_items = selected_items.length ();
 
@@ -304,13 +304,13 @@ public class Templates : GLib.Object
                 TreePath path = selected_items.nth_data (i);
                 TreeIter iter;
                 model.get_iter (out iter, path);
-                personal_store.remove (iter);
+                _personal_store.remove (iter);
             }
 
-            nb_personal_templates -= (int) nb_selected_items;
+            _nb_personal_templates -= (int) nb_selected_items;
         }
 
-        if (nb_personal_templates != nb_personal_templates_before)
+        if (_nb_personal_templates != nb_personal_templates_before)
         {
             save_rc_file ();
             save_contents ();
@@ -364,7 +364,7 @@ public class Templates : GLib.Object
             if (! file.query_exists ())
                 continue;
 
-            add_template_from_file (default_store, name, icon_id, file);
+            add_template_from_file (_default_store, name, icon_id, file);
             return;
         }
 
@@ -420,8 +420,8 @@ public class Templates : GLib.Object
     {
         save_rc_file ();
 
-        File file = File.new_for_path ("%s/%d.tex".printf (rc_dir,
-            nb_personal_templates - 1));
+        File file = File.new_for_path ("%s/%d.tex".printf (_rc_dir,
+            _nb_personal_templates - 1));
         try
         {
             // check if parent directories exist, if not, create it
@@ -440,23 +440,23 @@ public class Templates : GLib.Object
 
     private void save_rc_file ()
     {
-        if (nb_personal_templates == 0)
+        if (_nb_personal_templates == 0)
         {
             try
             {
-                File.new_for_path (rc_file).delete ();
+                File.new_for_path (_rc_file).delete ();
             }
             catch (Error e) {}
             return;
         }
 
         // the names and the icons of all personal templates
-        string[] names = new string[nb_personal_templates];
-        string[] icons = new string[nb_personal_templates];
+        string[] names = new string[_nb_personal_templates];
+        string[] icons = new string[_nb_personal_templates];
 
         // traverse the list store
         TreeIter iter;
-        TreeModel model = (TreeModel) personal_store;
+        TreeModel model = (TreeModel) _personal_store;
         bool valid_iter = model.get_iter_first (out iter);
         int i = 0;
         while (valid_iter)
@@ -477,7 +477,7 @@ public class Templates : GLib.Object
             key_file.set_string_list (Config.APP_NAME, "icons", icons);
 
             string key_file_data = key_file.to_data ();
-            File file = File.new_for_path (rc_file);
+            File file = File.new_for_path (_rc_file);
 
             // check if parent directories exist, if not, create it
             File parent = file.get_parent ();
@@ -498,18 +498,18 @@ public class Templates : GLib.Object
     private void save_contents ()
     {
         // delete all the *.tex files
-        Posix.system ("rm -f %s/*.tex".printf (rc_dir));
+        Posix.system ("rm -f %s/*.tex".printf (_rc_dir));
 
         // traverse the list store
         TreeIter iter;
-        TreeModel model = (TreeModel) personal_store;
+        TreeModel model = (TreeModel) _personal_store;
         bool valid_iter = model.get_iter_first (out iter);
         int i = 0;
         while (valid_iter)
         {
             string contents;
             model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
-            File file = File.new_for_path ("%s/%d.tex".printf (rc_dir, i));
+            File file = File.new_for_path ("%s/%d.tex".printf (_rc_dir, i));
             try
             {
                 // check if parent directories exist, if not, create it
