@@ -169,12 +169,9 @@ public class DocumentTab : Grid
 
         update_label_text ();
 
-        Button close_button = new Button ();
-        close_button.relief = ReliefStyle.NONE;
-        close_button.focus_on_click = false;
-        close_button.name = "my-close-button";
+        Gedit.CloseButton close_button = new Gedit.CloseButton ();
+        close_button.set_margin_left (2);
         close_button.tooltip_text = _("Close document");
-        close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
         close_button.clicked.connect (() => this.close_document ());
 
         _label = new Grid ();

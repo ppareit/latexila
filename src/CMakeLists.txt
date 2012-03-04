@@ -1,5 +1,6 @@
 file (GLOB vala_sources RELATIVE "${latexila_SOURCE_DIR}/src/" "*.vala")
 file (GLOB vapi_files "${latexila_SOURCE_DIR}/vapi/*.vapi")
+file (GLOB gedit_files "${latexila_SOURCE_DIR}/src/gedit/*")
 
 vala_precompile (
 	VALA_C
@@ -19,5 +20,5 @@ vala_precompile (
 		"C"
 )
 
-add_executable (latexila ${VALA_C})
+add_executable (latexila ${VALA_C} ${gedit_files})
 install (TARGETS latexila DESTINATION "bin")

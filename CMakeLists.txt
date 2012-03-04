@@ -97,7 +97,7 @@ add_subdirectory (man)
 add_subdirectory (po)
 add_subdirectory (src/ui)
 
-include_directories (vapi src/C ${latexila_BINARY_DIR}/src)
+include_directories (vapi src/C ${latexila_BINARY_DIR}/src src/gedit)
 if (BUILD_VALA)
 	add_subdirectory (src)
 else ()
