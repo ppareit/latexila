@@ -70,49 +70,29 @@ private class BuildToolDialog : Dialog
         add_button (Stock.OK, ResponseType.OK);
         title = _("Build Tool");
         destroy_with_parent = true;
-        border_width = 5;
 
-        try
-        {
-            string path = Path.build_filename (Config.DATA_DIR, "ui", "build_tool.ui");
-            Builder builder = new Builder ();
-            builder.add_from_file (path);
+        Grid label_grid = get_label_grid ();
+        Grid desc_grid = get_desc_grid ();
+        Grid extensions_grid = get_extensions_grid ();
+        Grid icon_grid = get_icon_grid ();
+        Grid jobs_grid = get_jobs_grid ();
 
-            // get objects
-            Box main_vbox = builder.get_object ("main_vbox") as Box;
-            main_vbox.unparent ();
+        Grid main_grid = new Grid ();
+        main_grid.set_row_spacing (5);
+        main_grid.set_column_spacing (5);
+        main_grid.attach (label_grid, 0, 0, 1, 1);
+        main_grid.attach (desc_grid, 1, 0, 1, 1);
+        main_grid.attach (extensions_grid, 0, 1, 1, 1);
+        main_grid.attach (icon_grid, 1, 1, 1, 1);
+        main_grid.attach (jobs_grid, 0, 2, 2, 1);
 
-            _entry_label = (Entry) builder.get_object ("entry_label");
-            _entry_desc = (Entry) builder.get_object ("entry_desc");
-            _entry_extensions = (Entry) builder.get_object ("entry_extensions");
-            _combobox_icon = (ComboBox) builder.get_object ("combobox_icon");
-            _entry_command = (Entry) builder.get_object ("entry_command");
-            _button_add = (Button) builder.get_object ("button_add");
-            _treeview_jobs = (TreeView) builder.get_object ("treeview_jobs");
-            _button_delete = (Button) builder.get_object ("button_delete");
-            _button_up = (Button) builder.get_object ("button_up");
-            _button_down = (Button) builder.get_object ("button_down");
+        Box content_area = get_content_area () as Box;
+        content_area.pack_start (main_grid);
+        content_area.show_all ();
 
-            // packing widget
-            Box content_area = get_content_area () as Box;
-            content_area.pack_start (main_vbox);
-            content_area.show_all ();
-
-            init_icon_treeview ();
-            init_jobs_treeview ();
-            init_actions ();
-        }
-        catch (Error e)
-        {
-            string message = "Error: %s".printf (e.message);
-            warning ("%s", message);
-
-            Label label_error = new Label (message);
-            label_error.set_line_wrap (true);
-            Box content_area = get_content_area () as Box;
-            content_area.pack_start (label_error, true, true, 0);
-            content_area.show_all ();
-        }
+        init_icon_treeview ();
+        init_jobs_treeview ();
+        init_actions ();
     }
 
     public static bool show_me (Window parent, int build_tool_num)
@@ -134,6 +114,118 @@ private class BuildToolDialog : Dialog
         _instance.present ();
         _instance.init (build_tool_num);
         return _instance.run_me (build_tool_num);
+    }
+
+    private Grid get_label_grid ()
+    {
+        Grid grid = new Grid ();
+        grid.set_row_spacing (6);
+        grid.border_width = 6;
+
+        Label title = new Label (null);
+        title.set_markup ("<b>" + _("Label") + "</b>");
+        title.set_halign (Align.START);
+        grid.attach (title, 0, 0, 1, 1);
+
+        Label arrow = new Label ("→");
+        arrow.set_tooltip_text (_("You can select this arrow and copy/paste it!"));
+        arrow.set_halign (Align.CENTER);
+        arrow.set_hexpand (true);
+        arrow.set_selectable (true);
+        grid.attach (arrow, 1, 0, 1, 1);
+        grid.set_hexpand (false);
+
+        _entry_label = new Entry ();
+        _entry_label.set_margin_left (12);
+        grid.attach (_entry_label, 0, 1, 2, 1);
+
+        return grid;
+    }
+
+    private Grid get_desc_grid ()
+    {
+        _entry_desc = new Entry ();
+        _entry_desc.hexpand = true;
+        return Utils.get_dialog_component (_("Description"), _entry_desc);
+    }
+
+    private Grid get_extensions_grid ()
+    {
+        _entry_extensions = new Entry ();
+        _entry_extensions.set_tooltip_text (
+            _("File extensions for which the build tool can be executed.\nThe extensions are separated by spaces."));
+
+        return Utils.get_dialog_component (_("Extensions"), _entry_extensions);
+    }
+
+    private Grid get_icon_grid ()
+    {
+        _combobox_icon = new ComboBox ();
+        return Utils.get_dialog_component (_("Icon"), _combobox_icon);
+    }
+
+    private Grid get_jobs_grid ()
+    {
+        Label placeholders = new Label (_("Placeholders:"));
+
+        Label placeholder_filename = new Label ("$filename");
+        placeholder_filename.set_tooltip_text (_("The active document filename"));
+
+        Label placeholder_shortname = new Label ("$shortname");
+        placeholder_shortname.set_tooltip_text (
+            _("The active document filename without its extension"));
+
+        Label placeholder_view = new Label ("$view");
+        placeholder_view.set_tooltip_text (
+            _("The program for viewing documents.\nIts value can be changed in the preferences dialog."));
+
+        _entry_command = new Entry ();
+        _entry_command.hexpand = true;
+
+        _button_add = new Button.from_stock (Stock.ADD);
+        _button_add.set_tooltip_text (_("New command"));
+
+        _treeview_jobs = new TreeView ();
+        _treeview_jobs.hexpand = true;
+        _treeview_jobs.vexpand = true;
+
+        Widget scrolled_treeview = Utils.add_scrollbar (_treeview_jobs);
+        scrolled_treeview.set_size_request (600, 110);
+
+        _button_delete = new Button.from_stock (Stock.REMOVE);
+        _button_up = new Button.from_stock (Stock.GO_UP);
+        _button_down = new Button.from_stock (Stock.GO_DOWN);
+
+        Grid placeholders_grid = new Grid ();
+        placeholders_grid.set_orientation (Orientation.HORIZONTAL);
+        placeholders_grid.set_column_spacing (10);
+        placeholders_grid.add (placeholders);
+        placeholders_grid.add (placeholder_filename);
+        placeholders_grid.add (placeholder_shortname);
+        placeholders_grid.add (placeholder_view);
+
+        Grid cmd_grid = new Grid ();
+        cmd_grid.set_orientation (Orientation.HORIZONTAL);
+        cmd_grid.set_column_spacing (5);
+        cmd_grid.add (_entry_command);
+        cmd_grid.add (_button_add);
+
+        Grid buttons_grid = new Grid ();
+        buttons_grid.set_orientation (Orientation.HORIZONTAL);
+        buttons_grid.set_column_spacing (5);
+        buttons_grid.add (_button_delete);
+        buttons_grid.add (_button_up);
+        buttons_grid.add (_button_down);
+
+        Grid jobs_grid = new Grid ();
+        jobs_grid.set_orientation (Orientation.VERTICAL);
+        jobs_grid.set_row_spacing (5);
+        jobs_grid.add (placeholders_grid);
+        jobs_grid.add (cmd_grid);
+        jobs_grid.add (scrolled_treeview);
+        jobs_grid.add (buttons_grid);
+
+        return Utils.get_dialog_component (_("Jobs"), jobs_grid);
     }
 
     private void init_icon_treeview ()
