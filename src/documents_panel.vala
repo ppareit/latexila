@@ -39,6 +39,8 @@ public class DocumentsPanel : Notebook
     public void add_tab (DocumentTab tab, int position, bool jump_to)
     {
         EventBox event_box = new EventBox ();
+        event_box.set_visible_window (false);
+
         event_box.add (tab.label);
         event_box.button_press_event.connect ((event) =>
         {
