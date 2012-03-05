@@ -22,11 +22,17 @@ using Gtk;
 public class Templates : GLib.Object
 {
     private static Templates _instance = null;
+
+    // Contains the default templates (empty, article, report, ...)
     private ListStore _default_store;
+
+    // Contains the personal templates (created by the user)
     private ListStore _personal_store;
+
     private int _nb_personal_templates;
-    private string _rc_file;
-    private string _rc_dir;
+
+    private File _data_dir;
+    private File _rc_file;
 
     private enum TemplateColumn
     {
@@ -40,57 +46,13 @@ public class Templates : GLib.Object
     /* Templates is a singleton */
     private Templates ()
     {
-        /* default templates */
-        _default_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
-            typeof (string), typeof (string), typeof (string));
+        _data_dir = File.new_for_path (
+            Path.build_filename (Environment.get_user_data_dir (), "latexila"));
 
-        add_template_from_string (_default_store, _("Empty"), "empty", "");
+        _rc_file = _data_dir.get_child ("templatesrc");
 
-        add_default_template (_("Article"),         "article",  "article.tex");
-        add_default_template (_("Report"),          "report",   "report.tex");
-        add_default_template (_("Book"),            "book",     "book.tex");
-        add_default_template (_("Letter"),          "letter",   "letter.tex");
-        add_default_template (_("Presentation"),    "beamer",   "beamer.tex");
-
-        /* personal templates */
-        _personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
-            typeof (string), typeof (string), typeof (string));
-        _nb_personal_templates = 0;
-
-        _rc_file = Path.build_filename (Environment.get_user_data_dir (), "latexila",
-            "templatesrc", null);
-        _rc_dir = Path.build_filename (Environment.get_user_data_dir (), "latexila", null);
-
-        // if the rc file doesn't exist, there is no personal template
-        if (! File.new_for_path (_rc_file).query_exists ())
-            return;
-
-        try
-        {
-            // load the key file
-            KeyFile key_file = new KeyFile ();
-            key_file.load_from_file (_rc_file, KeyFileFlags.NONE);
-
-            // get names and icons
-            string[] names = key_file.get_string_list (Config.APP_NAME, "names");
-            string[] icons = key_file.get_string_list (Config.APP_NAME, "icons");
-
-            _nb_personal_templates = names.length;
-
-            for (int i = 0 ; i < _nb_personal_templates ; i++)
-            {
-                File file = File.new_for_path ("%s/%d.tex".printf (_rc_dir, i));
-                if (! file.query_exists ())
-                    continue;
-
-                add_template_from_file (_personal_store, names[i], icons[i], file);
-            }
-        }
-        catch (Error e)
-        {
-            warning ("Load templates failed: %s", e.message);
-            return;
-        }
+        init_default_templates ();
+        init_personal_templates ();
     }
 
     public static Templates get_default ()
@@ -100,6 +62,147 @@ public class Templates : GLib.Object
         return _instance;
     }
 
+    private void init_default_templates ()
+    {
+        _default_store = create_new_store ();
+
+        add_template_from_string (_default_store, _("Empty"), "empty", "");
+
+        add_default_template (_("Article"), "article", "article.tex");
+        add_default_template (_("Report"), "report", "report.tex");
+        add_default_template (_("Book"), "book", "book.tex");
+        add_default_template (_("Letter"), "letter", "letter.tex");
+        add_default_template (_("Presentation"), "beamer", "beamer.tex");
+    }
+
+    private void init_personal_templates ()
+    {
+        _personal_store = create_new_store ();
+        _nb_personal_templates = 0;
+
+        // if the rc file doesn't exist, there is no personal template
+        if (! _rc_file.query_exists ())
+            return;
+
+        // load the key file
+        KeyFile key_file = new KeyFile ();
+        string[] names;
+        string[] icons;
+
+        try
+        {
+            key_file.load_from_file (_rc_file.get_path (), KeyFileFlags.NONE);
+
+            // get the names and the icons
+            names = key_file.get_string_list (Config.APP_NAME, "names");
+            icons = key_file.get_string_list (Config.APP_NAME, "icons");
+        }
+        catch (Error e)
+        {
+            warning ("Load templates failed: %s", e.message);
+            return;
+        }
+
+        return_if_fail (names.length == icons.length);
+
+        int nb_templates = names.length;
+
+        for (int i = 0 ; i < nb_templates ; i++)
+        {
+            File file = get_personal_template_file (i);
+            if (! file.query_exists ())
+            {
+                warning ("The template '%s' doesn't exist.", names[i]);
+                continue;
+            }
+
+            if (add_template_from_file (_personal_store, names[i], icons[i], file))
+                _nb_personal_templates++;
+        }
+    }
+
+    private ListStore create_new_store ()
+    {
+        return new ListStore (TemplateColumn.N_COLUMNS,
+            typeof (string), // pixbuf
+            typeof (string), // icon id
+            typeof (string), // name
+            typeof (string)  // contents
+        );
+    }
+
+    private File get_personal_template_file (int template_num)
+    {
+        string filename = "%d.tex".printf (template_num);
+        return _data_dir.get_child (filename);
+    }
+
+    /*************************************************************************/
+    // Add templates: from string, from file, ...
+
+    private void add_template_from_string (ListStore store, string name,
+        string icon_id, string contents)
+    {
+        TreeIter iter;
+        store.append (out iter);
+        store.set (iter,
+            TemplateColumn.PIXBUF, get_theme_icon (icon_id),
+            TemplateColumn.ICON_ID, icon_id,
+            TemplateColumn.NAME, name,
+            TemplateColumn.CONTENTS, contents);
+    }
+
+    // Returns true on success.
+    private bool add_template_from_file (ListStore store, string name,
+        string icon_id, File file)
+    {
+        uint8[] chars;
+
+        try
+        {
+            file.load_contents (null, out chars, null);
+        }
+        catch (Error e)
+        {
+            warning ("Impossible to load the template '%s': %s", name, e.message);
+            return false;
+        }
+
+        string contents = (string) (owned) chars;
+        add_template_from_string (store, name, icon_id, contents);
+
+        return true;
+    }
+
+    private void add_default_template (string name, string icon_id, string filename)
+    {
+        // The templates are translated, so we search first a translated template.
+
+        File[] files = {};
+
+        unowned string[] language_names = Intl.get_language_names ();
+        foreach (string language_name in language_names)
+        {
+            files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
+                "templates", language_name, filename));
+        }
+
+        foreach (File file in files)
+        {
+            if (! file.query_exists ())
+                continue;
+
+            add_template_from_file (_default_store, name, icon_id, file);
+            return;
+        }
+
+        warning ("Template '%s' not found.", name);
+    }
+
+    /*************************************************************************/
+    // Dialogs: create a new document, create/delete a template
+
+    // Dialog: create a new document from a template.
     public void show_dialog_new (MainWindow parent)
     {
         Dialog dialog = new Dialog.with_buttons (_("New File..."), parent,
@@ -205,6 +308,7 @@ public class Templates : GLib.Object
         dialog.destroy ();
     }
 
+    // Dialog: create a new template
     public void show_dialog_create (MainWindow parent)
     {
         return_if_fail (parent.active_tab != null);
@@ -269,6 +373,7 @@ public class Templates : GLib.Object
         dialog.destroy ();
     }
 
+    // Dialog: delete a template
     public void show_dialog_delete (MainWindow parent)
     {
         Dialog dialog = new Dialog.with_buttons (_("Delete Template(s)..."), parent,
@@ -317,58 +422,6 @@ public class Templates : GLib.Object
         }
 
         dialog.destroy ();
-    }
-
-    private void add_template_from_string (ListStore store, string name, string icon_id,
-        string contents)
-    {
-        TreeIter iter;
-        store.append (out iter);
-        store.set (iter,
-            TemplateColumn.PIXBUF, get_theme_icon (icon_id),
-            TemplateColumn.ICON_ID, icon_id,
-            TemplateColumn.NAME, name,
-            TemplateColumn.CONTENTS, contents,
-            -1);
-    }
-
-    private void add_template_from_file (ListStore store, string name, string icon_id,
-        File file)
-    {
-        try
-        {
-            uint8[] chars;
-            file.load_contents (null, out chars, null);
-            string contents = (string) (owned) chars;
-            add_template_from_string (store, name, icon_id, contents);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to load the template '%s': %s", name, e.message);
-        }
-    }
-
-    private void add_default_template (string name, string icon_id, string filename)
-    {
-        File[] files = {};
-
-        unowned string[] language_names = Intl.get_language_names ();
-        foreach (string language_name in language_names)
-        {
-            files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
-                "templates", language_name, filename));
-        }
-
-        foreach (File file in files)
-        {
-            if (! file.query_exists ())
-                continue;
-
-            add_template_from_file (_default_store, name, icon_id, file);
-            return;
-        }
-
-        warning ("Template '%s' not found.", name);
     }
 
     private IconView create_icon_view (ListStore store)
@@ -420,8 +473,8 @@ public class Templates : GLib.Object
     {
         save_rc_file ();
 
-        File file = File.new_for_path ("%s/%d.tex".printf (_rc_dir,
-            _nb_personal_templates - 1));
+        File file = get_personal_template_file (_nb_personal_templates - 1);
+
         try
         {
             // check if parent directories exist, if not, create it
@@ -430,7 +483,7 @@ public class Templates : GLib.Object
                 parent.make_directory_with_parents ();
 
             file.replace_contents (contents.data, null, false,
-                FileCreateFlags.NONE, null, null);
+                FileCreateFlags.NONE, null);
         }
         catch (Error e)
         {
@@ -442,11 +495,7 @@ public class Templates : GLib.Object
     {
         if (_nb_personal_templates == 0)
         {
-            try
-            {
-                File.new_for_path (_rc_file).delete ();
-            }
-            catch (Error e) {}
+            Utils.delete_file (_rc_file);
             return;
         }
 
@@ -477,15 +526,15 @@ public class Templates : GLib.Object
             key_file.set_string_list (Config.APP_NAME, "icons", icons);
 
             string key_file_data = key_file.to_data ();
-            File file = File.new_for_path (_rc_file);
 
             // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
+            // TODO move this in a function in Utils
+            File parent = _rc_file.get_parent ();
             if (parent != null && ! parent.query_exists ())
                 parent.make_directory_with_parents ();
 
-            file.replace_contents (key_file_data.data, null, false,
-                FileCreateFlags.NONE, null, null);
+            _rc_file.replace_contents (key_file_data.data, null, false,
+                FileCreateFlags.NONE, null);
         }
         catch (Error e)
         {
@@ -493,12 +542,13 @@ public class Templates : GLib.Object
         }
     }
 
-    /* save the contents of the personal templates
-     * the first personal template is saved in 0.tex, the second in 1.tex, etc */
+    // Save the contents of the personal templates.
+    // The first personal template is saved in 0.tex, the second in 1.tex, etc.
     private void save_contents ()
     {
         // delete all the *.tex files
-        Posix.system ("rm -f %s/*.tex".printf (_rc_dir));
+        // TODO do this in a portable way
+        Posix.system ("rm -f %s/*.tex".printf (_data_dir.get_path ()));
 
         // traverse the list store
         TreeIter iter;
@@ -509,7 +559,7 @@ public class Templates : GLib.Object
         {
             string contents;
             model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
-            File file = File.new_for_path ("%s/%d.tex".printf (_rc_dir, i));
+            File file = get_personal_template_file (i);
             try
             {
                 // check if parent directories exist, if not, create it
@@ -534,7 +584,6 @@ public class Templates : GLib.Object
     // and the return value is the theme icon name used for the pixbuf.
     // If we store directly the theme icon names in the rc file, old rc files must be
     // modified via a script for example, but it's simpler like that.
-    // TODO: for the 3.0 version, we can store directly theme icon names.
     private string? get_theme_icon (string icon_id)
     {
         switch (icon_id)
