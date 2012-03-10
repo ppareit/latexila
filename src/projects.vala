@@ -105,7 +105,7 @@ public class Projects
         GLib.List<Document> docs = Latexila.get_default ().get_documents ();
         foreach (Document doc in docs)
         {
-            if (doc.project_id != -1)
+            if (doc.project_id != -1 || doc.location == null)
                 continue;
 
             if (doc.location.has_prefix (new_project.directory))
@@ -176,6 +176,9 @@ public class Projects
         foreach (Document doc in docs)
         {
             doc.project_id = -1;
+
+            if (doc.location == null)
+                continue;
 
             for (int i = 0 ; i < projects.size ; i++)
             {
