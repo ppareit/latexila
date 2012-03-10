@@ -263,15 +263,15 @@ public class BuildTools
 
         foreach (File file in files)
         {
+            if (! file.query_exists ())
+                continue;
+
+            string? contents = Utils.load_file (file);
+            if (contents == null)
+                continue;
+
             try
             {
-                if (! file.query_exists ())
-                    continue;
-
-                uint8[] chars;
-                file.load_contents (null, out chars, null);
-                string contents = (string) (owned) chars;
-
                 MarkupParser parser =
                     { parser_start, parser_end, parser_text, null, null };
                 MarkupParseContext context =

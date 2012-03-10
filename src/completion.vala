@@ -766,14 +766,15 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         _commands = new Gee.HashMap<string, CompletionCommand?> ();
         _environments = new Gee.HashMap<string, CompletionChoice?> ();
 
+        File file = File.new_for_path (
+            Path.build_filename (Config.DATA_DIR, "completion.xml"));
+
+        string? contents = Utils.load_file (file);
+        if (contents == null)
+            return;
+
         try
         {
-            File file = File.new_for_path (Config.DATA_DIR + "/completion.xml");
-
-            uint8[] chars;
-            file.load_contents (null, out chars, null);
-            string contents = (string) (owned) chars;
-
             MarkupParser parser = { parser_start, parser_end, parser_text, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);

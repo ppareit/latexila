@@ -41,12 +41,12 @@ public class Projects
         if (! file.query_exists ())
             return;
 
+        string? contents = Utils.load_file (file);
+        if (contents == null)
+            return;
+
         try
         {
-            uint8[] chars;
-            file.load_contents (null, out chars, null);
-            string contents = (string) (owned) chars;
-
             MarkupParser parser = { parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
