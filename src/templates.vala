@@ -199,131 +199,6 @@ public class Templates : GLib.Object
         warning ("Template '%s' not found.", name);
     }
 
-    /*************************************************************************/
-    // Dialogs: create a new document, create/delete a template
-
-    // Dialog: create a new document from a template.
-    public void show_dialog_new (MainWindow parent)
-    {
-        Dialog dialog = new Dialog.with_buttons (_("New File..."), parent,
-            DialogFlags.NO_SEPARATOR,
-            Stock.OK, ResponseType.ACCEPT,
-            Stock.CANCEL, ResponseType.REJECT,
-            null);
-
-        // get and set previous size
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-        int w, h;
-        settings.get ("new-file-dialog-size", "(ii)", out w, out h);
-        dialog.set_default_size (w, h);
-
-        // without this, we can not shrink the dialog completely
-        dialog.set_size_request (0, 0);
-
-        Box content_area = (Box) dialog.get_content_area ();
-        VPaned vpaned = new VPaned ();
-        content_area.pack_start (vpaned);
-        vpaned.position = settings.get_int ("new-file-dialog-paned-position");
-
-        /* icon view for the default templates */
-        IconView icon_view_default_templates = create_icon_view (_default_store);
-        Widget scrollbar = Utils.add_scrollbar (icon_view_default_templates);
-        Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
-        vpaned.pack1 (component, true, true);
-
-        /* icon view for the personal templates */
-        IconView icon_view_personal_templates = create_icon_view (_personal_store);
-        scrollbar = Utils.add_scrollbar (icon_view_personal_templates);
-        component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
-        vpaned.pack2 (component, false, true);
-
-        content_area.show_all ();
-
-        icon_view_default_templates.selection_changed.connect (() =>
-        {
-            on_icon_view_selection_changed (icon_view_default_templates,
-                icon_view_personal_templates);
-        });
-
-        icon_view_personal_templates.selection_changed.connect (() =>
-        {
-            on_icon_view_selection_changed (icon_view_personal_templates,
-                icon_view_default_templates);
-        });
-
-        icon_view_default_templates.item_activated.connect ((path) =>
-        {
-            open_template (parent, _default_store, path);
-            close_dialog_new (dialog, vpaned);
-        });
-
-        icon_view_personal_templates.item_activated.connect ((path) =>
-        {
-            open_template (parent, _personal_store, path);
-            close_dialog_new (dialog, vpaned);
-        });
-
-        if (dialog.run () == ResponseType.ACCEPT)
-        {
-            List<TreePath> selected_items =
-                icon_view_default_templates.get_selected_items ();
-            TreeModel model = (TreeModel) _default_store;
-
-            // if no item is selected in the default templates, maybe one item is
-            // selected in the personal templates
-            if (selected_items.length () == 0)
-            {
-                selected_items = icon_view_personal_templates.get_selected_items ();
-                model = (TreeModel) _personal_store;
-            }
-
-            TreePath path = (TreePath) selected_items.nth_data (0);
-            open_template (parent, model, path);
-        }
-
-        close_dialog_new (dialog, vpaned);
-    }
-
-    private void on_icon_view_selection_changed (IconView icon_view,
-        IconView other_icon_view)
-    {
-        // Only one item of the two icon views can be selected at once.
-
-        // We unselect all the items of the other icon view only if the current icon
-        // view have an item selected, because when we unselect all the items the
-        // "selection-changed" signal is emitted for the other icon view, so for the
-        // other icon view this function is also called but no item is selected so
-        // nothing is done and the item selected by the user keeps selected.
-
-        List<TreePath> selected_items = icon_view.get_selected_items ();
-        if (selected_items.length () > 0)
-            other_icon_view.unselect_all ();
-    }
-
-    private void open_template (MainWindow main_window, TreeModel model, TreePath? path)
-    {
-        TreeIter iter = {};
-        string contents = "";
-
-        if (path != null && model.get_iter (out iter, path))
-            model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
-
-        DocumentTab tab = main_window.create_tab (true);
-        tab.document.set_contents (contents);
-    }
-
-    private void close_dialog_new (Dialog dialog, VPaned vpaned)
-    {
-        // save dialog size and paned position
-        int w, h;
-        dialog.get_size (out w, out h);
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-        settings.set ("new-file-dialog-size", "(ii)", w, h);
-        settings.set_int ("new-file-dialog-paned-position", vpaned.position);
-
-        dialog.destroy ();
-    }
-
     public IconView create_icon_view_default_templates ()
     {
         return create_icon_view (_default_store);
@@ -429,6 +304,32 @@ public class Templates : GLib.Object
         model.get (iter, TemplateColumn.ICON_ID, out icon_id);
 
         return icon_id;
+    }
+
+    public string get_default_template_contents (TreePath path)
+    {
+        return get_template_contents (_default_store, path);
+    }
+
+    public string get_personal_template_contents (TreePath path)
+    {
+        return get_template_contents (_personal_store, path);
+    }
+
+    private string get_template_contents (ListStore store, TreePath path)
+    {
+        TreeIter iter;
+        TreeModel model = store as TreeModel;
+        if (! model.get_iter (out iter, path))
+        {
+            warning ("Failed to get template contents");
+            return "";
+        }
+
+        string contents;
+        model.get (iter, TemplateColumn.CONTENTS, out contents);
+
+        return contents;
     }
 
     public void save_rc_file ()

@@ -19,6 +19,168 @@
 
 using Gtk;
 
+// Create a new document from a template.
+public class OpenTemplateDialog
+{
+    private unowned MainWindow _main_window;
+    private Dialog _dialog;
+    private IconView _icon_view_default_templates;
+    private IconView _icon_view_personal_templates;
+    private VPaned _vpaned;
+    private GLib.Settings _settings;
+
+    public OpenTemplateDialog (MainWindow main_window)
+    {
+        _main_window = main_window;
+
+        _dialog = new Dialog.with_buttons (_("New File..."), main_window,
+            DialogFlags.NO_SEPARATOR,
+            Stock.OK, ResponseType.ACCEPT,
+            Stock.CANCEL, ResponseType.REJECT,
+            null);
+
+        // Get and set previous size.
+        _settings = new GLib.Settings ("org.gnome.latexila.state.window");
+        int width;
+        int height;
+        _settings.get ("new-file-dialog-size", "(ii)", out width, out height);
+        _dialog.set_default_size (width, height);
+
+        // Be able to shrink the dialog completely.
+        _dialog.set_size_request (0, 0);
+
+        Box content_area = _dialog.get_content_area () as Box;
+        _vpaned = new VPaned ();
+        content_area.pack_start (_vpaned);
+        _vpaned.position = _settings.get_int ("new-file-dialog-paned-position");
+
+        // Icon view for the default templates.
+        Templates templates = Templates.get_default ();
+
+        _icon_view_default_templates = templates.create_icon_view_default_templates ();
+
+        Widget scrollbar = Utils.add_scrollbar (_icon_view_default_templates);
+        Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
+        _vpaned.pack1 (component, true, true);
+
+        // Icon view for the personal templates.
+        _icon_view_personal_templates = templates.create_icon_view_personal_templates ();
+
+        scrollbar = Utils.add_scrollbar (_icon_view_personal_templates);
+        component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
+        _vpaned.pack2 (component, false, true);
+
+        content_area.show_all ();
+
+        connect_to_signals ();
+        run_me ();
+        close_dialog ();
+    }
+
+    private void connect_to_signals ()
+    {
+        _icon_view_default_templates.selection_changed.connect (() =>
+        {
+            on_icon_view_selection_changed (_icon_view_default_templates,
+                _icon_view_personal_templates);
+        });
+
+        _icon_view_personal_templates.selection_changed.connect (() =>
+        {
+            on_icon_view_selection_changed (_icon_view_personal_templates,
+                _icon_view_default_templates);
+        });
+
+        _icon_view_default_templates.item_activated.connect ((path) =>
+        {
+            open_default_template (path);
+            close_dialog ();
+        });
+
+        _icon_view_personal_templates.item_activated.connect ((path) =>
+        {
+            open_personal_template (path);
+            close_dialog ();
+        });
+    }
+
+    private void on_icon_view_selection_changed (IconView icon_view,
+        IconView other_icon_view)
+    {
+        // Only one item of the two icon views can be selected at once.
+
+        // We unselect all the items of the other icon view only if the current icon
+        // view have an item selected, because when we unselect all the items the
+        // "selection-changed" signal is emitted for the other icon view, so for the
+        // other icon view this function is also called but no item is selected so
+        // nothing is done and the item selected by the user keeps selected.
+
+        List<TreePath> selected_items = icon_view.get_selected_items ();
+        if (selected_items.length () > 0)
+            other_icon_view.unselect_all ();
+    }
+
+    private void run_me ()
+    {
+        if (_dialog.run () != ResponseType.ACCEPT)
+            return;
+
+        // Default template selected?
+        List<TreePath> selected_items =
+            _icon_view_default_templates.get_selected_items ();
+
+        if (selected_items.length () > 0)
+        {
+            TreePath path = selected_items.nth_data (0);
+            open_default_template (path);
+            return;
+        }
+
+        // Personal template selected?
+        selected_items = _icon_view_personal_templates.get_selected_items ();
+        if (selected_items.length () > 0)
+        {
+            TreePath path = selected_items.nth_data (0);
+            open_personal_template (path);
+            return;
+        }
+
+        // No template selected
+        create_document ("");
+    }
+
+    private void open_default_template (TreePath path)
+    {
+        Templates templates = Templates.get_default ();
+        create_document (templates.get_default_template_contents (path));
+    }
+
+    private void open_personal_template (TreePath path)
+    {
+        Templates templates = Templates.get_default ();
+        create_document (templates.get_personal_template_contents (path));
+    }
+
+    private void create_document (string contents)
+    {
+        DocumentTab tab = _main_window.create_tab (true);
+        tab.document.set_contents (contents);
+    }
+
+    private void close_dialog ()
+    {
+        // Save dialog size and paned position.
+        int width;
+        int height;
+        _dialog.get_size (out width, out height);
+        _settings.set ("new-file-dialog-size", "(ii)", width, height);
+
+        _settings.set_int ("new-file-dialog-paned-position", _vpaned.position);
+
+        _dialog.destroy ();
+    }
+}
+
 public class CreateTemplateDialog : Dialog
 {
     public CreateTemplateDialog (MainWindow parent)

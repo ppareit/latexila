@@ -1496,7 +1496,7 @@ public class MainWindow : Window
 
     public void on_file_new ()
     {
-        Templates.get_default ().show_dialog_new (this);
+        new OpenTemplateDialog (this);
     }
 
     public void on_new_window ()
