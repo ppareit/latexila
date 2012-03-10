@@ -154,6 +154,9 @@ namespace Utils
 
     public void delete_file (File file)
     {
+        if (! file.query_exists ())
+            return;
+
         try
         {
             file.delete ();
