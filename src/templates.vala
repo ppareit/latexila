@@ -324,71 +324,6 @@ public class Templates : GLib.Object
         dialog.destroy ();
     }
 
-    // Dialog: create a new template
-    public void show_dialog_create (MainWindow parent)
-    {
-        return_if_fail (parent.active_tab != null);
-
-        Dialog dialog = new Dialog.with_buttons (_("New Template..."), parent, 0,
-            Stock.OK, ResponseType.ACCEPT,
-            Stock.CANCEL, ResponseType.REJECT,
-            null);
-
-        dialog.set_default_size (420, 370);
-
-        Box content_area = dialog.get_content_area () as Box;
-        content_area.homogeneous = false;
-
-        /* name */
-        Entry entry = new Entry ();
-        Widget component = Utils.get_dialog_component (_("Name of the new template"),
-            entry);
-        content_area.pack_start (component, false);
-
-        /* icon */
-        // we take the default store because it contains all the icons
-        IconView icon_view = create_icon_view (_default_store);
-        Widget scrollbar = Utils.add_scrollbar (icon_view);
-        component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
-        content_area.pack_start (component);
-
-        content_area.show_all ();
-
-        while (dialog.run () == ResponseType.ACCEPT)
-        {
-            // if no name specified
-            if (entry.text_length == 0)
-                continue;
-
-            List<TreePath> selected_items = icon_view.get_selected_items ();
-
-            // if no icon selected
-            if (selected_items.length () == 0)
-                continue;
-
-            _nb_personal_templates++;
-
-            // get the contents
-            TextIter start, end;
-            parent.active_document.get_bounds (out start, out end);
-            string contents = parent.active_document.get_text (start, end, false);
-
-            // get the icon id
-            TreeModel model = (TreeModel) _default_store;
-            TreePath path = selected_items.nth_data (0);
-            TreeIter iter;
-            string icon_id;
-            model.get_iter (out iter, path);
-            model.get (iter, TemplateColumn.ICON_ID, out icon_id, -1);
-
-            add_template_from_string (_personal_store, entry.text, icon_id, contents);
-            add_personal_template (contents);
-            break;
-        }
-
-        dialog.destroy ();
-    }
-
     public IconView create_icon_view_default_templates ()
     {
         return create_icon_view (_default_store);
@@ -459,8 +394,11 @@ public class Templates : GLib.Object
         _nb_personal_templates--;
     }
 
-    private void add_personal_template (string contents)
+    public void create_personal_template (string name, string icon_id, string contents)
     {
+        add_template_from_string (_personal_store, name, icon_id, contents);
+        _nb_personal_templates++;
+
         save_rc_file ();
 
         File file = get_personal_template_file (_nb_personal_templates - 1);
@@ -479,6 +417,18 @@ public class Templates : GLib.Object
         {
             warning ("Impossible to save the templates: %s", e.message);
         }
+    }
+
+    public string get_icon_id (TreePath default_template_path)
+    {
+        TreeModel model = (TreeModel) _default_store;
+        TreeIter iter;
+        model.get_iter (out iter, default_template_path);
+
+        string icon_id;
+        model.get (iter, TemplateColumn.ICON_ID, out icon_id);
+
+        return icon_id;
     }
 
     public void save_rc_file ()
