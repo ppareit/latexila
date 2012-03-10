@@ -242,19 +242,6 @@ public class MostUsedSymbols : GLib.Object
         }
         content += "</symbols>\n";
 
-        try
-        {
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            file.replace_contents (content.data, null, false,
-                FileCreateFlags.NONE, null, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save the most used symbols: %s", e.message);
-        }
+        Utils.save_file (file, content);
     }
 }

@@ -420,23 +420,9 @@ public class BuildTools
         }
         content += "</tools>\n";
 
-        try
-        {
-            File file = get_user_config_file ();
-
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            // a backup is made
-            file.replace_contents (content.data, null, true,
-                FileCreateFlags.NONE, null, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save build tools: %s", e.message);
-        }
+        // save the file
+        File file = get_user_config_file ();
+        Utils.save_file (file, content, true);
     }
 
     private File get_user_config_file ()
