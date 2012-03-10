@@ -36,8 +36,8 @@ public class Templates : GLib.Object
 
     private enum TemplateColumn
     {
-        PIXBUF,
-        ICON_ID,
+        PIXBUF,  // the theme icon name
+        ICON_ID, // the string stored in the rc file (article, report, ...)
         NAME,
         CONTENTS,
         N_COLUMNS
@@ -284,6 +284,22 @@ public class Templates : GLib.Object
         close_dialog_new (dialog, vpaned);
     }
 
+    private void on_icon_view_selection_changed (IconView icon_view,
+        IconView other_icon_view)
+    {
+        // Only one item of the two icon views can be selected at once.
+
+        // We unselect all the items of the other icon view only if the current icon
+        // view have an item selected, because when we unselect all the items the
+        // "selection-changed" signal is emitted for the other icon view, so for the
+        // other icon view this function is also called but no item is selected so
+        // nothing is done and the item selected by the user keeps selected.
+
+        List<TreePath> selected_items = icon_view.get_selected_items ();
+        if (selected_items.length () > 0)
+            other_icon_view.unselect_all ();
+    }
+
     private void open_template (MainWindow main_window, TreeModel model, TreePath? path)
     {
         TreeIter iter = {};
@@ -373,55 +389,14 @@ public class Templates : GLib.Object
         dialog.destroy ();
     }
 
-    // Dialog: delete a template
-    public void show_dialog_delete (MainWindow parent)
+    public IconView create_icon_view_default_templates ()
     {
-        Dialog dialog = new Dialog.with_buttons (_("Delete Template(s)..."), parent,
-            DialogFlags.NO_SEPARATOR,
-            Stock.DELETE, ResponseType.ACCEPT,
-            Stock.CLOSE, ResponseType.REJECT,
-            null);
+        return create_icon_view (_default_store);
+    }
 
-        dialog.set_default_size (400, 200);
-
-        Box content_area = (Box) dialog.get_content_area ();
-
-        /* icon view for the personal templates */
-        IconView icon_view = create_icon_view (_personal_store);
-        icon_view.set_selection_mode (SelectionMode.MULTIPLE);
-        Widget scrollbar = Utils.add_scrollbar (icon_view);
-        Widget component = Utils.get_dialog_component (_("Personal templates"),
-            scrollbar);
-        content_area.pack_start (component);
-        content_area.show_all ();
-
-        int nb_personal_templates_before = _nb_personal_templates;
-
-        while (dialog.run () == ResponseType.ACCEPT)
-        {
-            List<TreePath> selected_items = icon_view.get_selected_items ();
-            TreeModel model = (TreeModel) _personal_store;
-
-            uint nb_selected_items = selected_items.length ();
-
-            for (int i = 0 ; i < nb_selected_items ; i++)
-            {
-                TreePath path = selected_items.nth_data (i);
-                TreeIter iter;
-                model.get_iter (out iter, path);
-                _personal_store.remove (iter);
-            }
-
-            _nb_personal_templates -= (int) nb_selected_items;
-        }
-
-        if (_nb_personal_templates != nb_personal_templates_before)
-        {
-            save_rc_file ();
-            save_contents ();
-        }
-
-        dialog.destroy ();
+    public IconView create_icon_view_personal_templates ()
+    {
+        return create_icon_view (_personal_store);
     }
 
     private IconView create_icon_view (ListStore store)
@@ -453,20 +428,35 @@ public class Templates : GLib.Object
         return icon_view;
     }
 
-    private void on_icon_view_selection_changed (IconView icon_view,
-        IconView other_icon_view)
+    public void delete_personal_template (TreePath template_path)
     {
-        // only one item of the two icon views can be selected at once
+        /* Delete the template from the personal store */
+        TreeModel model = (TreeModel) _personal_store;
+        TreeIter iter;
+        model.get_iter (out iter, template_path);
+        _personal_store.remove (iter);
 
-        // we unselect all the items of the other icon view only if the current icon
-        // view have an item selected, because when we unselect all the items the
-        // "selection-changed" signal is emitted for the other icon view, so for the
-        // other icon view this function is also called but no item is selected so
-        // nothing is done and the item selected by the user keeps selected
+        /* Remove the corresponding file */
+        int template_num = template_path.get_indices ()[0];
+        File template_file = get_personal_template_file (template_num);
+        Utils.delete_file (template_file);
 
-        List<TreePath> selected_items = icon_view.get_selected_items ();
-        if (selected_items.length () > 0)
-            other_icon_view.unselect_all ();
+        /* Rename the next .tex files */
+        for (int i = template_num + 1 ; i < _nb_personal_templates ; i++)
+        {
+            File file = get_personal_template_file (i);
+            File new_file = get_personal_template_file (i-1);
+            try
+            {
+                file.move (new_file, FileCopyFlags.OVERWRITE);
+            }
+            catch (Error e)
+            {
+                warning ("Delete personal template, move file failed: %s", e.message);
+            }
+        }
+
+        _nb_personal_templates--;
     }
 
     private void add_personal_template (string contents)
@@ -491,7 +481,7 @@ public class Templates : GLib.Object
         }
     }
 
-    private void save_rc_file ()
+    public void save_rc_file ()
     {
         if (_nb_personal_templates == 0)
         {
@@ -539,44 +529,6 @@ public class Templates : GLib.Object
         catch (Error e)
         {
             warning ("Impossible to save the templates: %s", e.message);
-        }
-    }
-
-    // Save the contents of the personal templates.
-    // The first personal template is saved in 0.tex, the second in 1.tex, etc.
-    private void save_contents ()
-    {
-        // delete all the *.tex files
-        // TODO do this in a portable way
-        Posix.system ("rm -f %s/*.tex".printf (_data_dir.get_path ()));
-
-        // traverse the list store
-        TreeIter iter;
-        TreeModel model = (TreeModel) _personal_store;
-        bool valid_iter = model.get_iter_first (out iter);
-        int i = 0;
-        while (valid_iter)
-        {
-            string contents;
-            model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
-            File file = get_personal_template_file (i);
-            try
-            {
-                // check if parent directories exist, if not, create it
-                File parent = file.get_parent ();
-                if (parent != null && ! parent.query_exists ())
-                    parent.make_directory_with_parents ();
-
-                file.replace_contents (contents.data, null, false,
-                    FileCreateFlags.NONE, null, null);
-            }
-            catch (Error e)
-            {
-                warning ("Impossible to save the template: %s", e.message);
-            }
-
-            valid_iter = model.iter_next (ref iter);
-            i++;
         }
     }
 

@@ -1567,7 +1567,8 @@ public class MainWindow : Window
 
     public void on_delete_template ()
     {
-        Templates.get_default ().show_dialog_delete (this);
+        DeleteTemplateDialog dialog = new DeleteTemplateDialog (this);
+        dialog.destroy ();
     }
 
     public void on_file_close ()
