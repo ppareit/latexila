@@ -31,6 +31,9 @@ public class Templates : GLib.Object
 
     private int _nb_personal_templates;
 
+    // The contents of the personal templates are saved in the user data directory.
+    // The first personal template is 0.tex, the second 1.tex, and so on.
+    // The names and the icons of the personal templates are saved in an rc file.
     private File _data_dir;
     private File _rc_file;
 
@@ -137,8 +140,9 @@ public class Templates : GLib.Object
         return _data_dir.get_child (filename);
     }
 
+
     /*************************************************************************/
-    // Add templates: from string, from file, ...
+    // Add and delete templates, save rc file.
 
     private void add_template_from_string (ListStore store, string name,
         string icon_id, string contents)
@@ -156,19 +160,10 @@ public class Templates : GLib.Object
     private bool add_template_from_file (ListStore store, string name,
         string icon_id, File file)
     {
-        uint8[] chars;
-
-        try
-        {
-            file.load_contents (null, out chars, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to load the template '%s': %s", name, e.message);
+        string? contents = Utils.load_file (file);
+        if (contents == null)
             return false;
-        }
 
-        string contents = (string) (owned) chars;
         add_template_from_string (store, name, icon_id, contents);
 
         return true;
@@ -197,45 +192,6 @@ public class Templates : GLib.Object
         }
 
         warning ("Template '%s' not found.", name);
-    }
-
-    public IconView create_icon_view_default_templates ()
-    {
-        return create_icon_view (_default_store);
-    }
-
-    public IconView create_icon_view_personal_templates ()
-    {
-        return create_icon_view (_personal_store);
-    }
-
-    private IconView create_icon_view (ListStore store)
-    {
-        IconView icon_view = new IconView.with_model (store);
-        icon_view.set_selection_mode (SelectionMode.SINGLE);
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        pixbuf_renderer.stock_size = IconSize.DIALOG;
-        pixbuf_renderer.xalign = (float) 0.5;
-        pixbuf_renderer.yalign = (float) 1.0;
-        icon_view.pack_start (pixbuf_renderer, false);
-        icon_view.set_attributes (pixbuf_renderer,
-            "icon-name", TemplateColumn.PIXBUF,
-            null);
-
-        // We also use a CellRenderer for the text column, because with set_text_column()
-        // the text is not centered (when a CellRenderer is used for the pixbuf).
-        CellRendererText text_renderer = new CellRendererText ();
-        text_renderer.alignment = Pango.Alignment.CENTER;
-        text_renderer.wrap_mode = Pango.WrapMode.WORD;
-        text_renderer.xalign = (float) 0.5;
-        text_renderer.yalign = (float) 0.0;
-        icon_view.pack_end (text_renderer, false);
-        icon_view.set_attributes (text_renderer,
-            "text", TemplateColumn.NAME,
-            null);
-
-        return icon_view;
     }
 
     public void delete_personal_template (TreePath template_path)
@@ -277,28 +233,93 @@ public class Templates : GLib.Object
         save_rc_file ();
 
         File file = get_personal_template_file (_nb_personal_templates - 1);
+        Utils.save_file (file, contents);
+    }
 
-        try
+    public void save_rc_file ()
+    {
+        if (_nb_personal_templates == 0)
         {
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            file.replace_contents (contents.data, null, false,
-                FileCreateFlags.NONE, null);
+            Utils.delete_file (_rc_file);
+            return;
         }
-        catch (Error e)
+
+        // The names and the icons of all personal templates.
+        string[] names = new string[_nb_personal_templates];
+        string[] icons = new string[_nb_personal_templates];
+
+        // Traverse the list store.
+        TreeIter iter;
+        TreeModel model = _personal_store as TreeModel;
+        bool valid_iter = model.get_iter_first (out iter);
+        int template_num = 0;
+
+        while (valid_iter)
         {
-            warning ("Impossible to save the templates: %s", e.message);
+            model.get (iter,
+                TemplateColumn.NAME, out names[template_num],
+                TemplateColumn.ICON_ID, out icons[template_num]);
+
+            valid_iter = model.iter_next (ref iter);
+            template_num++;
+        }
+
+        // Contents of the rc file
+        KeyFile key_file = new KeyFile ();
+        key_file.set_string_list (Config.APP_NAME, "names", names);
+        key_file.set_string_list (Config.APP_NAME, "icons", icons);
+
+        string key_file_data = key_file.to_data ();
+
+        // Save the rc file
+        Utils.save_file (_rc_file, key_file_data);
+    }
+
+    // For compatibility reasons. 'icon_id' is the string stored in the rc file,
+    // and the return value is the theme icon name used for the pixbuf.
+    // If we store directly the theme icon names in the rc file, old rc files must be
+    // modified via a script for example, but it's simpler like that.
+    private string? get_theme_icon (string icon_id)
+    {
+        switch (icon_id)
+        {
+            case "empty":
+                return "text-x-preview";
+
+            case "article":
+                // Same as Stock.FILE (but it's the theme icon name)
+                return "text-x-generic";
+
+            case "report":
+                return "x-office-document";
+
+            case "book":
+                return "accessories-dictionary";
+
+            case "letter":
+                return "emblem-mail";
+
+            case "beamer":
+                return "x-office-presentation";
+
+            default:
+                return_val_if_reached (null);
         }
     }
 
+
+    /*************************************************************************/
+    // Get templates data: icon id, contents.
+
     public string get_icon_id (TreePath default_template_path)
     {
-        TreeModel model = (TreeModel) _default_store;
+        TreeModel model = _default_store as TreeModel;
         TreeIter iter;
-        model.get_iter (out iter, default_template_path);
+        if (! model.get_iter (out iter, default_template_path))
+        {
+            warning ("Failed to get template icon id");
+            return "";
+        }
 
         string icon_id;
         model.get (iter, TemplateColumn.ICON_ID, out icon_id);
@@ -332,86 +353,46 @@ public class Templates : GLib.Object
         return contents;
     }
 
-    public void save_rc_file ()
+
+    /*************************************************************************/
+    // Create icon view for the dialog windows.
+
+    public IconView create_icon_view_default_templates ()
     {
-        if (_nb_personal_templates == 0)
-        {
-            Utils.delete_file (_rc_file);
-            return;
-        }
-
-        // the names and the icons of all personal templates
-        string[] names = new string[_nb_personal_templates];
-        string[] icons = new string[_nb_personal_templates];
-
-        // traverse the list store
-        TreeIter iter;
-        TreeModel model = (TreeModel) _personal_store;
-        bool valid_iter = model.get_iter_first (out iter);
-        int i = 0;
-        while (valid_iter)
-        {
-            model.get (iter,
-                TemplateColumn.NAME, out names[i],
-                TemplateColumn.ICON_ID, out icons[i],
-                -1);
-            valid_iter = model.iter_next (ref iter);
-            i++;
-        }
-
-        /* save the rc file */
-        try
-        {
-            KeyFile key_file = new KeyFile ();
-            key_file.set_string_list (Config.APP_NAME, "names", names);
-            key_file.set_string_list (Config.APP_NAME, "icons", icons);
-
-            string key_file_data = key_file.to_data ();
-
-            // check if parent directories exist, if not, create it
-            // TODO move this in a function in Utils
-            File parent = _rc_file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            _rc_file.replace_contents (key_file_data.data, null, false,
-                FileCreateFlags.NONE, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save the templates: %s", e.message);
-        }
+        return create_icon_view (_default_store);
     }
 
-    // For compatibility reasons. 'icon_id' is the string stored in the rc file,
-    // and the return value is the theme icon name used for the pixbuf.
-    // If we store directly the theme icon names in the rc file, old rc files must be
-    // modified via a script for example, but it's simpler like that.
-    private string? get_theme_icon (string icon_id)
+    public IconView create_icon_view_personal_templates ()
     {
-        switch (icon_id)
-        {
-            case "empty":
-                return "text-x-preview";
+        return create_icon_view (_personal_store);
+    }
 
-            case "article":
-                // Same as Stock.FILE (but it's the theme icon name)
-                return "text-x-generic";
+    private IconView create_icon_view (ListStore store)
+    {
+        IconView icon_view = new IconView.with_model (store);
+        icon_view.set_selection_mode (SelectionMode.SINGLE);
 
-            case "report":
-                return "x-office-document";
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        pixbuf_renderer.stock_size = IconSize.DIALOG;
+        pixbuf_renderer.xalign = (float) 0.5;
+        pixbuf_renderer.yalign = (float) 1.0;
+        icon_view.pack_start (pixbuf_renderer, false);
+        icon_view.set_attributes (pixbuf_renderer,
+            "icon-name", TemplateColumn.PIXBUF,
+            null);
 
-            case "book":
-                return "accessories-dictionary";
+        // We also use a CellRenderer for the text column, because with set_text_column()
+        // the text is not centered (when a CellRenderer is used for the pixbuf).
+        CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.alignment = Pango.Alignment.CENTER;
+        text_renderer.wrap_mode = Pango.WrapMode.WORD;
+        text_renderer.xalign = (float) 0.5;
+        text_renderer.yalign = (float) 0.0;
+        icon_view.pack_end (text_renderer, false);
+        icon_view.set_attributes (text_renderer,
+            "text", TemplateColumn.NAME,
+            null);
 
-            case "letter":
-                return "emblem-mail";
-
-            case "beamer":
-                return "x-office-presentation";
-
-            default:
-                return_val_if_reached (null);
-        }
+        return icon_view;
     }
 }
