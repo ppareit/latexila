@@ -355,7 +355,7 @@ public class Templates : GLib.Object
 
 
     /*************************************************************************/
-    // Create icon view for the dialog windows.
+    // Create templates list for the dialog windows.
 
     public IconView create_icon_view_default_templates ()
     {
@@ -394,5 +394,44 @@ public class Templates : GLib.Object
             null);
 
         return icon_view;
+    }
+
+    public TreeView get_default_templates_list ()
+    {
+        return get_templates_list (_default_store);
+    }
+
+    public TreeView get_personal_templates_list ()
+    {
+        return get_templates_list (_personal_store);
+    }
+
+    private TreeView get_templates_list (ListStore store)
+    {
+        TreeView view = new TreeView.with_model (store);
+        view.headers_visible = false;
+        view.expand = true;
+
+        TreeSelection select = view.get_selection ();
+        select.set_mode (SelectionMode.SINGLE);
+
+        // Icon
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        pixbuf_renderer.stock_size = IconSize.BUTTON;
+
+        TreeViewColumn column = new TreeViewColumn.with_attributes ("Icon",
+            pixbuf_renderer, "icon-name", TemplateColumn.PIXBUF, null);
+
+        view.append_column (column);
+
+        // Name
+        CellRendererText text_renderer = new CellRendererText ();
+
+        column = new TreeViewColumn.with_attributes ("Name",
+            text_renderer, "text", TemplateColumn.NAME, null);
+
+        view.append_column (column);
+
+        return view;
     }
 }

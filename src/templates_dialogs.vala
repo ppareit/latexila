@@ -193,8 +193,6 @@ public class CreateTemplateDialog : Dialog
         add_button (Stock.OK, ResponseType.ACCEPT);
         add_button (Stock.CANCEL, ResponseType.REJECT);
 
-        set_default_size (420, 370);
-
         Box content_area = get_content_area () as Box;
         content_area.homogeneous = false;
 
@@ -209,19 +207,19 @@ public class CreateTemplateDialog : Dialog
         Templates templates = Templates.get_default ();
 
         // Take the default store because it contains all the icons.
-        IconView icon_view = templates.create_icon_view_default_templates ();
+        TreeView templates_list = templates.get_default_templates_list ();
 
-        Widget scrollbar = Utils.add_scrollbar (icon_view);
-        scrollbar.hexpand = true;
+        Widget scrollbar = Utils.add_scrollbar (templates_list);
+        scrollbar.set_size_request (250, 200);
         component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
         content_area.pack_start (component);
 
         content_area.show_all ();
 
-        run_me (parent, entry, icon_view);
+        run_me (parent, entry, templates_list);
     }
 
-    private void run_me (MainWindow parent, Entry entry, IconView icon_view)
+    private void run_me (MainWindow parent, Entry entry, TreeView templates_list)
     {
         Templates templates = Templates.get_default ();
 
@@ -231,7 +229,8 @@ public class CreateTemplateDialog : Dialog
             if (entry.text_length == 0)
                 continue;
 
-            List<TreePath> selected_items = icon_view.get_selected_items ();
+            TreeSelection select = templates_list.get_selection ();
+            List<TreePath> selected_items = select.get_selected_rows (null);
 
             // if no icon selected
             if (selected_items.length () == 0)
@@ -260,16 +259,14 @@ public class DeleteTemplateDialog : Dialog
         add_button (Stock.DELETE, ResponseType.ACCEPT);
         add_button (Stock.CLOSE, ResponseType.REJECT);
         set_transient_for (parent);
-        set_default_size (400, 200);
 
-        /* icon view for the personal templates */
+        /* List of the personal templates */
 
         Templates templates = Templates.get_default ();
-        IconView icon_view = templates.create_icon_view_personal_templates ();
-        icon_view.set_selection_mode (SelectionMode.MULTIPLE);
+        TreeView templates_list = templates.get_personal_templates_list ();
 
-        Widget scrollbar = Utils.add_scrollbar (icon_view);
-        scrollbar.hexpand = true;
+        Widget scrollbar = Utils.add_scrollbar (templates_list);
+        scrollbar.set_size_request (250, 150);
         Widget component = Utils.get_dialog_component (_("Personal templates"),
             scrollbar);
 
@@ -277,17 +274,18 @@ public class DeleteTemplateDialog : Dialog
         content_area.pack_start (component);
         content_area.show_all ();
 
-        run_me (icon_view);
+        run_me (templates_list);
     }
 
-    private void run_me (IconView icon_view)
+    private void run_me (TreeView templates_list)
     {
         Templates templates = Templates.get_default ();
         bool template_deleted = false;
 
         while (run () == ResponseType.ACCEPT)
         {
-            List<TreePath> selected_items = icon_view.get_selected_items ();
+            TreeSelection select = templates_list.get_selection ();
+            List<TreePath> selected_items = select.get_selected_rows (null);
             uint nb_selected_items = selected_items.length ();
 
             for (int item_num = 0 ; item_num < nb_selected_items ; item_num++)
