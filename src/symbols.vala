@@ -713,61 +713,66 @@ public class Symbols : Grid
 
     public Symbols (MainWindow main_window)
     {
-        if (! stores_initialized)
-        {
-            /* categories store */
-            categories_store = new ListStore (CategoryColumn.N_COLUMNS,
-                typeof (Gdk.Pixbuf), typeof (string));
-
-            foreach (CategoryInfo info in categories)
-            {
-                try
-                {
-                    Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (info.icon);
-                    TreeIter iter;
-                    categories_store.append (out iter);
-                    categories_store.set (iter,
-                        CategoryColumn.ICON, pixbuf,
-                        CategoryColumn.NAME, _(info.name),
-                        -1);
-                }
-                catch (Error e)
-                {
-                    warning ("Impossible to load the symbol: %s", e.message);
-                    continue;
-                }
-            }
-
-            // mosed used symbols
-            Gdk.Pixbuf pixbuf = Utils.get_pixbuf_from_stock (Stock.ABOUT, IconSize.MENU);
-            TreeIter iter;
-            categories_store.append (out iter);
-            categories_store.set (iter,
-                CategoryColumn.ICON, pixbuf,
-                CategoryColumn.NAME, _("Most Used"),
-                -1);
-
-            /* symbols stores */
-            symbols_stores[0] = get_symbol_store (symbols_greek);
-            symbols_stores[1] = get_symbol_store (symbols_arrows);
-            symbols_stores[2] = get_symbol_store (symbols_relations);
-            symbols_stores[3] = get_symbol_store (symbols_operators);
-            symbols_stores[4] = get_symbol_store (symbols_delimiters);
-            symbols_stores[5] = get_symbol_store (symbols_misc_math);
-            symbols_stores[6] = get_symbol_store (symbols_misc_text);
-
-            symbols_stores[7] = mus_store = new ListStore (SymbolColumn.N_COLUMNS,
-                typeof (Gdk.Pixbuf), typeof (string), typeof (string), typeof (string),
-                typeof (string));
-
-            reload_most_used_symbols ();
-
-            stores_initialized = true;
-        }
+        init_stores ();
 
         orientation = Orientation.VERTICAL;
         this.main_window = main_window;
         create_icon_views ();
+    }
+
+    private void init_stores ()
+    {
+        if (stores_initialized)
+            return;
+
+        /* categories store */
+        categories_store = new ListStore (CategoryColumn.N_COLUMNS,
+            typeof (Gdk.Pixbuf), typeof (string));
+
+        foreach (CategoryInfo info in categories)
+        {
+            try
+            {
+                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (info.icon);
+                TreeIter iter;
+                categories_store.append (out iter);
+                categories_store.set (iter,
+                    CategoryColumn.ICON, pixbuf,
+                    CategoryColumn.NAME, _(info.name),
+                    -1);
+            }
+            catch (Error e)
+            {
+                warning ("Impossible to load the symbol: %s", e.message);
+                continue;
+            }
+        }
+
+        // mosed used symbols
+        Gdk.Pixbuf pixbuf = Utils.get_pixbuf_from_stock (Stock.ABOUT, IconSize.MENU);
+        TreeIter iter;
+        categories_store.append (out iter);
+        categories_store.set (iter,
+            CategoryColumn.ICON, pixbuf,
+            CategoryColumn.NAME, _("Most Used"),
+            -1);
+
+        /* symbols stores */
+        symbols_stores[0] = get_symbol_store (symbols_greek);
+        symbols_stores[1] = get_symbol_store (symbols_arrows);
+        symbols_stores[2] = get_symbol_store (symbols_relations);
+        symbols_stores[3] = get_symbol_store (symbols_operators);
+        symbols_stores[4] = get_symbol_store (symbols_delimiters);
+        symbols_stores[5] = get_symbol_store (symbols_misc_math);
+        symbols_stores[6] = get_symbol_store (symbols_misc_text);
+
+        symbols_stores[7] = mus_store = new ListStore (SymbolColumn.N_COLUMNS,
+            typeof (Gdk.Pixbuf), typeof (string), typeof (string), typeof (string),
+            typeof (string));
+
+        reload_most_used_symbols ();
+
+        stores_initialized = true;
     }
 
     private void create_icon_views ()
