@@ -45,12 +45,12 @@ public class MostUsedSymbols : GLib.Object
         if (! file.query_exists ())
             return;
 
+        string? contents = Utils.load_file (file);
+        if (contents == null)
+            return;
+
         try
         {
-            uint8[] chars;
-            file.load_contents (null, out chars, null);
-            string contents = (string) (owned) chars;
-
             MarkupParser parser = { parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
@@ -242,19 +242,6 @@ public class MostUsedSymbols : GLib.Object
         }
         content += "</symbols>\n";
 
-        try
-        {
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            file.replace_contents (content.data, null, false,
-                FileCreateFlags.NONE, null, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save the most used symbols: %s", e.message);
-        }
+        Utils.save_file (file, content);
     }
 }

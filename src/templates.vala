@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,17 +21,26 @@ using Gtk;
 
 public class Templates : GLib.Object
 {
-    private static Templates templates = null;
-    private ListStore default_store;
-    private ListStore personal_store;
-    private int nb_personal_templates;
-    private string rc_file;
-    private string rc_dir;
+    private static Templates _instance = null;
+
+    // Contains the default templates (empty, article, report, ...)
+    private ListStore _default_store;
+
+    // Contains the personal templates (created by the user)
+    private ListStore _personal_store;
+
+    private int _nb_personal_templates;
+
+    // The contents of the personal templates are saved in the user data directory.
+    // The first personal template is 0.tex, the second 1.tex, and so on.
+    // The names and the icons of the personal templates are saved in an rc file.
+    private File _data_dir;
+    private File _rc_file;
 
     private enum TemplateColumn
     {
-        PIXBUF,
-        ICON_ID,
+        PIXBUF,  // the theme icon name
+        ICON_ID, // the string stored in the rc file (article, report, ...)
         NAME,
         CONTENTS,
         N_COLUMNS
@@ -40,290 +49,103 @@ public class Templates : GLib.Object
     /* Templates is a singleton */
     private Templates ()
     {
-        /* default templates */
-        default_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
-            typeof (string), typeof (string), typeof (string));
+        _data_dir = File.new_for_path (
+            Path.build_filename (Environment.get_user_data_dir (), "latexila"));
 
-        add_template_from_string (default_store, _("Empty"), "empty", "");
+        _rc_file = _data_dir.get_child ("templatesrc");
 
-        add_default_template (_("Article"),         "article",  "article.tex");
-        add_default_template (_("Report"),          "report",   "report.tex");
-        add_default_template (_("Book"),            "book",     "book.tex");
-        add_default_template (_("Letter"),          "letter",   "letter.tex");
-        add_default_template (_("Presentation"),    "beamer",   "beamer.tex");
+        init_default_templates ();
+        init_personal_templates ();
+    }
 
-        /* personal templates */
-        personal_store = new ListStore (TemplateColumn.N_COLUMNS, typeof (string),
-            typeof (string), typeof (string), typeof (string));
-        nb_personal_templates = 0;
+    public static Templates get_default ()
+    {
+        if (_instance == null)
+            _instance = new Templates ();
+        return _instance;
+    }
 
-        rc_file = Path.build_filename (Environment.get_user_data_dir (), "latexila",
-            "templatesrc", null);
-        rc_dir = Path.build_filename (Environment.get_user_data_dir (), "latexila", null);
+    private void init_default_templates ()
+    {
+        _default_store = create_new_store ();
+
+        add_template_from_string (_default_store, _("Empty"), "empty", "");
+
+        add_default_template (_("Article"), "article", "article.tex");
+        add_default_template (_("Report"), "report", "report.tex");
+        add_default_template (_("Book"), "book", "book.tex");
+        add_default_template (_("Letter"), "letter", "letter.tex");
+        add_default_template (_("Presentation"), "beamer", "beamer.tex");
+    }
+
+    private void init_personal_templates ()
+    {
+        _personal_store = create_new_store ();
+        _nb_personal_templates = 0;
 
         // if the rc file doesn't exist, there is no personal template
-        if (! File.new_for_path (rc_file).query_exists ())
+        if (! _rc_file.query_exists ())
             return;
+
+        // load the key file
+        KeyFile key_file = new KeyFile ();
+        string[] names;
+        string[] icons;
 
         try
         {
-            // load the key file
-            KeyFile key_file = new KeyFile ();
-            key_file.load_from_file (rc_file, KeyFileFlags.NONE);
+            key_file.load_from_file (_rc_file.get_path (), KeyFileFlags.NONE);
 
-            // get names and icons
-            string[] names = key_file.get_string_list (Config.APP_NAME, "names");
-            string[] icons = key_file.get_string_list (Config.APP_NAME, "icons");
-
-            nb_personal_templates = names.length;
-
-            for (int i = 0 ; i < nb_personal_templates ; i++)
-            {
-                File file = File.new_for_path ("%s/%d.tex".printf (rc_dir, i));
-                if (! file.query_exists ())
-                    continue;
-
-                add_template_from_file (personal_store, names[i], icons[i], file);
-            }
+            // get the names and the icons
+            names = key_file.get_string_list (Config.APP_NAME, "names");
+            icons = key_file.get_string_list (Config.APP_NAME, "icons");
         }
         catch (Error e)
         {
             warning ("Load templates failed: %s", e.message);
             return;
         }
-    }
 
-    public static Templates get_default ()
-    {
-        if (templates == null)
-            templates = new Templates ();
-        return templates;
-    }
+        return_if_fail (names.length == icons.length);
 
-    public void show_dialog_new (MainWindow parent)
-    {
-        Dialog dialog = new Dialog.with_buttons (_("New File..."), parent, 0,
-            Stock.OK, ResponseType.ACCEPT,
-            Stock.CANCEL, ResponseType.REJECT,
-            null);
+        int nb_templates = names.length;
 
-        // get and set previous size
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-        int w, h;
-        settings.get ("new-file-dialog-size", "(ii)", out w, out h);
-        dialog.set_default_size (w, h);
-
-        // without this, we can not shrink the dialog completely
-        dialog.set_size_request (0, 0);
-
-        Box content_area = (Box) dialog.get_content_area ();
-        VPaned vpaned = new VPaned ();
-        content_area.pack_start (vpaned);
-        vpaned.position = settings.get_int ("new-file-dialog-paned-position");
-
-        /* icon view for the default templates */
-        IconView icon_view_default_templates = create_icon_view (default_store);
-        Widget scrollbar = Utils.add_scrollbar (icon_view_default_templates);
-        scrollbar.hexpand = true;
-        Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
-        vpaned.pack1 (component, true, true);
-
-        /* icon view for the personal templates */
-        IconView icon_view_personal_templates = create_icon_view (personal_store);
-        scrollbar = Utils.add_scrollbar (icon_view_personal_templates);
-        scrollbar.hexpand = true;
-        component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
-        vpaned.pack2 (component, false, true);
-
-        content_area.show_all ();
-
-        icon_view_default_templates.selection_changed.connect (() =>
+        for (int i = 0 ; i < nb_templates ; i++)
         {
-            on_icon_view_selection_changed (icon_view_default_templates,
-                icon_view_personal_templates);
-        });
-
-        icon_view_personal_templates.selection_changed.connect (() =>
-        {
-            on_icon_view_selection_changed (icon_view_personal_templates,
-                icon_view_default_templates);
-        });
-
-        icon_view_default_templates.item_activated.connect ((path) =>
-        {
-            open_template (parent, default_store, path);
-            close_dialog_new (dialog, vpaned);
-        });
-
-        icon_view_personal_templates.item_activated.connect ((path) =>
-        {
-            open_template (parent, personal_store, path);
-            close_dialog_new (dialog, vpaned);
-        });
-
-        if (dialog.run () == ResponseType.ACCEPT)
-        {
-            List<TreePath> selected_items =
-                icon_view_default_templates.get_selected_items ();
-            TreeModel model = (TreeModel) default_store;
-
-            // if no item is selected in the default templates, maybe one item is
-            // selected in the personal templates
-            if (selected_items.length () == 0)
+            File file = get_personal_template_file (i);
+            if (! file.query_exists ())
             {
-                selected_items = icon_view_personal_templates.get_selected_items ();
-                model = (TreeModel) personal_store;
+                warning ("The template '%s' doesn't exist.", names[i]);
+                continue;
             }
 
-            TreePath path = (TreePath) selected_items.nth_data (0);
-            open_template (parent, model, path);
+            if (add_template_from_file (_personal_store, names[i], icons[i], file))
+                _nb_personal_templates++;
         }
-
-        close_dialog_new (dialog, vpaned);
     }
 
-    private void open_template (MainWindow main_window, TreeModel model, TreePath? path)
+    private ListStore create_new_store ()
     {
-        TreeIter iter = {};
-        string contents = "";
-
-        if (path != null && model.get_iter (out iter, path))
-            model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
-
-        DocumentTab tab = main_window.create_tab (true);
-        tab.document.set_contents (contents);
+        return new ListStore (TemplateColumn.N_COLUMNS,
+            typeof (string), // pixbuf
+            typeof (string), // icon id
+            typeof (string), // name
+            typeof (string)  // contents
+        );
     }
 
-    private void close_dialog_new (Dialog dialog, VPaned vpaned)
+    private File get_personal_template_file (int template_num)
     {
-        // save dialog size and paned position
-        int w, h;
-        dialog.get_size (out w, out h);
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-        settings.set ("new-file-dialog-size", "(ii)", w, h);
-        settings.set_int ("new-file-dialog-paned-position", vpaned.position);
-
-        dialog.destroy ();
+        string filename = "%d.tex".printf (template_num);
+        return _data_dir.get_child (filename);
     }
 
-    public void show_dialog_create (MainWindow parent)
-    {
-        return_if_fail (parent.active_tab != null);
 
-        Dialog dialog = new Dialog.with_buttons (_("New Template..."), parent, 0,
-            Stock.OK, ResponseType.ACCEPT,
-            Stock.CANCEL, ResponseType.REJECT,
-            null);
+    /*************************************************************************/
+    // Add and delete templates, save rc file.
 
-        dialog.set_default_size (420, 370);
-
-        Box content_area = dialog.get_content_area () as Box;
-        content_area.homogeneous = false;
-
-        /* name */
-        Entry entry = new Entry ();
-        entry.hexpand = true;
-        Widget component = Utils.get_dialog_component (_("Name of the new template"),
-            entry);
-        content_area.pack_start (component, false);
-
-        /* icon */
-        // we take the default store because it contains all the icons
-        IconView icon_view = create_icon_view (default_store);
-        Widget scrollbar = Utils.add_scrollbar (icon_view);
-        scrollbar.expand = true;
-        component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
-        content_area.pack_start (component);
-
-        content_area.show_all ();
-
-        while (dialog.run () == ResponseType.ACCEPT)
-        {
-            // if no name specified
-            if (entry.text_length == 0)
-                continue;
-
-            List<TreePath> selected_items = icon_view.get_selected_items ();
-
-            // if no icon selected
-            if (selected_items.length () == 0)
-                continue;
-
-            nb_personal_templates++;
-
-            // get the contents
-            TextIter start, end;
-            parent.active_document.get_bounds (out start, out end);
-            string contents = parent.active_document.get_text (start, end, false);
-
-            // get the icon id
-            TreeModel model = (TreeModel) default_store;
-            TreePath path = selected_items.nth_data (0);
-            TreeIter iter;
-            string icon_id;
-            model.get_iter (out iter, path);
-            model.get (iter, TemplateColumn.ICON_ID, out icon_id, -1);
-
-            add_template_from_string (personal_store, entry.text, icon_id, contents);
-            add_personal_template (contents);
-            break;
-        }
-
-        dialog.destroy ();
-    }
-
-    public void show_dialog_delete (MainWindow parent)
-    {
-        Dialog dialog = new Dialog.with_buttons (_("Delete Template(s)..."), parent, 0,
-            Stock.DELETE, ResponseType.ACCEPT,
-            Stock.CLOSE, ResponseType.REJECT,
-            null);
-
-        dialog.set_default_size (400, 200);
-
-        Box content_area = (Box) dialog.get_content_area ();
-
-        /* icon view for the personal templates */
-        IconView icon_view = create_icon_view (personal_store);
-        icon_view.set_selection_mode (SelectionMode.MULTIPLE);
-        Widget scrollbar = Utils.add_scrollbar (icon_view);
-        scrollbar.hexpand = true;
-        Widget component = Utils.get_dialog_component (_("Personal templates"),
-            scrollbar);
-        content_area.pack_start (component);
-        content_area.show_all ();
-
-        int nb_personal_templates_before = nb_personal_templates;
-
-        while (dialog.run () == ResponseType.ACCEPT)
-        {
-            List<TreePath> selected_items = icon_view.get_selected_items ();
-            TreeModel model = (TreeModel) personal_store;
-
-            uint nb_selected_items = selected_items.length ();
-
-            for (int i = 0 ; i < nb_selected_items ; i++)
-            {
-                TreePath path = selected_items.nth_data (i);
-                TreeIter iter;
-                model.get_iter (out iter, path);
-                personal_store.remove (iter);
-            }
-
-            nb_personal_templates -= (int) nb_selected_items;
-        }
-
-        if (nb_personal_templates != nb_personal_templates_before)
-        {
-            save_rc_file ();
-            save_contents ();
-        }
-
-        dialog.destroy ();
-    }
-
-    private void add_template_from_string (ListStore store, string name, string icon_id,
-        string contents)
+    private void add_template_from_string (ListStore store, string name,
+        string icon_id, string contents)
     {
         TreeIter iter;
         store.append (out iter);
@@ -331,28 +153,26 @@ public class Templates : GLib.Object
             TemplateColumn.PIXBUF, get_theme_icon (icon_id),
             TemplateColumn.ICON_ID, icon_id,
             TemplateColumn.NAME, name,
-            TemplateColumn.CONTENTS, contents,
-            -1);
+            TemplateColumn.CONTENTS, contents);
     }
 
-    private void add_template_from_file (ListStore store, string name, string icon_id,
-        File file)
+    // Returns true on success.
+    private bool add_template_from_file (ListStore store, string name,
+        string icon_id, File file)
     {
-        try
-        {
-            uint8[] chars;
-            file.load_contents (null, out chars, null);
-            string contents = (string) (owned) chars;
-            add_template_from_string (store, name, icon_id, contents);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to load the template '%s': %s", name, e.message);
-        }
+        string? contents = Utils.load_file (file);
+        if (contents == null)
+            return false;
+
+        add_template_from_string (store, name, icon_id, contents);
+
+        return true;
     }
 
     private void add_default_template (string name, string icon_id, string filename)
     {
+        // The templates are translated, so we search first a translated template.
+
         File[] files = {};
 
         unowned string[] language_names = Intl.get_language_names ();
@@ -367,11 +187,184 @@ public class Templates : GLib.Object
             if (! file.query_exists ())
                 continue;
 
-            add_template_from_file (default_store, name, icon_id, file);
+            add_template_from_file (_default_store, name, icon_id, file);
             return;
         }
 
         warning ("Template '%s' not found.", name);
+    }
+
+    public void delete_personal_template (TreePath template_path)
+    {
+        /* Delete the template from the personal store */
+        TreeModel model = (TreeModel) _personal_store;
+        TreeIter iter;
+        model.get_iter (out iter, template_path);
+        _personal_store.remove (iter);
+
+        /* Remove the corresponding file */
+        int template_num = template_path.get_indices ()[0];
+        File template_file = get_personal_template_file (template_num);
+        Utils.delete_file (template_file);
+
+        /* Rename the next .tex files */
+        for (int i = template_num + 1 ; i < _nb_personal_templates ; i++)
+        {
+            File file = get_personal_template_file (i);
+            File new_file = get_personal_template_file (i-1);
+            try
+            {
+                file.move (new_file, FileCopyFlags.OVERWRITE);
+            }
+            catch (Error e)
+            {
+                warning ("Delete personal template, move file failed: %s", e.message);
+            }
+        }
+
+        _nb_personal_templates--;
+    }
+
+    public void create_personal_template (string name, string icon_id, string contents)
+    {
+        add_template_from_string (_personal_store, name, icon_id, contents);
+        _nb_personal_templates++;
+
+        save_rc_file ();
+
+        File file = get_personal_template_file (_nb_personal_templates - 1);
+        Utils.save_file (file, contents);
+    }
+
+    public void save_rc_file ()
+    {
+        if (_nb_personal_templates == 0)
+        {
+            Utils.delete_file (_rc_file);
+            return;
+        }
+
+        // The names and the icons of all personal templates.
+        string[] names = new string[_nb_personal_templates];
+        string[] icons = new string[_nb_personal_templates];
+
+        // Traverse the list store.
+        TreeIter iter;
+        TreeModel model = _personal_store as TreeModel;
+        bool valid_iter = model.get_iter_first (out iter);
+        int template_num = 0;
+
+        while (valid_iter)
+        {
+            model.get (iter,
+                TemplateColumn.NAME, out names[template_num],
+                TemplateColumn.ICON_ID, out icons[template_num]);
+
+            valid_iter = model.iter_next (ref iter);
+            template_num++;
+        }
+
+        // Contents of the rc file
+        KeyFile key_file = new KeyFile ();
+        key_file.set_string_list (Config.APP_NAME, "names", names);
+        key_file.set_string_list (Config.APP_NAME, "icons", icons);
+
+        string key_file_data = key_file.to_data ();
+
+        // Save the rc file
+        Utils.save_file (_rc_file, key_file_data);
+    }
+
+    // For compatibility reasons. 'icon_id' is the string stored in the rc file,
+    // and the return value is the theme icon name used for the pixbuf.
+    // If we store directly the theme icon names in the rc file, old rc files must be
+    // modified via a script for example, but it's simpler like that.
+    private string? get_theme_icon (string icon_id)
+    {
+        switch (icon_id)
+        {
+            case "empty":
+                return "text-x-preview";
+
+            case "article":
+                // Same as Stock.FILE (but it's the theme icon name)
+                return "text-x-generic";
+
+            case "report":
+                return "x-office-document";
+
+            case "book":
+                return "accessories-dictionary";
+
+            case "letter":
+                return "emblem-mail";
+
+            case "beamer":
+                return "x-office-presentation";
+
+            default:
+                return_val_if_reached (null);
+        }
+    }
+
+
+    /*************************************************************************/
+    // Get templates data: icon id, contents.
+
+    public string get_icon_id (TreePath default_template_path)
+    {
+        TreeModel model = _default_store as TreeModel;
+        TreeIter iter;
+        if (! model.get_iter (out iter, default_template_path))
+        {
+            warning ("Failed to get template icon id");
+            return "";
+        }
+
+        string icon_id;
+        model.get (iter, TemplateColumn.ICON_ID, out icon_id);
+
+        return icon_id;
+    }
+
+    public string get_default_template_contents (TreePath path)
+    {
+        return get_template_contents (_default_store, path);
+    }
+
+    public string get_personal_template_contents (TreePath path)
+    {
+        return get_template_contents (_personal_store, path);
+    }
+
+    private string get_template_contents (ListStore store, TreePath path)
+    {
+        TreeIter iter;
+        TreeModel model = store as TreeModel;
+        if (! model.get_iter (out iter, path))
+        {
+            warning ("Failed to get template contents");
+            return "";
+        }
+
+        string contents;
+        model.get (iter, TemplateColumn.CONTENTS, out contents);
+
+        return contents;
+    }
+
+
+    /*************************************************************************/
+    // Create icon view for the dialog windows.
+
+    public IconView create_icon_view_default_templates ()
+    {
+        return create_icon_view (_default_store);
+    }
+
+    public IconView create_icon_view_personal_templates ()
+    {
+        return create_icon_view (_personal_store);
     }
 
     private IconView create_icon_view (ListStore store)
@@ -401,168 +394,5 @@ public class Templates : GLib.Object
             null);
 
         return icon_view;
-    }
-
-    private void on_icon_view_selection_changed (IconView icon_view,
-        IconView other_icon_view)
-    {
-        // only one item of the two icon views can be selected at once
-
-        // we unselect all the items of the other icon view only if the current icon
-        // view have an item selected, because when we unselect all the items the
-        // "selection-changed" signal is emitted for the other icon view, so for the
-        // other icon view this function is also called but no item is selected so
-        // nothing is done and the item selected by the user keeps selected
-
-        List<TreePath> selected_items = icon_view.get_selected_items ();
-        if (selected_items.length () > 0)
-            other_icon_view.unselect_all ();
-    }
-
-    private void add_personal_template (string contents)
-    {
-        save_rc_file ();
-
-        File file = File.new_for_path ("%s/%d.tex".printf (rc_dir,
-            nb_personal_templates - 1));
-        try
-        {
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            file.replace_contents (contents.data, null, false,
-                FileCreateFlags.NONE, null, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save the templates: %s", e.message);
-        }
-    }
-
-    private void save_rc_file ()
-    {
-        if (nb_personal_templates == 0)
-        {
-            try
-            {
-                File.new_for_path (rc_file).delete ();
-            }
-            catch (Error e) {}
-            return;
-        }
-
-        // the names and the icons of all personal templates
-        string[] names = new string[nb_personal_templates];
-        string[] icons = new string[nb_personal_templates];
-
-        // traverse the list store
-        TreeIter iter;
-        TreeModel model = (TreeModel) personal_store;
-        bool valid_iter = model.get_iter_first (out iter);
-        int i = 0;
-        while (valid_iter)
-        {
-            model.get (iter,
-                TemplateColumn.NAME, out names[i],
-                TemplateColumn.ICON_ID, out icons[i],
-                -1);
-            valid_iter = model.iter_next (ref iter);
-            i++;
-        }
-
-        /* save the rc file */
-        try
-        {
-            KeyFile key_file = new KeyFile ();
-            key_file.set_string_list (Config.APP_NAME, "names", names);
-            key_file.set_string_list (Config.APP_NAME, "icons", icons);
-
-            string key_file_data = key_file.to_data ();
-            File file = File.new_for_path (rc_file);
-
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            file.replace_contents (key_file_data.data, null, false,
-                FileCreateFlags.NONE, null, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save the templates: %s", e.message);
-        }
-    }
-
-    /* save the contents of the personal templates
-     * the first personal template is saved in 0.tex, the second in 1.tex, etc */
-    private void save_contents ()
-    {
-        // delete all the *.tex files
-        Posix.system ("rm -f %s/*.tex".printf (rc_dir));
-
-        // traverse the list store
-        TreeIter iter;
-        TreeModel model = (TreeModel) personal_store;
-        bool valid_iter = model.get_iter_first (out iter);
-        int i = 0;
-        while (valid_iter)
-        {
-            string contents;
-            model.get (iter, TemplateColumn.CONTENTS, out contents, -1);
-            File file = File.new_for_path ("%s/%d.tex".printf (rc_dir, i));
-            try
-            {
-                // check if parent directories exist, if not, create it
-                File parent = file.get_parent ();
-                if (parent != null && ! parent.query_exists ())
-                    parent.make_directory_with_parents ();
-
-                file.replace_contents (contents.data, null, false,
-                    FileCreateFlags.NONE, null, null);
-            }
-            catch (Error e)
-            {
-                warning ("Impossible to save the template: %s", e.message);
-            }
-
-            valid_iter = model.iter_next (ref iter);
-            i++;
-        }
-    }
-
-    // For compatibility reasons. 'icon_id' is the string stored in the rc file,
-    // and the return value is the theme icon name used for the pixbuf.
-    // If we store directly the theme icon names in the rc file, old rc files must be
-    // modified via a script for example, but it's simpler like that.
-    // TODO: for the 3.0 version, we can store directly theme icon names.
-    private string? get_theme_icon (string icon_id)
-    {
-        switch (icon_id)
-        {
-            case "empty":
-                return "text-x-preview";
-
-            case "article":
-                // Same as Stock.FILE (but it's the theme icon name)
-                return "text-x-generic";
-
-            case "report":
-                return "x-office-document";
-
-            case "book":
-                return "accessories-dictionary";
-
-            case "letter":
-                return "emblem-mail";
-
-            case "beamer":
-                return "x-office-presentation";
-
-            default:
-                return_val_if_reached (null);
-        }
     }
 }

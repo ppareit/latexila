@@ -944,6 +944,16 @@ Example:
 			<choice name="huge" />
 			<choice name="Huge" />
 
+			<choice name="rmfamily" />
+			<choice name="sffamily" />
+			<choice name="ttfamily" />
+			<choice name="mdseries" />
+			<choice name="bfseries" />
+			<choice name="upshape" />
+			<choice name="itshape" />
+			<choice name="slshape" />
+			<choice name="scshape" />
+
 			<placeholder key="Newenvironments" />
 		</argument>
 	</command>

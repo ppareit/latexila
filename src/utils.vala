@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -154,6 +154,9 @@ namespace Utils
 
     public void delete_file (File file)
     {
+        if (! file.query_exists ())
+            return;
+
         try
         {
             file.delete ();
@@ -161,6 +164,64 @@ namespace Utils
         catch (Error e)
         {
             warning ("Delete file '%s' failed: %s", file.get_parse_name (), e.message);
+        }
+    }
+
+    public bool create_parent_directories (File file)
+    {
+        File parent = file.get_parent ();
+
+        if (parent == null || parent.query_exists ())
+            return true;
+
+        try
+        {
+            parent.make_directory_with_parents ();
+        }
+        catch (Error e)
+        {
+            warning ("Failed to create directory parents for the file '%s': %s",
+                file.get_parse_name (), e.message);
+            return false;
+        }
+
+        return true;
+    }
+
+    public bool save_file (File file, string contents, bool make_backup = false)
+    {
+        if (! create_parent_directories (file))
+            return false;
+
+        try
+        {
+            file.replace_contents (contents.data, null, make_backup,
+                FileCreateFlags.NONE, null);
+        }
+        catch (Error e)
+        {
+            warning ("Failed to save the file '%s': %s", file.get_parse_name (),
+                e.message);
+            return false;
+        }
+
+        return true;
+    }
+
+    // Retruns null on error.
+    public string? load_file (File file)
+    {
+        try
+        {
+            uint8[] chars;
+            file.load_contents (null, out chars, null);
+            return (string) (owned) chars;
+        }
+        catch (Error e)
+        {
+            warning ("Failed to load the file '%s': %s", file.get_parse_name (),
+                e.message);
+            return null;
         }
     }
 

@@ -309,40 +309,11 @@ public class Latexila : GLib.Object
 
     private void add_theme_icon_to_stock (string icon_name, string stock_id)
     {
-        Gtk.IconTheme theme = Gtk.IconTheme.get_default ();
+        Gtk.IconSource icon_source = new Gtk.IconSource ();
+        icon_source.set_icon_name (icon_name);
+
         Gtk.IconSet icon_set = new Gtk.IconSet ();
-
-        Gtk.IconSize[] sizes =
-        {
-            Gtk.IconSize.MENU,
-            Gtk.IconSize.SMALL_TOOLBAR,
-            Gtk.IconSize.LARGE_TOOLBAR,
-            Gtk.IconSize.BUTTON,
-            Gtk.IconSize.DND,
-            Gtk.IconSize.DIALOG
-        };
-
-        foreach (Gtk.IconSize size in sizes)
-        {
-            int nb_pixels;
-            Gtk.icon_size_lookup (size, out nb_pixels, null);
-
-            Gdk.Pixbuf pixbuf = null;
-            try
-            {
-                pixbuf = theme.load_icon (icon_name, nb_pixels, 0);
-            }
-            catch (Error e)
-            {
-                warning ("Get theme icon failed: %s", e.message);
-                continue;
-            }
-
-            Gtk.IconSource icon_source = new Gtk.IconSource ();
-            icon_source.set_pixbuf (pixbuf);
-            icon_source.set_size (size);
-            icon_set.add_source (icon_source);
-        }
+        icon_set.add_source (icon_source);
 
         Gtk.IconFactory icon_factory = new Gtk.IconFactory ();
         icon_factory.add (stock_id, icon_set);

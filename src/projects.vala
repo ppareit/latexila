@@ -41,12 +41,12 @@ public class Projects
         if (! file.query_exists ())
             return;
 
+        string? contents = Utils.load_file (file);
+        if (contents == null)
+            return;
+
         try
         {
-            uint8[] chars;
-            file.load_contents (null, out chars, null);
-            string contents = (string) (owned) chars;
-
             MarkupParser parser = { parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
@@ -105,7 +105,7 @@ public class Projects
         GLib.List<Document> docs = Latexila.get_default ().get_documents ();
         foreach (Document doc in docs)
         {
-            if (doc.project_id != -1)
+            if (doc.project_id != -1 || doc.location == null)
                 continue;
 
             if (doc.location.has_prefix (new_project.directory))
@@ -176,6 +176,9 @@ public class Projects
         foreach (Document doc in docs)
         {
             doc.project_id = -1;
+
+            if (doc.location == null)
+                continue;
 
             for (int i = 0 ; i < projects.size ; i++)
             {
@@ -251,20 +254,7 @@ public class Projects
         }
         content += "</projects>\n";
 
-        try
-        {
-            // check if parent directories exist, if not, create it
-            File parent = file.get_parent ();
-            if (parent != null && ! parent.query_exists ())
-                parent.make_directory_with_parents ();
-
-            file.replace_contents (content.data, null, false,
-                FileCreateFlags.NONE, null, null);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to save the projects: %s", e.message);
-        }
+        Utils.save_file (file, content);
     }
 
     // returns true if dir1 is a subdirectory of dir2, or inversely
