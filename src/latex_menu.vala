@@ -24,9 +24,11 @@ public class LatexMenu : Gtk.ActionGroup
     private const Gtk.ActionEntry[] latex_action_entries =
     {
         // LaTeX
+
         { "Latex", null, "_LaTeX" },
 
         // LaTeX: Sectioning
+
         { "Sectioning", "sectioning-section", N_("_Sectioning") },
         { "SectioningPart", "sectioning-part", "\\_part", null,
             N_("Part"), on_sectioning_part },
@@ -44,6 +46,7 @@ public class LatexMenu : Gtk.ActionGroup
             N_("Sub-paragraph"), on_sectioning_subparagraph },
 
         // LaTeX: References
+
         { "References", "references", N_("_References") },
         { "ReferencesLabel", null, "\\_label", null,
             N_("Label"), on_ref_label },
@@ -59,6 +62,7 @@ public class LatexMenu : Gtk.ActionGroup
             N_("Reference to a bibliography item"), on_ref_cite },
 
         // LaTeX: Environments
+
         { "Environments", Stock.JUSTIFY_CENTER, "_Environments" },
         { "EnvCenter", Stock.JUSTIFY_CENTER, "\\begin{_center}", null,
             N_("Center - \\begin{center}"), on_env_center },
@@ -83,18 +87,8 @@ public class LatexMenu : Gtk.ActionGroup
         { "EnvTitlepage", null, "\\begin{titlepage}", null,
             N_("Title page - \\begin{titlepage}"), on_env_titlepage },
 
-
-        // LaTeX: Presentation
-        { "Presentation", "presentation", "_Presentation" },
-        { "PresentationFrame", null, "\\begin{frame}", null,
-            N_("Frame - \\begin{frame}"), on_present_frame },
-        { "PresentationBlock", null, "\\begin{block}", null,
-            N_("Block - \\begin{block}"), on_present_block },
-        { "PresentationColumns", null, "\\begin{columns}", null,
-            N_("Two columns - \\begin{columns}"), on_present_columns },
-
-
         // LaTeX: list environments
+
         { "ListEnvironments", "list-enumerate", N_("_List Environments") },
         { "ListEnvItemize", "list-itemize", "\\begin{_itemize}", null,
             N_("Bulleted List - \\begin{itemize}"), on_list_env_itemize },
@@ -108,6 +102,7 @@ public class LatexMenu : Gtk.ActionGroup
             N_("List item - \\item"), on_list_env_item },
 
         // LaTeX: character sizes
+
         { "CharacterSize", "character-size", N_("_Characters Sizes") },
         { "CharacterSizeTiny", null, "_tiny", null,
             "tiny", on_size_tiny },
@@ -131,6 +126,7 @@ public class LatexMenu : Gtk.ActionGroup
             "Huge", on_size_Huge },
 
         // LaTeX: font styles
+
         { "FontStyles", "bold", N_("_Font Styles") },
         { "Bold", "bold", "\\text_bf", "<Alt><Shift>B",
             N_("Bold - \\textbf"), on_text_bold },
@@ -173,7 +169,7 @@ public class LatexMenu : Gtk.ActionGroup
         { "FontShapeSmallCaps", "small_caps", "\\s_cshape", null,
             N_("Small Capitals - \\scshape"), on_text_font_shape_small_caps },
 
-        // Tabular
+        // LaTeX: Tabular
 
         { "Tabular", "table", N_("_Tabular") },
         { "TabularTabbing", null, "\\begin{ta_bbing}", null,
@@ -189,7 +185,17 @@ public class LatexMenu : Gtk.ActionGroup
         { "TabularCline", null, "\\_cline", null,
             N_("Horizontal line (columns specified) - \\cline"), on_tabular_cline },
 
-        // Spacing
+        // LaTeX: Presentation
+
+        { "Presentation", "presentation", "_Presentation" },
+        { "PresentationFrame", null, "\\begin{frame}", null,
+            N_("Frame - \\begin{frame}"), on_present_frame },
+        { "PresentationBlock", null, "\\begin{block}", null,
+            N_("Block - \\begin{block}"), on_present_block },
+        { "PresentationColumns", null, "\\begin{columns}", null,
+            N_("Two columns - \\begin{columns}"), on_present_columns },
+
+        // LaTeX: Spacing
 
         { "Spacing", null, N_("_Spacing") },
         { "SpacingNewLine", null, N_("New _Line"), null,
@@ -211,7 +217,7 @@ public class LatexMenu : Gtk.ActionGroup
         { "SpacingNoIndent", null, "\\_noindent", null,
             N_("No paragraph indentation - \\noindent"), on_spacing_noindent },
 
-        // International accents
+        // LaTeX: International accents
 
         { "Accents", null, N_("International _Accents") },
         { "Accent0", "accent0", "\\'", null, N_("Acute accent - \\'"), on_accent0 },
@@ -232,7 +238,7 @@ public class LatexMenu : Gtk.ActionGroup
         { "Accent14", "accent14", "\\r", null, N_("Ring - \\r"), on_accent14 },
         { "Accent15", "accent15", "\\t", null, N_("Tie - \\t"), on_accent15 },
 
-        // Others
+        // LaTeX: Others
 
         { "LatexMisc", null, N_("_Misc") },
         { "LatexDocumentClass", null, "\\_documentclass", null,
@@ -257,7 +263,7 @@ public class LatexMenu : Gtk.ActionGroup
         { "LatexInput", null, "\\_input", null,
             N_("Include a file - \\input"), on_input },
 
-        // LaTeX: math
+        // Math
 
         { "Math", null, N_("_Math") },
 
@@ -378,7 +384,7 @@ public class LatexMenu : Gtk.ActionGroup
         { "MathSpaceQuad", null, "\\_quad", null, null, on_math_space_quad },
         { "MathSpaceQquad", null, "\\qqu_ad", null, null, on_math_space_qquad },
 
-        // Left Delimiters
+        // Math: Left Delimiters
 
         { "MathLeftDelimiters", "delimiters-left", N_("_Left Delimiters") },
         { "MathLeftDelimiter1", null, N_("left ("), null,
@@ -400,7 +406,7 @@ public class LatexMenu : Gtk.ActionGroup
         { "MathLeftDelimiter9", null, N_("left ."), null,
             null, on_math_left_delimiter_9 },
 
-        // Right Delimiters
+        // Math: Right Delimiters
 
         { "MathRightDelimiters", "delimiters-right", N_("Right _Delimiters") },
         { "MathRightDelimiter1", null, N_("right )"), null,
