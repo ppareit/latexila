@@ -271,11 +271,13 @@ public class MainWindow : Window
         initialize_menubar_and_toolbar ();
         Widget menu = ui_manager.get_widget ("/MainMenu");
 
-        main_toolbar = (Toolbar) ui_manager.get_widget ("/MainToolbar");
+        main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
         main_toolbar.set_style (ToolbarStyle.ICONS);
+        StyleContext main_toolbar_context = main_toolbar.get_style_context ();
+        main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
         setup_toolbar_open_button (main_toolbar);
 
-        edit_toolbar = (Toolbar) ui_manager.get_widget ("/EditToolbar");
+        edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
         edit_toolbar.set_style (ToolbarStyle.ICONS);
 
         Toolbar build_toolbar = (Toolbar) ui_manager.get_widget ("/BuildToolbar");
