@@ -154,7 +154,6 @@ public class DocumentTab : Grid
 
         // with a scrollbar
         ScrolledWindow sw = new ScrolledWindow (null, null);
-        sw.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
 
         if (reparent)
             view.reparent (sw);

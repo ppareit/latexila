@@ -300,7 +300,6 @@ namespace Utils
     public Widget add_scrollbar (Widget child)
     {
         ScrolledWindow scrollbar = new ScrolledWindow (null, null);
-        scrollbar.set_policy (PolicyType.AUTOMATIC, PolicyType.AUTOMATIC);
         scrollbar.add (child);
         return scrollbar;
     }
