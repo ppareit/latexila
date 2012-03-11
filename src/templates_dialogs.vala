@@ -33,8 +33,7 @@ public class OpenTemplateDialog
     {
         _main_window = main_window;
 
-        _dialog = new Dialog.with_buttons (_("New File..."), main_window,
-            DialogFlags.NO_SEPARATOR,
+        _dialog = new Dialog.with_buttons (_("New File..."), main_window, 0,
             Stock.OK, ResponseType.ACCEPT,
             Stock.CANCEL, ResponseType.REJECT,
             null);
@@ -60,6 +59,7 @@ public class OpenTemplateDialog
         _icon_view_default_templates = templates.create_icon_view_default_templates ();
 
         Widget scrollbar = Utils.add_scrollbar (_icon_view_default_templates);
+        scrollbar.hexpand = true;
         Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
         _vpaned.pack1 (component, true, true);
 
@@ -67,6 +67,7 @@ public class OpenTemplateDialog
         _icon_view_personal_templates = templates.create_icon_view_personal_templates ();
 
         scrollbar = Utils.add_scrollbar (_icon_view_personal_templates);
+        scrollbar.hexpand = true;
         component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
         _vpaned.pack2 (component, false, true);
 
@@ -199,6 +200,7 @@ public class CreateTemplateDialog : Dialog
 
         /* name */
         Entry entry = new Entry ();
+        entry.hexpand = true;
         Widget component = Utils.get_dialog_component (_("Name of the new template"),
             entry);
         content_area.pack_start (component, false);
@@ -210,6 +212,7 @@ public class CreateTemplateDialog : Dialog
         IconView icon_view = templates.create_icon_view_default_templates ();
 
         Widget scrollbar = Utils.add_scrollbar (icon_view);
+        scrollbar.hexpand = true;
         component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
         content_area.pack_start (component);
 
@@ -256,7 +259,6 @@ public class DeleteTemplateDialog : Dialog
         title = _("Delete Template(s)...");
         add_button (Stock.DELETE, ResponseType.ACCEPT);
         add_button (Stock.CLOSE, ResponseType.REJECT);
-        has_separator = false;
         set_transient_for (parent);
         set_default_size (400, 200);
 
@@ -267,6 +269,7 @@ public class DeleteTemplateDialog : Dialog
         icon_view.set_selection_mode (SelectionMode.MULTIPLE);
 
         Widget scrollbar = Utils.add_scrollbar (icon_view);
+        scrollbar.hexpand = true;
         Widget component = Utils.get_dialog_component (_("Personal templates"),
             scrollbar);
 
