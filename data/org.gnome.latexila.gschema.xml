@@ -217,12 +217,6 @@
     <key name="vertical-paned-position" type="i">
       <default>375</default>
     </key>
-    <key name="new-file-dialog-size" type="(ii)">
-      <default>(400, 340)</default>
-    </key>
-    <key name="new-file-dialog-paned-position" type="i">
-      <default>170</default>
-    </key>
     <key name="structure-paned-position" type="i">
       <default>100</default>
     </key>

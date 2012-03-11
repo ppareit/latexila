@@ -357,45 +357,6 @@ public class Templates : GLib.Object
     /*************************************************************************/
     // Create templates list for the dialog windows.
 
-    public IconView create_icon_view_default_templates ()
-    {
-        return create_icon_view (_default_store);
-    }
-
-    public IconView create_icon_view_personal_templates ()
-    {
-        return create_icon_view (_personal_store);
-    }
-
-    private IconView create_icon_view (ListStore store)
-    {
-        IconView icon_view = new IconView.with_model (store);
-        icon_view.set_selection_mode (SelectionMode.SINGLE);
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        pixbuf_renderer.stock_size = IconSize.DIALOG;
-        pixbuf_renderer.xalign = (float) 0.5;
-        pixbuf_renderer.yalign = (float) 1.0;
-        icon_view.pack_start (pixbuf_renderer, false);
-        icon_view.set_attributes (pixbuf_renderer,
-            "icon-name", TemplateColumn.PIXBUF,
-            null);
-
-        // We also use a CellRenderer for the text column, because with set_text_column()
-        // the text is not centered (when a CellRenderer is used for the pixbuf).
-        CellRendererText text_renderer = new CellRendererText ();
-        text_renderer.alignment = Pango.Alignment.CENTER;
-        text_renderer.wrap_mode = Pango.WrapMode.WORD;
-        text_renderer.xalign = (float) 0.5;
-        text_renderer.yalign = (float) 0.0;
-        icon_view.pack_end (text_renderer, false);
-        icon_view.set_attributes (text_renderer,
-            "text", TemplateColumn.NAME,
-            null);
-
-        return icon_view;
-    }
-
     public TreeView get_default_templates_list ()
     {
         return get_templates_list (_default_store);

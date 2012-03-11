@@ -24,101 +24,92 @@ public class OpenTemplateDialog
 {
     private unowned MainWindow _main_window;
     private Dialog _dialog;
-    private IconView _icon_view_default_templates;
-    private IconView _icon_view_personal_templates;
-    private VPaned _vpaned;
-    private GLib.Settings _settings;
+    private TreeView _default_templates;
+    private TreeView _personal_templates;
 
     public OpenTemplateDialog (MainWindow main_window)
     {
         _main_window = main_window;
 
         _dialog = new Dialog.with_buttons (_("New File..."), main_window, 0,
-            Stock.OK, ResponseType.ACCEPT,
             Stock.CANCEL, ResponseType.REJECT,
+            Stock.OK, ResponseType.ACCEPT,
             null);
 
-        // Get and set previous size.
-        _settings = new GLib.Settings ("org.gnome.latexila.state.window");
-        int width;
-        int height;
-        _settings.get ("new-file-dialog-size", "(ii)", out width, out height);
-        _dialog.set_default_size (width, height);
-
-        // Be able to shrink the dialog completely.
-        _dialog.set_size_request (0, 0);
-
         Box content_area = _dialog.get_content_area () as Box;
-        _vpaned = new VPaned ();
-        content_area.pack_start (_vpaned);
-        _vpaned.position = _settings.get_int ("new-file-dialog-paned-position");
 
-        // Icon view for the default templates.
+        Grid hgrid = new Grid ();
+        hgrid.set_orientation (Orientation.HORIZONTAL);
+        hgrid.set_column_spacing (10);
+        content_area.pack_start (hgrid);
+
         Templates templates = Templates.get_default ();
 
-        _icon_view_default_templates = templates.create_icon_view_default_templates ();
+        // List of default templates.
+        _default_templates = templates.get_default_templates_list ();
 
-        Widget scrollbar = Utils.add_scrollbar (_icon_view_default_templates);
-        scrollbar.hexpand = true;
+        Widget scrollbar = Utils.add_scrollbar (_default_templates);
+        scrollbar.set_size_request (250, 200);
         Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
-        _vpaned.pack1 (component, true, true);
+        hgrid.add (component);
 
-        // Icon view for the personal templates.
-        _icon_view_personal_templates = templates.create_icon_view_personal_templates ();
+        // List of personal templates.
+        _personal_templates = templates.get_personal_templates_list ();
 
-        scrollbar = Utils.add_scrollbar (_icon_view_personal_templates);
-        scrollbar.hexpand = true;
+        scrollbar = Utils.add_scrollbar (_personal_templates);
+        scrollbar.set_size_request (250, 200);
         component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
-        _vpaned.pack2 (component, false, true);
+        hgrid.add (component);
 
         content_area.show_all ();
 
         connect_to_signals ();
         run_me ();
-        close_dialog ();
+        _dialog.destroy ();
     }
 
     private void connect_to_signals ()
     {
-        _icon_view_default_templates.selection_changed.connect (() =>
+        TreeSelection default_select = _default_templates.get_selection ();
+        TreeSelection personal_select = _personal_templates.get_selection ();
+
+        default_select.changed.connect (() =>
         {
-            on_icon_view_selection_changed (_icon_view_default_templates,
-                _icon_view_personal_templates);
+            on_list_selection_changed (default_select, personal_select);
         });
 
-        _icon_view_personal_templates.selection_changed.connect (() =>
+        personal_select.changed.connect (() =>
         {
-            on_icon_view_selection_changed (_icon_view_personal_templates,
-                _icon_view_default_templates);
+            on_list_selection_changed (personal_select, default_select);
         });
 
-        _icon_view_default_templates.item_activated.connect ((path) =>
+        _default_templates.row_activated.connect ((path) =>
         {
             open_default_template (path);
-            close_dialog ();
+            _dialog.destroy ();
         });
 
-        _icon_view_personal_templates.item_activated.connect ((path) =>
+        _personal_templates.row_activated.connect ((path) =>
         {
             open_personal_template (path);
-            close_dialog ();
+            _dialog.destroy ();
         });
     }
 
-    private void on_icon_view_selection_changed (IconView icon_view,
-        IconView other_icon_view)
+    private void on_list_selection_changed (TreeSelection select,
+        TreeSelection other_select)
     {
-        // Only one item of the two icon views can be selected at once.
+        // Only one item of the two lists can be selected at once.
 
-        // We unselect all the items of the other icon view only if the current icon
-        // view have an item selected, because when we unselect all the items the
-        // "selection-changed" signal is emitted for the other icon view, so for the
-        // other icon view this function is also called but no item is selected so
+        // We unselect all the items of the other list only if the current list
+        // have an item selected, because when we unselect all the items the
+        // "changed" signal is emitted for the other list, so for the
+        // other list this function is also called but no item is selected so
         // nothing is done and the item selected by the user keeps selected.
 
-        List<TreePath> selected_items = icon_view.get_selected_items ();
+        List<TreePath> selected_items = select.get_selected_rows (null);
         if (selected_items.length () > 0)
-            other_icon_view.unselect_all ();
+            other_select.unselect_all ();
     }
 
     private void run_me ()
@@ -127,8 +118,8 @@ public class OpenTemplateDialog
             return;
 
         // Default template selected?
-        List<TreePath> selected_items =
-            _icon_view_default_templates.get_selected_items ();
+        TreeSelection select = _default_templates.get_selection ();
+        List<TreePath> selected_items = select.get_selected_rows (null);
 
         if (selected_items.length () > 0)
         {
@@ -138,7 +129,8 @@ public class OpenTemplateDialog
         }
 
         // Personal template selected?
-        selected_items = _icon_view_personal_templates.get_selected_items ();
+        select = _personal_templates.get_selection ();
+        selected_items = select.get_selected_rows (null);
         if (selected_items.length () > 0)
         {
             TreePath path = selected_items.nth_data (0);
@@ -167,19 +159,6 @@ public class OpenTemplateDialog
         DocumentTab tab = _main_window.create_tab (true);
         tab.document.set_contents (contents);
     }
-
-    private void close_dialog ()
-    {
-        // Save dialog size and paned position.
-        int width;
-        int height;
-        _dialog.get_size (out width, out height);
-        _settings.set ("new-file-dialog-size", "(ii)", width, height);
-
-        _settings.set_int ("new-file-dialog-paned-position", _vpaned.position);
-
-        _dialog.destroy ();
-    }
 }
 
 public class CreateTemplateDialog : Dialog
@@ -190,8 +169,8 @@ public class CreateTemplateDialog : Dialog
 
         title = _("New Template...");
         set_transient_for (parent);
-        add_button (Stock.OK, ResponseType.ACCEPT);
         add_button (Stock.CANCEL, ResponseType.REJECT);
+        add_button (Stock.OK, ResponseType.ACCEPT);
 
         Box content_area = get_content_area () as Box;
         content_area.homogeneous = false;
@@ -264,6 +243,9 @@ public class DeleteTemplateDialog : Dialog
 
         Templates templates = Templates.get_default ();
         TreeView templates_list = templates.get_personal_templates_list ();
+
+        TreeSelection select = templates_list.get_selection ();
+        select.set_mode (SelectionMode.MULTIPLE);
 
         Widget scrollbar = Utils.add_scrollbar (templates_list);
         scrollbar.set_size_request (250, 150);
