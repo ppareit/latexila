@@ -786,6 +786,7 @@ public class Symbols : Grid
         categories_view.spacing = 5;
         categories_view.row_spacing = 0;
         categories_view.column_spacing = 0;
+        categories_view.hexpand = true;
 
         add (categories_view);
         categories_view.show ();
@@ -798,9 +799,9 @@ public class Symbols : Grid
         symbol_view.spacing = 0;
         symbol_view.row_spacing = 0;
         symbol_view.column_spacing = 0;
+        symbol_view.expand = true;
 
         Widget sw = Utils.add_scrollbar (symbol_view);
-        sw.expand = true;
         add (sw);
         sw.show_all ();
 
