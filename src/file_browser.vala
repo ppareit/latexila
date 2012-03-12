@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -38,24 +38,24 @@ public class FileBrowser : Grid
         N_COLUMNS
     }
 
-    private unowned MainWindow main_window;
-    private BuildView build_view;
-    private ListStore parent_dir_store;
-    private ListStore list_store;
+    private unowned MainWindow _main_window;
+    private BuildView _build_view;
+    private ListStore _parent_dir_store;
+    private ListStore _list_store;
     private TreeView _list_view;
-    private ComboBox combo_box;
-    private File current_directory;
-    private Button parent_button;
-    private GLib.Settings settings;
-    private GLib.Settings latex_settings;
-    private uint timeout_id = 0;
+    private ComboBox _combo_box;
+    private File _current_directory;
+    private Button _parent_button;
+    private GLib.Settings _settings;
+    private GLib.Settings _latex_settings;
+    private uint _timeout_id = 0;
 
     public FileBrowser (MainWindow main_window)
     {
         row_spacing = 3;
         orientation = Orientation.VERTICAL;
-        this.main_window = main_window;
-        this.build_view = main_window.get_build_view ();
+        this._main_window = main_window;
+        this._build_view = main_window.get_build_view ();
 
         init_toolbar ();
         init_combo_box ();
@@ -68,26 +68,26 @@ public class FileBrowser : Grid
 
     private void init_settings ()
     {
-        settings = new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
-        settings.changed["show-all-files"].connect (refresh);
-        settings.changed["show-all-files-except"].connect (refresh);
-        settings.changed["show-hidden-files"].connect (refresh);
-        settings.changed["file-extensions"].connect (on_refresh);
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
+        _settings.changed["show-all-files"].connect (refresh);
+        _settings.changed["show-all-files-except"].connect (refresh);
+        _settings.changed["show-hidden-files"].connect (refresh);
+        _settings.changed["file-extensions"].connect (on_refresh);
 
-        latex_settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        latex_settings.changed["clean-extensions"].connect (on_refresh);
+        _latex_settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
+        _latex_settings.changed["clean-extensions"].connect (on_refresh);
     }
 
     private void on_refresh ()
     {
         // Call refresh () only after 2 seconds.
         // If the text has changed before the 2 seconds, we reinitialize the counter.
-        if (timeout_id != 0)
-            Source.remove (timeout_id);
+        if (_timeout_id != 0)
+            Source.remove (_timeout_id);
 
-        timeout_id = Timeout.add_seconds (2, () =>
+        _timeout_id = Timeout.add_seconds (2, () =>
         {
-            timeout_id = 0;
+            _timeout_id = 0;
             refresh ();
             return false;
         });
@@ -101,17 +101,17 @@ public class FileBrowser : Grid
         add (grid);
 
         Button home_button = Utils.get_toolbar_button (Stock.HOME);
-        parent_button = Utils.get_toolbar_button (Stock.GO_UP);
+        _parent_button = Utils.get_toolbar_button (Stock.GO_UP);
         Button jump_button = Utils.get_toolbar_button (Stock.JUMP_TO);
         Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
 
         home_button.tooltip_text = _("Go to the home directory");
-        parent_button.tooltip_text = _("Go to the parent directory");
+        _parent_button.tooltip_text = _("Go to the parent directory");
         jump_button.tooltip_text = _("Go to the active document directory");
         refresh_button.tooltip_text = _("Refresh");
 
         grid.add (home_button);
-        grid.add (parent_button);
+        grid.add (_parent_button);
         grid.add (jump_button);
         grid.add (refresh_button);
 
@@ -121,30 +121,30 @@ public class FileBrowser : Grid
             fill_stores_with_dir (home_dir);
         });
 
-        parent_button.clicked.connect (() =>
+        _parent_button.clicked.connect (() =>
         {
-            File? parent = current_directory.get_parent ();
+            File? parent = _current_directory.get_parent ();
             return_if_fail (parent != null);
             fill_stores_with_dir (parent);
         });
 
         jump_button.clicked.connect (() =>
         {
-            if (main_window.active_tab == null
-                || main_window.active_document.location == null)
+            if (_main_window.active_tab == null
+                || _main_window.active_document.location == null)
                 return;
-            fill_stores_with_dir (main_window.active_document.location.get_parent ());
+            fill_stores_with_dir (_main_window.active_document.location.get_parent ());
         });
 
         // jump button sensitivity
-        main_window.notify["active-document"].connect (() =>
+        _main_window.notify["active-document"].connect (() =>
         {
             update_jump_button_sensitivity (jump_button);
 
             // update jump button sensitivity when location changes
-            if (main_window.active_document != null)
+            if (_main_window.active_document != null)
             {
-                main_window.active_document.notify["location"].connect (() =>
+                _main_window.active_document.notify["location"].connect (() =>
                 {
                     update_jump_button_sensitivity (jump_button);
                 });
@@ -156,51 +156,51 @@ public class FileBrowser : Grid
 
     private void update_jump_button_sensitivity (Button jump_button)
     {
-        jump_button.sensitive = main_window.active_tab != null
-            && main_window.active_document.location != null;
+        jump_button.sensitive = _main_window.active_tab != null
+            && _main_window.active_document.location != null;
     }
 
     // list of parent directories
     private void init_combo_box ()
     {
-        parent_dir_store = new ListStore (ParentDirColumn.N_COLUMNS,
+        _parent_dir_store = new ListStore (ParentDirColumn.N_COLUMNS,
             typeof (string),    // indentation (spaces)
             typeof (string),    // pixbuf (stock-id)
             typeof (string),    // directory name
             typeof (File));
 
-        combo_box = new ComboBox.with_model (parent_dir_store);
-        add (combo_box);
+        _combo_box = new ComboBox.with_model (_parent_dir_store);
+        add (_combo_box);
 
         // indentation
         CellRendererText text_renderer = new CellRendererText ();
-        combo_box.pack_start (text_renderer, false);
-        combo_box.set_attributes (text_renderer, "text", ParentDirColumn.INDENT, null);
+        _combo_box.pack_start (text_renderer, false);
+        _combo_box.set_attributes (text_renderer, "text", ParentDirColumn.INDENT, null);
 
         // pixbuf
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        combo_box.pack_start (pixbuf_renderer, false);
-        combo_box.set_attributes (pixbuf_renderer,
+        _combo_box.pack_start (pixbuf_renderer, false);
+        _combo_box.set_attributes (pixbuf_renderer,
             "stock-id", ParentDirColumn.PIXBUF, null);
 
         // directory name
         text_renderer = new CellRendererText ();
-        combo_box.pack_start (text_renderer, true);
-        combo_box.set_attributes (text_renderer, "text", ParentDirColumn.NAME, null);
+        _combo_box.pack_start (text_renderer, true);
+        _combo_box.set_attributes (text_renderer, "text", ParentDirColumn.NAME, null);
         text_renderer.ellipsize_set = true;
         text_renderer.ellipsize = Pango.EllipsizeMode.END;
 
-        combo_box.changed.connect (() =>
+        _combo_box.changed.connect (() =>
         {
             TreeIter iter;
-            if (combo_box.get_active_iter (out iter))
+            if (_combo_box.get_active_iter (out iter))
             {
-                TreeModel model = combo_box.get_model ();
+                TreeModel model = _combo_box.get_model ();
                 File file;
                 model.get (iter, ParentDirColumn.FILE, out file, -1);
 
                 // avoid infinite loop (this method is called in fill_stores_with_dir ())
-                if (! file.equal (current_directory))
+                if (! file.equal (_current_directory))
                     fill_stores_with_dir (file);
             }
         });
@@ -209,16 +209,16 @@ public class FileBrowser : Grid
     // list of files and directories
     private void init_list ()
     {
-        list_store = new ListStore (FileColumn.N_COLUMNS,
+        _list_store = new ListStore (FileColumn.N_COLUMNS,
             typeof (string),    // pixbuf (stock-id)
             typeof (string),    // filename
             typeof (bool)       // is directory
             );
 
-        list_store.set_sort_func (0, on_sort);
-        list_store.set_sort_column_id (0, SortType.ASCENDING);
+        _list_store.set_sort_func (0, on_sort);
+        _list_store.set_sort_column_id (0, SortType.ASCENDING);
 
-        _list_view = new TreeView.with_model (list_store);
+        _list_view = new TreeView.with_model (_list_store);
         _list_view.headers_visible = false;
 
         TreeViewColumn column = new TreeViewColumn ();
@@ -241,7 +241,7 @@ public class FileBrowser : Grid
 
         _list_view.row_activated.connect ((path) =>
         {
-            TreeModel model = (TreeModel) list_store;
+            TreeModel model = (TreeModel) _list_store;
             TreeIter iter;
             if (! model.get_iter (out iter, path))
                 return;
@@ -253,7 +253,7 @@ public class FileBrowser : Grid
                 FileColumn.IS_DIR, out is_dir,
                 -1);
 
-            File file = current_directory.get_child (basename);
+            File file = _current_directory.get_child (basename);
 
             if (is_dir)
             {
@@ -284,7 +284,7 @@ public class FileBrowser : Grid
 
                 // Open document
                 default:
-                    main_window.open_document (file);
+                    _main_window.open_document (file);
                     return;
             }
 
@@ -295,14 +295,14 @@ public class FileBrowser : Grid
                 return;
             }
 
-            new BuildToolRunner (file, tool, build_view,
-                main_window.get_action_stop_exec ());
+            new BuildToolRunner (file, tool, _build_view,
+                _main_window.get_action_stop_exec ());
         });
     }
 
     public void refresh ()
     {
-        fill_stores_with_dir (current_directory);
+        fill_stores_with_dir (_current_directory);
     }
 
     // Refresh the file browser if the document has a "link" with the directory currently
@@ -316,7 +316,7 @@ public class FileBrowser : Grid
         if (project == null)
         {
             if (doc.location != null
-                && current_directory.equal (doc.location.get_parent ()))
+                && _current_directory.equal (doc.location.get_parent ()))
             {
                 refresh ();
             }
@@ -327,8 +327,8 @@ public class FileBrowser : Grid
         // If a project is defined, refresh if the current dir is part of the project.
         File project_dir = project.directory;
 
-        if (current_directory.equal (project_dir)
-            || current_directory.has_prefix (project_dir))
+        if (_current_directory.equal (project_dir)
+            || _current_directory.has_prefix (project_dir))
         {
             refresh ();
         }
@@ -336,8 +336,8 @@ public class FileBrowser : Grid
 
     private void fill_stores_with_dir (File? dir)
     {
-        list_store.clear ();
-        parent_dir_store.clear ();
+        _list_store.clear ();
+        _parent_dir_store.clear ();
 
         _list_view.columns_autosize ();
 
@@ -346,7 +346,7 @@ public class FileBrowser : Grid
         File? directory = dir;
         if (directory == null)
         {
-            string uri = settings.get_string ("current-directory");
+            string uri = _settings.get_string ("current-directory");
 
             if (uri != null && uri.length > 0)
                 directory = File.new_for_uri (uri);
@@ -364,14 +364,14 @@ public class FileBrowser : Grid
             FileEnumerator enumerator = directory.enumerate_children (
                 "standard::type,standard::display-name", FileQueryInfoFlags.NONE);
 
-            bool show_all = settings.get_boolean ("show-all-files");
-            bool show_all_except = settings.get_boolean ("show-all-files-except");
-            bool show_hidden = show_all && settings.get_boolean ("show-hidden-files");
+            bool show_all = _settings.get_boolean ("show-all-files");
+            bool show_all_except = _settings.get_boolean ("show-all-files-except");
+            bool show_hidden = show_all && _settings.get_boolean ("show-hidden-files");
 
-            string exts = settings.get_string ("file-extensions");
+            string exts = _settings.get_string ("file-extensions");
             string[] extensions = exts.split (" ");
 
-            exts = latex_settings.get_string ("clean-extensions");
+            exts = _latex_settings.get_string ("clean-extensions");
             string[] clean_extensions = exts.split (" ");
 
             for (FileInfo? info = enumerator.next_file () ;
@@ -428,14 +428,14 @@ public class FileBrowser : Grid
                 }
             }
 
-            list_store.sort_column_changed ();
+            _list_store.sort_column_changed ();
         }
         catch (Error e)
         {
             warning ("%s", e.message);
 
             // warning dialog
-            MessageDialog dialog = new MessageDialog (main_window,
+            MessageDialog dialog = new MessageDialog (_main_window,
                 DialogFlags.DESTROY_WITH_PARENT,
                 MessageType.WARNING,
                 ButtonsType.CLOSE,
@@ -486,8 +486,8 @@ public class FileBrowser : Grid
                 pixbuf = Stock.DIRECTORY;
 
             // insert
-            parent_dir_store.append (out iter);
-            parent_dir_store.set (iter,
+            _parent_dir_store.append (out iter);
+            _parent_dir_store.set (iter,
                 ParentDirColumn.FILE, current,
                 ParentDirColumn.INDENT, indent,
                 ParentDirColumn.NAME, basename,
@@ -497,20 +497,20 @@ public class FileBrowser : Grid
             i++;
         }
 
-        current_directory = directory;
-        settings.set_string ("current-directory", directory.get_uri ());
+        _current_directory = directory;
+        _settings.set_string ("current-directory", directory.get_uri ());
 
         // select the last parent directory
-        combo_box.set_active_iter (iter);
+        _combo_box.set_active_iter (iter);
 
-        parent_button.set_sensitive (directory.get_parent () != null);
+        _parent_button.set_sensitive (directory.get_parent () != null);
     }
 
     private void insert_file (bool is_dir, string pixbuf, string basename)
     {
         TreeIter iter;
-        list_store.append (out iter);
-        list_store.set (iter,
+        _list_store.append (out iter);
+        _list_store.set (iter,
             FileColumn.IS_DIR, is_dir,
             FileColumn.PIXBUF, pixbuf,
             FileColumn.NAME, basename,
