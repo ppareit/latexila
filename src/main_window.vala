@@ -1934,7 +1934,7 @@ public class MainWindow : Window
     {
         string comments =
             _("LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop");
-        string copyright = "Copyright (C) 2009-2011 Sébastien Wilmet";
+        string copyright = "Copyright (C) 2009-2012 Sébastien Wilmet";
         string licence =
 """LaTeXila is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
