@@ -30,7 +30,7 @@ if (BUILD_VALA)
 	include ("${latexila_SOURCE_DIR}/cmake/use_vala.cmake")
 
 	set (_vala_main_version "0.16")
-	set (_vala_min_version "0.15.1")
+	set (_vala_min_version "0.16.0")
 
 	if (VALAC)
 		message (STATUS "Use custom valac: ${VALAC}")
