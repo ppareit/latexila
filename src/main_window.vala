@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -100,7 +100,7 @@ public class MainWindow : Window
         { "BuildClean", Stock.CLEAR, N_("Cleanup Build _Files"), null,
             N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
             on_build_clean },
-        { "BuildStopExecution", Stock.STOP, N_("_Stop Execution"), "<Release>F12",
+        { "BuildStopExecution", Stock.STOP, N_("_Stop Execution"), null,
             N_("Stop Execution"), on_build_stop_execution },
         { "BuildViewLog", "view_log", N_("View _Log"), null,
             N_("View Log"), on_build_view_log },
@@ -170,7 +170,7 @@ public class MainWindow : Window
         // Translators: "Edit" here is an adjective.
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
             N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
-        { "ViewSidePanel", null, N_("_Side panel"), null,
+        { "ViewSidePanel", null, N_("_Side panel"), "<Release>F12",
             N_("Show or hide the side panel"), on_show_side_panel },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), on_show_bottom_panel },
