@@ -51,7 +51,7 @@ public class FileBrowser : Grid
 
     public FileBrowser (MainWindow main_window)
     {
-        row_spacing = 3;
+        row_spacing = 5;
         orientation = Orientation.VERTICAL;
         this._main_window = main_window;
         this._build_view = main_window.get_build_view ();
@@ -97,6 +97,8 @@ public class FileBrowser : Grid
         Grid grid = new Grid ();
         grid.set_orientation (Orientation.HORIZONTAL);
         grid.column_homogeneous = true;
+        grid.set_margin_left (3);
+        grid.set_margin_right (3);
         add (grid);
 
         Button home_button = Utils.get_toolbar_button (Stock.HOME);
@@ -168,6 +170,8 @@ public class FileBrowser : Grid
             typeof (File));
 
         _combo_box = new ComboBox.with_model (_parent_dir_store);
+        _combo_box.set_margin_left (3);
+        _combo_box.set_margin_right (3);
         add (_combo_box);
 
         // pixbuf
