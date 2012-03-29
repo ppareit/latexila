@@ -710,14 +710,22 @@ public class Symbols : Grid
     private static ListStore[] symbols_stores = new ListStore[8];
     private static ListStore mus_store;
     private unowned MainWindow main_window;
+    private IconView symbol_view;
+    private Button _clear_button;
 
     public Symbols (MainWindow main_window)
     {
-        init_stores ();
+        this.main_window = main_window;
 
         orientation = Orientation.VERTICAL;
-        this.main_window = main_window;
-        create_icon_views ();
+        set_row_spacing (3);
+
+        init_stores ();
+        create_combo_box ();
+        create_icon_view ();
+
+        show_all ();
+        _clear_button.hide ();
     }
 
     private void init_stores ()
@@ -775,22 +783,45 @@ public class Symbols : Grid
         stores_initialized = true;
     }
 
-    private void create_icon_views ()
+    private void create_combo_box ()
     {
-        /* show the categories */
-        IconView categories_view = new IconView.with_model (categories_store);
-        categories_view.set_pixbuf_column (CategoryColumn.ICON);
-        categories_view.set_text_column (CategoryColumn.NAME);
-        categories_view.set_selection_mode (SelectionMode.SINGLE);
-        categories_view.set_item_orientation (Orientation.HORIZONTAL);
-        categories_view.spacing = 5;
-        categories_view.row_spacing = 0;
-        categories_view.column_spacing = 0;
+        ComboBox combo_box = new ComboBox.with_model (categories_store);
+        combo_box.set_margin_left (3);
+        combo_box.set_margin_right (3);
 
-        add (categories_view);
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        combo_box.pack_start (pixbuf_renderer, false);
+        combo_box.set_attributes (pixbuf_renderer,
+            "pixbuf", CategoryColumn.ICON, null);
 
+        CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.ellipsize_set = true;
+        text_renderer.ellipsize = Pango.EllipsizeMode.END;
+        combo_box.pack_start (text_renderer, true);
+        combo_box.set_attributes (text_renderer, "text", CategoryColumn.NAME, null);
+
+        combo_box.set_active (0);
+
+        add (combo_box);
+
+        combo_box.changed.connect (() =>
+        {
+            int num = combo_box.get_active ();
+
+            if (symbol_view != null)
+                symbol_view.set_model (symbols_stores[num]);
+
+            if (num == symbols_stores.length - 1)
+                _clear_button.show ();
+            else
+                _clear_button.hide ();
+        });
+    }
+
+    private void create_icon_view ()
+    {
         /* show the symbols */
-        IconView symbol_view = new IconView.with_model (symbols_stores[0]);
+        symbol_view = new IconView.with_model (symbols_stores[0]);
         symbol_view.set_pixbuf_column (SymbolColumn.PIXBUF);
         symbol_view.set_tooltip_column (SymbolColumn.TOOLTIP);
         symbol_view.set_selection_mode (SelectionMode.SINGLE);
@@ -800,36 +831,19 @@ public class Symbols : Grid
         symbol_view.expand = true;
 
         Widget sw = Utils.add_scrollbar (symbol_view);
+        sw.expand = true;
         add (sw);
 
         /* clear button (for most used symbols) */
-        Button button = new Button.from_stock (Stock.CLEAR);
-        button.margin = 2;
-        add (button);
+        _clear_button = new Button.from_stock (Stock.CLEAR);
+        _clear_button.margin = 2;
+        add (_clear_button);
 
         /* signals */
-        button.clicked.connect (() =>
+        _clear_button.clicked.connect (() =>
         {
             mus_store.clear ();
             MostUsedSymbols.get_default ().clear ();
-        });
-
-        categories_view.selection_changed.connect (() =>
-        {
-            var selected_items = categories_view.get_selected_items ();
-            TreePath path = selected_items.nth_data (0);
-
-            if (path != null)
-            {
-                int num = path.get_indices ()[0];
-                // change the model
-                symbol_view.set_model (symbols_stores[num]);
-
-                if (num == symbols_stores.length - 1)
-                    button.show ();
-                else
-                    button.hide ();
-            }
         });
 
         symbol_view.selection_changed.connect (() =>
@@ -870,9 +884,6 @@ public class Symbols : Grid
                     package != "" ? package : null);
             }
         });
-
-        show_all ();
-        button.hide ();
     }
 
     private ListStore get_symbol_store (SymbolInfo[] symbols)
