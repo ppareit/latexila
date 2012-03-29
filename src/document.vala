@@ -595,7 +595,7 @@ public class Document : Gtk.SourceBuffer
 
         try
         {
-            tmp_dir = MyDirUtils.make_tmp (template);
+            tmp_dir = DirUtils.make_tmp (template);
         }
         catch (FileError e)
         {

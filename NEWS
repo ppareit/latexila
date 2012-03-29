@@ -1,5 +1,26 @@
 LaTeXila NEWS
 
+================================
+* Release 2.4.0 (March 28, 2012)
+================================
+
+- Document compilation: set temporary location if file not saved
+- More documentation
+- Structure: bug fix for the display of simple lists
+- Build View: remove button "show critical errors"
+- Templates: code clean-up
+- More LaTeX commands for the completion
+- F12 shortcut to show/hide the side panel
+- TODO file removed (now in the wiki)
+- Updated Spanish, Slovenian, Serbian, French, German, Latvian,
+  Norwegian bokmål and Czech translations
+
+Thanks to:
+Bruno Brouard, Daniel Mustieles, Kjartan Maraas, Marek Černocký,
+Mario Blättermann, Matej Urbančič, Matthieu Baerts, Rudolfs Mazurs,
+Мирослав Николић
+
+
 =============================
 * Release 2.3.1 (Feb 5, 2012)
 =============================

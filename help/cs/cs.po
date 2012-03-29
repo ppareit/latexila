@@ -2,19 +2,19 @@
 # Copyright (C) 2011 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
 #
-# Marek Černocký <marek@manet.cz>, 2011.
+# Marek Černocký <marek@manet.cz>, 2011, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2011-08-16 21:20+0000\n"
-"PO-Revision-Date: 2011-08-18 18:58+0200\n"
+"POT-Creation-Date: 2012-02-05 20:27+0000\n"
+"PO-Revision-Date: 2012-03-26 12:40+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "MIME-Version: 1.0\n"
-"Language: cs\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: cs\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: C/index.page:4(page/title)
@@ -186,10 +186,12 @@ msgstr "Použijte klávesovou zkratku: <key>F2</key> → <key>F11</key>."
 #: C/build_tools.page:123(section/p)
 msgid ""
 "The build tool is executed on the currently opened file. If the file belongs "
-"to a project, it is executed on the project's main file."
+"to a <link xref=\"projects\">project</link>, it is executed on the project's "
+"main file."
 msgstr ""
-"Nástroj pro sestaven je spuštěn na právě otevřeném souboru. Pokud soubor "
-"náleží do projektu, je zpracování provedeno na hlavním souboru projektu."
+"Nástroj pro sestavení je spuštěn na právě otevřeném souboru. Pokud soubor "
+"náleží do <link xref=\"projects\">projektu</link>, je zpracování provedeno "
+"na hlavním souboru projektu."
 
 #: C/build_tools.page:127(note/title)
 msgid "Hidden Build Tools"
@@ -344,3 +346,178 @@ msgstr ""
 "Jedná se o postprocesor používaný příkazem <cmd>rubber</cmd>. Chyby jsou "
 "rozděleny do dvou typů: chybné oblasti a ostatní. Na rozdíl od postprocesoru "
 "<em>latex</em> se nerozlišuje mezi kritickou chybou a pouhým varováním."
+
+#: C/completion.page:10(page/title)
+msgid "Completion of LaTeX commands"
+msgstr ""
+
+#: C/completion.page:13(synopsis/p)
+msgid ""
+"The purpose is to facilitate the writing of LaTeX commands, by showing "
+"proposals."
+msgstr ""
+
+#: C/completion.page:17(section/title)
+msgid "Interactive completion"
+msgstr ""
+
+#: C/completion.page:18(section/p)
+msgid ""
+"By default, when a LaTeX command is typed, proposals will be shown after two "
+"characters. This can be configured in the preferences dialog: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
+"\"tab\">LaTeX</gui> </guiseq>"
+msgstr ""
+"Když píšete příkaz LaTeX, standardně se po napsání dvou znaků zobrazí návrh. "
+"Toto chování můžete změnit v dialogovém okně předvoleb: <guiseq> <gui style="
+"\"menu\">Upravit</gui> <gui style=\"menu\">Předvolby</gui> <gui style=\"tab"
+"\">LaTeX</gui> </guiseq>"
+
+#: C/completion.page:30(section/title)
+msgid "Manual completion"
+msgstr ""
+
+#: C/completion.page:31(section/p)
+msgid ""
+"At any time, press <keyseq> <key>Ctrl</key> <key>Space</key> </keyseq> to "
+"show proposals."
+msgstr ""
+"Návrh si můžete také kdykoliv zobrazit zmáčknutím <keyseq> <key>Ctrl</key> "
+"<key>mezerník</key> </keyseq>."
+
+#: C/projects.page:10(page/title)
+msgid "Projects"
+msgstr "Projekty"
+
+#: C/projects.page:13(synopsis/p)
+msgid ""
+"When a LaTeX document is split into several *.tex files, creating a project "
+"is useful."
+msgstr ""
+
+#: C/projects.page:18(section/title)
+msgid "Manage projects"
+msgstr ""
+
+#: C/projects.page:20(section/p)
+msgid ""
+"All actions related to projects are located in the <gui style=\"menu"
+"\">Projects</gui> menu. A project contain only two pieces of information:"
+msgstr ""
+
+#: C/projects.page:25(item/p)
+msgid "The directory where the project is located."
+msgstr "Složka, ve které se projekt nachází."
+
+#: C/projects.page:26(item/p)
+msgid "The main *.tex file."
+msgstr "Hlavní soubor *.tex."
+
+#: C/projects.page:29(section/p)
+msgid ""
+"As a consequence, a directory can contain only one project, which is quite "
+"logical."
+msgstr ""
+
+#: C/projects.page:35(section/title)
+msgid "Usefulness of projects"
+msgstr ""
+
+#: C/projects.page:37(item/p)
+msgid ""
+"A <link xref=\"build_tools\">build tool</link> is executed on the project's "
+"main file."
+msgstr ""
+
+#: C/spell_checking.page:10(page/title)
+msgid "Spell Checking"
+msgstr "Kontrola pravopisu"
+
+#: C/spell_checking.page:13(synopsis/p)
+msgid "The purpose is to correct spelling mistakes easily."
+msgstr "Slouží ke snadné opravě překlepů v pravopisu."
+
+#: C/spell_checking.page:17(section/title)
+msgid "Use the spell checking"
+msgstr ""
+
+#: C/spell_checking.page:18(section/p)
+msgid ""
+"The spell checking can be activated or disabled via the menu: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </guiseq>"
+msgstr ""
+"Kontrolu pravopisu je možné aktivovat nebo zakázat v nabídce: <guiseq> <gui "
+"style=\"menu\">Upravit</gui> <gui style=\"menu\">Kontrola pravopisu</gui> "
+"</guiseq>"
+
+#: C/spell_checking.page:26(section/p)
+msgid ""
+"Once the spell checking is activated, the misspelled words will be "
+"underlined in red. A right click on a misspelled word will show proposals."
+msgstr ""
+
+#: C/spell_checking.page:31(section/p)
+msgid "To change the language, do a right click on the document."
+msgstr ""
+
+#: C/spell_checking.page:35(section/title)
+msgid "Dictionaries"
+msgstr "Slovníky"
+
+#: C/spell_checking.page:36(section/p)
+msgid ""
+"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> is used for "
+"the spell checking in LaTeXila. GtkSpell uses <link href=\"http://www."
+"abisource.com/projects/enchant/\">Enchant</link>, which uses one or several "
+"backends such as Hunspell or Aspell for the dictionaries."
+msgstr ""
+
+#: C/spell_checking.page:43(section/p)
+msgid ""
+"So if there is no dictionary for your language, try to know which backend is "
+"used by Enchant on your system, and install the dictionary for this backend. "
+"There are most probably packages available for your Linux distribution."
+msgstr ""
+
+#: C/structure.page:10(page/title)
+msgid "Document's Structure"
+msgstr ""
+
+#: C/structure.page:13(synopsis/p)
+msgid ""
+"The list of chapters, sections, sub-sections and other things like tables, "
+"figures, … of a document, to easily navigate in it."
+msgstr ""
+
+#: C/structure.page:18(section/title)
+msgid "Display the structure"
+msgstr ""
+
+#: C/structure.page:20(section/p)
+msgid ""
+"The structure can be displayed in the side panel. If the side panel is "
+"hidden, go to <guiseq> <gui style=\"menu\">View</gui> <gui style=\"menu"
+"\">Side panel</gui> </guiseq>."
+msgstr ""
+"Strukturu si je možné zobrazit v postranním panelu. Jestliže je postranní "
+"panel skrytý, jděte na <guiseq> <gui style=\"menu\">Zobrazit</gui> <gui "
+"style=\"menu\">Postranní panel</gui> </guiseq>."
+
+#: C/structure.page:29(section/p)
+msgid ""
+"The structure's content is not automatically updated. That's why there is a "
+"refresh button. If text is inserted in the document, the position of an item "
+"(e.g. a section) remains correct, as far as the item is still there, and is "
+"not modified."
+msgstr ""
+
+#: C/structure.page:37(section/title)
+msgid "Actions"
+msgstr ""
+
+#: C/structure.page:39(section/p)
+msgid ""
+"Some actions such as \"cut\", \"copy\" or \"comment\" can be performed on a "
+"structure's item. Either by a right click, or via the <gui style=\"menu"
+"\">Structure</gui> menu."
+msgstr ""
