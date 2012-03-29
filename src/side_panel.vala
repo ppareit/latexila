@@ -107,6 +107,8 @@ public class SidePanel : Grid
             "stock-id", SidePanelColumn.PIXBUF, null);
 
         CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.ellipsize_set = true;
+        text_renderer.ellipsize = Pango.EllipsizeMode.END;
         combo_box.pack_start (text_renderer, true);
         combo_box.set_attributes (text_renderer, "text", SidePanelColumn.NAME, null);
 
