@@ -786,10 +786,8 @@ public class Symbols : Grid
         categories_view.spacing = 5;
         categories_view.row_spacing = 0;
         categories_view.column_spacing = 0;
-        categories_view.hexpand = true;
 
         add (categories_view);
-        categories_view.show ();
 
         /* show the symbols */
         IconView symbol_view = new IconView.with_model (symbols_stores[0]);
@@ -803,7 +801,6 @@ public class Symbols : Grid
 
         Widget sw = Utils.add_scrollbar (symbol_view);
         add (sw);
-        sw.show_all ();
 
         /* clear button (for most used symbols) */
         Button button = new Button.from_stock (Stock.CLEAR);
@@ -873,6 +870,9 @@ public class Symbols : Grid
                     package != "" ? package : null);
             }
         });
+
+        show_all ();
+        button.hide ();
     }
 
     private ListStore get_symbol_store (SymbolInfo[] symbols)
