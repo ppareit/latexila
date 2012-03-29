@@ -137,17 +137,6 @@ public class Structure : Grid
             show_document (_main_window.active_document, true);
         });
 
-        // separator
-        SeparatorToolItem sep = new SeparatorToolItem ();
-        grid.add (sep);
-
-        // expand all button
-        Button expand_button = Utils.get_toolbar_button (Stock.ZOOM_IN);
-        expand_button.tooltip_text = _("Expand All");
-        grid.add (expand_button);
-
-        expand_button.clicked.connect (() => _tree_view.expand_all ());
-
         // collapse all button
         Button collapse_button = Utils.get_toolbar_button (Stock.ZOOM_OUT);
         collapse_button.tooltip_text = _("Collapse All");
@@ -156,7 +145,7 @@ public class Structure : Grid
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
 
         // separator
-        sep = new SeparatorToolItem ();
+        SeparatorToolItem sep = new SeparatorToolItem ();
         grid.add (sep);
 
         // simple list buttons
