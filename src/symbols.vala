@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -788,6 +788,7 @@ public class Symbols : Grid
         ComboBox combo_box = new ComboBox.with_model (categories_store);
         combo_box.set_margin_left (3);
         combo_box.set_margin_right (3);
+        combo_box.hexpand = true;
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         combo_box.pack_start (pixbuf_renderer, false);
