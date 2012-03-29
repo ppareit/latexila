@@ -23,7 +23,6 @@ public class FileBrowser : Grid
 {
     private enum ParentDirColumn
     {
-        INDENT,
         PIXBUF,
         NAME,
         FILE,
@@ -164,18 +163,12 @@ public class FileBrowser : Grid
     private void init_combo_box ()
     {
         _parent_dir_store = new ListStore (ParentDirColumn.N_COLUMNS,
-            typeof (string),    // indentation (spaces)
             typeof (string),    // pixbuf (stock-id)
             typeof (string),    // directory name
             typeof (File));
 
         _combo_box = new ComboBox.with_model (_parent_dir_store);
         add (_combo_box);
-
-        // indentation
-        CellRendererText text_renderer = new CellRendererText ();
-        _combo_box.pack_start (text_renderer, false);
-        _combo_box.set_attributes (text_renderer, "text", ParentDirColumn.INDENT, null);
 
         // pixbuf
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
@@ -184,7 +177,7 @@ public class FileBrowser : Grid
             "stock-id", ParentDirColumn.PIXBUF, null);
 
         // directory name
-        text_renderer = new CellRendererText ();
+        CellRendererText text_renderer = new CellRendererText ();
         _combo_box.pack_start (text_renderer, true);
         _combo_box.set_attributes (text_renderer, "text", ParentDirColumn.NAME, null);
         text_renderer.ellipsize_set = true;
@@ -473,9 +466,6 @@ public class FileBrowser : Grid
             else
                 basename = current.get_basename ();
 
-            // indentation
-            string indent = string.nfill (i * 2, ' ');
-
             // pixbuf
             string pixbuf;
             if (i == 0)
@@ -489,7 +479,6 @@ public class FileBrowser : Grid
             _parent_dir_store.append (out iter);
             _parent_dir_store.set (iter,
                 ParentDirColumn.FILE, current,
-                ParentDirColumn.INDENT, indent,
                 ParentDirColumn.NAME, basename,
                 ParentDirColumn.PIXBUF, pixbuf,
                 -1);
