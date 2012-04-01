@@ -188,7 +188,7 @@ public class MainWindow : Window
     private BuildView build_view;
     private Toolbar main_toolbar;
     private Toolbar edit_toolbar;
-    private SidePanel side_panel;
+    private SidePanel _side_panel;
     private Symbols symbols;
     private FileBrowser file_browser;
     private Structure _structure;
@@ -306,19 +306,19 @@ public class MainWindow : Window
 
         // side panel
         ToggleAction action_view_side_panel =
-            (ToggleAction) action_group.get_action ("ViewSidePanel");
-        side_panel = new SidePanel (this, action_view_side_panel);
+            action_group.get_action ("ViewSidePanel") as ToggleAction;
+        _side_panel = new SidePanel (action_view_side_panel);
 
         symbols = new Symbols (this);
-        side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
+        _side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
 
         file_browser = new FileBrowser (this);
-        side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
+        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
         _structure = new Structure (this, ui_manager);
-        side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
+        _side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
 
-        side_panel.restore_state ();
+        _side_panel.restore_state ();
 
         /* signal handlers */
 
@@ -488,10 +488,10 @@ public class MainWindow : Window
         vpaned.pack1 (vgrid_source_view, true, true);
         vpaned.pack2 (build_view, false, true);
 
-        main_hpaned.add1 (side_panel);
+        main_hpaned.add1 (_side_panel);
         main_hpaned.add2 (vpaned);
 
-        side_panel.show ();
+        _side_panel.show ();
         vpaned.show ();
 
         main_vgrid.add (statusbar);
@@ -638,7 +638,7 @@ public class MainWindow : Window
         show = settings.get_boolean ("side-panel-visible");
 
         if (! show)
-            side_panel.hide ();
+            _side_panel.hide ();
 
         action = (ToggleAction) action_group.get_action ("ViewSidePanel");
         action.set_active (show);
@@ -1152,8 +1152,6 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
         settings_ui.set_boolean ("bottom-panel-visible", action.active);
-
-        settings_ui.set_int ("side-panel-component", side_panel.get_active_component ());
 
         action = (ToggleAction) action_group.get_action ("BuildShowWarnings");
         settings_ui.set_boolean ("show-build-warnings", action.active);
@@ -1695,9 +1693,9 @@ public class MainWindow : Window
     {
         bool show = (action as ToggleAction).active;
         if (show)
-            side_panel.show ();
+            _side_panel.show ();
         else
-            side_panel.hide ();
+            _side_panel.hide ();
     }
 
     public void on_show_bottom_panel (Gtk.Action action)

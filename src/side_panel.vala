@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,63 +21,75 @@ using Gtk;
 
 public class SidePanel : Grid
 {
-    private unowned MainWindow main_window;
-    private unowned ToggleAction action_view_side_panel;
-
-    private Grid[] components;
-    private ComboBox combo_box;
-    private ListStore list_store;
-
-    public SidePanel (MainWindow main_window, ToggleAction action_view_side_panel)
+    private enum SidePanelColumn
     {
-        orientation = Orientation.VERTICAL;
-        this.main_window = main_window;
-        this.action_view_side_panel = action_view_side_panel;
+        PIXBUF,
+        NAME,
+        N_COLUMNS
+    }
 
-        Grid grid = new Grid ();
-        grid.set_orientation (Orientation.HORIZONTAL);
-        grid.column_spacing = 3;
-        grid.border_width = 3;
-        add (grid);
+    private GLib.Settings _settings;
+    private Gee.ArrayList<Grid?> _components;
+    private ComboBox _combo_box;
+    private ListStore _list_store;
+    private int _current_component = -1;
 
-        combo_box = get_combo_box ();
-        combo_box.set_hexpand (true);
-        grid.add (combo_box);
-        grid.add (get_close_button ());
+    public SidePanel (ToggleAction action_view_side_panel)
+    {
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+        _components = new Gee.ArrayList<Grid?> ();
+
+        margin_left = 6;
+        margin_top = 3;
+        column_spacing = 3;
+        row_spacing = 3;
+
+        init_combo_box ();
+        Button close_button = get_close_button (action_view_side_panel);
+
+        attach (_combo_box, 0, 0, 1, 1);
+        attach (close_button, 1, 0, 1, 1);
         show_all ();
-
-        show.connect (show_active_component);
-        hide.connect (hide_all_components);
     }
 
-    public void add_component (string name, string stock_id, Grid component)
+    private void init_combo_box ()
     {
-        TreeIter iter;
-        list_store.append (out iter);
-        list_store.set (iter,
-            SidePanelColumn.PIXBUF, stock_id,
-            SidePanelColumn.NAME, name,
-            -1);
+        _list_store = new ListStore (SidePanelColumn.N_COLUMNS,
+            typeof (string), // pixbuf (stock-id)
+            typeof (string)  // name
+        );
 
-        add (component);
-        components += component;
+        _combo_box = new ComboBox.with_model (_list_store);
+        _combo_box.hexpand = true;
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        _combo_box.pack_start (pixbuf_renderer, false);
+        _combo_box.set_attributes (pixbuf_renderer,
+            "stock-id", SidePanelColumn.PIXBUF, null);
+
+        CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.ellipsize_set = true;
+        text_renderer.ellipsize = Pango.EllipsizeMode.END;
+        _combo_box.pack_start (text_renderer, true);
+        _combo_box.set_attributes (text_renderer, "text", SidePanelColumn.NAME, null);
+
+        /* signals */
+        _combo_box.changed.connect (show_active_component);
+
+        // Save which component is displayed. Since the component can be different
+        // on each window, we make only a SET (not a GET).
+        _settings.bind ("side-panel-component", _combo_box, "active",
+            SettingsBindFlags.SET);
     }
 
-    public void restore_state ()
-    {
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-        int num = settings.get_int ("side-panel-component");
-        num = num.clamp (0, components.length - 1);
-        combo_box.set_active (num);
-    }
-
-    private Button get_close_button ()
+    private Button get_close_button (ToggleAction action_view_side_panel)
     {
         Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
         close_button.tooltip_text = _("Hide panel");
         close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
+
         close_button.clicked.connect (() =>
         {
             this.hide ();
@@ -87,52 +99,34 @@ public class SidePanel : Grid
         return close_button;
     }
 
-    private enum SidePanelColumn
+    public void add_component (string name, string stock_id, Grid component)
     {
-        PIXBUF,
-        NAME,
-        N_COLUMNS
+        TreeIter iter;
+        _list_store.append (out iter);
+        _list_store.set (iter,
+            SidePanelColumn.PIXBUF, stock_id,
+            SidePanelColumn.NAME, name);
+
+        _components.add (component);
+        attach (component, 0, _components.size, 2, 1);
     }
 
-    private ComboBox get_combo_box ()
+    public void restore_state ()
     {
-        list_store = new ListStore (SidePanelColumn.N_COLUMNS, typeof (string),
-            typeof (string));
-
-        ComboBox combo_box = new ComboBox.with_model (list_store);
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        combo_box.pack_start (pixbuf_renderer, false);
-        combo_box.set_attributes (pixbuf_renderer,
-            "stock-id", SidePanelColumn.PIXBUF, null);
-
-        CellRendererText text_renderer = new CellRendererText ();
-        text_renderer.ellipsize_set = true;
-        text_renderer.ellipsize = Pango.EllipsizeMode.END;
-        combo_box.pack_start (text_renderer, true);
-        combo_box.set_attributes (text_renderer, "text", SidePanelColumn.NAME, null);
-
-        combo_box.changed.connect (show_active_component);
-
-        return combo_box;
-    }
-
-    public int get_active_component ()
-    {
-        return combo_box.get_active ();
-    }
-
-    private void hide_all_components ()
-    {
-        foreach (Grid component in components)
+        foreach (Grid component in _components)
             component.hide ();
+
+        int num = _settings.get_int ("side-panel-component");
+        num = num.clamp (0, _components.size - 1);
+        _combo_box.set_active (num);
     }
 
     private void show_active_component ()
     {
-        hide_all_components ();
+        if (0 <= _current_component && _current_component < _components.size)
+            _components[_current_component].hide ();
 
-        int active = get_active_component ();
-            components[active].show ();
+        _current_component = _combo_box.active;
+        _components[_current_component].show ();
     }
 }

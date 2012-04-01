@@ -786,8 +786,6 @@ public class Symbols : Grid
     private void create_combo_box ()
     {
         ComboBox combo_box = new ComboBox.with_model (categories_store);
-        combo_box.set_margin_left (3);
-        combo_box.set_margin_right (3);
         combo_box.hexpand = true;
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
@@ -837,7 +835,6 @@ public class Symbols : Grid
 
         /* clear button (for most used symbols) */
         _clear_button = new Button.from_stock (Stock.CLEAR);
-        _clear_button.margin = 2;
         add (_clear_button);
 
         /* signals */
