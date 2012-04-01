@@ -136,6 +136,7 @@ public class SearchAndReplace : GLib.Object
         _main_window = main_window;
         _main_grid = new Grid ();
         _main_grid.set_column_spacing (3);
+        _main_grid.set_row_spacing (3);
 
         /* Arrow */
         _button_arrow = new Button ();
