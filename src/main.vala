@@ -105,6 +105,6 @@ int main (string[] args)
     check_xdg_data_dirs ();
     init_i18n ();
 
-    Latexila app = Latexila.get_instance ();
+    Latexila app = new Latexila ();
     return app.run (args);
 }

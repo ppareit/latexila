@@ -21,11 +21,9 @@
 
 public class Latexila : Gtk.Application
 {
-    private static Latexila _instance = null;
-
     public MainWindow active_window { get; private set; }
 
-    private Latexila ()
+    public Latexila ()
     {
         Object (application_id: "org.gnome.latexila");
         Environment.set_application_name ("LaTeXila");
@@ -50,10 +48,7 @@ public class Latexila : Gtk.Application
 
     public static Latexila get_instance ()
     {
-        if (_instance == null)
-            _instance = new Latexila ();
-
-        return _instance;
+        return GLib.Application.get_default () as Latexila;
     }
 
     private void init_primary_instance ()
