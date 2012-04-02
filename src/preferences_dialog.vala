@@ -227,17 +227,20 @@ public class PreferencesDialog : Dialog
         init_schemes_treeview (schemes_treeview, current_scheme_id);
 
         // the scheme has changed in the treeview -> update gsettings
-        schemes_treeview.cursor_changed.connect ((treeview) =>
+        TreeSelection schemes_select = schemes_treeview.get_selection ();
+        schemes_select.changed.connect (() =>
         {
-            TreePath tree_path;
-            TreeIter iter;
-            schemes_treeview.get_cursor (out tree_path, null);
+            unowned TreeModel model;
+            GLib.List<TreePath> rows = schemes_select.get_selected_rows (out model);
+            if (rows.length () != 1)
+                return;
 
-            TreeModel model = treeview.model;
-            model.get_iter (out iter, tree_path);
+            TreePath path = rows.nth_data (0);
+            TreeIter iter;
+            model.get_iter (out iter, path);
 
             string id;
-            model.get (iter, StyleSchemes.ID, out id, -1);
+            model.get (iter, StyleSchemes.ID, out id);
 
             settings.set_string ("scheme", id);
         });
