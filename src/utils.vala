@@ -394,6 +394,16 @@ namespace Utils
     /*************************************************************************/
     // Misc
 
+    public OptionContext get_option_context (OptionEntry[] options)
+    {
+        OptionContext context =
+            new OptionContext (_("- Integrated LaTeX Environment for GNOME"));
+        context.add_main_entries (options, Config.GETTEXT_PACKAGE);
+        context.add_group (Gtk.get_option_group (false));
+
+        return context;
+    }
+
     public void flush_queue ()
     {
         while (Gtk.events_pending ())

@@ -21,30 +21,6 @@
 
 using Gtk;
 
-bool _option_version;
-bool _option_new_document;
-bool _option_new_window;
-
-[CCode (array_length = false, array_null_terminated = true)]
-string[] _remaining_args;
-
-const OptionEntry[] _options =
-{
-    {"version", 'V', 0, OptionArg.NONE, ref _option_version,
-        N_("Show the application's version"), null },
-
-    { "new-document", 'n', 0, OptionArg.NONE, ref _option_new_document,
-        N_("Create new document"), null },
-
-    { "new-window", 0, 0, OptionArg.NONE, ref _option_new_window,
-        N_("Create a new top-level window in an existing instance of LaTeXila"), null },
-
-    { "", 0, 0, OptionArg.FILENAME_ARRAY, ref _remaining_args,
-        null, "[FILE...]" },
-
-    { null }
-};
-
 private void check_xdg_data_dirs ()
 {
     // GSettings looks for compiled schemas in locations specified by the XDG_DATA_DIRS
@@ -72,12 +48,18 @@ private void init_i18n ()
     Intl.textdomain (Config.GETTEXT_PACKAGE);
 }
 
-private void parse_cmd_line_options (string[] args)
+private void parse_cmd_line_options (ref unowned string[] args)
 {
-    OptionContext context =
-        new OptionContext (_("- Integrated LaTeX Environment for GNOME"));
-    context.add_main_entries (_options, Config.GETTEXT_PACKAGE);
-    context.add_group (Gtk.get_option_group (false));
+    bool option_version = false;
+
+    OptionEntry[] options = new OptionEntry[2];
+
+    options[0] = {"version", 'V', 0, OptionArg.NONE, ref option_version,
+        N_("Show the application's version"), null };
+
+    options[1] = {null};
+
+    OptionContext context = Utils.get_option_context (options);
 
     try
     {
@@ -93,7 +75,7 @@ private void parse_cmd_line_options (string[] args)
         Process.exit (1);
     }
 
-    if (_option_version)
+    if (option_version)
     {
         stdout.printf ("%s %s\n", Config.APP_NAME, Config.APP_VERSION);
         Process.exit (0);
@@ -104,6 +86,7 @@ int main (string[] args)
 {
     check_xdg_data_dirs ();
     init_i18n ();
+    parse_cmd_line_options (ref args);
 
     Latexila app = new Latexila ();
     return app.run (args);
