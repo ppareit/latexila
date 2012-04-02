@@ -21,6 +21,12 @@
 
 using Gtk;
 
+private struct CmdLineData
+{
+    bool new_document;
+    bool new_window;
+}
+
 private void check_xdg_data_dirs ()
 {
     // GSettings looks for compiled schemas in locations specified by the XDG_DATA_DIRS
@@ -48,16 +54,27 @@ private void init_i18n ()
     Intl.textdomain (Config.GETTEXT_PACKAGE);
 }
 
-private void parse_cmd_line_options (ref unowned string[] args)
+private CmdLineData parse_cmd_line_options (string[] args)
 {
-    bool option_version = false;
+    bool show_version = false;
+    string[] files_list;
+    CmdLineData data = CmdLineData ();
 
-    OptionEntry[] options = new OptionEntry[2];
+    OptionEntry[] options = new OptionEntry[5];
 
-    options[0] = {"version", 'V', 0, OptionArg.NONE, ref option_version,
+    options[0] = { "version", 'V', 0, OptionArg.NONE, ref show_version,
         N_("Show the application's version"), null };
 
-    options[1] = {null};
+    options[1] = { "new-document", 'n', 0, OptionArg.NONE, ref data.new_document,
+        N_("Create new document"), null };
+
+    options[2] = { "new-window", 0, 0, OptionArg.NONE, ref data.new_window,
+        N_("Create a new top-level window in an existing instance of LaTeXila"), null };
+
+    options[3] = { "", 0, 0, OptionArg.FILENAME_ARRAY, ref files_list,
+        null, "[FILE...]" };
+
+    options[4] = { null };
 
     OptionContext context = Utils.get_option_context (options);
 
@@ -75,19 +92,38 @@ private void parse_cmd_line_options (ref unowned string[] args)
         Process.exit (1);
     }
 
-    if (option_version)
+    if (show_version)
     {
         stdout.printf ("%s %s\n", Config.APP_NAME, Config.APP_VERSION);
         Process.exit (0);
     }
+
+    return data;
 }
 
 int main (string[] args)
 {
     check_xdg_data_dirs ();
     init_i18n ();
-    parse_cmd_line_options (ref args);
+
+    CmdLineData data = parse_cmd_line_options (args);
 
     Latexila app = new Latexila ();
-    return app.run (args);
+
+    try
+    {
+        app.register ();
+    }
+    catch (Error e)
+    {
+        error ("Failed to register the application: %s", e.message);
+    }
+
+    if (data.new_window)
+        app.activate_action ("new-window", null);
+
+    if (data.new_document)
+        app.activate_action ("new-document", null);
+
+    return app.run ();
 }

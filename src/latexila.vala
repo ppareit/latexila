@@ -28,7 +28,14 @@ public class Latexila : Gtk.Application
         Object (application_id: "org.gnome.latexila");
         Environment.set_application_name ("LaTeXila");
 
+        connect_signals ();
+        add_actions ();
+    }
+
+    private void connect_signals ()
+    {
         startup.connect (init_primary_instance);
+
         activate.connect (() =>
         {
             hold ();
@@ -52,6 +59,31 @@ public class Latexila : Gtk.Application
             if (0 < windows.length ())
                 active_window = windows.data as MainWindow;
 
+            release ();
+        });
+    }
+
+    private void add_actions ()
+    {
+        /* New document */
+        SimpleAction new_document_action = new SimpleAction ("new-document", null);
+        add_action (new_document_action);
+
+        new_document_action.activate.connect (() =>
+        {
+            hold ();
+            create_document ();
+            release ();
+        });
+
+        /* New window */
+        SimpleAction new_window_action = new SimpleAction ("new-window", null);
+        add_action (new_window_action);
+
+        new_window_action.activate.connect (() =>
+        {
+            hold ();
+            create_window ();
             release ();
         });
     }
