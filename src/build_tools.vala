@@ -231,8 +231,11 @@ public class BuildTools
     private void update_all_menus ()
     {
         _modified = true;
-        foreach (MainWindow window in Latexila.get_default ().get_windows ())
-            window.update_build_tools_menu ();
+        foreach (Gtk.Window window in Latexila.get_instance ().get_windows ())
+        {
+            MainWindow main_window = window as MainWindow;
+            main_window.update_build_tools_menu ();
+        }
     }
 
     private bool is_compilation (string icon)

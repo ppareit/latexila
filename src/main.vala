@@ -15,6 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Sébastien Wilmet
  */
 
 using Gtk;
@@ -98,40 +100,11 @@ private void parse_cmd_line_options (string[] args)
     }
 }
 
-private void reopen_files ()
-{
-    Latexila latexila = Latexila.get_default ();
-
-    GLib.Settings editor_settings =
-        new GLib.Settings ("org.gnome.latexila.preferences.editor");
-    if (editor_settings.get_boolean ("reopen-files"))
-    {
-        GLib.Settings window_settings =
-            new GLib.Settings ("org.gnome.latexila.state.window");
-
-        string[] uris = window_settings.get_strv ("documents");
-        latexila.open_documents (uris);
-    }
-}
-
 int main (string[] args)
 {
     check_xdg_data_dirs ();
     init_i18n ();
 
-    Gtk.init (ref args);
-
-    parse_cmd_line_options (args);
-
-    // Create the application instance
-    Latexila latexila = Latexila.get_default ();
-
-    reopen_files ();
-
-    if (_option_new_document)
-        latexila.create_document ();
-
-    Gtk.main ();
-
-    return 0;
+    Latexila app = Latexila.get_instance ();
+    return app.run (args);
 }

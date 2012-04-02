@@ -306,7 +306,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     private void init_calltip_window ()
     {
-        Latexila app = Latexila.get_default ();
+        Latexila app = Latexila.get_instance ();
         _calltip_window = new SourceCompletionInfo ();
         _calltip_window.set_transient_for (app.active_window);
 //        _calltip_window.set_sizing (800, 200, true, true);
@@ -336,7 +336,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         _calltip_window_label.set_markup (markup);
 
-        MainWindow window = Latexila.get_default ().active_window;
+        MainWindow window = Latexila.get_instance ().active_window;
         _calltip_window.set_transient_for (window);
 
         // Calltip at a fixed place (after the '{' or '[' of the current argument).

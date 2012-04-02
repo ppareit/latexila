@@ -19,31 +19,51 @@
  * Author: Sébastien Wilmet
  */
 
-public class Latexila : GLib.Object
+public class Latexila : Gtk.Application
 {
     private static Latexila _instance = null;
-    private Gee.List<MainWindow> _windows;
 
     public MainWindow active_window { get; private set; }
 
-    // Latexila is a singleton.
     private Latexila ()
     {
-        _windows = new Gee.LinkedList<MainWindow> ();
+        Object (application_id: "org.gnome.latexila");
+        Environment.set_application_name ("LaTeXila");
 
-        set_application_icons ();
-        StockIcons.add_custom ();
+        startup.connect (init_primary_instance);
+        activate.connect (() => active_window.present ());
 
-        AppSettings.get_default ();
-        create_window ();
+        shutdown.connect (() =>
+        {
+            Projects.get_default ().save ();
+            BuildTools.get_default ().save ();
+            MostUsedSymbols.get_default ().save ();
+        });
+
+        window_removed.connect (() =>
+        {
+            unowned List<weak Gtk.Window> windows = get_windows ();
+            if (0 < windows.length ())
+                active_window = windows.data as MainWindow;
+        });
     }
 
-    public static Latexila get_default ()
+    public static Latexila get_instance ()
     {
         if (_instance == null)
             _instance = new Latexila ();
 
         return _instance;
+    }
+
+    private void init_primary_instance ()
+    {
+        set_application_icons ();
+        StockIcons.add_custom ();
+
+        AppSettings.get_default ();
+        create_window ();
+        reopen_files ();
     }
 
     private void set_application_icons ()
@@ -70,17 +90,30 @@ public class Latexila : GLib.Object
         Gtk.Window.set_default_icon_list (list);
     }
 
-    public Gee.List<MainWindow> get_windows ()
+    private void reopen_files ()
     {
-        return _windows;
+        GLib.Settings editor_settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.editor");
+
+        if (editor_settings.get_boolean ("reopen-files"))
+        {
+            GLib.Settings window_settings =
+                new GLib.Settings ("org.gnome.latexila.state.window");
+
+            string[] uris = window_settings.get_strv ("documents");
+            open_documents (uris);
+        }
     }
 
     // Get all the documents currently opened.
     public Gee.List<Document> get_documents ()
     {
         Gee.List<Document> all_documents = new Gee.LinkedList<Document> ();
-        foreach (MainWindow window in _windows)
-            all_documents.add_all (window.get_documents ());
+        foreach (Gtk.Window window in get_windows ())
+        {
+            MainWindow main_window = window as MainWindow;
+            all_documents.add_all (main_window.get_documents ());
+        }
 
         return all_documents;
     }
@@ -89,8 +122,11 @@ public class Latexila : GLib.Object
     public Gee.List<DocumentView> get_views ()
     {
         Gee.List<DocumentView> all_views = new Gee.LinkedList<DocumentView> ();
-        foreach (MainWindow window in _windows)
-            all_views.add_all (window.get_views ());
+        foreach (Gtk.Window window in get_windows ())
+        {
+            MainWindow main_window = window as MainWindow;
+            all_views.add_all (main_window.get_views ());
+        }
 
         return all_views;
     }
@@ -101,25 +137,11 @@ public class Latexila : GLib.Object
             active_window.save_state ();
 
         MainWindow window = new MainWindow ();
-        _windows.add (window);
+        add_window (window);
         active_window = window;
 
         if (screen != null)
             window.set_screen (screen);
-
-        window.destroy.connect (() =>
-        {
-            _windows.remove (window);
-            if (_windows.size == 0)
-            {
-                Projects.get_default ().save ();
-                BuildTools.get_default ().save ();
-                MostUsedSymbols.get_default ().save ();
-                Gtk.main_quit ();
-            }
-            else if (window == active_window)
-                active_window = _windows.first ();
-        });
 
         window.focus_in_event.connect (() =>
         {

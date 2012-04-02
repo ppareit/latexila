@@ -432,7 +432,7 @@ public class MainWindow : Window
         Gtk.drag_dest_add_uri_targets (this);
         drag_data_received.connect ((dc, x, y, selection_data, info, time) =>
         {
-            Latexila app = Latexila.get_default ();
+            Latexila app = Latexila.get_instance ();
             app.open_documents (selection_data.get_uris ());
             Gtk.drag_finish (dc, true, true, time);
         });
@@ -696,8 +696,10 @@ public class MainWindow : Window
     public DocumentTab? open_document (File location, bool jump_to = true)
     {
         /* check if the document is already opened */
-        foreach (MainWindow w in Latexila.get_default ().get_windows ())
+        foreach (Window window in Latexila.get_instance ().get_windows ())
         {
+            MainWindow w = window as MainWindow;
+
             foreach (Document doc in w.get_documents ())
             {
                 if (doc.location == null || ! location.equal (doc.location))
@@ -1165,7 +1167,7 @@ public class MainWindow : Window
 
     private void move_tab_to_new_window (DocumentTab tab)
     {
-        MainWindow new_window = Latexila.get_default ().create_window ();
+        MainWindow new_window = Latexila.get_instance ().create_window ();
         DocumentView view = tab.view;
         documents_panel.remove_tab (tab);
 
@@ -1257,7 +1259,7 @@ public class MainWindow : Window
             // save all the documents belonging to the project
             else
             {
-                Gee.List<Document> docs = Latexila.get_default ().get_documents ();
+                Gee.List<Document> docs = Latexila.get_instance ().get_documents ();
                 foreach (Document doc in docs)
                 {
                     if (doc.project_id == project_id)
@@ -1502,7 +1504,7 @@ public class MainWindow : Window
 
     public void on_new_window ()
     {
-        Latexila.get_default ().create_window ();
+        Latexila.get_instance ().create_window ();
     }
 
     public void on_file_open ()

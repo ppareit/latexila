@@ -1,11 +1,10 @@
 Requirements
 ============
 
-GTK+ >= 2.16
-GtkSourceView >= 2.10
-GLib >= 2.30
+GTK+ >= 3.4
+GtkSourceView >= 3.0
+GLib >= 2.32
 libgee
-unique
 GtkSpell
 gdk-x11
 x11
