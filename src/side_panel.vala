@@ -75,11 +75,6 @@ public class SidePanel : Grid
 
         /* signals */
         _combo_box.changed.connect (show_active_component);
-
-        // Save which component is displayed. Since the component can be different
-        // on each window, we make only a SET (not a GET).
-        _settings.bind ("side-panel-component", _combo_box, "active",
-            SettingsBindFlags.SET);
     }
 
     private Button get_close_button (ToggleAction action_view_side_panel)
@@ -119,6 +114,13 @@ public class SidePanel : Grid
         int num = _settings.get_int ("side-panel-component");
         num = num.clamp (0, _components.size - 1);
         _combo_box.set_active (num);
+
+        // Save which component is displayed. Since the component can be different
+        // on each window, we make only a SET (not a GET).
+        // The setting is bind only after getting the old value, otherwise the old value
+        // is overwritten.
+        _settings.bind ("side-panel-component", _combo_box, "active",
+            SettingsBindFlags.SET);
     }
 
     private void show_active_component ()
