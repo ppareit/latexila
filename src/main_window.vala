@@ -503,39 +503,42 @@ public class MainWindow : Window
         show_or_hide_build_messages ();
     }
 
-    public List<Document> get_documents ()
+    public Gee.List<Document> get_documents ()
     {
-        List<Document> res = null;
-        int nb = documents_panel.get_n_pages ();
-        for (int i = 0 ; i < nb ; i++)
+        Gee.List<Document> all_documents = new Gee.LinkedList<Document> ();
+        int nb_documents = documents_panel.get_n_pages ();
+        for (int i = 0 ; i < nb_documents ; i++)
         {
-            DocumentTab tab = (DocumentTab) documents_panel.get_nth_page (i);
-            res.append (tab.document);
+            DocumentTab tab = documents_panel.get_nth_page (i) as DocumentTab;
+            all_documents.add (tab.document);
         }
-        return res;
+
+        return all_documents;
     }
 
-    public List<Document> get_unsaved_documents ()
+    public Gee.List<Document> get_unsaved_documents ()
     {
-        List<Document> list = null;
+        Gee.List<Document> unsaved_documents = new Gee.LinkedList<Document> ();
         foreach (Document doc in get_documents ())
         {
             if (doc.get_modified ())
-                list.append (doc);
+                unsaved_documents.add (doc);
         }
-        return list;
+
+        return unsaved_documents;
     }
 
-    public List<DocumentView> get_views ()
+    public Gee.List<DocumentView> get_views ()
     {
-        List<DocumentView> res = null;
-        int nb = documents_panel.get_n_pages ();
-        for (int i = 0 ; i < nb ; i++)
+        Gee.List<DocumentView> all_views = new Gee.LinkedList<Document> ();
+        int nb_documents = documents_panel.get_n_pages ();
+        for (int i = 0 ; i < nb_documents ; i++)
         {
-            DocumentTab tab = (DocumentTab) documents_panel.get_nth_page (i);
-            res.append (tab.view);
+            DocumentTab tab = documents_panel.get_nth_page (i) as DocumentTab;
+            all_views.add (tab.view);
         }
-        return res;
+
+        return all_views;
     }
 
     private void initialize_menubar_and_toolbar ()
@@ -693,7 +696,7 @@ public class MainWindow : Window
     public DocumentTab? open_document (File location, bool jump_to = true)
     {
         /* check if the document is already opened */
-        foreach (MainWindow w in Latexila.get_default ().windows)
+        foreach (MainWindow w in Latexila.get_default ().get_windows ())
         {
             foreach (Document doc in w.get_documents ())
             {
@@ -1028,19 +1031,19 @@ public class MainWindow : Window
     // return true if all the documents are closed
     private bool close_all_documents ()
     {
-        List<Document> unsaved_documents = get_unsaved_documents ();
+        Gee.List<Document> unsaved_documents = get_unsaved_documents ();
 
         /* no unsaved document */
-        if (unsaved_documents == null)
+        if (unsaved_documents.size == 0)
         {
             documents_panel.remove_all_tabs ();
             return true;
         }
 
         /* only one unsaved document */
-        else if (unsaved_documents.next == null)
+        else if (unsaved_documents.size == 1)
         {
-            Document doc = unsaved_documents.data;
+            Document doc = unsaved_documents.first ();
             active_tab = doc.tab;
             if (close_tab (doc.tab))
             {
@@ -1107,7 +1110,7 @@ public class MainWindow : Window
         });
     }
 
-    public void save_state (bool sync = false)
+    public void save_state ()
     {
         /* state of the window */
         GLib.Settings settings_window =
@@ -1158,12 +1161,6 @@ public class MainWindow : Window
 
         action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
         settings_ui.set_boolean ("show-build-badboxes", action.active);
-
-        if (sync)
-        {
-            settings_window.sync ();
-            settings_ui.sync ();
-        }
     }
 
     private void move_tab_to_new_window (DocumentTab tab)
@@ -1260,7 +1257,7 @@ public class MainWindow : Window
             // save all the documents belonging to the project
             else
             {
-                List<Document> docs = Latexila.get_default ().get_documents ();
+                Gee.List<Document> docs = Latexila.get_default ().get_documents ();
                 foreach (Document doc in docs)
                 {
                     if (doc.project_id == project_id)

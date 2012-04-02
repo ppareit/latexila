@@ -30,9 +30,9 @@ namespace Dialogs
     }
 
     public void
-    close_several_unsaved_documents (MainWindow window, List<Document> unsaved_docs)
+    close_several_unsaved_documents (MainWindow window, Gee.List<Document> unsaved_docs)
     {
-        return_if_fail (unsaved_docs.length () >= 2);
+        return_if_fail (unsaved_docs.size >= 2);
 
         Dialog dialog = new Dialog.with_buttons (null,
             window,
@@ -64,7 +64,7 @@ namespace Dialogs
         primary_label.margin_bottom = 4;
         primary_label.set_markup ("<span weight=\"bold\" size=\"larger\">"
             + _("There are %d documents with unsaved changes. Save changes before closing?")
-            .printf (unsaved_docs.length ())
+            .printf (unsaved_docs.size)
             + "</span>");
 
         grid.attach (primary_label, 1, 0, 1, 1);
