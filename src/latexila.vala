@@ -29,20 +29,30 @@ public class Latexila : Gtk.Application
         Environment.set_application_name ("LaTeXila");
 
         startup.connect (init_primary_instance);
-        activate.connect (() => active_window.present ());
+        activate.connect (() =>
+        {
+            hold ();
+            active_window.present ();
+            release ();
+        });
 
         shutdown.connect (() =>
         {
+            hold ();
             Projects.get_default ().save ();
             BuildTools.get_default ().save ();
             MostUsedSymbols.get_default ().save ();
+            release ();
         });
 
         window_removed.connect (() =>
         {
+            hold ();
             unowned List<weak Gtk.Window> windows = get_windows ();
             if (0 < windows.length ())
                 active_window = windows.data as MainWindow;
+
+            release ();
         });
     }
 
@@ -53,12 +63,14 @@ public class Latexila : Gtk.Application
 
     private void init_primary_instance ()
     {
+        hold ();
         set_application_icons ();
         StockIcons.add_custom ();
 
         AppSettings.get_default ();
         create_window ();
         reopen_files ();
+        release ();
     }
 
     private void set_application_icons ()
