@@ -37,7 +37,5 @@ src/structure.vala
 src/symbols.vala
 src/tab_info_bar.vala
 src/templates.vala
-[type: gettext/glade]src/ui/build_tool.ui
 [type: gettext/glade]src/ui/preferences_dialog.ui
-[type: gettext/glade]src/ui/search_and_replace.ui
 src/utils.vala
