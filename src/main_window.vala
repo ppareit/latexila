@@ -1062,7 +1062,7 @@ public class MainWindow : Window
         TextIter iter;
         active_document.get_iter_at_mark (out iter, active_document.get_insert ());
         int row = (int) iter.get_line ();
-        int col = (int) active_view.my_get_visual_column (iter);
+        int col = (int) active_view.get_visual_column (iter);
         statusbar.set_cursor_position (row + 1, col + 1);
     }
 
