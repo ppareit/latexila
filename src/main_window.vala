@@ -433,7 +433,15 @@ public class MainWindow : Window
         drag_data_received.connect ((dc, x, y, selection_data, info, time) =>
         {
             Latexila app = Latexila.get_instance ();
-            app.open_documents (selection_data.get_uris ());
+
+            File[] files = {};
+            foreach (string uri in selection_data.get_uris ())
+            {
+                if (0 < uri.length)
+                    files += File.new_for_uri (uri);
+            }
+
+            app.open_documents (files);
             Gtk.drag_finish (dc, true, true, time);
         });
 

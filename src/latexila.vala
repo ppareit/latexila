@@ -86,6 +86,25 @@ public class Latexila : Gtk.Application
             create_window ();
             release ();
         });
+
+        /* Open files */
+        VariantType strings_array = new VariantType ("as");
+        SimpleAction open_files_action = new SimpleAction ("open-files", strings_array);
+        add_action (open_files_action);
+
+        open_files_action.activate.connect ((param) =>
+        {
+            string[] uris = param.dup_strv ();
+            File[] files = {};
+
+            foreach (string uri in uris)
+            {
+                if (0 < uri.length)
+                    files += File.new_for_uri (uri);
+            }
+
+            open_documents (files);
+        });
     }
 
     public static Latexila get_instance ()
@@ -140,7 +159,14 @@ public class Latexila : Gtk.Application
                 new GLib.Settings ("org.gnome.latexila.state.window");
 
             string[] uris = window_settings.get_strv ("documents");
-            open_documents (uris);
+            File[] files = {};
+            foreach (string uri in uris)
+            {
+                if (0 < uri.length)
+                    files += File.new_for_uri (uri);
+            }
+
+            open_documents (files);
         }
     }
 
@@ -197,17 +223,12 @@ public class Latexila : Gtk.Application
         active_window.create_tab (true);
     }
 
-    public void open_documents (
-        [CCode (array_length = false, array_null_terminated = true)] string[] uris)
+    public void open_documents (File[] files)
     {
         bool jump_to = true;
-        foreach (string uri in uris)
+        foreach (File file in files)
         {
-            if (uri.length == 0)
-                continue;
-
-            File location = File.new_for_uri (uri);
-            active_window.open_document (location, jump_to);
+            active_window.open_document (file, jump_to);
             jump_to = false;
         }
     }

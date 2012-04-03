@@ -25,6 +25,7 @@ private struct CmdLineData
 {
     bool new_document;
     bool new_window;
+    Variant? files_to_open;
 }
 
 private void check_xdg_data_dirs ()
@@ -54,12 +55,16 @@ private void init_i18n ()
     Intl.textdomain (Config.GETTEXT_PACKAGE);
 }
 
+// Put this here because inside a function is not possible...
+[CCode (array_length = false, array_null_terminated = true)]
+string[] files_list;
+
 private CmdLineData parse_cmd_line_options (string[] args)
 {
     bool show_version = false;
-    string[] files_list;
     CmdLineData data = CmdLineData ();
 
+    /* Definition of the options */
     OptionEntry[] options = new OptionEntry[5];
 
     options[0] = { "version", 'V', 0, OptionArg.NONE, ref show_version,
@@ -76,7 +81,11 @@ private CmdLineData parse_cmd_line_options (string[] args)
 
     options[4] = { null };
 
-    OptionContext context = Utils.get_option_context (options);
+    /* Parse the command line and extract data */
+    OptionContext context =
+        new OptionContext (_("- Integrated LaTeX Environment for GNOME"));
+    context.add_main_entries (options, Config.GETTEXT_PACKAGE);
+    context.add_group (Gtk.get_option_group (false));
 
     try
     {
@@ -96,6 +105,23 @@ private CmdLineData parse_cmd_line_options (string[] args)
     {
         stdout.printf ("%s %s\n", Config.APP_NAME, Config.APP_VERSION);
         Process.exit (0);
+    }
+
+    if (files_list.length == 0)
+        data.files_to_open = null;
+    else
+    {
+        string[] uris = {};
+        foreach (string filename in files_list)
+        {
+            // Call File.new_for_commandline_arg() here (and not in the Latexila class)
+            // because relative path resolution needs the right current working directory,
+            // which can be different for the primary instance.
+            File file = File.new_for_commandline_arg (filename);
+            uris += file.get_uri ();
+        }
+
+        data.files_to_open = new Variant.strv (uris);
     }
 
     return data;
@@ -121,6 +147,9 @@ int main (string[] args)
 
     if (data.new_window)
         app.activate_action ("new-window", null);
+
+    if (data.files_to_open != null)
+        app.activate_action ("open-files", data.files_to_open);
 
     if (data.new_document)
         app.activate_action ("new-document", null);
