@@ -6,8 +6,6 @@ GtkSourceView >= 3.0
 GLib >= 2.32
 libgee
 GtkSpell
-gdk-x11
-x11
 CMake >= 2.6.4
 gettext
 ITS Tool

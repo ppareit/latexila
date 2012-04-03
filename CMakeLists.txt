@@ -49,11 +49,9 @@ endif ()
 find_package (PkgConfig)
 pkg_check_modules (GTK REQUIRED "gtk+-3.0 >= 3.4")
 pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-3.0")
-#pkg_check_modules (GTKSPELL REQUIRED "gtkspell-2.0")
 pkg_check_modules (GEE REQUIRED "gee-1.0")
 pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.32")
-pkg_check_modules (GDK-X11 REQUIRED "gdk-x11-3.0")
-pkg_check_modules (X11 REQUIRED "x11")
+#pkg_check_modules (GTKSPELL REQUIRED "gtkspell-2.0")
 
 if (WITH_GNOME)
 	pkg_check_modules (DESKTOP-SCHEMAS REQUIRED "gsettings-desktop-schemas")
@@ -69,23 +67,17 @@ add_definitions (-include config.h)
 add_definitions (
 	${GTK_CFLAGS}
 	${GTKSOURCEVIEW_CFLAGS}
-# 	${GTKSPELL_CFLAGS}
 	${GEE_CFLAGS}
 	${GIO_CFLAGS}
-#	${UNIQUE_CFLAGS}
-	${GDK-X11_CFLAGS}
-	${X11_CFLAGS}
+# 	${GTKSPELL_CFLAGS}
 )
 
 link_libraries (
 	${GTK_LIBRARIES}
 	${GTKSOURCEVIEW_LIBRARIES}
-# 	${GTKSPELL_LIBRARIES}
 	${GEE_LIBRARIES}
 	${GIO_LIBRARIES}
-#	${UNIQUE_LIBRARIES}
-	${GDK-X11_LIBRARIES}
-	${X11_LIBRARIES}
+# 	${GTKSPELL_LIBRARIES}
 )
 
 include ("${latexila_SOURCE_DIR}/cmake/itstool.cmake")

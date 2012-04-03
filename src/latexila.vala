@@ -196,7 +196,7 @@ public class Latexila : Gtk.Application
         return all_views;
     }
 
-    public MainWindow create_window (Gdk.Screen? screen = null)
+    public MainWindow create_window ()
     {
         if (active_window != null)
             active_window.save_state ();
@@ -204,9 +204,6 @@ public class Latexila : Gtk.Application
         MainWindow window = new MainWindow ();
         add_window (window);
         active_window = window;
-
-        if (screen != null)
-            window.set_screen (screen);
 
         window.focus_in_event.connect (() =>
         {

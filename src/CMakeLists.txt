@@ -9,9 +9,6 @@ vala_precompile (
 		gtk+-3.0
 		gtksourceview-3.0
 		gee-1.0
-#		unique-1.0
-		gdk-x11-3.0
-		x11
 		posix
 
 	CUSTOM_VAPIS

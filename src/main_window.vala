@@ -889,27 +889,6 @@ public class MainWindow : Window
         return null;
     }
 
-    public bool is_on_workspace_screen (Gdk.Screen? screen, uint workspace)
-    {
-        if (screen != null)
-        {
-            string cur_name = screen.get_display ().get_name ();
-            int cur_n = screen.get_number ();
-            Gdk.Screen s = this.get_screen ();
-            string name = s.get_display ().get_name ();
-            int n = s.get_number ();
-
-            if (cur_name != name || cur_n != n)
-                return false;
-        }
-
-        if (! this.get_realized ())
-            this.realize ();
-
-        uint ws = Utils.get_window_workspace (this);
-        return ws == workspace || ws == Utils.ALL_WORKSPACES;
-    }
-
     private void sync_name (DocumentTab tab)
     {
         if (tab == active_tab)
