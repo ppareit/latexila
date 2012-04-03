@@ -5,7 +5,7 @@ GTK+ >= 3.4
 GtkSourceView >= 3.0
 GLib >= 2.32
 libgee
-GtkSpell
+GtkSpell >= 3.0 (not yet released)
 CMake >= 2.6.4
 gettext
 ITS Tool

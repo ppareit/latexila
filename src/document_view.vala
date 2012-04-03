@@ -174,22 +174,22 @@ public class DocumentView : Gtk.SourceView
     {
         disable_spell_checking ();
 
-//        try
-//        {
-//            // Will try the best language depending on the LANG environment variable.
-//            new GtkSpell.attach (this, null);
-//        }
-//        catch (GtkspellError e)
-//        {
-//            warning ("Spell error: %s", e.message);
-//        }
+        try
+        {
+            // Will try the best language depending on the LANG environment variable.
+            new GtkSpell.attach (this, null);
+        }
+        catch (GtkspellError e)
+        {
+            warning ("Spell error: %s", e.message);
+        }
     }
 
     public void disable_spell_checking ()
     {
-//        GtkSpell? spell = GtkSpell.get_from_text_view (this);
-//        if (spell != null)
-//            spell.detach ();
+        GtkSpell? spell = GtkSpell.get_from_text_view (this);
+        if (spell != null)
+            spell.detach ();
     }
 
     private bool on_backspace (Gdk.EventKey event)
@@ -197,7 +197,6 @@ public class DocumentView : Gtk.SourceView
         // See GDK_KEY_BackSpace in gdk/gdkkeysyms.h (not available in Vala)
 
         // TODO~ connect/disconnect the signal when settings in gsettings change
-        // note: this function will be removed when latexila will become a Gedit plugin...
         if (! _editor_settings.get_boolean ("insert-spaces")
             || ! _editor_settings.get_boolean ("forget-no-tabs")
             || event.keyval != 0xff08
