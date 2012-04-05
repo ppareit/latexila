@@ -44,7 +44,8 @@ public class GotoLine : Grid
 
         entry = new Entry ();
         add (entry);
-        entry.set_icon_from_stock (EntryIconPosition.SECONDARY, Stock.JUMP_TO);
+        Icon icon = new ThemedIcon.with_default_fallbacks ("go-jump-symbolic");
+        entry.set_icon_from_gicon (EntryIconPosition.SECONDARY, icon);
         entry.set_icon_activatable (EntryIconPosition.SECONDARY, true);
         entry.set_tooltip_text (_("Line you want to move the cursor to"));
         entry.set_size_request (100, -1);
@@ -302,7 +303,8 @@ public class SearchAndReplace : GLib.Object
     private void init_find_entry ()
     {
         _entry_find = new Entry ();
-        _entry_find.primary_icon_stock = Stock.PROPERTIES;
+        _entry_find.primary_icon_gicon =
+            new ThemedIcon.with_default_fallbacks ("document-properties-symbolic");
         _entry_find.primary_icon_activatable = true;
         _entry_find.set_tooltip_text (_("Search for"));
         _entry_find.can_focus = true;
