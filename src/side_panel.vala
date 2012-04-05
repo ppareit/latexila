@@ -34,7 +34,9 @@ public class SidePanel : Grid
     private ListStore _list_store;
     private int _current_component = -1;
 
-    public SidePanel (ToggleAction action_view_side_panel)
+    public signal void closed ();
+
+    public SidePanel ()
     {
         _settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
         _components = new Gee.ArrayList<Grid?> ();
@@ -45,7 +47,7 @@ public class SidePanel : Grid
         row_spacing = 3;
 
         init_combo_box ();
-        Button close_button = get_close_button (action_view_side_panel);
+        Button close_button = get_close_button ();
 
         attach (_combo_box, 0, 0, 1, 1);
         attach (close_button, 1, 0, 1, 1);
@@ -77,7 +79,7 @@ public class SidePanel : Grid
         _combo_box.changed.connect (show_active_component);
     }
 
-    private Button get_close_button (ToggleAction action_view_side_panel)
+    private Button get_close_button ()
     {
         Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
@@ -88,7 +90,7 @@ public class SidePanel : Grid
         close_button.clicked.connect (() =>
         {
             this.hide ();
-            action_view_side_panel.active = false;
+            closed ();
         });
 
         return close_button;

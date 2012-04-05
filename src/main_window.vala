@@ -305,9 +305,12 @@ public class MainWindow : Window
         build_view = new BuildView (this, build_toolbar, action_view_bottom_panel);
 
         // side panel
+        _side_panel = new SidePanel ();
+
         ToggleAction action_view_side_panel =
             action_group.get_action ("ViewSidePanel") as ToggleAction;
-        _side_panel = new SidePanel (action_view_side_panel);
+
+        _side_panel.closed.connect (() => action_view_side_panel.active = false);
 
         symbols = new Symbols (this);
         _side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
