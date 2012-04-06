@@ -24,11 +24,11 @@ private class BuildToolDialog : Dialog
 {
     private static BuildToolDialog _instance = null;
 
-    private Entry _entry_label;
+    private ErrorEntry _entry_label;
     private Entry _entry_desc;
     private Entry _entry_extensions;
     private ComboBox _combobox_icon;
-    private Entry _entry_command;
+    private ErrorEntry _entry_command;
     private Button _button_add;
     private TreeView _treeview_jobs;
     private Button _button_delete;
@@ -135,7 +135,7 @@ private class BuildToolDialog : Dialog
         grid.attach (arrow, 1, 0, 1, 1);
         grid.set_hexpand (false);
 
-        _entry_label = new Entry ();
+        _entry_label = new ErrorEntry ();
         _entry_label.set_margin_left (12);
         grid.attach (_entry_label, 0, 1, 2, 1);
 
@@ -179,7 +179,7 @@ private class BuildToolDialog : Dialog
         placeholder_view.set_tooltip_text (
             _("The program for viewing documents.\nIts value can be changed in the preferences dialog."));
 
-        _entry_command = new Entry ();
+        _entry_command = new ErrorEntry ();
         _entry_command.hexpand = true;
 
         _button_add = new Button.from_stock (Stock.ADD);
@@ -384,8 +384,8 @@ private class BuildToolDialog : Dialog
     {
         _entry_command.text = "";
         _jobs_store.clear ();
-        Utils.set_entry_error (_entry_label, false);
-        Utils.set_entry_error (_entry_command, false);
+        _entry_label.error = false;
+        _entry_command.error = false;
 
         if (build_tool_num == -1)
             _instance.init_new_build_tool ();
@@ -442,28 +442,14 @@ private class BuildToolDialog : Dialog
         {
             /* check if the form is correctly filled */
 
-            bool ok = true;
-
             // no label
-            if (_entry_label.text.strip () == "")
-            {
-                Utils.set_entry_error (_entry_label, true);
-                ok = false;
-            }
-            else
-                Utils.set_entry_error (_entry_label, false);
+            _entry_label.error = _entry_label.text.strip () == "";
 
             // no job
             TreeIter iter;
-            if (! _jobs_store.get_iter_first (out iter))
-            {
-                Utils.set_entry_error (_entry_command, true);
-                ok = false;
-            }
-            else
-                Utils.set_entry_error (_entry_command, false);
+            _entry_command.error = ! _jobs_store.get_iter_first (out iter);
 
-            if (! ok)
+            if (_entry_label.error || _entry_command.error)
                 continue;
 
             /* generate a new build tool */

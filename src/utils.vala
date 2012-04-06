@@ -304,16 +304,6 @@ namespace Utils
         return scrollbar;
     }
 
-    public void set_entry_error (Widget entry, bool error)
-    {
-        StyleContext context = entry.get_style_context ();
-
-        if (error)
-            context.add_class ("not-found");
-        else
-            context.remove_class ("not-found");
-    }
-
     public bool tree_model_iter_prev (TreeModel model, ref TreeIter iter)
     {
         TreePath path = model.get_path (iter);

@@ -22,7 +22,7 @@ using Gtk;
 public class GotoLine : Grid
 {
     private unowned MainWindow main_window;
-    private Entry entry;
+    private ErrorEntry entry;
 
     public GotoLine (MainWindow main_window)
     {
@@ -42,7 +42,7 @@ public class GotoLine : Grid
         label.margin_right = 2;
         add (label);
 
-        entry = new Entry ();
+        entry = new ErrorEntry ();
         add (entry);
         Icon icon = new ThemedIcon.with_default_fallbacks ("go-jump-symbolic");
         entry.set_icon_from_gicon (EntryIconPosition.SECONDARY, icon);
@@ -65,7 +65,7 @@ public class GotoLine : Grid
     {
         if (entry.text_length == 0)
         {
-            Utils.set_entry_error (entry, false);
+            entry.error = false;
             return;
         }
 
@@ -77,14 +77,13 @@ public class GotoLine : Grid
             unichar c = text[i];
             if (! c.isdigit ())
             {
-                Utils.set_entry_error (entry, true);
+                entry.error = true;
                 return;
             }
         }
 
         int line = int.parse (text);
-        bool error = ! main_window.active_document.goto_line (--line);
-        Utils.set_entry_error (entry, error);
+        entry.error = ! main_window.active_document.goto_line (--line);
         main_window.active_view.scroll_to_cursor ();
     }
 }
@@ -100,7 +99,7 @@ public class SearchAndReplace : GLib.Object
     private Button _button_arrow;
     private Arrow _arrow;
 
-    private Entry _entry_find;
+    private ErrorEntry _entry_find;
     private Entry _entry_replace;
 
     private CheckMenuItem _check_case_sensitive;
@@ -302,7 +301,7 @@ public class SearchAndReplace : GLib.Object
     /* Find entry */
     private void init_find_entry ()
     {
-        _entry_find = new Entry ();
+        _entry_find = new ErrorEntry ();
         _entry_find.primary_icon_gicon =
             new ThemedIcon.with_default_fallbacks ("document-properties-symbolic");
         _entry_find.primary_icon_activatable = true;
@@ -405,7 +404,7 @@ public class SearchAndReplace : GLib.Object
         _working_document.set_search_text (_entry_find.text, case_sensitive,
             entire_word, out nb_matches, null, select);
 
-        Utils.set_entry_error (_entry_find, nb_matches == 0);
+        _entry_find.error = nb_matches == 0;
     }
 
     private void select_current_match ()
