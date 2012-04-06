@@ -1092,7 +1092,7 @@ public class MainWindow : Window
         recent_chooser.set_sort_type (RecentSortType.MRU);
 
         RecentFilter filter = new RecentFilter ();
-        filter.add_application ("latexila");
+        filter.add_application (Config.APP_NAME);
         recent_chooser.set_filter (filter);
 
         recent_chooser.item_activated.connect ((chooser) =>

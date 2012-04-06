@@ -26,7 +26,7 @@ public class Latexila : Gtk.Application
     public Latexila ()
     {
         Object (application_id: "org.gnome.latexila");
-        Environment.set_application_name ("LaTeXila");
+        Environment.set_application_name (Config.APP_NAME);
 
         connect_signals ();
         add_actions ();
