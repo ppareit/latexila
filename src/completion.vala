@@ -333,6 +333,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         _calltip_window_label.set_markup (markup);
 
+        // Set better size
+        Requisition size;
+        _calltip_window_label.get_preferred_size (null, out size);
+        _calltip_window.set_default_size (size.width + 10, size.height);
+
         MainWindow window = Latexila.get_instance ().active_window;
         _calltip_window.set_transient_for (window);
         _calltip_window.set_attached_to (window.active_view);
