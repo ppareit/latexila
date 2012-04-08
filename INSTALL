@@ -3,7 +3,7 @@ Requirements
 
 GLib >= 2.32
 GTK+ >= 3.4
-GtkSourceView >= 3.0
+GtkSourceView >= 3.4.1
 GtkSpell >= 3.0 (not yet released)
 libgee
 gettext

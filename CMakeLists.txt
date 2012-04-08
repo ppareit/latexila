@@ -48,7 +48,7 @@ endif ()
 
 find_package (PkgConfig)
 pkg_check_modules (GTK REQUIRED "gtk+-3.0 >= 3.4")
-pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-3.0")
+pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-3.0 >= 3.4.1")
 pkg_check_modules (GEE REQUIRED "gee-1.0")
 pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.32")
 pkg_check_modules (GTKSPELL REQUIRED "gtkspell-3.0")

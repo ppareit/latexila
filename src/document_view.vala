@@ -63,9 +63,7 @@ public class DocumentView : Gtk.SourceView
             CompletionProvider provider = CompletionProvider.get_default ();
             completion.add_provider (provider);
             completion.remember_info_visibility = true;
-
-            // Gtk-CRITICAL with that, see bug #629055
-            //completion.show_headers = false;
+            completion.show_headers = false;
 
             buffer.notify["cursor-position"].connect (() =>
             {
