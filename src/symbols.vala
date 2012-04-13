@@ -713,6 +713,8 @@ public class Symbols : Grid
     private IconView symbol_view;
     private Button _clear_button;
 
+    private uint _timeout_id = 0;
+
     public Symbols (MainWindow main_window)
     {
         this.main_window = main_window;
@@ -726,6 +728,27 @@ public class Symbols : Grid
 
         show_all ();
         _clear_button.hide ();
+
+        show.connect (() => resize_iconview ());
+    }
+
+    // HACK the IconView is not resized with GTK+ 3.4, see:
+    // https://bugzilla.gnome.org/show_bug.cgi?id=673326
+    // TODO when the IconView is fixed, remove this hack.
+    public void resize_iconview ()
+    {
+        if (_timeout_id > 0)
+            return;
+
+        // Resize every 100ms.
+        _timeout_id = Timeout.add (100, () =>
+        {
+            TreeModel model = this.symbol_view.get_model ();
+            this.symbol_view.set_model (null);
+            this.symbol_view.set_model (model);
+            _timeout_id = 0;
+            return false;
+        });
     }
 
     private void init_stores ()

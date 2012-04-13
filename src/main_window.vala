@@ -478,6 +478,11 @@ public class MainWindow : Window
         main_vgrid.add (main_hpaned);
         main_hpaned.show ();
 
+        main_hpaned.notify["position"].connect (() =>
+        {
+            this.symbols.resize_iconview ();
+        });
+
         // vgrid source view: documents panel, goto line, search and replace
         Grid vgrid_source_view = new Grid ();
         vgrid_source_view.orientation = Orientation.VERTICAL;
