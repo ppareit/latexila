@@ -1,16 +1,18 @@
 Requirements
 ============
 
+GLib >= 2.32
 GTK+ >= 3.4
 GtkSourceView >= 3.0
-GLib >= 2.32
-libgee
 GtkSpell >= 3.0 (not yet released)
-CMake >= 2.6.4
+libgee
 gettext
-ITS Tool
 gsettings-desktop-schemas (optional)
+
+And for building the sources:
+CMake >= 2.6.4
 Vala >= 0.16.0 (may be optional)
+ITS Tool
 
 If you are installing LaTeXila from a tarball, you don't have to install Vala
 because the C code is already generated.
@@ -77,7 +79,7 @@ Configuration
 	To disable this option, run cmake with:
 	-DCOMPILE_SCHEMA=OFF
 
-	Useful for packages.
+	Useful to set this option OFF for packages.
 
 
 * Set a custom Vala compiler
