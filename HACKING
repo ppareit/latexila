@@ -44,6 +44,8 @@ There are some rules to follow when coding:
         - for (int i = 0 ; i < max ; i++) // not for(int i=0;i<max;i++)
         - etc...
     - do not use 'var' for declaring variables, unless the type is very long
+    - git commits: max 72 characters for the first line, followed by a blank
+      line and then the description
     - same coding style everywhere
 
 How to generate the C code from Vala files?
