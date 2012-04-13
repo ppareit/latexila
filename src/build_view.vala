@@ -182,9 +182,6 @@ public class BuildView : Grid
         grid.add (close_button);
         toolbar.set_vexpand (true);
 
-        StyleContext context = toolbar.get_style_context ();
-        context.remove_class (Gtk.STYLE_CLASS_TOOLBAR);
-
         grid.add (toolbar);
         add (grid);
     }
