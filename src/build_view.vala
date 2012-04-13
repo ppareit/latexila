@@ -120,9 +120,9 @@ public class BuildView : Grid
 
         /* create tree view */
         _view = new TreeView.with_model (_filtered_model);
+        _view.headers_visible = false;
 
         TreeViewColumn column_job = new TreeViewColumn ();
-        column_job.title = _("Job");
 
         CellRendererPixbuf renderer_pixbuf = new CellRendererPixbuf ();
         column_job.pack_start (renderer_pixbuf, false);
@@ -138,9 +138,9 @@ public class BuildView : Grid
 
         _view.append_column (column_job);
 
-        _view.insert_column_with_attributes (-1, _("File"), new CellRendererText (),
+        _view.insert_column_with_attributes (-1, null, new CellRendererText (),
             "text", BuildInfo.BASENAME);
-        _view.insert_column_with_attributes (-1, _("Line"), new CellRendererText (),
+        _view.insert_column_with_attributes (-1, null, new CellRendererText (),
             "text", BuildInfo.LINE);
 
         _view.set_tooltip_column (BuildInfo.PATH);
