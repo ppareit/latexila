@@ -1,6 +1,18 @@
 LaTeXila NEWS
 
 ================================
+* Release 2.5.0 (April 21, 2012)
+================================
+
+- Port to GTK+ 3
+- Migrate from libunique to GtkApplication
+- Updated Spanish, Slovenian and French translations
+
+Thanks to:
+Bruno Brouard, Daniel Mustieles, Matej Urbančič, Piotr Drąg
+
+
+================================
 * Release 2.4.0 (March 28, 2012)
 ================================
 
