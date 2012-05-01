@@ -57,9 +57,17 @@ function(vala_precompile)
 		list(APPEND out_files "${ARGS_OUTPUT_DIR}/${filename}.c")
 	endforeach()
 
+	# HACK to avoid two executions of the valac command.
+	# The file 'output_hack' is written when the C code is generated.
+	# It could maybe be possible to create a CMake target instead of
+	# creating a file. But here if the Vala sources are not modified,
+	# the C code is not regenerated. With add_custom_target(), the
+	# target is always built.
+	set(output_hack "${latexila_BINARY_DIR}/vala-sources-built")
+
 	add_custom_command(
 		OUTPUT
-			${out_files}
+			${output_hack}
 		COMMAND
 			${VALA_EXECUTABLE}
 			"-C"
@@ -67,9 +75,26 @@ function(vala_precompile)
 			${pkg_opts}
 			${ARGS_SOURCES}
 			${ARGS_VAPIS}
+		COMMAND
+			echo 'Just a hack...' > ${output_hack}
 		DEPENDS
 			${ARGS_SOURCES}
 			${ARGS_VAPIS}
+		COMMENT
+			"Generating C code from Vala sources: ${out_files}"
+	)
+
+	# All the output files (the C code) depends on the 'output_hack' file.
+	# If we test this (in verbose mode for instance) we can see that the
+	# dummy command is always executed two times.
+	# So if the valac command is put here, the C code is always generated
+	# two times, even if the Vala sources are not modified...
+	# With the hack, everything is going fine.
+	add_custom_command(
+		OUTPUT ${out_files}
+		COMMAND echo "ugly hack" > /dev/null
+		DEPENDS ${output_hack}
+		COMMENT ""
 	)
 
 	set(${ARGS_OUTPUT} ${out_files} PARENT_SCOPE)
