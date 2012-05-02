@@ -69,7 +69,7 @@ public class Structure : Grid
     private Gtk.Action _action_shift_right;
 
     private ToggleButton[] _simple_list_buttons = {};
-    private VPaned _vpaned;
+    private Paned _vpaned;
 
     private TreeView _tree_view;
     private DocumentStructure _document_structure = null;
@@ -237,7 +237,7 @@ public class Structure : Grid
 
     private void init_vpaned ()
     {
-        _vpaned = new VPaned ();
+        _vpaned = new Paned (Orientation.VERTICAL);
         _vpaned.expand = true;
         add (_vpaned);
 

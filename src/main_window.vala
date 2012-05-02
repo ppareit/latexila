@@ -192,8 +192,8 @@ public class MainWindow : Window
     private Symbols symbols;
     private FileBrowser file_browser;
     private Structure _structure;
-    private HPaned main_hpaned;
-    private VPaned vpaned;
+    private Paned main_hpaned;
+    private Paned vpaned;
 
     private UIManager ui_manager;
     private Gtk.ActionGroup action_group;
@@ -473,7 +473,7 @@ public class MainWindow : Window
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
         // right: documents panel, search and replace, log zone, ...
-        main_hpaned = new HPaned ();
+        main_hpaned = new Paned (Orientation.HORIZONTAL);
         main_hpaned.set_position (settings.get_int ("side-panel-size"));
         main_vgrid.add (main_hpaned);
         main_hpaned.show ();
@@ -497,7 +497,7 @@ public class MainWindow : Window
         // vertical pane
         // top: vbox source view
         // bottom: log zone
-        vpaned = new VPaned ();
+        vpaned = new Paned (Orientation.VERTICAL);
         vpaned.set_position (settings.get_int ("vertical-paned-position"));
 
         // when we resize the window, the bottom panel keeps the same height
