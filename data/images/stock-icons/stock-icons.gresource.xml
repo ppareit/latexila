@@ -74,6 +74,13 @@ in menus for example.
     <file preprocess="to-pixdata">slanted.png</file>
     <file preprocess="to-pixdata">small_caps.png</file>
     <file preprocess="to-pixdata">symbol_alpha.png</file>
+    <file preprocess="to-pixdata">symbol_arrows.png</file>
+    <file preprocess="to-pixdata">symbol_delimiters.png</file>
+    <file preprocess="to-pixdata">symbol_greek.png</file>
+    <file preprocess="to-pixdata">symbol_misc_math.png</file>
+    <file preprocess="to-pixdata">symbol_misc_text.png</file>
+    <file preprocess="to-pixdata">symbol_operators.png</file>
+    <file preprocess="to-pixdata">symbol_relations.png</file>
     <file preprocess="to-pixdata">table.png</file>
     <file preprocess="to-pixdata">tree_chapter.png</file>
     <file preprocess="to-pixdata">tree_label.png</file>

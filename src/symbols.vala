@@ -21,16 +21,29 @@ using Gtk;
 
 public class Symbols : Grid
 {
-    private const CategoryInfo[] categories =
+    struct SymbolInfo
     {
-        {N_("Greek"), Config.DATA_DIR + "/images/icons/symbol_greek.png"},
-        // when we drink too much tequila we walk like this arrow...
-        {N_("Arrows"), Config.DATA_DIR + "/images/icons/symbol_arrows.png"},
-        {N_("Relations"), Config.DATA_DIR + "/images/icons/symbol_relations.png"},
-        {N_("Operators"), Config.DATA_DIR + "/images/icons/symbol_operators.png"},
-        {N_("Delimiters"), Config.DATA_DIR + "/images/icons/symbol_delimiters.png"},
-        {N_("Misc math"), Config.DATA_DIR + "/images/icons/symbol_misc_math.png"},
-        {N_("Misc text"), Config.DATA_DIR + "/images/icons/symbol_misc_text.png"}
+        public string filename;
+        public string latex_command;
+        public string package_required;
+    }
+
+    struct CategoryInfo
+    {
+        public string name;
+        public string icon;
+    }
+
+    private const CategoryInfo[] _categories =
+    {
+        {N_("Greek"), "symbol_greek"},
+        {N_("Arrows"), "symbol_arrows"},
+        {N_("Relations"), "symbol_relations"},
+        {N_("Operators"), "symbol_operators"},
+        {N_("Delimiters"), "symbol_delimiters"},
+        {N_("Misc math"), "symbol_misc_math"},
+        {N_("Misc text"), "symbol_misc_text"},
+        {N_("Most Used"), Stock.ABOUT}
     };
 
     private const SymbolInfo[] symbols_greek =
@@ -675,19 +688,6 @@ public class Symbols : Grid
         {Config.DATA_DIR + "/images/misc-text/135.png", "\\textdiv", "textcomp"}
     };
 
-    struct SymbolInfo
-    {
-        public string filename;
-        public string latex_command;
-        public string package_required;
-    }
-
-    struct CategoryInfo
-    {
-        public string name;
-        public string icon;
-    }
-
     enum SymbolColumn
     {
         PIXBUF,
@@ -705,19 +705,19 @@ public class Symbols : Grid
         N_COLUMNS
     }
 
-    private static bool stores_initialized = false;
-    private static ListStore categories_store;
+    private static bool _stores_initialized = false;
+    private static ListStore _categories_store;
     private static ListStore[] symbols_stores = new ListStore[8];
     private static ListStore mus_store;
-    private unowned MainWindow main_window;
-    private IconView symbol_view;
+    private unowned MainWindow _main_window;
+    private IconView _symbol_view;
     private Button _clear_button;
 
     private uint _timeout_id = 0;
 
     public Symbols (MainWindow main_window)
     {
-        this.main_window = main_window;
+        _main_window = main_window;
 
         orientation = Orientation.VERTICAL;
         set_row_spacing (3);
@@ -743,9 +743,9 @@ public class Symbols : Grid
         // Resize every 100ms.
         _timeout_id = Timeout.add (100, () =>
         {
-            TreeModel model = this.symbol_view.get_model ();
-            this.symbol_view.set_model (null);
-            this.symbol_view.set_model (model);
+            TreeModel model = _symbol_view.get_model ();
+            _symbol_view.set_model (null);
+            _symbol_view.set_model (model);
             _timeout_id = 0;
             return false;
         });
@@ -753,42 +753,34 @@ public class Symbols : Grid
 
     private void init_stores ()
     {
-        if (stores_initialized)
-            return;
-
-        /* categories store */
-        categories_store = new ListStore (CategoryColumn.N_COLUMNS,
-            typeof (Gdk.Pixbuf), typeof (string));
-
-        foreach (CategoryInfo info in categories)
+        if (! _stores_initialized)
         {
-            try
-            {
-                Gdk.Pixbuf pixbuf = new Gdk.Pixbuf.from_file (info.icon);
-                TreeIter iter;
-                categories_store.append (out iter);
-                categories_store.set (iter,
-                    CategoryColumn.ICON, pixbuf,
-                    CategoryColumn.NAME, _(info.name),
-                    -1);
-            }
-            catch (Error e)
-            {
-                warning ("Impossible to load the symbol: %s", e.message);
-                continue;
-            }
+            init_categories_store ();
+            init_symbols_stores ();
+
+            _stores_initialized = true;
         }
+    }
 
-        // mosed used symbols
-        Gdk.Pixbuf pixbuf = Utils.get_pixbuf_from_stock (Stock.ABOUT, IconSize.MENU);
-        TreeIter iter;
-        categories_store.append (out iter);
-        categories_store.set (iter,
-            CategoryColumn.ICON, pixbuf,
-            CategoryColumn.NAME, _("Most Used"),
-            -1);
+    private void init_categories_store ()
+    {
+        _categories_store = new ListStore (CategoryColumn.N_COLUMNS,
+            typeof (string), // the icon (stock-id)
+            typeof (string)  // the name
+        );
 
-        /* symbols stores */
+        foreach (CategoryInfo info in _categories)
+        {
+            TreeIter iter;
+            _categories_store.append (out iter);
+            _categories_store.set (iter,
+                CategoryColumn.ICON, info.icon,
+                CategoryColumn.NAME, _(info.name));
+        }
+    }
+
+    private void init_symbols_stores ()
+    {
         symbols_stores[0] = get_symbol_store (symbols_greek);
         symbols_stores[1] = get_symbol_store (symbols_arrows);
         symbols_stores[2] = get_symbol_store (symbols_relations);
@@ -802,19 +794,17 @@ public class Symbols : Grid
             typeof (string));
 
         reload_most_used_symbols ();
-
-        stores_initialized = true;
     }
 
     private void create_combo_box ()
     {
-        ComboBox combo_box = new ComboBox.with_model (categories_store);
+        ComboBox combo_box = new ComboBox.with_model (_categories_store);
         combo_box.hexpand = true;
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         combo_box.pack_start (pixbuf_renderer, false);
         combo_box.set_attributes (pixbuf_renderer,
-            "pixbuf", CategoryColumn.ICON, null);
+            "stock-id", CategoryColumn.ICON, null);
 
         CellRendererText text_renderer = new CellRendererText ();
         text_renderer.ellipsize_set = true;
@@ -830,8 +820,8 @@ public class Symbols : Grid
         {
             int num = combo_box.get_active ();
 
-            if (symbol_view != null)
-                symbol_view.set_model (symbols_stores[num]);
+            if (_symbol_view != null)
+                _symbol_view.set_model (symbols_stores[num]);
 
             if (num == symbols_stores.length - 1)
                 _clear_button.show ();
@@ -843,16 +833,16 @@ public class Symbols : Grid
     private void create_icon_view ()
     {
         /* show the symbols */
-        symbol_view = new IconView.with_model (symbols_stores[0]);
-        symbol_view.set_pixbuf_column (SymbolColumn.PIXBUF);
-        symbol_view.set_tooltip_column (SymbolColumn.TOOLTIP);
-        symbol_view.set_selection_mode (SelectionMode.SINGLE);
-        symbol_view.spacing = 0;
-        symbol_view.row_spacing = 0;
-        symbol_view.column_spacing = 0;
-        symbol_view.expand = true;
+        _symbol_view = new IconView.with_model (symbols_stores[0]);
+        _symbol_view.set_pixbuf_column (SymbolColumn.PIXBUF);
+        _symbol_view.set_tooltip_column (SymbolColumn.TOOLTIP);
+        _symbol_view.set_selection_mode (SelectionMode.SINGLE);
+        _symbol_view.spacing = 0;
+        _symbol_view.row_spacing = 0;
+        _symbol_view.column_spacing = 0;
+        _symbol_view.expand = true;
 
-        Widget sw = Utils.add_scrollbar (symbol_view);
+        Widget sw = Utils.add_scrollbar (_symbol_view);
         sw.expand = true;
         add (sw);
 
@@ -867,21 +857,21 @@ public class Symbols : Grid
             MostUsedSymbols.get_default ().clear ();
         });
 
-        symbol_view.selection_changed.connect (() =>
+        _symbol_view.selection_changed.connect (() =>
         {
-            if (main_window.active_tab == null)
+            if (_main_window.active_tab == null)
             {
-                symbol_view.unselect_all ();
+                _symbol_view.unselect_all ();
                 return;
             }
 
-            var selected_items = symbol_view.get_selected_items ();
+            var selected_items = _symbol_view.get_selected_items ();
 
             // unselect the symbol, so the user can insert several times the same symbol
-            symbol_view.unselect_all ();
+            _symbol_view.unselect_all ();
 
             TreePath path = selected_items.nth_data (0);
-            TreeModel model = symbol_view.get_model ();
+            TreeModel model = _symbol_view.get_model ();
             TreeIter iter = {};
 
             if (path != null && model.get_iter (out iter, path))
@@ -894,11 +884,11 @@ public class Symbols : Grid
                     -1);
 
                 // insert the symbol in the current document
-                main_window.active_document.begin_user_action ();
-                main_window.active_document.insert_at_cursor (latex_command, -1);
-                main_window.active_document.insert_at_cursor (" ", -1);
-                main_window.active_document.end_user_action ();
-                main_window.active_view.grab_focus ();
+                _main_window.active_document.begin_user_action ();
+                _main_window.active_document.insert_at_cursor (latex_command, -1);
+                _main_window.active_document.insert_at_cursor (" ", -1);
+                _main_window.active_document.end_user_action ();
+                _main_window.active_view.grab_focus ();
 
                 // insert to most used symbol
                 MostUsedSymbols.get_default ().add_symbol (id, latex_command,
