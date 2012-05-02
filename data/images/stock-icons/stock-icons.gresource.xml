@@ -73,7 +73,6 @@ in menus for example.
     <file preprocess="to-pixdata">sectioning-subsubsection.png</file>
     <file preprocess="to-pixdata">slanted.png</file>
     <file preprocess="to-pixdata">small_caps.png</file>
-    <file preprocess="to-pixdata">symbol_alpha.png</file>
     <file preprocess="to-pixdata">symbol_arrows.png</file>
     <file preprocess="to-pixdata">symbol_delimiters.png</file>
     <file preprocess="to-pixdata">symbol_greek.png</file>

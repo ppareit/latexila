@@ -313,7 +313,7 @@ public class MainWindow : Window
         _side_panel.closed.connect (() => action_view_side_panel.active = false);
 
         symbols = new Symbols (this);
-        _side_panel.add_component (_("Symbols"), "symbol_alpha", symbols);
+        _side_panel.add_component (_("Symbols"), "symbol_greek", symbols);
 
         file_browser = new FileBrowser (this);
         _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
