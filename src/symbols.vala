@@ -75,15 +75,13 @@ public class Symbols : GLib.Object
             typeof (SymbolsCategoryType),
             typeof (string), // the icon
             typeof (string), // the name
-            typeof (ListStore)
+            typeof (TreeModel)
         );
 
-        /* Normal categories */
         foreach (CategoryInfo info in _normal_categories)
             add_normal_category (info);
 
-        /* Most used symbols */
-        //add_new_category (Stock.ABOUT, _("Most Used"));
+        add_most_used_category ();
     }
 
     public static Symbols get_default ()
@@ -113,50 +111,44 @@ public class Symbols : GLib.Object
         );
     }
 
-    /* MOST USED SYMBOLS */
-    public static void reload_most_used_symbols ()
+    private void add_most_used_category ()
     {
-        /*
-        _most_used_store.clear ();
+        TreeModel model = MostUsedSymbols.get_default ().get_model ();
 
-        foreach (MostUsedSymbol mus in MostUsedSymbols.get_default ())
-        {
-            var symbol = get_symbol_info_from_most_used (mus);
-            insert_symbol (_most_used_store, -1, symbol);
-        }
-        */
-    }
-
-    public static void insert_most_used_symbol (int index, MostUsedSymbol symbol)
-    {
-//        insert_symbol (_most_used_store, index, get_symbol_info_from_most_used (symbol));
-    }
-
-    public static void remove_most_used_symbol (int index)
-    {
-        /*
-        TreePath path = new TreePath.from_indices (index, -1);
         TreeIter iter;
-        if (_most_used_store.get_iter (out iter, path))
-            _most_used_store.remove (iter);
-        */
+        _categories_store.append (out iter);
+        _categories_store.set (iter,
+            SymbolsCategoryColumn.TYPE, SymbolsCategoryType.MOST_USED,
+            SymbolsCategoryColumn.ICON, Stock.ABOUT,
+            SymbolsCategoryColumn.NAME, _("Most Used"),
+            SymbolsCategoryColumn.SYMBOLS_STORE, model
+        );
     }
 
-    public static void swap_most_used_symbol (int current_index, int new_index)
+    public static string get_tooltip (string latex_command, string? package_required)
     {
-        /*
-        TreePath current_path = new TreePath.from_indices (current_index, -1);
-        TreePath new_path = new TreePath.from_indices (new_index, -1);
+        // Some characters ('<' for example) generate errors for the tooltip,
+        // so the text must be escaped.
+        string tooltip = Markup.escape_text (latex_command);
 
-        TreeIter current_iter = {};
-        TreeIter new_iter = {};
+        if (package_required != null)
+            tooltip += " (package %s)".printf (package_required);
 
-        if (_most_used_store.get_iter (out current_iter, current_path)
-            && _most_used_store.get_iter (out new_iter, new_path))
+        return tooltip;
+    }
+
+    public static Gdk.Pixbuf? get_pixbuf (string symbol_id)
+    {
+        try
         {
-            _most_used_store.move_before (ref current_iter, new_iter);
+            return Gdk.MyPixbuf.from_resource (
+                "/org/gnome/latexila/symbols/" + symbol_id);
         }
-        */
+        catch (Error e)
+        {
+            warning ("Impossible to load the symbol '%s': %s", symbol_id, e.message);
+            return null;
+        }
     }
 }
 
@@ -181,7 +173,6 @@ private class NormalSymbols : ListStore
             typeof (Gdk.Pixbuf),
             typeof (string), // command
             typeof (string), // tooltip
-            typeof (string), // package
             typeof (string)  // id
         };
 
@@ -212,26 +203,14 @@ private class NormalSymbols : ListStore
 
     private void add_symbol (SymbolInfo symbol)
     {
-        Gdk.Pixbuf pixbuf;
-
-        try
-        {
-            pixbuf = Gdk.MyPixbuf.from_resource (_resource_path + symbol.icon_file);
-        }
-        catch (Error e)
-        {
-            warning ("Impossible to load the symbol: %s", e.message);
-            return;
-        }
-
-        // Some characters ('<' for example) generate errors for the tooltip,
-        // so the text must be escaped.
-        string tooltip = Markup.escape_text (symbol.latex_command);
-
-        if (symbol.package_required != null)
-            tooltip += " (package %s)".printf (symbol.package_required);
+        string tooltip = Symbols.get_tooltip (symbol.latex_command,
+            symbol.package_required);
 
         string id = "%s/%s".printf (_category_id, symbol.icon_file);
+
+        Gdk.Pixbuf? pixbuf = Symbols.get_pixbuf (id);
+        if (pixbuf == null)
+            return;
 
         TreeIter iter;
         append (out iter);

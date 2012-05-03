@@ -48,7 +48,7 @@ public class Latexila : Gtk.Application
             hold ();
             Projects.get_default ().save ();
             BuildTools.get_default ().save ();
-//            MostUsedSymbols.get_default ().save ();
+            MostUsedSymbols.get_default ().save ();
             release ();
         });
 

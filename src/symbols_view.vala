@@ -167,8 +167,7 @@ public class SymbolsView : Grid
                 _main_window.active_view.grab_focus ();
 
                 // insert to most used symbol
-//                MostUsedSymbols.get_default ().add_symbol (id, latex_command,
-//                    package != "" ? package : null);
+                MostUsedSymbols.get_default ().increment_symbol (id);
             }
         });
     }
@@ -177,10 +176,9 @@ public class SymbolsView : Grid
     {
         _clear_button = new Button.from_stock (Stock.CLEAR);
 
-//        _clear_button.clicked.connect (() =>
-//        {
-//            _most_used_store.clear ();
-//            MostUsedSymbols.get_default ().clear ();
-//        });
+        _clear_button.clicked.connect (() =>
+        {
+            MostUsedSymbols.get_default ().clear ();
+        });
     }
 }

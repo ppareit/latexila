@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,30 +17,143 @@
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using Gee;
-
-public struct MostUsedSymbol
-{
-    public string id;
-    public string latex_command;
-    public string package_required;
-    public uint num;
-}
+using Gtk;
 
 public class MostUsedSymbols : GLib.Object
 {
-    private static MostUsedSymbols instance = null;
+    private static MostUsedSymbols _instance = null;
+    private GLib.Settings _settings;
+    private bool _modified = false;
 
-    private LinkedList<MostUsedSymbol?> most_used_symbols;
-    private bool modified = false;
-    private GLib.Settings settings;
+    private ListStore _store;
+    private TreeModelFilter _model_filter;
 
     private MostUsedSymbols ()
     {
-        most_used_symbols = new LinkedList<MostUsedSymbol?> ();
-        settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
 
-        /* load most used symbols from the XML file */
+        init_models ();
+        load_data ();
+
+        _settings.changed["nb-most-used-symbols"].connect (() =>
+        {
+            _model_filter.refilter ();
+        });
+    }
+
+    // singleton
+    public static MostUsedSymbols get_default ()
+    {
+        if (_instance == null)
+            _instance = new MostUsedSymbols ();
+
+        return _instance;
+    }
+
+    private void init_models ()
+    {
+        // There is one more column, to store the number of times the symbol
+        // has been used.
+        _store = new ListStore (SymbolColumn.N_COLUMNS + 1,
+            typeof (Gdk.Pixbuf),
+            typeof (string), // command
+            typeof (string), // tooltip
+            typeof (string), // id
+            typeof (int)     // number of times used
+        );
+
+        _store.set_sort_column_id (SymbolColumn.N_COLUMNS, SortType.DESCENDING);
+
+        _model_filter = new TreeModelFilter (_store, null);
+        _model_filter.set_visible_func ((model, iter) =>
+        {
+            TreePath? path = _store.get_path (iter);
+            if (path == null)
+                return false;
+
+            int pos = path.get_indices ()[0];
+
+            uint max;
+            _settings.get ("nb-most-used-symbols", "u", out max);
+
+            return pos < max;
+        });
+    }
+
+    public TreeModel get_model ()
+    {
+        return _model_filter as TreeModel;
+    }
+
+    public void clear ()
+    {
+        _store.clear ();
+    }
+
+    public void increment_symbol (string id)
+    {
+        TreeIter iter;
+
+        if (! get_iter_at_symbol_id (id, out iter))
+            add_symbol (id, 1);
+        else
+        {
+            int num;
+            TreeModel model = _store as TreeModel;
+            model.get (iter, SymbolColumn.N_COLUMNS, out num);
+
+            _store.set (iter, SymbolColumn.N_COLUMNS, num + 1);
+        }
+
+        _modified = true;
+    }
+
+    private bool get_iter_at_symbol_id (string id, out TreeIter iter)
+    {
+        if (! _store.get_iter_first (out iter))
+            return false;
+
+        do
+        {
+            string cur_id;
+            TreeModel model = _store as TreeModel;
+            model.get (iter, SymbolColumn.ID, out cur_id);
+
+            if (cur_id == id)
+                return true;
+        }
+        while (_store.iter_next (ref iter));
+
+        return false;
+    }
+
+    private void add_symbol (string id, int nb_times_used)
+    {
+        Gdk.Pixbuf? pixbuf = Symbols.get_pixbuf (id);
+        if (pixbuf == null)
+            return;
+
+        TreeIter iter;
+        _store.append (out iter);
+        _store.set (iter,
+            SymbolColumn.PIXBUF, pixbuf,
+            SymbolColumn.COMMAND, "",
+            SymbolColumn.TOOLTIP, "",
+            SymbolColumn.ID, id,
+            SymbolColumn.N_COLUMNS, nb_times_used
+        );
+    }
+
+    private File get_xml_file ()
+    {
+        string path = Path.build_filename (Environment.get_user_data_dir (),
+            "latexila", "most_used_symbols.xml");
+
+        return File.new_for_path (path);
+    }
+
+    private void load_data ()
+    {
         File file = get_xml_file ();
         if (! file.query_exists ())
             return;
@@ -61,116 +174,6 @@ public class MostUsedSymbols : GLib.Object
         }
     }
 
-    // singleton
-    public static MostUsedSymbols get_default ()
-    {
-        if (instance == null)
-            instance = new MostUsedSymbols ();
-        return instance;
-    }
-
-    public Iterator<MostUsedSymbol?> iterator ()
-    {
-        uint max;
-        settings.get ("nb-most-used-symbols", "u", out max);
-
-        int slice_max = int.min ((int) max, most_used_symbols.size);
-        var slice = most_used_symbols.slice (0, slice_max);
-
-        return (Iterator<MostUsedSymbol?>) slice.iterator ();
-    }
-
-    public void clear ()
-    {
-        modified = true;
-        most_used_symbols.clear ();
-    }
-
-    public void add_symbol (string id, string command, string? package)
-    {
-        modified = true;
-        uint max;
-        settings.get ("nb-most-used-symbols", "u", out max);
-
-        int i = 0;
-        foreach (MostUsedSymbol mus in most_used_symbols)
-        {
-            if (mus.id == id)
-            {
-                mus.num++;
-                // keep the list sorted
-                int new_i = sort (i, mus);
-                if (new_i != i && new_i < max)
-                {
-                    if (i >= max)
-                    {
-                        Symbols.remove_most_used_symbol ((int) max - 1);
-                        Symbols.insert_most_used_symbol (new_i, mus);
-                    }
-                    else
-                        Symbols.swap_most_used_symbol (i, new_i);
-                }
-                return;
-            }
-            i++;
-        }
-
-        // not found, insert the new symbol
-        MostUsedSymbol new_symbol = MostUsedSymbol ();
-        new_symbol.id = id;
-        new_symbol.latex_command = command;
-        new_symbol.package_required = package;
-        new_symbol.num = 1;
-
-        most_used_symbols.add (new_symbol);
-
-        if (most_used_symbols.size <= max)
-            Symbols.insert_most_used_symbol (most_used_symbols.size - 1, new_symbol);
-    }
-
-    private int sort (int index, MostUsedSymbol mus)
-    {
-        if (index == 0)
-        {
-            most_used_symbols[index] = mus;
-            return 0;
-        }
-
-        int new_index;
-        for (new_index = index - 1 ; new_index >= 0 ; new_index--)
-        {
-            MostUsedSymbol symbol = most_used_symbols[new_index];
-            if (symbol.num >= mus.num)
-            {
-                new_index++;
-                break;
-            }
-        }
-
-        // if the for loop didn't break
-        if (new_index < 0)
-            new_index = 0;
-
-        if (new_index < index)
-        {
-            most_used_symbols.remove_at (index);
-            most_used_symbols.insert (new_index, mus);
-        }
-        else
-            most_used_symbols[index] = mus;
-
-        return new_index;
-    }
-
-    /*
-    private void print_summary ()
-    {
-        stdout.printf ("\n=== Most Used Symbols ===\n");
-        foreach (MostUsedSymbol symbol in most_used_symbols)
-            stdout.printf ("%s (%s) - %u\n", symbol.id, symbol.latex_command, symbol.num);
-    }
-    */
-
     private void parser_start (MarkupParseContext context, string name,
         string[] attr_names, string[] attr_values) throws MarkupError
     {
@@ -180,30 +183,33 @@ public class MostUsedSymbols : GLib.Object
                 return;
 
             case "symbol":
-                MostUsedSymbol symbol = MostUsedSymbol ();
+                string id = null;
+                int num = 0;
+
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "id":
-                            symbol.id = attr_values[i];
+                            id = attr_values[i];
                             break;
-                        case "command":
-                            symbol.latex_command = attr_values[i];
-                            break;
-                        case "package":
-                            symbol.package_required =
-                                attr_values[i] != "" ? attr_values[i] : null;
-                            break;
+
                         case "num":
-                            symbol.num = (uint) int.parse (attr_values[i]);
+                            num = int.parse (attr_values[i]);
                             break;
+
+                        case "command":
+                        case "package":
+                            // Used in the past but no longer required.
+                            break;
+
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
                                 "unknown attribute \"" + attr_names[i] + "\"");
                     }
                 }
-                most_used_symbols.add (symbol);
+
+                add_symbol (id, num);
                 break;
 
             default:
@@ -212,34 +218,41 @@ public class MostUsedSymbols : GLib.Object
         }
     }
 
-    private File get_xml_file ()
-    {
-        string path = Path.build_filename (Environment.get_user_data_dir (),
-            "latexila", "most_used_symbols.xml", null);
-        return File.new_for_path (path);
-    }
-
     public void save ()
     {
-        if (! modified)
+        if (! _modified)
             return;
+
+        _modified = false;
 
         File file = get_xml_file ();
 
-        // if empty, delete the file
-        if (most_used_symbols.size == 0)
+        TreeIter iter;
+        bool is_empty = ! _store.get_iter_first (out iter);
+
+        if (is_empty)
         {
             Utils.delete_file (file);
             return;
         }
 
         string content = "<symbols>\n";
-        foreach (MostUsedSymbol symbol in most_used_symbols)
+
+        do
         {
-            content += "  <symbol id=\"%s\" command=\"%s\" package=\"%s\" num=\"%u\" />\n".printf (
-                symbol.id, symbol.latex_command, symbol.package_required ?? "",
-                symbol.num);
+            string id;
+            int num;
+
+            TreeModel model = _store as TreeModel;
+            model.get (iter,
+                SymbolColumn.ID, out id,
+                SymbolColumn.N_COLUMNS, out num
+            );
+
+            content += "  <symbol id=\"%s\" num=\"%d\" />\n".printf (id, num);
         }
+        while (_store.iter_next (ref iter));
+
         content += "</symbols>\n";
 
         Utils.save_file (file, content);

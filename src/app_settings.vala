@@ -23,7 +23,6 @@ public class AppSettings : GLib.Settings
 
     private Settings editor;
     private Settings desktop_interface;
-    private uint timeout_id = 0;
 
     public string system_font { get; private set; }
 
@@ -147,20 +146,6 @@ public class AppSettings : GLib.Settings
             foreach (Document doc in Latexila.get_instance ().get_documents ())
                 doc.tab.auto_save_interval = val;
         });
-
-        /*
-        editor.changed["nb-most-used-symbols"].connect ((setting, key) =>
-        {
-            if (timeout_id != 0)
-                Source.remove (timeout_id);
-            timeout_id = Timeout.add_seconds (1, () =>
-            {
-                timeout_id = 0;
-                Symbols.reload_most_used_symbols ();
-                return false;
-            });
-        });
-        */
     }
 
     private void set_font (string font)
