@@ -1,0 +1,105 @@
+<symbols>
+  <symbol file="01.png" command="\cdotp" />
+  <symbol file="02.png" command="\colon" />
+  <symbol file="03.png" command="\ldotp" />
+  <symbol file="04.png" command="\vdots" />
+  <symbol file="05.png" command="\cdots" />
+  <symbol file="06.png" command="\ddots" />
+  <symbol file="07.png" command="\ldots" />
+  <symbol file="08.png" command="\neg" />
+  <symbol file="09.png" command="\infty" />
+  <symbol file="10.png" command="\prime" />
+  <symbol file="11.png" command="\backprime" package="amssymb" />
+  <symbol file="12.png" command="\backslash" />
+  <symbol file="13.png" command="\diagdown" package="amssymb" />
+  <symbol file="14.png" command="\diagup" package="amssymb" />
+  <symbol file="15.png" command="\surd" />
+  <symbol file="16.png" command="\emptyset" />
+  <symbol file="17.png" command="\varnothing" package="amssymb" />
+  <symbol file="18.png" command="\sharp" />
+  <symbol file="19.png" command="\flat" />
+  <symbol file="20.png" command="\natural" />
+  <symbol file="21.png" command="\angle" />
+  <symbol file="22.png" command="\sphericalangle" package="amssymb" />
+  <symbol file="23.png" command="\measuredangle" package="amssymb" />
+  <symbol file="24.png" command="\Box" package="amssymb" />
+  <symbol file="25.png" command="\square" package="amssymb" />
+  <symbol file="26.png" command="\triangle" />
+  <symbol file="27.png" command="\vartriangle" package="amssymb" />
+  <symbol file="28.png" command="\triangledown" package="amssymb" />
+  <symbol file="29.png" command="\Diamond" package="amssymb" />
+  <symbol file="30.png" command="\diamondsuit" />
+  <symbol file="31.png" command="\lozenge" package="amssymb" />
+  <symbol file="32.png" command="\heartsuit" />
+  <symbol file="33.png" command="\blacksquare" package="amssymb" />
+  <symbol file="34.png" command="\blacktriangle" package="amssymb" />
+  <symbol file="35.png" command="\blacktriangledown" package="amssymb" />
+  <symbol file="36.png" command="\blacklozenge" package="amssymb" />
+  <symbol file="37.png" command="\bigstar" package="amssymb" />
+  <symbol file="38.png" command="\spadesuit" />
+  <symbol file="39.png" command="\clubsuit" />
+  <symbol file="40.png" command="\forall" />
+  <symbol file="41.png" command="\exists" />
+  <symbol file="42.png" command="\nexists" package="amssymb" />
+  <symbol file="43.png" command="\Finv" package="amssymb" />
+  <symbol file="44.png" command="\Game" package="amssymb" />
+  <symbol file="45.png" command="\ni" />
+  <symbol file="46.png" command="\in" />
+  <symbol file="47.png" command="\notin" />
+  <symbol file="48.png" command="\complement" package="amssymb" />
+  <symbol file="set-N.png" command="\mathbb{N}" package="amsfonts" />
+  <symbol file="set-Z.png" command="\mathbb{Z}" package="amsfonts" />
+  <symbol file="set-Q.png" command="\mathbb{Q}" package="amsfonts" />
+  <symbol file="set-I.png" command="\mathbb{I}" package="amsfonts" />
+  <symbol file="set-R.png" command="\mathbb{R}" package="amsfonts" />
+  <symbol file="set-C.png" command="\mathbb{C}" package="amsfonts" />
+  <symbol file="49.png" command="\Im" />
+  <symbol file="50.png" command="\Re" />
+  <symbol file="51.png" command="\aleph" />
+  <symbol file="52.png" command="\wp" />
+  <symbol file="53.png" command="\hslash" package="amssymb" />
+  <symbol file="54.png" command="\hbar" />
+  <symbol file="55.png" command="\imath" />
+  <symbol file="56.png" command="\jmath" />
+  <symbol file="57.png" command="\Bbbk" package="amssymb" />
+  <symbol file="58.png" command="\ell" />
+  <symbol file="59.png" command="\circledR" package="amssymb" />
+  <symbol file="60.png" command="\circledS" package="amssymb" />
+  <symbol file="61.png" command="\bot" />
+  <symbol file="62.png" command="\top" />
+  <symbol file="63.png" command="\partial" />
+  <symbol file="64.png" command="\nabla" />
+  <symbol file="65.png" command="\eth" package="amssymb" />
+  <symbol file="66.png" command="\mho" package="amssymb" />
+  <symbol file="67.png" command="\acute{}" />
+  <symbol file="68.png" command="\grave{}" />
+  <symbol file="69.png" command="\check{}" />
+  <symbol file="70.png" command="\hat{}" />
+  <symbol file="71.png" command="\tilde{}" />
+  <symbol file="72.png" command="\bar{}" />
+  <symbol file="73.png" command="\vec{}" />
+  <symbol file="74.png" command="\breve{}" />
+  <symbol file="75.png" command="\dot{}" />
+  <symbol file="76.png" command="\ddot{}" />
+  <symbol file="77.png" command="\dddot{}" package="amsmath" />
+  <symbol file="78.png" command="\ddddot{}" package="amsmath" />
+  <symbol file="79.png" command="\mathring{}" />
+  <symbol file="80.png" command="\widetilde{}" />
+  <symbol file="81.png" command="\widehat{}" />
+  <symbol file="82.png" command="\overleftarrow{}" />
+  <symbol file="83.png" command="\overrightarrow{}" />
+  <symbol file="84.png" command="\overline{}" />
+  <symbol file="85.png" command="\underline{}" />
+  <symbol file="86.png" command="\overbrace{}" />
+  <symbol file="87.png" command="\underbrace{}" />
+  <symbol file="88.png" command="\overleftrightarrow{}" package="amsmath" />
+  <symbol file="89.png" command="\underleftrightarrow{}" package="amsmath" />
+  <symbol file="90.png" command="\underleftarrow{}" package="amsmath" />
+  <symbol file="91.png" command="\underrightarrow{}" package="amsmath" />
+  <symbol file="92.png" command="\xleftarrow{}" package="amsmath" />
+  <symbol file="93.png" command="\xrightarrow{}" package="amsmath" />
+  <symbol file="94.png" command="\stackrel{}{}" />
+  <symbol file="95.png" command="\sqrt{}" />
+  <symbol file="96.png" command="f'" />
+  <symbol file="97.png" command="f''" />
+</symbols>

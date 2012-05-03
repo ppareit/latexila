@@ -1,0 +1,137 @@
+<symbols>
+  <symbol file="001.png" command="\dots" />
+  <symbol file="002.png" command="\texttildelow" package="textcomp" />
+  <symbol file="003.png" command="\textasciicircum" />
+  <symbol file="004.png" command="\textasciimacron" package="textcomp" />
+  <symbol file="005.png" command="\textasciiacute" package="textcomp" />
+  <symbol file="006.png" command="\textasciidieresis" package="textcomp" />
+  <symbol file="007.png" command="\textasciitilde" />
+  <symbol file="008.png" command="\textasciigrave" package="textcomp" />
+  <symbol file="009.png" command="\textasciibreve" package="textcomp" />
+  <symbol file="010.png" command="\textasciicaron" package="textcomp" />
+  <symbol file="011.png" command="\textacutedbl" package="textcomp" />
+  <symbol file="012.png" command="\textgravedbl" package="textcomp" />
+  <symbol file="013.png" command="\textquotedblleft" />
+  <symbol file="014.png" command="\textquotedblright" />
+  <symbol file="015.png" command="\textquoteleft" />
+  <symbol file="016.png" command="\textquoteright" />
+  <symbol file="017.png" command="\textquotestraightbase" package="textcomp" />
+  <symbol file="018.png" command="\textquotestraightdblbase" package="textcomp" />
+  <symbol file="019.png" command="\textquotesingle" package="textcomp" />
+  <symbol file="020.png" command="\textdblhyphen" package="textcomp" />
+  <symbol file="021.png" command="\textdblhyphenchar" package="textcomp" />
+  <symbol file="022.png" command="\textasteriskcentered" />
+  <symbol file="023.png" command="\textperiodcentered" />
+  <symbol file="024.png" command="\textquestiondown" />
+  <symbol file="025.png" command="\textinterrobang" package="textcomp" />
+  <symbol file="026.png" command="\textinterrobangdown" package="textcomp" />
+  <symbol file="027.png" command="\textexclamdown" />
+  <symbol file="028.png" command="\texttwelveudash" package="textcomp" />
+  <symbol file="029.png" command="\textemdash" />
+  <symbol file="030.png" command="\textendash" />
+  <symbol file="031.png" command="\textthreequartersemdash" package="textcomp" />
+  <symbol file="032.png" command="\textvisiblespace" />
+  <symbol file="033.png" command="\_" />
+  <symbol file="034.png" command="\textcurrency" package="textcomp" />
+  <symbol file="035.png" command="\textbaht" package="textcomp" />
+  <symbol file="036.png" command="\textguarani" package="textcomp" />
+  <symbol file="037.png" command="\textwon" package="textcomp" />
+  <symbol file="038.png" command="\textcent" package="textcomp" />
+  <symbol file="039.png" command="\textcentoldstyle" package="textcomp" />
+  <symbol file="040.png" command="\textdollar" />
+  <symbol file="041.png" command="\textdollaroldstyle" package="textcomp" />
+  <symbol file="042.png" command="\textlira" package="textcomp" />
+  <symbol file="043.png" command="\textyen" package="textcomp" />
+  <symbol file="044.png" command="\textdong" package="textcomp" />
+  <symbol file="045.png" command="\textnaira" package="textcomp" />
+  <symbol file="046.png" command="\textcolonmonetary" package="textcomp" />
+  <symbol file="047.png" command="\textpeso" package="textcomp" />
+  <symbol file="048.png" command="\pounds" />
+  <symbol file="049.png" command="\textflorin" package="textcomp" />
+  <symbol file="050.png" command="\texteuro" package="textcomp" />
+  <symbol file="051.png" command="\geneuro" package="eurosym" />
+  <symbol file="052.png" command="\geneuronarrow" package="eurosym" />
+  <symbol file="053.png" command="\geneurowide" package="eurosym" />
+  <symbol file="054.png" command="\officialeuro" package="eurosym" />
+  <symbol file="055.png" command="\textcircled{a}" />
+  <symbol file="056.png" command="\textcopyright" />
+  <symbol file="057.png" command="\textcopyleft" package="textcomp" />
+  <symbol file="058.png" command="\textregistered" />
+  <symbol file="059.png" command="\texttrademark" />
+  <symbol file="060.png" command="\textservicemark" package="textcomp" />
+  <symbol file="061.png" command="\oldstylenums{0}" />
+  <symbol file="062.png" command="\oldstylenums{1}" />
+  <symbol file="063.png" command="\oldstylenums{2}" />
+  <symbol file="064.png" command="\oldstylenums{3}" />
+  <symbol file="065.png" command="\oldstylenums{4}" />
+  <symbol file="066.png" command="\oldstylenums{5}" />
+  <symbol file="067.png" command="\oldstylenums{6}" />
+  <symbol file="068.png" command="\oldstylenums{7}" />
+  <symbol file="069.png" command="\oldstylenums{8}" />
+  <symbol file="070.png" command="\oldstylenums{9}" />
+  <symbol file="071.png" command="\textonehalf" package="textcomp" />
+  <symbol file="072.png" command="\textonequarter" package="textcomp" />
+  <symbol file="073.png" command="\textthreequarters" package="textcomp" />
+  <symbol file="074.png" command="\textonesuperior" package="textcomp" />
+  <symbol file="075.png" command="\texttwosuperior" package="textcomp" />
+  <symbol file="076.png" command="\textthreesuperior" package="textcomp" />
+  <symbol file="077.png" command="\textnumero" package="textcomp" />
+  <symbol file="078.png" command="\textpertenthousand" package="textcomp" />
+  <symbol file="079.png" command="\textperthousand" package="textcomp" />
+  <symbol file="080.png" command="\textdiscount" package="textcomp" />
+  <symbol file="081.png" command="\textblank" package="textcomp" />
+  <symbol file="082.png" command="\textrecipe" package="textcomp" />
+  <symbol file="083.png" command="\textestimated" package="textcomp" />
+  <symbol file="084.png" command="\textreferencemark" package="textcomp" />
+  <symbol file="085.png" command="\textmusicalnote" package="textcomp" />
+  <symbol file="086.png" command="\dag" />
+  <symbol file="087.png" command="\ddag" />
+  <symbol file="088.png" command="\S" />
+  <symbol file="089.png" command="\$" />
+  <symbol file="090.png" command="\textpilcrow" package="textcomp" />
+  <symbol file="091.png" command="\Cutleft" package="marvosym" />
+  <symbol file="092.png" command="\Cutright" package="marvosym" />
+  <symbol file="093.png" command="\Leftscissors" package="marvosym" />
+  <symbol file="094.png" command="\Cutline" package="marvosym" />
+  <symbol file="095.png" command="\Kutline" package="marvosym" />
+  <symbol file="096.png" command="\Rightscissors" package="marvosym" />
+  <symbol file="097.png" command="\CheckedBox" package="wasysym" />
+  <symbol file="098.png" command="\Square" package="wasysym" />
+  <symbol file="099.png" command="\XBox" package="wasysym" />
+  <symbol file="100.png" command="\textbigcircle" package="textcomp" />
+  <symbol file="101.png" command="\textopenbullet" package="textcomp" />
+  <symbol file="102.png" command="\textbullet" />
+  <symbol file="103.png" command="\checkmark" package="amssymb" />
+  <symbol file="104.png" command="\maltese" package="amssymb" />
+  <symbol file="105.png" command="\textordmasculine" package="textcomp" />
+  <symbol file="106.png" command="\textordfeminine" package="textcomp" />
+  <symbol file="107.png" command="\textborn" package="textcomp" />
+  <symbol file="108.png" command="\textdivorced" package="textcomp" />
+  <symbol file="109.png" command="\textdied" package="textcomp" />
+  <symbol file="110.png" command="\textmarried" package="textcomp" />
+  <symbol file="111.png" command="\textleaf" package="textcomp" />
+  <symbol file="112.png" command="\textcelsius" package="textcomp" />
+  <symbol file="113.png" command="\textdegree" package="textcomp" />
+  <symbol file="114.png" command="\textmho" package="textcomp" />
+  <symbol file="115.png" command="\textohm" package="textcomp" />
+  <symbol file="116.png" command="\textbackslash" />
+  <symbol file="117.png" command="\textbar" />
+  <symbol file="118.png" command="\textbrokenbar" package="textcomp" />
+  <symbol file="119.png" command="\textbardbl" />
+  <symbol file="120.png" command="\textfractionsolidus" package="textcomp" />
+  <symbol file="121.png" command="\textlangle" package="textcomp" />
+  <symbol file="122.png" command="\textlnot" package="textcomp" />
+  <symbol file="123.png" command="\textminus" package="textcomp" />
+  <symbol file="124.png" command="\textrangle" package="textcomp" />
+  <symbol file="125.png" command="\textlbrackdbl" package="textcomp" />
+  <symbol file="126.png" command="\textrbrackdbl" package="textcomp" />
+  <symbol file="127.png" command="\textmu" package="textcomp" />
+  <symbol file="128.png" command="\textpm" package="textcomp" />
+  <symbol file="129.png" command="\textlquill" package="textcomp" />
+  <symbol file="130.png" command="\textrquill" package="textcomp" />
+  <symbol file="131.png" command="\textless" />
+  <symbol file="132.png" command="\textgreater" />
+  <symbol file="133.png" command="\textsurd" package="textcomp" />
+  <symbol file="134.png" command="\texttimes" package="textcomp" />
+  <symbol file="135.png" command="\textdiv" package="textcomp" />
+</symbols>

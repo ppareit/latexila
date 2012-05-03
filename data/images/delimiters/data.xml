@@ -1,0 +1,39 @@
+<symbols>
+  <symbol file="01.png" command="\downarrow" />
+  <symbol file="02.png" command="\Downarrow" />
+  <symbol file="03.png" command="[" />
+  <symbol file="04.png" command="]" />
+  <symbol file="05.png" command="\langle" />
+  <symbol file="06.png" command="\rangle" />
+  <symbol file="07.png" command="|" />
+  <symbol file="08.png" command="\|" />
+  <symbol file="09.png" command="\lceil" />
+  <symbol file="10.png" command="\rceil" />
+  <symbol file="11.png" command="\uparrow" />
+  <symbol file="12.png" command="\Uparrow" />
+  <symbol file="13.png" command="\lfloor" />
+  <symbol file="14.png" command="\rfloor" />
+  <symbol file="15.png" command="\updownarrow" />
+  <symbol file="16.png" command="\Updownarrow" />
+  <symbol file="17.png" command="(" />
+  <symbol file="18.png" command=")" />
+  <symbol file="19.png" command="\{" />
+  <symbol file="20.png" command="\}" />
+  <symbol file="21.png" command="/" />
+  <symbol file="22.png" command="\backslash" />
+  <symbol file="23.png" command="\lmoustache" />
+  <symbol file="24.png" command="\rmoustache" />
+  <symbol file="25.png" command="\lgroup" />
+  <symbol file="26.png" command="\rgroup" />
+  <symbol file="27.png" command="\arrowvert" />
+  <symbol file="28.png" command="\Arrowvert" />
+  <symbol file="29.png" command="\bracevert" />
+  <symbol file="30.png" command="\lvert" package="amsmath" />
+  <symbol file="31.png" command="\rvert" package="amsmath" />
+  <symbol file="32.png" command="\lVert" package="amsmath" />
+  <symbol file="33.png" command="\rVert" package="amsmath" />
+  <symbol file="34.png" command="\ulcorner" package="amssymb" />
+  <symbol file="35.png" command="\urcorner" package="amssymb" />
+  <symbol file="36.png" command="\llcorner" package="amssymb" />
+  <symbol file="37.png" command="\lrcorner" package="amssymb" />
+</symbols>

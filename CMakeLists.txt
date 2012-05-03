@@ -110,6 +110,27 @@ gresource (
 
 set (generated_resources ${generated_resource})
 
+set (symbols_categories
+	"arrows"
+	"delimiters"
+	"greek"
+	"misc-math"
+	"misc-text"
+	"operators"
+	"relations"
+)
+
+foreach (symbols_cat ${symbols_categories})
+	gresource (
+		"${latexila_SOURCE_DIR}/data/images/${symbols_cat}" # resource dir
+		"symbols-${symbols_cat}.gresource.xml" # resource file
+		"${latexila_BINARY_DIR}/src" # output dir
+		generated_resource
+	)
+
+	list (APPEND generated_resources ${generated_resource})
+endforeach ()
+
 # Build the source code
 include_directories (src/C src/gedit ${latexila_BINARY_DIR}/src)
 

@@ -1,0 +1,71 @@
+<symbols>
+  <symbol file="01.png" command="\leftarrow" />
+  <symbol file="02.png" command="\leftrightarrow" />
+  <symbol file="03.png" command="\rightarrow" />
+  <symbol file="04.png" command="\mapsto" />
+  <symbol file="05.png" command="\longleftarrow" />
+  <symbol file="06.png" command="\longleftrightarrow" />
+  <symbol file="07.png" command="\longrightarrow" />
+  <symbol file="08.png" command="\longmapsto" />
+  <symbol file="09.png" command="\downarrow" />
+  <symbol file="10.png" command="\updownarrow" />
+  <symbol file="11.png" command="\uparrow" />
+  <symbol file="12.png" command="\nwarrow" />
+  <symbol file="13.png" command="\searrow" />
+  <symbol file="14.png" command="\nearrow" />
+  <symbol file="15.png" command="\swarrow" />
+  <symbol file="16.png" command="\textdownarrow" package="textcomp" />
+  <symbol file="17.png" command="\textuparrow" package="textcomp" />
+  <symbol file="18.png" command="\textleftarrow" package="textcomp" />
+  <symbol file="19.png" command="\textrightarrow" package="textcomp" />
+  <symbol file="20.png" command="\nleftarrow" package="amssymb" />
+  <symbol file="21.png" command="\nleftrightarrow" package="amssymb" />
+  <symbol file="22.png" command="\nrightarrow" package="amssymb" />
+  <symbol file="23.png" command="\hookleftarrow" />
+  <symbol file="24.png" command="\hookrightarrow" />
+  <symbol file="25.png" command="\twoheadleftarrow" package="amssymb" />
+  <symbol file="26.png" command="\twoheadrightarrow" package="amssymb" />
+  <symbol file="27.png" command="\leftarrowtail" package="amssymb" />
+  <symbol file="28.png" command="\rightarrowtail" package="amssymb" />
+  <symbol file="29.png" command="\Leftarrow" />
+  <symbol file="30.png" command="\Leftrightarrow" />
+  <symbol file="31.png" command="\Rightarrow" />
+  <symbol file="32.png" command="\Longleftarrow" />
+  <symbol file="33.png" command="\Longleftrightarrow" />
+  <symbol file="34.png" command="\Longrightarrow" />
+  <symbol file="35.png" command="\Updownarrow" />
+  <symbol file="36.png" command="\Uparrow" />
+  <symbol file="37.png" command="\Downarrow" />
+  <symbol file="38.png" command="\nLeftarrow" package="amssymb" />
+  <symbol file="39.png" command="\nLeftrightarrow" package="amssymb" />
+  <symbol file="40.png" command="\nRightarrow" package="amssymb" />
+  <symbol file="41.png" command="\leftleftarrows" package="amssymb" />
+  <symbol file="42.png" command="\leftrightarrows" package="amssymb" />
+  <symbol file="43.png" command="\rightleftarrows" package="amssymb" />
+  <symbol file="44.png" command="\rightrightarrows" package="amssymb" />
+  <symbol file="45.png" command="\downdownarrows" package="amssymb" />
+  <symbol file="46.png" command="\upuparrows" package="amssymb" />
+  <symbol file="47.png" command="\circlearrowleft" package="amssymb" />
+  <symbol file="48.png" command="\circlearrowright" package="amssymb" />
+  <symbol file="49.png" command="\curvearrowleft" package="amssymb" />
+  <symbol file="50.png" command="\curvearrowright" package="amssymb" />
+  <symbol file="51.png" command="\Lsh" package="amssymb" />
+  <symbol file="52.png" command="\Rsh" package="amssymb" />
+  <symbol file="53.png" command="\looparrowleft" package="amssymb" />
+  <symbol file="54.png" command="\looparrowright" package="amssymb" />
+  <symbol file="55.png" command="\dashleftarrow" package="amssymb" />
+  <symbol file="56.png" command="\dashrightarrow" package="amssymb" />
+  <symbol file="57.png" command="\leftrightsquigarrow" package="amssymb" />
+  <symbol file="58.png" command="\rightsquigarrow" package="amssymb" />
+  <symbol file="59.png" command="\Lleftarrow" package="amssymb" />
+  <symbol file="60.png" command="\leftharpoondown" />
+  <symbol file="61.png" command="\rightharpoondown" />
+  <symbol file="62.png" command="\leftharpoonup" />
+  <symbol file="63.png" command="\rightharpoonup" />
+  <symbol file="64.png" command="\rightleftharpoons" />
+  <symbol file="65.png" command="\leftrightharpoons" package="amssymb" />
+  <symbol file="66.png" command="\downharpoonleft" package="amssymb" />
+  <symbol file="67.png" command="\upharpoonleft" package="amssymb" />
+  <symbol file="68.png" command="\downharpoonright" package="amssymb" />
+  <symbol file="69.png" command="\upharpoonright" package="amssymb" />
+</symbols>

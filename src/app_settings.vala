@@ -148,6 +148,7 @@ public class AppSettings : GLib.Settings
                 doc.tab.auto_save_interval = val;
         });
 
+        /*
         editor.changed["nb-most-used-symbols"].connect ((setting, key) =>
         {
             if (timeout_id != 0)
@@ -159,6 +160,7 @@ public class AppSettings : GLib.Settings
                 return false;
             });
         });
+        */
     }
 
     private void set_font (string font)

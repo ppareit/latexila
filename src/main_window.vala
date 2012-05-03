@@ -189,7 +189,7 @@ public class MainWindow : Window
     private Toolbar main_toolbar;
     private Toolbar edit_toolbar;
     private SidePanel _side_panel;
-    private Symbols symbols;
+    private SymbolsView _symbols;
     private FileBrowser file_browser;
     private Structure _structure;
     private Paned main_hpaned;
@@ -312,8 +312,8 @@ public class MainWindow : Window
 
         _side_panel.closed.connect (() => action_view_side_panel.active = false);
 
-        symbols = new Symbols (this);
-        _side_panel.add_component (_("Symbols"), "symbol_greek", symbols);
+        _symbols = new SymbolsView (this);
+        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
 
         file_browser = new FileBrowser (this);
         _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
@@ -480,7 +480,7 @@ public class MainWindow : Window
 
         main_hpaned.notify["position"].connect (() =>
         {
-            this.symbols.resize_iconview ();
+            this._symbols.resize_iconview ();
         });
 
         // vgrid source view: documents panel, goto line, search and replace
@@ -692,21 +692,6 @@ public class MainWindow : Window
     public BuildView get_build_view ()
     {
         return build_view;
-    }
-
-    public CustomStatusbar get_statusbar ()
-    {
-        return statusbar;
-    }
-
-    public Symbols get_symbols ()
-    {
-        return symbols;
-    }
-
-    public FileBrowser get_file_browser ()
-    {
-        return file_browser;
     }
 
     public DocumentTab? open_document (File location, bool jump_to = true)

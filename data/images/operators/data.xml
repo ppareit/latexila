@@ -1,0 +1,82 @@
+<symbols>
+  <symbol file="001.png" command="\pm" />
+  <symbol file="002.png" command="\mp" />
+  <symbol file="003.png" command="\times" />
+  <symbol file="004.png" command="\div" />
+  <symbol file="005.png" command="\ast" />
+  <symbol file="006.png" command="\star" />
+  <symbol file="007.png" command="\circ" />
+  <symbol file="008.png" command="\bullet" />
+  <symbol file="009.png" command="\divideontimes" package="amssymb" />
+  <symbol file="010.png" command="\ltimes" package="amssymb" />
+  <symbol file="011.png" command="\rtimes" package="amssymb" />
+  <symbol file="012.png" command="\cdot" />
+  <symbol file="013.png" command="\dotplus" package="amssymb" />
+  <symbol file="014.png" command="\leftthreetimes" package="amssymb" />
+  <symbol file="015.png" command="\rightthreetimes" package="amssymb" />
+  <symbol file="016.png" command="\amalg" />
+  <symbol file="017.png" command="\otimes" />
+  <symbol file="018.png" command="\oplus" />
+  <symbol file="019.png" command="\ominus" />
+  <symbol file="020.png" command="\oslash" />
+  <symbol file="021.png" command="\odot" />
+  <symbol file="022.png" command="\circledcirc" package="amssymb" />
+  <symbol file="023.png" command="\circleddash" package="amssymb" />
+  <symbol file="024.png" command="\circledast" package="amssymb" />
+  <symbol file="025.png" command="\bigcirc" />
+  <symbol file="026.png" command="\boxdot" package="amssymb" />
+  <symbol file="027.png" command="\boxminus" package="amssymb" />
+  <symbol file="028.png" command="\boxplus" package="amssymb" />
+  <symbol file="029.png" command="\boxtimes" package="amssymb" />
+  <symbol file="030.png" command="\diamond" />
+  <symbol file="031.png" command="\bigtriangleup" />
+  <symbol file="032.png" command="\bigtriangledown" />
+  <symbol file="033.png" command="\triangleleft" />
+  <symbol file="034.png" command="\triangleright" />
+  <symbol file="035.png" command="\lhd" package="amssymb" />
+  <symbol file="036.png" command="\rhd" package="amssymb" />
+  <symbol file="037.png" command="\unlhd" package="amssymb" />
+  <symbol file="038.png" command="\unrhd" package="amssymb" />
+  <symbol file="039.png" command="\cup" />
+  <symbol file="040.png" command="\cap" />
+  <symbol file="041.png" command="\uplus" />
+  <symbol file="042.png" command="\Cup" package="amssymb" />
+  <symbol file="043.png" command="\Cap" package="amssymb" />
+  <symbol file="044.png" command="\wr" />
+  <symbol file="045.png" command="\setminus" />
+  <symbol file="046.png" command="\smallsetminus" package="amssymb" />
+  <symbol file="047.png" command="\sqcap" />
+  <symbol file="048.png" command="\sqcup" />
+  <symbol file="049.png" command="\wedge" />
+  <symbol file="050.png" command="\vee" />
+  <symbol file="051.png" command="\barwedge" package="amssymb" />
+  <symbol file="052.png" command="\veebar" package="amssymb" />
+  <symbol file="053.png" command="\doublebarwedge" package="amssymb" />
+  <symbol file="054.png" command="\curlywedge" package="amssymb" />
+  <symbol file="055.png" command="\curlyvee" package="amssymb" />
+  <symbol file="056.png" command="\dagger" package="amssymb" />
+  <symbol file="057.png" command="\ddagger" package="amssymb" />
+  <symbol file="058.png" command="\intercal" package="amssymb" />
+  <symbol file="059.png" command="\bigcap" />
+  <symbol file="060.png" command="\bigcup" />
+  <symbol file="061.png" command="\biguplus" />
+  <symbol file="062.png" command="\bigsqcup" />
+  <symbol file="063.png" command="\prod" />
+  <symbol file="064.png" command="\coprod" />
+  <symbol file="065.png" command="\bigwedge" />
+  <symbol file="066.png" command="\bigvee" />
+  <symbol file="067.png" command="\bigodot" />
+  <symbol file="068.png" command="\bigoplus" />
+  <symbol file="069.png" command="\bigotimes" />
+  <symbol file="070.png" command="\sum" />
+  <symbol file="071.png" command="\int" />
+  <symbol file="072.png" command="\oint" />
+  <symbol file="073.png" command="\iint" package="amsmath" />
+  <symbol file="074.png" command="\iiint" package="amsmath" />
+  <symbol file="075.png" command="\iiiint" package="amsmath" />
+  <symbol file="076.png" command="\idotsint" package="amsmath" />
+  <symbol file="077.png" command="\varlimsup" package="amsmath" />
+  <symbol file="078.png" command="\varliminf" package="amsmath" />
+  <symbol file="079.png" command="\varinjlim" package="amsmath" />
+  <symbol file="080.png" command="\varprojlim" package="amsmath" />
+</symbols>

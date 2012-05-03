@@ -75,6 +75,12 @@ namespace Utils
         return true;
     }
 
+    public unowned string get_string_from_resource (string resource_path)
+    {
+        Bytes bytes = resources_lookup_data (resource_path, 0);
+        return (string) bytes.get_data ();
+    }
+
 
     /*************************************************************************/
     // URI, File or Path utilities

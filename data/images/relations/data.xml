@@ -1,0 +1,141 @@
+<symbols>
+  <symbol file="001.png" command="\bowtie" />
+  <symbol file="002.png" command="\Join" package="amssymb" />
+  <symbol file="003.png" command="\propto" />
+  <symbol file="004.png" command="\varpropto" package="amssymb" />
+  <symbol file="005.png" command="\multimap" package="amssymb" />
+  <symbol file="006.png" command="\pitchfork" package="amssymb" />
+  <symbol file="007.png" command="\therefore" package="amssymb" />
+  <symbol file="008.png" command="\because" package="amssymb" />
+  <symbol file="009.png" command="=" />
+  <symbol file="010.png" command="\neq" />
+  <symbol file="011.png" command="\equiv" />
+  <symbol file="012.png" command="\approx" />
+  <symbol file="013.png" command="\sim" />
+  <symbol file="014.png" command="\simeq" />
+  <symbol file="015.png" command="\backsimeq" package="amssymb" />
+  <symbol file="016.png" command="\approxeq" package="amssymb" />
+  <symbol file="017.png" command="\cong" />
+  <symbol file="018.png" command="\ncong" package="amssymb" />
+  <symbol file="019.png" command="\smile" />
+  <symbol file="020.png" command="\frown" />
+  <symbol file="021.png" command="\asymp" />
+  <symbol file="022.png" command="\smallfrown" package="amssymb" />
+  <symbol file="023.png" command="\smallsmile" package="amssymb" />
+  <symbol file="024.png" command="\between" package="amssymb" />
+  <symbol file="025.png" command="\prec" />
+  <symbol file="026.png" command="\succ" />
+  <symbol file="027.png" command="\nprec" package="amssymb" />
+  <symbol file="028.png" command="\nsucc" package="amssymb" />
+  <symbol file="029.png" command="\preceq" />
+  <symbol file="030.png" command="\succeq" />
+  <symbol file="031.png" command="\npreceq" package="amssymb" />
+  <symbol file="032.png" command="\nsucceq" package="amssymb" />
+  <symbol file="033.png" command="\preccurlyeq" package="amssymb" />
+  <symbol file="034.png" command="\succcurlyeq" package="amssymb" />
+  <symbol file="035.png" command="\curlyeqprec" package="amssymb" />
+  <symbol file="036.png" command="\curlyeqsucc" package="amssymb" />
+  <symbol file="037.png" command="\precsim" package="amssymb" />
+  <symbol file="038.png" command="\succsim" package="amssymb" />
+  <symbol file="039.png" command="\precnsim" package="amssymb" />
+  <symbol file="040.png" command="\succnsim" package="amssymb" />
+  <symbol file="041.png" command="\precapprox" package="amssymb" />
+  <symbol file="042.png" command="\succapprox" package="amssymb" />
+  <symbol file="043.png" command="\precnapprox" package="amssymb" />
+  <symbol file="044.png" command="\succnapprox" package="amssymb" />
+  <symbol file="045.png" command="\perp" />
+  <symbol file="046.png" command="\vdash" />
+  <symbol file="047.png" command="\dashv" />
+  <symbol file="048.png" command="\nvdash" package="amssymb" />
+  <symbol file="049.png" command="\Vdash" package="amssymb" />
+  <symbol file="050.png" command="\Vvdash" package="amssymb" />
+  <symbol file="051.png" command="\models" />
+  <symbol file="052.png" command="\vDash" package="amssymb" />
+  <symbol file="053.png" command="\nvDash" package="amssymb" />
+  <symbol file="054.png" command="\nVDash" package="amssymb" />
+  <symbol file="055.png" command="\mid" />
+  <symbol file="056.png" command="\nmid" package="amssymb" />
+  <symbol file="057.png" command="\parallel" />
+  <symbol file="058.png" command="\nparallel" package="amssymb" />
+  <symbol file="059.png" command="\shortmid" package="amssymb" />
+  <symbol file="060.png" command="\nshortmid" package="amssymb" />
+  <symbol file="061.png" command="\shortparallel" package="amssymb" />
+  <symbol file="062.png" command="\nshortparallel" package="amssymb" />
+  <symbol file="063.png" command="&lt;" />
+  <symbol file="064.png" command="&gt;" />
+  <symbol file="065.png" command="\nless" package="amssymb" />
+  <symbol file="066.png" command="\ngtr" package="amssymb" />
+  <symbol file="067.png" command="\lessdot" package="amssymb" />
+  <symbol file="068.png" command="\gtrdot" package="amssymb" />
+  <symbol file="069.png" command="\ll" />
+  <symbol file="070.png" command="\gg" />
+  <symbol file="071.png" command="\lll" package="amssymb" />
+  <symbol file="072.png" command="\ggg" package="amssymb" />
+  <symbol file="073.png" command="\leq" />
+  <symbol file="074.png" command="\geq" />
+  <symbol file="075.png" command="\lneq" package="amssymb" />
+  <symbol file="076.png" command="\gneq" package="amssymb" />
+  <symbol file="077.png" command="\nleq" package="amssymb" />
+  <symbol file="078.png" command="\ngeq" package="amssymb" />
+  <symbol file="079.png" command="\leqq" package="amssymb" />
+  <symbol file="080.png" command="\geqq" package="amssymb" />
+  <symbol file="081.png" command="\lneqq" package="amssymb" />
+  <symbol file="082.png" command="\gneqq" package="amssymb" />
+  <symbol file="083.png" command="\lvertneqq" package="amssymb" />
+  <symbol file="084.png" command="\gvertneqq" package="amssymb" />
+  <symbol file="085.png" command="\nleqq" package="amssymb" />
+  <symbol file="086.png" command="\ngeqq" package="amssymb" />
+  <symbol file="087.png" command="\leqslant" package="amssymb" />
+  <symbol file="088.png" command="\geqslant" package="amssymb" />
+  <symbol file="089.png" command="\nleqslant" package="amssymb" />
+  <symbol file="090.png" command="\ngeqslant" package="amssymb" />
+  <symbol file="091.png" command="\eqslantless" package="amssymb" />
+  <symbol file="092.png" command="\eqslantgtr" package="amssymb" />
+  <symbol file="093.png" command="\lessgtr" package="amssymb" />
+  <symbol file="094.png" command="\gtrless" package="amssymb" />
+  <symbol file="095.png" command="\lesseqgtr" package="amssymb" />
+  <symbol file="096.png" command="\gtreqless" package="amssymb" />
+  <symbol file="097.png" command="\lesseqqgtr" package="amssymb" />
+  <symbol file="098.png" command="\gtreqqless" package="amssymb" />
+  <symbol file="099.png" command="\lesssim" package="amssymb" />
+  <symbol file="100.png" command="\gtrsim" package="amssymb" />
+  <symbol file="101.png" command="\lnsim" package="amssymb" />
+  <symbol file="102.png" command="\gnsim" package="amssymb" />
+  <symbol file="103.png" command="\lessapprox" package="amssymb" />
+  <symbol file="104.png" command="\gtrapprox" package="amssymb" />
+  <symbol file="105.png" command="\lnapprox" package="amssymb" />
+  <symbol file="106.png" command="\gnapprox" package="amssymb" />
+  <symbol file="107.png" command="\vartriangleleft" package="amssymb" />
+  <symbol file="108.png" command="\vartriangleright" package="amssymb" />
+  <symbol file="109.png" command="\ntriangleleft" package="amssymb" />
+  <symbol file="110.png" command="\ntriangleright" package="amssymb" />
+  <symbol file="111.png" command="\trianglelefteq" package="amssymb" />
+  <symbol file="112.png" command="\trianglerighteq" package="amssymb" />
+  <symbol file="113.png" command="\ntrianglelefteq" package="amssymb" />
+  <symbol file="114.png" command="\ntrianglerighteq" package="amssymb" />
+  <symbol file="115.png" command="\blacktriangleleft" package="amssymb" />
+  <symbol file="116.png" command="\blacktriangleright" package="amssymb" />
+  <symbol file="117.png" command="\subset" />
+  <symbol file="118.png" command="\supset" />
+  <symbol file="119.png" command="\subseteq" />
+  <symbol file="120.png" command="\supseteq" />
+  <symbol file="121.png" command="\subsetneq" package="amssymb" />
+  <symbol file="122.png" command="\supsetneq" package="amssymb" />
+  <symbol file="123.png" command="\varsubsetneq" package="amssymb" />
+  <symbol file="124.png" command="\varsupsetneq" package="amssymb" />
+  <symbol file="125.png" command="\nsubseteq" package="amssymb" />
+  <symbol file="126.png" command="\nsupseteq" package="amssymb" />
+  <symbol file="127.png" command="\subseteqq" package="amssymb" />
+  <symbol file="128.png" command="\supseteqq" package="amssymb" />
+  <symbol file="129.png" command="\subsetneqq" package="amssymb" />
+  <symbol file="130.png" command="\supsetneqq" package="amssymb" />
+  <symbol file="131.png" command="\nsubseteqq" package="amssymb" />
+  <symbol file="132.png" command="\nsupseteqq" package="amssymb" />
+  <symbol file="133.png" command="\backepsilon" package="amssymb" />
+  <symbol file="134.png" command="\Subset" package="amssymb" />
+  <symbol file="135.png" command="\Supset" package="amssymb" />
+  <symbol file="136.png" command="\sqsubset" package="amssymb" />
+  <symbol file="137.png" command="\sqsupset" package="amssymb" />
+  <symbol file="138.png" command="\sqsubseteq" />
+  <symbol file="139.png" command="\sqsupseteq" />
+</symbols>

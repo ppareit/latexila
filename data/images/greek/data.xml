@@ -1,0 +1,53 @@
+<symbols>
+  <symbol file="01.png" command="\alpha" />
+  <symbol file="02.png" command="\beta" />
+  <symbol file="03.png" command="\gamma" />
+  <symbol file="04.png" command="\delta" />
+  <symbol file="05.png" command="\epsilon" />
+  <symbol file="06.png" command="\varepsilon" />
+  <symbol file="07.png" command="\zeta" />
+  <symbol file="08.png" command="\eta" />
+  <symbol file="09.png" command="\theta" />
+  <symbol file="10.png" command="\vartheta" />
+  <symbol file="11.png" command="\iota" />
+  <symbol file="12.png" command="\kappa" />
+  <symbol file="13.png" command="\lambda" />
+  <symbol file="14.png" command="\mu" />
+  <symbol file="15.png" command="\nu" />
+  <symbol file="16.png" command="\xi" />
+  <symbol file="18.png" command="\pi" />
+  <symbol file="19.png" command="\varpi" />
+  <symbol file="20.png" command="\rho" />
+  <symbol file="21.png" command="\varrho" />
+  <symbol file="22.png" command="\sigma" />
+  <symbol file="23.png" command="\varsigma" />
+  <symbol file="24.png" command="\tau" />
+  <symbol file="25.png" command="\upsilon" />
+  <symbol file="26.png" command="\phi" />
+  <symbol file="27.png" command="\varphi" />
+  <symbol file="28.png" command="\chi" />
+  <symbol file="29.png" command="\psi" />
+  <symbol file="30.png" command="\omega" />
+  <symbol file="33.png" command="\Gamma" />
+  <symbol file="34.png" command="\varGamma" package="amsmath" />
+  <symbol file="35.png" command="\Delta" />
+  <symbol file="36.png" command="\varDelta" package="amsmath" />
+  <symbol file="40.png" command="\Theta" />
+  <symbol file="41.png" command="\varTheta" package="amsmath" />
+  <symbol file="44.png" command="\Lambda" />
+  <symbol file="45.png" command="\varLambda" package="amsmath" />
+  <symbol file="48.png" command="\Xi" />
+  <symbol file="49.png" command="\varXi" package="amsmath" />
+  <symbol file="51.png" command="\Pi" />
+  <symbol file="52.png" command="\varPi" package="amsmath" />
+  <symbol file="54.png" command="\Sigma" />
+  <symbol file="55.png" command="\varSigma" package="amsmath" />
+  <symbol file="57.png" command="\Upsilon" />
+  <symbol file="58.png" command="\varUpsilon" package="amsmath" />
+  <symbol file="59.png" command="\Phi" />
+  <symbol file="60.png" command="\varPhi" package="amsmath" />
+  <symbol file="62.png" command="\Psi" />
+  <symbol file="63.png" command="\varPsi" package="amsmath" />
+  <symbol file="64.png" command="\Omega" />
+  <symbol file="65.png" command="\varOmega" package="amsmath" />
+</symbols>
