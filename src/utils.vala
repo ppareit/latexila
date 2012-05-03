@@ -75,10 +75,19 @@ namespace Utils
         return true;
     }
 
-    public unowned string get_string_from_resource (string resource_path)
+    public unowned string? get_string_from_resource (string resource_path)
     {
-        Bytes bytes = resources_lookup_data (resource_path, 0);
-        return (string) bytes.get_data ();
+        try
+        {
+            Bytes bytes = resources_lookup_data (resource_path, 0);
+            return (string) bytes.get_data ();
+        }
+        catch (Error e)
+        {
+            warning ("Failed to load data from resource '%s': %s",
+                resource_path, e.message);
+            return null;
+        }
     }
 
 

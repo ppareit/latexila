@@ -192,11 +192,14 @@ private class NormalSymbols : ListStore
 
     private void load_symbols ()
     {
+        unowned string? contents =
+            Utils.get_string_from_resource (_resource_path + "data.xml");
+
+        if (contents == null)
+            return;
+
         try
         {
-            unowned string contents =
-                Utils.get_string_from_resource (_resource_path + "data.xml");
-
             MarkupParser parser = { parser_start, null, null, null, null };
             MarkupParseContext context = new MarkupParseContext (parser, 0, this, null);
             context.parse (contents, -1);
