@@ -653,17 +653,19 @@ public class LatexMenu : Gtk.ActionGroup
     {
         string indent = get_indentation ();
 
-        string begin = @"\\begin{figure}\n" +
+        string before_cursor =
+            "\\begin{figure}\n" +
             @"$indent\\begin{center}\n" +
             @"$indent$indent\\includegraphics{";
 
-        string end = @"}\n" +
-            @"$indent$indent\\label{fig:}\n" +
+        string after_cursor =
+            "}\n" +
             @"$indent$indent\\caption{}\n" +
+            @"$indent$indent\\label{fig:}\n" +
             @"$indent\\end{center}\n" +
             "\\end{figure}";
 
-        text_buffer_insert (begin, end);
+        text_buffer_insert (before_cursor, after_cursor);
     }
 
     public void on_env_table ()
