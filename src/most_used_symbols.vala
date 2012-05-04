@@ -15,6 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Sébastien Wilmet
  */
 
 using Gtk;
@@ -27,6 +29,9 @@ public class MostUsedSymbols : GLib.Object
 
     private ListStore _store;
     private TreeModelFilter _model_filter;
+
+    // The column containing the number of times a symbol has been used.
+    private static const int SYMBOL_COLUMN_NUM = SymbolColumn.N_COLUMNS;
 
     private MostUsedSymbols ()
     {
@@ -52,8 +57,6 @@ public class MostUsedSymbols : GLib.Object
 
     private void init_models ()
     {
-        // There is one more column, to store the number of times the symbol
-        // has been used.
         _store = new ListStore (SymbolColumn.N_COLUMNS + 1,
             typeof (Gdk.Pixbuf),
             typeof (string), // command
@@ -62,7 +65,7 @@ public class MostUsedSymbols : GLib.Object
             typeof (int)     // number of times used
         );
 
-        _store.set_sort_column_id (SymbolColumn.N_COLUMNS, SortType.DESCENDING);
+        _store.set_sort_column_id (SYMBOL_COLUMN_NUM, SortType.DESCENDING);
 
         _model_filter = new TreeModelFilter (_store, null);
         _model_filter.set_visible_func ((model, iter) =>
@@ -100,9 +103,9 @@ public class MostUsedSymbols : GLib.Object
         {
             int num;
             TreeModel model = _store as TreeModel;
-            model.get (iter, SymbolColumn.N_COLUMNS, out num);
+            model.get (iter, SYMBOL_COLUMN_NUM, out num);
 
-            _store.set (iter, SymbolColumn.N_COLUMNS, num + 1);
+            _store.set (iter, SYMBOL_COLUMN_NUM, num + 1);
         }
 
         _modified = true;
@@ -140,7 +143,7 @@ public class MostUsedSymbols : GLib.Object
             SymbolColumn.COMMAND, "",
             SymbolColumn.TOOLTIP, "",
             SymbolColumn.ID, id,
-            SymbolColumn.N_COLUMNS, nb_times_used
+            SYMBOL_COLUMN_NUM, nb_times_used
         );
     }
 
@@ -246,7 +249,7 @@ public class MostUsedSymbols : GLib.Object
             TreeModel model = _store as TreeModel;
             model.get (iter,
                 SymbolColumn.ID, out id,
-                SymbolColumn.N_COLUMNS, out num
+                SYMBOL_COLUMN_NUM, out num
             );
 
             content += "  <symbol id=\"%s\" num=\"%d\" />\n".printf (id, num);
