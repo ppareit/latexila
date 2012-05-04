@@ -68,6 +68,9 @@ public class Symbols : GLib.Object
     private static Symbols _instance = null;
     private ListStore _categories_store;
 
+    // category id -> NormalSymbols
+    private Gee.Map<string, NormalSymbols?> _normal_symbols_map;
+
     // singleton
     private Symbols ()
     {
@@ -78,16 +81,23 @@ public class Symbols : GLib.Object
             typeof (TreeModel)
         );
 
+        _normal_symbols_map = new Gee.HashMap<string, NormalSymbols?> ();
+
         foreach (CategoryInfo info in _normal_categories)
             add_normal_category (info);
-
-        add_most_used_category ();
     }
 
     public static Symbols get_default ()
     {
         if (_instance == null)
+        {
             _instance = new Symbols ();
+
+            // This class must be instanciated before the construction of the
+            // MostUsedSymbols class, because MostUsedSymbols calls
+            // get_symbol_info().
+            _instance.add_most_used_category ();
+        }
 
         return _instance;
     }
@@ -97,9 +107,35 @@ public class Symbols : GLib.Object
         return _categories_store as TreeModel;
     }
 
+    public bool get_symbol_info (string id, out string command, out string tooltip)
+    {
+        command = null;
+        tooltip = null;
+
+        string[] id_components = id.split ("/");
+        return_val_if_fail (id_components.length == 2, false);
+
+        string category_id = id_components[0];
+        string icon_file = id_components[1];
+
+        return_val_if_fail (_normal_symbols_map.has_key (category_id), false);
+
+        NormalSymbols normal_symbols = _normal_symbols_map[category_id];
+
+        string package = null;
+        bool ok = normal_symbols.get_symbol_info (icon_file, out command, out package);
+
+        return_val_if_fail (ok, false);
+
+        tooltip = get_tooltip (command, package);
+        return true;
+    }
+
     private void add_normal_category (CategoryInfo info)
     {
         ListStore store = new NormalSymbols (info.id);
+
+        _normal_symbols_map[info.id] = store as NormalSymbols;
 
         TreeIter iter;
         _categories_store.append (out iter);
@@ -156,7 +192,6 @@ private class NormalSymbols : ListStore
 {
     private struct SymbolInfo
     {
-        string icon_file;
         string latex_command;
         string? package_required;
     }
@@ -164,10 +199,15 @@ private class NormalSymbols : ListStore
     private string _category_id;
     private string _resource_path;
 
+    // icon file -> symbol info
+    private Gee.Map<string, SymbolInfo?> _data;
+
     public NormalSymbols (string category_id)
     {
         _category_id = category_id;
         _resource_path = @"/org/gnome/latexila/symbols/$category_id/";
+
+        _data = new Gee.HashMap<string, SymbolInfo?> ();
 
         Type[] column_types = {
             typeof (Gdk.Pixbuf),
@@ -179,6 +219,21 @@ private class NormalSymbols : ListStore
         set_column_types (column_types);
 
         load_symbols ();
+    }
+
+    public bool get_symbol_info (string icon_file, out string command, out string package)
+    {
+        command = null;
+        package = null;
+
+        if (! _data.has_key (icon_file))
+            return false;
+
+        SymbolInfo info = _data[icon_file];
+        command = info.latex_command;
+        package = info.package_required;
+
+        return true;
     }
 
     private void load_symbols ()
@@ -201,12 +256,14 @@ private class NormalSymbols : ListStore
         }
     }
 
-    private void add_symbol (SymbolInfo symbol)
+    private void add_symbol (string icon_file, SymbolInfo symbol)
     {
+        _data[icon_file] = symbol;
+
         string tooltip = Symbols.get_tooltip (symbol.latex_command,
             symbol.package_required);
 
-        string id = "%s/%s".printf (_category_id, symbol.icon_file);
+        string id = "%s/%s".printf (_category_id, icon_file);
 
         Gdk.Pixbuf? pixbuf = Symbols.get_pixbuf (id);
         if (pixbuf == null)
@@ -233,13 +290,14 @@ private class NormalSymbols : ListStore
             case "symbol":
                 SymbolInfo symbol = SymbolInfo ();
                 symbol.package_required = null;
+                string icon_file = null;
 
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
                         case "file":
-                            symbol.icon_file = attr_values[i];
+                            icon_file = attr_values[i];
                             break;
 
                         case "command":
@@ -256,7 +314,7 @@ private class NormalSymbols : ListStore
                     }
                 }
 
-                add_symbol (symbol);
+                add_symbol (icon_file, symbol);
                 break;
 
             default:

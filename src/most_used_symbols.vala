@@ -136,12 +136,17 @@ public class MostUsedSymbols : GLib.Object
         if (pixbuf == null)
             return;
 
+        string command;
+        string tooltip;
+        if (! Symbols.get_default ().get_symbol_info (id, out command, out tooltip))
+            return;
+
         TreeIter iter;
         _store.append (out iter);
         _store.set (iter,
             SymbolColumn.PIXBUF, pixbuf,
-            SymbolColumn.COMMAND, "",
-            SymbolColumn.TOOLTIP, "",
+            SymbolColumn.COMMAND, command,
+            SymbolColumn.TOOLTIP, tooltip,
             SymbolColumn.ID, id,
             SYMBOL_COLUMN_NUM, nb_times_used
         );
