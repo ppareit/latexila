@@ -1,10 +1,7 @@
 cmake_minimum_required (VERSION 2.6.4)
 
-# Some variables
 set (APP_NAME "LaTeXila")
 set (APP_VERSION "2.5.1")
-set (SCHEMA_DIR "${CMAKE_INSTALL_PREFIX}/share")
-set (ICONS_DIR "${CMAKE_INSTALL_PREFIX}/share/icons/hicolor")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
@@ -26,6 +23,10 @@ set (WITH_GNOME OFF CACHE BOOL
 	"Use gsettings-desktop-schemas for a better integration with GNOME")
 set (COMPILE_SCHEMA ON CACHE BOOL "Compile the GSettings schema")
 set (VALAC "" CACHE FILEPATH "The valac executable to use")
+
+# Some variables
+set (SCHEMA_DIR "${CMAKE_INSTALL_PREFIX}/share")
+set (ICONS_DIR "${CMAKE_INSTALL_PREFIX}/share/icons/hicolor")
 
 # Native Language Support
 set (GETTEXT_PACKAGE "latexila")
