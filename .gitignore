@@ -1,8 +1,0 @@
-*.cmake
-*.gmo
-config.h
-CMakeCache.txt
-CMakeFiles
-Makefile
-src/latexila
-install_manifest.txt
