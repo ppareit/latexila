@@ -30,7 +30,6 @@ public class SymbolsView : Grid
     private ComboBox _combo_box;
     private IconView _symbol_view;
     private Button _clear_button;
-    private uint _timeout_id = 0;
 
     public SymbolsView (MainWindow main_window)
     {
@@ -53,28 +52,8 @@ public class SymbolsView : Grid
         add (_clear_button);
 
         show_all ();
-        show.connect (() => resize_iconview ());
 
         _combo_box.set_active (0);
-    }
-
-    // HACK the IconView is not resized with GTK+ 3.4, see:
-    // https://bugzilla.gnome.org/show_bug.cgi?id=673326
-    // TODO when the IconView is fixed, remove this hack.
-    public void resize_iconview ()
-    {
-        if (_timeout_id > 0)
-            return;
-
-        // Resize every 100ms.
-        _timeout_id = Timeout.add (100, () =>
-        {
-            TreeModel model = _symbol_view.get_model ();
-            _symbol_view.set_model (null);
-            _symbol_view.set_model (model);
-            _timeout_id = 0;
-            return false;
-        });
     }
 
     private void create_combo_box ()

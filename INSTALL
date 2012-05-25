@@ -2,7 +2,7 @@ Requirements
 ============
 
 GLib >= 2.32
-GTK+ >= 3.4
+GTK+ >= 3.4.3
 GtkSourceView >= 3.4.1
 GtkSpell >= 3.0 (not yet released)
 libgee
