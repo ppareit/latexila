@@ -4,7 +4,7 @@ Requirements
 GLib >= 2.32
 GTK+ >= 3.4.3
 GtkSourceView >= 3.4.1
-GtkSpell >= 3.0 (not yet released)
+GtkSpell >= 3.0 (not yet released, see note below)
 libgee
 gettext
 gsettings-desktop-schemas (optional)
@@ -19,6 +19,13 @@ because the C code is already generated.
 
 You also probably want to install Latexmk or Rubber. Latexmk is used by default
 for compiling documents.
+
+GtkSpell 3.0 can be found on the mercurial (hg) repository [1]. The official web
+site is hosted on sourceforge [2]. And there is a Debian package available [3].
+
+[1] http://gtkspell.hg.sourceforge.net/hgweb/gtkspell/gtkspell/
+[2] http://gtkspell.sourceforge.net
+[3] http://packages.debian.org/wheezy/libgtkspell-3-0
 
 
 Simple install procedure
