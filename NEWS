@@ -1,5 +1,19 @@
 LaTeXila NEWS
 
+==============================
+* Release 2.5.1 (May 31, 2012)
+==============================
+
+- Figure insertion: swap \label and \caption
+- Use GResource for icons and symbols
+- Code refactoring for the symbols (in the side panel)
+- Fixes and improvements of the compilation with CMake
+- Updated Brazilian Portuguese, Czech, Serbian and Latvian translations
+
+Thanks to:
+Átila Camurça, Marek Černocký, Rūdolfs Mazurs, Мирослав Николић
+
+
 ================================
 * Release 2.5.0 (April 21, 2012)
 ================================
