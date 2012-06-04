@@ -1,8 +1,22 @@
 LaTeXila NEWS
 
+==============================
+* Release 2.4.1 (June 5, 2012)
+==============================
+
+- Figure insertion: swap \label and \caption
+- Updated French, Czech translations
+- Added Indonesian translation
+
+Thanks to:
+Andika Triwidada, Bruno Brouard, Marek Černocký
+
+
 ================================
 * Release 2.4.0 (March 28, 2012)
 ================================
+
+Release name: Welcome Spring
 
 - Document compilation: set temporary location if file not saved
 - More documentation
