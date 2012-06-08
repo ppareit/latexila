@@ -177,7 +177,7 @@ public class Symbols : GLib.Object
     {
         try
         {
-            return Gdk.MyPixbuf.from_resource (
+            return new Gdk.Pixbuf.from_resource (
                 "/org/gnome/latexila/symbols/" + symbol_id);
         }
         catch (Error e)

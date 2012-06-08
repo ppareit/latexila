@@ -36,8 +36,8 @@ find_package (Itstool REQUIRED)
 
 # Vala
 if (BUILD_VALA)
-	set (_vala_main_version "0.16")
-	set (_vala_min_version "0.16.0")
+	set (_vala_main_version "0.18")
+	set (_vala_min_version "0.17.1")
 
 	if (VALAC)
 		message (STATUS "Use custom valac: ${VALAC}")

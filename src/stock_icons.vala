@@ -72,7 +72,7 @@ public class StockIcons
 
             try
             {
-                pixbuf = Gdk.MyPixbuf.from_resource (resource_path + icon_file);
+                pixbuf = new Gdk.Pixbuf.from_resource (resource_path + icon_file);
             }
             catch (Error e)
             {

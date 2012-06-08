@@ -11,7 +11,7 @@ gsettings-desktop-schemas (optional)
 
 And for building the sources:
 CMake >= 2.6.4
-Vala >= 0.16.0 (may be optional)
+Vala >= 0.17.1 (may be optional)
 ITS Tool
 
 If you are installing LaTeXila from a tarball, you don't have to install Vala
