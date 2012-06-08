@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2011 Sébastien Wilmet
+ * Copyright © 2011-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,10 @@
  */
 
 using Gtk;
+
+// Model: structure_model.vala
+// View: structure.vala
+// Controller: document_structure.vala
 
 public class DocumentStructure : GLib.Object
 {

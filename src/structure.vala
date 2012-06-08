@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2011 Sébastien Wilmet
+ * Copyright © 2011-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,22 @@
  */
 
 using Gtk;
+
+// Model: structure_model.vala
+// View: structure.vala
+// Controller: document_structure.vala
+
+// Little overview:
+//
+// The complete structure of a file is displayed in a tree.
+// There are also "simple lists" that displays only one or several types of items.
+// When an element in the simple list is selected, the corresponding element in the tree
+// is also selected, and inversely.
+// When an item is selected, the cursor in the file is moved to the item.
+// Some actions are possible on the items. These actions are located in the Structure
+// menu, or simply by a right click on the item.
+// There is a mini-toolbar, with buttons to choose the simple list, and some other
+// actions like refresh the data.
 
 public enum StructType
 {

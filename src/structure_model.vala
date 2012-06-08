@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2011 Sébastien Wilmet
+ * Copyright © 2011-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,10 @@
  */
 
 using Gtk;
+
+// Model: structure_model.vala
+// View: structure.vala
+// Controller: document_structure.vala
 
 public struct StructData
 {
@@ -740,8 +744,8 @@ public class StructureModel : TreeModel, GLib.Object
             store.set (iter,
                 StructListColumn.PIXBUF, Structure.get_icon_from_type (data.type),
                 StructListColumn.TEXT, data.text,
-                StructListColumn.TOOLTIP, Structure.get_type_name (data.type),
-                -1);
+                StructListColumn.TOOLTIP, Structure.get_type_name (data.type)
+            );
         }
     }
 
