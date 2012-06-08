@@ -37,8 +37,8 @@ using Gtk;
 
 public enum StructType
 {
-    // First part: must be exactly the same as the first part of LowLevelType
-    // (in DocumentStructure).
+    // Common types: items that can be fetched at once (only one LaTeX markup or comment)
+    BEGIN_COMMON_TYPES,
     PART,
     CHAPTER,
     SECTION,
@@ -51,11 +51,28 @@ public enum StructType
     IMAGE,
     TODO,
     FIXME,
-    NB_COMMON_TYPES,
+    END_COMMON_TYPES,
 
-    // Second part: "high-level" only
+    // Low-level types: does not correspond to an item that can be directly displayed
+    // in the structure.
+    BEGIN_LOW_LEVEL_TYPES,
+    BEGIN_FIGURE,
+    END_FIGURE,
+    BEGIN_TABLE,
+    END_TABLE,
+    BEGIN_VERBATIM,
+    END_VERBATIM,
+    END_DOCUMENT,
+    CAPTION,
+    END_LOW_LEVEL_TYPES,
+
+    // High-level types: items that contain a number of low level types, and that are
+    // displayed in the structure.
+    BEGIN_HIGH_LEVEL_TYPES,
     TABLE,
     FIGURE,
+    END_HIGH_LEVEL_TYPES,
+
     NB_TYPES
 }
 
@@ -576,7 +593,13 @@ public class Structure : Grid
     // A label for example is not a section.
     public static bool is_section (StructType type)
     {
-        return type <= StructType.SUBPARAGRAPH;
+        return StructType.PART <= type && type <= StructType.SUBPARAGRAPH;
+    }
+
+    public static bool is_common_type (StructType type)
+    {
+        return StructType.BEGIN_COMMON_TYPES < type
+            && type < StructType.END_COMMON_TYPES;
     }
 
 

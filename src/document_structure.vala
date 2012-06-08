@@ -25,35 +25,6 @@ using Gtk;
 
 public class DocumentStructure : GLib.Object
 {
-    private enum LowLevelType
-    {
-        // First part: must be exactly the same as the first part of StructType
-        // (in Structure).
-        PART,
-        CHAPTER,
-        SECTION,
-        SUBSECTION,
-        SUBSUBSECTION,
-        PARAGRAPH,
-        SUBPARAGRAPH,
-        LABEL,
-        INCLUDE,
-        IMAGE,
-        TODO,
-        FIXME,
-        NB_COMMON_TYPES,
-
-        // Second part: "low-level" only
-        BEGIN_FIGURE,
-        END_FIGURE,
-        BEGIN_TABLE,
-        END_TABLE,
-        BEGIN_VERBATIM,
-        END_VERBATIM,
-        END_DOCUMENT,
-        CAPTION
-    }
-
     // For a figure or table environment, because all the data can not be inserted at once
     private struct EnvData
     {
@@ -180,7 +151,7 @@ public class DocumentStructure : GLib.Object
             int line_length = line.length;
             while (start_index < line_length)
             {
-                LowLevelType? type;
+                StructType? type;
                 string? contents;
                 int? start_match_index;
                 int? end_match_index;
@@ -220,7 +191,7 @@ public class DocumentStructure : GLib.Object
     // Returns true if an item has been found, false otherwise.
     // With the out arguments we can fetch the information we are intersted in.
     private bool search_low_level_item (string line, int start_index,
-        out LowLevelType? type, out string? contents,
+        out StructType? type, out string? contents,
         out int? start_match_index, out int? end_match_index)
     {
         type = null;
@@ -290,7 +261,7 @@ public class DocumentStructure : GLib.Object
     }
 
     private bool search_markup (string line, int after_backslash_index,
-        out LowLevelType? type, out string? contents, out int? end_match_index)
+        out StructType? type, out string? contents, out int? end_match_index)
     {
         type = null;
         contents = null;
@@ -314,7 +285,7 @@ public class DocumentStructure : GLib.Object
         }
 
         /* simple markup */
-        type = get_markup_low_level_type (name);
+        type = get_markup_type (name);
         if (type == null)
             return false;
 
@@ -323,7 +294,7 @@ public class DocumentStructure : GLib.Object
     }
 
     private bool search_env (string line, int begin_contents_index, bool is_begin_env,
-        out LowLevelType? type, out int? end_match_index)
+        out StructType? type, out int? end_match_index)
     {
         type = null;
 
@@ -335,25 +306,25 @@ public class DocumentStructure : GLib.Object
 
         if (contents == "verbatim" || contents == "verbatim*")
         {
-            type = is_begin_env ? LowLevelType.BEGIN_VERBATIM : LowLevelType.END_VERBATIM;
+            type = is_begin_env ? StructType.BEGIN_VERBATIM : StructType.END_VERBATIM;
             return true;
         }
 
         if (contents == "figure")
         {
-            type = is_begin_env ? LowLevelType.BEGIN_FIGURE : LowLevelType.END_FIGURE;
+            type = is_begin_env ? StructType.BEGIN_FIGURE : StructType.END_FIGURE;
             return true;
         }
 
         if (contents == "table")
         {
-            type = is_begin_env ? LowLevelType.BEGIN_TABLE : LowLevelType.END_TABLE;
+            type = is_begin_env ? StructType.BEGIN_TABLE : StructType.END_TABLE;
             return true;
         }
 
         if (contents == "document" && ! is_begin_env)
         {
-            type = LowLevelType.END_DOCUMENT;
+            type = StructType.END_DOCUMENT;
             return true;
         }
 
@@ -501,7 +472,7 @@ public class DocumentStructure : GLib.Object
     }
 
     private bool search_comment (string line, int after_percent_index,
-        out LowLevelType? type, out string? contents, out int? end_match_index)
+        out StructType? type, out string? contents, out int? end_match_index)
     {
         type = null;
         contents = null;
@@ -514,7 +485,7 @@ public class DocumentStructure : GLib.Object
             return false;
 
         string type_str = match_info.fetch_named ("type");
-        type = type_str == "TODO" ? LowLevelType.TODO : LowLevelType.FIXME;
+        type = type_str == "TODO" ? StructType.TODO : StructType.FIXME;
 
         contents = match_info.fetch_named ("text");
         end_match_index = line.length;
@@ -522,34 +493,34 @@ public class DocumentStructure : GLib.Object
         return true;
     }
 
-    private void handle_item (LowLevelType type, string? contents, TextIter iter)
+    private void handle_item (StructType type, string? contents, TextIter iter)
     {
         // we are currently in a verbatim env
         if (_in_verbatim_env)
         {
-            if (type == LowLevelType.END_VERBATIM)
+            if (type == StructType.END_VERBATIM)
                 _in_verbatim_env = false;
 
             return;
         }
 
-        if (type == LowLevelType.TODO || type == LowLevelType.FIXME)
-            add_item ((StructType) type, truncate (contents) ?? contents, iter);
+        if (type == StructType.TODO || type == StructType.FIXME)
+            add_item (type, truncate (contents) ?? contents, iter);
 
         // the low-level type is common with the high-level type
-        else if (type < LowLevelType.NB_COMMON_TYPES)
-            add_item ((StructType) type, contents, iter);
+        else if (Structure.is_common_type (type))
+            add_item (type, contents, iter);
 
         // begin of a verbatim env
-        else if (type == LowLevelType.BEGIN_VERBATIM)
+        else if (type == StructType.BEGIN_VERBATIM)
             _in_verbatim_env = true;
 
         // begin of a figure or table env
-        else if (type == LowLevelType.BEGIN_FIGURE || type == LowLevelType.BEGIN_TABLE)
+        else if (type == StructType.BEGIN_FIGURE || type == StructType.BEGIN_TABLE)
             create_new_environment (type, iter);
 
         // a caption (we take only the first)
-        else if (type == LowLevelType.CAPTION && _last_env_data != null
+        else if (type == StructType.CAPTION && _last_env_data != null
             && _last_env_data.first_caption == null)
         {
             _last_env_data.first_caption = truncate (contents) ?? contents;
@@ -565,19 +536,19 @@ public class DocumentStructure : GLib.Object
         }
 
         // end of the document
-        else if (type == LowLevelType.END_DOCUMENT)
+        else if (type == StructType.END_DOCUMENT)
             _end_document_mark = create_text_mark_from_iter (iter);
     }
 
-    private void create_new_environment (LowLevelType type, TextIter start_iter)
+    private void create_new_environment (StructType type, TextIter start_iter)
     {
-        return_if_fail (type == LowLevelType.BEGIN_FIGURE
-            || type == LowLevelType.BEGIN_TABLE);
+        return_if_fail (type == StructType.BEGIN_FIGURE
+            || type == StructType.BEGIN_TABLE);
 
         _last_env_data = EnvData ();
         _last_env_data.first_caption = null;
 
-        if (type == LowLevelType.BEGIN_TABLE)
+        if (type == StructType.BEGIN_TABLE)
             _last_env_data.type = StructType.TABLE;
         else
             _last_env_data.type = StructType.FIGURE;
@@ -586,15 +557,15 @@ public class DocumentStructure : GLib.Object
         _last_env_data.path = _model.get_path (tree_iter);
     }
 
-    private bool verify_end_environment_type (LowLevelType type)
+    private bool verify_end_environment_type (StructType type)
     {
         if (_last_env_data == null)
             return false;
 
-        if (type == LowLevelType.END_TABLE)
+        if (type == StructType.END_TABLE)
             return _last_env_data.type == StructType.TABLE;
 
-        if (type == LowLevelType.END_FIGURE)
+        if (type == StructType.END_FIGURE)
             return _last_env_data.type == StructType.FIGURE;
 
         return false;
@@ -655,50 +626,50 @@ public class DocumentStructure : GLib.Object
         return text.substring (0, index);
     }
 
-    private LowLevelType? get_markup_low_level_type (string markup_name)
+    private StructType? get_markup_type (string markup_name)
     {
         switch (markup_name)
         {
             case "part":
             case "part*":
-                return LowLevelType.PART;
+                return StructType.PART;
 
             case "chapter":
             case "chapter*":
-                return LowLevelType.CHAPTER;
+                return StructType.CHAPTER;
 
             case "section":
             case "section*":
-                return LowLevelType.SECTION;
+                return StructType.SECTION;
 
             case "subsection":
             case "subsection*":
-                return LowLevelType.SUBSECTION;
+                return StructType.SUBSECTION;
 
             case "subsubsection":
             case "subsubsection*":
-                return LowLevelType.SUBSUBSECTION;
+                return StructType.SUBSUBSECTION;
 
             case "paragraph":
             case "paragraph*":
-                return LowLevelType.PARAGRAPH;
+                return StructType.PARAGRAPH;
 
             case "subparagraph":
             case "subparagraph*":
-                return LowLevelType.SUBPARAGRAPH;
+                return StructType.SUBPARAGRAPH;
 
             case "label":
-                return LowLevelType.LABEL;
+                return StructType.LABEL;
 
             case "input":
             case "include":
-                return LowLevelType.INCLUDE;
+                return StructType.INCLUDE;
 
             case "includegraphics":
-                return LowLevelType.IMAGE;
+                return StructType.IMAGE;
 
             case "caption":
-                return LowLevelType.CAPTION;
+                return StructType.CAPTION;
 
             default:
                 return null;
@@ -933,8 +904,8 @@ public class DocumentStructure : GLib.Object
                 null);
         }
 
-        // an other common type: the end iter is already at the good place
-        else if (item_type < StructType.NB_COMMON_TYPES)
+        // another common type: the end iter is already at the good place
+        else if (Structure.is_common_type (item_type))
             return true;
 
         // an environment
@@ -958,7 +929,7 @@ public class DocumentStructure : GLib.Object
 
         /* parse the line */
         int start_index = start_match_iter.get_line_index ();
-        LowLevelType? low_level_type;
+        StructType? low_level_type;
         string? contents;
         int? start_match_index;
         int? end_match_index;
@@ -987,11 +958,11 @@ public class DocumentStructure : GLib.Object
     // If 'start' is true, and if the structure item is an environment, a \begin{} is
     // expected. Otherwise, a \end{} is expected.
     private bool same_items (StructType item_type, string item_contents,
-        LowLevelType item_found_type, string item_found_contents, bool start)
+        StructType item_found_type, string item_found_contents, bool start)
     {
-        if (item_found_type < LowLevelType.NB_COMMON_TYPES)
+        if (Structure.is_common_type (item_found_type))
         {
-            bool same_type = item_type == (StructType) item_found_type;
+            bool same_type = item_type == item_found_type;
             bool same_contents = item_contents == item_found_contents;
             return same_type && same_contents;
         }
@@ -999,17 +970,17 @@ public class DocumentStructure : GLib.Object
         if (item_type == StructType.FIGURE)
         {
             if (start)
-                return item_found_type == LowLevelType.BEGIN_FIGURE;
+                return item_found_type == StructType.BEGIN_FIGURE;
             else
-                return item_found_type == LowLevelType.END_FIGURE;
+                return item_found_type == StructType.END_FIGURE;
         }
 
         if (item_type == StructType.TABLE)
         {
             if (start)
-                return item_found_type == LowLevelType.BEGIN_TABLE;
+                return item_found_type == StructType.BEGIN_TABLE;
             else
-                return item_found_type == LowLevelType.END_TABLE;
+                return item_found_type == StructType.END_TABLE;
         }
 
         return false;
@@ -1105,12 +1076,12 @@ public class DocumentStructure : GLib.Object
         if (markup_name == null)
             return false;
 
-        LowLevelType? markup_type = get_markup_low_level_type (markup_name);
+        StructType? markup_type = get_markup_type (markup_name);
         if (markup_type == null)
             return false;
 
         // HACK see https://bugzilla.gnome.org/show_bug.cgi?id=652781
-        LowLevelType markup_type_hack = markup_type;
+        StructType markup_type_hack = markup_type;
         if ((int) type != (int) markup_type_hack)
             return false;
 

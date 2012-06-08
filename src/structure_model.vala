@@ -455,7 +455,7 @@ public class StructureModel : TreeModel, GLib.Object
 
         unowned Node<StructData?> node = get_node_from_iter (iter);
         StructType type = node.data.type;
-        return_if_fail (type < StructType.SUBPARAGRAPH);
+        return_if_fail (Structure.is_section (type) && type != StructType.SUBPARAGRAPH);
 
         StructType new_type = type + 1;
 
@@ -782,30 +782,18 @@ public class StructureModel : TreeModel, GLib.Object
     {
         StructData item = node.data;
 
-        if (Structure.is_section (item.type))
-            return;
-
         var list = get_list (item.type);
-        return_if_fail (list != null);
-
-        list.add (node);
+        if (list != null)
+            list.add (node);
     }
 
     private void regenerate_simple_lists ()
     {
         reset_simple_lists ();
 
-        _tree.traverse (TraverseType.PRE_ORDER, TraverseFlags.ALL, -1, (node_param) =>
+        _tree.traverse (TraverseType.PRE_ORDER, TraverseFlags.ALL, -1, (node) =>
         {
-            unowned Node<StructData?> node = (Node<StructData?>) node_param;
-            StructType type = node.data.type;
-            if (! Structure.is_section (type))
-            {
-                var list = get_list (type);
-                return_val_if_fail (list != null, true);
-
-                list.add (node);
-            }
+            insert_node_in_list (node);
 
             // continue the traversal
             return false;
