@@ -123,18 +123,19 @@ public class DocumentStructure : GLib.Object
                 _timer.continue ();
         }
 
-        int cur_line = _start_parsing_line;
-        int nb_lines = _doc.get_line_count ();
-        int stop_parsing_line = _start_parsing_line + MAX_NB_LINES_TO_PARSE;
-
         // The parsing is done line-by-line.
-        while (cur_line < nb_lines)
+        TextIter line_iter;
+        _doc.get_iter_at_line (out line_iter, _start_parsing_line);
+
+        int nb_lines_parsed = 0;
+
+        do
         {
-            // If it's a big document, the parsing is splitted into several chunks,
+            // If it's a big document, the parsing is split into several chunks,
             // so the UI is not frozen.
-            if (cur_line == stop_parsing_line)
+            if (nb_lines_parsed == MAX_NB_LINES_TO_PARSE)
             {
-                _start_parsing_line = cur_line;
+                _start_parsing_line += MAX_NB_LINES_TO_PARSE;
 
                 if (_measure_parsing_time)
                     _timer.stop ();
@@ -143,12 +144,11 @@ public class DocumentStructure : GLib.Object
             }
 
             // get the text of the current line
-            string line = get_document_line_contents (cur_line);
+            string line_text = get_line_contents_at_iter (line_iter);
 
             // in one line there could be several items
-
             int start_index = 0;
-            int line_length = line.length;
+            int line_length = line_text.length;
             while (start_index < line_length)
             {
                 StructType? type;
@@ -156,21 +156,22 @@ public class DocumentStructure : GLib.Object
                 int? start_match_index;
                 int? end_match_index;
 
-                bool item_found = search_low_level_item (line, start_index, out type,
+                bool item_found = search_low_level_item (line_text, start_index, out type,
                     out contents, out start_match_index, out end_match_index);
 
                 if (! item_found)
                     break;
 
-                TextIter iter;
-                _doc.get_iter_at_line_index (out iter, cur_line, start_match_index);
+                TextIter iter = line_iter;
+                iter.set_line_index (start_match_index);
                 handle_item (type, contents, iter);
 
                 start_index = end_match_index;
             }
 
-            cur_line++;
+            nb_lines_parsed++;
         }
+        while (line_iter.forward_line ());
 
         if (_measure_parsing_time)
         {
@@ -676,6 +677,19 @@ public class DocumentStructure : GLib.Object
         }
     }
 
+    private string get_line_contents_at_iter (TextIter iter)
+    {
+        TextIter begin_line = iter;
+        begin_line.set_line_offset (0);
+
+        TextIter end_line = iter;
+        if (! iter.ends_line ())
+            end_line.forward_to_line_end ();
+
+        TextBuffer buffer = iter.get_buffer ();
+        return buffer.get_text (begin_line, end_line, false);
+    }
+
     /*************************************************************************/
     // Actions: cut, copy, delete, select, comment, shift left/right
 
@@ -924,8 +938,7 @@ public class DocumentStructure : GLib.Object
     {
         end_match_iter = {};
 
-        int line_num = start_match_iter.get_line ();
-        string line = get_document_line_contents (line_num);
+        string line = get_line_contents_at_iter (start_match_iter);
 
         /* parse the line */
         int start_index = start_match_iter.get_line_index ();
@@ -947,7 +960,8 @@ public class DocumentStructure : GLib.Object
         // compare the item found with the structure item
         if (same_items (item_type, item_contents, low_level_type, contents, is_start))
         {
-            _doc.get_iter_at_line_index (out end_match_iter, line_num, end_match_index);
+            end_match_iter = start_match_iter;
+            end_match_iter.set_line_index (end_match_index);
             return true;
         }
 
@@ -984,25 +998,6 @@ public class DocumentStructure : GLib.Object
         }
 
         return false;
-    }
-
-    private string? get_document_line_contents (int line_num)
-    {
-        int nb_lines = _doc.get_line_count ();
-        return_val_if_fail (0 <= line_num && line_num < nb_lines, null);
-
-        TextIter begin;
-        _doc.get_iter_at_line (out begin, line_num);
-
-        // If the line is empty, and if we do a forward_to_line_end(), we go to the end of
-        // the _next_ line, so we must handle this special case.
-        if (begin.ends_line ())
-            return "";
-
-        TextIter end = begin;
-        end.forward_to_line_end ();
-
-        return _doc.get_text (begin, end, false);
     }
 
     // Take into account \end{document}
@@ -1048,8 +1043,7 @@ public class DocumentStructure : GLib.Object
         TextMark mark;
         _model.get (tree_iter,
             StructColumn.TYPE, out type,
-            StructColumn.START_MARK, out mark,
-            -1);
+            StructColumn.START_MARK, out mark);
 
         if (shift_right)
             return_val_if_fail (type != StructType.SUBPARAGRAPH, false);
@@ -1063,9 +1057,7 @@ public class DocumentStructure : GLib.Object
         TextIter text_iter;
         _doc.get_iter_at_mark (out text_iter, mark);
 
-        int line_num = text_iter.get_line ();
-        string? line = get_document_line_contents (line_num);
-        return_val_if_fail (line != null, false);
+        string line = get_line_contents_at_iter (text_iter);
 
         int backslash_index = text_iter.get_line_index ();
         if (line[backslash_index] != '\\')
@@ -1096,13 +1088,11 @@ public class DocumentStructure : GLib.Object
             new_markup_name += "*";
 
         /* Replace the markup name */
-        TextIter begin_markup_name_iter;
-        _doc.get_iter_at_line_index (out begin_markup_name_iter, line_num,
-            after_backslash_index);
+        TextIter begin_markup_name_iter = text_iter;
+        begin_markup_name_iter.set_line_index (after_backslash_index);
 
-        TextIter end_markup_name_iter;
-        _doc.get_iter_at_line_index (out end_markup_name_iter, line_num,
-            after_backslash_index + markup_name.length);
+        TextIter end_markup_name_iter = text_iter;
+        end_markup_name_iter.set_line_index (after_backslash_index + markup_name.length);
 
         _doc.delete (ref begin_markup_name_iter, ref end_markup_name_iter);
         _doc.insert (ref begin_markup_name_iter, new_markup_name, -1);
