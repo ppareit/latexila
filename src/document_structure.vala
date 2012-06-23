@@ -1069,7 +1069,12 @@ public class DocumentStructure : GLib.Object
             return false;
 
         StructType? markup_type = get_markup_type (markup_name);
-        if (markup_type == null || type != markup_type)
+        if (markup_type == null)
+            return false;
+
+        // HACK see https://bugzilla.gnome.org/show_bug.cgi?id=652781
+        StructType markup_type_hack = markup_type;
+        if ((int) type != (int) markup_type_hack)
             return false;
 
         /* Get the new markup name */
