@@ -1072,7 +1072,8 @@ public class DocumentStructure : GLib.Object
         if (markup_type == null)
             return false;
 
-        // HACK see https://bugzilla.gnome.org/show_bug.cgi?id=652781
+        // TODO remove this hack when the bug is fixed.
+        // See https://bugzilla.gnome.org/show_bug.cgi?id=678791
         StructType markup_type_hack = markup_type;
         if ((int) type != (int) markup_type_hack)
             return false;
