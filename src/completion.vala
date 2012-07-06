@@ -252,10 +252,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     // It has the same effect as returning false in match().
     private void show_no_proposals (SourceCompletionContext context)
     {
-        // FIXME: maybe this method is not sure, because sometimes segfault occur,
-        // but it's really difficult to diagnose...
-        // see bug #618004
-
         // The second argument can not be null so we use a variable...
         // The vapi should be fixed.
         List<SourceCompletionItem> empty_proposals = null;

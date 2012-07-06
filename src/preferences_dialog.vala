@@ -98,7 +98,6 @@ public class PreferencesDialog : Dialog
         {
             preferences_dialog = new PreferencesDialog ();
 
-            // FIXME how to connect Widget.destroyed?
             preferences_dialog.destroy.connect (() =>
             {
                 if (preferences_dialog != null)
