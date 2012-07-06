@@ -17,7 +17,7 @@ function (gresource resource_dir resource_file output_dir output_file)
 	execute_process (
 		OUTPUT_VARIABLE _files
 		WORKING_DIRECTORY ${resource_dir}
-		COMMAND glib-compile-resources --generate-dependencies ${resource_file}
+		COMMAND ${gresources_executable} --generate-dependencies ${resource_file}
 	)
 
 	string (REPLACE "\n" ";" files ${_files})
@@ -32,6 +32,6 @@ function (gresource resource_dir resource_file output_dir output_file)
 		OUTPUT ${output}
 		DEPENDS "${resource_dir}/${resource_file}" ${depends}
 		WORKING_DIRECTORY ${resource_dir}
-		COMMAND glib-compile-resources --generate-source --target=${output} ${resource_file}
+		COMMAND ${gresources_executable} --generate-source --target=${output} ${resource_file}
 	)
 endfunction ()

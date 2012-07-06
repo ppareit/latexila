@@ -104,6 +104,8 @@ configure_file (
 add_definitions (-include config.h)
 
 # Resources
+find_package (gresources REQUIRED)
+
 gresource (
 	"${latexila_SOURCE_DIR}/data/images/stock-icons" # resource dir
 	"stock-icons.gresource.xml" # resource file
