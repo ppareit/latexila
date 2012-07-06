@@ -46,7 +46,6 @@ public class SymbolsView : Grid
         add (_combo_box);
 
         Widget sw = Utils.add_scrollbar (_symbol_view);
-        sw.expand = true; // FIXME still useful?
         add (sw);
 
         add (_clear_button);
