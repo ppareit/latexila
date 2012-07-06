@@ -52,12 +52,28 @@ $ xargs rm < install_manifest.txt
 Configuration
 =============
 
-* Change the install directory
+* Change the install prefix directory
 
 	Default value: /usr/local/
 
 	Run cmake with this option:
 	-DCMAKE_INSTALL_PREFIX=/path/to/install/directory/
+
+
+* Change the data directory
+
+	Default value: CMAKE_INSTALL_PREFIX/share/latexila/
+
+	Run cmake with this option:
+	-DDATA_DIR=/path/to/data/directory/
+
+
+* Change the man page directory
+
+	Default value: CMAKE_INSTALL_PREFIX/share/man/man1/
+
+	Run cmake with this option:
+	-DMAN_DIR=/path/to/man/directory/
 
 
 * Generate the C code from the Vala files

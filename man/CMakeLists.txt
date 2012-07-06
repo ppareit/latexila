@@ -1,1 +1,1 @@
-install (FILES latexila.1 DESTINATION share/man/man1)
+install (FILES latexila.1 DESTINATION ${MAN_DIR})

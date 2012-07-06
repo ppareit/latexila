@@ -18,6 +18,8 @@ include ("${latexila_SOURCE_DIR}/cmake/build_vala.cmake")
 # Build options
 set (DATA_DIR "${CMAKE_INSTALL_PREFIX}/share/latexila"
 	CACHE PATH "The directory where the data is")
+set (MAN_DIR "${CMAKE_INSTALL_PREFIX}/share/man/man1"
+	CACHE PATH "The directory where the man page is")
 set (BUILD_VALA ON CACHE BOOL "Generate the C code from Vala files")
 set (WITH_GNOME OFF CACHE BOOL
 	"Use gsettings-desktop-schemas for a better integration with GNOME")
