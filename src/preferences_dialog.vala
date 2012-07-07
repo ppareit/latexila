@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,8 +22,7 @@ using Gee;
 
 public class PreferencesDialog : Dialog
 {
-    private static PreferencesDialog preferences_dialog = null;
-    private ListStore build_tools_store;
+    private static PreferencesDialog _instance = null;
 
     delegate unowned string Plural (ulong n);
 
@@ -94,28 +93,28 @@ public class PreferencesDialog : Dialog
 
     public static void show_me (MainWindow parent)
     {
-        if (preferences_dialog == null)
+        if (_instance == null)
         {
-            preferences_dialog = new PreferencesDialog ();
+            _instance = new PreferencesDialog ();
 
-            preferences_dialog.destroy.connect (() =>
+            _instance.destroy.connect (() =>
             {
-                if (preferences_dialog != null)
-                    preferences_dialog = null;
+                if (_instance != null)
+                    _instance = null;
             });
         }
 
-        if (parent != preferences_dialog.get_transient_for ())
-            preferences_dialog.set_transient_for (parent);
+        if (parent != _instance.get_transient_for ())
+            _instance.set_transient_for (parent);
 
-        preferences_dialog.present ();
+        _instance.present ();
     }
 
     private void reset_all ()
     {
         // build tools are not reset, since there is another button for that
 
-        Dialog dialog = get_reset_all_confirm_dialog (
+        Dialog dialog = Utils.get_reset_all_confirm_dialog (this,
             _("Do you really want to reset all preferences?"));
         int resp = dialog.run ();
         dialog.destroy ();
@@ -300,116 +299,9 @@ public class PreferencesDialog : Dialog
         settings.bind ("latexmk-always-show-all", latexmk_checkbutton, "active",
             SettingsBindFlags.DEFAULT);
 
-        var build_tools_view = builder.get_object ("build_tools_treeview") as TreeView;
-        init_build_tools_treeview (build_tools_view);
-
-        Button bt_properties = builder.get_object ("build_tool_properties") as Button;
-        bt_properties.clicked.connect (() =>
-        {
-            int num = Utils.get_selected_row (build_tools_view);
-            if (0 <= num)
-                run_build_tool_dialog (num);
-        });
-
-        Button bt_new = builder.get_object ("build_tool_new") as Button;
-        bt_new.clicked.connect (() =>
-        {
-            run_build_tool_dialog (-1);
-        });
-
-        Button bt_copy = builder.get_object ("build_tool_copy") as Button;
-        bt_copy.clicked.connect (() =>
-        {
-            int selected_row = Utils.get_selected_row (build_tools_view);
-            if (selected_row < 0)
-                return;
-
-            BuildTools build_tools = BuildTools.get_default ();
-            BuildTool? tool = build_tools.get (selected_row);
-            return_if_fail (tool != null);
-
-            tool.show = false;
-            tool.label = _("%s [copy]").printf (tool.label);
-            build_tools.insert (selected_row + 1, tool);
-
-            update_build_tools_store ();
-        });
-
-        Button bt_up = builder.get_object ("build_tool_up") as Button;
-        bt_up.clicked.connect (() =>
-        {
-            TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (build_tools_view, out iter1);
-            if (i != -1 && i > 0)
-            {
-                iter2 = iter1;
-                if (Utils.tree_model_iter_prev (build_tools_store, ref iter2))
-                {
-                    build_tools_store.swap (iter1, iter2);
-                    BuildTools.get_default ().move_up (i);
-                }
-            }
-        });
-
-        Button bt_down = builder.get_object ("build_tool_down") as Button;
-        bt_down.clicked.connect (() =>
-        {
-            TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (build_tools_view, out iter1);
-            if (i != -1)
-            {
-                iter2 = iter1;
-                if (build_tools_store.iter_next (ref iter2))
-                {
-                    build_tools_store.swap (iter1, iter2);
-                    BuildTools.get_default ().move_down (i);
-                }
-            }
-        });
-
-        Button bt_delete = builder.get_object ("build_tool_delete") as Button;
-        bt_delete.clicked.connect (() =>
-        {
-            TreeIter iter;
-            int selected_row = Utils.get_selected_row (build_tools_view, out iter);
-            if (selected_row == -1)
-                return;
-
-            string label;
-            TreeModel model = (TreeModel) build_tools_store;
-            model.get (iter, BuildToolColumn.LABEL, out label, -1);
-
-            Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
-                MessageType.QUESTION, ButtonsType.NONE,
-                _("Do you really want to delete the build tool \"%s\"?"),
-                label);
-
-            dialog.add_buttons (Stock.CANCEL, ResponseType.CANCEL,
-                Stock.DELETE, ResponseType.YES);
-
-            if (dialog.run () == ResponseType.YES)
-            {
-                build_tools_store.remove (iter);
-                BuildTools.get_default ().delete (selected_row);
-            }
-
-            dialog.destroy ();
-        });
-
-        Button bt_reset = builder.get_object ("build_tool_reset") as Button;
-        bt_reset.clicked.connect (() =>
-        {
-            Dialog dialog = get_reset_all_confirm_dialog (
-                _("Do you really want to reset all build tools?"));
-
-            if (dialog.run () == ResponseType.YES)
-            {
-                BuildTools.get_default ().reset_all ();
-                update_build_tools_store ();
-            }
-
-            dialog.destroy ();
-        });
+        Grid grid_latex_tab = builder.get_object ("grid_latex_tab") as Grid;
+        Grid build_tools_preferences = new BuildToolsPreferences ();
+        grid_latex_tab.attach (build_tools_preferences, 0, 4, 1, 1);
     }
 
     private void init_other_tab (Builder builder)
@@ -564,124 +456,5 @@ public class PreferencesDialog : Dialog
             if (id == current_id)
                 select.select_iter (iter);
         }
-    }
-
-    private enum BuildToolColumn
-    {
-        SHOW,
-        PIXBUF,
-        LABEL,
-        DESCRIPTION,
-        N_COLUMNS
-    }
-
-    private void init_build_tools_treeview (TreeView build_tools_view)
-    {
-        build_tools_store = new ListStore (BuildToolColumn.N_COLUMNS, typeof (bool),
-            typeof (string), typeof (string), typeof (string));
-        build_tools_view.set_model (build_tools_store);
-
-        TreeViewColumn active_column = new TreeViewColumn ();
-        active_column.set_title (_("Active"));
-        build_tools_view.append_column (active_column);
-
-        CellRendererToggle toggle_renderer = new CellRendererToggle ();
-        active_column.pack_start (toggle_renderer, false);
-        active_column.set_attributes (toggle_renderer,
-          "active", BuildToolColumn.SHOW,
-          null);
-
-        TreeViewColumn label_column = new TreeViewColumn ();
-        label_column.set_title (_("Label"));
-        build_tools_view.append_column (label_column);
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        label_column.pack_start (pixbuf_renderer, false);
-        label_column.set_attributes (pixbuf_renderer,
-          "stock-id", BuildToolColumn.PIXBUF,
-          null);
-
-        CellRendererText text_renderer = new CellRendererText ();
-        label_column.pack_start (text_renderer, true);
-        label_column.set_attributes (text_renderer,
-          "text", BuildToolColumn.LABEL,
-          null);
-
-        build_tools_view.set_tooltip_column (BuildToolColumn.DESCRIPTION);
-
-        TreeSelection select = build_tools_view.get_selection ();
-        select.set_mode (SelectionMode.SINGLE);
-
-        /* fill list store */
-        update_build_tools_store ();
-
-        /* show/hide build tool */
-        toggle_renderer.toggled.connect ((path_string) =>
-        {
-            TreeIter iter;
-            build_tools_store.get_iter_from_string (out iter, path_string);
-            bool val;
-            TreeModel model = (TreeModel) build_tools_store;
-            model.get (iter, BuildToolColumn.SHOW, out val, -1);
-
-            val = ! val;
-            build_tools_store.set (iter, BuildToolColumn.SHOW, val, -1);
-
-            int num = int.parse (path_string);
-            BuildTools build_tools = BuildTools.get_default ();
-            BuildTool build_tool = build_tools[num];
-            build_tool.show = val;
-
-            build_tools.update (num, build_tool);
-        });
-
-        /* double-click */
-        build_tools_view.row_activated.connect ((path, column) =>
-        {
-            if (column == label_column)
-            {
-                int num = path.get_indices ()[0];
-                run_build_tool_dialog (num);
-            }
-        });
-    }
-
-    private void update_build_tools_store ()
-    {
-        build_tools_store.clear ();
-
-        foreach (BuildTool tool in BuildTools.get_default ())
-        {
-            TreeIter iter;
-            build_tools_store.append (out iter);
-            build_tools_store.set (iter,
-                BuildToolColumn.SHOW, tool.show,
-                BuildToolColumn.PIXBUF, tool.icon,
-                BuildToolColumn.LABEL, tool.label,
-                BuildToolColumn.DESCRIPTION, Markup.escape_text (tool.description),
-                -1);
-        }
-    }
-
-    private Dialog get_reset_all_confirm_dialog (string msg)
-    {
-        Dialog dialog = new MessageDialog (this, DialogFlags.DESTROY_WITH_PARENT,
-            MessageType.QUESTION, ButtonsType.NONE, "%s", msg);
-
-        dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
-
-        Button button = new Button.with_label (_("Reset All"));
-        Image image = new Image.from_stock (Stock.CLEAR, IconSize.BUTTON);
-        button.set_image (image);
-        button.show_all ();
-        dialog.add_action_widget (button, ResponseType.YES);
-
-        return dialog;
-    }
-
-    private void run_build_tool_dialog (int num)
-    {
-        if (BuildToolDialog.show_me (get_transient_for (), num))
-            update_build_tools_store ();
     }
 }

@@ -395,6 +395,32 @@ namespace Utils
         return grid;
     }
 
+    public unowned Gtk.Window? get_toplevel_window (Widget widget)
+    {
+        unowned Widget toplevel = widget.get_toplevel ();
+
+        if (toplevel is Gtk.Window)
+            return toplevel as Gtk.Window;
+
+        return null;
+    }
+
+    private Dialog get_reset_all_confirm_dialog (Gtk.Window window, string msg)
+    {
+        Dialog dialog = new MessageDialog (window, DialogFlags.DESTROY_WITH_PARENT,
+            MessageType.QUESTION, ButtonsType.NONE, "%s", msg);
+
+        dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
+
+        Button button = new Button.with_label (_("Reset All"));
+        Image image = new Image.from_stock (Stock.CLEAR, IconSize.BUTTON);
+        button.set_image (image);
+        button.show_all ();
+        dialog.add_action_widget (button, ResponseType.YES);
+
+        return dialog;
+    }
+
 
     /*************************************************************************/
     // Misc
