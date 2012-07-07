@@ -159,6 +159,8 @@ public class BuildToolsPreferences : Grid
         properties_button.set_icon_name ("document-properties-symbolic");
         properties_button.set_tooltip_text ("Edit the properties");
 
+        set_sensitivity_on_selection (properties_button);
+
         properties_button.clicked.connect (() =>
         {
             int num = Utils.get_selected_row (_tree_view);
@@ -174,6 +176,8 @@ public class BuildToolsPreferences : Grid
         ToolButton copy_button = new ToolButton (null, null);
         copy_button.set_icon_name ("edit-copy-symbolic");
         copy_button.set_tooltip_text ("Create a copy");
+
+        set_sensitivity_on_selection (copy_button);
 
         copy_button.clicked.connect (() =>
         {
@@ -215,6 +219,8 @@ public class BuildToolsPreferences : Grid
         remove_button.set_icon_name ("list-remove-symbolic");
         remove_button.set_tooltip_text (_("Remove"));
 
+        set_sensitivity_on_selection (remove_button);
+
         remove_button.clicked.connect (() =>
         {
             TreeIter iter;
@@ -255,6 +261,29 @@ public class BuildToolsPreferences : Grid
         up_button.set_icon_name ("go-up-symbolic");
         up_button.set_tooltip_text (_("Move up"));
 
+        /* Sensitivity */
+
+        up_button.set_sensitive (false);
+
+        unowned TreeSelection select = _tree_view.get_selection ();
+        select.changed.connect (() =>
+        {
+            List<TreePath> selected_rows = select.get_selected_rows (null);
+
+            if (selected_rows.length () == 0)
+            {
+                up_button.set_sensitive (false);
+                return;
+            }
+
+            TreePath path_selected = selected_rows.nth_data (0);
+            int row_num = path_selected.get_indices ()[0];
+
+            up_button.set_sensitive (row_num > 0);
+        });
+
+        /* Behavior */
+
         up_button.clicked.connect (() =>
         {
             TreeIter iter_selected;
@@ -269,6 +298,9 @@ public class BuildToolsPreferences : Grid
                 {
                     _list_store.swap (iter_selected, iter_up);
                     BuildTools.get_default ().move_up (selected_row);
+
+                    // Force the 'changed' signal on the selection to be emitted
+                    select.changed ();
                 }
             }
         });
@@ -281,6 +313,32 @@ public class BuildToolsPreferences : Grid
         ToolButton down_button = new ToolButton (null, null);
         down_button.set_icon_name ("go-down-symbolic");
         down_button.set_tooltip_text (_("Move down"));
+
+        /* Sensitivity */
+
+        down_button.set_sensitive (false);
+
+        unowned TreeSelection select = _tree_view.get_selection ();
+        select.changed.connect (() =>
+        {
+            List<TreePath> selected_rows = select.get_selected_rows (null);
+
+            if (selected_rows.length () == 0)
+            {
+                down_button.set_sensitive (false);
+                return;
+            }
+
+            TreePath path_selected = selected_rows.nth_data (0);
+            int row_num = path_selected.get_indices ()[0];
+
+            TreeModel model = _list_store as TreeModel;
+            int nb_rows = model.iter_n_children (null);
+
+            down_button.set_sensitive (row_num < nb_rows - 1);
+        });
+
+        /* Behavior */
 
         down_button.clicked.connect (() =>
         {
@@ -296,6 +354,9 @@ public class BuildToolsPreferences : Grid
                 {
                     _list_store.swap (iter_selected, iter_down);
                     BuildTools.get_default ().move_down (selected_row);
+
+                    // Force the 'changed' signal on the selection to be emitted
+                    select.changed ();
                 }
             }
         });
@@ -356,5 +417,20 @@ public class BuildToolsPreferences : Grid
 
         if (accepted)
             update_list_store ();
+    }
+
+    // Set 'widget' as sensitive when there is a selection in the TreeView.
+    // If no elements are selected (this is the case by default),
+    // the widget is insensitive.
+    private void set_sensitivity_on_selection (Widget widget)
+    {
+        widget.set_sensitive (false);
+
+        unowned TreeSelection select = _tree_view.get_selection ();
+        select.changed.connect (() =>
+        {
+            bool row_selected = select.count_selected_rows () > 0;
+            widget.set_sensitive (row_selected);
+        });
     }
 }
