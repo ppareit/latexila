@@ -160,14 +160,15 @@ $ ps2pdf document.ps</screen>
   <title>Jobs of a Build Tool</title>
 
   <p>In the properties of a build tool, the tricky part is to configure the jobs.
-  A build tool can execute several jobs. Each job contains three pieces of
+  A build tool can execute several jobs. Each job contains two pieces of
   information:</p>
   <list>
     <item><p>The command, which can use placeholders.</p></item>
-    <item><p>Whether the job must succeed. If this option is enabled, when an error
-    occurs during the job execution, the next job is not executed.</p></item>
     <item><p>The post processor (see <link xref="#post-processors" />).</p></item>
   </list>
+
+  <p>When an error occurs during a job's execution, the execution of the build
+  tool is aborted, so the next jobs are not launched.</p>
 </section>
 
 <section id="post-processors">
