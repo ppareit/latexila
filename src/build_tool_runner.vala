@@ -302,13 +302,7 @@ public class BuildToolRunner : GLib.Object
         else
         {
             view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
-            if (current_job.must_succeed)
-                failed ();
-            else
-            {
-                job_num++;
-                proceed ();
-            }
+            failed ();
         }
     }
 
@@ -385,13 +379,7 @@ public class BuildToolRunner : GLib.Object
                 view.append_single_message (job_partitions[job_num], info_msg);
             }
 
-            if (current_job.must_succeed)
-                failed ();
-            else
-            {
-                job_num++;
-                proceed ();
-            }
+            failed ();
         }
     }
 

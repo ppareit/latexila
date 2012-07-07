@@ -37,7 +37,7 @@ private class BuildToolDialog : Dialog
 
     private ListStore _jobs_store;
 
-    struct IconColumn
+    private struct IconColumn
     {
         public string stock_id;
         public string label;
@@ -56,10 +56,9 @@ private class BuildToolDialog : Dialog
         { "view_ps", N_("View PS") }
     };
 
-    enum JobColumn
+    private enum JobColumn
     {
         COMMAND,
-        MUST_SUCCEED,
         POST_PROCESSOR,
         N_COLUMNS
     }
@@ -256,9 +255,8 @@ private class BuildToolDialog : Dialog
     {
         _jobs_store = new ListStore (JobColumn.N_COLUMNS,
             typeof (string),    // command
-            typeof (bool),      // must succeed
             typeof (string)     // post processor
-            );
+        );
 
         _treeview_jobs.set_model (_jobs_store);
 
@@ -282,14 +280,9 @@ private class BuildToolDialog : Dialog
         text_renderer.editable = true;
 
         TreeViewColumn column = new TreeViewColumn.with_attributes (_("Commands"),
-            text_renderer, "text", JobColumn.COMMAND, null);
+            text_renderer, "text", JobColumn.COMMAND);
         column.set_resizable (true);
         _treeview_jobs.append_column (column);
-
-        CellRendererToggle toggle_renderer = new CellRendererToggle ();
-        toggle_renderer.activatable = true;
-        _treeview_jobs.insert_column_with_attributes (-1, _("Must Succeed"),
-            toggle_renderer, "active", JobColumn.MUST_SUCCEED, null);
 
         CellRendererCombo combo_renderer = new CellRendererCombo ();
         combo_renderer.editable = true;
@@ -297,7 +290,7 @@ private class BuildToolDialog : Dialog
         combo_renderer.text_column = 0;
         combo_renderer.has_entry = false;
         _treeview_jobs.insert_column_with_attributes (-1, _("Post Processor"),
-            combo_renderer, "text", JobColumn.POST_PROCESSOR, null);
+            combo_renderer, "text", JobColumn.POST_PROCESSOR);
 
         /* callbacks */
 
@@ -305,24 +298,14 @@ private class BuildToolDialog : Dialog
         {
             TreeIter iter;
             _jobs_store.get_iter_from_string (out iter, path_string);
-            _jobs_store.set (iter, JobColumn.COMMAND, new_text, -1);
-        });
-
-        toggle_renderer.toggled.connect ((path_string) =>
-        {
-            TreeIter iter;
-            _jobs_store.get_iter_from_string (out iter, path_string);
-            bool val;
-            TreeModel model = (TreeModel) _jobs_store;
-            model.get (iter, JobColumn.MUST_SUCCEED, out val, -1);
-            _jobs_store.set (iter, JobColumn.MUST_SUCCEED, ! val, -1);
+            _jobs_store.set (iter, JobColumn.COMMAND, new_text);
         });
 
         combo_renderer.edited.connect ((path_string, new_text) =>
         {
             TreeIter iter;
             _jobs_store.get_iter_from_string (out iter, path_string);
-            _jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text, -1);
+            _jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text);
         });
     }
 
@@ -373,10 +356,9 @@ private class BuildToolDialog : Dialog
         _jobs_store.append (out iter);
         _jobs_store.set (iter,
             JobColumn.COMMAND, _entry_command.text,
-            JobColumn.MUST_SUCCEED, true,
             JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
-                PostProcessorType.NO_OUTPUT),
-            -1);
+                PostProcessorType.NO_OUTPUT)
+        );
         _entry_command.text = "";
     }
 
@@ -428,10 +410,9 @@ private class BuildToolDialog : Dialog
             _jobs_store.append (out iter);
             _jobs_store.set (iter,
                 JobColumn.COMMAND, job.command,
-                JobColumn.MUST_SUCCEED, job.must_succeed,
                 JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
-                    job.post_processor),
-                -1);
+                    job.post_processor)
+            );
         }
     }
 
@@ -475,9 +456,8 @@ private class BuildToolDialog : Dialog
                 string post_processor_name;
                 model.get (iter,
                     JobColumn.COMMAND, out command,
-                    JobColumn.MUST_SUCCEED, out job.must_succeed,
-                    JobColumn.POST_PROCESSOR, out post_processor_name,
-                    -1);
+                    JobColumn.POST_PROCESSOR, out post_processor_name
+                );
 
                 job.command = command.strip ();
                 job.post_processor = BuildTools.get_post_processor_type_from_name (

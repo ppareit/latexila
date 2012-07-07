@@ -430,24 +430,4 @@ namespace Utils
         while (Gtk.events_pending ())
             Gtk.main_iteration ();
     }
-
-    /*
-    public void print_build_tool (BuildTool build_tool)
-    {
-        stdout.printf ("\n=== Build Tool ===\n");
-        stdout.printf ("desc: %s\n", build_tool.description);
-        stdout.printf ("ext: %s\n", build_tool.extensions);
-        stdout.printf ("label: %s\n", build_tool.label);
-        stdout.printf ("icon: %s\n\n", build_tool.icon);
-
-        foreach (BuildJob build_job in build_tool.jobs)
-        {
-            stdout.printf ("== Build Job ==\n");
-            stdout.printf ("must succeed: %s\n", build_job.must_succeed.to_string ());
-            stdout.printf ("post processor: %s\n",
-                BuildTools.get_post_processor_name_from_type (build_job.post_processor));
-            stdout.printf ("command: %s\n\n", build_job.command);
-        }
-    }
-    */
 }

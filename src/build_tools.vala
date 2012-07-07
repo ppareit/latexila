@@ -32,7 +32,6 @@ public enum PostProcessorType
 
 public struct BuildJob
 {
-    public bool must_succeed;
     public PostProcessorType post_processor;
     public string command;
 }
@@ -211,7 +210,6 @@ public class BuildTools
             BuildJob job2 = tool2.jobs[job_num];
 
             if (job1.command != job2.command
-                || job1.must_succeed != job2.must_succeed
                 || job1.post_processor != job2.post_processor)
                 return false;
         }
@@ -331,13 +329,15 @@ public class BuildTools
                 {
                     switch (attr_names[i])
                     {
-                        case "mustSucceed":
-                            _cur_job.must_succeed = bool.parse (attr_values[i]);
-                            break;
                         case "postProcessor":
                             _cur_job.post_processor = get_post_processor_type_from_name (
                                 attr_values[i]);
                             break;
+
+                        // for compatibility
+                        case "mustSucceed":
+                            break;
+
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
                                 "unknown attribute \"" + attr_names[i] + "\"");
@@ -413,8 +413,7 @@ public class BuildTools
 
             foreach (BuildJob job in tool.jobs)
             {
-                content += "    <job mustSucceed=\"%s\" postProcessor=\"%s\">".printf (
-                    job.must_succeed.to_string (),
+                content += "    <job postProcessor=\"%s\">".printf (
                     get_post_processor_name_from_type (job.post_processor));
 
                 content += Markup.printf_escaped ("%s</job>\n", job.command);
