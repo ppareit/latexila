@@ -6,6 +6,7 @@ data/templates/templates.pot
 src/app_settings.vala
 src/build_tool_dialog.vala
 src/build_tool_runner.vala
+src/build_tools_preferences.vala
 src/build_tools.vala
 src/build_view.vala
 src/clean_build_files.vala
