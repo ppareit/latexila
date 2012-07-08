@@ -143,10 +143,10 @@ $ ps2pdf document.ps</screen>
     </guiseq>
   </p>
 
-  <p>You will see a list with all the build tools. There are check buttons to show or hide
-  them. When a build tool is hidden, it's not possible to execute it. You can perform some
-  actions, like moving a tool up or down, open its properties, delete or copy it, create a
-  new one, etc.</p>
+  <p>You will see a list with all the build tools. There are check buttons to enable or
+  disable them. When a build tool is disabled, it's not possible to execute it. You can
+  perform some actions, like moving a tool up or down, open its properties, delete or copy
+  it, create a new one, etc.</p>
 
   <note style="tip">
     <p>Double-click on a build tool will open its properties.</p>
