@@ -39,6 +39,12 @@ private class BuildToolDialog : Dialog
         N_COLUMNS
     }
 
+    private enum PostProcessorColumn
+    {
+        NAME,
+        N_COLUMNS
+    }
+
     private static BuildToolDialog _instance = null;
 
     private Entry _entry_label;
@@ -198,7 +204,7 @@ private class BuildToolDialog : Dialog
 
         /* Post processors list store */
 
-        ListStore post_processor_store = new ListStore (1,
+        ListStore post_processor_store = new ListStore (PostProcessorColumn.N_COLUMNS,
             typeof (string) // the name of the post processor
         );
 
@@ -209,8 +215,11 @@ private class BuildToolDialog : Dialog
 
             TreeIter iter;
             post_processor_store.append (out iter);
-            post_processor_store.set (iter, 0, name);
+            post_processor_store.set (iter, PostProcessorColumn.NAME, name);
         }
+
+        post_processor_store.set_sort_column_id (PostProcessorColumn.NAME,
+            SortType.ASCENDING);
 
         /* Cell renderers */
 
@@ -225,7 +234,7 @@ private class BuildToolDialog : Dialog
         CellRendererCombo combo_renderer = new CellRendererCombo ();
         combo_renderer.editable = true;
         combo_renderer.model = post_processor_store;
-        combo_renderer.text_column = 0;
+        combo_renderer.text_column = PostProcessorColumn.NAME;
         combo_renderer.has_entry = false;
         _jobs_view.insert_column_with_attributes (-1, _("Post Processor"),
             combo_renderer, "text", JobColumn.POST_PROCESSOR);

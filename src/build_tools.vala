@@ -21,7 +21,6 @@
 
 public enum PostProcessorType
 {
-    // please keep these items sorted in alphabetical order (for the build tool dialog)
     ALL_OUTPUT = 0,
     LATEX,
     LATEXMK,
@@ -61,6 +60,7 @@ public class BuildTools : GLib.Object
 
     private static string[] _post_processor_names =
     {
+        // Same order as the PostProcessorType enum.
         "all-output",
         "latex",
         "latexmk",
@@ -69,13 +69,18 @@ public class BuildTools : GLib.Object
     };
 
     private Gee.LinkedList<BuildTool?> _build_tools;
+    private bool _modified = false;
+
+    // Used during the XML file parsing to load the build tools.
     private BuildTool _cur_tool;
     private BuildJob _cur_job;
 
-    private bool _modified = false;
-
+    // Singleton
     private BuildTools ()
     {
+        int nb_post_processors = PostProcessorType.N_POST_PROCESSORS;
+        return_if_fail (_post_processor_names.length == nb_post_processors);
+
         load ();
     }
 
@@ -83,12 +88,14 @@ public class BuildTools : GLib.Object
     {
         if (_instance == null)
             _instance = new BuildTools ();
+
         return _instance;
     }
 
     public BuildTool? get_by_id (int id)
     {
         return_val_if_fail (0 <= id && id < _build_tools.size, null);
+
         return _build_tools[id];
     }
 
@@ -97,6 +104,7 @@ public class BuildTools : GLib.Object
         return _build_tools.iterator ();
     }
 
+    // TODO use gtk_show_uri() instead of finding the right build tool to view a document
     public BuildTool? get_view_doc (DocType type)
     {
         string[] icon = new string[DocType.LAST];
@@ -133,9 +141,7 @@ public class BuildTools : GLib.Object
 
     private void swap (int num1, int num2)
     {
-        return_if_fail (_build_tools != null);
-
-        BuildTool tool = _build_tools.get (num1);
+        BuildTool tool = _build_tools[num1];
         _build_tools.remove_at (num1);
         _build_tools.insert (num2, tool);
         update_all_menus ();
@@ -143,23 +149,19 @@ public class BuildTools : GLib.Object
 
     public void delete (int num)
     {
-        return_if_fail (_build_tools != null);
+        return_if_fail (0 <= num && num < _build_tools.size);
 
-        return_if_fail (num >= 0 && num < _build_tools.size);
         _build_tools.remove_at (num);
         update_all_menus ();
     }
 
     public void add (BuildTool tool)
     {
-        return_if_fail (_build_tools != null);
-
         insert (_build_tools.size, tool);
     }
 
     public void insert (int pos, BuildTool tool)
     {
-        return_if_fail (_build_tools != null);
         return_if_fail (0 <= pos && pos <= _build_tools.size);
 
         tool.compilation = is_compilation (tool.icon);
@@ -169,9 +171,9 @@ public class BuildTools : GLib.Object
 
     public void update (int num, BuildTool tool)
     {
-        return_if_fail (_build_tools != null);
         return_if_fail (0 <= num && num < _build_tools.size);
-        BuildTool current_tool = _build_tools.get (num);
+
+        BuildTool current_tool = _build_tools[num];
 
         if (! is_equal (current_tool, tool))
         {
@@ -187,6 +189,7 @@ public class BuildTools : GLib.Object
         File file = get_user_config_file ();
         if (file.query_exists ())
             Utils.delete_file (file);
+
         load ();
         update_all_menus ();
     }
@@ -199,7 +202,9 @@ public class BuildTools : GLib.Object
             || tool1.extensions != tool2.extensions
             || tool1.icon != tool2.icon
             || tool1.jobs.size != tool2.jobs.size)
+        {
             return false;
+        }
 
         for (int job_num = 0 ; job_num < tool1.jobs.size ; job_num++)
         {
@@ -208,21 +213,15 @@ public class BuildTools : GLib.Object
 
             if (job1.command != job2.command
                 || job1.post_processor != job2.post_processor)
+            {
                 return false;
+            }
         }
 
         return true;
     }
 
-    /*
-    private void print_summary ()
-    {
-        stdout.printf ("\n=== build tools summary ===\n");
-        foreach (BuildTool tool in _build_tools)
-            stdout.printf ("%s\n", tool.label);
-    }
-    */
-
+    // TODO emit a signal instead
     private void update_all_menus ()
     {
         _modified = true;
@@ -233,9 +232,13 @@ public class BuildTools : GLib.Object
         }
     }
 
+    // TODO rewrite this, based on the job's commands.
+    // Or simply assume that all the _build_ tools are compilation, since gtk_show_uri()
+    // will be used for the other tools, anyway.
     private bool is_compilation (string icon)
     {
-        // If it's a compilation, the file browser is refreshed after the execution.
+        // If it's a compilation, the files are first saved before running the
+        // build tool, and the file browser is refreshed after the execution.
         return icon.contains ("compile")
             || icon == Gtk.Stock.EXECUTE
             || icon == Gtk.Stock.CONVERT;
@@ -308,13 +311,16 @@ public class BuildTools : GLib.Object
                         case "enabled":
                             _cur_tool.enabled = bool.parse (attr_values[i]);
                             break;
+
                         case "extensions":
                             _cur_tool.extensions = attr_values[i];
                             break;
+
                         case "icon":
                             _cur_tool.icon = attr_values[i];
                             _cur_tool.compilation = is_compilation (attr_values[i]);
                             break;
+
                         default:
                             throw new MarkupError.UNKNOWN_ATTRIBUTE (
                                 "unknown attribute \"" + attr_names[i] + "\"");
@@ -363,6 +369,7 @@ public class BuildTools : GLib.Object
                 // the description is optional
                 if (_cur_tool.description == null)
                     _cur_tool.description = _cur_tool.label;
+
                 _build_tools.add (_cur_tool);
                 break;
 
@@ -384,9 +391,11 @@ public class BuildTools : GLib.Object
             case "job":
                 _cur_job.command = text.strip ();
                 break;
+
             case "label":
                 _cur_tool.label = text.strip ();
                 break;
+
             case "description":
                 _cur_tool.description = text.strip ();
                 break;
@@ -395,12 +404,11 @@ public class BuildTools : GLib.Object
 
     public void save ()
     {
-        return_if_fail (_build_tools != null);
-
         if (! _modified)
             return;
 
         string content = "<tools>";
+
         foreach (BuildTool tool in _build_tools)
         {
             content += "\n  <tool enabled=\"%s\"".printf (tool.enabled.to_string ());
@@ -420,6 +428,7 @@ public class BuildTools : GLib.Object
             }
             content += "  </tool>\n";
         }
+
         content += "</tools>\n";
 
         // save the file
@@ -430,7 +439,8 @@ public class BuildTools : GLib.Object
     private File get_user_config_file ()
     {
         string path = Path.build_filename (Environment.get_user_config_dir (),
-            "latexila", "build_tools.xml", null);
+            "latexila", "build_tools.xml");
+
         return File.new_for_path (path);
     }
 
@@ -448,6 +458,7 @@ public class BuildTools : GLib.Object
     public static string? get_post_processor_name_from_type (PostProcessorType type)
     {
         return_val_if_fail (type != PostProcessorType.N_POST_PROCESSORS, null);
+
         return _post_processor_names[type];
     }
 }
