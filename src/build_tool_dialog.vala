@@ -221,6 +221,14 @@ private class BuildToolDialog : Dialog
         add_button.set_icon_name ("list-add-symbolic");
         add_button.set_tooltip_text (_("Add..."));
 
+        add_button.clicked.connect (() =>
+        {
+            BuildJob new_job = BuildJob ();
+            new_job.command = "";
+            new_job.post_processor = PostProcessorType.ALL_OUTPUT;
+            add_build_job (new_job);
+        });
+
         return add_button;
     }
 
@@ -229,6 +237,27 @@ private class BuildToolDialog : Dialog
         ToolButton remove_button = new ToolButton (null, null);
         remove_button.set_icon_name ("list-remove-symbolic");
         remove_button.set_tooltip_text (_("Remove"));
+
+        /* Sensitivity */
+
+        remove_button.set_sensitive (false);
+
+        unowned TreeSelection select = _jobs_view.get_selection ();
+        select.changed.connect (() =>
+        {
+            bool row_selected = select.count_selected_rows () > 0;
+            remove_button.set_sensitive (row_selected);
+        });
+
+        /* Behavior */
+
+        remove_button.clicked.connect (() =>
+        {
+            TreeIter iter;
+            int selected_row = Utils.get_selected_row (_jobs_view, out iter);
+            if (selected_row >= 0)
+                _jobs_store.remove (iter);
+        });
 
         return remove_button;
     }
@@ -239,6 +268,48 @@ private class BuildToolDialog : Dialog
         up_button.set_icon_name ("go-up-symbolic");
         up_button.set_tooltip_text (_("Move up"));
 
+        /* Sensitivity */
+
+        up_button.set_sensitive (false);
+
+        unowned TreeSelection select = _jobs_view.get_selection ();
+        select.changed.connect (() =>
+        {
+            List<TreePath> selected_rows = select.get_selected_rows (null);
+
+            if (selected_rows.length () == 0)
+            {
+                up_button.set_sensitive (false);
+                return;
+            }
+
+            TreePath path_selected = selected_rows.nth_data (0);
+            int row_num = path_selected.get_indices ()[0];
+
+            up_button.set_sensitive (row_num > 0);
+        });
+
+        /* Behavior */
+
+        up_button.clicked.connect (() =>
+        {
+            TreeIter iter_selected;
+
+            int selected_row = Utils.get_selected_row (_jobs_view, out iter_selected);
+
+            if (selected_row > 0)
+            {
+                TreeIter iter_up = iter_selected;
+                if (Utils.tree_model_iter_prev (_jobs_store, ref iter_up))
+                {
+                    _jobs_store.swap (iter_selected, iter_up);
+
+                    // Force the 'changed' signal on the selection to be emitted
+                    select.changed ();
+                }
+            }
+        });
+
         return up_button;
     }
 
@@ -248,7 +319,72 @@ private class BuildToolDialog : Dialog
         down_button.set_icon_name ("go-down-symbolic");
         down_button.set_tooltip_text (_("Move down"));
 
+        /* Sensitivity */
+
+        down_button.set_sensitive (false);
+
+        unowned TreeSelection select = _jobs_view.get_selection ();
+        select.changed.connect (() =>
+        {
+            List<TreePath> selected_rows = select.get_selected_rows (null);
+
+            if (selected_rows.length () == 0)
+            {
+                down_button.set_sensitive (false);
+                return;
+            }
+
+            TreePath path_selected = selected_rows.nth_data (0);
+            int row_num = path_selected.get_indices ()[0];
+
+            TreeModel model = _jobs_store as TreeModel;
+            int nb_rows = model.iter_n_children (null);
+
+            down_button.set_sensitive (row_num < nb_rows - 1);
+        });
+
+        /* Behavior */
+
+        down_button.clicked.connect (() =>
+        {
+            TreeIter iter_selected;
+
+            int selected_row = Utils.get_selected_row (_jobs_view, out iter_selected);
+
+            if (selected_row >= 0)
+            {
+                TreeIter iter_down = iter_selected;
+                if (_jobs_store.iter_next (ref iter_down))
+                {
+                    _jobs_store.swap (iter_selected, iter_down);
+
+                    // Force the 'changed' signal on the selection to be emitted
+                    select.changed ();
+                }
+            }
+        });
+
         return down_button;
+    }
+
+    /*************************************************************************/
+    // Misc utilities functions
+
+    private void add_build_job (BuildJob job)
+    {
+        string post_processor_name =
+            BuildTools.get_post_processor_name_from_type (job.post_processor);
+
+        TreeIter iter;
+        _jobs_store.append (out iter);
+        _jobs_store.set (iter,
+            JobColumn.COMMAND, job.command,
+            JobColumn.POST_PROCESSOR, post_processor_name
+        );
+
+        // Force the 'changed' signal on the selection to be emitted
+        unowned TreeSelection select = _jobs_view.get_selection ();
+        select.changed ();
     }
 
     /*************************************************************************/

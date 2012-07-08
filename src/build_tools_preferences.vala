@@ -288,8 +288,7 @@ public class BuildToolsPreferences : Grid
         {
             TreeIter iter_selected;
 
-            int selected_row = Utils.get_selected_row (_tree_view,
-                out iter_selected);
+            int selected_row = Utils.get_selected_row (_tree_view, out iter_selected);
 
             if (selected_row > 0)
             {
@@ -344,8 +343,7 @@ public class BuildToolsPreferences : Grid
         {
             TreeIter iter_selected;
 
-            int selected_row = Utils.get_selected_row (_tree_view,
-                out iter_selected);
+            int selected_row = Utils.get_selected_row (_tree_view, out iter_selected);
 
             if (selected_row >= 0)
             {
