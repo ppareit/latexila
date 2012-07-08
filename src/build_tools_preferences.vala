@@ -147,8 +147,8 @@ public class BuildToolsPreferences : Grid
         {
             if (column == label_column)
             {
-                int num = path.get_indices ()[0];
-                run_build_tool_dialog (num);
+                int build_tool_num = path.get_indices ()[0];
+                edit_build_tool (build_tool_num);
             }
         });
     }
@@ -163,9 +163,10 @@ public class BuildToolsPreferences : Grid
 
         properties_button.clicked.connect (() =>
         {
-            int num = Utils.get_selected_row (_tree_view);
-            if (0 <= num)
-                run_build_tool_dialog (num);
+            int build_tool_num = Utils.get_selected_row (_tree_view);
+
+            if (0 <= build_tool_num)
+                edit_build_tool (build_tool_num);
         });
 
         return properties_button;
@@ -207,7 +208,10 @@ public class BuildToolsPreferences : Grid
 
         add_button.clicked.connect (() =>
         {
-            run_build_tool_dialog (-1);
+            show_build_tool_dialog ();
+
+            if (BuildToolDialog.create_build_tool ())
+                update_list_store ();
         });
 
         return add_button;
@@ -406,12 +410,20 @@ public class BuildToolsPreferences : Grid
         }
     }
 
-    private void run_build_tool_dialog (int num)
+    private void show_build_tool_dialog ()
     {
         unowned Gtk.Window? window = Utils.get_toplevel_window (this);
         return_if_fail (window != null);
 
         BuildToolDialog.show_me (window.get_transient_for ());
+    }
+
+    private void edit_build_tool (int build_tool_num)
+    {
+        show_build_tool_dialog ();
+
+        if (BuildToolDialog.edit_build_tool (build_tool_num))
+            update_list_store ();
     }
 
     // Set 'widget' as sensitive when there is a selection in the TreeView.

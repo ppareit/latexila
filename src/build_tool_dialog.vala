@@ -89,6 +89,14 @@ private class BuildToolDialog : Dialog
     // Returns false if the user has clicked on cancel.
     public static bool edit_build_tool (int build_tool_num)
     {
+        return_val_if_fail (_instance != null, false);
+
+        BuildTools build_tools = BuildTools.get_default ();
+        BuildTool? build_tool = build_tools[build_tool_num];
+
+        return_val_if_fail (build_tool != null, false);
+
+        _instance.set_build_tool (build_tool);
         return false;
     }
 
@@ -96,6 +104,9 @@ private class BuildToolDialog : Dialog
     // Returns false if the user has clicked on cancel.
     public static bool create_build_tool ()
     {
+        return_val_if_fail (_instance != null, false);
+
+        _instance.set_new_build_tool ();
         return false;
     }
 
@@ -365,6 +376,63 @@ private class BuildToolDialog : Dialog
         });
 
         return down_button;
+    }
+
+    /*************************************************************************/
+    // Run the dialog
+
+    private void set_new_build_tool ()
+    {
+        _entry_label.error = false;
+        _entry_label.text = "";
+        _entry_desc.text = "";
+        _entry_extensions.text = "";
+
+        _icons_combobox.set_active (0);
+
+        _jobs_store.clear ();
+        _jobs_view.columns_autosize ();
+    }
+
+    private void set_build_tool (BuildTool build_tool)
+    {
+        /* Text entries */
+
+        _entry_label.error = false;
+        _entry_label.text = build_tool.label;
+        _entry_desc.text = build_tool.description;
+        _entry_extensions.text = build_tool.extensions;
+
+        /* Icon */
+
+        _icons_combobox.set_active (0);
+
+        TreeIter iter;
+        bool ok = _icons_store.get_iter_first (out iter);
+        return_if_fail (ok);
+
+        TreeModel model = _icons_store as TreeModel;
+
+        do
+        {
+            string stock_id;
+            model.get (iter, IconColumn.STOCK_ID, out stock_id);
+
+            if (stock_id == build_tool.icon)
+            {
+                _icons_combobox.set_active_iter (iter);
+                break;
+            }
+        }
+        while (_icons_store.iter_next (ref iter));
+
+        /* Jobs */
+
+        _jobs_store.clear ();
+        foreach (BuildJob build_job in build_tool.jobs)
+            add_build_job (build_job);
+
+        _jobs_view.columns_autosize ();
     }
 
     /*************************************************************************/
