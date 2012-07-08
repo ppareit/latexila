@@ -301,6 +301,7 @@ public class PreferencesDialog : Dialog
 
         Grid grid_latex_tab = builder.get_object ("grid_latex_tab") as Grid;
         Grid build_tools_preferences = new BuildToolsPreferences ();
+        build_tools_preferences.set_margin_left (12);
         grid_latex_tab.attach (build_tools_preferences, 0, 4, 1, 1);
     }
 
