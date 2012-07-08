@@ -29,7 +29,7 @@ public class BuildToolsPreferences : Grid
 {
     private enum BuildToolColumn
     {
-        ENABLE,
+        ENABLED,
         PIXBUF,
         LABEL,
         DESCRIPTION,
@@ -79,7 +79,7 @@ public class BuildToolsPreferences : Grid
     private void init_list_store ()
     {
         _list_store = new ListStore (BuildToolColumn.N_COLUMNS,
-            typeof (bool),   // enable
+            typeof (bool),   // enabled
             typeof (string), // pixbuf (stock-id)
             typeof (string), // label
             typeof (string)  // description
@@ -93,14 +93,14 @@ public class BuildToolsPreferences : Grid
         _tree_view = new TreeView.with_model (_list_store);
         _tree_view.set_rules_hint (true);
 
-        TreeViewColumn enable_column = new TreeViewColumn ();
-        enable_column.set_title (_("Enable"));
-        _tree_view.append_column (enable_column);
+        TreeViewColumn enabled_column = new TreeViewColumn ();
+        enabled_column.set_title (_("Enabled"));
+        _tree_view.append_column (enabled_column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
-        enable_column.pack_start (toggle_renderer, false);
-        enable_column.set_attributes (toggle_renderer,
-            "active", BuildToolColumn.ENABLE);
+        enabled_column.pack_start (toggle_renderer, false);
+        enabled_column.set_attributes (toggle_renderer,
+            "active", BuildToolColumn.ENABLED);
 
         TreeViewColumn label_column = new TreeViewColumn ();
         label_column.set_title (_("Label"));
@@ -127,17 +127,19 @@ public class BuildToolsPreferences : Grid
             TreeIter iter;
             _list_store.get_iter_from_string (out iter, path_string);
 
-            bool enable;
+            bool enabled;
             TreeModel model = _list_store as TreeModel;
-            model.get (iter, BuildToolColumn.ENABLE, out enable);
+            model.get (iter, BuildToolColumn.ENABLED, out enabled);
 
-            enable = ! enable;
-            _list_store.set (iter, BuildToolColumn.ENABLE, enable);
+            enabled = ! enabled;
+            _list_store.set (iter, BuildToolColumn.ENABLED, enabled);
 
             int num = int.parse (path_string);
             BuildTools build_tools = BuildTools.get_default ();
-            BuildTool build_tool = build_tools[num];
-            build_tool.show = enable;
+            BuildTool? build_tool = build_tools.get_by_id (num);
+            return_if_fail (build_tool != null);
+
+            build_tool.enabled = enabled;
 
             build_tools.update (num, build_tool);
         });
@@ -187,10 +189,10 @@ public class BuildToolsPreferences : Grid
                 return;
 
             BuildTools build_tools = BuildTools.get_default ();
-            BuildTool? tool = build_tools[selected_row];
+            BuildTool? tool = build_tools.get_by_id (selected_row);
             return_if_fail (tool != null);
 
-            tool.show = false;
+            tool.enabled = false;
             tool.label = _("%s [copy]").printf (tool.label);
             build_tools.insert (selected_row + 1, tool);
 
@@ -402,7 +404,7 @@ public class BuildToolsPreferences : Grid
             TreeIter iter;
             _list_store.append (out iter);
             _list_store.set (iter,
-                BuildToolColumn.ENABLE, tool.show,
+                BuildToolColumn.ENABLED, tool.enabled,
                 BuildToolColumn.PIXBUF, tool.icon,
                 BuildToolColumn.LABEL, tool.label,
                 BuildToolColumn.DESCRIPTION, Markup.escape_text (tool.description)

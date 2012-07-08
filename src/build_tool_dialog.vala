@@ -92,7 +92,7 @@ private class BuildToolDialog : Dialog
         return_val_if_fail (_instance != null, false);
 
         BuildTools build_tools = BuildTools.get_default ();
-        BuildTool? build_tool = build_tools[build_tool_num];
+        BuildTool? build_tool = build_tools.get_by_id (build_tool_num);
 
         return_val_if_fail (build_tool != null, false);
 
@@ -103,7 +103,7 @@ private class BuildToolDialog : Dialog
         if (ok)
         {
             BuildTool new_build_tool = _instance.retrieve_build_tool ();
-            new_build_tool.show = build_tool.show;
+            new_build_tool.enabled = build_tool.enabled;
             build_tools.update (build_tool_num, new_build_tool);
         }
 
@@ -124,7 +124,7 @@ private class BuildToolDialog : Dialog
         if (ok)
         {
             BuildTool new_build_tool = _instance.retrieve_build_tool ();
-            new_build_tool.show = true;
+            new_build_tool.enabled = true;
 
             BuildTools build_tools = BuildTools.get_default ();
             build_tools.add (new_build_tool);

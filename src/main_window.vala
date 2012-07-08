@@ -1178,7 +1178,7 @@ public class MainWindow : Window
         int j = 0;
         foreach (BuildTool build_tool in build_tools)
         {
-            if (! build_tool.show)
+            if (! build_tool.enabled)
             {
                 i++;
                 continue;
@@ -1215,7 +1215,7 @@ public class MainWindow : Window
         string[] _name = action.name.split ("_");
         int tool_index = int.parse (_name[1]);
 
-        BuildTool? tool = BuildTools.get_default ()[tool_index];
+        BuildTool? tool = BuildTools.get_default ().get_by_id (tool_index);
         return_if_fail (tool != null);
 
         if (! tool.compilation)
@@ -1223,7 +1223,7 @@ public class MainWindow : Window
 
         build_view.show ();
 
-        // save the document if it's a compilation (e.g. with rubber)
+        // save the document if it's a compilation
         if (tool.compilation)
         {
             if (active_document.location == null)
@@ -1426,7 +1426,7 @@ public class MainWindow : Window
         int tool_num = 0;
         foreach (BuildTool tool in BuildTools.get_default ())
         {
-            if (! tool.show)
+            if (! tool.enabled)
             {
                 tool_num++;
                 continue;

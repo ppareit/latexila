@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,9 +15,9 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Sébastien Wilmet
  */
-
-using Gee;
 
 public enum PostProcessorType
 {
@@ -32,19 +32,19 @@ public enum PostProcessorType
 
 public struct BuildJob
 {
-    public PostProcessorType post_processor;
-    public string command;
+    PostProcessorType post_processor;
+    string command;
 }
 
 public struct BuildTool
 {
-    public string description;
-    public string extensions;
-    public string label;
-    public string icon;
-    public bool show;
-    public bool compilation;
-    public ArrayList<BuildJob?> jobs;
+    string description;
+    string extensions;
+    string label;
+    string icon;
+    bool enabled;
+    bool compilation;
+    Gee.ArrayList<BuildJob?> jobs;
 }
 
 public enum DocType
@@ -55,7 +55,7 @@ public enum DocType
     LAST
 }
 
-public class BuildTools
+public class BuildTools : GLib.Object
 {
     private static BuildTools _instance = null;
 
@@ -68,7 +68,7 @@ public class BuildTools
         "rubber"
     };
 
-    private LinkedList<BuildTool?> _build_tools;
+    private Gee.LinkedList<BuildTool?> _build_tools;
     private BuildTool _cur_tool;
     private BuildJob _cur_job;
 
@@ -86,15 +86,15 @@ public class BuildTools
         return _instance;
     }
 
-    public BuildTool? get (int id)
+    public BuildTool? get_by_id (int id)
     {
-        return_val_if_fail (id >= 0 && id < _build_tools.size, null);
+        return_val_if_fail (0 <= id && id < _build_tools.size, null);
         return _build_tools[id];
     }
 
-    public Iterator<BuildTool?> iterator ()
+    public Gee.Iterator<BuildTool?> iterator ()
     {
-        return (Iterator<BuildTool?>) _build_tools.iterator ();
+        return _build_tools.iterator ();
     }
 
     public BuildTool? get_view_doc (DocType type)
@@ -193,7 +193,7 @@ public class BuildTools
 
     private bool is_equal (BuildTool tool1, BuildTool tool2)
     {
-        if (tool1.show != tool2.show
+        if (tool1.enabled != tool2.enabled
             || tool1.label != tool2.label
             || tool1.description != tool2.description
             || tool1.extensions != tool2.extensions
@@ -243,7 +243,7 @@ public class BuildTools
 
     private void load ()
     {
-        _build_tools = new LinkedList<BuildTool?> ();
+        _build_tools = new Gee.LinkedList<BuildTool?> ();
 
         // First, try to load the user config file if it exists.
         // Otherwise try to load the default file (from most desirable to least desirable,
@@ -297,14 +297,16 @@ public class BuildTools
             case "tool":
                 _cur_tool = BuildTool ();
                 _cur_tool.compilation = false;
-                _cur_tool.jobs = new ArrayList<BuildJob?> ();
+                _cur_tool.jobs = new Gee.ArrayList<BuildJob?> ();
 
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
                     switch (attr_names[i])
                     {
+                        // 'show' was the previous name of 'enabled'
                         case "show":
-                            _cur_tool.show = bool.parse (attr_values[i]);
+                        case "enabled":
+                            _cur_tool.enabled = bool.parse (attr_values[i]);
                             break;
                         case "extensions":
                             _cur_tool.extensions = attr_values[i];
@@ -401,8 +403,9 @@ public class BuildTools
         string content = "<tools>";
         foreach (BuildTool tool in _build_tools)
         {
-            content += "\n  <tool show=\"%s\" extensions=\"%s\" icon=\"%s\">\n".printf (
-                tool.show.to_string (), tool.extensions, tool.icon);
+            content += "\n  <tool enabled=\"%s\"".printf (tool.enabled.to_string ());
+            content += " extensions=\"%s\"".printf (tool.extensions);
+            content += " icon=\"%s\">\n".printf (tool.icon);
 
             content += Markup.printf_escaped ("    <label>%s</label>\n", tool.label);
             content += Markup.printf_escaped ("    <description>%s</description>\n",

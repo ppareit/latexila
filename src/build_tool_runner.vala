@@ -29,7 +29,6 @@ public class BuildToolRunner : GLib.Object
     private string output = "";
 
     private BuildView view;
-    private bool compilation;
     private string document_view_program;
     private bool latexmk_show_all;
     private Gtk.Action action_stop_exec;
@@ -52,7 +51,6 @@ public class BuildToolRunner : GLib.Object
         Gtk.Action action_stop_exec)
     {
         this.file = file;
-        this.compilation = tool.compilation;
         this.action_stop_exec = action_stop_exec;
 
         filename = file.get_parse_name ();
