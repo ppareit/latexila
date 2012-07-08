@@ -46,14 +46,6 @@ public struct BuildTool
     Gee.ArrayList<BuildJob?> jobs;
 }
 
-public enum DocType
-{
-    DVI,
-    PDF,
-    PS,
-    LAST
-}
-
 public class BuildTools : GLib.Object
 {
     private static BuildTools _instance = null;
@@ -102,24 +94,6 @@ public class BuildTools : GLib.Object
     public Gee.Iterator<BuildTool?> iterator ()
     {
         return _build_tools.iterator ();
-    }
-
-    // TODO use gtk_show_uri() instead of finding the right build tool to view a document
-    public BuildTool? get_view_doc (DocType type)
-    {
-        string[] icon = new string[DocType.LAST];
-        icon[DocType.DVI] = "view_dvi";
-        icon[DocType.PDF] = "view_pdf";
-        icon[DocType.PS] = "view_ps";
-
-        // we take the first match
-        foreach (BuildTool build_tool in _build_tools)
-        {
-            if (build_tool.icon == icon[type])
-                return build_tool;
-        }
-
-        return null;
     }
 
     public bool is_empty ()

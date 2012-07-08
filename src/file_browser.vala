@@ -255,42 +255,24 @@ public class FileBrowser : Grid
                 return;
             }
 
-            BuildTools build_tools = BuildTools.get_default ();
             string extension = Utils.get_extension (basename);
-            DocType doc_type;
-
-            switch (extension)
+            if (extension != ".dvi" &&
+                extension != ".pdf" &&
+                extension != ".ps")
             {
-                // View DVI
-                case ".dvi":
-                    doc_type = DocType.DVI;
-                    break;
-
-                // View PDF
-                case ".pdf":
-                    doc_type = DocType.PDF;
-                    break;
-
-                // View PS
-                case ".ps":
-                    doc_type = DocType.PS;
-                    break;
-
-                // Open document
-                default:
-                    _main_window.open_document (file);
-                    return;
-            }
-
-            BuildTool? tool = build_tools.get_view_doc (doc_type);
-            if (tool == null)
-            {
-                warning ("There is no build tool to view the file '%s'", basename);
+                _main_window.open_document (file);
                 return;
             }
 
-            new BuildToolRunner (file, tool, _build_view,
-                _main_window.get_action_stop_exec ());
+            try
+            {
+                Gtk.show_uri (this.get_screen (), file.get_uri (), Gdk.CURRENT_TIME);
+            }
+            catch (Error e)
+            {
+                warning ("Impossible to open the file '%s': %s",
+                    file.get_uri (), e.message);
+            }
         });
     }
 
