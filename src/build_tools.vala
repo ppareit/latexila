@@ -167,14 +167,11 @@ public class BuildTools
         update_all_menus ();
     }
 
-    public void update (int num, BuildTool tool, bool keep_show = false)
+    public void update (int num, BuildTool tool)
     {
         return_if_fail (_build_tools != null);
-        return_if_fail (num >= 0 && num < _build_tools.size);
+        return_if_fail (0 <= num && num < _build_tools.size);
         BuildTool current_tool = _build_tools.get (num);
-
-        if (keep_show)
-            tool.show = current_tool.show;
 
         if (! is_equal (current_tool, tool))
         {

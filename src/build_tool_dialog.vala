@@ -41,7 +41,7 @@ private class BuildToolDialog : Dialog
 
     private static BuildToolDialog _instance = null;
 
-    private ErrorEntry _entry_label;
+    private Entry _entry_label;
     private Entry _entry_desc;
     private Entry _entry_extensions;
 
@@ -97,7 +97,18 @@ private class BuildToolDialog : Dialog
         return_val_if_fail (build_tool != null, false);
 
         _instance.set_build_tool (build_tool);
-        return false;
+
+        bool ok = _instance.run () == ResponseType.OK;
+
+        if (ok)
+        {
+            BuildTool new_build_tool = _instance.retrieve_build_tool ();
+            new_build_tool.show = build_tool.show;
+            build_tools.update (build_tool_num, new_build_tool);
+        }
+
+        _instance.hide ();
+        return ok;
     }
 
     // Returns true if the build tool is created.
@@ -107,7 +118,20 @@ private class BuildToolDialog : Dialog
         return_val_if_fail (_instance != null, false);
 
         _instance.set_new_build_tool ();
-        return false;
+
+        bool ok = _instance.run () == ResponseType.OK;
+
+        if (ok)
+        {
+            BuildTool new_build_tool = _instance.retrieve_build_tool ();
+            new_build_tool.show = true;
+
+            BuildTools build_tools = BuildTools.get_default ();
+            build_tools.add (new_build_tool);
+        }
+
+        _instance.hide ();
+        return ok;
     }
 
     /*************************************************************************/
@@ -115,7 +139,7 @@ private class BuildToolDialog : Dialog
 
     private void init_text_entries ()
     {
-        _entry_label = new ErrorEntry ();
+        _entry_label = new Entry ();
         _entry_desc = new Entry ();
         _entry_extensions = new Entry ();
     }
@@ -379,11 +403,10 @@ private class BuildToolDialog : Dialog
     }
 
     /*************************************************************************/
-    // Run the dialog
+    // Set and retrieve data
 
     private void set_new_build_tool ()
     {
-        _entry_label.error = false;
         _entry_label.text = "";
         _entry_desc.text = "";
         _entry_extensions.text = "";
@@ -398,7 +421,6 @@ private class BuildToolDialog : Dialog
     {
         /* Text entries */
 
-        _entry_label.error = false;
         _entry_label.text = build_tool.label;
         _entry_desc.text = build_tool.description;
         _entry_extensions.text = build_tool.extensions;
@@ -433,6 +455,60 @@ private class BuildToolDialog : Dialog
             add_build_job (build_job);
 
         _jobs_view.columns_autosize ();
+    }
+
+    // Retrieve the build tool from the data stored in the main widgets of the dialog.
+    private BuildTool retrieve_build_tool ()
+    {
+        BuildTool tool = BuildTool ();
+
+        /* Text entries */
+
+        tool.label = _entry_label.text.strip ();
+
+        string desc = _entry_desc.text.strip ();
+        if (desc == "")
+            tool.description = tool.label;
+        else
+            tool.description = desc;
+
+        tool.extensions = _entry_extensions.text.strip ();
+
+        /* Icon */
+
+        TreeIter iter;
+        _icons_combobox.get_active_iter (out iter);
+        TreeModel model = _icons_store as TreeModel;
+        model.get (iter, IconColumn.STOCK_ID, out tool.icon);
+
+        /* Jobs */
+
+        tool.jobs = new Gee.ArrayList<BuildJob?> ();
+
+        model = _jobs_store as TreeModel;
+        bool valid = _jobs_store.get_iter_first (out iter);
+
+        while (valid)
+        {
+            BuildJob job = BuildJob ();
+            string command;
+            string post_processor_name;
+
+            model.get (iter,
+                JobColumn.COMMAND, out command,
+                JobColumn.POST_PROCESSOR, out post_processor_name
+            );
+
+            job.command = command.strip ();
+            job.post_processor = BuildTools.get_post_processor_type_from_name (
+                post_processor_name);
+
+            tool.jobs.add (job);
+
+            valid = _jobs_store.iter_next (ref iter);
+        }
+
+        return tool;
     }
 
     /*************************************************************************/
