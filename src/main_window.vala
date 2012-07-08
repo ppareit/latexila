@@ -512,6 +512,12 @@ public class MainWindow : Window
         show ();
         show_or_hide_widgets ();
         show_or_hide_build_messages ();
+
+        /* Force to show icons in the menu.
+         * In the LaTeX and Math menu, icons are needed.
+         */
+        unowned Gtk.Settings gtk_settings = menu.get_settings ();
+        gtk_settings.gtk_menu_images = true;
     }
 
     public Gee.List<Document> get_documents ()
