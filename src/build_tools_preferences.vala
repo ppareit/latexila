@@ -413,10 +413,7 @@ public class BuildToolsPreferences : Grid
         unowned Gtk.Window? window = Utils.get_toplevel_window (this);
         return_if_fail (window != null);
 
-        bool accepted = BuildToolDialog.show_me (window.get_transient_for (), num);
-
-        if (accepted)
-            update_list_store ();
+        BuildToolDialog.show_me (window.get_transient_for ());
     }
 
     // Set 'widget' as sensitive when there is a selection in the TreeView.

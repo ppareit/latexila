@@ -15,46 +15,22 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Sébastien Wilmet
  */
 
+// The configuration of a single build tool.
+
 using Gtk;
-using Gee;
 
 private class BuildToolDialog : Dialog
 {
-    private static BuildToolDialog _instance = null;
-
-    private ErrorEntry _entry_label;
-    private Entry _entry_desc;
-    private Entry _entry_extensions;
-    private ComboBox _combobox_icon;
-    private ErrorEntry _entry_command;
-    private Button _button_add;
-    private TreeView _treeview_jobs;
-    private Button _button_delete;
-    private Button _button_up;
-    private Button _button_down;
-
-    private ListStore _jobs_store;
-
-    private struct IconColumn
+    private enum IconColumn
     {
-        public string stock_id;
-        public string label;
+        STOCK_ID,
+        LABEL,
+        N_COLUMNS
     }
-
-    private const IconColumn[] _icons =
-    {
-        { Stock.EXECUTE, N_("Execute") },
-        { "compile_dvi", "LaTeX → DVI" },
-        { "compile_pdf", "LaTeX → PDF" },
-        { "compile_ps", "LaTeX → PS" },
-        { Stock.CONVERT, N_("Convert") },
-        { Stock.FILE, N_("View File") },
-        { "view_dvi", N_("View DVI") },
-        { "view_pdf", N_("View PDF") },
-        { "view_ps", N_("View PS") }
-    };
 
     private enum JobColumn
     {
@@ -63,6 +39,18 @@ private class BuildToolDialog : Dialog
         N_COLUMNS
     }
 
+    private static BuildToolDialog _instance = null;
+
+    private ErrorEntry _entry_label;
+    private Entry _entry_desc;
+    private Entry _entry_extensions;
+
+    private ListStore _icons_store;
+    private ComboBox _icons_combobox;
+
+    private ListStore _jobs_store;
+    private TreeView _jobs_view;
+
     private BuildToolDialog ()
     {
         add_button (Stock.CANCEL, ResponseType.CANCEL);
@@ -70,31 +58,17 @@ private class BuildToolDialog : Dialog
         title = _("Build Tool");
         destroy_with_parent = true;
 
-        Grid label_grid = get_label_grid ();
-        Grid desc_grid = get_desc_grid ();
-        Grid extensions_grid = get_extensions_grid ();
-        Grid icon_grid = get_icon_grid ();
-        Grid jobs_grid = get_jobs_grid ();
-
-        Grid main_grid = new Grid ();
-        main_grid.set_row_spacing (5);
-        main_grid.set_column_spacing (5);
-        main_grid.attach (label_grid, 0, 0, 1, 1);
-        main_grid.attach (desc_grid, 1, 0, 1, 1);
-        main_grid.attach (extensions_grid, 0, 1, 1, 1);
-        main_grid.attach (icon_grid, 1, 1, 1, 1);
-        main_grid.attach (jobs_grid, 0, 2, 2, 1);
+        init_text_entries ();
+        init_icons_store ();
+        init_icons_combobox ();
+        init_jobs ();
 
         Box content_area = get_content_area () as Box;
-        content_area.pack_start (main_grid);
+        content_area.pack_start (get_main_grid ());
         content_area.show_all ();
-
-        init_icon_treeview ();
-        init_jobs_treeview ();
-        init_actions ();
     }
 
-    public static bool show_me (Window parent, int build_tool_num)
+    public static void show_me (Gtk.Window parent)
     {
         if (_instance == null)
         {
@@ -107,12 +81,153 @@ private class BuildToolDialog : Dialog
             });
         }
 
-        if (parent != _instance.get_transient_for ())
-            _instance.set_transient_for (parent);
-
+        _instance.set_transient_for (parent);
         _instance.present ();
-        _instance.init (build_tool_num);
-        return _instance.run_me (build_tool_num);
+    }
+
+    // Returns true if the build tool is edited.
+    // Returns false if the user has clicked on cancel.
+    public static bool edit_build_tool (int build_tool_num)
+    {
+        return false;
+    }
+
+    // Returns true if the build tool is created.
+    // Returns false if the user has clicked on cancel.
+    public static bool create_build_tool ()
+    {
+        return false;
+    }
+
+    /*************************************************************************/
+    // Init main widgets
+
+    private void init_text_entries ()
+    {
+        _entry_label = new ErrorEntry ();
+        _entry_desc = new Entry ();
+        _entry_extensions = new Entry ();
+    }
+
+    private void init_icons_store ()
+    {
+        _icons_store = new ListStore (IconColumn.N_COLUMNS,
+            typeof (string), // icon stock-id
+            typeof (string)  // label
+        );
+
+        add_icon (Stock.EXECUTE, _("Execute"));
+        add_icon ("compile_dvi", "LaTeX → DVI");
+        add_icon ("compile_pdf", "LaTeX → PDF");
+        add_icon ("compile_ps", "LaTeX → PS");
+        add_icon (Stock.CONVERT, _("Convert"));
+        add_icon (Stock.FILE, _("View File"));
+        add_icon ("view_dvi", _("View DVI"));
+        add_icon ("view_pdf", _("View PDF"));
+        add_icon ("view_ps", _("View PS"));
+    }
+
+    private void add_icon (string stock_id, string label)
+    {
+        TreeIter iter;
+        _icons_store.append (out iter);
+        _icons_store.set (iter,
+            IconColumn.STOCK_ID, stock_id,
+            IconColumn.LABEL, label
+        );
+    }
+
+    private void init_icons_combobox ()
+    {
+        _icons_combobox = new ComboBox.with_model (_icons_store);
+
+        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
+        _icons_combobox.pack_start (pixbuf_renderer, false);
+        _icons_combobox.set_attributes (pixbuf_renderer,
+            "stock-id", IconColumn.STOCK_ID);
+
+        CellRendererText text_renderer = new CellRendererText ();
+        _icons_combobox.pack_start (text_renderer, true);
+        _icons_combobox.set_attributes (text_renderer,
+            "text", IconColumn.LABEL);
+    }
+
+    private void init_jobs ()
+    {
+        _jobs_store = new ListStore (JobColumn.N_COLUMNS,
+            typeof (string), // command
+            typeof (string)  // post processor
+        );
+
+        _jobs_view = new TreeView.with_model (_jobs_store);
+
+        /* Post processors list store */
+
+        ListStore post_processor_store = new ListStore (1,
+            typeof (string) // the name of the post processor
+        );
+
+        for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
+        {
+            string name = BuildTools.get_post_processor_name_from_type (
+                (PostProcessorType) type);
+
+            TreeIter iter;
+            post_processor_store.append (out iter);
+            post_processor_store.set (iter, 0, name);
+        }
+
+        /* Cell renderers */
+
+        CellRendererText text_renderer = new CellRendererText ();
+        text_renderer.editable = true;
+
+        TreeViewColumn column = new TreeViewColumn.with_attributes (_("Commands"),
+            text_renderer, "text", JobColumn.COMMAND);
+        column.set_resizable (true);
+        _jobs_view.append_column (column);
+
+        CellRendererCombo combo_renderer = new CellRendererCombo ();
+        combo_renderer.editable = true;
+        combo_renderer.model = post_processor_store;
+        combo_renderer.text_column = 0;
+        combo_renderer.has_entry = false;
+        _jobs_view.insert_column_with_attributes (-1, _("Post Processor"),
+            combo_renderer, "text", JobColumn.POST_PROCESSOR);
+
+        /* Behavior */
+
+        text_renderer.edited.connect ((path_string, new_text) =>
+        {
+            TreeIter iter;
+            _jobs_store.get_iter_from_string (out iter, path_string);
+            _jobs_store.set (iter, JobColumn.COMMAND, new_text);
+        });
+
+        combo_renderer.edited.connect ((path_string, new_text) =>
+        {
+            TreeIter iter;
+            _jobs_store.get_iter_from_string (out iter, path_string);
+            _jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text);
+        });
+    }
+
+    /*************************************************************************/
+    // Packing widgets, add section titles, tooltips, etc.
+
+    private Grid get_main_grid ()
+    {
+        Grid main_grid = new Grid ();
+        main_grid.set_row_spacing (5);
+        main_grid.set_column_spacing (5);
+
+        main_grid.attach (get_label_grid (), 0, 0, 1, 1);
+        main_grid.attach (get_desc_grid (), 1, 0, 1, 1);
+        main_grid.attach (get_extensions_grid (), 0, 1, 1, 1);
+        main_grid.attach (get_icons_grid (), 1, 1, 1, 1);
+        main_grid.attach (get_jobs_grid (), 0, 2, 2, 1);
+
+        return main_grid;
     }
 
     private Grid get_label_grid ()
@@ -134,7 +249,6 @@ private class BuildToolDialog : Dialog
         grid.attach (arrow, 1, 0, 1, 1);
         grid.set_hexpand (false);
 
-        _entry_label = new ErrorEntry ();
         _entry_label.set_margin_left (12);
         grid.attach (_entry_label, 0, 1, 2, 1);
 
@@ -143,28 +257,28 @@ private class BuildToolDialog : Dialog
 
     private Grid get_desc_grid ()
     {
-        _entry_desc = new Entry ();
         _entry_desc.hexpand = true;
         return Utils.get_dialog_component (_("Description"), _entry_desc);
     }
 
     private Grid get_extensions_grid ()
     {
-        _entry_extensions = new Entry ();
         _entry_extensions.set_tooltip_text (
-            _("File extensions for which the build tool can be executed.\nThe extensions are separated by spaces."));
+            _("File extensions for which the build tool can be executed.") + "\n" +
+            _("The extensions are separated by spaces."));
 
         return Utils.get_dialog_component (_("Extensions"), _entry_extensions);
     }
 
-    private Grid get_icon_grid ()
+    private Grid get_icons_grid ()
     {
-        _combobox_icon = new ComboBox ();
-        return Utils.get_dialog_component (_("Icon"), _combobox_icon);
+        return Utils.get_dialog_component (_("Icon"), _icons_combobox);
     }
 
     private Grid get_jobs_grid ()
     {
+        /* Placeholders */
+
         Label placeholders = new Label (_("Placeholders:"));
 
         Label placeholder_filename = new Label ("$filename");
@@ -176,24 +290,8 @@ private class BuildToolDialog : Dialog
 
         Label placeholder_view = new Label ("$view");
         placeholder_view.set_tooltip_text (
-            _("The program for viewing documents.\nIts value can be changed in the preferences dialog."));
-
-        _entry_command = new ErrorEntry ();
-        _entry_command.hexpand = true;
-
-        _button_add = new Button.from_stock (Stock.ADD);
-        _button_add.set_tooltip_text (_("New command"));
-
-        _treeview_jobs = new TreeView ();
-        _treeview_jobs.hexpand = true;
-        _treeview_jobs.vexpand = true;
-
-        Widget scrolled_treeview = Utils.add_scrollbar (_treeview_jobs);
-        scrolled_treeview.set_size_request (600, 110);
-
-        _button_delete = new Button.from_stock (Stock.REMOVE);
-        _button_up = new Button.from_stock (Stock.GO_UP);
-        _button_down = new Button.from_stock (Stock.GO_DOWN);
+            _("The program for viewing documents.") + "\n" +
+            _("Its value can be changed in the preferences dialog."));
 
         Grid placeholders_grid = new Grid ();
         placeholders_grid.set_orientation (Orientation.HORIZONTAL);
@@ -203,284 +301,19 @@ private class BuildToolDialog : Dialog
         placeholders_grid.add (placeholder_shortname);
         placeholders_grid.add (placeholder_view);
 
-        Grid cmd_grid = new Grid ();
-        cmd_grid.set_orientation (Orientation.HORIZONTAL);
-        cmd_grid.set_column_spacing (5);
-        cmd_grid.add (_entry_command);
-        cmd_grid.add (_button_add);
+        /* Jobs tree view */
 
-        Grid buttons_grid = new Grid ();
-        buttons_grid.set_orientation (Orientation.HORIZONTAL);
-        buttons_grid.set_column_spacing (5);
-        buttons_grid.add (_button_delete);
-        buttons_grid.add (_button_up);
-        buttons_grid.add (_button_down);
+        _jobs_view.expand = true;
+
+        Widget scrolled_treeview = Utils.add_scrollbar (_jobs_view);
+        scrolled_treeview.set_size_request (600, 110);
 
         Grid jobs_grid = new Grid ();
         jobs_grid.set_orientation (Orientation.VERTICAL);
         jobs_grid.set_row_spacing (5);
         jobs_grid.add (placeholders_grid);
-        jobs_grid.add (cmd_grid);
         jobs_grid.add (scrolled_treeview);
-        jobs_grid.add (buttons_grid);
 
         return Utils.get_dialog_component (_("Jobs"), jobs_grid);
-    }
-
-    private void init_icon_treeview ()
-    {
-        ListStore icon_store = new ListStore (2, typeof (string), typeof (string));
-
-        // fill icon store
-        foreach (IconColumn icon in _icons)
-        {
-            TreeIter iter;
-            icon_store.append (out iter);
-            icon_store.set (iter, 0, icon.stock_id, 1, _(icon.label), -1);
-        }
-
-        // init combobox
-        _combobox_icon.set_model (icon_store);
-
-        CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
-        _combobox_icon.pack_start (pixbuf_renderer, false);
-        _combobox_icon.set_attributes (pixbuf_renderer, "stock-id", 0, null);
-
-        CellRendererText text_renderer = new CellRendererText ();
-        _combobox_icon.pack_start (text_renderer, true);
-        _combobox_icon.set_attributes (text_renderer, "text", 1, null);
-    }
-
-    private void init_jobs_treeview ()
-    {
-        _jobs_store = new ListStore (JobColumn.N_COLUMNS,
-            typeof (string),    // command
-            typeof (string)     // post processor
-        );
-
-        _treeview_jobs.set_model (_jobs_store);
-
-        /* post processor list store */
-
-        ListStore post_processor_store = new ListStore (1, typeof (string));
-
-        for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
-        {
-            TreeIter iterpp;
-            post_processor_store.append (out iterpp);
-            post_processor_store.set (iterpp,
-                0, BuildTools.get_post_processor_name_from_type (
-                    (PostProcessorType) type),
-                -1);
-        }
-
-        /* cell renderers */
-
-        CellRendererText text_renderer = new CellRendererText ();
-        text_renderer.editable = true;
-
-        TreeViewColumn column = new TreeViewColumn.with_attributes (_("Commands"),
-            text_renderer, "text", JobColumn.COMMAND);
-        column.set_resizable (true);
-        _treeview_jobs.append_column (column);
-
-        CellRendererCombo combo_renderer = new CellRendererCombo ();
-        combo_renderer.editable = true;
-        combo_renderer.model = post_processor_store;
-        combo_renderer.text_column = 0;
-        combo_renderer.has_entry = false;
-        _treeview_jobs.insert_column_with_attributes (-1, _("Post Processor"),
-            combo_renderer, "text", JobColumn.POST_PROCESSOR);
-
-        /* callbacks */
-
-        text_renderer.edited.connect ((path_string, new_text) =>
-        {
-            TreeIter iter;
-            _jobs_store.get_iter_from_string (out iter, path_string);
-            _jobs_store.set (iter, JobColumn.COMMAND, new_text);
-        });
-
-        combo_renderer.edited.connect ((path_string, new_text) =>
-        {
-            TreeIter iter;
-            _jobs_store.get_iter_from_string (out iter, path_string);
-            _jobs_store.set (iter, JobColumn.POST_PROCESSOR, new_text);
-        });
-    }
-
-    private void init_actions ()
-    {
-        _button_add.clicked.connect (on_command_add);
-        _entry_command.activate.connect (on_command_add);
-
-        _button_delete.clicked.connect (() =>
-        {
-            TreeIter iter;
-            int i = Utils.get_selected_row (_treeview_jobs, out iter);
-            if (i != -1)
-                _jobs_store.remove (iter);
-        });
-
-        _button_up.clicked.connect (() =>
-        {
-            TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (_treeview_jobs, out iter1);
-            if (i != -1 && i > 0)
-            {
-                iter2 = iter1;
-                if (Utils.tree_model_iter_prev (_jobs_store, ref iter2))
-                    _jobs_store.swap (iter1, iter2);
-            }
-        });
-
-        _button_down.clicked.connect (() =>
-        {
-            TreeIter iter1, iter2;
-            int i = Utils.get_selected_row (_treeview_jobs, out iter1);
-            if (i != -1)
-            {
-                iter2 = iter1;
-                if (_jobs_store.iter_next (ref iter2))
-                    _jobs_store.swap (iter1, iter2);
-            }
-        });
-    }
-
-    private void on_command_add ()
-    {
-        if (_entry_command.text.strip () == "")
-            return;
-
-        TreeIter iter;
-        _jobs_store.append (out iter);
-        _jobs_store.set (iter,
-            JobColumn.COMMAND, _entry_command.text,
-            JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
-                PostProcessorType.NO_OUTPUT)
-        );
-        _entry_command.text = "";
-    }
-
-    private void init (int build_tool_num)
-    {
-        _entry_command.text = "";
-        _jobs_store.clear ();
-        _entry_label.error = false;
-        _entry_command.error = false;
-
-        if (build_tool_num == -1)
-            _instance.init_new_build_tool ();
-        else
-            _instance.init_with_build_tool (BuildTools.get_default ()[build_tool_num]);
-
-        _treeview_jobs.columns_autosize ();
-    }
-
-    private void init_new_build_tool ()
-    {
-        _entry_label.text = "";
-        _entry_desc.text = "";
-        _entry_extensions.text = ".tex";
-        _combobox_icon.set_active (0);
-    }
-
-    private void init_with_build_tool (BuildTool tool)
-    {
-        _entry_label.text = tool.label;
-        _entry_desc.text = tool.description;
-        _entry_extensions.text = tool.extensions;
-
-        // set icon
-        _combobox_icon.set_active (0);
-        for (int i = 0 ; i < _icons.length ; i++)
-        {
-            if (_icons[i].stock_id == tool.icon)
-            {
-                _combobox_icon.set_active (i);
-                break;
-            }
-        }
-
-        // jobs
-        _jobs_store.clear ();
-        foreach (BuildJob job in tool.jobs)
-        {
-            TreeIter iter;
-            _jobs_store.append (out iter);
-            _jobs_store.set (iter,
-                JobColumn.COMMAND, job.command,
-                JobColumn.POST_PROCESSOR, BuildTools.get_post_processor_name_from_type (
-                    job.post_processor)
-            );
-        }
-    }
-
-    // Returns true if the build tool is correctly updated or created.
-    private bool run_me (int build_tool_num)
-    {
-        while (run () == ResponseType.OK)
-        {
-            /* check if the form is correctly filled */
-
-            // no label
-            _entry_label.error = _entry_label.text.strip () == "";
-
-            // no job
-            TreeIter iter;
-            _entry_command.error = ! _jobs_store.get_iter_first (out iter);
-
-            if (_entry_label.error || _entry_command.error)
-                continue;
-
-            /* generate a new build tool */
-
-            BuildTool tool = BuildTool ();
-            tool.label = _entry_label.text.strip ();
-            tool.description =
-                _entry_desc.text.strip () == "" ? tool.label : _entry_desc.text.strip ();
-            tool.extensions = _entry_extensions.text.strip ();
-            tool.jobs = new Gee.ArrayList<BuildJob?> ();
-
-            _combobox_icon.get_active_iter (out iter);
-            TreeModel model = _combobox_icon.get_model ();
-            model.get (iter, 0, out tool.icon, -1);
-
-            model = _treeview_jobs.get_model ();
-            bool valid = _jobs_store.get_iter_first (out iter);
-            while (valid)
-            {
-                BuildJob job = BuildJob ();
-
-                string command;
-                string post_processor_name;
-                model.get (iter,
-                    JobColumn.COMMAND, out command,
-                    JobColumn.POST_PROCESSOR, out post_processor_name
-                );
-
-                job.command = command.strip ();
-                job.post_processor = BuildTools.get_post_processor_type_from_name (
-                    post_processor_name);
-                tool.jobs.add (job);
-
-                valid = _jobs_store.iter_next (ref iter);
-            }
-
-            /* update build tools settings */
-            if (build_tool_num == -1)
-            {
-                tool.show = true;
-                BuildTools.get_default ().add (tool);
-            }
-            else
-                BuildTools.get_default ().update (build_tool_num, tool, true);
-
-            hide ();
-            return true;
-        }
-
-        hide ();
-        return false;
     }
 }
