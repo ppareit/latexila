@@ -24,26 +24,16 @@ using Gtk;
 public class MostUsedSymbols : GLib.Object
 {
     private static MostUsedSymbols _instance = null;
-    private GLib.Settings _settings;
     private bool _modified = false;
-
     private ListStore _store;
-    private TreeModelFilter _model_filter;
 
     // The column containing the number of times a symbol has been used.
     private static const int SYMBOL_COLUMN_NUM = SymbolColumn.N_COLUMNS;
 
     private MostUsedSymbols ()
     {
-        _settings = new GLib.Settings ("org.gnome.latexila.preferences.editor");
-
         init_models ();
         load_data ();
-
-        _settings.changed["nb-most-used-symbols"].connect (() =>
-        {
-            _model_filter.refilter ();
-        });
     }
 
     // singleton
@@ -66,26 +56,11 @@ public class MostUsedSymbols : GLib.Object
         );
 
         _store.set_sort_column_id (SYMBOL_COLUMN_NUM, SortType.DESCENDING);
-
-        _model_filter = new TreeModelFilter (_store, null);
-        _model_filter.set_visible_func ((model, iter) =>
-        {
-            TreePath? path = _store.get_path (iter);
-            if (path == null)
-                return false;
-
-            int pos = path.get_indices ()[0];
-
-            uint max;
-            _settings.get ("nb-most-used-symbols", "u", out max);
-
-            return pos < max;
-        });
     }
 
     public TreeModel get_model ()
     {
-        return _model_filter as TreeModel;
+        return _store as TreeModel;
     }
 
     public void clear ()

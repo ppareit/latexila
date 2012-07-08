@@ -307,18 +307,10 @@ public class PreferencesDialog : Dialog
 
     private void init_other_tab (Builder builder)
     {
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.editor");
         GLib.Settings latex_settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
         GLib.Settings fb_settings =
             new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
-
-        var nb_most_used_symbols =
-            builder.get_object ("nb_most_used_symbols") as SpinButton;
-        set_spin_button_range (nb_most_used_symbols, settings, "nb-most-used-symbols");
-        settings.bind ("nb-most-used-symbols", nb_most_used_symbols, "value",
-            SettingsBindFlags.DEFAULT);
 
         var confirm_clean_up_checkbutton =
             builder.get_object ("confirm_clean_up_checkbutton");
