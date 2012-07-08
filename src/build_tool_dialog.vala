@@ -213,6 +213,45 @@ private class BuildToolDialog : Dialog
     }
 
     /*************************************************************************/
+    // Jobs: mini-toolbar buttons (add, remove, up, down)
+
+    private ToolButton get_add_button ()
+    {
+        ToolButton add_button = new ToolButton (null, null);
+        add_button.set_icon_name ("list-add-symbolic");
+        add_button.set_tooltip_text (_("Add..."));
+
+        return add_button;
+    }
+
+    private ToolButton get_remove_button ()
+    {
+        ToolButton remove_button = new ToolButton (null, null);
+        remove_button.set_icon_name ("list-remove-symbolic");
+        remove_button.set_tooltip_text (_("Remove"));
+
+        return remove_button;
+    }
+
+    private ToolButton get_up_button ()
+    {
+        ToolButton up_button = new ToolButton (null, null);
+        up_button.set_icon_name ("go-up-symbolic");
+        up_button.set_tooltip_text (_("Move up"));
+
+        return up_button;
+    }
+
+    private ToolButton get_down_button ()
+    {
+        ToolButton down_button = new ToolButton (null, null);
+        down_button.set_icon_name ("go-down-symbolic");
+        down_button.set_tooltip_text (_("Move down"));
+
+        return down_button;
+    }
+
+    /*************************************************************************/
     // Packing widgets, add section titles, tooltips, etc.
 
     private Grid get_main_grid ()
@@ -305,14 +344,37 @@ private class BuildToolDialog : Dialog
 
         _jobs_view.expand = true;
 
-        Widget scrolled_treeview = Utils.add_scrollbar (_jobs_view);
-        scrolled_treeview.set_size_request (600, 110);
+        ScrolledWindow scrolled_window =
+            Utils.add_scrollbar (_jobs_view) as ScrolledWindow;
+        scrolled_window.set_size_request (600, 110);
+        scrolled_window.set_shadow_type (ShadowType.IN);
+
+        StyleContext context = scrolled_window.get_style_context ();
+        context.set_junction_sides (JunctionSides.BOTTOM);
+
+        /* Toolbar */
+
+        Toolbar toolbar = new Toolbar ();
+        toolbar.insert (get_add_button (), -1);
+        toolbar.insert (get_remove_button (), -1);
+        toolbar.insert (get_up_button (), -1);
+        toolbar.insert (get_down_button (), -1);
+
+        toolbar.set_icon_size (IconSize.MENU);
+        toolbar.set_style (ToolbarStyle.ICONS);
+
+        context = toolbar.get_style_context ();
+        context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
+        context.set_junction_sides (JunctionSides.TOP);
+
+        /* Pack */
 
         Grid jobs_grid = new Grid ();
         jobs_grid.set_orientation (Orientation.VERTICAL);
-        jobs_grid.set_row_spacing (5);
+        placeholders_grid.set_margin_bottom (8);
         jobs_grid.add (placeholders_grid);
-        jobs_grid.add (scrolled_treeview);
+        jobs_grid.add (scrolled_window);
+        jobs_grid.add (toolbar);
 
         return Utils.get_dialog_component (_("Jobs"), jobs_grid);
     }
