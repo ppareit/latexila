@@ -67,11 +67,15 @@ public class BuildTools : GLib.Object
     private BuildTool _cur_tool;
     private BuildJob _cur_job;
 
+    public signal void modified ();
+
     // Singleton
     private BuildTools ()
     {
         int nb_post_processors = PostProcessorType.N_POST_PROCESSORS;
         return_if_fail (_post_processor_names.length == nb_post_processors);
+
+        modified.connect (() => _modified = true);
 
         load ();
     }
@@ -118,7 +122,7 @@ public class BuildTools : GLib.Object
         BuildTool tool = _build_tools[num1];
         _build_tools.remove_at (num1);
         _build_tools.insert (num2, tool);
-        update_all_menus ();
+        modified ();
     }
 
     public void delete (int num)
@@ -126,7 +130,7 @@ public class BuildTools : GLib.Object
         return_if_fail (0 <= num && num < _build_tools.size);
 
         _build_tools.remove_at (num);
-        update_all_menus ();
+        modified ();
     }
 
     public void add (BuildTool tool)
@@ -140,7 +144,7 @@ public class BuildTools : GLib.Object
 
         tool.compilation = is_compilation (tool.icon);
         _build_tools.insert (pos, tool);
-        update_all_menus ();
+        modified ();
     }
 
     public void update (int num, BuildTool tool)
@@ -154,7 +158,7 @@ public class BuildTools : GLib.Object
             tool.compilation = is_compilation (tool.icon);
             _build_tools.remove_at (num);
             _build_tools.insert (num, tool);
-            update_all_menus ();
+            modified ();
         }
     }
 
@@ -165,7 +169,7 @@ public class BuildTools : GLib.Object
             Utils.delete_file (file);
 
         load ();
-        update_all_menus ();
+        modified ();
     }
 
     private bool is_equal (BuildTool tool1, BuildTool tool2)
@@ -193,17 +197,6 @@ public class BuildTools : GLib.Object
         }
 
         return true;
-    }
-
-    // TODO emit a signal instead
-    private void update_all_menus ()
-    {
-        _modified = true;
-        foreach (Gtk.Window window in Latexila.get_instance ().get_windows ())
-        {
-            MainWindow main_window = window as MainWindow;
-            main_window.update_build_tools_menu ();
-        }
     }
 
     // TODO rewrite this, based on the job's commands.

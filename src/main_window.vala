@@ -618,6 +618,9 @@ public class MainWindow : Window
         build_tools_action_group = new Gtk.ActionGroup ("BuildToolsActions");
         ui_manager.insert_action_group (build_tools_action_group, 0);
         update_build_tools_menu ();
+
+        BuildTools build_tools = BuildTools.get_default ();
+        build_tools.modified.connect (() => update_build_tools_menu ());
     }
 
     private void on_menu_item_select (Gtk.MenuItem proxy)
