@@ -617,9 +617,7 @@ private class BuildToolDialog : Dialog
             _("The active document filename without its extension"));
 
         Label placeholder_view = new Label ("$view");
-        placeholder_view.set_tooltip_text (
-            _("The program for viewing documents.") + "\n" +
-            _("Its value can be changed in the preferences dialog."));
+        placeholder_view.set_tooltip_text (_("The program for viewing documents"));
 
         Grid placeholders_grid = new Grid ();
         placeholders_grid.set_orientation (Orientation.HORIZONTAL);

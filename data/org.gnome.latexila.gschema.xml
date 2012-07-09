@@ -133,11 +133,6 @@
       <summary>Interactive completion min chars</summary>
       <description>Minimum number of characters after '\' for interactive completion</description>
     </key>
-    <key name="document-view-program" type="s">
-      <default>'xdg-open'</default>
-      <summary>Document view program</summary>
-      <description>Program for viewing documents (PDF, DVI, PS)</description>
-    </key>
     <key name="latexmk-always-show-all" type="b">
       <default>false</default>
       <summary>Latexmk always show all</summary>

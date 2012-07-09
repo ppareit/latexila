@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,6 @@ public class BuildToolRunner : GLib.Object
     private string output = "";
 
     private BuildView view;
-    private string document_view_program;
     private bool latexmk_show_all;
     private Gtk.Action action_stop_exec;
 
@@ -59,7 +58,6 @@ public class BuildToolRunner : GLib.Object
 
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        document_view_program = settings.get_string ("document-view-program");
         latexmk_show_all = settings.get_boolean ("latexmk-always-show-all");
 
         // verify if file extension is allowed for the build tool
@@ -416,18 +414,16 @@ public class BuildToolRunner : GLib.Object
         {
             if (command[i].contains ("$view"))
             {
-                command[i] = command[i].replace ("$view", document_view_program);
-                continue;
+                // TODO use gtk_show_uri() instead of xdg-open
+                command[i] = command[i].replace ("$view", "xdg-open");
             }
-            if (command[i].contains ("$filename"))
+            else if (command[i].contains ("$filename"))
             {
                 command[i] = command[i].replace ("$filename", base_filename);
-                continue;
             }
-            if (command[i].contains ("$shortname"))
+            else if (command[i].contains ("$shortname"))
             {
                 command[i] = command[i].replace ("$shortname", base_shortname);
-                continue;
             }
         }
 
