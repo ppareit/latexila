@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * Author: Sébastien Wilmet
  */
 
 using Gtk;
@@ -29,10 +31,13 @@ public enum PartitionState
 
 public enum BuildMsgType
 {
+    TITLE,
+    JOB_TITLE,
+    JOB_SUB_COMMAND,
     ERROR,
     WARNING,
     BADBOX,
-    OTHER
+    INFO
 }
 
 public struct BuildMsg
@@ -102,14 +107,16 @@ public class BuildView : Grid
         _filtered_model.set_visible_func ((model, iter) =>
         {
             BuildMsgType msg_type;
-            model.get (iter, BuildInfo.MESSAGE_TYPE, out msg_type, -1);
+            model.get (iter, BuildInfo.MESSAGE_TYPE, out msg_type);
 
             switch (msg_type)
             {
                 case BuildMsgType.WARNING:
                     return show_warnings;
+
                 case BuildMsgType.BADBOX:
                     return show_badboxes;
+
                 default:
                     return true;
             }
@@ -193,39 +200,29 @@ public class BuildView : Grid
             // the row is not selected
             return false;
 
-        BuildMsgType msg_type;
+        if (model.iter_has_child (iter))
+        {
+            if (_view.is_row_expanded (path))
+                _view.collapse_row (path);
+            else
+                _view.expand_to_path (path);
+
+            // the row is not selected
+            return false;
+        }
+
         File file;
-        int start_line, end_line;
+        int start_line;
+        int end_line;
 
         model.get (iter,
-            BuildInfo.MESSAGE_TYPE, out msg_type,
             BuildInfo.FILE, out file,
             BuildInfo.START_LINE, out start_line,
-            BuildInfo.END_LINE, out end_line,
-            -1);
+            BuildInfo.END_LINE, out end_line
+        );
 
-        if (msg_type != BuildMsgType.OTHER && file != null)
-        {
+        if (file != null)
             jump_to_file (file, start_line, end_line);
-
-            // the row is selected
-            return true;
-        }
-
-        // maybe it's a parent, so we can show or hide its children
-        else if (msg_type == BuildMsgType.OTHER)
-        {
-            if (model.iter_has_child (iter))
-            {
-                if (_view.is_row_expanded (path))
-                    _view.collapse_row (path);
-                else
-                    _view.expand_to_path (path);
-
-                // the row is not selected
-                return false;
-            }
-        }
 
         // the row is selected, so we can copy/paste its content
         return true;
@@ -256,14 +253,16 @@ public class BuildView : Grid
     public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent,
         bool bold = false)
     {
+        BuildMsgType type = bold ? BuildMsgType.TITLE : BuildMsgType.JOB_TITLE;
+
         TreeIter iter;
         _store.append (out iter, parent);
         _store.set (iter,
             BuildInfo.ICON,         get_icon_from_state (state),
             BuildInfo.MESSAGE,      msg,
-            BuildInfo.MESSAGE_TYPE, BuildMsgType.OTHER,
-            BuildInfo.WEIGHT,       bold ? 800 : 400,
-            -1);
+            BuildInfo.MESSAGE_TYPE, type,
+            BuildInfo.WEIGHT,       bold ? 800 : 400
+        );
 
         _view.expand_to_path (_store.get_path (iter));
 
@@ -272,7 +271,7 @@ public class BuildView : Grid
 
     public void set_partition_state (TreeIter partition_id, PartitionState state)
     {
-        _store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state), -1);
+        _store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state));
     }
 
     public void append_messages (TreeIter parent, Node<BuildMsg?> messages,
@@ -286,7 +285,6 @@ public class BuildView : Grid
             // the node contains children
             if (cur_node.children != null)
             {
-                _store.set (child, BuildInfo.ICON, "completion_choice", -1);
                 append_messages (child, cur_node, false);
 
                 if (cur_node.data.expand)
@@ -302,7 +300,7 @@ public class BuildView : Grid
             _view.expand_row (_store.get_path (parent), false);
     }
 
-    public TreeIter append_single_message (TreeIter partition_id, BuildMsg message)
+    public TreeIter append_single_message (TreeIter parent, BuildMsg message)
     {
         File file = null;
         string path = null;
@@ -327,7 +325,7 @@ public class BuildView : Grid
         }
 
         TreeIter iter;
-        _store.append (out iter, partition_id);
+        _store.append (out iter, parent);
         _store.set (iter,
             BuildInfo.ICON,         get_icon_from_msg_type (message.type),
             BuildInfo.MESSAGE,      message.text,
@@ -338,8 +336,8 @@ public class BuildView : Grid
             BuildInfo.PATH,         path,
             BuildInfo.START_LINE,   start_line,
             BuildInfo.END_LINE,     end_line,
-            BuildInfo.LINE,         line_str,
-            -1);
+            BuildInfo.LINE,         line_str
+        );
 
         return iter;
     }
@@ -350,12 +348,16 @@ public class BuildView : Grid
         {
             case PartitionState.RUNNING:
                 return Stock.EXECUTE;
+
             case PartitionState.SUCCEEDED:
                 return Stock.APPLY;
+
             case PartitionState.FAILED:
                 return Stock.DIALOG_ERROR;
+
             case PartitionState.ABORTED:
                 return Stock.STOP;
+
             default:
                 return_val_if_reached (null);
         }
@@ -365,16 +367,21 @@ public class BuildView : Grid
     {
         switch (type)
         {
+            case BuildMsgType.JOB_SUB_COMMAND:
+                // TODO rename the completion_choice stock icon
+                return "completion_choice";
+
             case BuildMsgType.ERROR:
                 return Stock.DIALOG_ERROR;
+
             case BuildMsgType.WARNING:
                 return Stock.DIALOG_WARNING;
+
             case BuildMsgType.BADBOX:
                 return "badbox";
-            case BuildMsgType.OTHER:
-                return null;
+
             default:
-                return_val_if_reached (null);
+                return null;
         }
     }
 

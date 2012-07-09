@@ -83,7 +83,7 @@ private class AllOutputPostProcessor : PostProcessor
             nb_lines--;
 
         BuildMsg message = BuildMsg ();
-        message.type = BuildMsgType.OTHER;
+        message.type = BuildMsgType.INFO;
         message.filename = null;
         message.lines_set = false;
 
@@ -245,7 +245,7 @@ private class LatexmkPostProcessor : PostProcessor
 
             /* title */
             BuildMsg title_msg = BuildMsg ();
-            title_msg.type = BuildMsgType.OTHER;
+            title_msg.type = BuildMsgType.JOB_SUB_COMMAND;
             title_msg.lines_set = false;
             title_msg.text = match_info.fetch_named ("title");
 
@@ -257,7 +257,7 @@ private class LatexmkPostProcessor : PostProcessor
 
             /* command line */
             BuildMsg cmd_line_msg = BuildMsg ();
-            cmd_line_msg.type = BuildMsgType.OTHER;
+            cmd_line_msg.type = BuildMsgType.INFO;
             cmd_line_msg.lines_set = false;
             cmd_line_msg.text = "$ " + match_info.fetch_named ("cmd");
 

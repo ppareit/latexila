@@ -102,7 +102,7 @@ public class BuildToolRunner : GLib.Object
                 view.append_single_message (job_partition, message);
 
                 message.text = e.message;
-                message.type = BuildMsgType.OTHER;
+                message.type = BuildMsgType.INFO;
                 view.append_single_message (job_partition, message);
 
                 failed ();
@@ -245,7 +245,7 @@ public class BuildToolRunner : GLib.Object
                 BuildMsg info_msg = BuildMsg ();
                 info_msg.text =
                     _("%s doesn't seem to be installed.").printf (command[0]);
-                info_msg.type = BuildMsgType.OTHER;
+                info_msg.type = BuildMsgType.INFO;
                 info_msg.lines_set = false;
                 view.append_single_message (job_partitions[job_num], info_msg);
             }

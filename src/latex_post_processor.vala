@@ -145,7 +145,7 @@ private class LatexPostProcessor : PostProcessor
             nb_errors,   nb_errors   == 1 ? "error"   : "errors",
             nb_warnings, nb_warnings == 1 ? "warning" : "warnings",
             nb_badboxes, nb_badboxes == 1 ? "badbox"  : "badboxes");
-        msg.type = BuildMsgType.OTHER;
+        msg.type = BuildMsgType.INFO;
         add_msg (false);
     }
 
@@ -482,7 +482,7 @@ private class LatexPostProcessor : PostProcessor
             return false;
 
         msg.start_line = NO_LINE;
-        msg.type = BuildMsgType.OTHER;
+        msg.type = BuildMsgType.INFO;
 
         MatchInfo match_info;
         if (! reg_other_bytes.match (line, 0, out match_info))
@@ -835,7 +835,7 @@ private class LatexPostProcessor : PostProcessor
     {
         msg = BuildMsg ();
         msg.text = null;
-        msg.type = BuildMsgType.OTHER;
+        msg.type = BuildMsgType.INFO;
         msg.filename = null;
         msg.start_line = NO_LINE;
         msg.end_line = NO_LINE;
