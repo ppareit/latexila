@@ -24,7 +24,7 @@
 public class BuildCommandRunner : GLib.Object
 {
     private string[] _command_args;
-    private string? _working_directory;
+    private string _working_directory;
 
     private Pid? _child_pid = null;
     private uint _child_watch_handler = 0;
@@ -32,7 +32,7 @@ public class BuildCommandRunner : GLib.Object
 
     public signal void finished (int exit_status);
 
-    public BuildCommandRunner (string[] command_args, string? working_directory)
+    public BuildCommandRunner (string[] command_args, string working_directory)
     {
         _command_args = command_args;
         _working_directory = working_directory;
