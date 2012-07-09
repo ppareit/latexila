@@ -142,7 +142,7 @@ public class BuildTools : GLib.Object
     {
         return_if_fail (0 <= pos && pos <= _build_tools.size);
 
-        tool.compilation = is_compilation (tool.icon);
+        tool.compilation = is_compilation (tool);
         _build_tools.insert (pos, tool);
         modified ();
     }
@@ -155,7 +155,7 @@ public class BuildTools : GLib.Object
 
         if (! is_equal (current_tool, tool))
         {
-            tool.compilation = is_compilation (tool.icon);
+            tool.compilation = is_compilation (tool);
             _build_tools.remove_at (num);
             _build_tools.insert (num, tool);
             modified ();
@@ -199,16 +199,19 @@ public class BuildTools : GLib.Object
         return true;
     }
 
-    // TODO rewrite this, based on the job's commands.
-    // Or simply assume that all the _build_ tools are compilation, since gtk_show_uri()
-    // will be used for the other tools, anyway.
-    private bool is_compilation (string icon)
+    // If it's a compilation, the files are first saved before running the
+    // build tool, and the file browser is refreshed after the execution.
+    private bool is_compilation (BuildTool build_tool)
     {
-        // If it's a compilation, the files are first saved before running the
-        // build tool, and the file browser is refreshed after the execution.
-        return icon.contains ("compile")
-            || icon == Gtk.Stock.EXECUTE
-            || icon == Gtk.Stock.CONVERT;
+        foreach (BuildJob job in build_tool.jobs)
+        {
+            // If the command is not for viewing a file, we assume that it's
+            // a compilation.
+            if (! job.command.contains ("$view"))
+                return true;
+        }
+
+        return false;
     }
 
     private void load ()
@@ -285,7 +288,6 @@ public class BuildTools : GLib.Object
 
                         case "icon":
                             _cur_tool.icon = attr_values[i];
-                            _cur_tool.compilation = is_compilation (attr_values[i]);
                             break;
 
                         default:
@@ -336,6 +338,8 @@ public class BuildTools : GLib.Object
                 // the description is optional
                 if (_cur_tool.description == null)
                     _cur_tool.description = _cur_tool.label;
+
+                _cur_tool.compilation = is_compilation (_cur_tool);
 
                 _build_tools.add (_cur_tool);
                 break;
