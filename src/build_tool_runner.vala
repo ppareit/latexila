@@ -21,12 +21,7 @@ using Gtk;
 
 public class BuildToolRunner : GLib.Object
 {
-    private static const int POLL_INTERVAL = 250;
-    private Pid? child_pid = null;
-    private uint[] handlers = {};
-    private IOChannel out_channel;
-    private bool read_output = true;
-    private string output = "";
+    private BuildCommandRunner? _command_runner = null;
 
     private BuildView view;
     private bool latexmk_show_all;
@@ -124,69 +119,11 @@ public class BuildToolRunner : GLib.Object
         return true;
     }
 
-    private void execute (string[] command, string? working_directory) throws Error
-    {
-//        stdout.printf ("command arguments:\n");
-//        foreach (string arg in command)
-//            stdout.printf ("%s\n", arg);
-//        stdout.printf ("\n");
-
-        try
-        {
-            int std_out;
-
-            Process.spawn_async_with_pipes (working_directory, command, null,
-                SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH,
-
-                // redirect stderr into stdout
-                () => { Posix.dup2 (Posix.STDOUT_FILENO, Posix.STDERR_FILENO); },
-
-                out child_pid, null, out std_out);
-
-            // we want to know the exit code
-            handlers += ChildWatch.add (child_pid, on_exit);
-
-            out_channel = new IOChannel.unix_new (std_out);
-            out_channel.set_flags (IOFlags.NONBLOCK);
-            out_channel.set_encoding (null);
-
-            handlers += Timeout.add (POLL_INTERVAL, on_output);
-        }
-        catch (Error e)
-        {
-            throw e;
-        }
-    }
-
-    private void execute_without_output (string[] command, string? working_directory)
-        throws Error
-    {
-        read_output = false;
-
-        try
-        {
-            Process.spawn_async (working_directory, command, null,
-                SpawnFlags.DO_NOT_REAP_CHILD | SpawnFlags.SEARCH_PATH, null,
-                out child_pid);
-
-            // we want to know the exit code
-            handlers += ChildWatch.add (child_pid, on_exit);
-        }
-        catch (Error e)
-        {
-            throw e;
-        }
-    }
-
     /* Abort the running process */
     public void abort ()
     {
-        if (child_pid == null)
-            return;
-
-        foreach (uint handler in handlers)
-            Source.remove (handler);
-        Posix.kill (child_pid, Posix.SIGTERM);
+        if (_command_runner != null)
+            _command_runner.abort ();
 
         action_stop_exec.set_sensitive (false);
         view.set_partition_state (root_partition, PartitionState.ABORTED);
@@ -194,72 +131,11 @@ public class BuildToolRunner : GLib.Object
             view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
     }
 
-    private bool on_output ()
+    private void on_command_finished (int exit_status)
     {
-        return_val_if_fail (read_output, false);
+        return_if_fail (_command_runner != null);
 
-        string? text = null;
-        size_t length;
-
-        try
-        {
-            out_channel.read_to_end (out text, out length);
-        }
-        catch (ConvertError e)
-        {
-            warning ("Read output: convert error: %s", e.message);
-        }
-        catch (IOChannelError e)
-        {
-            warning ("Read output: IO channel error: %s", e.message);
-        }
-
-        if (length <= 0)
-            return true;
-
-        // check if the output is a valid UTF-8 string
-        if (text.validate ())
-        {
-            output += text;
-            return true;
-        }
-
-        // make the conversion into UTF-8 line by line, because if it is done to the all
-        // string at once, there are some encodings troubles with the "latex" and
-        // "pdflatex" commands (with accents in the filename for instance).
-        string[] lines = text.split ("\n");
-        foreach (string line in lines)
-        {
-            string? line_utf8 = line.locale_to_utf8 (-1, null, null);
-
-            if (line_utf8 == null)
-            {
-                try
-                {
-                    line_utf8 = convert (line, -1, "UTF-8", "ISO-8859-1");
-                }
-                catch (ConvertError e) {}
-            }
-
-            if (line_utf8 != null && line_utf8.validate ())
-                output += line_utf8 + "\n";
-            else
-                warning ("Read output failed: %s", line);
-        }
-
-        return true;
-    }
-
-    private void on_exit (Pid pid, int status)
-    {
-        foreach (uint handler in handlers)
-            Source.remove (handler);
-
-        // read remaining output
-        if (read_output)
-            on_output ();
-
-        // create post processor
+        // Create post processor
         PostProcessor post_processor;
         switch (current_job.post_processor)
         {
@@ -284,8 +160,8 @@ public class BuildToolRunner : GLib.Object
                 break;
         }
 
-        post_processor.set_status (status);
-        post_processor.process (file, output);
+        post_processor.set_status (exit_status);
+        post_processor.process (file, _command_runner.get_output ());
 
         view.append_messages (job_partitions[job_num], post_processor.get_messages ());
 
@@ -312,9 +188,6 @@ public class BuildToolRunner : GLib.Object
             finished ();
             return;
         }
-
-        // reset output because it's the same variable for all jobs
-        output = "";
 
         current_job = jobs[job_num];
         string[] command;
@@ -346,12 +219,14 @@ public class BuildToolRunner : GLib.Object
             view.append_single_message (job_partitions[job_num], message);
         }
 
+        _command_runner = new BuildCommandRunner (command, directory);
+
         try
         {
             if (current_job.post_processor == PostProcessorType.NO_OUTPUT)
-                execute_without_output (command, directory);
+                _command_runner.execute_without_output ();
             else
-                execute (command, directory);
+                _command_runner.execute_with_output ();
         }
         catch (Error e)
         {
@@ -377,6 +252,8 @@ public class BuildToolRunner : GLib.Object
 
             failed ();
         }
+
+        _command_runner.finished.connect (on_command_finished);
     }
 
     private string[] get_command_args (string command_line, bool for_printing = false)
