@@ -166,10 +166,10 @@ public class MainWindow : Window
         { "EditSpellChecking", Stock.SPELL_CHECK, null, "",
             N_("Activate or disable the spell checking"), on_spell_checking },
         { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
-            N_("Show or hide the main toolbar"), on_show_main_toolbar },
+            N_("Show or hide the main toolbar"), null },
         // Translators: "Edit" here is an adjective.
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
-            N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
+            N_("Show or hide the edit toolbar"), null },
         { "ViewSidePanel", null, N_("_Side panel"), "<Release>F12",
             N_("Show or hide the side panel"), null },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
@@ -303,20 +303,8 @@ public class MainWindow : Window
 
         _build_view = new BuildView (this, build_toolbar);
 
-        ToggleAction action_view_bottom_panel =
-            action_group.get_action ("ViewBottomPanel") as ToggleAction;
-
-        _build_view.bind_property ("visible", action_view_bottom_panel, "active",
-            BindingFlags.BIDIRECTIONAL);
-
         // side panel
         _side_panel = new SidePanel ();
-
-        ToggleAction action_view_side_panel =
-            action_group.get_action ("ViewSidePanel") as ToggleAction;
-
-        _side_panel.bind_property ("visible", action_view_side_panel, "active",
-            BindingFlags.BIDIRECTIONAL);
 
         _symbols = new SymbolsView (this);
         _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
@@ -647,33 +635,36 @@ public class MainWindow : Window
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
         /* main toolbar */
-        bool show = settings.get_boolean ("main-toolbar-visible");
+        ToggleAction action = action_group.get_action ("ViewMainToolbar") as ToggleAction;
 
-        _main_toolbar.visible = show;
+        _main_toolbar.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
 
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
-        action.active = show;
+        action.active = settings.get_boolean ("main-toolbar-visible");
 
         /* edit toolbar */
-        show = settings.get_boolean ("edit-toolbar-visible");
+        action = action_group.get_action ("ViewEditToolbar") as ToggleAction;
 
-        if (! show)
-            _edit_toolbar.hide ();
+        _edit_toolbar.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
 
-        action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
-        action.set_active (show);
+        action.active = settings.get_boolean ("edit-toolbar-visible");
 
         /* side panel */
-        show = settings.get_boolean ("side-panel-visible");
-
         action = action_group.get_action ("ViewSidePanel") as ToggleAction;
-        action.set_active (show);
+
+        _side_panel.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        action.active = settings.get_boolean ("side-panel-visible");
 
         /* bottom panel */
-        show = settings.get_boolean ("bottom-panel-visible");
-
         action = action_group.get_action ("ViewBottomPanel") as ToggleAction;
-        action.set_active (show);
+
+        _build_view.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        action.active = settings.get_boolean ("bottom-panel-visible");
     }
 
     private void show_or_hide_build_messages ()
@@ -1666,24 +1657,6 @@ public class MainWindow : Window
     }
 
     /* View */
-
-    public void on_show_main_toolbar (Gtk.Action action)
-    {
-        bool show = (action as ToggleAction).active;
-        if (show)
-            _main_toolbar.show_all ();
-        else
-            _main_toolbar.hide ();
-    }
-
-    public void on_show_edit_toolbar (Gtk.Action action)
-    {
-        bool show = (action as ToggleAction).active;
-        if (show)
-            _edit_toolbar.show_all ();
-        else
-            _edit_toolbar.hide ();
-    }
 
     public void on_view_zoom_in ()
     {
