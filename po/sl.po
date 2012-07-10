@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-04 08:05+0000\n"
-"PO-Revision-Date: 2012-04-04 13:38+0100\n"
+"POT-Creation-Date: 2012-07-10 06:20+0000\n"
+"PO-Revision-Date: 2012-07-10 09:03+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -23,7 +23,7 @@ msgstr ""
 "X-Poedit-SourceCharset: utf-8\n"
 
 #: C/build_tools.xml:37(tool/label)
-#: ../src/build_tool_dialog.vala:55
+#: ../src/build_tool_dialog.vala:167
 msgid "View PDF"
 msgstr "Pokaži PDF"
 
@@ -32,7 +32,7 @@ msgid "View the PDF file"
 msgstr "Pokaži datoteko PDF"
 
 #: C/build_tools.xml:43(tool/label)
-#: ../src/build_tool_dialog.vala:54
+#: ../src/build_tool_dialog.vala:166
 msgid "View DVI"
 msgstr "Pokaži DVI"
 
@@ -41,7 +41,7 @@ msgid "View the DVI file"
 msgstr "Pokaži datoteko DVI"
 
 #: C/build_tools.xml:49(tool/label)
-#: ../src/build_tool_dialog.vala:56
+#: ../src/build_tool_dialog.vala:168
 msgid "View PS"
 msgstr "Pokaži PS"
 
@@ -146,118 +146,132 @@ msgstr ""
 "\\end{letter}\n"
 "\\end{document}\n"
 
-#: ../src/build_tool_dialog.vala:48
-msgid "Execute"
-msgstr "Izvedi"
-
-#: ../src/build_tool_dialog.vala:52
-msgid "Convert"
-msgstr "Pretvori"
-
-#: ../src/build_tool_dialog.vala:53
-msgid "View File"
-msgstr "Pokaži datoteko"
-
-#: ../src/build_tool_dialog.vala:71
+#: ../src/build_tool_dialog.vala:64
 msgid "Build Tool"
 msgstr "Orodje za izgradnjo"
 
-#: ../src/build_tool_dialog.vala:126
-#: ../src/latex_menu.vala:52
-#: ../src/preferences_dialog.vala:596
-#: ../src/structure.vala:691
-msgid "Label"
-msgstr "Oznaka"
-
-#: ../src/build_tool_dialog.vala:131
-msgid "You can select this arrow and copy/paste it!"
-msgstr "To puščico lahko izberete in jo kopirate/prilepite!"
-
-#: ../src/build_tool_dialog.vala:149
-msgid "Description"
-msgstr "Opis"
-
-#: ../src/build_tool_dialog.vala:156
-msgid ""
-"File extensions for which the build tool can be executed.\n"
-"The extensions are separated by spaces."
-msgstr ""
-"Pripona datotek, ki omogočajo zagon orodja izgradnje.\n"
-"Pripone so ločene s presledki."
-
-#: ../src/build_tool_dialog.vala:158
-msgid "Extensions"
-msgstr "Razširitve"
+#: ../src/build_tool_dialog.vala:160
+msgid "Execute"
+msgstr "Izvedi"
 
 #: ../src/build_tool_dialog.vala:164
-msgid "Icon"
-msgstr "Ikona"
+msgid "Convert"
+msgstr "Pretvori"
 
-#: ../src/build_tool_dialog.vala:169
-msgid "Placeholders:"
-msgstr "Ograde:"
+#: ../src/build_tool_dialog.vala:165
+msgid "View File"
+msgstr "Pokaži datoteko"
 
-#: ../src/build_tool_dialog.vala:172
-msgid "The active document filename"
-msgstr "Ime datoteke dejavnega dokumenta"
-
-#: ../src/build_tool_dialog.vala:176
-msgid "The active document filename without its extension"
-msgstr "Ime datoteke dejavnega dokumenta brez pripone"
-
-#: ../src/build_tool_dialog.vala:180
-msgid ""
-"The program for viewing documents.\n"
-"Its value can be changed in the preferences dialog."
-msgstr ""
-"Program za ogledovanje dokumentov.\n"
-"To vrednost lahko spremenite v pogovornem oknu nastavitev."
-
-#: ../src/build_tool_dialog.vala:186
-msgid "New command"
-msgstr "Nov ukaz"
-
-#: ../src/build_tool_dialog.vala:228
-msgid "Jobs"
-msgstr "Posli"
-
-#: ../src/build_tool_dialog.vala:284
+#: ../src/build_tool_dialog.vala:229
 msgid "Commands"
 msgstr "Ukazi"
 
-#: ../src/build_tool_dialog.vala:291
-msgid "Must Succeed"
-msgstr "Mora uspeti"
-
-#: ../src/build_tool_dialog.vala:299
+#: ../src/build_tool_dialog.vala:239
 msgid "Post Processor"
 msgstr "Poopravilnik"
 
-#: ../src/build_tool_runner.vala:351
+#: ../src/build_tool_dialog.vala:266
+#: ../src/build_tools_preferences.vala:209
+msgid "Add..."
+msgstr "Dodaj ..."
+
+#: ../src/build_tool_dialog.vala:283
+#: ../src/build_tools_preferences.vala:226
+msgid "Remove"
+msgstr "Odstrani"
+
+#: ../src/build_tool_dialog.vala:313
+#: ../src/build_tools_preferences.vala:268
+msgid "Move up"
+msgstr "Premakni navzgor"
+
+#: ../src/build_tool_dialog.vala:364
+#: ../src/build_tools_preferences.vala:320
+msgid "Move down"
+msgstr "Premakni navzdol"
+
+#: ../src/build_tool_dialog.vala:568
+#: ../src/build_tools_preferences.vala:106
+#: ../src/latex_menu.vala:52
+#: ../src/structure.vala:730
+msgid "Label"
+msgstr "Oznaka"
+
+#: ../src/build_tool_dialog.vala:573
+msgid "You can select this arrow and copy/paste it!"
+msgstr "To puščico lahko izberete in jo kopirate/prilepite!"
+
+#: ../src/build_tool_dialog.vala:589
+msgid "Description"
+msgstr "Opis"
+
+#: ../src/build_tool_dialog.vala:595
+msgid "File extensions for which the build tool can be executed."
+msgstr "Pripona datotek, ki omogočajo zagon orodja izgradnje."
+
+#: ../src/build_tool_dialog.vala:596
+msgid "The extensions are separated by spaces."
+msgstr "Seznam pripon, ločenih s presledki."
+
+#: ../src/build_tool_dialog.vala:598
+msgid "Extensions"
+msgstr "Razširitve"
+
+#: ../src/build_tool_dialog.vala:603
+msgid "Icon"
+msgstr "Ikona"
+
+#. Placeholders
+#: ../src/build_tool_dialog.vala:610
+msgid "Placeholders:"
+msgstr "Ograde:"
+
+#: ../src/build_tool_dialog.vala:613
+msgid "The active document filename"
+msgstr "Ime datoteke dejavnega dokumenta"
+
+#: ../src/build_tool_dialog.vala:617
+msgid "The active document filename without its extension"
+msgstr "Ime datoteke dejavnega dokumenta brez pripone"
+
+#: ../src/build_tool_dialog.vala:620
+msgid "The program for viewing documents"
+msgstr "Program za pregledovanje dokumentov"
+
+#: ../src/build_tool_dialog.vala:666
+msgid "Jobs"
+msgstr "Posli"
+
+#: ../src/build_tool_runner.vala:212
 msgid "Rubber may not support filenames with spaces (even in a directory)"
 msgstr "Program Rubber morda ne podpira imen datotek s presledki (celo v mapi)"
 
-#: ../src/build_tool_runner.vala:382
+#: ../src/build_tool_runner.vala:243
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "%s ni nameščen."
 
-#: ../src/build_view.vala:125
-msgid "Job"
-msgstr "Posel"
+#: ../src/build_tools_preferences.vala:97
+msgid "Enabled"
+msgstr "Omogočeno"
 
-#: ../src/build_view.vala:141
-msgid "File"
-msgstr "Datoteka"
+#: ../src/build_tools_preferences.vala:196
+#, c-format
+msgid "%s [copy]"
+msgstr "%s [kopija]"
 
-#: ../src/build_view.vala:143
-msgid "Line"
-msgstr "Črta"
+#: ../src/build_tools_preferences.vala:246
+#, c-format
+msgid "Do you really want to delete the build tool \"%s\"?"
+msgstr "Ali res želite izbrisati orodje za iz gradnjo \"%s\"?"
 
-#: ../src/build_view.vala:172
-#: ../src/side_panel.vala:85
-msgid "Hide panel"
-msgstr "Skrij pult"
+#: ../src/build_tools_preferences.vala:376
+msgid "Reset all the build tools"
+msgstr "Ponastavi vsa orodja za izgradnjo"
+
+#: ../src/build_tools_preferences.vala:384
+msgid "Do you really want to reset all build tools?"
+msgstr "Ali res želite ponastaviti vsa orodja za izgradnjo?"
 
 #: ../src/clean_build_files.vala:261
 msgid "Do you really want to delete these files?"
@@ -272,7 +286,7 @@ msgstr "Izberite datoteke, ki jih želite izbrisati:"
 msgid "No build file to clean up."
 msgstr "Ni datotek izgradnje za čiščenje."
 
-#: ../src/completion.vala:296
+#: ../src/completion.vala:292
 msgid "No matching proposal"
 msgstr "Ni skladnih predlogov"
 
@@ -284,7 +298,7 @@ msgid "Ln %d, Col %d"
 msgstr "Vr. %d, st. %d"
 
 #: ../src/dialogs.vala:40
-#: ../src/main_window.vala:842
+#: ../src/main_window.vala:832
 msgid "Close without Saving"
 msgstr "Zapri brez shranjevanja"
 
@@ -301,7 +315,7 @@ msgstr "Izberite dokumente, ki jih želite shraniti:"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Če sprememb ne shranite, bodo trajno izgubljene."
 
-#: ../src/document_structure.vala:731
+#: ../src/document_structure.vala:720
 msgid "The structure item already contains a sub-paragraph."
 msgstr "Predmet zgradbe že vključuje podrejeni odstavek."
 
@@ -379,30 +393,30 @@ msgstr "Napaka med poskusom pretvorbe datoteke v UTF-8."
 msgid "Unsaved Document"
 msgstr "Neshranjen dokument"
 
-#: ../src/file_browser.vala:108
+#: ../src/file_browser.vala:106
 msgid "Go to the home directory"
 msgstr "Pojdi v domačo mapo"
 
-#: ../src/file_browser.vala:109
+#: ../src/file_browser.vala:107
 msgid "Go to the parent directory"
 msgstr "Pojdi v mapo višje"
 
-#: ../src/file_browser.vala:110
+#: ../src/file_browser.vala:108
 msgid "Go to the active document directory"
 msgstr "Pojdi v mapo dejavnega dokumenta"
 
-#: ../src/file_browser.vala:111
-#: ../src/structure.vala:132
+#: ../src/file_browser.vala:109
+#: ../src/structure.vala:165
 msgid "Refresh"
 msgstr "Osveži"
 
-#: ../src/file_browser.vala:436
-#: ../src/main_window.vala:316
-#: ../src/ui/preferences_dialog.ui.h:31
+#: ../src/file_browser.vala:416
+#: ../src/main_window.vala:321
+#: ../src/ui/preferences_dialog.ui.h:26
 msgid "File Browser"
 msgstr "Brskalnik datotek"
 
-#: ../src/file_browser.vala:466
+#: ../src/file_browser.vala:446
 msgid "File System"
 msgstr "Datotečni sistem"
 
@@ -412,37 +426,37 @@ msgid "_Sectioning"
 msgstr "_Razdeljevanje"
 
 #: ../src/latex_menu.vala:34
-#: ../src/structure.vala:684
+#: ../src/structure.vala:723
 msgid "Part"
 msgstr "Del"
 
 #: ../src/latex_menu.vala:36
-#: ../src/structure.vala:685
+#: ../src/structure.vala:724
 msgid "Chapter"
 msgstr "Poglavje"
 
 #: ../src/latex_menu.vala:38
-#: ../src/structure.vala:686
+#: ../src/structure.vala:725
 msgid "Section"
 msgstr "Odsek"
 
 #: ../src/latex_menu.vala:40
-#: ../src/structure.vala:687
+#: ../src/structure.vala:726
 msgid "Sub-section"
 msgstr "Pod-odsek"
 
 #: ../src/latex_menu.vala:42
-#: ../src/structure.vala:688
+#: ../src/structure.vala:727
 msgid "Sub-sub-section"
 msgstr "Pod-pod-odsek"
 
 #: ../src/latex_menu.vala:44
-#: ../src/structure.vala:689
+#: ../src/structure.vala:728
 msgid "Paragraph"
 msgstr "Odstavek"
 
 #: ../src/latex_menu.vala:46
-#: ../src/structure.vala:690
+#: ../src/structure.vala:729
 msgid "Sub-paragraph"
 msgstr "Pododstavek"
 
@@ -1162,7 +1176,7 @@ msgid "Create a new window"
 msgstr "Ustvari novo okno"
 
 #: ../src/main_window.vala:35
-#: ../src/main_window.vala:1077
+#: ../src/main_window.vala:1067
 msgid "Open a file"
 msgstr "Odpri datoteko"
 
@@ -1473,7 +1487,7 @@ msgid "The Kile LaTeX Reference"
 msgstr "Sklicni Kile LaTeX"
 
 #: ../src/main_window.vala:161
-#: ../src/main_window.vala:1965
+#: ../src/main_window.vala:1909
 msgid "About LaTeXila"
 msgstr "O programu LaTeXila"
 
@@ -1530,109 +1544,109 @@ msgstr "Pokaži sla_be okvirje"
 msgid "Show Bad Boxes"
 msgstr "Pokaži slabe okvirje"
 
-#: ../src/main_window.vala:313
+#: ../src/main_window.vala:318
 msgid "Symbols"
 msgstr "Simboli"
 
-#: ../src/main_window.vala:319
+#: ../src/main_window.vala:324
 msgid "Structure"
 msgstr "Zgradba"
 
 #. recent documents
-#: ../src/main_window.vala:555
+#: ../src/main_window.vala:566
 msgid "Open _Recent"
 msgstr "Odpri _nedavne"
 
-#: ../src/main_window.vala:556
+#: ../src/main_window.vala:567
 msgid "Open recently used files"
 msgstr "Odpri nedavno uporabljene datoteke"
 
-#: ../src/main_window.vala:728
+#: ../src/main_window.vala:718
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ta datoteka (%s) je že odprta v drugem oknu programa LaTeXila."
 
-#: ../src/main_window.vala:730
+#: ../src/main_window.vala:720
 msgid "LaTeXila opened this instance of the file in a non-editable way. Do you want to edit it anyway?"
 msgstr "S programom LaTeXila je odprt ta primerek datoteke v načinu, ki ne dopušča urejanja. Ali jo želite vseeno urejati?"
 
-#: ../src/main_window.vala:733
+#: ../src/main_window.vala:723
 msgid "Edit Anyway"
 msgstr "Vseeno uredi"
 
-#: ../src/main_window.vala:734
+#: ../src/main_window.vala:724
 msgid "Don't Edit"
 msgstr "Ne urejaj"
 
-#: ../src/main_window.vala:839
+#: ../src/main_window.vala:829
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Ali želite shraniti spremembe v dokumentu \"%s\", preden ga zaprete?"
 
-#: ../src/main_window.vala:937
+#: ../src/main_window.vala:927
 msgid "Read-Only"
 msgstr "Samo za branje"
 
-#: ../src/main_window.vala:951
+#: ../src/main_window.vala:941
 msgid "Save File"
 msgstr "Shrani datoteko"
 
-#: ../src/main_window.vala:986
+#: ../src/main_window.vala:976
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Datoteka z imenom \"%s\" že obstaja. Ali jo želite zamenjati?"
 
-#: ../src/main_window.vala:991
+#: ../src/main_window.vala:981
 msgid "Replace"
 msgstr "Zamenjaj"
 
-#: ../src/main_window.vala:1078
+#: ../src/main_window.vala:1068
 msgid "Open a recently used file"
 msgstr "Odpri nedavno uporabljeno datoteko"
 
-#: ../src/main_window.vala:1499
+#: ../src/main_window.vala:1489
 msgid "Open Files"
 msgstr "Odpri datoteke"
 
-#: ../src/main_window.vala:1512
+#: ../src/main_window.vala:1502
 msgid "All LaTeX Files"
 msgstr "Vse datoteke LaTeX "
 
-#: ../src/main_window.vala:1519
+#: ../src/main_window.vala:1509
 msgid "All Files"
 msgstr "Vse datoteke"
 
-#: ../src/main_window.vala:1926
+#: ../src/main_window.vala:1870
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je okolje LaTeX s podporo za namizje GNOME"
 
-#: ../src/main_window.vala:1966
+#: ../src/main_window.vala:1910
 msgid "translator-credits"
 msgstr "Matej Urbančič, Martin Srebotnjak"
 
-#: ../src/post_processors.vala:277
+#: ../src/post_processors.vala:270
 msgid "Latexmk messages"
 msgstr "Sporočila Latexmk"
 
-#: ../src/preferences_dialog.vala:32
+#: ../src/preferences_dialog.vala:31
 msgid "Preferences"
 msgstr "Možnosti"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:37
-#: ../src/preferences_dialog.vala:674
+#: ../src/preferences_dialog.vala:36
+#: ../src/utils.vala:415
 msgid "Reset All"
 msgstr "Ponastavi vse"
 
-#: ../src/preferences_dialog.vala:40
+#: ../src/preferences_dialog.vala:39
 msgid "Reset all preferences"
 msgstr "Počisti vse nastavitve"
 
-#: ../src/preferences_dialog.vala:120
+#: ../src/preferences_dialog.vala:118
 msgid "Do you really want to reset all preferences?"
 msgstr "Resnično želite ponastaviti vse nastavitve?"
 
-#: ../src/preferences_dialog.vala:194
+#: ../src/preferences_dialog.vala:192
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minut"
@@ -1640,7 +1654,7 @@ msgstr[1] "minuta"
 msgstr[2] "minuti"
 msgstr[3] "minute"
 
-#: ../src/preferences_dialog.vala:294
+#: ../src/preferences_dialog.vala:292
 msgid "character"
 msgid_plural "characters"
 msgstr[0] "znakov"
@@ -1648,28 +1662,10 @@ msgstr[1] "znak"
 msgstr[2] "znaka"
 msgstr[3] "znaki"
 
-#: ../src/preferences_dialog.vala:333
-#, c-format
-msgid "%s [copy]"
-msgstr "%s [kopija]"
-
-#: ../src/preferences_dialog.vala:385
-#, c-format
-msgid "Do you really want to delete the build tool \"%s\"?"
-msgstr "Ali res želite izbrisati orodje za iz gradnjo \"%s\"?"
-
-#: ../src/preferences_dialog.vala:404
-msgid "Do you really want to reset all build tools?"
-msgstr "Ali res želite ponastaviti vsa orodja za izgradnjo?"
-
-#: ../src/preferences_dialog.vala:486
+#: ../src/preferences_dialog.vala:366
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr "Uporabi pisavo sistema s stalno širino (%s)"
-
-#: ../src/preferences_dialog.vala:586
-msgid "Active"
-msgstr "Dejavno"
 
 #: ../src/project_dialogs.vala:26
 msgid "New Project"
@@ -1717,7 +1713,7 @@ msgstr "Glavne datoteke ni v mapi."
 msgid "Go to Line:"
 msgstr "Pojdi v vrstico:"
 
-#: ../src/search.vala:49
+#: ../src/search.vala:50
 msgid "Line you want to move the cursor to"
 msgstr "Vrstica, v katero želite premakniti kazalko"
 
@@ -1729,133 +1725,136 @@ msgstr "Zamenjaj z"
 msgid "All"
 msgstr "Vse"
 
-#: ../src/search.vala:307
+#: ../src/search.vala:308
 msgid "Search for"
 msgstr "Poišči"
 
-#: ../src/search.vala:313
+#: ../src/search.vala:314
 msgid "Case sensitive"
 msgstr "Razlikovanje velikosti črk"
 
-#: ../src/search.vala:314
+#: ../src/search.vala:315
 msgid "Entire words only"
 msgstr "Le cele besede"
 
-#: ../src/structure.vala:142
+#: ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "Skrij pult"
+
+#: ../src/structure.vala:175
 msgid "Collapse All"
 msgstr "Zloži vse"
 
-#: ../src/structure.vala:153
+#: ../src/structure.vala:186
 msgid "Show labels"
 msgstr "Pokaži napise"
 
-#: ../src/structure.vala:157
+#: ../src/structure.vala:190
 msgid "Show files included"
 msgstr "Pokaži vključene datoteke"
 
-#: ../src/structure.vala:161
+#: ../src/structure.vala:194
 msgid "Show tables"
 msgstr "Pokaži razpredelnice"
 
-#: ../src/structure.vala:165
+#: ../src/structure.vala:198
 msgid "Show figures and images"
 msgstr "Pokaži risbe in slike"
 
 # TODO programiranje 'znane napake'
 # FIXME programiranje 'cilji'
-#: ../src/structure.vala:169
+#: ../src/structure.vala:202
 msgid "Show TODOs and FIXMEs"
 msgstr "Pokaži cilje in znane napake"
 
-#: ../src/structure.vala:614
+#: ../src/structure.vala:653
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Napaka dejanja zgradbe: %s"
 
-#: ../src/structure.vala:619
+#: ../src/structure.vala:658
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "Podatki o zgradbi so videti zastareli. Osvežite zgradbo."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:639
+#: ../src/structure.vala:678
 msgid "cut"
 msgstr "Izreži"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:641
+#: ../src/structure.vala:680
 msgid "copy"
 msgstr "Kopiraj"
 
-#: ../src/structure.vala:642
+#: ../src/structure.vala:681
 msgid "delete"
 msgstr "Izbriši"
 
-#: ../src/structure.vala:643
+#: ../src/structure.vala:682
 msgid "select"
 msgstr "Izberi"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:645
+#: ../src/structure.vala:684
 msgid "comment"
 msgstr "Komentiraj"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:647
+#: ../src/structure.vala:686
 msgid "shift left"
 msgstr "Leva dvigalka"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:649
+#: ../src/structure.vala:688
 msgid "shift right"
 msgstr "Desna dvigalka"
 
-#: ../src/structure.vala:694
+#: ../src/structure.vala:733
 msgid "Table"
 msgstr "Razpredelnica"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:696
+#: ../src/structure.vala:735
 msgid "Figure"
 msgstr "Skica"
 
-#: ../src/structure.vala:697
+#: ../src/structure.vala:736
 msgid "Image"
 msgstr "Slika"
 
-#: ../src/structure.vala:698
+#: ../src/structure.vala:737
 msgid "File included"
 msgstr "Datoteka vključena"
 
-#: ../src/symbols.vala:26
+#: ../src/symbols.vala:59
 msgid "Greek"
 msgstr "Grščina"
 
-#. when we drink too much tequila we walk like this arrow...
-#: ../src/symbols.vala:28
+#: ../src/symbols.vala:60
 msgid "Arrows"
 msgstr "Puščice"
 
-#: ../src/symbols.vala:29
+#: ../src/symbols.vala:61
 msgid "Relations"
 msgstr "Relacije"
 
-#: ../src/symbols.vala:30
+#: ../src/symbols.vala:62
 msgid "Operators"
 msgstr "Operatorji"
 
-#: ../src/symbols.vala:31
+#: ../src/symbols.vala:63
 msgid "Delimiters"
 msgstr "Razmejilniki"
 
-#: ../src/symbols.vala:32
+#: ../src/symbols.vala:64
 msgid "Misc math"
 msgstr "Razno - matematika"
 
-#: ../src/symbols.vala:33
+#: ../src/symbols.vala:65
 msgid "Misc text"
 msgstr "Razno - besedilo"
 
-#: ../src/symbols.vala:765
+#: ../src/symbols.vala:159
 msgid "Most Used"
 msgstr "Največ uporabljene"
 
@@ -1949,76 +1948,90 @@ msgid "Font & Colors"
 msgstr "Pisave in barve"
 
 #: ../src/ui/preferences_dialog.ui.h:18
-msgid "Build Tools"
-msgstr "Orodja za izgradnjo"
-
-#: ../src/ui/preferences_dialog.ui.h:19
 msgid "Interactive completion after"
 msgstr "Odzivno dopolnjevanje po"
 
-#: ../src/ui/preferences_dialog.ui.h:20
+#: ../src/ui/preferences_dialog.ui.h:19
 msgid "Number of characters after &apos;\\&apos;"
 msgstr "Število znakov v dokumentu za &apos;\\&apos;"
 
-#: ../src/ui/preferences_dialog.ui.h:21
+#: ../src/ui/preferences_dialog.ui.h:20
 msgid "Number of characters after '\\'"
 msgstr "Število znakov po '\\'"
+
+#: ../src/ui/preferences_dialog.ui.h:21
+msgid "Build Tools"
+msgstr "Orodja za izgradnjo"
 
 #: ../src/ui/preferences_dialog.ui.h:22
 msgid "Always show all information for the Latexmk post processor"
 msgstr "Vedno prikaži vse podatke poopravilnika Latexmk"
 
 #: ../src/ui/preferences_dialog.ui.h:23
-msgid "Program for viewing documents:"
-msgstr "Program za ogledovanje dokumentov:"
-
-#: ../src/ui/preferences_dialog.ui.h:24
-msgid "Delete one build tool"
-msgstr "Izbriši eno orodje za izgradnje"
-
-#: ../src/ui/preferences_dialog.ui.h:25
-msgid "Reset"
-msgstr "Ponastavi"
-
-#: ../src/ui/preferences_dialog.ui.h:26
-msgid "Reset all build tools"
-msgstr "Ponastavi vsa orodja za izgradnjo"
-
-#: ../src/ui/preferences_dialog.ui.h:27
-msgid "Number of most used symbols:"
-msgstr "Število najbolj pogosto uporabljanih simbolov:"
-
-#: ../src/ui/preferences_dialog.ui.h:28
 msgid "File Clean-Up"
 msgstr "Čiščenje datoteke"
 
-#: ../src/ui/preferences_dialog.ui.h:29
+#: ../src/ui/preferences_dialog.ui.h:24
 msgid "No confirmation when cleaning-up"
 msgstr "Brez potrjevanja pri čiščenju"
 
-#: ../src/ui/preferences_dialog.ui.h:30
+#: ../src/ui/preferences_dialog.ui.h:25
 msgid "Automatically clean-up files after close"
 msgstr "Samodejno počisti datoteke po zapiranju"
 
-#: ../src/ui/preferences_dialog.ui.h:32
+#: ../src/ui/preferences_dialog.ui.h:27
 msgid "Show all files"
 msgstr "Pokaži vse datoteke"
 
-#: ../src/ui/preferences_dialog.ui.h:33
+#: ../src/ui/preferences_dialog.ui.h:28
 msgid "Except those for clean-up"
 msgstr "Razen tistih za čiščenje"
 
-#: ../src/ui/preferences_dialog.ui.h:34
+#: ../src/ui/preferences_dialog.ui.h:29
 msgid "Show hidden files (beginning with a dot)"
 msgstr "Pokaži skrite datoteke (ki se začenjajo s piko)"
 
-#: ../src/ui/preferences_dialog.ui.h:35
+#: ../src/ui/preferences_dialog.ui.h:30
 msgid "Show only files with these extensions"
 msgstr "Pokaži le datoteke s temi priponami"
 
-#: ../src/ui/preferences_dialog.ui.h:36
+#: ../src/ui/preferences_dialog.ui.h:31
 msgid "Other"
 msgstr "Ostalo"
+
+#~ msgid ""
+#~ "The program for viewing documents.\n"
+#~ "Its value can be changed in the preferences dialog."
+#~ msgstr ""
+#~ "Program za ogledovanje dokumentov.\n"
+#~ "To vrednost lahko spremenite v pogovornem oknu nastavitev."
+
+#~ msgid "New command"
+#~ msgstr "Nov ukaz"
+
+#~ msgid "Must Succeed"
+#~ msgstr "Mora uspeti"
+
+#~ msgid "Job"
+#~ msgstr "Posel"
+
+#~ msgid "File"
+#~ msgstr "Datoteka"
+
+#~ msgid "Line"
+#~ msgstr "Črta"
+
+#~ msgid "Active"
+#~ msgstr "Dejavno"
+
+#~ msgid "Delete one build tool"
+#~ msgstr "Izbriši eno orodje za izgradnje"
+
+#~ msgid "Reset"
+#~ msgstr "Ponastavi"
+
+#~ msgid "Number of most used symbols:"
+#~ msgstr "Število najbolj pogosto uporabljanih simbolov:"
 
 #~ msgid "%u of %u"
 #~ msgstr "%u od %u"
