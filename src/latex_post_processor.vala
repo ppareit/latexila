@@ -91,7 +91,7 @@ private class LatexPostProcessor : PostProcessor
 
     public LatexPostProcessor ()
     {
-        reset_msg ();
+        msg = BuildMsg ();
 
         if (reg_badbox != null)
             return;
@@ -791,7 +791,7 @@ private class LatexPostProcessor : PostProcessor
         if (msg.type == BuildMsgType.WARNING
             && msg.text == "There were undefined references.")
         {
-            reset_msg ();
+            msg = BuildMsg ();
             return;
         }
 
@@ -824,21 +824,7 @@ private class LatexPostProcessor : PostProcessor
                 break;
         }
 
-        if (msg.start_line != NO_LINE)
-            msg.lines_set = true;
-
         append_message (msg);
-        reset_msg ();
-    }
-
-    private void reset_msg ()
-    {
         msg = BuildMsg ();
-        msg.text = null;
-        msg.type = BuildMsgType.INFO;
-        msg.filename = null;
-        msg.start_line = NO_LINE;
-        msg.end_line = NO_LINE;
-        msg.lines_set = false;
     }
 }

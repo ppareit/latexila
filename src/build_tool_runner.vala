@@ -98,7 +98,6 @@ public class BuildToolRunner : GLib.Object
                 BuildMsg message = BuildMsg ();
                 message.text = "Failed to parse command line:";
                 message.type = BuildMsgType.ERROR;
-                message.lines_set = false;
                 view.append_single_message (job_partition, message);
 
                 message.text = e.message;
@@ -214,7 +213,6 @@ public class BuildToolRunner : GLib.Object
                 _("Rubber may not support filenames with spaces (even in a directory)");
             message.type = BuildMsgType.WARNING;
             message.filename = filename;
-            message.lines_set = false;
 
             view.append_single_message (job_partitions[job_num], message);
         }
@@ -235,7 +233,6 @@ public class BuildToolRunner : GLib.Object
             BuildMsg error_msg = BuildMsg ();
             error_msg.text = e.message;
             error_msg.type = BuildMsgType.ERROR;
-            error_msg.lines_set = false;
             view.append_single_message (job_partitions[job_num], error_msg);
 
             // If the command doesn't seem to be installed, display a more understandable
@@ -245,8 +242,6 @@ public class BuildToolRunner : GLib.Object
                 BuildMsg info_msg = BuildMsg ();
                 info_msg.text =
                     _("%s doesn't seem to be installed.").printf (command[0]);
-                info_msg.type = BuildMsgType.INFO;
-                info_msg.lines_set = false;
                 view.append_single_message (job_partitions[job_num], info_msg);
             }
 

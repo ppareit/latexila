@@ -42,18 +42,28 @@ public enum BuildMsgType
 
 public struct BuildMsg
 {
-    public string text;
-    public BuildMsgType type;
-    public string? filename;
+    BuildMsgType type;
+    string? text;
 
-    public bool lines_set;
-    public int start_line;
+    // Reference to a certain file.
+    string? filename;
 
-    // if -1, takes the same value as start_line
-    public int end_line;
+    // Reference to lines in the file. -1 to unset.
+    int start_line;
+    int end_line;
 
-    // if the message have children, show them?
-    public bool expand;
+    // If the message have children, whether to show them.
+    bool expand;
+
+    public BuildMsg ()
+    {
+        type = BuildMsgType.INFO;
+        text = null;
+        filename = null;
+        start_line = -1;
+        end_line = -1;
+        expand = true;
+    }
 }
 
 public class BuildView : TreeView
@@ -202,26 +212,28 @@ public class BuildView : TreeView
         );
 
         if (file != null)
-            jump_to_file (file, start_line, end_line);
+        {
+            if (start_line == -1)
+                _main_window.open_document (file);
+            else
+                jump_to_file_lines (file, start_line, end_line);
+        }
 
         // the row is selected, so we can copy/paste its content
         return true;
     }
 
-    private void jump_to_file (File file, int start_line, int end_line)
+    private void jump_to_file_lines (File file, int start_line, int end_line)
     {
+        return_if_fail (start_line >= 0 && end_line >= 0);
+
         DocumentTab tab = _main_window.open_document (file);
 
-        // If the file was not yet opened, it takes some time. If we try to select the
-        // lines when the file is not fully charged, the lines are simply not selected.
+        // Ensure that the file is fully loaded before selecting the lines.
         Utils.flush_queue ();
 
-        if (start_line != -1)
-        {
-            // start_line and end_line begins at 1, but select_lines() begins at 0
-            int end = end_line != -1 ? end_line - 1 : start_line;
-            tab.document.select_lines (start_line - 1, end);
-        }
+        // start_line and end_line begins at 1, but select_lines() begins at 0
+        tab.document.select_lines (start_line - 1, end_line - 1);
     }
 
     public void clear ()
@@ -280,41 +292,39 @@ public class BuildView : TreeView
             this.expand_row (_store.get_path (parent), false);
     }
 
-    public TreeIter append_single_message (TreeIter parent, BuildMsg message)
+    public TreeIter append_single_message (TreeIter parent, BuildMsg msg)
     {
         File file = null;
         string path = null;
 
-        if (message.filename != null)
+        if (msg.filename != null)
         {
-            file = File.new_for_path (message.filename);
-            path = Utils.replace_home_dir_with_tilde (message.filename);
+            file = File.new_for_path (msg.filename);
+            path = Utils.replace_home_dir_with_tilde (msg.filename);
 
             // the path is displayed in a tooltip
             path = Markup.escape_text (path);
         }
 
-        int start_line = -1;
-        int end_line = -1;
-        string line_str = null;
-        if (message.lines_set)
-        {
-            start_line = message.start_line;
-            end_line = message.end_line;
-            line_str = start_line.to_string ();
-        }
+        string? line_str = null;
+        if (msg.start_line != -1)
+            line_str = msg.start_line.to_string ();
+
+        int end_line = msg.end_line;
+        if (end_line == -1)
+            end_line = msg.start_line;
 
         TreeIter iter;
         _store.append (out iter, parent);
         _store.set (iter,
-            BuildMsgColumn.ICON,         get_icon_from_msg_type (message.type),
-            BuildMsgColumn.MESSAGE,      message.text,
-            BuildMsgColumn.MESSAGE_TYPE, message.type,
+            BuildMsgColumn.ICON,         get_icon_from_msg_type (msg.type),
+            BuildMsgColumn.MESSAGE,      msg.text,
+            BuildMsgColumn.MESSAGE_TYPE, msg.type,
             BuildMsgColumn.WEIGHT,       400,
             BuildMsgColumn.BASENAME,     file != null ? file.get_basename () : null,
             BuildMsgColumn.FILE,         file,
             BuildMsgColumn.PATH,         path,
-            BuildMsgColumn.START_LINE,   start_line,
+            BuildMsgColumn.START_LINE,   msg.start_line,
             BuildMsgColumn.END_LINE,     end_line,
             BuildMsgColumn.LINE_STR,     line_str
         );

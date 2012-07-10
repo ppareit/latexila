@@ -83,9 +83,6 @@ private class AllOutputPostProcessor : PostProcessor
             nb_lines--;
 
         BuildMsg message = BuildMsg ();
-        message.type = BuildMsgType.INFO;
-        message.filename = null;
-        message.lines_set = false;
 
         for (int line_num = 0 ; line_num < nb_lines ; line_num++)
         {
@@ -131,21 +128,20 @@ private class RubberPostProcessor : PostProcessor
 
             // message type
             message.type = BuildMsgType.ERROR;
-            if (message.text.contains ("Underfull") || message.text.contains ("Overfull"))
+            if (message.text.contains ("Underfull") ||
+                message.text.contains ("Overfull"))
+            {
                 message.type = BuildMsgType.BADBOX;
+            }
 
             // line
-            message.lines_set = false;
             string? line = match_info.fetch_named ("line");
             if (line != null && 0 < line.length)
             {
-                message.lines_set = true;
                 string[] parts = line.split ("-");
                 message.start_line = int.parse (parts[0]);
                 if (1 < parts.length && parts[1] != null && 0 < parts[1].length)
                     message.end_line = int.parse (parts[1]);
-                else
-                    message.end_line = -1;
             }
 
             // filename
@@ -246,7 +242,6 @@ private class LatexmkPostProcessor : PostProcessor
             /* title */
             BuildMsg title_msg = BuildMsg ();
             title_msg.type = BuildMsgType.JOB_SUB_COMMAND;
-            title_msg.lines_set = false;
             title_msg.text = match_info.fetch_named ("title");
 
             // Do not expand the row, so the user have first a global view of what have
@@ -257,8 +252,6 @@ private class LatexmkPostProcessor : PostProcessor
 
             /* command line */
             BuildMsg cmd_line_msg = BuildMsg ();
-            cmd_line_msg.type = BuildMsgType.INFO;
-            cmd_line_msg.lines_set = false;
             cmd_line_msg.text = "$ " + match_info.fetch_named ("cmd");
 
             cmd_messages.insert_data (0, cmd_line_msg);
