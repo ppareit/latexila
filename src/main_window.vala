@@ -693,11 +693,6 @@ public class MainWindow : Window
         action.set_active (show_badboxes);
     }
 
-    public BuildView get_build_view ()
-    {
-        return build_view;
-    }
-
     public DocumentTab? open_document (File location, bool jump_to = true)
     {
         /* check if the document is already opened */

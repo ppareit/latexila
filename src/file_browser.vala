@@ -38,7 +38,6 @@ public class FileBrowser : Grid
     }
 
     private unowned MainWindow _main_window;
-    private BuildView _build_view;
     private ListStore _parent_dir_store;
     private ListStore _list_store;
     private TreeView _list_view;
@@ -52,7 +51,6 @@ public class FileBrowser : Grid
     public FileBrowser (MainWindow main_window)
     {
         _main_window = main_window;
-        _build_view = main_window.get_build_view ();
 
         row_spacing = 5;
         orientation = Orientation.VERTICAL;
