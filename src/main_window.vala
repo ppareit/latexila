@@ -175,9 +175,9 @@ public class MainWindow : Window
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), null },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
-            N_("Show Warnings"), on_build_show_warnings },
+            N_("Show Warnings"), null },
         { "BuildShowBadBoxes", "badbox", N_("Show _Bad Boxes"), null,
-            N_("Show Bad Boxes"), on_build_show_badboxes }
+            N_("Show Bad Boxes"), null }
     };
 
     private string file_chooser_current_folder = Environment.get_home_dir ();
@@ -669,19 +669,22 @@ public class MainWindow : Window
 
     private void show_or_hide_build_messages ()
     {
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-        bool show_warnings = settings.get_boolean ("show-build-warnings");
-        bool show_badboxes = settings.get_boolean ("show-build-badboxes");
-
-        _build_view.show_warnings = show_warnings;
-        _build_view.show_badboxes = show_badboxes;
-
-        ToggleAction action =
+        ToggleAction action_warnings =
             action_group.get_action ("BuildShowWarnings") as ToggleAction;
-        action.set_active (show_warnings);
 
-        action = action_group.get_action ("BuildShowBadBoxes") as ToggleAction;
-        action.set_active (show_badboxes);
+        ToggleAction action_badboxes =
+            action_group.get_action ("BuildShowBadBoxes") as ToggleAction;
+
+        _build_view.bind_property ("show-warnings", action_warnings, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        _build_view.bind_property ("show-badboxes", action_badboxes, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
+        action_warnings.active = settings.get_boolean ("show-build-warnings");
+        action_badboxes.active = settings.get_boolean ("show-build-badboxes");
     }
 
     public DocumentTab? open_document (File location, bool jump_to = true)
@@ -1731,16 +1734,6 @@ public class MainWindow : Window
             warning ("Impossible to view log");
         else
             tab.document.readonly = true;
-    }
-
-    public void on_build_show_warnings (Gtk.Action action)
-    {
-        _build_view.show_warnings = ((ToggleAction) action).active;
-    }
-
-    public void on_build_show_badboxes (Gtk.Action action)
-    {
-        _build_view.show_badboxes = ((ToggleAction) action).active;
     }
 
     /* Documents */
