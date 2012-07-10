@@ -36,8 +36,8 @@ public class BuildToolRunner : GLib.Object
     private int job_num = 0;
     private BuildJob current_job;
 
-    private TreeIter root_partition;
-    private TreeIter[] job_partitions;
+    private TreeIter main_title;
+    private TreeIter[] job_titles;
 
     public signal void finished ();
 
@@ -67,7 +67,7 @@ public class BuildToolRunner : GLib.Object
         jobs = tool.jobs;
         this.view = view;
         view.clear ();
-        root_partition = view.set_title (tool.label, BuildState.RUNNING);
+        main_title = view.add_main_title (tool.label, BuildState.RUNNING);
 
         if (! add_job_titles ())
             return;
@@ -91,24 +91,24 @@ public class BuildToolRunner : GLib.Object
             }
             catch (ShellError e)
             {
-                TreeIter job_partition =
+                TreeIter job_title =
                     view.add_job_title (job.command, BuildState.FAILED);
 
                 BuildMsg message = BuildMsg ();
                 message.text = "Failed to parse command line:";
                 message.type = BuildMsgType.ERROR;
-                view.append_single_message (job_partition, message);
+                view.append_single_message (job_title, message);
 
                 message.text = e.message;
                 message.type = BuildMsgType.INFO;
-                view.append_single_message (job_partition, message);
+                view.append_single_message (job_title, message);
 
                 failed ();
                 return false;
             }
 
             string job_title = string.joinv (" ", command);
-            job_partitions += view.add_job_title (job_title, BuildState.RUNNING);
+            job_titles += view.add_job_title (job_title, BuildState.RUNNING);
 
             job_num++;
         }
@@ -124,9 +124,9 @@ public class BuildToolRunner : GLib.Object
             _command_runner.abort ();
 
         action_stop_exec.set_sensitive (false);
-        view.set_partition_state (root_partition, BuildState.ABORTED);
-        for (int i = job_num ; i < job_partitions.length ; i++)
-            view.set_partition_state (job_partitions[i], BuildState.ABORTED);
+        view.set_title_state (main_title, BuildState.ABORTED);
+        for (int i = job_num ; i < job_titles.length ; i++)
+            view.set_title_state (job_titles[i], BuildState.ABORTED);
     }
 
     private void on_command_finished (int exit_status)
@@ -161,17 +161,17 @@ public class BuildToolRunner : GLib.Object
         post_processor.set_status (exit_status);
         post_processor.process (file, _command_runner.get_output ());
 
-        view.append_messages (job_partitions[job_num], post_processor.get_messages ());
+        view.append_messages (job_titles[job_num], post_processor.get_messages ());
 
         if (post_processor.successful)
         {
-            view.set_partition_state (job_partitions[job_num], BuildState.SUCCEEDED);
+            view.set_title_state (job_titles[job_num], BuildState.SUCCEEDED);
             job_num++;
             proceed ();
         }
         else
         {
-            view.set_partition_state (job_partitions[job_num], BuildState.FAILED);
+            view.set_title_state (job_titles[job_num], BuildState.FAILED);
             failed ();
         }
     }
@@ -181,7 +181,7 @@ public class BuildToolRunner : GLib.Object
         // all jobs executed, finished
         if (job_num >= jobs.size)
         {
-            view.set_partition_state (root_partition, BuildState.SUCCEEDED);
+            view.set_title_state (main_title, BuildState.SUCCEEDED);
             action_stop_exec.set_sensitive (false);
             finished ();
             return;
@@ -213,7 +213,7 @@ public class BuildToolRunner : GLib.Object
             message.type = BuildMsgType.WARNING;
             message.filename = filename;
 
-            view.append_single_message (job_partitions[job_num], message);
+            view.append_single_message (job_titles[job_num], message);
         }
 
         _command_runner = new BuildCommandRunner (command, directory);
@@ -227,12 +227,12 @@ public class BuildToolRunner : GLib.Object
         }
         catch (Error e)
         {
-            view.set_partition_state (job_partitions[job_num], BuildState.FAILED);
+            view.set_title_state (job_titles[job_num], BuildState.FAILED);
 
             BuildMsg error_msg = BuildMsg ();
             error_msg.text = e.message;
             error_msg.type = BuildMsgType.ERROR;
-            view.append_single_message (job_partitions[job_num], error_msg);
+            view.append_single_message (job_titles[job_num], error_msg);
 
             // If the command doesn't seem to be installed, display a more understandable
             // message.
@@ -241,7 +241,7 @@ public class BuildToolRunner : GLib.Object
                 BuildMsg info_msg = BuildMsg ();
                 info_msg.text =
                     _("%s doesn't seem to be installed.").printf (command[0]);
-                view.append_single_message (job_partitions[job_num], info_msg);
+                view.append_single_message (job_titles[job_num], info_msg);
             }
 
             failed ();
@@ -303,9 +303,9 @@ public class BuildToolRunner : GLib.Object
 
     private void failed ()
     {
-        view.set_partition_state (root_partition, BuildState.FAILED);
-        for (int i = job_num + 1 ; i < job_partitions.length ; i++)
-            view.set_partition_state (job_partitions[i], BuildState.ABORTED);
+        view.set_title_state (main_title, BuildState.FAILED);
+        for (int i = job_num + 1 ; i < job_titles.length ; i++)
+            view.set_title_state (job_titles[i], BuildState.ABORTED);
 
         action_stop_exec.set_sensitive (false);
     }

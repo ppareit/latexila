@@ -242,17 +242,17 @@ public class BuildView : TreeView
         this.columns_autosize ();
     }
 
-    public TreeIter set_title (string title, BuildState state)
+    public TreeIter add_main_title (string main_title, BuildState state)
     {
-        return add_partition (title, state, BuildMsgType.TITLE);
+        return add_title (main_title, state, BuildMsgType.TITLE);
     }
 
     public TreeIter add_job_title (string job_title, BuildState state)
     {
-        return add_partition (job_title, state, BuildMsgType.JOB_TITLE);
+        return add_title (job_title, state, BuildMsgType.JOB_TITLE);
     }
 
-    private TreeIter add_partition (string msg, BuildState state, BuildMsgType type)
+    private TreeIter add_title (string msg, BuildState state, BuildMsgType type)
     {
         bool bold = type == BuildMsgType.TITLE;
 
@@ -270,13 +270,13 @@ public class BuildView : TreeView
         return iter;
     }
 
-    public void set_partition_state (TreeIter partition_id, BuildState state)
+    public void set_title_state (TreeIter title_id, BuildState state)
     {
-        _store.set (partition_id, BuildMsgColumn.ICON, get_icon_from_state (state));
+        _store.set (title_id, BuildMsgColumn.ICON, get_icon_from_state (state));
     }
 
     public void append_messages (TreeIter parent, Node<BuildMsg?> messages,
-        bool parent_is_partition = true)
+        bool parent_is_title = true)
     {
         unowned Node<BuildMsg?> cur_node = messages.first_child ();
         while (cur_node != null)
@@ -295,9 +295,8 @@ public class BuildView : TreeView
             cur_node = cur_node.next_sibling ();
         }
 
-        // All partitions are expanded, but we must do that when the partition have
-        // children.
-        if (parent_is_partition)
+        // All titles are expanded, but we must do that when the title have children.
+        if (parent_is_title)
             this.expand_row (_store.get_path (parent), false);
     }
 
