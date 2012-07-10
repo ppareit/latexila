@@ -186,8 +186,8 @@ public class MainWindow : Window
     private GotoLine goto_line;
     private SearchAndReplace search_and_replace;
     private BuildView _build_view;
-    private Toolbar main_toolbar;
-    private Toolbar edit_toolbar;
+    private Toolbar _main_toolbar;
+    private Toolbar _edit_toolbar;
     private SidePanel _side_panel;
     private SymbolsView _symbols;
     private FileBrowser file_browser;
@@ -271,14 +271,14 @@ public class MainWindow : Window
         initialize_menubar_and_toolbar ();
         Widget menu = ui_manager.get_widget ("/MainMenu");
 
-        main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
-        main_toolbar.set_style (ToolbarStyle.ICONS);
-        StyleContext main_toolbar_context = main_toolbar.get_style_context ();
+        _main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
+        _main_toolbar.set_style (ToolbarStyle.ICONS);
+        StyleContext main_toolbar_context = _main_toolbar.get_style_context ();
         main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-        setup_toolbar_open_button (main_toolbar);
+        setup_toolbar_open_button (_main_toolbar);
 
-        edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
-        edit_toolbar.set_style (ToolbarStyle.ICONS);
+        _edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
+        _edit_toolbar.set_style (ToolbarStyle.ICONS);
 
         Toolbar build_toolbar = (Toolbar) ui_manager.get_widget ("/BuildToolbar");
         build_toolbar.set_style (ToolbarStyle.ICONS);
@@ -469,12 +469,12 @@ public class MainWindow : Window
         main_vgrid.orientation = Orientation.VERTICAL;
 
         main_vgrid.add (menu);
-        main_vgrid.add (main_toolbar);
-        main_vgrid.add (edit_toolbar);
+        main_vgrid.add (_main_toolbar);
+        main_vgrid.add (_edit_toolbar);
 
         main_vgrid.show ();
         menu.show_all ();
-        main_toolbar.show_all ();
+        _main_toolbar.show_all ();
 
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
@@ -649,7 +649,7 @@ public class MainWindow : Window
         /* main toolbar */
         bool show = settings.get_boolean ("main-toolbar-visible");
 
-        main_toolbar.visible = show;
+        _main_toolbar.visible = show;
 
         ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
         action.active = show;
@@ -658,7 +658,7 @@ public class MainWindow : Window
         show = settings.get_boolean ("edit-toolbar-visible");
 
         if (! show)
-            edit_toolbar.hide ();
+            _edit_toolbar.hide ();
 
         action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
         action.set_active (show);
@@ -1671,18 +1671,18 @@ public class MainWindow : Window
     {
         bool show = (action as ToggleAction).active;
         if (show)
-            main_toolbar.show_all ();
+            _main_toolbar.show_all ();
         else
-            main_toolbar.hide ();
+            _main_toolbar.hide ();
     }
 
     public void on_show_edit_toolbar (Gtk.Action action)
     {
         bool show = (action as ToggleAction).active;
         if (show)
-            edit_toolbar.show_all ();
+            _edit_toolbar.show_all ();
         else
-            edit_toolbar.hide ();
+            _edit_toolbar.hide ();
     }
 
     public void on_view_zoom_in ()
