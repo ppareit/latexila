@@ -297,11 +297,19 @@ public class MainWindow : Window
         goto_line = new GotoLine (this);
         search_and_replace = new SearchAndReplace (this);
 
-        // build view
+        // bottom panel
         action_stop_exec = action_group.get_action ("BuildStopExecution");
         action_stop_exec.set_sensitive (false);
 
-        _build_view = new BuildView (this, build_toolbar);
+        _build_view = new BuildView (this);
+
+        BottomPanel bottom_panel = new BottomPanel (_build_view, build_toolbar);
+
+        ToggleAction action_bottom_panel =
+            action_group.get_action ("ViewBottomPanel") as ToggleAction;
+
+        bottom_panel.bind_property ("visible", action_bottom_panel, "active",
+            BindingFlags.BIDIRECTIONAL);
 
         // side panel
         _side_panel = new SidePanel ();
@@ -491,7 +499,7 @@ public class MainWindow : Window
 
         // when we resize the window, the bottom panel keeps the same height
         vpaned.pack1 (vgrid_source_view, true, true);
-        vpaned.pack2 (_build_view, false, true);
+        vpaned.pack2 (bottom_panel, false, true);
 
         main_hpaned.add1 (_side_panel);
         main_hpaned.add2 (vpaned);
@@ -660,10 +668,6 @@ public class MainWindow : Window
 
         /* bottom panel */
         action = action_group.get_action ("ViewBottomPanel") as ToggleAction;
-
-        _build_view.bind_property ("visible", action, "active",
-            BindingFlags.BIDIRECTIONAL);
-
         action.active = settings.get_boolean ("bottom-panel-visible");
     }
 

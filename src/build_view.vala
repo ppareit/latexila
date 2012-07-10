@@ -56,7 +56,7 @@ public struct BuildMsg
     public bool expand;
 }
 
-public class BuildView : Grid
+public class BuildView : TreeView
 {
     private enum BuildMsgColumn
     {
@@ -78,19 +78,16 @@ public class BuildView : Grid
 
     private unowned MainWindow _main_window;
     private TreeStore _store;
-    private TreeView _view;
 
     // Used to show/hide warnings and badboxes.
     private TreeModelFilter _filtered_model;
 
-    public BuildView (MainWindow main_window, Toolbar toolbar)
+    public BuildView (MainWindow main_window)
     {
-        orientation = Orientation.HORIZONTAL;
         _main_window = main_window;
 
         init_tree_models ();
         init_tree_view ();
-        packing_widgets (toolbar);
     }
 
     private void init_tree_models ()
@@ -133,8 +130,8 @@ public class BuildView : Grid
 
     private void init_tree_view ()
     {
-        _view = new TreeView.with_model (_filtered_model);
-        _view.headers_visible = false;
+        this.set_model (_filtered_model);
+        this.headers_visible = false;
 
         /* Columns, cell renderers */
         TreeViewColumn column_job = new TreeViewColumn ();
@@ -151,17 +148,17 @@ public class BuildView : Grid
         column_job.add_attribute (renderer_text, "text", BuildMsgColumn.MESSAGE);
         column_job.add_attribute (renderer_text, "weight", BuildMsgColumn.WEIGHT);
 
-        _view.append_column (column_job);
+        this.append_column (column_job);
 
-        _view.insert_column_with_attributes (-1, null, new CellRendererText (),
+        this.insert_column_with_attributes (-1, null, new CellRendererText (),
             "text", BuildMsgColumn.BASENAME);
-        _view.insert_column_with_attributes (-1, null, new CellRendererText (),
+        this.insert_column_with_attributes (-1, null, new CellRendererText (),
             "text", BuildMsgColumn.LINE_STR);
 
-        _view.set_tooltip_column (BuildMsgColumn.PATH);
+        this.set_tooltip_column (BuildMsgColumn.PATH);
 
         /* Selection */
-        TreeSelection select = _view.get_selection ();
+        TreeSelection select = this.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
         select.set_select_function ((select, model, path, path_currently_selected) =>
         {
@@ -173,37 +170,7 @@ public class BuildView : Grid
         });
 
         /* Double-click */
-        _view.row_activated.connect ((path) => select_row (_filtered_model, path));
-    }
-
-    private Button get_close_button ()
-    {
-        Button close_button = new Button ();
-        close_button.relief = ReliefStyle.NONE;
-        close_button.focus_on_click = false;
-        close_button.tooltip_text = _("Hide panel");
-        close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
-        close_button.clicked.connect (() => this.hide ());
-
-        return close_button;
-    }
-
-    private void packing_widgets (Toolbar toolbar)
-    {
-        Widget sw = Utils.add_scrollbar (_view);
-        sw.expand = true;
-        add (sw);
-        sw.show_all ();
-
-        Grid grid = new Grid ();
-        grid.orientation = Orientation.VERTICAL;
-        grid.add (get_close_button ());
-
-        toolbar.set_vexpand (true);
-        grid.add (toolbar);
-
-        add (grid);
-        grid.show_all ();
+        this.row_activated.connect ((path) => select_row (_filtered_model, path));
     }
 
     private bool select_row (TreeModel model, TreePath path)
@@ -215,10 +182,10 @@ public class BuildView : Grid
 
         if (model.iter_has_child (iter))
         {
-            if (_view.is_row_expanded (path))
-                _view.collapse_row (path);
+            if (this.is_row_expanded (path))
+                this.collapse_row (path);
             else
-                _view.expand_to_path (path);
+                this.expand_to_path (path);
 
             // the row is not selected
             return false;
@@ -260,7 +227,7 @@ public class BuildView : Grid
     public void clear ()
     {
         _store.clear ();
-        _view.columns_autosize ();
+        this.columns_autosize ();
     }
 
     public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent,
@@ -277,7 +244,7 @@ public class BuildView : Grid
             BuildMsgColumn.WEIGHT,       bold ? 800 : 400
         );
 
-        _view.expand_to_path (_store.get_path (iter));
+        this.expand_to_path (_store.get_path (iter));
 
         return iter;
     }
@@ -301,7 +268,7 @@ public class BuildView : Grid
                 append_messages (child, cur_node, false);
 
                 if (cur_node.data.expand)
-                    _view.expand_to_path (_store.get_path (child));
+                    this.expand_to_path (_store.get_path (child));
             }
 
             cur_node = cur_node.next_sibling ();
@@ -310,7 +277,7 @@ public class BuildView : Grid
         // All partitions are expanded, but we must do that when the partition have
         // children.
         if (parent_is_partition)
-            _view.expand_row (_store.get_path (parent), false);
+            this.expand_row (_store.get_path (parent), false);
     }
 
     public TreeIter append_single_message (TreeIter parent, BuildMsg message)
