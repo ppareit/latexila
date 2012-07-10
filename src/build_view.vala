@@ -276,7 +276,7 @@ public class BuildView : TreeView
     }
 
     public void append_messages (TreeIter parent, Node<BuildMsg?> messages,
-        bool parent_is_title = true)
+        bool expand = true)
     {
         unowned Node<BuildMsg?> cur_node = messages.first_child ();
         while (cur_node != null)
@@ -285,19 +285,13 @@ public class BuildView : TreeView
 
             // the node contains children
             if (cur_node.children != null)
-            {
-                append_messages (child, cur_node, false);
-
-                if (cur_node.data.expand)
-                    this.expand_to_path (_store.get_path (child));
-            }
+                append_messages (child, cur_node, cur_node.data.expand);
 
             cur_node = cur_node.next_sibling ();
         }
 
-        // All titles are expanded, but we must do that when the title have children.
-        if (parent_is_title)
-            this.expand_row (_store.get_path (parent), false);
+        if (expand)
+            this.expand_to_path (_store.get_path (parent));
     }
 
     public TreeIter append_single_message (TreeIter parent, BuildMsg msg)
