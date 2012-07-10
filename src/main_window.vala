@@ -1249,7 +1249,7 @@ public class MainWindow : Window
         }
 
         File main_file = active_document.get_main_file ();
-        build_tool_runner = new BuildToolRunner (main_file, tool, _build_view,
+        build_tool_runner = new BuildToolRunner (tool, main_file, _build_view,
             action_stop_exec);
 
         // refresh file browser when compilation is finished

@@ -21,292 +21,175 @@ using Gtk;
 
 public class BuildToolRunner : GLib.Object
 {
-    private BuildCommandRunner? _command_runner = null;
+    private BuildTool _tool;
+    private File _on_file;
+    private BuildView _view;
+    private Gtk.Action _action_stop_exec;
 
-    private BuildView view;
-    private bool latexmk_show_all;
-    private Gtk.Action action_stop_exec;
+    private TreeIter _main_title;
 
-    private File file;
-    private string filename;
-    private string shortname;
-    private string directory;
+    private int _job_num;
+    private BuildJob _current_job;
+    private TreeIter _current_job_title;
+    private BuildJobRunner? _current_job_runner = null;
 
-    private unowned Gee.ArrayList<BuildJob?> jobs;
-    private int job_num = 0;
-    private BuildJob current_job;
-
-    private TreeIter main_title;
-    private TreeIter[] job_titles;
+    private bool _aborted = false;
 
     public signal void finished ();
 
-    public BuildToolRunner (File file, BuildTool tool, BuildView view,
+    public BuildToolRunner (BuildTool build_tool, File on_file, BuildView build_view,
         Gtk.Action action_stop_exec)
     {
-        this.file = file;
-        this.action_stop_exec = action_stop_exec;
+        _tool = build_tool;
+        _on_file = on_file;
+        _view = build_view;
+        _action_stop_exec = action_stop_exec;
 
-        filename = file.get_parse_name ();
-        shortname = Utils.get_shortname (filename);
-        directory = file.get_parent ().get_parse_name ();
-
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        latexmk_show_all = settings.get_boolean ("latexmk-always-show-all");
-
-        // verify if file extension is allowed for the build tool
-        string[] extensions = tool.extensions.split (" ");
-        if (0 < tool.extensions.length
-            && ! (Utils.get_extension (filename) in extensions))
+        if (! match_allowed_extensions ())
         {
-            warning ("Bad file extension");
+            warning ("Build tool runner: bad file extension");
             return;
         }
 
-        jobs = tool.jobs;
-        this.view = view;
-        view.clear ();
-        main_title = view.add_main_title (tool.label, BuildState.RUNNING);
+        _view.clear ();
+        _action_stop_exec.set_sensitive (true);
 
-        if (! add_job_titles ())
-            return;
+        _main_title = _view.add_main_title (_tool.label, BuildState.RUNNING);
 
-        action_stop_exec.set_sensitive (true);
+        _job_num = 0;
         proceed ();
     }
 
-    // Returns true on success, false otherwise.
-    private bool add_job_titles ()
-    {
-        job_num = 0;
-
-        foreach (BuildJob job in jobs)
-        {
-            string[] command;
-
-            try
-            {
-                command = get_command_args (job.command, true);
-            }
-            catch (ShellError e)
-            {
-                TreeIter job_title =
-                    view.add_job_title (job.command, BuildState.FAILED);
-
-                BuildMsg message = BuildMsg ();
-                message.text = "Failed to parse command line:";
-                message.type = BuildMsgType.ERROR;
-                view.append_single_message (job_title, message);
-
-                message.text = e.message;
-                message.type = BuildMsgType.INFO;
-                view.append_single_message (job_title, message);
-
-                failed ();
-                return false;
-            }
-
-            string job_title = string.joinv (" ", command);
-            job_titles += view.add_job_title (job_title, BuildState.RUNNING);
-
-            job_num++;
-        }
-
-        job_num = 0;
-        return true;
-    }
-
-    /* Abort the running process */
     public void abort ()
     {
-        if (_command_runner != null)
-            _command_runner.abort ();
+        if (_current_job_runner != null)
+            _current_job_runner.abort ();
 
-        action_stop_exec.set_sensitive (false);
-        view.set_title_state (main_title, BuildState.ABORTED);
-        for (int i = job_num ; i < job_titles.length ; i++)
-            view.set_title_state (job_titles[i], BuildState.ABORTED);
+        _action_stop_exec.set_sensitive (false);
+        _view.set_title_state (_main_title, BuildState.ABORTED);
+        _view.set_title_state (_current_job_title, BuildState.ABORTED);
+
+        _aborted = true;
     }
 
-    private void on_command_finished (int exit_status)
+    private bool match_allowed_extensions ()
     {
-        return_if_fail (_command_runner != null);
+        string[] allowed_extensions = _tool.extensions.split (" ");
 
-        // Create post processor
-        PostProcessor post_processor;
-        switch (current_job.post_processor)
-        {
-            case PostProcessorType.ALL_OUTPUT:
-                post_processor = new AllOutputPostProcessor ();
-                break;
-            case PostProcessorType.LATEX:
-                post_processor = new LatexPostProcessor ();
-                break;
-            case PostProcessorType.LATEXMK:
-                post_processor = new LatexmkPostProcessor (latexmk_show_all);
-                break;
-            case PostProcessorType.NO_OUTPUT:
-                post_processor = new NoOutputPostProcessor ();
-                break;
-            case PostProcessorType.RUBBER:
-                post_processor = new RubberPostProcessor ();
-                break;
-            default:
-                warning ("Unknown post processor. Use no-output.");
-                post_processor = new NoOutputPostProcessor ();
-                break;
-        }
+        if (allowed_extensions.length == 0)
+            return true;
 
-        post_processor.set_status (exit_status);
-        post_processor.process (file, _command_runner.get_output ());
+        string filename = _on_file.get_parse_name ();
+        string extension = Utils.get_extension (filename);
 
-        view.append_messages (job_titles[job_num], post_processor.get_messages ());
-
-        if (post_processor.successful)
-        {
-            view.set_title_state (job_titles[job_num], BuildState.SUCCEEDED);
-            job_num++;
-            proceed ();
-        }
-        else
-        {
-            view.set_title_state (job_titles[job_num], BuildState.FAILED);
-            failed ();
-        }
+        return extension in allowed_extensions;
     }
 
     private void proceed ()
     {
-        // all jobs executed, finished
-        if (job_num >= jobs.size)
+        // All jobs executed, finished.
+        if (_tool.jobs.size <= _job_num)
         {
-            view.set_title_state (main_title, BuildState.SUCCEEDED);
-            action_stop_exec.set_sensitive (false);
+            _view.set_title_state (_main_title, BuildState.SUCCEEDED);
+            _action_stop_exec.set_sensitive (false);
             finished ();
             return;
         }
 
-        current_job = jobs[job_num];
-        string[] command;
+        _current_job = _tool.jobs[_job_num];
+        run_current_job ();
+    }
 
-        try
+    private void run_current_job ()
+    {
+        _current_job_runner = new BuildJobRunner (_current_job, _on_file);
+
+        if (! add_job_title ())
         {
-            command = get_command_args (current_job.command);
-        }
-        catch (ShellError e)
-        {
-            // This should never append, since the command has already been parsed for
-            // printing purpose.
-            critical ("Separate command arguments worked the first time…");
             failed ();
             return;
         }
 
-        // Attention, rubber doesn't support filenames with spaces, warn the user
-        if (current_job.post_processor == PostProcessorType.RUBBER
-            && filename.contains (" "))
+        _current_job_runner.finished.connect ((success) =>
         {
-            BuildMsg message = BuildMsg ();
-            message.text =
-                _("Rubber may not support filenames with spaces (even in a directory)");
-            message.type = BuildMsgType.WARNING;
-            message.filename = filename;
+            _view.append_messages (_current_job_title,
+                _current_job_runner.get_messages ());
 
-            view.append_single_message (job_titles[job_num], message);
-        }
+            if (_aborted)
+                return;
 
-        _command_runner = new BuildCommandRunner (command, directory);
+            BuildState state = success ? BuildState.SUCCEEDED : BuildState.FAILED;
+            _view.set_title_state (_current_job_title, state);
+
+            _job_num++;
+            proceed ();
+        });
 
         try
         {
-            if (current_job.post_processor == PostProcessorType.NO_OUTPUT)
-                _command_runner.execute_without_output ();
-            else
-                _command_runner.execute_with_output ();
+            _current_job_runner.run ();
+        }
+        catch (ShellError e)
+        {
+            // This error is already catched in add_job_title() normally.
+            critical ("Failed to parse command line a second time: %s", e.message);
+            failed ();
         }
         catch (Error e)
         {
-            view.set_title_state (job_titles[job_num], BuildState.FAILED);
-
             BuildMsg error_msg = BuildMsg ();
             error_msg.text = e.message;
             error_msg.type = BuildMsgType.ERROR;
-            view.append_single_message (job_titles[job_num], error_msg);
+            _view.append_single_message (_current_job_title, error_msg);
 
             // If the command doesn't seem to be installed, display a more understandable
             // message.
             if (e is SpawnError.NOENT)
             {
+                string command_name = _current_job_runner.get_command_name ();
+
                 BuildMsg info_msg = BuildMsg ();
                 info_msg.text =
-                    _("%s doesn't seem to be installed.").printf (command[0]);
-                view.append_single_message (job_titles[job_num], info_msg);
+                    _("%s doesn't seem to be installed.").printf (command_name);
+
+                _view.append_single_message (_current_job_title, info_msg);
             }
 
             failed ();
         }
-
-        _command_runner.finished.connect (on_command_finished);
     }
 
-    private string[] get_command_args (string command_line, bool for_printing = false)
-        throws ShellError
+    // Returns true on success.
+    private bool add_job_title ()
     {
-        /* separate arguments */
-        string[] command = {};
-
         try
         {
-            Shell.parse_argv (command_line, out command);
+            string command_line = _current_job_runner.get_command_line ();
+            _current_job_title = _view.add_job_title (command_line, BuildState.RUNNING);
+            return true;
         }
-        catch (ShellError e)
+        catch (ShellError error)
         {
-            warning ("Separate command arguments: %s", e.message);
-            throw e;
+            _current_job_title =
+                _view.add_job_title (_current_job.command, BuildState.FAILED);
+
+            BuildMsg message = BuildMsg ();
+            message.text = "Failed to parse command line:";
+            message.type = BuildMsgType.ERROR;
+            _view.append_single_message (_current_job_title, message);
+
+            message.text = error.message;
+            message.type = BuildMsgType.INFO;
+            _view.append_single_message (_current_job_title, message);
+
+            return false;
         }
-
-        /* re-add quotes if needed */
-        if (for_printing)
-        {
-            for (int cmd_num = 0 ; cmd_num < command.length ; cmd_num++)
-            {
-                string cur_cmd = command[cmd_num];
-                if (cur_cmd.contains (" "))
-                    command[cmd_num] = "\"" + cur_cmd + "\"";
-            }
-        }
-
-        /* replace placeholders */
-        string base_filename = file.get_basename ();
-        string base_shortname = Utils.get_shortname (base_filename);
-
-        for (int i = 0 ; i < command.length ; i++)
-        {
-            if (command[i].contains ("$view"))
-            {
-                // TODO use gtk_show_uri() instead of xdg-open
-                command[i] = command[i].replace ("$view", "xdg-open");
-            }
-            else if (command[i].contains ("$filename"))
-            {
-                command[i] = command[i].replace ("$filename", base_filename);
-            }
-            else if (command[i].contains ("$shortname"))
-            {
-                command[i] = command[i].replace ("$shortname", base_shortname);
-            }
-        }
-
-        return command;
     }
 
     private void failed ()
     {
-        view.set_title_state (main_title, BuildState.FAILED);
-        for (int i = job_num + 1 ; i < job_titles.length ; i++)
-            view.set_title_state (job_titles[i], BuildState.ABORTED);
-
-        action_stop_exec.set_sensitive (false);
+        _view.set_title_state (_main_title, BuildState.FAILED);
+        _view.set_title_state (_current_job_title, BuildState.FAILED);
+        _action_stop_exec.set_sensitive (false);
     }
 }
