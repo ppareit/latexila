@@ -80,14 +80,11 @@ public class BuildView : Grid
     private TreeStore _store;
     private TreeModelFilter _filtered_model;
     private TreeView _view;
-    private unowned ToggleAction _action_view_bottom_panel;
 
-    public BuildView (MainWindow main_window, Toolbar toolbar,
-        ToggleAction view_bottom_panel)
+    public BuildView (MainWindow main_window, Toolbar toolbar)
     {
         orientation = Orientation.HORIZONTAL;
         _main_window = main_window;
-        _action_view_bottom_panel = view_bottom_panel;
 
         _store = new TreeStore (BuildInfo.N_COLUMNS,
             typeof (string),    // icon (stock-id)
@@ -171,6 +168,7 @@ public class BuildView : Grid
         Widget sw = Utils.add_scrollbar (_view);
         sw.expand = true;
         add (sw);
+        sw.show_all ();
 
         // close button
         Button close_button = new Button ();
@@ -178,11 +176,7 @@ public class BuildView : Grid
         close_button.focus_on_click = false;
         close_button.tooltip_text = _("Hide panel");
         close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
-        close_button.clicked.connect (() =>
-        {
-            this.hide ();
-            _action_view_bottom_panel.active = false;
-        });
+        close_button.clicked.connect (() => this.hide ());
 
         Grid grid = new Grid ();
         grid.orientation = Orientation.VERTICAL;
@@ -191,6 +185,7 @@ public class BuildView : Grid
 
         grid.add (toolbar);
         add (grid);
+        grid.show_all ();
     }
 
     private bool select_row (TreeModel model, TreePath path)
@@ -383,11 +378,5 @@ public class BuildView : Grid
             default:
                 return null;
         }
-    }
-
-    public new void show ()
-    {
-        base.show ();
-        _action_view_bottom_panel.active = true;
     }
 }

@@ -173,7 +173,7 @@ public class MainWindow : Window
         { "ViewSidePanel", null, N_("_Side panel"), "<Release>F12",
             N_("Show or hide the side panel"), on_show_side_panel },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
-            N_("Show or hide the bottom panel"), on_show_bottom_panel },
+            N_("Show or hide the bottom panel"), null },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
             N_("Show Warnings"), on_build_show_warnings },
         { "BuildShowBadBoxes", "badbox", N_("Show _Bad Boxes"), null,
@@ -185,7 +185,7 @@ public class MainWindow : Window
     private CustomStatusbar statusbar;
     private GotoLine goto_line;
     private SearchAndReplace search_and_replace;
-    private BuildView build_view;
+    private BuildView _build_view;
     private Toolbar main_toolbar;
     private Toolbar edit_toolbar;
     private SidePanel _side_panel;
@@ -300,9 +300,14 @@ public class MainWindow : Window
         // build view
         action_stop_exec = action_group.get_action ("BuildStopExecution");
         action_stop_exec.set_sensitive (false);
+
+        _build_view = new BuildView (this, build_toolbar);
+
         ToggleAction action_view_bottom_panel =
-            (ToggleAction) action_group.get_action ("ViewBottomPanel");
-        build_view = new BuildView (this, build_toolbar, action_view_bottom_panel);
+            action_group.get_action ("ViewBottomPanel") as ToggleAction;
+
+        _build_view.bind_property ("visible", action_view_bottom_panel, "active",
+            BindingFlags.BIDIRECTIONAL);
 
         // side panel
         _side_panel = new SidePanel ();
@@ -497,7 +502,7 @@ public class MainWindow : Window
 
         // when we resize the window, the bottom panel keeps the same height
         vpaned.pack1 (vgrid_source_view, true, true);
-        vpaned.pack2 (build_view, false, true);
+        vpaned.pack2 (_build_view, false, true);
 
         main_hpaned.add1 (_side_panel);
         main_hpaned.add2 (vpaned);
@@ -669,10 +674,7 @@ public class MainWindow : Window
         /* bottom panel */
         show = settings.get_boolean ("bottom-panel-visible");
 
-        if (! show)
-            build_view.hide ();
-
-        action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
+        action = action_group.get_action ("ViewBottomPanel") as ToggleAction;
         action.set_active (show);
     }
 
@@ -682,8 +684,8 @@ public class MainWindow : Window
         bool show_warnings = settings.get_boolean ("show-build-warnings");
         bool show_badboxes = settings.get_boolean ("show-build-badboxes");
 
-        build_view.show_warnings = show_warnings;
-        build_view.show_badboxes = show_badboxes;
+        _build_view.show_warnings = show_warnings;
+        _build_view.show_badboxes = show_badboxes;
 
         ToggleAction action =
             action_group.get_action ("BuildShowWarnings") as ToggleAction;
@@ -1219,7 +1221,7 @@ public class MainWindow : Window
         if (! tool.compilation)
             return_if_fail (active_document.location != null);
 
-        build_view.show ();
+        _build_view.show ();
 
         // save the document if it's a compilation
         if (tool.compilation)
@@ -1251,7 +1253,7 @@ public class MainWindow : Window
         }
 
         File main_file = active_document.get_main_file ();
-        build_tool_runner = new BuildToolRunner (main_file, tool, build_view,
+        build_tool_runner = new BuildToolRunner (main_file, tool, _build_view,
             action_stop_exec);
 
         // refresh file browser when compilation is finished
@@ -1676,15 +1678,6 @@ public class MainWindow : Window
             _side_panel.hide ();
     }
 
-    public void on_show_bottom_panel (Gtk.Action action)
-    {
-        bool show = (action as ToggleAction).active;
-        if (show)
-            build_view.show_all ();
-        else
-            build_view.hide ();
-    }
-
     public void on_show_main_toolbar (Gtk.Action action)
     {
         bool show = (action as ToggleAction).active;
@@ -1747,7 +1740,7 @@ public class MainWindow : Window
     {
         return_if_fail (build_tool_runner != null);
         build_tool_runner.abort ();
-        build_view.show ();
+        _build_view.show ();
     }
 
     public void on_build_clean ()
@@ -1780,12 +1773,12 @@ public class MainWindow : Window
 
     public void on_build_show_warnings (Gtk.Action action)
     {
-        build_view.show_warnings = ((ToggleAction) action).active;
+        _build_view.show_warnings = ((ToggleAction) action).active;
     }
 
     public void on_build_show_badboxes (Gtk.Action action)
     {
-        build_view.show_badboxes = ((ToggleAction) action).active;
+        _build_view.show_badboxes = ((ToggleAction) action).active;
     }
 
     /* Documents */
