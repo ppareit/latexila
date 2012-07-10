@@ -171,7 +171,7 @@ public class MainWindow : Window
         { "ViewEditToolbar", null, N_("_Edit Toolbar"), null,
             N_("Show or hide the edit toolbar"), on_show_edit_toolbar },
         { "ViewSidePanel", null, N_("_Side panel"), "<Release>F12",
-            N_("Show or hide the side panel"), on_show_side_panel },
+            N_("Show or hide the side panel"), null },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), null },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
@@ -315,7 +315,8 @@ public class MainWindow : Window
         ToggleAction action_view_side_panel =
             action_group.get_action ("ViewSidePanel") as ToggleAction;
 
-        _side_panel.closed.connect (() => action_view_side_panel.active = false);
+        _side_panel.bind_property ("visible", action_view_side_panel, "active",
+            BindingFlags.BIDIRECTIONAL);
 
         _symbols = new SymbolsView (this);
         _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
@@ -665,10 +666,7 @@ public class MainWindow : Window
         /* side panel */
         show = settings.get_boolean ("side-panel-visible");
 
-        if (! show)
-            _side_panel.hide ();
-
-        action = (ToggleAction) action_group.get_action ("ViewSidePanel");
+        action = action_group.get_action ("ViewSidePanel") as ToggleAction;
         action.set_active (show);
 
         /* bottom panel */
@@ -1668,15 +1666,6 @@ public class MainWindow : Window
     }
 
     /* View */
-
-    public void on_show_side_panel (Gtk.Action action)
-    {
-        bool show = (action as ToggleAction).active;
-        if (show)
-            _side_panel.show ();
-        else
-            _side_panel.hide ();
-    }
 
     public void on_show_main_toolbar (Gtk.Action action)
     {
