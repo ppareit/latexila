@@ -67,7 +67,7 @@ public class BuildToolRunner : GLib.Object
         jobs = tool.jobs;
         this.view = view;
         view.clear ();
-        root_partition = view.set_title (tool.label, PartitionState.RUNNING);
+        root_partition = view.set_title (tool.label, BuildState.RUNNING);
 
         if (! add_job_titles ())
             return;
@@ -92,7 +92,7 @@ public class BuildToolRunner : GLib.Object
             catch (ShellError e)
             {
                 TreeIter job_partition =
-                    view.add_job_title (job.command, PartitionState.FAILED);
+                    view.add_job_title (job.command, BuildState.FAILED);
 
                 BuildMsg message = BuildMsg ();
                 message.text = "Failed to parse command line:";
@@ -108,7 +108,7 @@ public class BuildToolRunner : GLib.Object
             }
 
             string job_title = string.joinv (" ", command);
-            job_partitions += view.add_job_title (job_title, PartitionState.RUNNING);
+            job_partitions += view.add_job_title (job_title, BuildState.RUNNING);
 
             job_num++;
         }
@@ -124,9 +124,9 @@ public class BuildToolRunner : GLib.Object
             _command_runner.abort ();
 
         action_stop_exec.set_sensitive (false);
-        view.set_partition_state (root_partition, PartitionState.ABORTED);
+        view.set_partition_state (root_partition, BuildState.ABORTED);
         for (int i = job_num ; i < job_partitions.length ; i++)
-            view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
+            view.set_partition_state (job_partitions[i], BuildState.ABORTED);
     }
 
     private void on_command_finished (int exit_status)
@@ -165,13 +165,13 @@ public class BuildToolRunner : GLib.Object
 
         if (post_processor.successful)
         {
-            view.set_partition_state (job_partitions[job_num], PartitionState.SUCCEEDED);
+            view.set_partition_state (job_partitions[job_num], BuildState.SUCCEEDED);
             job_num++;
             proceed ();
         }
         else
         {
-            view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
+            view.set_partition_state (job_partitions[job_num], BuildState.FAILED);
             failed ();
         }
     }
@@ -181,7 +181,7 @@ public class BuildToolRunner : GLib.Object
         // all jobs executed, finished
         if (job_num >= jobs.size)
         {
-            view.set_partition_state (root_partition, PartitionState.SUCCEEDED);
+            view.set_partition_state (root_partition, BuildState.SUCCEEDED);
             action_stop_exec.set_sensitive (false);
             finished ();
             return;
@@ -227,7 +227,7 @@ public class BuildToolRunner : GLib.Object
         }
         catch (Error e)
         {
-            view.set_partition_state (job_partitions[job_num], PartitionState.FAILED);
+            view.set_partition_state (job_partitions[job_num], BuildState.FAILED);
 
             BuildMsg error_msg = BuildMsg ();
             error_msg.text = e.message;
@@ -303,9 +303,9 @@ public class BuildToolRunner : GLib.Object
 
     private void failed ()
     {
-        view.set_partition_state (root_partition, PartitionState.FAILED);
+        view.set_partition_state (root_partition, BuildState.FAILED);
         for (int i = job_num + 1 ; i < job_partitions.length ; i++)
-            view.set_partition_state (job_partitions[i], PartitionState.ABORTED);
+            view.set_partition_state (job_partitions[i], BuildState.ABORTED);
 
         action_stop_exec.set_sensitive (false);
     }

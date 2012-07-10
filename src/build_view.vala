@@ -21,7 +21,7 @@
 
 using Gtk;
 
-public enum PartitionState
+public enum BuildState
 {
     RUNNING,
     SUCCEEDED,
@@ -242,17 +242,17 @@ public class BuildView : TreeView
         this.columns_autosize ();
     }
 
-    public TreeIter set_title (string title, PartitionState state)
+    public TreeIter set_title (string title, BuildState state)
     {
         return add_partition (title, state, BuildMsgType.TITLE);
     }
 
-    public TreeIter add_job_title (string job_title, PartitionState state)
+    public TreeIter add_job_title (string job_title, BuildState state)
     {
         return add_partition (job_title, state, BuildMsgType.JOB_TITLE);
     }
 
-    private TreeIter add_partition (string msg, PartitionState state, BuildMsgType type)
+    private TreeIter add_partition (string msg, BuildState state, BuildMsgType type)
     {
         bool bold = type == BuildMsgType.TITLE;
 
@@ -270,7 +270,7 @@ public class BuildView : TreeView
         return iter;
     }
 
-    public void set_partition_state (TreeIter partition_id, PartitionState state)
+    public void set_partition_state (TreeIter partition_id, BuildState state)
     {
         _store.set (partition_id, BuildMsgColumn.ICON, get_icon_from_state (state));
     }
@@ -341,20 +341,20 @@ public class BuildView : TreeView
         return iter;
     }
 
-    private string? get_icon_from_state (PartitionState state)
+    private string? get_icon_from_state (BuildState state)
     {
         switch (state)
         {
-            case PartitionState.RUNNING:
+            case BuildState.RUNNING:
                 return Stock.EXECUTE;
 
-            case PartitionState.SUCCEEDED:
+            case BuildState.SUCCEEDED:
                 return Stock.APPLY;
 
-            case PartitionState.FAILED:
+            case BuildState.FAILED:
                 return Stock.DIALOG_ERROR;
 
-            case PartitionState.ABORTED:
+            case BuildState.ABORTED:
                 return Stock.STOP;
 
             default:
