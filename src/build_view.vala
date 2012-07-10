@@ -58,7 +58,7 @@ public struct BuildMsg
 
 public class BuildView : Grid
 {
-    private enum BuildInfo
+    private enum BuildMsgColumn
     {
         ICON,
         MESSAGE,
@@ -69,7 +69,7 @@ public class BuildView : Grid
         FILE,
         START_LINE,
         END_LINE,
-        LINE,
+        LINE_STR,
         N_COLUMNS
     }
 
@@ -95,7 +95,7 @@ public class BuildView : Grid
 
     private void init_tree_models ()
     {
-        _store = new TreeStore (BuildInfo.N_COLUMNS,
+        _store = new TreeStore (BuildMsgColumn.N_COLUMNS,
             typeof (string),    // icon (stock-id)
             typeof (string),    // message
             typeof (BuildMsgType),
@@ -112,7 +112,7 @@ public class BuildView : Grid
         _filtered_model.set_visible_func ((model, iter) =>
         {
             BuildMsgType msg_type;
-            model.get (iter, BuildInfo.MESSAGE_TYPE, out msg_type);
+            model.get (iter, BuildMsgColumn.MESSAGE_TYPE, out msg_type);
 
             switch (msg_type)
             {
@@ -141,24 +141,24 @@ public class BuildView : Grid
 
         CellRendererPixbuf renderer_pixbuf = new CellRendererPixbuf ();
         column_job.pack_start (renderer_pixbuf, false);
-        column_job.add_attribute (renderer_pixbuf, "stock-id", BuildInfo.ICON);
+        column_job.add_attribute (renderer_pixbuf, "stock-id", BuildMsgColumn.ICON);
 
         CellRendererText renderer_text = new CellRendererText ();
         renderer_text.weight_set = true;
         renderer_text.editable = true;
         renderer_text.editable_set = true;
         column_job.pack_start (renderer_text, true);
-        column_job.add_attribute (renderer_text, "text", BuildInfo.MESSAGE);
-        column_job.add_attribute (renderer_text, "weight", BuildInfo.WEIGHT);
+        column_job.add_attribute (renderer_text, "text", BuildMsgColumn.MESSAGE);
+        column_job.add_attribute (renderer_text, "weight", BuildMsgColumn.WEIGHT);
 
         _view.append_column (column_job);
 
         _view.insert_column_with_attributes (-1, null, new CellRendererText (),
-            "text", BuildInfo.BASENAME);
+            "text", BuildMsgColumn.BASENAME);
         _view.insert_column_with_attributes (-1, null, new CellRendererText (),
-            "text", BuildInfo.LINE);
+            "text", BuildMsgColumn.LINE_STR);
 
-        _view.set_tooltip_column (BuildInfo.PATH);
+        _view.set_tooltip_column (BuildMsgColumn.PATH);
 
         /* Selection */
         TreeSelection select = _view.get_selection ();
@@ -229,9 +229,9 @@ public class BuildView : Grid
         int end_line;
 
         model.get (iter,
-            BuildInfo.FILE, out file,
-            BuildInfo.START_LINE, out start_line,
-            BuildInfo.END_LINE, out end_line
+            BuildMsgColumn.FILE, out file,
+            BuildMsgColumn.START_LINE, out start_line,
+            BuildMsgColumn.END_LINE, out end_line
         );
 
         if (file != null)
@@ -271,10 +271,10 @@ public class BuildView : Grid
         TreeIter iter;
         _store.append (out iter, parent);
         _store.set (iter,
-            BuildInfo.ICON,         get_icon_from_state (state),
-            BuildInfo.MESSAGE,      msg,
-            BuildInfo.MESSAGE_TYPE, type,
-            BuildInfo.WEIGHT,       bold ? 800 : 400
+            BuildMsgColumn.ICON,         get_icon_from_state (state),
+            BuildMsgColumn.MESSAGE,      msg,
+            BuildMsgColumn.MESSAGE_TYPE, type,
+            BuildMsgColumn.WEIGHT,       bold ? 800 : 400
         );
 
         _view.expand_to_path (_store.get_path (iter));
@@ -284,7 +284,7 @@ public class BuildView : Grid
 
     public void set_partition_state (TreeIter partition_id, PartitionState state)
     {
-        _store.set (partition_id, BuildInfo.ICON, get_icon_from_state (state));
+        _store.set (partition_id, BuildMsgColumn.ICON, get_icon_from_state (state));
     }
 
     public void append_messages (TreeIter parent, Node<BuildMsg?> messages,
@@ -340,16 +340,16 @@ public class BuildView : Grid
         TreeIter iter;
         _store.append (out iter, parent);
         _store.set (iter,
-            BuildInfo.ICON,         get_icon_from_msg_type (message.type),
-            BuildInfo.MESSAGE,      message.text,
-            BuildInfo.MESSAGE_TYPE, message.type,
-            BuildInfo.WEIGHT,       400,
-            BuildInfo.BASENAME,     file != null ? file.get_basename () : null,
-            BuildInfo.FILE,         file,
-            BuildInfo.PATH,         path,
-            BuildInfo.START_LINE,   start_line,
-            BuildInfo.END_LINE,     end_line,
-            BuildInfo.LINE,         line_str
+            BuildMsgColumn.ICON,         get_icon_from_msg_type (message.type),
+            BuildMsgColumn.MESSAGE,      message.text,
+            BuildMsgColumn.MESSAGE_TYPE, message.type,
+            BuildMsgColumn.WEIGHT,       400,
+            BuildMsgColumn.BASENAME,     file != null ? file.get_basename () : null,
+            BuildMsgColumn.FILE,         file,
+            BuildMsgColumn.PATH,         path,
+            BuildMsgColumn.START_LINE,   start_line,
+            BuildMsgColumn.END_LINE,     end_line,
+            BuildMsgColumn.LINE_STR,     line_str
         );
 
         return iter;
