@@ -67,10 +67,9 @@ public class BuildToolRunner : GLib.Object
         jobs = tool.jobs;
         this.view = view;
         view.clear ();
-        root_partition = view.add_partition (tool.label, PartitionState.RUNNING, null,
-            true);
+        root_partition = view.set_title (tool.label, PartitionState.RUNNING);
 
-        if (! add_job_partitions ())
+        if (! add_job_titles ())
             return;
 
         action_stop_exec.set_sensitive (true);
@@ -78,7 +77,7 @@ public class BuildToolRunner : GLib.Object
     }
 
     // Returns true on success, false otherwise.
-    private bool add_job_partitions ()
+    private bool add_job_titles ()
     {
         job_num = 0;
 
@@ -92,8 +91,8 @@ public class BuildToolRunner : GLib.Object
             }
             catch (ShellError e)
             {
-                TreeIter job_partition = view.add_partition (job.command,
-                    PartitionState.FAILED, root_partition);
+                TreeIter job_partition =
+                    view.add_job_title (job.command, PartitionState.FAILED);
 
                 BuildMsg message = BuildMsg ();
                 message.text = "Failed to parse command line:";
@@ -108,8 +107,8 @@ public class BuildToolRunner : GLib.Object
                 return false;
             }
 
-            job_partitions += view.add_partition (string.joinv (" ", command),
-                PartitionState.RUNNING, root_partition);
+            string job_title = string.joinv (" ", command);
+            job_partitions += view.add_job_title (job_title, PartitionState.RUNNING);
 
             job_num++;
         }

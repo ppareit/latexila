@@ -242,13 +242,22 @@ public class BuildView : TreeView
         this.columns_autosize ();
     }
 
-    public TreeIter add_partition (string msg, PartitionState state, TreeIter? parent,
-        bool bold = false)
+    public TreeIter set_title (string title, PartitionState state)
     {
-        BuildMsgType type = bold ? BuildMsgType.TITLE : BuildMsgType.JOB_TITLE;
+        return add_partition (title, state, BuildMsgType.TITLE);
+    }
+
+    public TreeIter add_job_title (string job_title, PartitionState state)
+    {
+        return add_partition (job_title, state, BuildMsgType.JOB_TITLE);
+    }
+
+    private TreeIter add_partition (string msg, PartitionState state, BuildMsgType type)
+    {
+        bool bold = type == BuildMsgType.TITLE;
 
         TreeIter iter;
-        _store.append (out iter, parent);
+        _store.append (out iter, null);
         _store.set (iter,
             BuildMsgColumn.ICON,         get_icon_from_state (state),
             BuildMsgColumn.MESSAGE,      msg,
