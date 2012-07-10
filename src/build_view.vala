@@ -78,14 +78,23 @@ public class BuildView : Grid
 
     private unowned MainWindow _main_window;
     private TreeStore _store;
-    private TreeModelFilter _filtered_model;
     private TreeView _view;
+
+    // Used to show/hide warnings and badboxes.
+    private TreeModelFilter _filtered_model;
 
     public BuildView (MainWindow main_window, Toolbar toolbar)
     {
         orientation = Orientation.HORIZONTAL;
         _main_window = main_window;
 
+        init_tree_models ();
+        init_tree_view ();
+        packing_widgets (toolbar);
+    }
+
+    private void init_tree_models ()
+    {
         _store = new TreeStore (BuildInfo.N_COLUMNS,
             typeof (string),    // icon (stock-id)
             typeof (string),    // message
@@ -99,7 +108,6 @@ public class BuildView : Grid
             typeof (string)     // line (same as start line but for display)
         );
 
-        /* filter errors/warnings/badboxes */
         _filtered_model = new TreeModelFilter (_store, null);
         _filtered_model.set_visible_func ((model, iter) =>
         {
@@ -121,11 +129,14 @@ public class BuildView : Grid
 
         this.notify["show-warnings"].connect (() => _filtered_model.refilter ());
         this.notify["show-badboxes"].connect (() => _filtered_model.refilter ());
+    }
 
-        /* create tree view */
+    private void init_tree_view ()
+    {
         _view = new TreeView.with_model (_filtered_model);
         _view.headers_visible = false;
 
+        /* Columns, cell renderers */
         TreeViewColumn column_job = new TreeViewColumn ();
 
         CellRendererPixbuf renderer_pixbuf = new CellRendererPixbuf ();
@@ -149,7 +160,7 @@ public class BuildView : Grid
 
         _view.set_tooltip_column (BuildInfo.PATH);
 
-        // selection
+        /* Selection */
         TreeSelection select = _view.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
         select.set_select_function ((select, model, path, path_currently_selected) =>
@@ -161,16 +172,12 @@ public class BuildView : Grid
             return select_row (model, path);
         });
 
-        // double-click
+        /* Double-click */
         _view.row_activated.connect ((path) => select_row (_filtered_model, path));
+    }
 
-        // with a scrollbar
-        Widget sw = Utils.add_scrollbar (_view);
-        sw.expand = true;
-        add (sw);
-        sw.show_all ();
-
-        // close button
+    private Button get_close_button ()
+    {
         Button close_button = new Button ();
         close_button.relief = ReliefStyle.NONE;
         close_button.focus_on_click = false;
@@ -178,12 +185,23 @@ public class BuildView : Grid
         close_button.add (new Image.from_stock (Stock.CLOSE, IconSize.MENU));
         close_button.clicked.connect (() => this.hide ());
 
+        return close_button;
+    }
+
+    private void packing_widgets (Toolbar toolbar)
+    {
+        Widget sw = Utils.add_scrollbar (_view);
+        sw.expand = true;
+        add (sw);
+        sw.show_all ();
+
         Grid grid = new Grid ();
         grid.orientation = Orientation.VERTICAL;
-        grid.add (close_button);
-        toolbar.set_vexpand (true);
+        grid.add (get_close_button ());
 
+        toolbar.set_vexpand (true);
         grid.add (toolbar);
+
         add (grid);
         grid.show_all ();
     }
