@@ -24,7 +24,6 @@ public class BuildToolRunner : GLib.Object
     private BuildTool _tool;
     private File _on_file;
     private BuildView _view;
-    private Gtk.Action _action_stop_exec;
 
     private TreeIter _main_title;
 
@@ -37,13 +36,11 @@ public class BuildToolRunner : GLib.Object
 
     public signal void finished ();
 
-    public BuildToolRunner (BuildTool build_tool, File on_file, BuildView build_view,
-        Gtk.Action action_stop_exec)
+    public BuildToolRunner (BuildTool build_tool, File on_file, BuildView build_view)
     {
         _tool = build_tool;
         _on_file = on_file;
         _view = build_view;
-        _action_stop_exec = action_stop_exec;
 
         if (! match_allowed_extensions ())
         {
@@ -52,8 +49,6 @@ public class BuildToolRunner : GLib.Object
         }
 
         _view.clear ();
-        _action_stop_exec.set_sensitive (true);
-
         _main_title = _view.add_main_title (_tool.label, BuildState.RUNNING);
 
         _job_num = 0;
@@ -65,11 +60,11 @@ public class BuildToolRunner : GLib.Object
         if (_current_job_runner != null)
             _current_job_runner.abort ();
 
-        _action_stop_exec.set_sensitive (false);
         _view.set_title_state (_main_title, BuildState.ABORTED);
         _view.set_title_state (_current_job_title, BuildState.ABORTED);
 
         _aborted = true;
+        finished ();
     }
 
     private bool match_allowed_extensions ()
@@ -91,7 +86,6 @@ public class BuildToolRunner : GLib.Object
         if (_tool.jobs.size <= _job_num)
         {
             _view.set_title_state (_main_title, BuildState.SUCCEEDED);
-            _action_stop_exec.set_sensitive (false);
             finished ();
             return;
         }
@@ -190,6 +184,7 @@ public class BuildToolRunner : GLib.Object
     {
         _view.set_title_state (_main_title, BuildState.FAILED);
         _view.set_title_state (_current_job_title, BuildState.FAILED);
-        _action_stop_exec.set_sensitive (false);
+
+        finished ();
     }
 }

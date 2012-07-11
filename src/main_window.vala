@@ -203,7 +203,6 @@ public class MainWindow : Window
     private uint documents_list_menu_ui_id;
     private uint build_tools_menu_ui_id;
     private BuildToolRunner build_tool_runner;
-    private Gtk.Action action_stop_exec;
 
     // context id for the statusbar
     private uint tip_message_cid;
@@ -298,7 +297,7 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
 
         // bottom panel
-        action_stop_exec = action_group.get_action ("BuildStopExecution");
+        Gtk.Action action_stop_exec = action_group.get_action ("BuildStopExecution");
         action_stop_exec.set_sensitive (false);
 
         _build_view = new BuildView (this);
@@ -1248,23 +1247,21 @@ public class MainWindow : Window
             Utils.flush_queue ();
         }
 
+        Gtk.Action action_stop_exec = action_group.get_action ("BuildStopExecution");
+        action_stop_exec.sensitive = true;
+
         File main_file = active_document.get_main_file ();
-        build_tool_runner = new BuildToolRunner (tool, main_file, _build_view,
-            action_stop_exec);
+        build_tool_runner = new BuildToolRunner (tool, main_file, _build_view);
 
-        // refresh file browser when compilation is finished
-        if (tool.compilation)
+        build_tool_runner.finished.connect (() =>
         {
-            build_tool_runner.finished.connect (() =>
-            {
-                file_browser.refresh_for_document (active_document);
-            });
-        }
-    }
+            action_stop_exec.sensitive = false;
 
-    public Gtk.Action get_action_stop_exec ()
-    {
-        return action_stop_exec;
+            // Refresh the file browser when the compilation is finished.
+            // TODO It would be better if the file browser could detect file updates.
+            if (tool.compilation)
+                file_browser.refresh_for_document (active_document);
+        });
     }
 
     private void update_documents_list_menu ()
