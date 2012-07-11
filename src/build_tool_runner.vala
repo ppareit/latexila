@@ -42,12 +42,6 @@ public class BuildToolRunner : GLib.Object
         _on_file = on_file;
         _view = build_view;
 
-        if (! match_allowed_extensions ())
-        {
-            warning ("Build tool runner: bad file extension");
-            return;
-        }
-
         _view.clear ();
         _main_title = _view.add_main_title (_tool.label, BuildState.RUNNING);
 
@@ -65,19 +59,6 @@ public class BuildToolRunner : GLib.Object
 
         _aborted = true;
         finished ();
-    }
-
-    private bool match_allowed_extensions ()
-    {
-        string[] allowed_extensions = _tool.extensions.split (" ");
-
-        if (allowed_extensions.length == 0)
-            return true;
-
-        string filename = _on_file.get_parse_name ();
-        string extension = Utils.get_extension (filename);
-
-        return extension in allowed_extensions;
     }
 
     private void proceed ()
