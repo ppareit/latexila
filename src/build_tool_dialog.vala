@@ -593,7 +593,8 @@ private class BuildToolDialog : Dialog
     {
         _entry_extensions.set_tooltip_text (
             _("File extensions for which the build tool can be executed.") + "\n" +
-            _("The extensions are separated by spaces."));
+            _("The extensions are separated by spaces.") + "\n" +
+            _("If it is empty, all extensions are allowed."));
 
         return Utils.get_dialog_component (_("Extensions"), _entry_extensions);
     }
@@ -610,11 +611,14 @@ private class BuildToolDialog : Dialog
         Label placeholders = new Label (_("Placeholders:"));
 
         Label placeholder_filename = new Label ("$filename");
-        placeholder_filename.set_tooltip_text (_("The active document filename"));
+        placeholder_filename.set_tooltip_text (
+            _("The active document's filename.") + "\n" +
+            _("If the active document belongs to a project, the main file is choosen."));
 
         Label placeholder_shortname = new Label ("$shortname");
         placeholder_shortname.set_tooltip_text (
-            _("The active document filename without its extension"));
+            _("The active document's filename without its extension.") + "\n" +
+            _("If the active document belongs to a project, the main file is choosen."));
 
         Label placeholder_view = new Label ("$view");
         placeholder_view.set_tooltip_text (_("The program for viewing documents"));
