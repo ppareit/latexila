@@ -67,8 +67,7 @@ public class BuildJobRunner : GLib.Object
 
         _command_runner.finished.connect ((exit_status) =>
         {
-            create_post_processor ();
-            _post_processor.set_status (exit_status);
+            create_post_processor (exit_status);
             _post_processor.process (_on_file, _command_runner.get_output ());
 
             finished (exit_status == 0);
@@ -145,7 +144,7 @@ public class BuildJobRunner : GLib.Object
         return new_args;
     }
 
-    private void create_post_processor ()
+    private void create_post_processor (int exit_status)
     {
         switch (_build_job.post_processor)
         {
@@ -163,7 +162,7 @@ public class BuildJobRunner : GLib.Object
 
                 bool show_all = settings.get_boolean ("latexmk-always-show-all");
 
-                _post_processor = new LatexmkPostProcessor (show_all);
+                _post_processor = new LatexmkPostProcessor (exit_status, show_all);
                 break;
 
             case PostProcessorType.NO_OUTPUT:

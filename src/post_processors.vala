@@ -22,8 +22,6 @@ private abstract class PostProcessor : GLib.Object
     protected Node<BuildMsg?> _all_messages = new Node<BuildMsg?> (BuildMsg ());
     private unowned Node<BuildMsg?> _prev_message = null;
 
-    public bool successful { get; protected set; }
-
     public Node<BuildMsg?> get_messages ()
     {
         return (owned) _all_messages;
@@ -49,11 +47,6 @@ private abstract class PostProcessor : GLib.Object
 
         _prev_message = new_message;
         return new_message;
-    }
-
-    public void set_status (int status)
-    {
-        successful = status == 0;
     }
 
     public abstract void process (File file, string output);
@@ -168,10 +161,12 @@ private class LatexmkPostProcessor : PostProcessor
 {
     private static Regex? _reg_rule = null;
     private static Regex? _reg_no_rule = null;
+    private int _exit_status;
     private bool _force_show_all;
 
-    public LatexmkPostProcessor (bool force_show_all)
+    public LatexmkPostProcessor (int exit_status, bool force_show_all)
     {
+        _exit_status = exit_status;
         _force_show_all = force_show_all;
 
         if (_reg_rule != null)
@@ -295,7 +290,7 @@ private class LatexmkPostProcessor : PostProcessor
             // Almost all the time, the user wants to see only the latex output.
             // If an error has occured, we verify if the last command was a latex command.
             // If it is the case, there is no need to show all output.
-            if (! _force_show_all && (successful || last_cmd_is_latex_cmd))
+            if (! _force_show_all && (_exit_status == 0 || last_cmd_is_latex_cmd))
                 _all_messages = (owned) latex_messages;
 
             // Replace 'last_latex_node' by 'latex_messages'
