@@ -43,7 +43,6 @@ public struct BuildTool
     string icon;
     string files_to_open;
     bool enabled;
-    bool compilation;
     Gee.ArrayList<BuildJob?> jobs;
 
     public BuildTool ()
@@ -54,8 +53,12 @@ public struct BuildTool
         icon = "";
         files_to_open = "";
         enabled = false;
-        compilation = false;
         jobs = new Gee.ArrayList<BuildJob?> ();
+    }
+
+    public bool has_jobs ()
+    {
+        return jobs.size > 0;
     }
 }
 
@@ -155,7 +158,6 @@ public class BuildTools : GLib.Object
     {
         return_if_fail (0 <= pos && pos <= _build_tools.size);
 
-        tool.compilation = is_compilation (tool);
         _build_tools.insert (pos, tool);
         modified ();
     }
@@ -168,7 +170,6 @@ public class BuildTools : GLib.Object
 
         if (! is_equal (current_tool, tool))
         {
-            tool.compilation = is_compilation (tool);
             _build_tools.remove_at (num);
             _build_tools.insert (num, tool);
             modified ();
@@ -211,13 +212,6 @@ public class BuildTools : GLib.Object
         }
 
         return true;
-    }
-
-    // If it's a compilation, the files are first saved before running the
-    // build tool, and the file browser is refreshed after the execution.
-    private bool is_compilation (BuildTool build_tool)
-    {
-        return build_tool.jobs.size > 0;
     }
 
     private void load ()
@@ -344,8 +338,6 @@ public class BuildTools : GLib.Object
                 // the description is optional
                 if (_cur_tool.description == "")
                     _cur_tool.description = _cur_tool.label;
-
-                _cur_tool.compilation = is_compilation (_cur_tool);
 
                 _build_tools.add (_cur_tool);
                 break;

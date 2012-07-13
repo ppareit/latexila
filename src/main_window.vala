@@ -1213,13 +1213,13 @@ public class MainWindow : Window
         BuildTool? tool = BuildTools.get_default ().get_by_id (tool_index);
         return_if_fail (tool != null);
 
-        if (! tool.compilation)
+        if (! tool.has_jobs ())
             return_if_fail (active_document.location != null);
 
         _build_view.show ();
 
-        // save the document if it's a compilation
-        if (tool.compilation)
+        // save the document if commands are executed
+        if (tool.has_jobs ())
         {
             if (active_document.location == null)
             {
@@ -1243,7 +1243,7 @@ public class MainWindow : Window
                 }
             }
 
-            // Ensure that the files are correctly saved before the compilation.
+            // Ensure that the files are correctly saved before the execution.
             Utils.flush_queue ();
         }
 
@@ -1257,9 +1257,9 @@ public class MainWindow : Window
         {
             action_stop_exec.sensitive = false;
 
-            // Refresh the file browser when the compilation is finished.
+            // Refresh the file browser when the execution is finished.
             // TODO It would be better if the file browser could detect file updates.
-            if (tool.compilation)
+            if (tool.has_jobs ())
                 file_browser.refresh_for_document (active_document);
         });
     }
@@ -1429,7 +1429,7 @@ public class MainWindow : Window
                 build_tools_action_group.get_action (@"BuildTool_$tool_num");
 
             if (unsaved_doc)
-                action.set_sensitive (tool.compilation);
+                action.set_sensitive (tool.has_jobs ());
             else
             {
                 string[] extensions = tool.extensions.split (" ");
