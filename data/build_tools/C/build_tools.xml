@@ -4,31 +4,31 @@
   <tool show="true" extensions=".tex" icon="compile_pdf">
     <label its:translate="no">LaTeX → PDF (Latexmk)</label>
     <job postProcessor="latexmk">latexmk -pdf $filename</job>
-    <job postProcessor="no-output">$view $shortname.pdf</job>
+    <open>$shortname.pdf</open>
   </tool>
 
   <tool show="true" extensions=".tex" icon="compile_dvi">
     <label its:translate="no">LaTeX → DVI → PDF (Latexmk)</label>
     <job postProcessor="latexmk">latexmk -pdfdvi $filename</job>
-    <job postProcessor="no-output">$view $shortname.pdf</job>
+    <open>$shortname.pdf</open>
   </tool>
 
   <tool show="true" extensions=".tex" icon="compile_ps">
     <label its:translate="no">LaTeX → DVI → PS → PDF (Latexmk)</label>
     <job postProcessor="latexmk">latexmk -pdfps $filename</job>
-    <job postProcessor="no-output">$view $shortname.pdf</job>
+    <open>$shortname.pdf</open>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_dvi">
     <label its:translate="no">LaTeX → DVI (Latexmk)</label>
     <job postProcessor="latexmk">latexmk $filename</job>
-    <job postProcessor="no-output">$view $shortname.dvi</job>
+    <open>$shortname.dvi</open>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_ps">
     <label its:translate="no">LaTeX → DVI → PS (Latexmk)</label>
     <job postProcessor="latexmk">latexmk -ps $filename</job>
-    <job postProcessor="no-output">$view $shortname.ps</job>
+    <open>$shortname.ps</open>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_pdf">
@@ -36,7 +36,7 @@
     <job postProcessor="latexmk">
       latexmk -pdf -e &apos;$pdflatex=q/xelatex %O %S/&apos; $filename
     </job>
-    <job postProcessor="no-output">$view $shortname.pdf</job>
+    <open>$shortname.pdf</open>
   </tool>
 
   <!-- View DVI/PDF/PS -->
@@ -44,19 +44,19 @@
   <tool show="true" extensions=".tex .pdf" icon="view_pdf">
     <label>View PDF</label>
     <description>View the PDF file</description>
-    <job postProcessor="no-output">$view $shortname.pdf</job>
+    <open>$shortname.pdf</open>
   </tool>
 
   <tool show="true" extensions=".tex .dvi" icon="view_dvi">
     <label>View DVI</label>
     <description>View the DVI file</description>
-    <job postProcessor="no-output">$view $shortname.dvi</job>
+    <open>$shortname.dvi</open>
   </tool>
 
   <tool show="true" extensions=".tex .ps" icon="view_ps">
     <label>View PS</label>
     <description>View the PostScript file</description>
-    <job postProcessor="no-output">$view $shortname.ps</job>
+    <open>$shortname.ps</open>
   </tool>
 
   <!-- Rubber -->
@@ -66,7 +66,7 @@
     <job postProcessor="rubber">
       rubber --maxerr -1 --short --force --warn all --pdf $filename
     </job>
-    <job postProcessor="no-output">$view $shortname.pdf</job>
+    <open>$shortname.pdf</open>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_dvi">
@@ -74,7 +74,7 @@
     <job postProcessor="rubber">
       rubber --maxerr -1 --short --force --warn all $filename
     </job>
-    <job postProcessor="no-output">$view $shortname.dvi</job>
+    <open>$shortname.dvi</open>
   </tool>
 
   <tool show="false" extensions=".tex" icon="compile_ps">
@@ -82,7 +82,7 @@
     <job postProcessor="rubber">
       rubber --maxerr -1 --short --force --warn all --ps $filename
     </job>
-    <job postProcessor="no-output">$view $shortname.ps</job>
+    <open>$shortname.ps</open>
   </tool>
 
   <!-- latex, pdflatex -->
