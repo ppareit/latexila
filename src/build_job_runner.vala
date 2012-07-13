@@ -159,12 +159,7 @@ public class BuildJobRunner : GLib.Object
                 break;
 
             case PostProcessorType.LATEXMK:
-                GLib.Settings settings =
-                    new GLib.Settings ("org.gnome.latexila.preferences.latex");
-
-                bool show_all = settings.get_boolean ("latexmk-always-show-all");
-
-                _post_processor = new LatexmkPostProcessor (exit_status, show_all);
+                _post_processor = new LatexmkPostProcessor (exit_status);
                 break;
 
             case PostProcessorType.NO_OUTPUT:

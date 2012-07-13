@@ -162,12 +162,10 @@ private class LatexmkPostProcessor : PostProcessor
     private static Regex? _reg_rule = null;
     private static Regex? _reg_no_rule = null;
     private int _exit_status;
-    private bool _force_show_all;
 
-    public LatexmkPostProcessor (int exit_status, bool force_show_all)
+    public LatexmkPostProcessor (int exit_status)
     {
         _exit_status = exit_status;
-        _force_show_all = force_show_all;
 
         if (_reg_rule != null)
             return;
@@ -290,7 +288,7 @@ private class LatexmkPostProcessor : PostProcessor
             // Almost all the time, the user wants to see only the latex output.
             // If an error has occured, we verify if the last command was a latex command.
             // If it is the case, there is no need to show all output.
-            if (! _force_show_all && (_exit_status == 0 || last_cmd_is_latex_cmd))
+            if (_exit_status == 0 || last_cmd_is_latex_cmd)
                 _all_messages = (owned) latex_messages;
 
             // Replace 'last_latex_node' by 'latex_messages'

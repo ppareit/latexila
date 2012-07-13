@@ -291,14 +291,10 @@ public class PreferencesDialog : Dialog
         set_plural (interactive_comp_label, settings, "interactive-completion-num",
             (n) => ngettext ("character", "characters", n));
 
-        var latexmk_checkbutton = builder.get_object ("latexmk_checkbutton");
-        settings.bind ("latexmk-always-show-all", latexmk_checkbutton, "active",
-            SettingsBindFlags.DEFAULT);
-
         Grid grid_latex_tab = builder.get_object ("grid_latex_tab") as Grid;
         Grid build_tools_preferences = new BuildToolsPreferences ();
         build_tools_preferences.set_margin_left (12);
-        grid_latex_tab.attach (build_tools_preferences, 0, 3, 1, 1);
+        grid_latex_tab.attach (build_tools_preferences, 0, 2, 1, 1);
     }
 
     private void init_other_tab (Builder builder)

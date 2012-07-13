@@ -133,15 +133,6 @@
       <summary>Interactive completion min chars</summary>
       <description>Minimum number of characters after '\' for interactive completion</description>
     </key>
-    <key name="latexmk-always-show-all" type="b">
-      <default>false</default>
-      <summary>Latexmk always show all</summary>
-      <description>
-        Always show all information for the Latexmk post processor.
-        If it is set to false, all the information will be displayed only if
-        an error occurs during a command other than 'latex' or 'pdflatex'.
-      </description>
-    </key>
     <key name="no-confirm-clean" type="b">
       <default>false</default>
       <summary>No confirmation clean-up</summary>
