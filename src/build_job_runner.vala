@@ -127,15 +127,17 @@ public class BuildJobRunner : GLib.Object
         string[] new_args = {};
         foreach (string arg in args)
         {
-            if (arg.contains ("$view"))
-                // TODO use gtk_show_uri() instead of xdg-open
-                new_args += arg.replace ("$view", "xdg-open");
-
-            else if (arg.contains ("$filename"))
+            if (arg.contains ("$filename"))
                 new_args += arg.replace ("$filename", base_filename);
 
             else if (arg.contains ("$shortname"))
                 new_args += arg.replace ("$shortname", base_shortname);
+
+            else if (arg.contains ("$view"))
+            {
+                warning ("Build job runner: the '$view' placeholder is deprecated.");
+                new_args += arg.replace ("$view", "xdg-open");
+            }
 
             else
                 new_args += arg;

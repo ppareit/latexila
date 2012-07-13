@@ -63,16 +63,21 @@ public class BuildToolRunner : GLib.Object
 
     private void proceed ()
     {
-        // All jobs executed, finished.
-        if (_tool.jobs.size <= _job_num)
+        _current_job_runner = null;
+
+        // Run the next job.
+        if (_job_num < _tool.jobs.size)
+        {
+            _current_job = _tool.jobs[_job_num];
+            run_current_job ();
+        }
+
+        // All the jobs have run successfully, open the files.
+        else if (open_files ())
         {
             _view.set_title_state (_main_title, BuildState.SUCCEEDED);
             finished ();
-            return;
         }
-
-        _current_job = _tool.jobs[_job_num];
-        run_current_job ();
     }
 
     private void run_current_job ()
@@ -159,6 +164,84 @@ public class BuildToolRunner : GLib.Object
 
             return false;
         }
+    }
+
+    private bool open_files ()
+    {
+        string[] files_to_open = _tool.files_to_open.split (" ");
+
+        foreach (string file_to_open in files_to_open)
+        {
+            if (! open_file (file_to_open))
+                return false;
+        }
+
+        return true;
+    }
+
+    // Returns true on success.
+    private bool open_file (string file_to_open)
+    {
+        /* Replace placeholders */
+
+        string filename = _on_file.get_uri ();
+        string shortname = Utils.get_shortname (filename);
+
+        string uri;
+
+        if (file_to_open.contains ("$filename"))
+            uri = file_to_open.replace ("$filename", filename);
+
+        else if (file_to_open.contains ("$shortname"))
+            uri = file_to_open.replace ("$shortname", shortname);
+
+        else
+            uri = "file://" + file_to_open;
+
+        /* Add title in the build view */
+
+        string basename = Path.get_basename (uri);
+
+        _current_job_title = _view.add_job_title (_("Open %s").printf (basename),
+            BuildState.RUNNING);
+
+        /* Check if the file exists */
+
+        File file = File.new_for_uri (uri);
+        if (! file.query_exists ())
+        {
+            BuildMsg message = BuildMsg ();
+            message.text = _("The file '%s' doesn't exist.").printf (uri);
+            message.type = BuildMsgType.ERROR;
+            _view.append_single_message (_current_job_title, message);
+
+            failed ();
+            return false;
+        }
+
+        /* Show uri */
+
+        try
+        {
+            Gtk.show_uri (_view.get_screen (), uri, Gdk.CURRENT_TIME);
+        }
+        catch (Error e)
+        {
+            BuildMsg message = BuildMsg ();
+            message.text = _("Failed to open '%s':").printf (uri);
+            message.type = BuildMsgType.ERROR;
+            _view.append_single_message (_current_job_title, message);
+
+            message.text = e.message;
+            _view.append_single_message (_current_job_title, message);
+
+            failed ();
+            return false;
+        }
+
+        _view.set_title_state (_current_job_title, BuildState.SUCCEEDED);
+
+        return true;
     }
 
     private void failed ()
