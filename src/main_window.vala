@@ -1262,6 +1262,8 @@ public class MainWindow : Window
             if (tool.has_jobs ())
                 file_browser.refresh_for_document (active_document);
         });
+
+        build_tool_runner.run ();
     }
 
     private void update_documents_list_menu ()

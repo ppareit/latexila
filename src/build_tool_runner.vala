@@ -27,9 +27,9 @@ public class BuildToolRunner : GLib.Object
 
     private TreeIter _main_title;
 
-    private int _job_num;
+    private int _job_num = 0;
     private BuildJob _current_job;
-    private TreeIter _current_job_title;
+    private TreeIter? _current_job_title = null;
     private BuildJobRunner? _current_job_runner = null;
 
     private bool _aborted = false;
@@ -44,9 +44,6 @@ public class BuildToolRunner : GLib.Object
 
         _view.clear ();
         _main_title = _view.add_main_title (_tool.label, BuildState.RUNNING);
-
-        _job_num = 0;
-        proceed ();
     }
 
     public void abort ()
@@ -55,13 +52,15 @@ public class BuildToolRunner : GLib.Object
             _current_job_runner.abort ();
 
         _view.set_title_state (_main_title, BuildState.ABORTED);
-        _view.set_title_state (_current_job_title, BuildState.ABORTED);
+
+        if (_current_job_title != null)
+            _view.set_title_state (_current_job_title, BuildState.ABORTED);
 
         _aborted = true;
         finished ();
     }
 
-    private void proceed ()
+    public void run ()
     {
         _current_job_runner = null;
 
@@ -102,7 +101,7 @@ public class BuildToolRunner : GLib.Object
             _view.set_title_state (_current_job_title, state);
 
             _job_num++;
-            proceed ();
+            run ();
         });
 
         try
