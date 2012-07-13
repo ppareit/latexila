@@ -434,7 +434,7 @@ private class BuildToolDialog : Dialog
         /* Text entries */
 
         _entry_label.text = build_tool.label;
-        _entry_desc.text = build_tool.description;
+        _entry_desc.text = build_tool.get_description ();
         _entry_extensions.text = build_tool.extensions;
         _entry_files_to_open.text = build_tool.files_to_open;
 
@@ -478,13 +478,7 @@ private class BuildToolDialog : Dialog
         /* Text entries */
 
         tool.label = _entry_label.text.strip ();
-
-        string desc = _entry_desc.text.strip ();
-        if (desc == "")
-            tool.description = tool.label;
-        else
-            tool.description = desc;
-
+        tool.set_description (_entry_desc.text.strip ());
         tool.extensions = _entry_extensions.text.strip ();
         tool.files_to_open = _entry_files_to_open.text.strip ();
 

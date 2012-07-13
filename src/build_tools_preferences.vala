@@ -401,13 +401,15 @@ public class BuildToolsPreferences : Grid
 
         foreach (BuildTool tool in BuildTools.get_default ())
         {
+            string description = Markup.escape_text (tool.get_description ());
+
             TreeIter iter;
             _list_store.append (out iter);
             _list_store.set (iter,
                 BuildToolColumn.ENABLED, tool.enabled,
                 BuildToolColumn.PIXBUF, tool.icon,
                 BuildToolColumn.LABEL, tool.label,
-                BuildToolColumn.DESCRIPTION, Markup.escape_text (tool.description)
+                BuildToolColumn.DESCRIPTION, description
             );
         }
     }

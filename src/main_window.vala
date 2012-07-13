@@ -1181,7 +1181,7 @@ public class MainWindow : Window
 
             string action_name = @"BuildTool_$i";
             Gtk.Action action = new Gtk.Action (action_name, build_tool.label,
-                build_tool.description, build_tool.icon);
+                build_tool.get_description (), build_tool.icon);
 
             // F2 -> F11
             // (F1 = help, F12 = stop execution)

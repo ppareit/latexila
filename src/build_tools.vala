@@ -37,7 +37,7 @@ public struct BuildJob
 
 public struct BuildTool
 {
-    string description;
+    private string _description;
     string extensions;
     string label;
     string icon;
@@ -47,7 +47,7 @@ public struct BuildTool
 
     public BuildTool ()
     {
-        description = "";
+        _description = "";
         extensions = "";
         label = "";
         icon = "";
@@ -59,6 +59,19 @@ public struct BuildTool
     public bool has_jobs ()
     {
         return jobs.size > 0;
+    }
+
+    public void set_description (string description)
+    {
+        _description = description;
+    }
+
+    public string get_description ()
+    {
+        if (_description == null || _description == "")
+            return label;
+
+        return _description;
     }
 }
 
@@ -190,7 +203,7 @@ public class BuildTools : GLib.Object
     {
         if (tool1.enabled != tool2.enabled
             || tool1.label != tool2.label
-            || tool1.description != tool2.description
+            || tool1.get_description () != tool2.get_description ()
             || tool1.extensions != tool2.extensions
             || tool1.icon != tool2.icon
             || tool1.files_to_open != tool2.files_to_open
@@ -335,10 +348,6 @@ public class BuildTools : GLib.Object
                 return;
 
             case "tool":
-                // the description is optional
-                if (_cur_tool.description == "")
-                    _cur_tool.description = _cur_tool.label;
-
                 _build_tools.add (_cur_tool);
                 break;
 
@@ -366,7 +375,7 @@ public class BuildTools : GLib.Object
                 break;
 
             case "description":
-                _cur_tool.description = text.strip ();
+                _cur_tool.set_description (text.strip ());
                 break;
 
             case "open":
@@ -390,7 +399,7 @@ public class BuildTools : GLib.Object
 
             content += Markup.printf_escaped ("    <label>%s</label>\n", tool.label);
             content += Markup.printf_escaped ("    <description>%s</description>\n",
-                tool.description);
+                tool.get_description ());
 
             foreach (BuildJob job in tool.jobs)
             {
