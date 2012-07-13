@@ -85,6 +85,8 @@ public class BuildView : TreeView
 
     public bool show_warnings { get; set; }
     public bool show_badboxes { get; set; }
+    public bool show_details { get; set; default = false; }
+    public bool has_details { get; set; default = false; }
 
     private unowned MainWindow _main_window;
     private TreeStore _store;

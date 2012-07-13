@@ -174,6 +174,8 @@ public class MainWindow : Window
             N_("Show or hide the side panel"), null },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
             N_("Show or hide the bottom panel"), null },
+        { "BuildShowDetails", Stock.ZOOM_IN, N_("Show _Details"), null,
+            N_("Show Details"), null },
         { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
             N_("Show Warnings"), null },
         { "BuildShowBadBoxes", "badbox", N_("Show _Bad Boxes"), null,
@@ -672,21 +674,39 @@ public class MainWindow : Window
 
     private void show_or_hide_build_messages ()
     {
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
+        /* Show details */
+
+        ToggleAction action_details =
+            action_group.get_action ("BuildShowDetails") as ToggleAction;
+
+        action_details.bind_property ("active", _build_view, "show-details",
+            BindingFlags.DEFAULT);
+
+        _build_view.bind_property ("has-details", action_details, "sensitive",
+            BindingFlags.SYNC_CREATE);
+
+        action_details.active = false;
+
+        /* Show warnings */
+
         ToggleAction action_warnings =
             action_group.get_action ("BuildShowWarnings") as ToggleAction;
-
-        ToggleAction action_badboxes =
-            action_group.get_action ("BuildShowBadBoxes") as ToggleAction;
 
         _build_view.bind_property ("show-warnings", action_warnings, "active",
             BindingFlags.BIDIRECTIONAL);
 
+        action_warnings.active = settings.get_boolean ("show-build-warnings");
+
+        /* Show badboxes */
+
+        ToggleAction action_badboxes =
+            action_group.get_action ("BuildShowBadBoxes") as ToggleAction;
+
         _build_view.bind_property ("show-badboxes", action_badboxes, "active",
             BindingFlags.BIDIRECTIONAL);
 
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-
-        action_warnings.active = settings.get_boolean ("show-build-warnings");
         action_badboxes.active = settings.get_boolean ("show-build-badboxes");
     }
 
