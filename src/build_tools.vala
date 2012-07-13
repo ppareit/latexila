@@ -45,6 +45,18 @@ public struct BuildTool
     bool enabled;
     bool compilation;
     Gee.ArrayList<BuildJob?> jobs;
+
+    public BuildTool ()
+    {
+        description = "";
+        extensions = "";
+        label = "";
+        icon = "";
+        files_to_open = "";
+        enabled = false;
+        compilation = false;
+        jobs = new Gee.ArrayList<BuildJob?> ();
+    }
 }
 
 public class BuildTools : GLib.Object
@@ -264,8 +276,6 @@ public class BuildTools : GLib.Object
 
             case "tool":
                 _cur_tool = BuildTool ();
-                _cur_tool.compilation = false;
-                _cur_tool.jobs = new Gee.ArrayList<BuildJob?> ();
 
                 for (int i = 0 ; i < attr_names.length ; i++)
                 {
@@ -332,7 +342,7 @@ public class BuildTools : GLib.Object
 
             case "tool":
                 // the description is optional
-                if (_cur_tool.description == null)
+                if (_cur_tool.description == "")
                     _cur_tool.description = _cur_tool.label;
 
                 _cur_tool.compilation = is_compilation (_cur_tool);

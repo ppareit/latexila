@@ -497,8 +497,6 @@ private class BuildToolDialog : Dialog
 
         /* Jobs */
 
-        tool.jobs = new Gee.ArrayList<BuildJob?> ();
-
         model = _jobs_store as TreeModel;
         bool valid = _jobs_store.get_iter_first (out iter);
 
