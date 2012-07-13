@@ -50,6 +50,7 @@ private class BuildToolDialog : Dialog
     private Entry _entry_label;
     private Entry _entry_desc;
     private Entry _entry_extensions;
+    private Entry _entry_files_to_open;
 
     private ListStore _icons_store;
     private ComboBox _icons_combobox;
@@ -148,6 +149,7 @@ private class BuildToolDialog : Dialog
         _entry_label = new Entry ();
         _entry_desc = new Entry ();
         _entry_extensions = new Entry ();
+        _entry_files_to_open = new Entry ();
     }
 
     private void init_icons_store ()
@@ -419,6 +421,7 @@ private class BuildToolDialog : Dialog
         _entry_label.text = "";
         _entry_desc.text = "";
         _entry_extensions.text = "";
+        _entry_files_to_open.text = "";
 
         _icons_combobox.set_active (0);
 
@@ -433,6 +436,7 @@ private class BuildToolDialog : Dialog
         _entry_label.text = build_tool.label;
         _entry_desc.text = build_tool.description;
         _entry_extensions.text = build_tool.extensions;
+        _entry_files_to_open.text = "";
 
         /* Icon */
 
@@ -554,6 +558,7 @@ private class BuildToolDialog : Dialog
         main_grid.attach (get_extensions_grid (), 0, 1, 1, 1);
         main_grid.attach (get_icons_grid (), 1, 1, 1, 1);
         main_grid.attach (get_jobs_grid (), 0, 2, 2, 1);
+        main_grid.attach (get_files_to_open_grid (), 0, 3, 2, 1);
 
         return main_grid;
     }
@@ -620,16 +625,12 @@ private class BuildToolDialog : Dialog
             _("The active document's filename without its extension.") + "\n" +
             _("If the active document belongs to a project, the main file is choosen."));
 
-        Label placeholder_view = new Label ("$view");
-        placeholder_view.set_tooltip_text (_("The program for viewing documents"));
-
         Grid placeholders_grid = new Grid ();
         placeholders_grid.set_orientation (Orientation.HORIZONTAL);
         placeholders_grid.set_column_spacing (10);
         placeholders_grid.add (placeholders);
         placeholders_grid.add (placeholder_filename);
         placeholders_grid.add (placeholder_shortname);
-        placeholders_grid.add (placeholder_view);
 
         /* Jobs tree view */
 
@@ -637,7 +638,7 @@ private class BuildToolDialog : Dialog
 
         ScrolledWindow scrolled_window =
             Utils.add_scrollbar (_jobs_view) as ScrolledWindow;
-        scrolled_window.set_size_request (600, 110);
+        scrolled_window.set_size_request (600, 80);
         scrolled_window.set_shadow_type (ShadowType.IN);
 
         StyleContext context = scrolled_window.get_style_context ();
@@ -668,5 +669,16 @@ private class BuildToolDialog : Dialog
         jobs_grid.add (toolbar);
 
         return Utils.get_dialog_component (_("Jobs"), jobs_grid);
+    }
+
+    private Grid get_files_to_open_grid ()
+    {
+        _entry_files_to_open.set_tooltip_text (
+            _("List of files to open after executing the build jobs.") + "\n" +
+            _("The files are separated by spaces.") + "\n" +
+            _("You should use the placeholders to specify the files."));
+
+        _entry_files_to_open.hexpand = true;
+        return Utils.get_dialog_component (_("Files to open"), _entry_files_to_open);
     }
 }
