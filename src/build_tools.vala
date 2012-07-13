@@ -41,6 +41,7 @@ public struct BuildTool
     string extensions;
     string label;
     string icon;
+    string files_to_open;
     bool enabled;
     bool compilation;
     Gee.ArrayList<BuildJob?> jobs;
@@ -179,6 +180,7 @@ public class BuildTools : GLib.Object
             || tool1.description != tool2.description
             || tool1.extensions != tool2.extensions
             || tool1.icon != tool2.icon
+            || tool1.files_to_open != tool2.files_to_open
             || tool1.jobs.size != tool2.jobs.size)
         {
             return false;
@@ -203,15 +205,7 @@ public class BuildTools : GLib.Object
     // build tool, and the file browser is refreshed after the execution.
     private bool is_compilation (BuildTool build_tool)
     {
-        foreach (BuildJob job in build_tool.jobs)
-        {
-            // If the command is not for viewing a file, we assume that it's
-            // a compilation.
-            if (! job.command.contains ("$view"))
-                return true;
-        }
-
-        return false;
+        return build_tool.jobs.size > 0;
     }
 
     private void load ()
@@ -265,6 +259,7 @@ public class BuildTools : GLib.Object
             case "tools":
             case "label":
             case "description":
+            case "open":
                 return;
 
             case "tool":
@@ -332,6 +327,7 @@ public class BuildTools : GLib.Object
             case "tools":
             case "label":
             case "description":
+            case "open":
                 return;
 
             case "tool":
@@ -370,6 +366,10 @@ public class BuildTools : GLib.Object
             case "description":
                 _cur_tool.description = text.strip ();
                 break;
+
+            case "open":
+                _cur_tool.files_to_open = text.strip ();
+                break;
         }
     }
 
@@ -397,6 +397,10 @@ public class BuildTools : GLib.Object
 
                 content += Markup.printf_escaped ("%s</job>\n", job.command);
             }
+
+            content += Markup.printf_escaped ("    <open>%s</open>\n",
+                tool.files_to_open);
+
             content += "  </tool>\n";
         }
 

@@ -436,7 +436,7 @@ private class BuildToolDialog : Dialog
         _entry_label.text = build_tool.label;
         _entry_desc.text = build_tool.description;
         _entry_extensions.text = build_tool.extensions;
-        _entry_files_to_open.text = "";
+        _entry_files_to_open.text = build_tool.files_to_open;
 
         /* Icon */
 
@@ -486,6 +486,7 @@ private class BuildToolDialog : Dialog
             tool.description = desc;
 
         tool.extensions = _entry_extensions.text.strip ();
+        tool.files_to_open = _entry_files_to_open.text.strip ();
 
         /* Icon */
 
