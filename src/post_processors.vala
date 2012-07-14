@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2010-2011 Sébastien Wilmet
+ * Copyright © 2010-2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,10 +19,32 @@
 
 private abstract class PostProcessor : GLib.Object
 {
+    // Store all the messages. A message can have children.
     protected Node<BuildMsg?> _all_messages = new Node<BuildMsg?> (BuildMsg ());
+
+    // Used to append efficiently a new message with append_message().
     private unowned Node<BuildMsg?> _prev_message = null;
 
+    // These two attributes can be ignored for post-processors that don't support
+    // detailed messages.
+    protected bool _has_details = false;
+    protected Node<BuildMsg?> _messages_without_details =
+        new Node<BuildMsg?> (BuildMsg ());
+
+    public bool has_details ()
+    {
+        return _has_details;
+    }
+
     public Node<BuildMsg?> get_messages ()
+    {
+        if (_has_details)
+            return (owned) _messages_without_details;
+        else
+            return (owned) _all_messages;
+    }
+
+    public Node<BuildMsg?> get_detailed_messages ()
     {
         return (owned) _all_messages;
     }
@@ -289,25 +311,36 @@ private class LatexmkPostProcessor : PostProcessor
             // If an error has occured, we verify if the last command was a latex command.
             // If it is the case, there is no need to show all output.
             if (_exit_status == 0 || last_cmd_is_latex_cmd)
-                _all_messages = (owned) latex_messages;
-
-            // Replace 'last_latex_node' by 'latex_messages'
-            else
             {
-                // take the title
-                latex_messages.data = last_latex_node.data;
+                _has_details = true;
 
-                // expand only the last latex command
-                latex_messages.data.expand = true;
+                // Make a deep copy of the latex messages.
+                _messages_without_details = new Node<BuildMsg?> (BuildMsg ());
 
-                // take the command line
-                latex_messages.insert (0, last_latex_node.first_child ().unlink ());
+                unowned Node<BuildMsg?> child = latex_messages.first_child ();
+                while (child != null)
+                {
+                    _messages_without_details.prepend_data (child.data);
+                    child = child.next_sibling ();
+                }
 
-                // replace
-                int pos = _all_messages.child_position (last_latex_node);
-                last_latex_node.unlink ();
-                _all_messages.insert (pos, (owned) latex_messages);
+                _messages_without_details.reverse_children ();
             }
+
+            /* Replace 'last_latex_node' by 'latex_messages' */
+            // take the title
+            latex_messages.data = last_latex_node.data;
+
+            // expand only the last latex command
+            latex_messages.data.expand = true;
+
+            // take the command line
+            latex_messages.insert (0, last_latex_node.first_child ().unlink ());
+
+            // replace
+            int pos = _all_messages.child_position (last_latex_node);
+            last_latex_node.unlink ();
+            _all_messages.insert (pos, (owned) latex_messages);
         }
 
         if (_all_messages.children != null)
