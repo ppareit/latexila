@@ -89,19 +89,19 @@ public class BuildJobRunner : GLib.Object
             return _post_processor.has_details ();
     }
 
-    public Node<BuildMsg?> get_messages ()
+    public Gee.List<BuildMsg?> get_messages ()
     {
         if (_post_processor == null)
         {
             warning ("Build job runner: try to get messages too early");
 
-            return new Node<BuildMsg?> (BuildMsg ());
+            return new Gee.LinkedList<BuildMsg?> ();
         }
 
         return _post_processor.get_messages ();
     }
 
-    public Node<BuildMsg?> get_detailed_messages ()
+    public Gee.List<BuildMsg?> get_detailed_messages ()
     {
         if (_post_processor == null)
             return get_messages ();

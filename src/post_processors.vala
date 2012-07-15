@@ -20,55 +20,30 @@
 private abstract class PostProcessor : GLib.Object
 {
     // Store all the messages. A message can have children.
-    protected Node<BuildMsg?> _all_messages = new Node<BuildMsg?> (BuildMsg ());
-
-    // Used to append efficiently a new message with append_message().
-    private unowned Node<BuildMsg?> _prev_message = null;
+    protected Gee.List<BuildMsg?> _all_messages = new Gee.LinkedList<BuildMsg?> ();
 
     // These two attributes can be ignored for post-processors that don't support
     // detailed messages.
     protected bool _has_details = false;
-    protected Node<BuildMsg?> _messages_without_details =
-        new Node<BuildMsg?> (BuildMsg ());
+    protected Gee.List<BuildMsg?> _messages_without_details =
+        new Gee.LinkedList<BuildMsg?> ();
 
     public bool has_details ()
     {
         return _has_details;
     }
 
-    public Node<BuildMsg?> get_messages ()
+    public Gee.List<BuildMsg?> get_messages ()
     {
         if (_has_details)
-            return (owned) _messages_without_details;
+            return _messages_without_details;
         else
-            return (owned) _all_messages;
+            return _all_messages;
     }
 
-    public Node<BuildMsg?> get_detailed_messages ()
+    public Gee.List<BuildMsg?> get_detailed_messages ()
     {
-        return (owned) _all_messages;
-    }
-
-    protected unowned Node<BuildMsg?> append_message (BuildMsg message)
-    {
-        unowned Node<BuildMsg?> new_message;
-
-        bool prev_msg_is_invalid = _prev_message != null && _prev_message.next != null;
-
-        // If _prev_message is not the last node, do a normal 'append'.
-        if (_prev_message == null || prev_msg_is_invalid)
-            new_message = _all_messages.append_data (message);
-
-        else
-        {
-            // 'insert_after' is O(1), whereas 'append' is O(N).
-            // That's why we keep the previous node.
-            new_message = _all_messages.insert_after (_prev_message,
-                new Node<BuildMsg?> (message));
-        }
-
-        _prev_message = new_message;
-        return new_message;
+        return _all_messages;
     }
 
     public abstract void process (File file, string output);
@@ -102,7 +77,7 @@ private class AllOutputPostProcessor : PostProcessor
         for (int line_num = 0 ; line_num < nb_lines ; line_num++)
         {
             message.text = lines[line_num];
-            append_message (message);
+            _all_messages.add (message);
         }
     }
 }
@@ -164,7 +139,7 @@ private class RubberPostProcessor : PostProcessor
             if (message.filename[0] != '/')
                 message.filename = "%s/%s".printf (parent_path, message.filename);
 
-            append_message (message);
+            _all_messages.add (message);
 
             try
             {
@@ -225,66 +200,72 @@ private class LatexmkPostProcessor : PostProcessor
     {
         return_if_fail (_reg_rule != null && _reg_no_rule != null);
 
-        string last_latex_output = null;
-        unowned Node<BuildMsg?> last_latex_node = null;
+        // We run the 'latex' post-processor only on the last latex or pdflatex rule.
+        // The first latex rules most probably have warnings that are fixed in the last
+        // latex rule.
+        string? last_latex_output = null;
+        int last_latex_child_num = 0;
+        bool last_rule_is_latex_rule = false;
 
         MatchInfo match_info;
         _reg_rule.match (output, 0, out match_info);
         while (match_info.matches ())
         {
-            Node<BuildMsg?> cmd_messages = null;
+            BuildMsg msg = BuildMsg ();
+            msg.type = BuildMsgType.JOB_SUB_COMMAND;
 
-            /* command output */
+            // Do not expand the row, so the user have first a global view of what have
+            // been executed.
+            msg.expand = false;
+
+            /* Title */
+
+            msg.text = match_info.fetch_named ("title");
+
+            /* Command line */
+
+            BuildMsg cmd_line_msg = BuildMsg ();
+            cmd_line_msg.text = "$ " + match_info.fetch_named ("cmd");
+            msg.children.add (cmd_line_msg);
+
+            /* Command output */
+
             string rule = match_info.fetch_named ("rule");
 
-            // if the rule is latex or pdflatex, we store the output
+            // If the rule is latex or pdflatex, we store the output.
             bool is_latex_cmd = rule == "latex" || rule == "pdflatex";
+            last_rule_is_latex_rule = is_latex_cmd;
+
             if (is_latex_cmd)
             {
                 last_latex_output = match_info.fetch_named ("output");
-                cmd_messages = new Node<BuildMsg?> (BuildMsg ());
+                last_latex_child_num = _all_messages.size;
             }
 
-            // if it's another rule (bibtex, makeindex, etc), we show all output
+            // If it's another rule (bibtex, makeindex, etc), we show all output.
             else
             {
                 string cmd_output = match_info.fetch_named ("output");
                 PostProcessor all_output_pp = new AllOutputPostProcessor ();
                 all_output_pp.process (file, cmd_output);
-                cmd_messages = all_output_pp.get_messages ();
+                msg.children.add_all (all_output_pp.get_messages ());
             }
 
-            /* title */
-            BuildMsg title_msg = BuildMsg ();
-            title_msg.type = BuildMsgType.JOB_SUB_COMMAND;
-            title_msg.text = match_info.fetch_named ("title");
-
-            // Do not expand the row, so the user have first a global view of what have
-            // been executed.
-            title_msg.expand = false;
-
-            cmd_messages.data = title_msg;
-
-            /* command line */
-            BuildMsg cmd_line_msg = BuildMsg ();
-            cmd_line_msg.text = "$ " + match_info.fetch_named ("cmd");
-
-            cmd_messages.insert_data (0, cmd_line_msg);
-
-            if (is_latex_cmd)
-                last_latex_node = _all_messages.append ((owned) cmd_messages);
-            else
-                _all_messages.append ((owned) cmd_messages);
+            _all_messages.add (msg);
 
             /* Latexmk output */
+
+            BuildMsg latexmk_msg = BuildMsg ();
+            latexmk_msg.type = BuildMsgType.JOB_SUB_COMMAND;
+            latexmk_msg.text = _("Latexmk messages");
+            latexmk_msg.expand = false;
+
             string latexmk_output = match_info.fetch_named ("latexmk");
             PostProcessor all_output_pp = new AllOutputPostProcessor ();
             all_output_pp.process (file, latexmk_output);
-            Node<BuildMsg?> latexmk_messages = all_output_pp.get_messages ();
+            latexmk_msg.children = all_output_pp.get_messages ();
 
-            title_msg.text = _("Latexmk messages");
-            latexmk_messages.data = title_msg;
-            _all_messages.append ((owned) latexmk_messages);
+            _all_messages.add (latexmk_msg);
 
             try
             {
@@ -302,57 +283,37 @@ private class LatexmkPostProcessor : PostProcessor
         {
             PostProcessor latex_pp = new LatexPostProcessor ();
             latex_pp.process (file, last_latex_output);
-            Node<BuildMsg?> latex_messages = latex_pp.get_messages ();
-
-            bool last_cmd_is_latex_cmd =
-                _all_messages.last_child ().prev_sibling () == last_latex_node;
 
             // Almost all the time, the user wants to see only the latex output.
             // If an error has occured, we verify if the last command was a latex command.
             // If it is the case, there is no need to show all output.
-            if (_exit_status == 0 || last_cmd_is_latex_cmd)
+            if (_exit_status == 0 || last_rule_is_latex_rule)
             {
                 _has_details = true;
-
-                // Make a deep copy of the latex messages.
-                _messages_without_details = new Node<BuildMsg?> (BuildMsg ());
-
-                unowned Node<BuildMsg?> child = latex_messages.first_child ();
-                while (child != null)
-                {
-                    _messages_without_details.prepend_data (child.data);
-                    child = child.next_sibling ();
-                }
-
-                _messages_without_details.reverse_children ();
+                _messages_without_details = latex_pp.get_messages ();
             }
 
-            /* Replace 'last_latex_node' by 'latex_messages' */
-            // take the title
-            latex_messages.data = last_latex_node.data;
+            /* Add the latex messages */
 
-            // expand only the last latex command
-            latex_messages.data.expand = true;
+            BuildMsg msg = _all_messages.get (last_latex_child_num);
+            msg.children.add_all (latex_pp.get_messages ());
 
-            // take the command line
-            latex_messages.insert (0, last_latex_node.first_child ().unlink ());
+            // Expand only the last latex command.
+            msg.expand = true;
 
-            // replace
-            int pos = _all_messages.child_position (last_latex_node);
-            last_latex_node.unlink ();
-            _all_messages.insert (pos, (owned) latex_messages);
+            _all_messages.set (last_latex_child_num, msg);
         }
 
-        if (_all_messages.children != null)
+        if (_all_messages.size > 0)
             return;
 
-        /* show all output since there were no rule executed */
+        /* Show all output since there were no rule executed */
 
         PostProcessor all_output_pp = new AllOutputPostProcessor ();
 
         if (_reg_no_rule.match (output, 0, out match_info))
         {
-            // almost all output
+            // Almost all output
             string all_output = match_info.fetch_named ("output");
             all_output_pp.process (file, all_output);
         }

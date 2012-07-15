@@ -824,7 +824,7 @@ private class LatexPostProcessor : PostProcessor
                 break;
         }
 
-        append_message (msg);
+        _all_messages.add (msg);
         msg = BuildMsg ();
     }
 }

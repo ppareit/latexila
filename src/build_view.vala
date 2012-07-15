@@ -55,6 +55,11 @@ public struct BuildMsg
     // If the message have children, whether to show them.
     bool expand;
 
+    // Gee.List is used for the tree structure because Gee doesn't have an interface
+    // for trees, and because GLib.Node is not convenient to use in Vala (problems
+    // with owned references).
+    Gee.List<BuildMsg?> children;
+
     public BuildMsg ()
     {
         type = BuildMsgType.INFO;
@@ -63,6 +68,7 @@ public struct BuildMsg
         start_line = -1;
         end_line = -1;
         expand = true;
+        children = new Gee.LinkedList<BuildMsg?> ();
     }
 }
 
@@ -277,19 +283,16 @@ public class BuildView : TreeView
         _store.set (title_id, BuildMsgColumn.ICON, get_icon_from_state (state));
     }
 
-    public void append_messages (TreeIter parent, Node<BuildMsg?> messages,
+    public void append_messages (TreeIter parent, Gee.List<BuildMsg?> messages,
         bool expand = true)
     {
-        unowned Node<BuildMsg?> cur_node = messages.first_child ();
-        while (cur_node != null)
+        foreach (BuildMsg msg in messages)
         {
-            TreeIter child = append_single_message (parent, cur_node.data);
+            TreeIter child = append_single_message (parent, msg);
 
-            // the node contains children
-            if (cur_node.children != null)
-                append_messages (child, cur_node, cur_node.data.expand);
-
-            cur_node = cur_node.next_sibling ();
+            // The message contains children
+            if (msg.children.size > 0)
+                append_messages (child, msg.children, msg.expand);
         }
 
         if (expand)

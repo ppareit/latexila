@@ -78,7 +78,7 @@ public class BuildToolRunner : GLib.Object
                 {
                     _view.remove_children (job_title);
 
-                    Node<BuildMsg?> messages;
+                    Gee.List<BuildMsg?> messages;
                     if (_view.show_details)
                         messages = job_runner.get_detailed_messages ();
                     else
@@ -141,7 +141,7 @@ public class BuildToolRunner : GLib.Object
 
         _current_job_runner.finished.connect ((success) =>
         {
-            Node<BuildMsg?> messages;
+            Gee.List<BuildMsg?> messages;
             if (_view.show_details)
                 messages = _current_job_runner.get_detailed_messages ();
             else
