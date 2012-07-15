@@ -27,10 +27,15 @@ public class BuildToolRunner : GLib.Object
 
     private TreeIter _main_title;
 
+    // Used during the execution
     private int _job_num = 0;
     private BuildJob _current_job;
     private TreeIter? _current_job_title = null;
     private BuildJobRunner? _current_job_runner = null;
+
+    // Keep references
+    private TreeIter[] _job_titles = {};
+    private BuildJobRunner[] _job_runners = {};
 
     private bool _aborted = false;
 
@@ -43,7 +48,23 @@ public class BuildToolRunner : GLib.Object
         _view = build_view;
 
         _view.clear ();
+        _view.has_details = false;
         _main_title = _view.add_main_title (_tool.label, BuildState.RUNNING);
+
+        /* Update the "has-details" property of the build view (which in turn determines
+         * the sensitivity of the "show details" action).
+         */
+        finished.connect (() =>
+        {
+            foreach (BuildJobRunner job_runner in _job_runners)
+            {
+                if (job_runner.has_details ())
+                {
+                    _view.has_details = true;
+                    return;
+                }
+            }
+        });
     }
 
     public void abort ()
@@ -62,6 +83,12 @@ public class BuildToolRunner : GLib.Object
 
     public void run ()
     {
+        if (_job_num > 0)
+        {
+            _job_titles += _current_job_title;
+            _job_runners += _current_job_runner;
+        }
+
         _current_job_runner = null;
 
         // Run the next job.

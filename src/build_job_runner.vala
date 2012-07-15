@@ -81,6 +81,14 @@ public class BuildJobRunner : GLib.Object
             _command_runner.execute_with_output ();
     }
 
+    public bool has_details ()
+    {
+        if (_post_processor == null)
+            return false;
+        else
+            return _post_processor.has_details ();
+    }
+
     public Node<BuildMsg?> get_messages ()
     {
         if (_post_processor == null)
@@ -91,6 +99,14 @@ public class BuildJobRunner : GLib.Object
         }
 
         return _post_processor.get_messages ();
+    }
+
+    public Node<BuildMsg?> get_detailed_messages ()
+    {
+        if (_post_processor == null)
+            return get_messages ();
+        else
+            return _post_processor.get_detailed_messages ();
     }
 
     public void abort ()
