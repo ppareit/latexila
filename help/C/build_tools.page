@@ -151,9 +151,6 @@ $ ps2pdf document.ps</screen>
   <note style="tip">
     <p>Double-click on a build tool will open its properties.</p>
   </note>
-
-  <p>For an explanation of the option about the Latexmk post processor, see
-  <link xref="#post-processors" />.</p>
 </section>
 
 <section id="jobs">
@@ -196,14 +193,6 @@ $ ps2pdf document.ps</screen>
       <title its:translate="no">latexmk</title>
       <p>Used for the <cmd>latexmk</cmd> command. Internally, this post processor uses
       other ones: <em>latex</em> and <em>all-output</em>.</p>
-
-      <p>In the <link xref="#general_configuration" />, there is an option for always
-      showing all information of this post processor. If this option is disabled (which
-      is the case by default), only the output of the last <cmd>latex</cmd> or
-      <cmd>pdflatex</cmd> command is displayed, if no error occurred in another command.
-      This allows to reduce the output showed in the bottom panel. But even if there are
-      no errors, it can be useful to see exactly which commands are executed, with their
-      output.</p>
     </item>
     <item>
       <title its:translate="no">rubber</title>
