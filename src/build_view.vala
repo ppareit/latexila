@@ -336,6 +336,15 @@ public class BuildView : TreeView
         return iter;
     }
 
+    public void remove_children (TreeIter parent)
+    {
+        TreeIter child;
+        if (! _store.iter_children (out child, parent))
+            return;
+
+        while (_store.remove (ref child));
+    }
+
     private string? get_icon_from_state (BuildState state)
     {
         switch (state)

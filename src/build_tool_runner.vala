@@ -65,6 +65,29 @@ public class BuildToolRunner : GLib.Object
                 }
             }
         });
+
+        /* Show/hide details */
+        _view.notify["show-details"].connect (() =>
+        {
+            for (int job_num = 0 ; job_num < _job_titles.length ; job_num++)
+            {
+                TreeIter job_title = _job_titles[job_num];
+                BuildJobRunner job_runner = _job_runners[job_num];
+
+                if (job_runner.has_details ())
+                {
+                    _view.remove_children (job_title);
+
+                    Node<BuildMsg?> messages;
+                    if (_view.show_details)
+                        messages = job_runner.get_detailed_messages ();
+                    else
+                        messages = job_runner.get_messages ();
+
+                    _view.append_messages (job_title, messages);
+                }
+            }
+        });
     }
 
     public void abort ()
@@ -118,8 +141,13 @@ public class BuildToolRunner : GLib.Object
 
         _current_job_runner.finished.connect ((success) =>
         {
-            _view.append_messages (_current_job_title,
-                _current_job_runner.get_messages ());
+            Node<BuildMsg?> messages;
+            if (_view.show_details)
+                messages = _current_job_runner.get_detailed_messages ();
+            else
+                messages = _current_job_runner.get_messages ();
+
+            _view.append_messages (_current_job_title, messages);
 
             if (_aborted)
                 return;
