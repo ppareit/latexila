@@ -24,6 +24,7 @@ src/latexila.vala
 src/latex_menu.vala
 src/latex_post_processor.vala
 src/main.vala
+src/main_window_build_tools.vala
 src/main_window.vala
 src/menu_in_toolbar.vala
 src/most_used_symbols.vala
