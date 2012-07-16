@@ -91,7 +91,7 @@ public class MainWindowBuildTools
         ui_manager.insert_action_group (_dynamic_action_group, 0);
         update_menu ();
 
-        BuildTools build_tools = BuildTools.get_default ();
+        PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
         build_tools.modified.connect (() => update_menu ());
     }
 
@@ -125,7 +125,7 @@ public class MainWindowBuildTools
         }
 
         int tool_num = 0;
-        foreach (BuildTool tool in BuildTools.get_default ())
+        foreach (BuildTool tool in PersonalBuildTools.get_default ())
         {
             if (! tool.enabled)
             {
@@ -174,7 +174,7 @@ public class MainWindowBuildTools
             _dynamic_action_group.remove_action (action);
         }
 
-        BuildTools build_tools = BuildTools.get_default ();
+        PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
 
         if (build_tools.is_empty ())
             _menu_ui_id = 0;
@@ -226,7 +226,7 @@ public class MainWindowBuildTools
         string[] name = action.name.split ("_");
         int tool_num = int.parse (name[1]);
 
-        BuildTool? tool = BuildTools.get_default ().get_by_id (tool_num);
+        BuildTool? tool = PersonalBuildTools.get_default ().get_build_tool (tool_num);
         return_if_fail (tool != null);
 
         if (! tool.has_jobs ())

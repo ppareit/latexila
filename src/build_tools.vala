@@ -75,10 +75,8 @@ public struct BuildTool
     }
 }
 
-public class BuildTools : GLib.Object
+public abstract class BuildTools : GLib.Object
 {
-    private static BuildTools _instance = null;
-
     private static string[] _post_processor_names =
     {
         // Same order as the PostProcessorType enum.
@@ -89,8 +87,11 @@ public class BuildTools : GLib.Object
         "rubber"
     };
 
-    private Gee.LinkedList<BuildTool?> _build_tools;
-    private bool _modified = false;
+    protected Gee.LinkedList<BuildTool?> _build_tools;
+
+    // Possible locations for the XML file, containaing the build tools.
+    // The order is important: the first file is tried, then the second, and so on.
+    protected Gee.List<File> _xml_files = new Gee.LinkedList<File> ();
 
     // Used during the XML file parsing to load the build tools.
     private BuildTool _cur_tool;
@@ -98,32 +99,14 @@ public class BuildTools : GLib.Object
 
     public signal void modified ();
 
-    // Singleton
-    private BuildTools ()
+    public BuildTool? get_build_tool (int tool_num)
     {
-        int nb_post_processors = PostProcessorType.N_POST_PROCESSORS;
-        return_if_fail (_post_processor_names.length == nb_post_processors);
+        return_val_if_fail (0 <= tool_num && tool_num < _build_tools.size, null);
 
-        modified.connect (() => _modified = true);
-
-        load ();
+        return _build_tools[tool_num];
     }
 
-    public static BuildTools get_default ()
-    {
-        if (_instance == null)
-            _instance = new BuildTools ();
-
-        return _instance;
-    }
-
-    public BuildTool? get_by_id (int id)
-    {
-        return_val_if_fail (0 <= id && id < _build_tools.size, null);
-
-        return _build_tools[id];
-    }
-
+    // Support the foreach loop
     public Gee.Iterator<BuildTool?> iterator ()
     {
         return _build_tools.iterator ();
@@ -134,118 +117,30 @@ public class BuildTools : GLib.Object
         return _build_tools.size == 0;
     }
 
-    public void move_up (int num)
+    public static PostProcessorType? get_post_processor_type_from_name (string name)
     {
-        return_if_fail (num > 0);
-        swap (num, num - 1);
-    }
-
-    public void move_down (int num)
-    {
-        return_if_fail (num < _build_tools.size - 1);
-        swap (num, num + 1);
-    }
-
-    private void swap (int num1, int num2)
-    {
-        BuildTool tool = _build_tools[num1];
-        _build_tools.remove_at (num1);
-        _build_tools.insert (num2, tool);
-        modified ();
-    }
-
-    public void delete (int num)
-    {
-        return_if_fail (0 <= num && num < _build_tools.size);
-
-        _build_tools.remove_at (num);
-        modified ();
-    }
-
-    public void add (BuildTool tool)
-    {
-        insert (_build_tools.size, tool);
-    }
-
-    public void insert (int pos, BuildTool tool)
-    {
-        return_if_fail (0 <= pos && pos <= _build_tools.size);
-
-        _build_tools.insert (pos, tool);
-        modified ();
-    }
-
-    public void update (int num, BuildTool tool)
-    {
-        return_if_fail (0 <= num && num < _build_tools.size);
-
-        BuildTool current_tool = _build_tools[num];
-
-        if (! is_equal (current_tool, tool))
+        for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
         {
-            _build_tools.remove_at (num);
-            _build_tools.insert (num, tool);
-            modified ();
-        }
-    }
-
-    public void reset_all ()
-    {
-        File file = get_user_config_file ();
-        if (file.query_exists ())
-            Utils.delete_file (file);
-
-        load ();
-        modified ();
-    }
-
-    private bool is_equal (BuildTool tool1, BuildTool tool2)
-    {
-        if (tool1.enabled != tool2.enabled
-            || tool1.label != tool2.label
-            || tool1.get_description () != tool2.get_description ()
-            || tool1.extensions != tool2.extensions
-            || tool1.icon != tool2.icon
-            || tool1.files_to_open != tool2.files_to_open
-            || tool1.jobs.size != tool2.jobs.size)
-        {
-            return false;
+            if (_post_processor_names[type] == name)
+                return (PostProcessorType) type;
         }
 
-        for (int job_num = 0 ; job_num < tool1.jobs.size ; job_num++)
-        {
-            BuildJob job1 = tool1.jobs[job_num];
-            BuildJob job2 = tool2.jobs[job_num];
-
-            if (job1.command != job2.command
-                || job1.post_processor != job2.post_processor)
-            {
-                return false;
-            }
-        }
-
-        return true;
+        return_val_if_reached (null);
     }
 
-    private void load ()
+    public static string? get_post_processor_name_from_type (PostProcessorType type)
+    {
+        return_val_if_fail (type != PostProcessorType.N_POST_PROCESSORS, null);
+
+        return _post_processor_names[type];
+    }
+
+    protected void load ()
     {
         _build_tools = new Gee.LinkedList<BuildTool?> ();
 
-        // First, try to load the user config file if it exists.
-        // Otherwise try to load the default file (from most desirable to least desirable,
-        // depending of the current locale).
-
-        File[] files = {};
-        files += get_user_config_file ();
-
-        unowned string[] language_names = Intl.get_language_names ();
-        foreach (string language_name in language_names)
-        {
-            files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
-                "build_tools", language_name, "build_tools.xml"));
-        }
-
-        foreach (File file in files)
+        // Try to load the XML file from the most desirable to least desirable location.
+        foreach (File file in _xml_files)
         {
             if (! file.query_exists ())
                 continue;
@@ -383,6 +278,119 @@ public class BuildTools : GLib.Object
                 break;
         }
     }
+}
+
+public class DefaultBuildTools : BuildTools
+{
+    private static DefaultBuildTools _instance = null;
+
+    private DefaultBuildTools ()
+    {
+        unowned string[] language_names = Intl.get_language_names ();
+        foreach (string language_name in language_names)
+        {
+            string path = Path.build_filename (Config.DATA_DIR, "build_tools",
+                language_name, "build_tools.xml");
+
+            _xml_files.add (File.new_for_path (path));
+        }
+
+        load ();
+    }
+
+    public static DefaultBuildTools get_default ()
+    {
+        if (_instance == null)
+            _instance = new DefaultBuildTools ();
+
+        return _instance;
+    }
+}
+
+public class PersonalBuildTools : BuildTools
+{
+    private static PersonalBuildTools _instance = null;
+
+    private bool _modified = false;
+
+    private PersonalBuildTools ()
+    {
+        _xml_files.add (get_user_config_file ());
+        load ();
+
+        modified.connect (() => _modified = true);
+    }
+
+    public static PersonalBuildTools get_default ()
+    {
+        if (_instance == null)
+            _instance = new PersonalBuildTools ();
+
+        return _instance;
+    }
+
+    public void move_up (int tool_num)
+    {
+        return_if_fail (tool_num > 0);
+        swap (tool_num, tool_num - 1);
+    }
+
+    public void move_down (int tool_num)
+    {
+        return_if_fail (tool_num < _build_tools.size - 1);
+        swap (tool_num, tool_num + 1);
+    }
+
+    private void swap (int tool_num1, int tool_num2)
+    {
+        BuildTool tool = _build_tools[tool_num1];
+        _build_tools.remove_at (tool_num1);
+        _build_tools.insert (tool_num2, tool);
+        modified ();
+    }
+
+    public void delete (int tool_num)
+    {
+        return_if_fail (0 <= tool_num && tool_num < _build_tools.size);
+
+        _build_tools.remove_at (tool_num);
+        modified ();
+    }
+
+    public void add (BuildTool tool)
+    {
+        insert (_build_tools.size, tool);
+    }
+
+    public void insert (int pos, BuildTool tool)
+    {
+        return_if_fail (0 <= pos && pos <= _build_tools.size);
+
+        _build_tools.insert (pos, tool);
+        modified ();
+    }
+
+    public void update (int num, BuildTool tool)
+    {
+        return_if_fail (0 <= num && num < _build_tools.size);
+
+        BuildTool current_tool = _build_tools[num];
+
+        if (! is_equal (current_tool, tool))
+        {
+            _build_tools.remove_at (num);
+            _build_tools.insert (num, tool);
+            modified ();
+        }
+    }
+
+    private File get_user_config_file ()
+    {
+        string path = Path.build_filename (Environment.get_user_config_dir (),
+            "latexila", "build_tools.xml");
+
+        return File.new_for_path (path);
+    }
 
     public void save ()
     {
@@ -422,29 +430,31 @@ public class BuildTools : GLib.Object
         Utils.save_file (file, content, true);
     }
 
-    private File get_user_config_file ()
+    private bool is_equal (BuildTool tool1, BuildTool tool2)
     {
-        string path = Path.build_filename (Environment.get_user_config_dir (),
-            "latexila", "build_tools.xml");
-
-        return File.new_for_path (path);
-    }
-
-    public static PostProcessorType? get_post_processor_type_from_name (string name)
-    {
-        for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
+        if (tool1.enabled != tool2.enabled
+            || tool1.label != tool2.label
+            || tool1.get_description () != tool2.get_description ()
+            || tool1.extensions != tool2.extensions
+            || tool1.icon != tool2.icon
+            || tool1.files_to_open != tool2.files_to_open
+            || tool1.jobs.size != tool2.jobs.size)
         {
-            if (_post_processor_names[type] == name)
-                return (PostProcessorType) type;
+            return false;
         }
 
-        return_val_if_reached (null);
-    }
+        for (int job_num = 0 ; job_num < tool1.jobs.size ; job_num++)
+        {
+            BuildJob job1 = tool1.jobs[job_num];
+            BuildJob job2 = tool2.jobs[job_num];
 
-    public static string? get_post_processor_name_from_type (PostProcessorType type)
-    {
-        return_val_if_fail (type != PostProcessorType.N_POST_PROCESSORS, null);
+            if (job1.command != job2.command
+                || job1.post_processor != job2.post_processor)
+            {
+                return false;
+            }
+        }
 
-        return _post_processor_names[type];
+        return true;
     }
 }

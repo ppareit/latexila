@@ -78,7 +78,6 @@ public class BuildToolsPreferences : GLib.Object
         toolbar.insert (get_remove_button (), -1);
         toolbar.insert (get_up_button (), -1);
         toolbar.insert (get_down_button (), -1);
-        toolbar.insert (get_reset_button (), -1);
 
         toolbar.set_icon_size (IconSize.MENU);
         toolbar.set_style (ToolbarStyle.ICONS);
@@ -152,8 +151,8 @@ public class BuildToolsPreferences : GLib.Object
             _list_store.set (iter, BuildToolColumn.ENABLED, enabled);
 
             int num = int.parse (path_string);
-            BuildTools build_tools = BuildTools.get_default ();
-            BuildTool? build_tool = build_tools.get_by_id (num);
+            PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
+            BuildTool? build_tool = build_tools.get_build_tool (num);
             return_if_fail (build_tool != null);
 
             build_tool.enabled = enabled;
@@ -205,8 +204,8 @@ public class BuildToolsPreferences : GLib.Object
             if (selected_row < 0)
                 return;
 
-            BuildTools build_tools = BuildTools.get_default ();
-            BuildTool? tool = build_tools.get_by_id (selected_row);
+            PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
+            BuildTool? tool = build_tools.get_build_tool (selected_row);
             return_if_fail (tool != null);
 
             tool.enabled = false;
@@ -267,7 +266,7 @@ public class BuildToolsPreferences : GLib.Object
             if (dialog.run () == ResponseType.YES)
             {
                 _list_store.remove (iter);
-                BuildTools.get_default ().delete (selected_row);
+                PersonalBuildTools.get_default ().delete (selected_row);
             }
 
             dialog.destroy ();
@@ -317,7 +316,7 @@ public class BuildToolsPreferences : GLib.Object
                 if (Utils.tree_model_iter_prev (_list_store, ref iter_up))
                 {
                     _list_store.swap (iter_selected, iter_up);
-                    BuildTools.get_default ().move_up (selected_row);
+                    PersonalBuildTools.get_default ().move_up (selected_row);
 
                     // Force the 'changed' signal on the selection to be emitted
                     select.changed ();
@@ -372,7 +371,7 @@ public class BuildToolsPreferences : GLib.Object
                 if (_list_store.iter_next (ref iter_down))
                 {
                     _list_store.swap (iter_selected, iter_down);
-                    BuildTools.get_default ().move_down (selected_row);
+                    PersonalBuildTools.get_default ().move_down (selected_row);
 
                     // Force the 'changed' signal on the selection to be emitted
                     select.changed ();
@@ -383,35 +382,11 @@ public class BuildToolsPreferences : GLib.Object
         return down_button;
     }
 
-    private ToolButton get_reset_button ()
-    {
-        ToolButton reset_button = new ToolButton (null, null);
-        // TODO use the clear symbolic icon when it is available
-        reset_button.set_icon_name ("edit-delete-symbolic");
-        reset_button.set_tooltip_text (_("Reset all the build tools"));
-
-        reset_button.clicked.connect (() =>
-        {
-            Dialog dialog = Utils.get_reset_all_confirm_dialog (_dialog,
-                _("Do you really want to reset all build tools?"));
-
-            if (dialog.run () == ResponseType.YES)
-            {
-                BuildTools.get_default ().reset_all ();
-                update_list_store ();
-            }
-
-            dialog.destroy ();
-        });
-
-        return reset_button;
-    }
-
     private void update_list_store ()
     {
         _list_store.clear ();
 
-        foreach (BuildTool tool in BuildTools.get_default ())
+        foreach (BuildTool tool in PersonalBuildTools.get_default ())
         {
             string description = Markup.escape_text (tool.get_description ());
 
