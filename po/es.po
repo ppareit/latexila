@@ -9,17 +9,17 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-04-03 12:34+0000\n"
-"PO-Revision-Date: 2012-04-04 09:56+0200\n"
+"POT-Creation-Date: 2012-07-16 05:13+0000\n"
+"PO-Revision-Date: 2012-07-16 16:14+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:55
+#: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:169
 msgid "View PDF"
 msgstr "Ver PDF"
 
@@ -27,7 +27,7 @@ msgstr "Ver PDF"
 msgid "View the PDF file"
 msgstr "Ver el archivo PDF"
 
-#: C/build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:54
+#: C/build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:168
 msgid "View DVI"
 msgstr "Ver DVI"
 
@@ -35,7 +35,7 @@ msgstr "Ver DVI"
 msgid "View the DVI file"
 msgstr "Ver el archivo DVI"
 
-#: C/build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:56
+#: C/build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:170
 msgid "View PS"
 msgstr "Ver PS"
 
@@ -138,118 +138,176 @@ msgstr ""
 "\\end{letter}\n"
 "\\end{document}\n"
 
-#: ../src/build_tool_dialog.vala:48
-msgid "Execute"
-msgstr "Ejecutar"
-
-#: ../src/build_tool_dialog.vala:52
-msgid "Convert"
-msgstr "Convertir"
-
-#: ../src/build_tool_dialog.vala:53
-msgid "View File"
-msgstr "Ver Archivo"
-
-#: ../src/build_tool_dialog.vala:71
+#: ../src/build_tool_dialog.vala:65
 msgid "Build Tool"
 msgstr "Herramienta de construcción"
 
-#: ../src/build_tool_dialog.vala:126 ../src/latex_menu.vala:52
-#: ../src/preferences_dialog.vala:596 ../src/structure.vala:691
-msgid "Label"
-msgstr "Etiqueta"
+#: ../src/build_tool_dialog.vala:162
+msgid "Execute"
+msgstr "Ejecutar"
 
-#: ../src/build_tool_dialog.vala:131
-msgid "You can select this arrow and copy/paste it!"
-msgstr "Puede elegir esta flecha y copiarlo/pegarlo"
+#: ../src/build_tool_dialog.vala:166
+msgid "Convert"
+msgstr "Convertir"
 
-#: ../src/build_tool_dialog.vala:149
-msgid "Description"
-msgstr "Descripción"
+#: ../src/build_tool_dialog.vala:167
+msgid "View File"
+msgstr "Ver Archivo"
 
-#: ../src/build_tool_dialog.vala:156
-msgid ""
-"File extensions for which the build tool can be executed.\n"
-"The extensions are separated by spaces."
-msgstr ""
-"Extensiones de archivos para las que la herramienta de construcción se puede "
-"ejecutar.\n"
-"Las extensiones están separadas por espacios."
-
-#: ../src/build_tool_dialog.vala:158
-msgid "Extensions"
-msgstr "Extensiones"
-
-#: ../src/build_tool_dialog.vala:164
-msgid "Icon"
-msgstr "Icono"
-
-#: ../src/build_tool_dialog.vala:169
-msgid "Placeholders:"
-msgstr "Marcadores de posición:"
-
-#: ../src/build_tool_dialog.vala:172
-msgid "The active document filename"
-msgstr "El nombre de archivo del documento activo"
-
-#: ../src/build_tool_dialog.vala:176
-msgid "The active document filename without its extension"
-msgstr "El nombre de archivo del documento activo sin su extensión"
-
-#: ../src/build_tool_dialog.vala:180
-msgid ""
-"The program for viewing documents.\n"
-"Its value can be changed in the preferences dialog."
-msgstr ""
-"El programa para ver documentos.\n"
-"Su valor se puede cambiar en el diálogo de preferencias."
-
-#: ../src/build_tool_dialog.vala:186
-msgid "New command"
-msgstr "Comando nuevo"
-
-#: ../src/build_tool_dialog.vala:228
-msgid "Jobs"
-msgstr "Trabajos"
-
-#: ../src/build_tool_dialog.vala:284
+#: ../src/build_tool_dialog.vala:231
 msgid "Commands"
 msgstr "Comandos"
 
-#: ../src/build_tool_dialog.vala:291
-msgid "Must Succeed"
-msgstr "Debe tener éxito"
-
-#: ../src/build_tool_dialog.vala:299
+#: ../src/build_tool_dialog.vala:241
 msgid "Post Processor"
 msgstr "Post-procesador"
 
-#: ../src/build_tool_runner.vala:351
-msgid "Rubber may not support filenames with spaces (even in a directory)"
-msgstr ""
-"Puede que Rubber no soporte nombres de archivos con espacios (incluso en una "
-"carpeta)"
+#: ../src/build_tool_dialog.vala:268 ../src/build_tools_preferences.vala:226
+msgid "Add..."
+msgstr "Añadir…"
 
-#: ../src/build_tool_runner.vala:382
+#: ../src/build_tool_dialog.vala:285 ../src/build_tools_preferences.vala:243
+msgid "Remove"
+msgstr "Quitar"
+
+#: ../src/build_tool_dialog.vala:315 ../src/build_tools_preferences.vala:283
+msgid "Move up"
+msgstr "Subir"
+
+#: ../src/build_tool_dialog.vala:366 ../src/build_tools_preferences.vala:335
+msgid "Move down"
+msgstr "Bajar"
+
+#: ../src/build_tool_dialog.vala:566 ../src/build_tools_preferences.vala:123
+#: ../src/latex_menu.vala:52 ../src/structure.vala:730
+msgid "Label"
+msgstr "Etiqueta"
+
+#: ../src/build_tool_dialog.vala:571
+msgid "You can select this arrow and copy/paste it!"
+msgstr "Puede elegir esta flecha y copiarlo/pegarlo"
+
+#: ../src/build_tool_dialog.vala:587
+msgid "Description"
+msgstr "Descripción"
+
+#: ../src/build_tool_dialog.vala:593
+#| msgid ""
+#| "File extensions for which the build tool can be executed.\n"
+#| "The extensions are separated by spaces."
+msgid "File extensions for which the build tool can be executed."
+msgstr ""
+"Extensiones de archivos para las que la herramienta de construcción se puede "
+"ejecutar."
+
+#: ../src/build_tool_dialog.vala:594
+msgid "The extensions are separated by spaces."
+msgstr "Las extensiones están separadas por espacios."
+
+#: ../src/build_tool_dialog.vala:595
+msgid "If it is empty, all extensions are allowed."
+msgstr "Si está vacía, se permiten todas las extensiones."
+
+#: ../src/build_tool_dialog.vala:597
+msgid "Extensions"
+msgstr "Extensiones"
+
+#: ../src/build_tool_dialog.vala:602
+msgid "Icon"
+msgstr "Icono"
+
+#. Placeholders
+#: ../src/build_tool_dialog.vala:609
+msgid "Placeholders:"
+msgstr "Marcadores de posición:"
+
+#: ../src/build_tool_dialog.vala:613
+#| msgid "The active document filename"
+msgid "The active document's filename."
+msgstr "El nombre de archivo del documento activo."
+
+#: ../src/build_tool_dialog.vala:614 ../src/build_tool_dialog.vala:619
+msgid "If the active document belongs to a project, the main file is choosen."
+msgstr ""
+"Si el documento activo pertenece a un proyecto, se elije el archivo "
+"principal."
+
+#: ../src/build_tool_dialog.vala:618
+#| msgid "The active document filename without its extension"
+msgid "The active document's filename without its extension."
+msgstr "El nombre de archivo del documento activo sin su extensión."
+
+#: ../src/build_tool_dialog.vala:664
+msgid "Jobs"
+msgstr "Trabajos"
+
+#: ../src/build_tool_dialog.vala:670
+msgid "List of files to open after executing the build jobs."
+msgstr ""
+"Lista de archivos que abrir después de ejecutar las tareas de construcción."
+
+#: ../src/build_tool_dialog.vala:671
+msgid "The files are separated by spaces."
+msgstr "Los archivos están separados por espacios."
+
+#: ../src/build_tool_dialog.vala:672
+msgid "You should use the placeholders to specify the files."
+msgstr ""
+"Debe especificar los marcadores de posición para especificar los archivos."
+
+#: ../src/build_tool_dialog.vala:675
+msgid "Files to open"
+msgstr "Archivos que abrir"
+
+#: ../src/build_tool_runner.vala:187
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "parece que %s no está instalado."
 
-#: ../src/build_view.vala:125
-msgid "Job"
-msgstr "Trabajo"
+#: ../src/build_tool_runner.vala:259
+#, c-format
+#| msgid "Open Files"
+msgid "Open %s"
+msgstr "Abrir %s"
 
-#: ../src/build_view.vala:141
-msgid "File"
-msgstr "Archivo"
+#: ../src/build_tool_runner.vala:268
+#, c-format
+#| msgid "The file %s changed on disk."
+msgid "The file '%s' doesn't exist."
+msgstr "El archivo «%s» no existe."
 
-#: ../src/build_view.vala:143
-msgid "Line"
-msgstr "Línea"
+#: ../src/build_tool_runner.vala:285
+#, c-format
+msgid "Failed to open '%s':"
+msgstr "Falló al abrir «%s»:"
 
-#: ../src/build_view.vala:172 ../src/side_panel.vala:85
-msgid "Hide panel"
-msgstr "Ocultar panel"
+#: ../src/build_tools_preferences.vala:48
+msgid "Build Tools"
+msgstr "Herramientas de construcción"
+
+#: ../src/build_tools_preferences.vala:114
+#| msgid "Table"
+msgid "Enabled"
+msgstr "Activada"
+
+#: ../src/build_tools_preferences.vala:213
+#, c-format
+msgid "%s [copy]"
+msgstr "%s (copia)"
+
+#: ../src/build_tools_preferences.vala:261
+#, c-format
+msgid "Do you really want to delete the build tool \"%s\"?"
+msgstr "¿Realmente quiere eliminar la herramienta de construcción «%s»?"
+
+#: ../src/build_tools_preferences.vala:391
+#| msgid "Reset all build tools"
+msgid "Reset all the build tools"
+msgstr "Restablecer todas las herramientas de construcción"
+
+#: ../src/build_tools_preferences.vala:396
+msgid "Do you really want to reset all build tools?"
+msgstr "¿Realmente quiere restablecer todas las herramientas de construcción?"
 
 #: ../src/clean_build_files.vala:261
 msgid "Do you really want to delete these files?"
@@ -264,7 +322,7 @@ msgstr "Seleccione los archivos que quiere eliminar:"
 msgid "No build file to clean up."
 msgstr "Ningún archivo de construcción que limpiar."
 
-#: ../src/completion.vala:296
+#: ../src/completion.vala:292
 msgid "No matching proposal"
 msgstr "No hay propuesta equivalente"
 
@@ -275,7 +333,7 @@ msgstr "No hay propuesta equivalente"
 msgid "Ln %d, Col %d"
 msgstr "Ln %d, Col %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:842
+#: ../src/dialogs.vala:40 ../src/main_window.vala:790
 msgid "Close without Saving"
 msgstr "Cerrar sin guardar"
 
@@ -295,7 +353,7 @@ msgstr "Seleccione los documentos que quiere guardar:"
 msgid "If you don't save, all your changes will be permanently lost."
 msgstr "Si no guarda, todos sus cambios se perderán permanentemente."
 
-#: ../src/document_structure.vala:731
+#: ../src/document_structure.vala:720
 msgid "The structure item already contains a sub-paragraph."
 msgstr "El elemento de estructura ya contiene un subpárrafo."
 
@@ -372,28 +430,28 @@ msgstr "Error al tratar de convertir el documento a UTF-8"
 msgid "Unsaved Document"
 msgstr "Documento no guardado"
 
-#: ../src/file_browser.vala:108
+#: ../src/file_browser.vala:106
 msgid "Go to the home directory"
 msgstr "Ir a la carpeta de inicio"
 
-#: ../src/file_browser.vala:109
+#: ../src/file_browser.vala:107
 msgid "Go to the parent directory"
 msgstr "Ir a la carpeta padre"
 
-#: ../src/file_browser.vala:110
+#: ../src/file_browser.vala:108
 msgid "Go to the active document directory"
 msgstr "Ir a la carpeta del documento activo"
 
-#: ../src/file_browser.vala:111 ../src/structure.vala:132
+#: ../src/file_browser.vala:109 ../src/structure.vala:165
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/file_browser.vala:436 ../src/main_window.vala:316
-#: ../src/ui/preferences_dialog.ui.h:31
+#: ../src/file_browser.vala:416 ../src/main_window.vala:274
+#: ../src/ui/preferences_dialog.ui.h:21
 msgid "File Browser"
 msgstr "Explorador de archivos"
 
-#: ../src/file_browser.vala:466
+#: ../src/file_browser.vala:446
 msgid "File System"
 msgstr "Sistema de archivos"
 
@@ -402,31 +460,31 @@ msgstr "Sistema de archivos"
 msgid "_Sectioning"
 msgstr "_Seccionamiento"
 
-#: ../src/latex_menu.vala:34 ../src/structure.vala:684
+#: ../src/latex_menu.vala:34 ../src/structure.vala:723
 msgid "Part"
 msgstr "Parte"
 
-#: ../src/latex_menu.vala:36 ../src/structure.vala:685
+#: ../src/latex_menu.vala:36 ../src/structure.vala:724
 msgid "Chapter"
 msgstr "Capítulo"
 
-#: ../src/latex_menu.vala:38 ../src/structure.vala:686
+#: ../src/latex_menu.vala:38 ../src/structure.vala:725
 msgid "Section"
 msgstr "Sección"
 
-#: ../src/latex_menu.vala:40 ../src/structure.vala:687
+#: ../src/latex_menu.vala:40 ../src/structure.vala:726
 msgid "Sub-section"
 msgstr "Subsección"
 
-#: ../src/latex_menu.vala:42 ../src/structure.vala:688
+#: ../src/latex_menu.vala:42 ../src/structure.vala:727
 msgid "Sub-sub-section"
 msgstr "Subsubsección"
 
-#: ../src/latex_menu.vala:44 ../src/structure.vala:689
+#: ../src/latex_menu.vala:44 ../src/structure.vala:728
 msgid "Paragraph"
 msgstr "Párrafo"
 
-#: ../src/latex_menu.vala:46 ../src/structure.vala:690
+#: ../src/latex_menu.vala:46 ../src/structure.vala:729
 msgid "Sub-paragraph"
 msgstr "Subpárrafo"
 
@@ -1140,7 +1198,7 @@ msgstr "_Ventana nueva"
 msgid "Create a new window"
 msgstr "Crear una ventana nueva"
 
-#: ../src/main_window.vala:35 ../src/main_window.vala:1077
+#: ../src/main_window.vala:35 ../src/main_window.vala:1025
 msgid "Open a file"
 msgstr "Abrir un archivo"
 
@@ -1209,7 +1267,7 @@ msgstr "Eliminar el texto elegido"
 msgid "Select the entire document"
 msgstr "Seleccionar todo el documento"
 
-#: ../src/main_window.vala:71 ../src/main_window.vala:145
+#: ../src/main_window.vala:71 ../src/main_window.vala:135
 msgid "_Comment"
 msgstr "_Comentar"
 
@@ -1279,259 +1337,214 @@ msgstr "_Ir a la línea…"
 msgid "Go to a specific line"
 msgstr "Ir a una línea específica"
 
-#. Build
-#: ../src/main_window.vala:99
-msgid "_Build"
-msgstr "_Construir"
-
-#: ../src/main_window.vala:100
-msgid "Cleanup Build _Files"
-msgstr "Limpiar _archivos de construcción"
-
-#: ../src/main_window.vala:101
-msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
-msgstr "Limpiar archivos de construcción (*.aux, *.log, *.out, *.toc, *.etc)"
-
-#: ../src/main_window.vala:103
-msgid "_Stop Execution"
-msgstr "_Detener la ejecución"
-
-#: ../src/main_window.vala:104
-msgid "Stop Execution"
-msgstr "Detener la ejecución"
-
-#: ../src/main_window.vala:105
-msgid "View _Log"
-msgstr "Ver _registro"
-
-#: ../src/main_window.vala:106
-msgid "View Log"
-msgstr "Ver registro"
-
 #. Documents
-#: ../src/main_window.vala:109
+#: ../src/main_window.vala:99
 msgid "_Documents"
 msgstr "_Documentos"
 
-#: ../src/main_window.vala:110
+#: ../src/main_window.vala:100
 msgid "_Save All"
 msgstr "Guardar _todo"
 
-#: ../src/main_window.vala:111
+#: ../src/main_window.vala:101
 msgid "Save all open files"
 msgstr "Guardar todos los archivos abiertos"
 
-#: ../src/main_window.vala:112
+#: ../src/main_window.vala:102
 msgid "_Close All"
 msgstr "_Cerrar todo"
 
-#: ../src/main_window.vala:113
+#: ../src/main_window.vala:103
 msgid "Close all open files"
 msgstr "Cerrar todos los archivos abiertos"
 
-#: ../src/main_window.vala:114
+#: ../src/main_window.vala:104
 msgid "_Previous Document"
 msgstr "Documento _anterior"
 
-#: ../src/main_window.vala:115
+#: ../src/main_window.vala:105
 msgid "Activate previous document"
 msgstr "Activar el documento anterior"
 
-#: ../src/main_window.vala:117
+#: ../src/main_window.vala:107
 msgid "_Next Document"
 msgstr "Documento _siguiente"
 
-#: ../src/main_window.vala:118
+#: ../src/main_window.vala:108
 msgid "Activate next document"
 msgstr "Activar el documento siguiente"
 
-#: ../src/main_window.vala:120
+#: ../src/main_window.vala:110
 msgid "_Move to New Window"
 msgstr "_Mover a una ventana nueva"
 
-#: ../src/main_window.vala:121
+#: ../src/main_window.vala:111
 msgid "Move the current document to a new window"
 msgstr "Mover el documento actual hacia una ventana nueva"
 
 #. Projects
-#: ../src/main_window.vala:125
+#: ../src/main_window.vala:115
 msgid "_Projects"
 msgstr "_Proyectos"
 
-#: ../src/main_window.vala:126
+#: ../src/main_window.vala:116
 msgid "_New Project"
 msgstr "Proyecto _nuevo"
 
-#: ../src/main_window.vala:127
+#: ../src/main_window.vala:117
 msgid "Create a new project"
 msgstr "Crear un proyecto nuevo"
 
-#: ../src/main_window.vala:128
+#: ../src/main_window.vala:118
 msgid "_Configure Current Project"
 msgstr "_Configurar el proyecto actual"
 
-#: ../src/main_window.vala:129
+#: ../src/main_window.vala:119
 msgid "Change the main file of the current project"
 msgstr "Crear el archivo principal del proyecto actual"
 
-#: ../src/main_window.vala:131
+#: ../src/main_window.vala:121
 msgid "_Manage Projects"
 msgstr "_Gestionar Proyectos"
 
-#: ../src/main_window.vala:132 ../src/project_dialogs.vala:183
+#: ../src/main_window.vala:122 ../src/project_dialogs.vala:183
 msgid "Manage Projects"
 msgstr "Gestionar Proyectos"
 
 #. Structure
-#: ../src/main_window.vala:135
+#: ../src/main_window.vala:125
 msgid "S_tructure"
 msgstr "Es_tructura"
 
-#: ../src/main_window.vala:137
+#: ../src/main_window.vala:127
 msgid "Cut the selected structure item"
 msgstr "Cortar el elemento de estructura seleccionado"
 
-#: ../src/main_window.vala:139
+#: ../src/main_window.vala:129
 msgid "Copy the selected structure item"
 msgstr "Copiar el elemento de estructura seleccionado"
 
-#: ../src/main_window.vala:141
+#: ../src/main_window.vala:131
 msgid "Delete the selected structure item"
 msgstr "Eliminar el elemento de estructura seleccionado"
 
-#: ../src/main_window.vala:142
+#: ../src/main_window.vala:132
 msgid "_Select"
 msgstr "_Seleccionar"
 
-#: ../src/main_window.vala:143
+#: ../src/main_window.vala:133
 msgid "Select the contents of the selected structure item"
 msgstr "Seleccionar el contenido del elemento de estructura seleccionado"
 
-#: ../src/main_window.vala:146
+#: ../src/main_window.vala:136
 msgid "Comment the selected structure item"
 msgstr "Comentar el elemento de estructura seleccionado"
 
-#: ../src/main_window.vala:147
+#: ../src/main_window.vala:137
 msgid "Shift _Left"
 msgstr "Desplazar a la i_zquierda"
 
-#: ../src/main_window.vala:148
+#: ../src/main_window.vala:138
 msgid "Shift the selected structure item to the left (e.g. section → chapter)"
 msgstr ""
 "Desplazar la estructura seleccionada un elemento a la izquierda (ej. sección "
 "→ capítulo)"
 
-#: ../src/main_window.vala:150
+#: ../src/main_window.vala:140
 msgid "Shift _Right"
 msgstr "Desplazar a la _derecha"
 
-#: ../src/main_window.vala:151
+#: ../src/main_window.vala:141
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
 msgstr ""
 "Desplazar la estructura seleccionada un elemento a la derecha (ej. capítulo "
 "→ sección)"
 
 #. Help
-#: ../src/main_window.vala:155
+#: ../src/main_window.vala:145
 msgid "_Help"
 msgstr "Ay_uda"
 
-#: ../src/main_window.vala:156
+#: ../src/main_window.vala:146
 msgid "_Contents"
 msgstr "Índ_ice"
 
-#: ../src/main_window.vala:157
+#: ../src/main_window.vala:147
 msgid "Open the LaTeXila documentation"
 msgstr "Abrir la documentación de LaTeXila"
 
-#: ../src/main_window.vala:158
+#: ../src/main_window.vala:148
 msgid "_LaTeX Reference"
 msgstr "Referencia de _LaTeX"
 
-#: ../src/main_window.vala:159
+#: ../src/main_window.vala:149
 msgid "The Kile LaTeX Reference"
 msgstr "La referencia de LaTeX de Kile"
 
-#: ../src/main_window.vala:161 ../src/main_window.vala:1965
+#: ../src/main_window.vala:151 ../src/main_window.vala:1658
 msgid "About LaTeXila"
 msgstr "Acerca de LaTeXila"
 
-#: ../src/main_window.vala:167
+#: ../src/main_window.vala:157
 msgid "Activate or disable the spell checking"
 msgstr "Activar o desactivar la corrección ortográfica"
 
-#: ../src/main_window.vala:168
+#: ../src/main_window.vala:158
 msgid "_Main Toolbar"
 msgstr "Barra de _herramientas principal"
 
-#: ../src/main_window.vala:169
+#: ../src/main_window.vala:159
 msgid "Show or hide the main toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas principal"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:171
+#: ../src/main_window.vala:161
 msgid "_Edit Toolbar"
 msgstr "_Editar la barra de herramientas"
 
-#: ../src/main_window.vala:172
+#: ../src/main_window.vala:162
 msgid "Show or hide the edit toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas de edición"
 
-#: ../src/main_window.vala:173
+#: ../src/main_window.vala:163
 msgid "_Side panel"
 msgstr "Panel _lateral"
 
-#: ../src/main_window.vala:174
+#: ../src/main_window.vala:164
 msgid "Show or hide the side panel"
 msgstr "Mostrar u ocultar el panel lateral"
 
-#: ../src/main_window.vala:175
+#: ../src/main_window.vala:165
 msgid "_Bottom panel"
 msgstr "Panel _inferior"
 
-#: ../src/main_window.vala:176
+#: ../src/main_window.vala:166
 msgid "Show or hide the bottom panel"
 msgstr "Mostrar u ocultar el panel inferior"
 
-#: ../src/main_window.vala:177
-msgid "Show _Warnings"
-msgstr "Mostrar _advertencias"
-
-#: ../src/main_window.vala:178
-msgid "Show Warnings"
-msgstr "Mostrar advertencias"
-
-#: ../src/main_window.vala:179
-msgid "Show _Bad Boxes"
-msgstr "Mostrar _Bad Boxes"
-
-#: ../src/main_window.vala:180
-msgid "Show Bad Boxes"
-msgstr "Mostrar Bad Boxes"
-
-#: ../src/main_window.vala:313
+#: ../src/main_window.vala:271
 msgid "Symbols"
 msgstr "Símbolos"
 
-#: ../src/main_window.vala:319
+#: ../src/main_window.vala:298
 msgid "Structure"
 msgstr "Estructura"
 
 #. recent documents
-#: ../src/main_window.vala:555
+#: ../src/main_window.vala:551
 msgid "Open _Recent"
 msgstr "Abir _reciente"
 
-#: ../src/main_window.vala:556
+#: ../src/main_window.vala:552
 msgid "Open recently used files"
 msgstr "Abrir archivos usados recientemente"
 
-#: ../src/main_window.vala:728
+#: ../src/main_window.vala:675
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Este archivo (%s) ya esta abierto en otra ventana de LaTeXila."
 
-#: ../src/main_window.vala:730
+#: ../src/main_window.vala:677
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1539,117 +1552,99 @@ msgstr ""
 "LaTeXila abrió esta instancia del archivo en una forma no editable.¿Quiere "
 "editarlo de todas formas?"
 
-#: ../src/main_window.vala:733
+#: ../src/main_window.vala:680
 msgid "Edit Anyway"
 msgstr "Editar de todas formas"
 
-#: ../src/main_window.vala:734
+#: ../src/main_window.vala:681
 msgid "Don't Edit"
 msgstr "No editar"
 
-#: ../src/main_window.vala:839
+#: ../src/main_window.vala:787
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "¿Guardar los cambios del documento «%s» antes de cerrar?"
 
-#: ../src/main_window.vala:937
+#: ../src/main_window.vala:885
 msgid "Read-Only"
 msgstr "Sólo lectura"
 
-#: ../src/main_window.vala:951
+#: ../src/main_window.vala:899
 msgid "Save File"
 msgstr "Guardar Archivo"
 
-#: ../src/main_window.vala:986
+#: ../src/main_window.vala:934
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Ya existe un archivo llamado «%s». ¿Quiere reemplazarlo?"
 
-#: ../src/main_window.vala:991
+#: ../src/main_window.vala:939
 msgid "Replace"
 msgstr "Reemplazar"
 
-#: ../src/main_window.vala:1078
+#: ../src/main_window.vala:1026
 msgid "Open a recently used file"
 msgstr "Abrir un archivo usado recientemente"
 
-#: ../src/main_window.vala:1499
+#: ../src/main_window.vala:1275
 msgid "Open Files"
 msgstr "Abrir archivos"
 
-#: ../src/main_window.vala:1512
+#: ../src/main_window.vala:1288
 msgid "All LaTeX Files"
 msgstr "Todos los archivos de LaTeX"
 
-#: ../src/main_window.vala:1519
+#: ../src/main_window.vala:1295
 msgid "All Files"
 msgstr "Todos los archivos"
 
-#: ../src/main_window.vala:1926
+#: ../src/main_window.vala:1619
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila es un entorno LaTeX Integrado para el escritorio GNOME"
 
-#: ../src/main_window.vala:1966
+#: ../src/main_window.vala:1659
 msgid "translator-credits"
 msgstr ""
 "Daniel Mustieles García <daniel.mustieles@gmail.com>, 2011\n"
 "Matías De la Puente <mfpuente.ar@gmail.com>"
 
-#: ../src/post_processors.vala:277
+#: ../src/post_processors.vala:260
 msgid "Latexmk messages"
 msgstr "mensajes de Latexmk"
 
-#: ../src/preferences_dialog.vala:32
+#: ../src/preferences_dialog.vala:31
 msgid "Preferences"
 msgstr "Preferencias"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:37 ../src/preferences_dialog.vala:674
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:415
 msgid "Reset All"
 msgstr "Restablecer todo"
 
-#: ../src/preferences_dialog.vala:40
+#: ../src/preferences_dialog.vala:39
 msgid "Reset all preferences"
 msgstr "Restablecer todas las preferencias"
 
-#: ../src/preferences_dialog.vala:120
+#: ../src/preferences_dialog.vala:118
 msgid "Do you really want to reset all preferences?"
 msgstr "¿Realmente quiere restablecer todas las preferencias?"
 
-#: ../src/preferences_dialog.vala:194
+#: ../src/preferences_dialog.vala:192
 msgid "minute"
 msgid_plural "minutes"
 msgstr[0] "minuto"
 msgstr[1] "minutos"
 
-#: ../src/preferences_dialog.vala:294
+#: ../src/preferences_dialog.vala:292
 msgid "character"
 msgid_plural "characters"
 msgstr[0] "carácter"
 msgstr[1] "caracteres"
 
-#: ../src/preferences_dialog.vala:333
-#, c-format
-msgid "%s [copy]"
-msgstr "%s (copia)"
-
-#: ../src/preferences_dialog.vala:385
-#, c-format
-msgid "Do you really want to delete the build tool \"%s\"?"
-msgstr "¿Realmente quiere eliminar la herramienta de construcción «%s»?"
-
-#: ../src/preferences_dialog.vala:404
-msgid "Do you really want to reset all build tools?"
-msgstr "¿Realmente quiere restablecer todas las herramientas de construcción?"
-
-#: ../src/preferences_dialog.vala:486
+#: ../src/preferences_dialog.vala:357
 #, c-format
 msgid "Use the system fixed width font (%s)"
 msgstr "Usar la tipografía de ancho fijo del sistema (%s)"
-
-#: ../src/preferences_dialog.vala:586
-msgid "Active"
-msgstr "Activar"
 
 #: ../src/project_dialogs.vala:26
 msgid "New Project"
@@ -1695,7 +1690,7 @@ msgstr "El archivo principal no está en la carpeta."
 msgid "Go to Line:"
 msgstr "Ir a la línea:"
 
-#: ../src/search.vala:49
+#: ../src/search.vala:50
 msgid "Line you want to move the cursor to"
 msgstr "Línea a la quiere mover el cursor"
 
@@ -1707,131 +1702,134 @@ msgstr "Reemplazar con"
 msgid "All"
 msgstr "Todo"
 
-#: ../src/search.vala:307
+#: ../src/search.vala:308
 msgid "Search for"
 msgstr "Buscar"
 
-#: ../src/search.vala:313
+#: ../src/search.vala:314
 msgid "Case sensitive"
 msgstr "Sensible a capitalización"
 
-#: ../src/search.vala:314
+#: ../src/search.vala:315
 msgid "Entire words only"
 msgstr "Solo palabras completas"
 
-#: ../src/structure.vala:142
+#: ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "Ocultar panel"
+
+#: ../src/structure.vala:175
 msgid "Collapse All"
 msgstr "Contraer todo"
 
-#: ../src/structure.vala:153
+#: ../src/structure.vala:186
 msgid "Show labels"
 msgstr "Mostrar etiquetas"
 
-#: ../src/structure.vala:157
+#: ../src/structure.vala:190
 msgid "Show files included"
 msgstr "Mostrar archivos incluidos"
 
-#: ../src/structure.vala:161
+#: ../src/structure.vala:194
 msgid "Show tables"
 msgstr "Mostrar tablas"
 
-#: ../src/structure.vala:165
+#: ../src/structure.vala:198
 msgid "Show figures and images"
 msgstr "Mostrar figuras e imágenes"
 
-#: ../src/structure.vala:169
+#: ../src/structure.vala:202
 msgid "Show TODOs and FIXMEs"
 msgstr "Mostrar TODO y FIXME"
 
-#: ../src/structure.vala:614
+#: ../src/structure.vala:653
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Error de acción de la estructura: %s"
 
-#: ../src/structure.vala:619
+#: ../src/structure.vala:658
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "La estructura de datos está obsoleta. Actualice la estructura."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:639
+#: ../src/structure.vala:678
 msgid "cut"
 msgstr "cortar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:641
+#: ../src/structure.vala:680
 msgid "copy"
 msgstr "copiar"
 
-#: ../src/structure.vala:642
+#: ../src/structure.vala:681
 msgid "delete"
 msgstr "eliminar"
 
-#: ../src/structure.vala:643
+#: ../src/structure.vala:682
 msgid "select"
 msgstr "seleccionar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:645
+#: ../src/structure.vala:684
 msgid "comment"
 msgstr "comentario"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:647
+#: ../src/structure.vala:686
 msgid "shift left"
 msgstr "desplazar a la izquierda"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:649
+#: ../src/structure.vala:688
 msgid "shift right"
 msgstr "desplazar a la derecha"
 
-#: ../src/structure.vala:694
+#: ../src/structure.vala:733
 msgid "Table"
 msgstr "Tabla"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:696
+#: ../src/structure.vala:735
 msgid "Figure"
 msgstr "Figura"
 
-#: ../src/structure.vala:697
+#: ../src/structure.vala:736
 msgid "Image"
 msgstr "Imagen"
 
-#: ../src/structure.vala:698
+#: ../src/structure.vala:737
 msgid "File included"
 msgstr "Archivo incluido"
 
-#: ../src/symbols.vala:26
+#: ../src/symbols.vala:59
 msgid "Greek"
 msgstr "Griego"
 
-#. when we drink too much tequila we walk like this arrow...
-#: ../src/symbols.vala:28
+#: ../src/symbols.vala:60
 msgid "Arrows"
 msgstr "Flechas"
 
-#: ../src/symbols.vala:29
+#: ../src/symbols.vala:61
 msgid "Relations"
 msgstr "Relaciones"
 
-#: ../src/symbols.vala:30
+#: ../src/symbols.vala:62
 msgid "Operators"
 msgstr "Operadores"
 
-#: ../src/symbols.vala:31
+#: ../src/symbols.vala:63
 msgid "Delimiters"
 msgstr "Delimitadores"
 
-#: ../src/symbols.vala:32
+#: ../src/symbols.vala:64
 msgid "Misc math"
 msgstr "Matemática varios"
 
-#: ../src/symbols.vala:33
+#: ../src/symbols.vala:65
 msgid "Misc text"
 msgstr "Texto varios"
 
-#: ../src/symbols.vala:765
+#: ../src/symbols.vala:159
 msgid "Most Used"
 msgstr "Más usado"
 
@@ -1925,77 +1923,127 @@ msgid "Font & Colors"
 msgstr "Tipografía y colores"
 
 #: ../src/ui/preferences_dialog.ui.h:18
-msgid "Build Tools"
-msgstr "Herramientas de construcción"
-
-#: ../src/ui/preferences_dialog.ui.h:19
-msgid "Interactive completion after"
-msgstr "Completado interactivo después de"
-
-#: ../src/ui/preferences_dialog.ui.h:20
-#| msgid "Number of characters after '\\'"
-msgid "Number of characters after &apos;\\&apos;"
-msgstr "Número de caracteres después de «\\»"
-
-#: ../src/ui/preferences_dialog.ui.h:21
-msgid "Number of characters after '\\'"
-msgstr "Número de caracteres después de «\\»"
-
-#: ../src/ui/preferences_dialog.ui.h:22
-msgid "Always show all information for the Latexmk post processor"
-msgstr "mostrar siempre toda la información para el post procesador Latexmk"
-
-#: ../src/ui/preferences_dialog.ui.h:23
-msgid "Program for viewing documents:"
-msgstr "Programa para ver documentos:"
-
-#: ../src/ui/preferences_dialog.ui.h:24
-msgid "Delete one build tool"
-msgstr "Eliminar una herramienta de construcción"
-
-#: ../src/ui/preferences_dialog.ui.h:25
-msgid "Reset"
-msgstr "Restablecer"
-
-#: ../src/ui/preferences_dialog.ui.h:26
-msgid "Reset all build tools"
-msgstr "¿Realmente quiere restablecer todas las herramientas de construcción?"
-
-#: ../src/ui/preferences_dialog.ui.h:27
-msgid "Number of most used symbols:"
-msgstr "Número de símbolos más usados:"
-
-#: ../src/ui/preferences_dialog.ui.h:28
 msgid "File Clean-Up"
 msgstr "Limpieza de Archivos"
 
-#: ../src/ui/preferences_dialog.ui.h:29
+#: ../src/ui/preferences_dialog.ui.h:19
 msgid "No confirmation when cleaning-up"
 msgstr "No confirmar al limpiar"
 
-#: ../src/ui/preferences_dialog.ui.h:30
+#: ../src/ui/preferences_dialog.ui.h:20
 msgid "Automatically clean-up files after close"
 msgstr "Limpiar automáticamente los archivos después de cerrar"
 
-#: ../src/ui/preferences_dialog.ui.h:32
+#: ../src/ui/preferences_dialog.ui.h:22
 msgid "Show all files"
 msgstr "Mostrar todos los archivos"
 
-#: ../src/ui/preferences_dialog.ui.h:33
+#: ../src/ui/preferences_dialog.ui.h:23
 msgid "Except those for clean-up"
 msgstr "Excepto aquellos que limpiar"
 
-#: ../src/ui/preferences_dialog.ui.h:34
+#: ../src/ui/preferences_dialog.ui.h:24
 msgid "Show hidden files (beginning with a dot)"
 msgstr "Mostrar archivos ocultos (los que compienzan con un punto)"
 
-#: ../src/ui/preferences_dialog.ui.h:35
+#: ../src/ui/preferences_dialog.ui.h:25
 msgid "Show only files with these extensions"
 msgstr "Mostrar solo los archivos con estas extensiones"
 
-#: ../src/ui/preferences_dialog.ui.h:36
+#: ../src/ui/preferences_dialog.ui.h:26
+msgid "Interactive completion after"
+msgstr "Completado interactivo después de"
+
+#: ../src/ui/preferences_dialog.ui.h:27
+msgid "Number of characters after &apos;\\&apos;"
+msgstr "Número de caracteres después de «\\»"
+
+#: ../src/ui/preferences_dialog.ui.h:28
+msgid "Number of characters after '\\'"
+msgstr "Número de caracteres después de «\\»"
+
+#: ../src/ui/preferences_dialog.ui.h:29
 msgid "Other"
 msgstr "Otros"
+
+#~ msgid ""
+#~ "The program for viewing documents.\n"
+#~ "Its value can be changed in the preferences dialog."
+#~ msgstr ""
+#~ "El programa para ver documentos.\n"
+#~ "Su valor se puede cambiar en el diálogo de preferencias."
+
+#~ msgid "New command"
+#~ msgstr "Comando nuevo"
+
+#~ msgid "Must Succeed"
+#~ msgstr "Debe tener éxito"
+
+#~ msgid "Rubber may not support filenames with spaces (even in a directory)"
+#~ msgstr ""
+#~ "Puede que Rubber no soporte nombres de archivos con espacios (incluso en "
+#~ "una carpeta)"
+
+#~ msgid "Job"
+#~ msgstr "Trabajo"
+
+#~ msgid "File"
+#~ msgstr "Archivo"
+
+#~ msgid "Line"
+#~ msgstr "Línea"
+
+#~ msgid "_Build"
+#~ msgstr "_Construir"
+
+#~ msgid "Cleanup Build _Files"
+#~ msgstr "Limpiar _archivos de construcción"
+
+#~ msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
+#~ msgstr ""
+#~ "Limpiar archivos de construcción (*.aux, *.log, *.out, *.toc, *.etc)"
+
+#~ msgid "_Stop Execution"
+#~ msgstr "_Detener la ejecución"
+
+#~ msgid "Stop Execution"
+#~ msgstr "Detener la ejecución"
+
+#~ msgid "View _Log"
+#~ msgstr "Ver _registro"
+
+#~ msgid "View Log"
+#~ msgstr "Ver registro"
+
+#~ msgid "Show _Warnings"
+#~ msgstr "Mostrar _advertencias"
+
+#~ msgid "Show Warnings"
+#~ msgstr "Mostrar advertencias"
+
+#~ msgid "Show _Bad Boxes"
+#~ msgstr "Mostrar _Bad Boxes"
+
+#~ msgid "Show Bad Boxes"
+#~ msgstr "Mostrar Bad Boxes"
+
+#~ msgid "Active"
+#~ msgstr "Activar"
+
+#~ msgid "Always show all information for the Latexmk post processor"
+#~ msgstr "mostrar siempre toda la información para el post procesador Latexmk"
+
+#~ msgid "Program for viewing documents:"
+#~ msgstr "Programa para ver documentos:"
+
+#~ msgid "Delete one build tool"
+#~ msgstr "Eliminar una herramienta de construcción"
+
+#~ msgid "Reset"
+#~ msgstr "Restablecer"
+
+#~ msgid "Number of most used symbols:"
+#~ msgstr "Número de símbolos más usados:"
 
 #~ msgid "%u of %u"
 #~ msgstr "%u de %u"
