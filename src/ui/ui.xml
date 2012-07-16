@@ -73,7 +73,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     </menu>
 
     <menu action="Build" name="BuildMenu">
-      <placeholder name="BuildToolsPlaceholder" />
+      <placeholder name="BuildToolsPlaceholderMenu" />
       <separator />
       <menuitem action="BuildClean" />
       <menuitem action="BuildStopExecution" />
@@ -400,7 +400,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <toolitem action="SearchFind" />
     <toolitem action="SearchReplace" />
     <separator />
-    <placeholder name="BuildToolsPlaceholder2" />
+    <placeholder name="BuildToolsPlaceholderToolbar" />
   </toolbar>
 
   <toolbar name="EditToolbar">

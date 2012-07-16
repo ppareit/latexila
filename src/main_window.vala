@@ -95,18 +95,6 @@ public class MainWindow : Window
         { "SearchGoToLine", Stock.JUMP_TO, N_("_Go to Line..."), "<Control>G",
             N_("Go to a specific line"), on_search_goto_line },
 
-        // Build
-        { "Build", null, N_("_Build") },
-        { "BuildClean", Stock.CLEAR, N_("Cleanup Build _Files"), null,
-            N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
-            on_build_clean },
-        { "BuildStopExecution", Stock.STOP, N_("_Stop Execution"), null,
-            N_("Stop Execution"), on_build_stop_execution },
-        { "BuildViewLog", "view_log", N_("View _Log"), null,
-            N_("View Log"), on_build_view_log },
-        { "BuildToolsPreferences", Stock.PREFERENCES, N_("_Manage Build Tools"), null,
-            N_("Manage Build Tools"), on_build_tools_preferences },
-
         // Documents
         { "Documents", null, N_("_Documents") },
         { "DocumentsSaveAll", Stock.SAVE, N_("_Save All"), "<Shift><Control>L",
@@ -175,13 +163,7 @@ public class MainWindow : Window
         { "ViewSidePanel", null, N_("_Side panel"), "<Release>F12",
             N_("Show or hide the side panel"), null },
         { "ViewBottomPanel", null, N_("_Bottom panel"), null,
-            N_("Show or hide the bottom panel"), null },
-        { "BuildShowDetails", Stock.ZOOM_IN, N_("Show _Details"), null,
-            N_("Show Details"), null },
-        { "BuildShowWarnings", Stock.DIALOG_WARNING, N_("Show _Warnings"), null,
-            N_("Show Warnings"), null },
-        { "BuildShowBadBoxes", "badbox", N_("Show _Bad Boxes"), null,
-            N_("Show Bad Boxes"), null }
+            N_("Show or hide the bottom panel"), null }
     };
 
     private string file_chooser_current_folder = Environment.get_home_dir ();
@@ -189,12 +171,10 @@ public class MainWindow : Window
     private CustomStatusbar statusbar;
     private GotoLine goto_line;
     private SearchAndReplace search_and_replace;
-    private BuildView _build_view;
     private Toolbar _main_toolbar;
     private Toolbar _edit_toolbar;
     private SidePanel _side_panel;
     private SymbolsView _symbols;
-    private FileBrowser file_browser;
     private Structure _structure;
     private Paned main_hpaned;
     private Paned vpaned;
@@ -203,10 +183,9 @@ public class MainWindow : Window
     private Gtk.ActionGroup action_group;
     private Gtk.ActionGroup latex_action_group;
     private Gtk.ActionGroup documents_list_action_group;
-    private Gtk.ActionGroup build_tools_action_group;
     private uint documents_list_menu_ui_id;
-    private uint build_tools_menu_ui_id;
-    private BuildToolRunner build_tool_runner;
+
+    private MainWindowBuildTools _main_window_build_tools;
 
     // context id for the statusbar
     private uint tip_message_cid;
@@ -272,21 +251,6 @@ public class MainWindow : Window
 
         /* components */
         initialize_menubar_and_toolbar ();
-        Widget menu = ui_manager.get_widget ("/MainMenu");
-
-        _main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
-        _main_toolbar.set_style (ToolbarStyle.ICONS);
-        StyleContext main_toolbar_context = _main_toolbar.get_style_context ();
-        main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-        setup_toolbar_open_button (_main_toolbar);
-
-        _edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
-        _edit_toolbar.set_style (ToolbarStyle.ICONS);
-
-        Toolbar build_toolbar = (Toolbar) ui_manager.get_widget ("/BuildToolbar");
-        build_toolbar.set_style (ToolbarStyle.ICONS);
-        build_toolbar.set_icon_size (IconSize.MENU);
-        build_toolbar.set_orientation (Orientation.VERTICAL);
 
         documents_panel = new DocumentsPanel (this);
         documents_panel.right_click.connect ((event) =>
@@ -300,13 +264,28 @@ public class MainWindow : Window
         goto_line = new GotoLine (this);
         search_and_replace = new SearchAndReplace (this);
 
+        // side panel
+        _side_panel = new SidePanel ();
+
+        _symbols = new SymbolsView (this);
+        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
+
+        FileBrowser file_browser = new FileBrowser (this);
+        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
+
         // bottom panel
-        Gtk.Action action_stop_exec = action_group.get_action ("BuildStopExecution");
-        action_stop_exec.set_sensitive (false);
 
-        _build_view = new BuildView (this);
+        BuildView build_view = new BuildView (this);
 
-        BottomPanel bottom_panel = new BottomPanel (_build_view, build_toolbar);
+        _main_window_build_tools = new MainWindowBuildTools (this, ui_manager,
+            build_view, file_browser);
+
+        Toolbar build_toolbar = ui_manager.get_widget ("/BuildToolbar") as Toolbar;
+        build_toolbar.set_style (ToolbarStyle.ICONS);
+        build_toolbar.set_icon_size (IconSize.MENU);
+        build_toolbar.set_orientation (Orientation.VERTICAL);
+
+        BottomPanel bottom_panel = new BottomPanel (build_view, build_toolbar);
 
         ToggleAction action_bottom_panel =
             action_group.get_action ("ViewBottomPanel") as ToggleAction;
@@ -314,19 +293,23 @@ public class MainWindow : Window
         bottom_panel.bind_property ("visible", action_bottom_panel, "active",
             BindingFlags.BIDIRECTIONAL);
 
-        // side panel
-        _side_panel = new SidePanel ();
-
-        _symbols = new SymbolsView (this);
-        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
-
-        file_browser = new FileBrowser (this);
-        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
-
+        // structure (the UI manager must be initialized)
         _structure = new Structure (this, ui_manager);
         _side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
 
         _side_panel.restore_state ();
+
+        // menu and toolbars
+        Widget menu = ui_manager.get_widget ("/MainMenu");
+
+        _main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
+        _main_toolbar.set_style (ToolbarStyle.ICONS);
+        StyleContext main_toolbar_context = _main_toolbar.get_style_context ();
+        main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+        setup_toolbar_open_button (_main_toolbar);
+
+        _edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
+        _edit_toolbar.set_style (ToolbarStyle.ICONS);
 
         /* signal handlers */
 
@@ -383,7 +366,7 @@ public class MainWindow : Window
             set_undo_sensitivity ();
             set_redo_sensitivity ();
             update_next_prev_doc_sensitivity ();
-            update_build_tools_sensitivity ();
+            _main_window_build_tools.update_sensitivity ();
             update_config_project_sensitivity ();
             my_set_title ();
             update_cursor_position_statusbar ();
@@ -516,7 +499,6 @@ public class MainWindow : Window
         add (main_vgrid);
         show ();
         show_or_hide_widgets ();
-        show_or_hide_build_messages ();
 
         /* Force to show icons in the menu.
          * In the LaTeX and Math menu, icons are needed.
@@ -618,14 +600,6 @@ public class MainWindow : Window
         // list of open documents menu
         documents_list_action_group = new Gtk.ActionGroup ("DocumentsListActions");
         ui_manager.insert_action_group (documents_list_action_group, 0);
-
-        // build tools
-        build_tools_action_group = new Gtk.ActionGroup ("BuildToolsActions");
-        ui_manager.insert_action_group (build_tools_action_group, 0);
-        update_build_tools_menu ();
-
-        BuildTools build_tools = BuildTools.get_default ();
-        build_tools.modified.connect (() => update_build_tools_menu ());
     }
 
     private void on_menu_item_select (Gtk.MenuItem proxy)
@@ -672,44 +646,6 @@ public class MainWindow : Window
         /* bottom panel */
         action = action_group.get_action ("ViewBottomPanel") as ToggleAction;
         action.active = settings.get_boolean ("bottom-panel-visible");
-    }
-
-    private void show_or_hide_build_messages ()
-    {
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-
-        /* Show details */
-
-        ToggleAction action_details =
-            action_group.get_action ("BuildShowDetails") as ToggleAction;
-
-        action_details.bind_property ("active", _build_view, "show-details",
-            BindingFlags.DEFAULT);
-
-        _build_view.bind_property ("has-details", action_details, "sensitive",
-            BindingFlags.SYNC_CREATE);
-
-        action_details.active = false;
-
-        /* Show warnings */
-
-        ToggleAction action_warnings =
-            action_group.get_action ("BuildShowWarnings") as ToggleAction;
-
-        _build_view.bind_property ("show-warnings", action_warnings, "active",
-            BindingFlags.BIDIRECTIONAL);
-
-        action_warnings.active = settings.get_boolean ("show-build-warnings");
-
-        /* Show badboxes */
-
-        ToggleAction action_badboxes =
-            action_group.get_action ("BuildShowBadBoxes") as ToggleAction;
-
-        _build_view.bind_property ("show-badboxes", action_badboxes, "active",
-            BindingFlags.BIDIRECTIONAL);
-
-        action_badboxes.active = settings.get_boolean ("show-build-badboxes");
     }
 
     public DocumentTab? open_document (File location, bool jump_to = true)
@@ -808,13 +744,14 @@ public class MainWindow : Window
         tab.document.notify["location"].connect (() =>
         {
             sync_name (tab);
-            update_build_tools_sensitivity ();
+            _main_window_build_tools.update_sensitivity ();
         });
 
         tab.document.notify["project-id"].connect (() =>
         {
-            update_build_tools_sensitivity ();
+            _main_window_build_tools.update_sensitivity ();
         });
+
 
         tab.document.modified_changed.connect (() => sync_name (tab));
         tab.document.notify["readonly"].connect (() => sync_name (tab));
@@ -1156,11 +1093,7 @@ public class MainWindow : Window
         action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
         settings_ui.set_boolean ("bottom-panel-visible", action.active);
 
-        action = (ToggleAction) action_group.get_action ("BuildShowWarnings");
-        settings_ui.set_boolean ("show-build-warnings", action.active);
-
-        action = (ToggleAction) action_group.get_action ("BuildShowBadBoxes");
-        settings_ui.set_boolean ("show-build-badboxes", action.active);
+        _main_window_build_tools.save_state ();
     }
 
     private void move_tab_to_new_window (DocumentTab tab)
@@ -1172,120 +1105,6 @@ public class MainWindow : Window
         // we create a new tab with the same view, so we avoid headache with signals
         // the user see nothing, muahahaha
         new_window.create_tab_with_view (view);
-    }
-
-    public void update_build_tools_menu ()
-    {
-        return_if_fail (build_tools_action_group != null);
-
-        if (build_tools_menu_ui_id != 0)
-            ui_manager.remove_ui (build_tools_menu_ui_id);
-
-        foreach (Gtk.Action action in build_tools_action_group.list_actions ())
-        {
-            action.activate.disconnect (build_tools_menu_activate);
-            build_tools_action_group.remove_action (action);
-        }
-
-        BuildTools build_tools = BuildTools.get_default ();
-
-        uint id = build_tools.is_empty () ? 0 : ui_manager.new_merge_id ();
-
-        int i = 0;
-        int j = 0;
-        foreach (BuildTool build_tool in build_tools)
-        {
-            if (! build_tool.enabled)
-            {
-                i++;
-                continue;
-            }
-
-            string action_name = @"BuildTool_$i";
-            Gtk.Action action = new Gtk.Action (action_name, build_tool.label,
-                build_tool.get_description (), build_tool.icon);
-
-            // F2 -> F11
-            // (F1 = help, F12 = stop execution)
-            string accel = j < 10 ? "<Release>F%d".printf (j + 2) : null;
-
-            build_tools_action_group.add_action_with_accel (action, accel);
-            action.activate.connect (build_tools_menu_activate);
-
-            ui_manager.add_ui (id, "/MainMenu/BuildMenu/BuildToolsPlaceholder",
-                action_name, action_name, UIManagerItemType.MENUITEM, false);
-            ui_manager.add_ui (id, "/MainToolbar/BuildToolsPlaceholder2",
-                action_name, action_name, UIManagerItemType.TOOLITEM, false);
-
-            i++;
-            j++;
-        }
-
-        build_tools_menu_ui_id = id;
-        update_build_tools_sensitivity ();
-    }
-
-    private void build_tools_menu_activate (Gtk.Action action)
-    {
-        return_if_fail (active_tab != null);
-
-        string[] _name = action.name.split ("_");
-        int tool_index = int.parse (_name[1]);
-
-        BuildTool? tool = BuildTools.get_default ().get_by_id (tool_index);
-        return_if_fail (tool != null);
-
-        if (! tool.has_jobs ())
-            return_if_fail (active_document.location != null);
-
-        _build_view.show ();
-
-        // save the document if commands are executed
-        if (tool.has_jobs ())
-        {
-            if (active_document.location == null)
-            {
-                bool tmp_location_set = active_document.set_tmp_location ();
-                return_if_fail (tmp_location_set);
-            }
-
-            int project_id = active_document.project_id;
-
-            if (project_id == -1)
-                active_document.save ();
-
-            // save all the documents belonging to the project
-            else
-            {
-                Gee.List<Document> docs = Latexila.get_instance ().get_documents ();
-                foreach (Document doc in docs)
-                {
-                    if (doc.project_id == project_id)
-                        doc.save ();
-                }
-            }
-
-            // Ensure that the files are correctly saved before the execution.
-            Utils.flush_queue ();
-        }
-
-        Gtk.Action action_stop_exec = action_group.get_action ("BuildStopExecution");
-        action_stop_exec.sensitive = true;
-
-        File main_file = active_document.get_main_file ();
-        build_tool_runner = new BuildToolRunner (tool, main_file, _build_view);
-
-        build_tool_runner.finished.connect (() =>
-        {
-            action_stop_exec.sensitive = false;
-
-            // Refresh the file browser when the execution is finished.
-            // TODO It would be better if the file browser could detect file updates.
-            if (tool.has_jobs ())
-                file_browser.refresh_for_document (active_document);
-        });
-
-        build_tool_runner.run ();
     }
 
     private void update_documents_list_menu ()
@@ -1358,7 +1177,7 @@ public class MainWindow : Window
             "EditCopy", "EditPaste", "EditDelete", "EditSelectAll", "EditComment",
             "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
             "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
-            "SearchFind", "SearchReplace", "SearchGoToLine", "BuildClean", "BuildViewLog",
+            "SearchFind", "SearchReplace", "SearchGoToLine",
             "ProjectsConfigCurrent", "FileCreateTemplate"
         };
 
@@ -1369,7 +1188,7 @@ public class MainWindow : Window
         }
 
         latex_action_group.set_sensitive (sensitive);
-        build_tools_action_group.set_sensitive (sensitive);
+        _main_window_build_tools.update_sensitivity ();
     }
 
     private void set_undo_sensitivity ()
@@ -1409,60 +1228,6 @@ public class MainWindow : Window
 
         int nb_pages = documents_panel.get_n_pages ();
         action_next.set_sensitive (current_page < nb_pages - 1);
-    }
-
-    private void update_build_tools_sensitivity ()
-    {
-        Gtk.Action clean_action = action_group.get_action ("BuildClean");
-        Gtk.Action view_log_action = action_group.get_action ("BuildViewLog");
-
-        if (active_tab == null)
-        {
-            build_tools_action_group.set_sensitive (false);
-            clean_action.set_sensitive (false);
-            view_log_action.set_sensitive (false);
-            return;
-        }
-
-        // we must set the _action group_ sensitive and then set the sensitivity for each
-        // action of the action group
-        build_tools_action_group.set_sensitive (true);
-
-        bool is_tex = active_document.is_main_file_a_tex_file ();
-        clean_action.set_sensitive (is_tex);
-        view_log_action.set_sensitive (is_tex);
-
-        bool unsaved_doc = active_document.location == null;
-        string ext = "";
-        if (! unsaved_doc)
-        {
-            string path = active_document.get_main_file ().get_parse_name ();
-            ext = Utils.get_extension (path);
-        }
-
-        int tool_num = 0;
-        foreach (BuildTool tool in BuildTools.get_default ())
-        {
-            if (! tool.enabled)
-            {
-                tool_num++;
-                continue;
-            }
-
-            Gtk.Action action =
-                build_tools_action_group.get_action (@"BuildTool_$tool_num");
-
-            if (unsaved_doc)
-                action.set_sensitive (tool.has_jobs ());
-            else
-            {
-                string[] extensions = tool.extensions.split (" ");
-                bool sensitive = tool.extensions.length == 0 || ext in extensions;
-                action.set_sensitive (sensitive);
-            }
-
-            tool_num++;
-        }
     }
 
     public void update_config_project_sensitivity ()
@@ -1722,48 +1487,6 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         goto_line.show ();
-    }
-
-    /* Build */
-
-    public void on_build_stop_execution ()
-    {
-        return_if_fail (build_tool_runner != null);
-        build_tool_runner.abort ();
-        _build_view.show ();
-    }
-
-    public void on_build_clean ()
-    {
-        return_if_fail (active_tab != null);
-
-        CleanBuildFiles build_files = new CleanBuildFiles (this, active_document);
-
-        if (build_files.clean ())
-            file_browser.refresh_for_document (active_document);
-    }
-
-    public void on_build_view_log ()
-    {
-        return_if_fail (active_tab != null);
-        return_if_fail (active_document.is_main_file_a_tex_file ());
-
-        File mainfile = active_document.get_main_file ();
-        File directory = mainfile.get_parent ();
-
-        string basename = Utils.get_shortname (mainfile.get_basename ()) + ".log";
-        File file = directory.get_child (basename);
-        DocumentTab? tab = open_document (file);
-
-        if (tab == null)
-            warning ("Impossible to view log");
-        else
-            tab.document.readonly = true;
-    }
-
-    public void on_build_tools_preferences ()
-    {
-        new BuildToolsPreferences (this);
     }
 
     /* Documents */
