@@ -104,6 +104,8 @@ public class MainWindow : Window
             N_("Stop Execution"), on_build_stop_execution },
         { "BuildViewLog", "view_log", N_("View _Log"), null,
             N_("View Log"), on_build_view_log },
+        { "BuildToolsPreferences", Stock.PREFERENCES, N_("_Manage Build Tools"), null,
+            N_("Manage Build Tools"), on_build_tools_preferences },
 
         // Documents
         { "Documents", null, N_("_Documents") },
@@ -1757,6 +1759,11 @@ public class MainWindow : Window
             warning ("Impossible to view log");
         else
             tab.document.readonly = true;
+    }
+
+    public void on_build_tools_preferences ()
+    {
+        new BuildToolsPreferences (this);
     }
 
     /* Documents */

@@ -25,7 +25,7 @@
 
 using Gtk;
 
-public class BuildToolsPreferences : Grid
+public class BuildToolsPreferences : GLib.Object
 {
     private enum BuildToolColumn
     {
@@ -36,15 +36,31 @@ public class BuildToolsPreferences : Grid
         N_COLUMNS
     }
 
+    private Dialog _dialog;
     private ListStore _list_store;
     private TreeView _tree_view;
 
-    public BuildToolsPreferences ()
+    public BuildToolsPreferences (MainWindow main_window)
     {
-        set_orientation (Orientation.VERTICAL);
-
         init_list_store ();
         init_tree_view ();
+
+        _dialog = new Dialog.with_buttons (_("Build Tools"), main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            Stock.CLOSE, ResponseType.ACCEPT);
+
+        Box content_area = _dialog.get_content_area ();
+        content_area.pack_start (get_default_build_tools_grid ());
+        content_area.show_all ();
+
+        _dialog.run ();
+        _dialog.destroy ();
+    }
+
+    private Grid get_default_build_tools_grid ()
+    {
+        Grid grid = new Grid ();
+        grid.set_orientation (Orientation.VERTICAL);
 
         _tree_view.expand = true;
         ScrolledWindow scrolled_window =
@@ -71,9 +87,10 @@ public class BuildToolsPreferences : Grid
         context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
         context.set_junction_sides (JunctionSides.TOP);
 
-        add (scrolled_window);
-        add (toolbar);
-        show_all ();
+        grid.add (scrolled_window);
+        grid.add (toolbar);
+
+        return grid;
     }
 
     private void init_list_store ()
@@ -238,10 +255,8 @@ public class BuildToolsPreferences : Grid
             TreeModel model = _list_store as TreeModel;
             model.get (iter, BuildToolColumn.LABEL, out label);
 
-            unowned Gtk.Window? window = Utils.get_toplevel_window (this);
-            return_if_fail (window != null);
-
-            Dialog dialog = new MessageDialog (window, DialogFlags.DESTROY_WITH_PARENT,
+            Dialog dialog = new MessageDialog (_dialog,
+                DialogFlags.DESTROY_WITH_PARENT | DialogFlags.MODAL,
                 MessageType.QUESTION, ButtonsType.NONE,
                 _("Do you really want to delete the build tool \"%s\"?"),
                 label);
@@ -377,10 +392,7 @@ public class BuildToolsPreferences : Grid
 
         reset_button.clicked.connect (() =>
         {
-            unowned Gtk.Window? window = Utils.get_toplevel_window (this);
-            return_if_fail (window != null);
-
-            Dialog dialog = Utils.get_reset_all_confirm_dialog (window,
+            Dialog dialog = Utils.get_reset_all_confirm_dialog (_dialog,
                 _("Do you really want to reset all build tools?"));
 
             if (dialog.run () == ResponseType.YES)
@@ -416,10 +428,7 @@ public class BuildToolsPreferences : Grid
 
     private void show_build_tool_dialog ()
     {
-        unowned Gtk.Window? window = Utils.get_toplevel_window (this);
-        return_if_fail (window != null);
-
-        BuildToolDialog.show_me (window.get_transient_for ());
+        BuildToolDialog.show_me (_dialog);
     }
 
     private void edit_build_tool (int build_tool_num)

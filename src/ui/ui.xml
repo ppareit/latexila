@@ -1,7 +1,7 @@
 <!--
 This file is part of LaTeXila.
 
-Copyright © 2010 Sébastien Wilmet
+Copyright © 2010-2012 Sébastien Wilmet
 
 LaTeXila is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -82,6 +82,8 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <menuitem action="BuildShowDetails" />
       <menuitem action="BuildShowWarnings" />
       <menuitem action="BuildShowBadBoxes" />
+      <separator />
+      <menuitem action="BuildToolsPreferences" />
     </menu>
 
     <menu action="Latex">
