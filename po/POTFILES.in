@@ -4,6 +4,9 @@
 data/build_tools/build_tools.pot
 data/templates/templates.pot
 src/app_settings.vala
+src/bottom_panel.vala
+src/build_command_runner.vala
+src/build_job_runner.vala
 src/build_tool_dialog.vala
 src/build_tool_runner.vala
 src/build_tools_preferences.vala
@@ -19,6 +22,7 @@ src/document_tab.vala
 src/document.vala
 src/document_view.vala
 src/encodings.vala
+src/error_entry.vala
 src/file_browser.vala
 src/latexila.vala
 src/latex_menu.vala
@@ -34,10 +38,13 @@ src/project_dialogs.vala
 src/projects.vala
 src/search.vala
 src/side_panel.vala
+src/stock_icons.vala
 src/structure_model.vala
 src/structure.vala
 src/symbols.vala
+src/symbols_view.vala
 src/tab_info_bar.vala
+src/templates_dialogs.vala
 src/templates.vala
 [type: gettext/glade]src/ui/preferences_dialog.ui
 src/utils.vala
