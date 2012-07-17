@@ -115,8 +115,8 @@ $ ps2pdf document.ps</screen>
 
   <p>There are several means to execute a build tool:</p>
   <list>
-    <item><p>Open the <gui style="menu">Build</gui> menu (first part).</p></item>
-    <item><p>Use the buttons in the main toolbar (last part).</p></item>
+    <item><p>Open the <gui style="menu">Build</gui> menu.</p></item>
+    <item><p>Use the buttons in the main toolbar.</p></item>
     <item><p>Use the shortcut: <key>F2</key> → <key>F11</key>.</p></item>
   </list>
 
@@ -135,18 +135,18 @@ $ ps2pdf document.ps</screen>
   <title>General Configuration</title>
 
   <p>
-    To configure the build tools, open the preferences dialog:
+    To configure the build tools, go to:
     <guiseq>
-      <gui style="menu">Edit</gui>
-      <gui style="menu">Preferences</gui>
-      <gui style="tab">LaTeX</gui>
+      <gui style="menu">Build</gui>
+      <gui style="menu">Manage Build Tools</gui>
     </guiseq>
   </p>
 
-  <p>You will see a list with all the build tools. There are check buttons to enable or
-  disable them. When a build tool is disabled, it's not possible to execute it. You can
-  perform some actions, like moving a tool up or down, open its properties, delete or copy
-  it, create a new one, etc.</p>
+  <p>You will see the list of all the default build tools, and a second list
+  with your personal build tools. There are check buttons to enable or disable
+  them. When a build tool is disabled, it's not possible to execute it. You can
+  perform some actions, like moving a tool up or down, open its properties,
+  delete or copy it, create a new one, etc.</p>
 
   <note style="tip">
     <p>Double-click on a build tool will open its properties.</p>
