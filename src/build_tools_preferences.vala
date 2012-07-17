@@ -48,11 +48,7 @@ public class BuildToolsPreferences : GLib.Object
         update_default_store ();
         update_personal_store ();
 
-        _default_view = get_new_view (_default_store,
-            DefaultBuildTools.get_default ());
-
-        _personal_view = get_new_view (_personal_store,
-            PersonalBuildTools.get_default ());
+        init_views ();
 
         _dialog = new Dialog.with_buttons (_("Build Tools"), main_window,
             DialogFlags.DESTROY_WITH_PARENT,
@@ -71,6 +67,30 @@ public class BuildToolsPreferences : GLib.Object
 
         _dialog.run ();
         _dialog.destroy ();
+    }
+
+    private void init_views ()
+    {
+        _default_view = get_new_view (_default_store,
+            DefaultBuildTools.get_default ());
+
+        _personal_view = get_new_view (_personal_store,
+            PersonalBuildTools.get_default ());
+
+        // Only one item of the two views can be selected at once.
+
+        TreeSelection default_select = _default_view.get_selection ();
+        TreeSelection personal_select = _personal_view.get_selection ();
+
+        default_select.changed.connect (() =>
+        {
+            on_view_selection_changed (default_select, personal_select);
+        });
+
+        personal_select.changed.connect (() =>
+        {
+            on_view_selection_changed (personal_select, default_select);
+        });
     }
 
     private Grid get_default_grid ()
@@ -205,6 +225,14 @@ public class BuildToolsPreferences : GLib.Object
         });
 
         return view;
+    }
+
+    private void on_view_selection_changed (TreeSelection select,
+        TreeSelection other_select)
+    {
+        List<TreePath> selected_items = select.get_selected_rows (null);
+        if (selected_items.length () > 0)
+            other_select.unselect_all ();
     }
 
     private ToolButton get_properties_button (TreeView view, BuildTools build_tools)
