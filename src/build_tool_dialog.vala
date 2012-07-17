@@ -93,34 +93,36 @@ private class BuildToolDialog : Dialog
     }
 
     // Returns true if the build tool is edited.
-    // Returns false if the user has clicked on cancel.
-    public static bool edit_build_tool (int build_tool_num)
+    public static bool open_build_tool (BuildTools build_tools, int build_tool_num)
     {
         return_val_if_fail (_instance != null, false);
 
-        PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
         BuildTool? build_tool = build_tools.get_build_tool (build_tool_num);
-
         return_val_if_fail (build_tool != null, false);
 
         _instance.set_build_tool (build_tool);
 
         bool ok = _instance.run () == ResponseType.OK;
+        _instance.hide ();
+
+        if (build_tools is DefaultBuildTools)
+            return false;
 
         if (ok)
         {
             BuildTool new_build_tool = _instance.retrieve_build_tool ();
             new_build_tool.enabled = build_tool.enabled;
-            build_tools.update (build_tool_num, new_build_tool);
+
+            PersonalBuildTools personal_build_tools = build_tools as PersonalBuildTools;
+            personal_build_tools.update (build_tool_num, new_build_tool);
         }
 
-        _instance.hide ();
         return ok;
     }
 
     // Returns true if the build tool is created.
     // Returns false if the user has clicked on cancel.
-    public static bool create_build_tool ()
+    public static bool create_personal_build_tool ()
     {
         return_val_if_fail (_instance != null, false);
 

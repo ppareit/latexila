@@ -19,8 +19,7 @@
  * Author: Sébastien Wilmet
  */
 
-// The preferences of the build tools, which is part of the preferences dialog, in the
-// LaTeX tab.
+// The preferences of the default and personal build tools.
 // For the configuration of a single build tool, see build_tool_dialog.vala.
 
 using Gtk;
@@ -37,47 +36,88 @@ public class BuildToolsPreferences : GLib.Object
     }
 
     private Dialog _dialog;
-    private ListStore _list_store;
-    private TreeView _tree_view;
+    private ListStore _default_store;
+    private ListStore _personal_store;
+    private TreeView _default_view;
+    private TreeView _personal_view;
 
     public BuildToolsPreferences (MainWindow main_window)
     {
-        init_list_store ();
-        init_tree_view ();
+        _default_store = get_new_store ();
+        _personal_store = get_new_store ();
+        update_default_store ();
+        update_personal_store ();
+
+        _default_view = get_new_view (_default_store,
+            DefaultBuildTools.get_default ());
+
+        _personal_view = get_new_view (_personal_store,
+            PersonalBuildTools.get_default ());
 
         _dialog = new Dialog.with_buttons (_("Build Tools"), main_window,
             DialogFlags.DESTROY_WITH_PARENT,
             Stock.CLOSE, ResponseType.ACCEPT);
 
+        Grid hgrid = new Grid ();
+        hgrid.set_orientation (Orientation.HORIZONTAL);
+        hgrid.set_column_spacing (10);
+
+        hgrid.add (get_default_grid ());
+        hgrid.add (get_personal_grid ());
+
         Box content_area = _dialog.get_content_area ();
-        content_area.pack_start (get_default_build_tools_grid ());
+        content_area.pack_start (hgrid);
         content_area.show_all ();
 
         _dialog.run ();
         _dialog.destroy ();
     }
 
-    private Grid get_default_build_tools_grid ()
+    private Grid get_default_grid ()
     {
-        Grid grid = new Grid ();
-        grid.set_orientation (Orientation.VERTICAL);
+        BuildTools default_build_tools = DefaultBuildTools.get_default ();
+        ToolButton properties_button = get_properties_button (_default_view,
+            default_build_tools);
+        ToolButton copy_button = get_copy_button (_default_view, default_build_tools);
 
-        _tree_view.expand = true;
-        ScrolledWindow scrolled_window =
-            Utils.add_scrollbar (_tree_view) as ScrolledWindow;
+        Toolbar toolbar = new Toolbar ();
+        toolbar.insert (properties_button, -1);
+        toolbar.insert (copy_button, -1);
+
+        Grid join = join_view_and_toolbar (_default_view, toolbar);
+
+        return Utils.get_dialog_component (_("Default build tools"), join);
+    }
+
+    private Grid get_personal_grid ()
+    {
+        BuildTools personal_build_tools = PersonalBuildTools.get_default ();
+        ToolButton properties_button = get_properties_button (_personal_view,
+            personal_build_tools);
+        ToolButton copy_button = get_copy_button (_personal_view, personal_build_tools);
+
+        Toolbar toolbar = new Toolbar ();
+        toolbar.insert (properties_button, -1);
+        toolbar.insert (copy_button, -1);
+        toolbar.insert (get_add_button (), -1);
+        toolbar.insert (get_remove_button (), -1);
+        toolbar.insert (get_up_button (), -1);
+        toolbar.insert (get_down_button (), -1);
+
+        Grid join = join_view_and_toolbar (_personal_view, toolbar);
+
+        return Utils.get_dialog_component (_("Personal build tools"), join);
+    }
+
+    private Grid join_view_and_toolbar (TreeView view, Toolbar toolbar)
+    {
+        view.expand = true;
+        ScrolledWindow scrolled_window = Utils.add_scrollbar (view) as ScrolledWindow;
         scrolled_window.set_shadow_type (ShadowType.IN);
         scrolled_window.set_size_request (350, 200);
 
         StyleContext context = scrolled_window.get_style_context ();
         context.set_junction_sides (JunctionSides.BOTTOM);
-
-        Toolbar toolbar = new Toolbar ();
-        toolbar.insert (get_properties_button (), -1);
-        toolbar.insert (get_copy_button (), -1);
-        toolbar.insert (get_add_button (), -1);
-        toolbar.insert (get_remove_button (), -1);
-        toolbar.insert (get_up_button (), -1);
-        toolbar.insert (get_down_button (), -1);
 
         toolbar.set_icon_size (IconSize.MENU);
         toolbar.set_style (ToolbarStyle.ICONS);
@@ -86,32 +126,32 @@ public class BuildToolsPreferences : GLib.Object
         context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
         context.set_junction_sides (JunctionSides.TOP);
 
+        Grid grid = new Grid ();
+        grid.set_orientation (Orientation.VERTICAL);
         grid.add (scrolled_window);
         grid.add (toolbar);
 
         return grid;
     }
 
-    private void init_list_store ()
+    private ListStore get_new_store ()
     {
-        _list_store = new ListStore (BuildToolColumn.N_COLUMNS,
+        return new ListStore (BuildToolColumn.N_COLUMNS,
             typeof (bool),   // enabled
             typeof (string), // pixbuf (stock-id)
             typeof (string), // label
             typeof (string)  // description
         );
-
-        update_list_store ();
     }
 
-    private void init_tree_view ()
+    private TreeView get_new_view (ListStore store, BuildTools build_tools)
     {
-        _tree_view = new TreeView.with_model (_list_store);
-        _tree_view.set_rules_hint (true);
+        TreeView view = new TreeView.with_model (store);
+        view.set_rules_hint (true);
 
         TreeViewColumn enabled_column = new TreeViewColumn ();
         enabled_column.set_title (_("Enabled"));
-        _tree_view.append_column (enabled_column);
+        view.append_column (enabled_column);
 
         CellRendererToggle toggle_renderer = new CellRendererToggle ();
         enabled_column.pack_start (toggle_renderer, false);
@@ -120,7 +160,7 @@ public class BuildToolsPreferences : GLib.Object
 
         TreeViewColumn label_column = new TreeViewColumn ();
         label_column.set_title (_("Label"));
-        _tree_view.append_column (label_column);
+        view.append_column (label_column);
 
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         label_column.pack_start (pixbuf_renderer, false);
@@ -132,87 +172,84 @@ public class BuildToolsPreferences : GLib.Object
         label_column.set_attributes (text_renderer,
           "text", BuildToolColumn.LABEL);
 
-        _tree_view.set_tooltip_column (BuildToolColumn.DESCRIPTION);
+        view.set_tooltip_column (BuildToolColumn.DESCRIPTION);
 
-        TreeSelection select = _tree_view.get_selection ();
+        TreeSelection select = view.get_selection ();
         select.set_mode (SelectionMode.SINGLE);
 
         /* Enable and disable a build tool */
         toggle_renderer.toggled.connect ((path_string) =>
         {
             TreeIter iter;
-            _list_store.get_iter_from_string (out iter, path_string);
+            store.get_iter_from_string (out iter, path_string);
 
             bool enabled;
-            TreeModel model = _list_store as TreeModel;
+            TreeModel model = store as TreeModel;
             model.get (iter, BuildToolColumn.ENABLED, out enabled);
 
             enabled = ! enabled;
-            _list_store.set (iter, BuildToolColumn.ENABLED, enabled);
+            store.set (iter, BuildToolColumn.ENABLED, enabled);
 
             int num = int.parse (path_string);
-            PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
-            BuildTool? build_tool = build_tools.get_build_tool (num);
-            return_if_fail (build_tool != null);
-
-            build_tool.enabled = enabled;
-
-            build_tools.update (num, build_tool);
+            build_tools.set_enabled (num, enabled);
         });
 
         /* Double-click */
-        _tree_view.row_activated.connect ((path, column) =>
+        view.row_activated.connect ((path, column) =>
         {
             if (column == label_column)
             {
                 int build_tool_num = path.get_indices ()[0];
-                edit_build_tool (build_tool_num);
+                open_build_tool (build_tools, build_tool_num);
             }
         });
+
+        return view;
     }
 
-    private ToolButton get_properties_button ()
+    private ToolButton get_properties_button (TreeView view, BuildTools build_tools)
     {
         ToolButton properties_button = new ToolButton (null, null);
         properties_button.set_icon_name ("document-properties-symbolic");
         properties_button.set_tooltip_text ("Edit the properties");
 
-        set_sensitivity_on_selection (properties_button);
+        set_sensitivity_on_selection (view, properties_button);
 
         properties_button.clicked.connect (() =>
         {
-            int build_tool_num = Utils.get_selected_row (_tree_view);
+            int build_tool_num = Utils.get_selected_row (view);
 
             if (0 <= build_tool_num)
-                edit_build_tool (build_tool_num);
+                open_build_tool (build_tools, build_tool_num);
         });
 
         return properties_button;
     }
 
-    private ToolButton get_copy_button ()
+    private ToolButton get_copy_button (TreeView view, BuildTools build_tools)
     {
         ToolButton copy_button = new ToolButton (null, null);
         copy_button.set_icon_name ("edit-copy-symbolic");
         copy_button.set_tooltip_text ("Create a copy");
 
-        set_sensitivity_on_selection (copy_button);
+        set_sensitivity_on_selection (view, copy_button);
 
         copy_button.clicked.connect (() =>
         {
-            int selected_row = Utils.get_selected_row (_tree_view);
+            int selected_row = Utils.get_selected_row (view);
             if (selected_row < 0)
                 return;
 
-            PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
             BuildTool? tool = build_tools.get_build_tool (selected_row);
             return_if_fail (tool != null);
 
             tool.enabled = false;
             tool.label = _("%s [copy]").printf (tool.label);
-            build_tools.insert (selected_row + 1, tool);
 
-            update_list_store ();
+            PersonalBuildTools personal_build_tools = PersonalBuildTools.get_default ();
+            personal_build_tools.add (tool);
+
+            update_personal_store ();
         });
 
         return copy_button;
@@ -228,8 +265,8 @@ public class BuildToolsPreferences : GLib.Object
         {
             show_build_tool_dialog ();
 
-            if (BuildToolDialog.create_build_tool ())
-                update_list_store ();
+            if (BuildToolDialog.create_personal_build_tool ())
+                update_personal_store ();
         });
 
         return add_button;
@@ -241,17 +278,17 @@ public class BuildToolsPreferences : GLib.Object
         remove_button.set_icon_name ("list-remove-symbolic");
         remove_button.set_tooltip_text (_("Remove"));
 
-        set_sensitivity_on_selection (remove_button);
+        set_sensitivity_on_selection (_personal_view, remove_button);
 
         remove_button.clicked.connect (() =>
         {
             TreeIter iter;
-            int selected_row = Utils.get_selected_row (_tree_view, out iter);
+            int selected_row = Utils.get_selected_row (_personal_view, out iter);
             if (selected_row == -1)
                 return;
 
             string label;
-            TreeModel model = _list_store as TreeModel;
+            TreeModel model = _personal_store as TreeModel;
             model.get (iter, BuildToolColumn.LABEL, out label);
 
             Dialog dialog = new MessageDialog (_dialog,
@@ -265,7 +302,7 @@ public class BuildToolsPreferences : GLib.Object
 
             if (dialog.run () == ResponseType.YES)
             {
-                _list_store.remove (iter);
+                _personal_store.remove (iter);
                 PersonalBuildTools.get_default ().delete (selected_row);
             }
 
@@ -285,7 +322,7 @@ public class BuildToolsPreferences : GLib.Object
 
         up_button.set_sensitive (false);
 
-        unowned TreeSelection select = _tree_view.get_selection ();
+        unowned TreeSelection select = _personal_view.get_selection ();
         select.changed.connect (() =>
         {
             List<TreePath> selected_rows = select.get_selected_rows (null);
@@ -308,14 +345,14 @@ public class BuildToolsPreferences : GLib.Object
         {
             TreeIter iter_selected;
 
-            int selected_row = Utils.get_selected_row (_tree_view, out iter_selected);
+            int selected_row = Utils.get_selected_row (_personal_view, out iter_selected);
 
             if (selected_row > 0)
             {
                 TreeIter iter_up = iter_selected;
-                if (Utils.tree_model_iter_prev (_list_store, ref iter_up))
+                if (Utils.tree_model_iter_prev (_personal_store, ref iter_up))
                 {
-                    _list_store.swap (iter_selected, iter_up);
+                    _personal_store.swap (iter_selected, iter_up);
                     PersonalBuildTools.get_default ().move_up (selected_row);
 
                     // Force the 'changed' signal on the selection to be emitted
@@ -337,7 +374,7 @@ public class BuildToolsPreferences : GLib.Object
 
         down_button.set_sensitive (false);
 
-        unowned TreeSelection select = _tree_view.get_selection ();
+        unowned TreeSelection select = _personal_view.get_selection ();
         select.changed.connect (() =>
         {
             List<TreePath> selected_rows = select.get_selected_rows (null);
@@ -351,7 +388,7 @@ public class BuildToolsPreferences : GLib.Object
             TreePath path_selected = selected_rows.nth_data (0);
             int row_num = path_selected.get_indices ()[0];
 
-            TreeModel model = _list_store as TreeModel;
+            TreeModel model = _personal_store as TreeModel;
             int nb_rows = model.iter_n_children (null);
 
             down_button.set_sensitive (row_num < nb_rows - 1);
@@ -363,14 +400,14 @@ public class BuildToolsPreferences : GLib.Object
         {
             TreeIter iter_selected;
 
-            int selected_row = Utils.get_selected_row (_tree_view, out iter_selected);
+            int selected_row = Utils.get_selected_row (_personal_view, out iter_selected);
 
             if (selected_row >= 0)
             {
                 TreeIter iter_down = iter_selected;
-                if (_list_store.iter_next (ref iter_down))
+                if (_personal_store.iter_next (ref iter_down))
                 {
-                    _list_store.swap (iter_selected, iter_down);
+                    _personal_store.swap (iter_selected, iter_down);
                     PersonalBuildTools.get_default ().move_down (selected_row);
 
                     // Force the 'changed' signal on the selection to be emitted
@@ -382,17 +419,27 @@ public class BuildToolsPreferences : GLib.Object
         return down_button;
     }
 
-    private void update_list_store ()
+    private void update_default_store ()
     {
-        _list_store.clear ();
+        update_store (_default_store, DefaultBuildTools.get_default ());
+    }
 
-        foreach (BuildTool tool in PersonalBuildTools.get_default ())
+    private void update_personal_store ()
+    {
+        update_store (_personal_store, PersonalBuildTools.get_default ());
+    }
+
+    private void update_store (ListStore store, BuildTools build_tools)
+    {
+        store.clear ();
+
+        foreach (BuildTool tool in build_tools)
         {
             string description = Markup.escape_text (tool.get_description ());
 
             TreeIter iter;
-            _list_store.append (out iter);
-            _list_store.set (iter,
+            store.append (out iter);
+            store.set (iter,
                 BuildToolColumn.ENABLED, tool.enabled,
                 BuildToolColumn.PIXBUF, tool.icon,
                 BuildToolColumn.LABEL, tool.label,
@@ -406,22 +453,25 @@ public class BuildToolsPreferences : GLib.Object
         BuildToolDialog.show_me (_dialog);
     }
 
-    private void edit_build_tool (int build_tool_num)
+    private void open_build_tool (BuildTools build_tools, int build_tool_num)
     {
         show_build_tool_dialog ();
 
-        if (BuildToolDialog.edit_build_tool (build_tool_num))
-            update_list_store ();
+        bool edited = BuildToolDialog.open_build_tool (build_tools, build_tool_num);
+
+        // If the build tool is edited, then it is a personal build tool.
+        if (edited)
+            update_personal_store ();
     }
 
     // Set 'widget' as sensitive when there is a selection in the TreeView.
     // If no elements are selected (this is the case by default),
     // the widget is insensitive.
-    private void set_sensitivity_on_selection (Widget widget)
+    private void set_sensitivity_on_selection (TreeView view, Widget widget)
     {
         widget.set_sensitive (false);
 
-        unowned TreeSelection select = _tree_view.get_selection ();
+        unowned TreeSelection select = view.get_selection ();
         select.changed.connect (() =>
         {
             bool row_selected = select.count_selected_rows () > 0;

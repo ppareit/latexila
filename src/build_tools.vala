@@ -117,6 +117,19 @@ public abstract class BuildTools : GLib.Object
         return _build_tools.size == 0;
     }
 
+    public void set_enabled (int tool_num, bool enabled)
+    {
+        return_if_fail (0 <= tool_num && tool_num < _build_tools.size);
+
+        BuildTool tool = _build_tools[tool_num];
+        if (tool.enabled != enabled)
+        {
+            tool.enabled = enabled;
+            _build_tools[tool_num] = tool;
+            modified ();
+        }
+    }
+
     public static PostProcessorType? get_post_processor_type_from_name (string name)
     {
         for (int type = 0 ; type < PostProcessorType.N_POST_PROCESSORS ; type++)
