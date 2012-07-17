@@ -101,7 +101,7 @@ public abstract class BuildTools : GLib.Object
 
     public BuildTool? get_build_tool (int tool_num)
     {
-        return_val_if_fail (0 <= tool_num && tool_num < _build_tools.size, null);
+        return_val_if_fail (is_valid_index (tool_num), null);
 
         return _build_tools[tool_num];
     }
@@ -119,7 +119,7 @@ public abstract class BuildTools : GLib.Object
 
     public void set_enabled (int tool_num, bool enabled)
     {
-        return_if_fail (0 <= tool_num && tool_num < _build_tools.size);
+        return_if_fail (is_valid_index (tool_num));
 
         BuildTool tool = _build_tools[tool_num];
         if (tool.enabled != enabled)
@@ -146,6 +146,11 @@ public abstract class BuildTools : GLib.Object
         return_val_if_fail (type != PostProcessorType.N_POST_PROCESSORS, null);
 
         return _post_processor_names[type];
+    }
+
+    protected bool is_valid_index (int tool_num)
+    {
+        return 0 <= tool_num && tool_num < _build_tools.size;
     }
 
     protected void load ()
@@ -344,13 +349,13 @@ public class PersonalBuildTools : BuildTools
 
     public void move_up (int tool_num)
     {
-        return_if_fail (tool_num > 0);
+        return_if_fail (0 < tool_num && tool_num < _build_tools.size);
         swap (tool_num, tool_num - 1);
     }
 
     public void move_down (int tool_num)
     {
-        return_if_fail (tool_num < _build_tools.size - 1);
+        return_if_fail (0 <= tool_num && tool_num < _build_tools.size - 1);
         swap (tool_num, tool_num + 1);
     }
 
@@ -364,7 +369,7 @@ public class PersonalBuildTools : BuildTools
 
     public void delete (int tool_num)
     {
-        return_if_fail (0 <= tool_num && tool_num < _build_tools.size);
+        return_if_fail (is_valid_index (tool_num));
 
         _build_tools.remove_at (tool_num);
         modified ();
@@ -385,14 +390,13 @@ public class PersonalBuildTools : BuildTools
 
     public void update (int num, BuildTool tool)
     {
-        return_if_fail (0 <= num && num < _build_tools.size);
+        return_if_fail (is_valid_index (num));
 
         BuildTool current_tool = _build_tools[num];
 
         if (! is_equal (current_tool, tool))
         {
-            _build_tools.remove_at (num);
-            _build_tools.insert (num, tool);
+            _build_tools[num] = tool;
             modified ();
         }
     }
