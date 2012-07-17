@@ -237,6 +237,8 @@ public class MainWindowBuildTools
             tool_num++;
         }
 
+        add_separator ();
+
         /* Add the personal build tools */
         tool_num = 0;
         foreach (BuildTool build_tool in personal_build_tools)
@@ -247,6 +249,17 @@ public class MainWindowBuildTools
         }
 
         update_sensitivity ();
+    }
+
+    private void add_separator ()
+    {
+        _ui_manager.add_ui (_menu_ui_id,
+            "/MainMenu/BuildMenu/BuildToolsPlaceholderMenu",
+            "BuildToolsSeparator", null, UIManagerItemType.SEPARATOR, false);
+
+        _ui_manager.add_ui (_menu_ui_id,
+            "/MainToolbar/BuildToolsPlaceholderToolbar",
+            "BuildToolsSeparator", null, UIManagerItemType.SEPARATOR, false);
     }
 
     private void add_dynamic_action (BuildTool build_tool, string action_name,
