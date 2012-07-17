@@ -3,5 +3,6 @@
     its:version="1.0">
 
     <its:translateRule translate="no" selector="//job" />
+    <its:translateRule translate="no" selector="//open" />
 
 </its:rules>
