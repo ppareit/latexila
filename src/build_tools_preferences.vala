@@ -263,9 +263,9 @@ public class BuildToolsPreferences : GLib.Object
 
         add_button.clicked.connect (() =>
         {
-            show_build_tool_dialog ();
+            BuildToolDialog dialog = new BuildToolDialog (_dialog);
 
-            if (BuildToolDialog.create_personal_build_tool ())
+            if (dialog.create_personal_build_tool ())
                 update_personal_store ();
         });
 
@@ -448,16 +448,11 @@ public class BuildToolsPreferences : GLib.Object
         }
     }
 
-    private void show_build_tool_dialog ()
-    {
-        BuildToolDialog.show_me (_dialog);
-    }
-
     private void open_build_tool (BuildTools build_tools, int build_tool_num)
     {
-        show_build_tool_dialog ();
+        BuildToolDialog dialog = new BuildToolDialog (_dialog);
 
-        bool edited = BuildToolDialog.open_build_tool (build_tools, build_tool_num);
+        bool edited = dialog.open_build_tool (build_tools, build_tool_num);
 
         // If the build tool is edited, then it is a personal build tool.
         if (edited)

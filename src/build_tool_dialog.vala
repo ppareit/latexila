@@ -23,7 +23,7 @@
 
 using Gtk;
 
-private class BuildToolDialog : Dialog
+public class BuildToolDialog : GLib.Object
 {
     private enum IconColumn
     {
@@ -45,7 +45,7 @@ private class BuildToolDialog : Dialog
         N_COLUMNS
     }
 
-    private static BuildToolDialog _instance = null;
+    private Dialog _dialog;
 
     private Entry _entry_label;
     private Entry _entry_desc;
@@ -58,88 +58,83 @@ private class BuildToolDialog : Dialog
     private ListStore _jobs_store;
     private TreeView _jobs_view;
 
-    private BuildToolDialog ()
+    public BuildToolDialog (Gtk.Window parent)
     {
-        add_button (Stock.CANCEL, ResponseType.CANCEL);
-        add_button (Stock.OK, ResponseType.OK);
-        title = _("Build Tool");
-        destroy_with_parent = true;
+        _dialog = new Dialog ();
+        _dialog.destroy_with_parent = true;
+        _dialog.modal = true;
+        _dialog.set_transient_for (parent);
 
         init_text_entries ();
         init_icons_store ();
         init_icons_combobox ();
         init_jobs ();
 
-        Box content_area = get_content_area () as Box;
+        Box content_area = _dialog.get_content_area ();
         content_area.pack_start (get_main_grid ());
         content_area.show_all ();
     }
 
-    public static void show_me (Gtk.Window parent)
+    private void set_read_only ()
     {
-        if (_instance == null)
-        {
-            _instance = new BuildToolDialog ();
+        _dialog.add_button (Stock.CLOSE, ResponseType.CANCEL);
+        _dialog.title = _("Build Tool (read-only)");
+    }
 
-            _instance.destroy.connect (() =>
-            {
-                if (_instance != null)
-                    _instance = null;
-            });
-        }
-
-        _instance.set_transient_for (parent);
-        _instance.present ();
+    private void set_editable ()
+    {
+        _dialog.add_button (Stock.CANCEL, ResponseType.CANCEL);
+        _dialog.add_button (Stock.OK, ResponseType.OK);
+        _dialog.title = _("Build Tool");
     }
 
     // Returns true if the build tool is edited.
-    public static bool open_build_tool (BuildTools build_tools, int build_tool_num)
+    public bool open_build_tool (BuildTools build_tools, int build_tool_num)
     {
-        return_val_if_fail (_instance != null, false);
-
         BuildTool? build_tool = build_tools.get_build_tool (build_tool_num);
         return_val_if_fail (build_tool != null, false);
 
-        _instance.set_build_tool (build_tool);
-
-        bool ok = _instance.run () == ResponseType.OK;
-        _instance.hide ();
-
         if (build_tools is DefaultBuildTools)
-            return false;
+            set_read_only ();
+        else
+            set_editable ();
+
+        set_build_tool (build_tool);
+
+        bool ok = _dialog.run () == ResponseType.OK;
 
         if (ok)
         {
-            BuildTool new_build_tool = _instance.retrieve_build_tool ();
+            BuildTool new_build_tool = retrieve_build_tool ();
             new_build_tool.enabled = build_tool.enabled;
 
             PersonalBuildTools personal_build_tools = build_tools as PersonalBuildTools;
             personal_build_tools.update (build_tool_num, new_build_tool);
         }
 
+        _dialog.destroy ();
         return ok;
     }
 
     // Returns true if the build tool is created.
     // Returns false if the user has clicked on cancel.
-    public static bool create_personal_build_tool ()
+    public bool create_personal_build_tool ()
     {
-        return_val_if_fail (_instance != null, false);
+        set_editable ();
+        set_new_build_tool ();
 
-        _instance.set_new_build_tool ();
-
-        bool ok = _instance.run () == ResponseType.OK;
+        bool ok = _dialog.run () == ResponseType.OK;
 
         if (ok)
         {
-            BuildTool new_build_tool = _instance.retrieve_build_tool ();
+            BuildTool new_build_tool = retrieve_build_tool ();
             new_build_tool.enabled = true;
 
             PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
             build_tools.add (new_build_tool);
         }
 
-        _instance.hide ();
+        _dialog.destroy ();
         return ok;
     }
 
