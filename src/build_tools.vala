@@ -45,6 +45,10 @@ public struct BuildTool
     bool enabled;
     Gee.ArrayList<BuildJob?> jobs;
 
+    // The ID is used only by the default build tools.
+    // It is used to save those that are enabled or disabled.
+    int id;
+
     public BuildTool ()
     {
         _description = "";
@@ -54,6 +58,7 @@ public struct BuildTool
         files_to_open = "";
         enabled = false;
         jobs = new Gee.ArrayList<BuildJob?> ();
+        id = 0;
     }
 
     public bool has_jobs ()
@@ -201,6 +206,10 @@ public abstract class BuildTools : GLib.Object
                 {
                     switch (attr_names[i])
                     {
+                        case "id":
+                            _cur_tool.id = int.parse (attr_values[i]);
+                            break;
+
                         // 'show' was the previous name of 'enabled'
                         case "show":
                         case "enabled":
