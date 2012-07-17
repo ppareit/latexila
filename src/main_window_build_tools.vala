@@ -91,8 +91,11 @@ public class MainWindowBuildTools
         ui_manager.insert_action_group (_dynamic_action_group, 0);
         update_menu ();
 
-        PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
-        build_tools.modified.connect (() => update_menu ());
+        PersonalBuildTools personal_build_tools = PersonalBuildTools.get_default ();
+        personal_build_tools.modified.connect (() => update_menu ());
+
+        DefaultBuildTools default_build_tools = DefaultBuildTools.get_default ();
+        default_build_tools.modified.connect (() => update_menu ());
     }
 
     public void update_sensitivity ()
@@ -110,42 +113,80 @@ public class MainWindowBuildTools
 
         _dynamic_action_group.set_sensitive (true);
 
-        Document active_doc = _main_window.active_document;
-
-        bool is_tex = active_doc.is_main_file_a_tex_file ();
+        bool is_tex = _main_window.active_document.is_main_file_a_tex_file ();
         clean_action.set_sensitive (is_tex);
         view_log_action.set_sensitive (is_tex);
 
-        bool unsaved_doc = active_doc.location == null;
-        string ext = "";
-        if (! unsaved_doc)
-        {
-            string path = active_doc.get_main_file ().get_parse_name ();
-            ext = Utils.get_extension (path);
-        }
-
         int tool_num = 0;
-        foreach (BuildTool tool in PersonalBuildTools.get_default ())
+        foreach (BuildTool tool in DefaultBuildTools.get_default ())
         {
-            if (! tool.enabled)
-            {
-                tool_num++;
-                continue;
-            }
-
-            Gtk.Action action = _dynamic_action_group.get_action (@"BuildTool_$tool_num");
-
-            if (unsaved_doc)
-                action.set_sensitive (tool.has_jobs ());
-            else
-            {
-                string[] extensions = tool.extensions.split (" ");
-                bool sensitive = tool.extensions.length == 0 || ext in extensions;
-                action.set_sensitive (sensitive);
-            }
-
+            string action_name = get_default_build_tool_name (tool_num);
+            update_build_tool_sensitivity (tool, action_name);
             tool_num++;
         }
+
+        tool_num = 0;
+        foreach (BuildTool tool in PersonalBuildTools.get_default ())
+        {
+            string action_name = get_personal_build_tool_name (tool_num);
+            update_build_tool_sensitivity (tool, action_name);
+            tool_num++;
+        }
+    }
+
+    private string get_default_build_tool_name (int tool_num)
+    {
+        return @"DefaultBuildTool_$tool_num";
+    }
+
+    private string get_personal_build_tool_name (int tool_num)
+    {
+        return @"PersonalBuildTool_$tool_num";
+    }
+
+    private BuildTool? get_build_tool_from_name (string action_name)
+    {
+        BuildTools build_tools;
+
+        if (action_name.has_prefix ("DefaultBuildTool_"))
+            build_tools = DefaultBuildTools.get_default ();
+
+        else if (action_name.has_prefix ("PersonalBuildTool_"))
+            build_tools = PersonalBuildTools.get_default ();
+
+        else
+            return_val_if_reached (null);
+
+        string[] name = action_name.split ("_");
+        return_val_if_fail (name.length == 2, null);
+
+        int tool_num = int.parse (name[1]);
+
+        return build_tools.get_build_tool (tool_num);
+    }
+
+    private void update_build_tool_sensitivity (BuildTool tool, string action_name)
+    {
+        if (! tool.enabled)
+            return;
+
+        Gtk.Action action = _dynamic_action_group.get_action (action_name);
+
+        Document active_doc = _main_window.active_document;
+        bool unsaved_doc = active_doc.location == null;
+
+        if (unsaved_doc)
+        {
+            action.set_sensitive (tool.has_jobs ());
+            return;
+        }
+
+        string path = active_doc.get_main_file ().get_parse_name ();
+        string ext = Utils.get_extension (path);
+
+        string[] extensions = tool.extensions.split (" ");
+        bool sensitive = tool.extensions.length == 0 || ext in extensions;
+        action.set_sensitive (sensitive);
     }
 
     public void save_state ()
@@ -174,65 +215,80 @@ public class MainWindowBuildTools
             _dynamic_action_group.remove_action (action);
         }
 
-        PersonalBuildTools build_tools = PersonalBuildTools.get_default ();
 
-        if (build_tools.is_empty ())
+        DefaultBuildTools default_build_tools = DefaultBuildTools.get_default ();
+        PersonalBuildTools personal_build_tools = PersonalBuildTools.get_default ();
+
+        if (default_build_tools.is_empty () && personal_build_tools.is_empty ())
+        {
             _menu_ui_id = 0;
-        else
-            _menu_ui_id = _ui_manager.new_merge_id ();
+            return;
+        }
 
+        _menu_ui_id = _ui_manager.new_merge_id ();
+
+        /* Add the default build tools */
         int tool_num = 0;
         int accel_num = 2;
-        foreach (BuildTool build_tool in build_tools)
+        foreach (BuildTool build_tool in default_build_tools)
         {
-            if (! build_tool.enabled)
-            {
-                tool_num++;
-                continue;
-            }
-
-            string action_name = @"BuildTool_$tool_num";
-            Gtk.Action action = new Gtk.Action (action_name, build_tool.label,
-                build_tool.get_description (), build_tool.icon);
-
-            // F2 -> F11
-            // (F1 = help, F12 = show/hide side panel)
-            string? accel = null;
-            if (accel_num <= 11)
-                accel = @"<Release>F$accel_num";
-
-            _dynamic_action_group.add_action_with_accel (action, accel);
-            action.activate.connect (activate_dynamic_action);
-
-            _ui_manager.add_ui (_menu_ui_id,
-                "/MainMenu/BuildMenu/BuildToolsPlaceholderMenu",
-                action_name, action_name, UIManagerItemType.MENUITEM, false);
-
-            _ui_manager.add_ui (_menu_ui_id,
-                "/MainToolbar/BuildToolsPlaceholderToolbar",
-                action_name, action_name, UIManagerItemType.TOOLITEM, false);
-
+            string action_name = get_default_build_tool_name (tool_num);
+            add_dynamic_action (build_tool, action_name, ref accel_num);
             tool_num++;
-            accel_num++;
+        }
+
+        /* Add the personal build tools */
+        tool_num = 0;
+        foreach (BuildTool build_tool in personal_build_tools)
+        {
+            string action_name = get_personal_build_tool_name (tool_num);
+            add_dynamic_action (build_tool, action_name, ref accel_num);
+            tool_num++;
         }
 
         update_sensitivity ();
+    }
+
+    private void add_dynamic_action (BuildTool build_tool, string action_name,
+        ref int accel_num)
+    {
+        if (! build_tool.enabled)
+            return;
+
+        Gtk.Action action = new Gtk.Action (action_name, build_tool.label,
+            build_tool.get_description (), build_tool.icon);
+
+        // F2 -> F11
+        // (F1 = help, F12 = show/hide side panel)
+        string? accel = null;
+        if (accel_num <= 11)
+            accel = @"<Release>F$accel_num";
+
+        _dynamic_action_group.add_action_with_accel (action, accel);
+        action.activate.connect (activate_dynamic_action);
+
+        _ui_manager.add_ui (_menu_ui_id,
+            "/MainMenu/BuildMenu/BuildToolsPlaceholderMenu",
+            action_name, action_name, UIManagerItemType.MENUITEM, false);
+
+        _ui_manager.add_ui (_menu_ui_id,
+            "/MainToolbar/BuildToolsPlaceholderToolbar",
+            action_name, action_name, UIManagerItemType.TOOLITEM, false);
+
+        accel_num++;
     }
 
     private void activate_dynamic_action (Gtk.Action action)
     {
         return_if_fail (_main_window.active_tab != null);
 
-        string[] name = action.name.split ("_");
-        int tool_num = int.parse (name[1]);
-
-        BuildTool? tool = PersonalBuildTools.get_default ().get_build_tool (tool_num);
+        BuildTool? tool = get_build_tool_from_name (action.name);
         return_if_fail (tool != null);
 
-        if (! tool.has_jobs ())
-            return_if_fail (_main_window.active_document.location != null);
-
         Document active_doc = _main_window.active_document;
+
+        if (! tool.has_jobs ())
+            return_if_fail (active_doc.location != null);
 
         /* Save the document if jobs are executed */
         if (tool.has_jobs ())
