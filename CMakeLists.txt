@@ -50,7 +50,7 @@ if (BUILD_VALA)
 		if ((NOT VALA_FOUND) OR
 		    ("${VALA_VERSION}" VERSION_LESS "${_vala_min_version}"))
 			message (FATAL_ERROR
-				"Vala ${_vala_main_version}.x >= ${_vala_min_version} required")
+				"valac-${_vala_main_version} >= ${_vala_min_version} required")
 		endif ()
 	endif ()
 endif ()

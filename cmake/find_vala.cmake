@@ -10,7 +10,7 @@
 #
 #	if ((NOT VALA_FOUND) OR
 #	    ("${VALA_VERSION}" VERSION_LESS "0.12.1"))
-#		message (FATAL_ERROR "Vala 0.12.x >= 0.12.1 required")
+#		message (FATAL_ERROR "valac-0.12 >= 0.12.1 required")
 #	endif ()
 #
 # VALA_FOUND is always set.
@@ -43,7 +43,7 @@ function (find_vala version_required)
 		set (VALA_VERSION ${_vala_version} PARENT_SCOPE)
 		mark_as_advanced (VALA_VERSION)
 
-		message (STATUS "Vala ${_vala_version} found")
+		message (STATUS "Found Vala: ${_vala_executable} (found version \"${_vala_version}\")")
 	else ()
 		set (VALA_FOUND false PARENT_SCOPE)
 		mark_as_advanced (VALA_FOUND)
