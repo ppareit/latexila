@@ -31,10 +31,11 @@ public class OpenTemplateDialog
     {
         _main_window = main_window;
 
-        _dialog = new Dialog.with_buttons (_("New File..."), main_window, 0,
+        _dialog = new Dialog.with_buttons (_("New File..."), main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
             Stock.CANCEL, ResponseType.REJECT,
-            Stock.OK, ResponseType.ACCEPT,
-            null);
+            Stock.OK, ResponseType.ACCEPT
+        );
 
         Box content_area = _dialog.get_content_area () as Box;
 
@@ -172,6 +173,7 @@ public class CreateTemplateDialog : Dialog
 
         title = _("New Template...");
         set_transient_for (parent);
+        destroy_with_parent = true;
         add_button (Stock.CANCEL, ResponseType.REJECT);
         add_button (Stock.OK, ResponseType.ACCEPT);
 
@@ -242,6 +244,7 @@ public class DeleteTemplateDialog : Dialog
         add_button (Stock.DELETE, ResponseType.ACCEPT);
         add_button (Stock.CLOSE, ResponseType.REJECT);
         set_transient_for (parent);
+        destroy_with_parent = true;
 
         /* List of the personal templates */
 
