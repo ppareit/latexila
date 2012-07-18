@@ -481,23 +481,20 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private TextIter get_begin_arg_pos (TextIter in_arg_pos)
     {
         string text = get_text_line_to_iter (in_arg_pos);
-        int cur_index = text.length;
-        int prev_index = cur_index;
+        int index = text.length;
         unichar cur_char;
 
-        while (Utils.string_get_prev_char (text, ref prev_index, out cur_char))
+        while (text.get_prev_char (ref index, out cur_char))
         {
             if ((cur_char == '[' || cur_char == '{')
-                && ! Utils.char_is_escaped (text, cur_index))
+                && ! Utils.char_is_escaped (text, index))
             {
                 break;
             }
-
-            cur_index = prev_index;
         }
 
         TextIter begin_arg_pos = in_arg_pos;
-        begin_arg_pos.set_visible_line_index (cur_index);
+        begin_arg_pos.set_visible_line_index (index);
         begin_arg_pos.forward_char ();
 
         return begin_arg_pos;
