@@ -81,7 +81,7 @@ public class PreferencesDialog : Dialog
 
         init_editor_tab (builder);
         init_font_and_colors_tab (builder);
-        init_latex_tab (builder);
+        init_interactive_completion_setting (builder);
         init_other_tab (builder);
 
         // pack notebook
@@ -267,7 +267,7 @@ public class PreferencesDialog : Dialog
         });
     }
 
-    private void init_latex_tab (Builder builder)
+    private void init_interactive_completion_setting (Builder builder)
     {
         GLib.Settings settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
