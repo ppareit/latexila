@@ -48,7 +48,9 @@ public class OpenTemplateDialog
         // List of default templates.
         _default_templates = templates.get_default_templates_list ();
 
-        Widget scrollbar = Utils.add_scrollbar (_default_templates);
+        ScrolledWindow scrollbar =
+            Utils.add_scrollbar (_default_templates) as ScrolledWindow;
+        scrollbar.set_shadow_type (ShadowType.IN);
         scrollbar.set_size_request (250, 200);
         Widget component = Utils.get_dialog_component (_("Default templates"), scrollbar);
         hgrid.add (component);
@@ -56,7 +58,8 @@ public class OpenTemplateDialog
         // List of personal templates.
         _personal_templates = templates.get_personal_templates_list ();
 
-        scrollbar = Utils.add_scrollbar (_personal_templates);
+        scrollbar = Utils.add_scrollbar (_personal_templates) as ScrolledWindow;
+        scrollbar.set_shadow_type (ShadowType.IN);
         scrollbar.set_size_request (250, 200);
         component = Utils.get_dialog_component (_("Your personal templates"), scrollbar);
         hgrid.add (component);
@@ -188,7 +191,8 @@ public class CreateTemplateDialog : Dialog
         // Take the default store because it contains all the icons.
         TreeView templates_list = templates.get_default_templates_list ();
 
-        Widget scrollbar = Utils.add_scrollbar (templates_list);
+        ScrolledWindow scrollbar = Utils.add_scrollbar (templates_list) as ScrolledWindow;
+        scrollbar.set_shadow_type (ShadowType.IN);
         scrollbar.set_size_request (250, 200);
         component = Utils.get_dialog_component (_("Choose an icon"), scrollbar);
         content_area.pack_start (component);
@@ -247,7 +251,8 @@ public class DeleteTemplateDialog : Dialog
         TreeSelection select = templates_list.get_selection ();
         select.set_mode (SelectionMode.MULTIPLE);
 
-        Widget scrollbar = Utils.add_scrollbar (templates_list);
+        ScrolledWindow scrollbar = Utils.add_scrollbar (templates_list) as ScrolledWindow;
+        scrollbar.set_shadow_type (ShadowType.IN);
         scrollbar.set_size_request (250, 150);
         Widget component = Utils.get_dialog_component (_("Personal templates"),
             scrollbar);
