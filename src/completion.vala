@@ -514,18 +514,10 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         return_val_if_fail (index <= text.length, null);
 
-        // Skip the last character (the '{' in the above example).
         int cur_index = index;
-        if (! Utils.string_get_prev_char (text, ref cur_index, null))
-            return null;
-
-        while (true)
+        unichar cur_char;
+        while (text.get_prev_char (ref cur_index, out cur_char))
         {
-            unichar cur_char;
-            int prev_index = cur_index;
-            bool first_char = ! Utils.string_get_prev_char (text,
-                ref prev_index, out cur_char);
-
             if (cur_char == '\\')
             {
                 // If the backslash is escaped, it's not a LaTeX command.
@@ -538,11 +530,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             // A LaTeX command contains only normal letters and '*'.
             if (! cur_char.isalpha () && cur_char != '*')
                 break;
-
-            if (first_char)
-                break;
-
-            cur_index = prev_index;
         }
 
         return null;
