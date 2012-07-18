@@ -52,21 +52,6 @@ namespace Utils
         return escaped;
     }
 
-    // The opposite of string.get_next_char ().
-    // TODO remove this function when it is included upstream
-    // See https://bugzilla.gnome.org/show_bug.cgi?id=655185
-    public bool string_get_prev_char (string str, ref int index, out unichar c)
-    {
-        c = str.get_char (index);
-        if (index <= 0)
-            return false;
-
-        unowned string str_at_index = (string) ((char*) str + index);
-        unowned string str_prev = str_at_index.prev_char ();
-        index = (int) ((char*) str_prev - (char*) str);
-        return true;
-    }
-
     public unowned string? get_string_from_resource (string resource_path)
     {
         try

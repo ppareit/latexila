@@ -549,10 +549,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         /* Fetch the argument's contents */
         while (true)
         {
-            int prev_index = cur_index;
             unichar cur_char;
-            bool first_char = ! Utils.string_get_prev_char (text,
-                ref prev_index, out cur_char);
+            if (! text.get_prev_char (ref cur_index, out cur_char))
+                return false;
 
             // End of the argument's contents.
             bool opening_bracket = cur_char == '{' || cur_char == '[';
@@ -560,15 +559,8 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             {
                 info.args_types.insert (0, cur_char == '[');
                 info.arg_contents = text[cur_index + 1 : last_index];
-                cur_index = prev_index;
                 break;
             }
-
-            // Not in an argument.
-            if (first_char)
-                return false;
-
-            cur_index = prev_index;
         }
 
         /* Traverse the previous arguments, and find the command name */
@@ -577,10 +569,9 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         while (true)
         {
-            int prev_index = cur_index;
             unichar cur_char;
-            bool first_char = ! Utils.string_get_prev_char (text,
-                ref prev_index, out cur_char);
+            if (! text.get_prev_char (ref cur_index, out cur_char))
+                return false;
 
             // In the contents of a previous argument.
             if (in_prev_arg)
@@ -611,11 +602,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             // Spaces are allowed between arguments.
             else if (! cur_char.isspace ())
                 return false;
-
-            if (first_char)
-                return false;
-
-            cur_index = prev_index;
         }
     }
 
