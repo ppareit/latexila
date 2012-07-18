@@ -38,23 +38,15 @@ namespace Utils
     {
         return_val_if_fail (char_index < text.length, false);
 
-        int index = (int) char_index;
-        if (! string_get_prev_char (text, ref index, null))
-            return false;
-
         bool escaped = false;
-        while (true)
+        int index = (int) char_index;
+        unichar cur_char;
+        while (text.get_prev_char (ref index, out cur_char))
         {
-            unichar cur_char;
-            bool first_char = ! string_get_prev_char (text, ref index, out cur_char);
-
             if (cur_char != '\\')
                 break;
 
             escaped = ! escaped;
-
-            if (first_char)
-                break;
         }
 
         return escaped;
