@@ -323,6 +323,8 @@ public class DefaultBuildTools : BuildTools
         }
 
         load ();
+        load_enable_setting ();
+        modified.connect (save_enable_setting);
     }
 
     public static DefaultBuildTools get_default ()
@@ -331,6 +333,86 @@ public class DefaultBuildTools : BuildTools
             _instance = new DefaultBuildTools ();
 
         return _instance;
+    }
+
+    // Enable or disable the build tools.
+    // There are two lists: the enabled build tools IDs, and the disabled build tools IDs.
+    // By default, the two lists are empty. If an ID is in a list, it will erase the
+    // default value found in the XML file. So when a new default build tool is added,
+    // it is not present in the lists, and it automatically gets the default value from
+    // the XML file.
+    private void load_enable_setting ()
+    {
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.latex");
+
+        /* Get the enabled build tool IDs */
+
+        int[] enabled_tool_ids = {};
+
+        Variant enabled_tools = settings.get_value ("enabled-default-build-tools");
+        VariantIter iter;
+        enabled_tools.get ("ai", out iter);
+
+        int enabled_tool_id;
+        while (iter.next ("i", out enabled_tool_id))
+            enabled_tool_ids += enabled_tool_id;
+
+        /* Enable the build tools to enable */
+
+        int tool_num = 0;
+        foreach (BuildTool build_tool in _build_tools)
+        {
+            if (build_tool.id in enabled_tool_ids)
+                set_enabled (tool_num, true);
+
+            tool_num++;
+        }
+
+        /* Get the disabled build tool IDs */
+
+        int[] disabled_tool_ids = {};
+
+        Variant disabled_tools = settings.get_value ("disabled-default-build-tools");
+        disabled_tools.get ("ai", out iter);
+
+        int disabled_tool_id;
+        while (iter.next ("i", out disabled_tool_id))
+            disabled_tool_ids += disabled_tool_id;
+
+        /* Disable the build tools to disable */
+
+        tool_num = 0;
+        foreach (BuildTool build_tool in _build_tools)
+        {
+            if (build_tool.id in disabled_tool_ids)
+                set_enabled (tool_num, false);
+
+            tool_num++;
+        }
+    }
+
+    private void save_enable_setting ()
+    {
+        VariantBuilder builder_enabled = new VariantBuilder (VariantType.ARRAY);
+        VariantBuilder builder_disabled = new VariantBuilder (VariantType.ARRAY);
+
+        foreach (BuildTool build_tool in _build_tools)
+        {
+            if (build_tool.enabled)
+                builder_enabled.add ("i", build_tool.id);
+            else
+                builder_disabled.add ("i", build_tool.id);
+        }
+
+        Variant enabled_tools = builder_enabled.end ();
+        Variant disabled_tools = builder_disabled.end ();
+
+        GLib.Settings settings =
+            new GLib.Settings ("org.gnome.latexila.preferences.latex");
+
+        settings.set_value ("enabled-default-build-tools", enabled_tools);
+        settings.set_value ("disabled-default-build-tools", disabled_tools);
     }
 }
 

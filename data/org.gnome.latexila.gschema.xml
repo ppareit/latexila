@@ -148,6 +148,16 @@
       <summary>File extensions for clean-up</summary>
       <description>The file extensions for the clean-up are separated by spaces</description>
     </key>
+    <key name="enabled-default-build-tools" type="ai">
+      <default>[]</default>
+      <summary>Enabled default build tools</summary>
+      <description>The list of the default build tools that are enabled</description>
+    </key>
+    <key name="disabled-default-build-tools" type="ai">
+      <default>[]</default>
+      <summary>Disabled default build tools</summary>
+      <description>The list of the default build tools that are disabled</description>
+    </key>
   </schema>
 
   <schema id="org.gnome.latexila.preferences.file-browser" path="/org/gnome/latexila/preferences/file-browser/">
