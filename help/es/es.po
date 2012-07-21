@@ -7,14 +7,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2012-02-05 21:00+0000\n"
-"PO-Revision-Date: 2012-02-06 10:23+0100\n"
+"POT-Creation-Date: 2012-07-18 00:03+0000\n"
+"PO-Revision-Date: 2012-07-21 18:21+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
 #: C/index.page:4(page/title)
 msgid "LaTeXila Help"
@@ -172,21 +174,20 @@ msgid "There are several means to execute a build tool:"
 msgstr "Hay varias maneras de ejecutar una herramienta de construcción:"
 
 #: C/build_tools.page:118(item/p)
-msgid "Open the <gui style=\"menu\">Build</gui> menu (first part)."
-msgstr "Abrir el menú <gui style=\"menu\">Construir</gui> (primera parte)."
+#| msgid "Open the <gui style=\"menu\">Build</gui> menu (first part)."
+msgid "Open the <gui style=\"menu\">Build</gui> menu."
+msgstr "Abrir el menú <gui style=\"menu\">Construir</gui>."
 
 #: C/build_tools.page:119(item/p)
-msgid "Use the buttons in the main toolbar (last part)."
-msgstr "Usar los botones en la barra de herramientas principal (última parte)."
+#| msgid "Use the buttons in the main toolbar (last part)."
+msgid "Use the buttons in the main toolbar."
+msgstr "Usar los botones en la barra de herramientas principal."
 
 #: C/build_tools.page:120(item/p)
 msgid "Use the shortcut: <key>F2</key> → <key>F11</key>."
 msgstr "Use el atajo de teclado: <key>F2</key> → <key>F11</key>."
 
 #: C/build_tools.page:123(section/p)
-#| msgid ""
-#| "The build tool is executed on the currently opened file. If the file "
-#| "belongs to a project, it is executed on the project's main file."
 msgid ""
 "The build tool is executed on the currently opened file. If the file belongs "
 "to a <link xref=\"projects\">project</link>, it is executed on the project's "
@@ -215,23 +216,33 @@ msgid "General Configuration"
 msgstr "Configuración general"
 
 #: C/build_tools.page:137(section/p)
+#| msgid ""
+#| "To configure the build tools, open the preferences dialog: <guiseq> <gui "
+#| "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui "
+#| "style=\"tab\">LaTeX</gui> </guiseq>"
 msgid ""
-"To configure the build tools, open the preferences dialog: <guiseq> <gui "
-"style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
-"\"tab\">LaTeX</gui> </guiseq>"
+"To configure the build tools, go to: <guiseq> <gui style=\"menu\">Build</"
+"gui> <gui style=\"menu\">Manage Build Tools</gui> </guiseq>"
 msgstr ""
-"Para configurar las herramientas de construcción, abra el diálogo de "
-"preferencias: <guiseq> <gui style=\"menu\">Editar</gui> <gui style=\"menu"
-"\">Preferenceias</gui> <gui style=\"tab\">LaTeX</gui> </guiseq>"
+"Para configurar las herramientas de construcción, vaya a: <guiseq> <gui "
+"style=\"menu\">Construir</gui> <gui style=\"menu\">Gestionar herramientas de "
+"construcción</gui> </guiseq>"
 
-#: C/build_tools.page:146(section/p)
+#: C/build_tools.page:145(section/p)
+#| msgid ""
+#| "You will see a list with all the build tools. There are check buttons to "
+#| "show or hide them. When a build tool is hidden, it's not possible to "
+#| "execute it. You can perform some actions, like moving a tool up or down, "
+#| "open its properties, delete or copy it, create a new one, etc."
 msgid ""
-"You will see a list with all the build tools. There are check buttons to "
-"show or hide them. When a build tool is hidden, it's not possible to execute "
-"it. You can perform some actions, like moving a tool up or down, open its "
+"You will see the list of all the default build tools, and a second list with "
+"your personal build tools. There are check buttons to enable or disable "
+"them. When a build tool is disabled, it's not possible to execute it. You "
+"can perform some actions, like moving a tool up or down, open its "
 "properties, delete or copy it, create a new one, etc."
 msgstr ""
-"Verá una lista de todas las herramientas de construcción. Hay casillas para "
+"Verá una lista de todas las herramientas de construcción, y una segunda "
+"lista con sus herramientas personales de construcción. Hay casillas para "
 "mostrarlas u ocultarlas. Cuando una herramienta de construcción está oculta, "
 "no es posible ejecutarla. Puede realizar algunas acciones, como mover una "
 "herramienta, abrir sus propiedades, eliminarla, copiarla, crear una nueva, "
@@ -243,50 +254,46 @@ msgstr ""
 "Una pulsación doble sobre una herramienta de construcción mostrará sus "
 "propiedades."
 
-#: C/build_tools.page:155(section/p)
-msgid ""
-"For an explanation of the option about the Latexmk post processor, see <link "
-"xref=\"#post-processors\"/>."
-msgstr ""
-"Para obtener una explicación de la opción sobre el post-procesador Latexmk, "
-"consulte la <link xref=\"#post-processors\"/>."
-
-#: C/build_tools.page:160(section/title)
+#: C/build_tools.page:157(section/title)
 msgid "Jobs of a Build Tool"
 msgstr "Tareas de una herramienta de construcción"
 
-#: C/build_tools.page:162(section/p)
+#: C/build_tools.page:159(section/p)
+#| msgid ""
+#| "In the properties of a build tool, the tricky part is to configure the "
+#| "jobs. A build tool can execute several jobs. Each job contains three "
+#| "pieces of information:"
 msgid ""
 "In the properties of a build tool, the tricky part is to configure the jobs. "
-"A build tool can execute several jobs. Each job contains three pieces of "
+"A build tool can execute several jobs. Each job contains two pieces of "
 "information:"
 msgstr ""
 "En las propiedades de una herramienta de construcción, la parte complicada "
 "es configurar las tareas. Una herramienta de construcción puede ejecutar "
-"varias tareas. Cada tarea contiene tres fragmentos de información:"
+"varias tareas. Cada tarea contiene dos fragmentos de información:"
 
-#: C/build_tools.page:166(item/p)
+#: C/build_tools.page:163(item/p)
 msgid "The command, which can use placeholders."
 msgstr "El comando, que puede usar marcadores de posición."
 
-#: C/build_tools.page:167(item/p)
-msgid ""
-"Whether the job must succeed. If this option is enabled, when an error "
-"occurs during the job execution, the next job is not executed."
-msgstr ""
-"Indica si la tarea debe terminar con éxito. Si esta opción está activada, "
-"cuando ocurre un error durante la ejecución de la tarea, la siguiente tarea "
-"no se ejecuta."
-
-#: C/build_tools.page:169(item/p)
+#: C/build_tools.page:164(item/p)
 msgid "The post processor (see <link xref=\"#post-processors\"/>)."
 msgstr "El post-procesador (consulte la <link xref=\"#post-processors\"/>)."
 
-#: C/build_tools.page:174(section/title)
+#: C/build_tools.page:167(section/p)
+msgid ""
+"When an error occurs during a job's execution, the execution of the build "
+"tool is aborted, so the next jobs are not launched."
+msgstr ""
+"Cuando ocurre un error durante la ejecución de una tarea, se cancela la "
+"ejecución de la herramienta de construcción, por lo que los siguientes "
+"trabajos no se lanzan."
+
+#: C/build_tools.page:172(section/title)
 msgid "Post Processors"
 msgstr "Post-procesadores"
 
-#: C/build_tools.page:175(section/p)
+#: C/build_tools.page:173(section/p)
 msgid ""
 "The purpose of a post processor is to filter the command output and extract "
 "the useful information. Five post processors are available:"
@@ -295,15 +302,15 @@ msgstr ""
 "comando y extraer la información útil. Hay cinco post-procesadores "
 "disponibles:"
 
-#: C/build_tools.page:181(item/p)
+#: C/build_tools.page:179(item/p)
 msgid "The output is simply not displayed."
 msgstr "La salida simplemente no se muestra."
 
-#: C/build_tools.page:185(item/p)
+#: C/build_tools.page:183(item/p)
 msgid "All the output is displayed, without filter."
 msgstr "Se muestra toda la salida, sin filtrar."
 
-#: C/build_tools.page:189(item/p)
+#: C/build_tools.page:187(item/p)
 msgid ""
 "Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands. "
 "There can be three types of errors: critical errors, warnings, or bad boxes. "
@@ -315,7 +322,7 @@ msgstr ""
 "boxes». También hay alguna información útil: el tamaño del documento, el "
 "número de páginas y el número de errores."
 
-#: C/build_tools.page:196(item/p)
+#: C/build_tools.page:194(item/p)
 msgid ""
 "Used for the <cmd>latexmk</cmd> command. Internally, this post processor "
 "uses other ones: <em>latex</em> and <em>all-output</em>."
@@ -324,24 +331,6 @@ msgstr ""
 "usa otros: <em>latex</em> y <em>all-output</em>."
 
 #: C/build_tools.page:199(item/p)
-msgid ""
-"In the <link xref=\"#general_configuration\"/>, there is an option for "
-"always showing all information of this post processor. If this option is "
-"disabled (which is the case by default), only the output of the last "
-"<cmd>latex</cmd> or <cmd>pdflatex</cmd> command is displayed, if no error "
-"occurred in another command. This allows to reduce the output showed in the "
-"bottom panel. But even if there are no errors, it can be useful to see "
-"exactly which commands are executed, with their output."
-msgstr ""
-"En la <link xref=\"#general_configuration\"/>, hay una opción para mostrar "
-"siempre toda la información de este post-procesador. Si esta opción está "
-"desactivada (lo está de manera predeterminada), sólo se muestra la salida "
-"del último comando <cmd>latex</cmd> o <cmd>pdflatex</cmd> si no hay ningún "
-"error en otro comando. Esto permite reducir la salida mostrada en el panel "
-"inferior. Pero incluso si no hay errores, puede ser útil para ver "
-"exactamente qué comandos se han ejecutado, con su salida."
-
-#: C/build_tools.page:209(item/p)
 msgid ""
 "This is the post-processor used for the <cmd>rubber</cmd> command. The "
 "errors are categorized into two types: bad boxes, and the others. So, unlike "
@@ -503,9 +492,9 @@ msgid ""
 "used by Enchant on your system, and install the dictionary for this backend. "
 "There are most probably packages available for your Linux distribution."
 msgstr ""
-"Si no hay un diccionario para su idioma, trate de averiguar qué «backend» usa "
-"Enchant en su sistema, e instale el backend para este backend. Probablemente "
-"haya paquetes disponibles para su distribución de Linux."
+"Si no hay un diccionario para su idioma, trate de averiguar qué «backend» "
+"usa Enchant en su sistema, e instale el backend para este backend. "
+"Probablemente haya paquetes disponibles para su distribución de Linux."
 
 #: C/structure.page:10(page/title)
 msgid "Document's Structure"
@@ -524,10 +513,6 @@ msgid "Display the structure"
 msgstr "Mostrar la estructura"
 
 #: C/structure.page:20(section/p)
-#| msgid ""
-#| "The spell checking can be activated or disabled via the menu: <guiseq> "
-#| "<gui style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </"
-#| "guiseq>"
 msgid ""
 "The structure can be displayed in the side panel. If the side panel is "
 "hidden, go to <guiseq> <gui style=\"menu\">View</gui> <gui style=\"menu"
@@ -550,7 +535,6 @@ msgstr ""
 "medida en la que el artículo está todavía allí, y no se modifica."
 
 #: C/structure.page:37(section/title)
-#| msgid "Dictionaries"
 msgid "Actions"
 msgstr "Acciones"
 
@@ -560,6 +544,39 @@ msgid ""
 "structure's item. Either by a right click, or via the <gui style=\"menu"
 "\">Structure</gui> menu."
 msgstr ""
-"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en una "
-"estructura. Se puede hacer pulsando con el botón derecho o mediante el menú "
-"<gui style=\"menu\">Estructura</gui>."
+"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en "
+"una estructura. Se puede hacer pulsando con el botón derecho o mediante el "
+"menú <gui style=\"menu\">Estructura</gui>."
+
+#~ msgid ""
+#~ "For an explanation of the option about the Latexmk post processor, see "
+#~ "<link xref=\"#post-processors\"/>."
+#~ msgstr ""
+#~ "Para obtener una explicación de la opción sobre el post-procesador "
+#~ "Latexmk, consulte la <link xref=\"#post-processors\"/>."
+
+#~ msgid ""
+#~ "Whether the job must succeed. If this option is enabled, when an error "
+#~ "occurs during the job execution, the next job is not executed."
+#~ msgstr ""
+#~ "Indica si la tarea debe terminar con éxito. Si esta opción está activada, "
+#~ "cuando ocurre un error durante la ejecución de la tarea, la siguiente "
+#~ "tarea no se ejecuta."
+
+#~ msgid ""
+#~ "In the <link xref=\"#general_configuration\"/>, there is an option for "
+#~ "always showing all information of this post processor. If this option is "
+#~ "disabled (which is the case by default), only the output of the last "
+#~ "<cmd>latex</cmd> or <cmd>pdflatex</cmd> command is displayed, if no error "
+#~ "occurred in another command. This allows to reduce the output showed in "
+#~ "the bottom panel. But even if there are no errors, it can be useful to "
+#~ "see exactly which commands are executed, with their output."
+#~ msgstr ""
+#~ "En la <link xref=\"#general_configuration\"/>, hay una opción para "
+#~ "mostrar siempre toda la información de este post-procesador. Si esta "
+#~ "opción está desactivada (lo está de manera predeterminada), sólo se "
+#~ "muestra la salida del último comando <cmd>latex</cmd> o <cmd>pdflatex</"
+#~ "cmd> si no hay ningún error en otro comando. Esto permite reducir la "
+#~ "salida mostrada en el panel inferior. Pero incluso si no hay errores, "
+#~ "puede ser útil para ver exactamente qué comandos se han ejecutado, con su "
+#~ "salida."
