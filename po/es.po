@@ -9,17 +9,18 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-07-16 05:13+0000\n"
-"PO-Revision-Date: 2012-07-16 16:14+0200\n"
+"POT-Creation-Date: 2012-07-18 00:03+0000\n"
+"PO-Revision-Date: 2012-07-21 18:15+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
-#: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:169
+#: C/build_tools.xml:37(tool/label) ../src/build_tool_dialog.vala:166
 msgid "View PDF"
 msgstr "Ver PDF"
 
@@ -27,7 +28,7 @@ msgstr "Ver PDF"
 msgid "View the PDF file"
 msgstr "Ver el archivo PDF"
 
-#: C/build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:168
+#: C/build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:165
 msgid "View DVI"
 msgstr "Ver DVI"
 
@@ -35,7 +36,7 @@ msgstr "Ver DVI"
 msgid "View the DVI file"
 msgstr "Ver el archivo DVI"
 
-#: C/build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:170
+#: C/build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:167
 msgid "View PS"
 msgstr "Ver PS"
 
@@ -138,124 +139,128 @@ msgstr ""
 "\\end{letter}\n"
 "\\end{document}\n"
 
-#: ../src/build_tool_dialog.vala:65
+#: ../src/bottom_panel.vala:51 ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "Ocultar panel"
+
+#: ../src/build_tool_dialog.vala:81
+#| msgid "Build Tool"
+msgid "Build Tool (read-only)"
+msgstr "Herramienta de construcción (solo lectura)"
+
+#: ../src/build_tool_dialog.vala:88
 msgid "Build Tool"
 msgstr "Herramienta de construcción"
 
-#: ../src/build_tool_dialog.vala:162
+#: ../src/build_tool_dialog.vala:159
 msgid "Execute"
 msgstr "Ejecutar"
 
-#: ../src/build_tool_dialog.vala:166
+#: ../src/build_tool_dialog.vala:163
 msgid "Convert"
 msgstr "Convertir"
 
-#: ../src/build_tool_dialog.vala:167
+#: ../src/build_tool_dialog.vala:164
 msgid "View File"
 msgstr "Ver Archivo"
 
-#: ../src/build_tool_dialog.vala:231
+#: ../src/build_tool_dialog.vala:228
 msgid "Commands"
 msgstr "Comandos"
 
-#: ../src/build_tool_dialog.vala:241
+#: ../src/build_tool_dialog.vala:238
 msgid "Post Processor"
 msgstr "Post-procesador"
 
-#: ../src/build_tool_dialog.vala:268 ../src/build_tools_preferences.vala:226
+#: ../src/build_tool_dialog.vala:265 ../src/build_tools_preferences.vala:290
 msgid "Add..."
 msgstr "Añadir…"
 
-#: ../src/build_tool_dialog.vala:285 ../src/build_tools_preferences.vala:243
+#: ../src/build_tool_dialog.vala:282 ../src/build_tools_preferences.vala:307
 msgid "Remove"
 msgstr "Quitar"
 
-#: ../src/build_tool_dialog.vala:315 ../src/build_tools_preferences.vala:283
+#: ../src/build_tool_dialog.vala:312 ../src/build_tools_preferences.vala:347
 msgid "Move up"
 msgstr "Subir"
 
-#: ../src/build_tool_dialog.vala:366 ../src/build_tools_preferences.vala:335
+#: ../src/build_tool_dialog.vala:363 ../src/build_tools_preferences.vala:399
 msgid "Move down"
 msgstr "Bajar"
 
-#: ../src/build_tool_dialog.vala:566 ../src/build_tools_preferences.vala:123
+#: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:182
 #: ../src/latex_menu.vala:52 ../src/structure.vala:730
 msgid "Label"
 msgstr "Etiqueta"
 
-#: ../src/build_tool_dialog.vala:571
+#: ../src/build_tool_dialog.vala:568
 msgid "You can select this arrow and copy/paste it!"
 msgstr "Puede elegir esta flecha y copiarlo/pegarlo"
 
-#: ../src/build_tool_dialog.vala:587
+#: ../src/build_tool_dialog.vala:584
 msgid "Description"
 msgstr "Descripción"
 
-#: ../src/build_tool_dialog.vala:593
-#| msgid ""
-#| "File extensions for which the build tool can be executed.\n"
-#| "The extensions are separated by spaces."
+#: ../src/build_tool_dialog.vala:590
 msgid "File extensions for which the build tool can be executed."
 msgstr ""
 "Extensiones de archivos para las que la herramienta de construcción se puede "
 "ejecutar."
 
-#: ../src/build_tool_dialog.vala:594
+#: ../src/build_tool_dialog.vala:591
 msgid "The extensions are separated by spaces."
 msgstr "Las extensiones están separadas por espacios."
 
-#: ../src/build_tool_dialog.vala:595
+#: ../src/build_tool_dialog.vala:592
 msgid "If it is empty, all extensions are allowed."
 msgstr "Si está vacía, se permiten todas las extensiones."
 
-#: ../src/build_tool_dialog.vala:597
+#: ../src/build_tool_dialog.vala:594
 msgid "Extensions"
 msgstr "Extensiones"
 
-#: ../src/build_tool_dialog.vala:602
+#: ../src/build_tool_dialog.vala:599
 msgid "Icon"
 msgstr "Icono"
 
 #. Placeholders
-#: ../src/build_tool_dialog.vala:609
+#: ../src/build_tool_dialog.vala:606
 msgid "Placeholders:"
 msgstr "Marcadores de posición:"
 
-#: ../src/build_tool_dialog.vala:613
-#| msgid "The active document filename"
+#: ../src/build_tool_dialog.vala:610
 msgid "The active document's filename."
 msgstr "El nombre de archivo del documento activo."
 
-#: ../src/build_tool_dialog.vala:614 ../src/build_tool_dialog.vala:619
+#: ../src/build_tool_dialog.vala:611 ../src/build_tool_dialog.vala:616
 msgid "If the active document belongs to a project, the main file is choosen."
 msgstr ""
 "Si el documento activo pertenece a un proyecto, se elije el archivo "
 "principal."
 
-#: ../src/build_tool_dialog.vala:618
-#| msgid "The active document filename without its extension"
+#: ../src/build_tool_dialog.vala:615
 msgid "The active document's filename without its extension."
 msgstr "El nombre de archivo del documento activo sin su extensión."
 
-#: ../src/build_tool_dialog.vala:664
+#: ../src/build_tool_dialog.vala:661
 msgid "Jobs"
 msgstr "Trabajos"
 
-#: ../src/build_tool_dialog.vala:670
+#: ../src/build_tool_dialog.vala:667
 msgid "List of files to open after executing the build jobs."
 msgstr ""
 "Lista de archivos que abrir después de ejecutar las tareas de construcción."
 
-#: ../src/build_tool_dialog.vala:671
+#: ../src/build_tool_dialog.vala:668
 msgid "The files are separated by spaces."
 msgstr "Los archivos están separados por espacios."
 
-#: ../src/build_tool_dialog.vala:672
+#: ../src/build_tool_dialog.vala:669
 msgid "You should use the placeholders to specify the files."
 msgstr ""
 "Debe especificar los marcadores de posición para especificar los archivos."
 
-#: ../src/build_tool_dialog.vala:675
+#: ../src/build_tool_dialog.vala:672
 msgid "Files to open"
 msgstr "Archivos que abrir"
 
@@ -266,13 +271,11 @@ msgstr "parece que %s no está instalado."
 
 #: ../src/build_tool_runner.vala:259
 #, c-format
-#| msgid "Open Files"
 msgid "Open %s"
 msgstr "Abrir %s"
 
 #: ../src/build_tool_runner.vala:268
 #, c-format
-#| msgid "The file %s changed on disk."
 msgid "The file '%s' doesn't exist."
 msgstr "El archivo «%s» no existe."
 
@@ -281,33 +284,33 @@ msgstr "El archivo «%s» no existe."
 msgid "Failed to open '%s':"
 msgstr "Falló al abrir «%s»:"
 
-#: ../src/build_tools_preferences.vala:48
+#: ../src/build_tools_preferences.vala:53
 msgid "Build Tools"
 msgstr "Herramientas de construcción"
 
-#: ../src/build_tools_preferences.vala:114
-#| msgid "Table"
+#: ../src/build_tools_preferences.vala:109
+#| msgid "Delete one build tool"
+msgid "Default build tools"
+msgstr "Herramientas de construcción predeterminadas"
+
+#: ../src/build_tools_preferences.vala:129
+#| msgid "Reset all the build tools"
+msgid "Personal build tools"
+msgstr "Herramientas de construcción personales"
+
+#: ../src/build_tools_preferences.vala:173
 msgid "Enabled"
 msgstr "Activada"
 
-#: ../src/build_tools_preferences.vala:213
+#: ../src/build_tools_preferences.vala:275
 #, c-format
 msgid "%s [copy]"
 msgstr "%s (copia)"
 
-#: ../src/build_tools_preferences.vala:261
+#: ../src/build_tools_preferences.vala:325
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
 msgstr "¿Realmente quiere eliminar la herramienta de construcción «%s»?"
-
-#: ../src/build_tools_preferences.vala:391
-#| msgid "Reset all build tools"
-msgid "Reset all the build tools"
-msgstr "Restablecer todas las herramientas de construcción"
-
-#: ../src/build_tools_preferences.vala:396
-msgid "Do you really want to reset all build tools?"
-msgstr "¿Realmente quiere restablecer todas las herramientas de construcción?"
 
 #: ../src/clean_build_files.vala:261
 msgid "Do you really want to delete these files?"
@@ -1181,6 +1184,70 @@ msgstr ""
 "Ejecute «%s --help» para ver una lista completa de opciones de línea comando "
 "disponibles.\n"
 
+#: ../src/main_window_build_tools.vala:28
+msgid "_Build"
+msgstr "_Construir"
+
+#: ../src/main_window_build_tools.vala:30
+msgid "Cleanup Build _Files"
+msgstr "Limpiar _archivos de construcción"
+
+#: ../src/main_window_build_tools.vala:31
+msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
+msgstr "Limpiar archivos de construcción (*.aux, *.log, *.out, *.toc, *.etc)"
+
+#: ../src/main_window_build_tools.vala:34
+msgid "_Stop Execution"
+msgstr "_Detener la ejecución"
+
+#: ../src/main_window_build_tools.vala:35
+msgid "Stop Execution"
+msgstr "Detener la ejecución"
+
+#: ../src/main_window_build_tools.vala:37
+msgid "View _Log"
+msgstr "Ver _registro"
+
+#: ../src/main_window_build_tools.vala:38
+msgid "View Log"
+msgstr "Ver registro"
+
+#: ../src/main_window_build_tools.vala:40
+#| msgid "Build Tools"
+msgid "_Manage Build Tools"
+msgstr "_Gestionar herramientas de construcción"
+
+#: ../src/main_window_build_tools.vala:41
+#| msgid "Build Tools"
+msgid "Manage Build Tools"
+msgstr "Gestionar herramientas de construcción"
+
+#: ../src/main_window_build_tools.vala:46
+#| msgid "Show tables"
+msgid "Show _Details"
+msgstr "Mostrar _detalles"
+
+#: ../src/main_window_build_tools.vala:47
+#| msgid "Show tables"
+msgid "Show Details"
+msgstr "Mostrar detalles"
+
+#: ../src/main_window_build_tools.vala:49
+msgid "Show _Warnings"
+msgstr "Mostrar _advertencias"
+
+#: ../src/main_window_build_tools.vala:50
+msgid "Show Warnings"
+msgstr "Mostrar advertencias"
+
+#: ../src/main_window_build_tools.vala:52
+msgid "Show _Bad Boxes"
+msgstr "Mostrar _Bad Boxes"
+
+#: ../src/main_window_build_tools.vala:53
+msgid "Show Bad Boxes"
+msgstr "Mostrar Bad Boxes"
+
 #. File
 #: ../src/main_window.vala:29
 msgid "_File"
@@ -1714,10 +1781,6 @@ msgstr "Sensible a capitalización"
 msgid "Entire words only"
 msgstr "Solo palabras completas"
 
-#: ../src/side_panel.vala:85
-msgid "Hide panel"
-msgstr "Ocultar panel"
-
 #: ../src/structure.vala:175
 msgid "Collapse All"
 msgstr "Contraer todo"
@@ -1832,6 +1895,38 @@ msgstr "Texto varios"
 #: ../src/symbols.vala:159
 msgid "Most Used"
 msgstr "Más usado"
+
+#: ../src/templates_dialogs.vala:34
+msgid "New File..."
+msgstr "Archivo nuevo…"
+
+#: ../src/templates_dialogs.vala:53
+msgid "Default templates"
+msgstr "Plantillas predeterminadas"
+
+#: ../src/templates_dialogs.vala:61
+msgid "Your personal templates"
+msgstr "Sus plantillas personales"
+
+#: ../src/templates_dialogs.vala:170
+msgid "New Template..."
+msgstr "Plantilla nueva…"
+
+#: ../src/templates_dialogs.vala:181
+msgid "Name of the new template"
+msgstr "Nombre de la plantilla nueva"
+
+#: ../src/templates_dialogs.vala:193
+msgid "Choose an icon"
+msgstr "Elija un icono"
+
+#: ../src/templates_dialogs.vala:237
+msgid "Delete Template(s)..."
+msgstr "Eliminar Plantilla(s)…"
+
+#: ../src/templates_dialogs.vala:252
+msgid "Personal templates"
+msgstr "Plantillas personales"
 
 #: ../src/templates.vala:72
 msgid "Empty"
@@ -1966,6 +2061,10 @@ msgstr "Número de caracteres después de «\\»"
 msgid "Other"
 msgstr "Otros"
 
+#~ msgid "Do you really want to reset all build tools?"
+#~ msgstr ""
+#~ "¿Realmente quiere restablecer todas las herramientas de construcción?"
+
 #~ msgid ""
 #~ "The program for viewing documents.\n"
 #~ "Its value can be changed in the preferences dialog."
@@ -1993,40 +2092,6 @@ msgstr "Otros"
 #~ msgid "Line"
 #~ msgstr "Línea"
 
-#~ msgid "_Build"
-#~ msgstr "_Construir"
-
-#~ msgid "Cleanup Build _Files"
-#~ msgstr "Limpiar _archivos de construcción"
-
-#~ msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
-#~ msgstr ""
-#~ "Limpiar archivos de construcción (*.aux, *.log, *.out, *.toc, *.etc)"
-
-#~ msgid "_Stop Execution"
-#~ msgstr "_Detener la ejecución"
-
-#~ msgid "Stop Execution"
-#~ msgstr "Detener la ejecución"
-
-#~ msgid "View _Log"
-#~ msgstr "Ver _registro"
-
-#~ msgid "View Log"
-#~ msgstr "Ver registro"
-
-#~ msgid "Show _Warnings"
-#~ msgstr "Mostrar _advertencias"
-
-#~ msgid "Show Warnings"
-#~ msgstr "Mostrar advertencias"
-
-#~ msgid "Show _Bad Boxes"
-#~ msgstr "Mostrar _Bad Boxes"
-
-#~ msgid "Show Bad Boxes"
-#~ msgstr "Mostrar Bad Boxes"
-
 #~ msgid "Active"
 #~ msgstr "Activar"
 
@@ -2035,9 +2100,6 @@ msgstr "Otros"
 
 #~ msgid "Program for viewing documents:"
 #~ msgstr "Programa para ver documentos:"
-
-#~ msgid "Delete one build tool"
-#~ msgstr "Eliminar una herramienta de construcción"
 
 #~ msgid "Reset"
 #~ msgstr "Restablecer"
@@ -2059,30 +2121,6 @@ msgstr "Otros"
 
 #~ msgid "Expand All"
 #~ msgstr "Expandir todo"
-
-#~ msgid "New File..."
-#~ msgstr "Archivo nuevo…"
-
-#~ msgid "Default templates"
-#~ msgstr "Plantillas predeterminadas"
-
-#~ msgid "Your personal templates"
-#~ msgstr "Sus plantillas personales"
-
-#~ msgid "New Template..."
-#~ msgstr "Plantilla nueva…"
-
-#~ msgid "Name of the new template"
-#~ msgstr "Nombre de la plantilla nueva"
-
-#~ msgid "Choose an icon"
-#~ msgstr "Elija un icono"
-
-#~ msgid "Delete Template(s)..."
-#~ msgstr "Eliminar Plantilla(s)…"
-
-#~ msgid "Personal templates"
-#~ msgstr "Plantillas personales"
 
 #~ msgid "Clear Find"
 #~ msgstr "Limpiar búsqueda"
