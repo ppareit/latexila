@@ -121,26 +121,6 @@ public class MainWindow : Window
         { "ProjectsManage", Stock.PREFERENCES, N_("_Manage Projects"), null,
             N_("Manage Projects"), on_projects_manage },
 
-        // Structure
-        { "Structure", null, N_("S_tructure") },
-        { "StructureCut", Stock.CUT, null, "",
-            N_("Cut the selected structure item"), on_structure_cut },
-        { "StructureCopy", Stock.COPY, null, "",
-            N_("Copy the selected structure item"), on_structure_copy },
-        { "StructureDelete", Stock.DELETE, null, "",
-            N_("Delete the selected structure item"), on_structure_delete },
-        { "StructureSelect", Stock.SELECT_ALL, N_("_Select"), "",
-            N_("Select the contents of the selected structure item"),
-            on_structure_select },
-        { "StructureComment", null, N_("_Comment"), null,
-            N_("Comment the selected structure item"), on_structure_comment },
-        { "StructureShiftLeft", Stock.GO_BACK, N_("Shift _Left"), "",
-            N_("Shift the selected structure item to the left (e.g. section → chapter)"),
-            on_structure_shift_left },
-        { "StructureShiftRight", Stock.GO_FORWARD, N_("Shift _Right"), "",
-            N_("Shift the selected structure item to the right (e.g. chapter → section)"),
-            on_structure_shift_right },
-
         // Help
         { "Help", null, N_("_Help") },
         { "HelpContents", Stock.HELP, N_("_Contents"), "<Release>F1",
@@ -264,17 +244,17 @@ public class MainWindow : Window
         goto_line = new GotoLine (this);
         search_and_replace = new SearchAndReplace (this);
 
-        // side panel
-        _side_panel = new SidePanel ();
-
-        _symbols = new SymbolsView (this);
-        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
-
+        // File browser
         FileBrowser file_browser = new FileBrowser (this);
-        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
-        // bottom panel
+        // Symbols
+        _symbols = new SymbolsView (this);
 
+        // Structure
+        _structure = new Structure (this);
+        new MainWindowStructure (ui_manager, _structure);
+
+        // Bottom panel
         BuildView build_view = new BuildView (this);
 
         _main_window_build_tools = new MainWindowBuildTools (this, ui_manager,
@@ -293,10 +273,11 @@ public class MainWindow : Window
         bottom_panel.bind_property ("visible", action_bottom_panel, "active",
             BindingFlags.BIDIRECTIONAL);
 
-        // structure (the UI manager must be initialized)
-        _structure = new Structure (this, ui_manager);
+        // Side panel
+        _side_panel = new SidePanel ();
+        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
+        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
         _side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
-
         _side_panel.restore_state ();
 
         // menu and toolbars
@@ -1539,50 +1520,6 @@ public class MainWindow : Window
     public void on_projects_manage ()
     {
         ProjectDialogs.manage_projects (this);
-    }
-
-    /* Structure */
-
-    public void on_structure_cut ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.CUT);
-    }
-
-    public void on_structure_copy ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.COPY);
-    }
-
-    public void on_structure_delete ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.DELETE);
-    }
-
-    public void on_structure_select ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.SELECT);
-    }
-
-    public void on_structure_comment ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.COMMENT);
-    }
-
-    public void on_structure_shift_left ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.SHIFT_LEFT);
-    }
-
-    public void on_structure_shift_right ()
-    {
-        return_if_fail (_structure != null);
-        _structure.do_action (StructAction.SHIFT_RIGHT);
     }
 
     /* Help */

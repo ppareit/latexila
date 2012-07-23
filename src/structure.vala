@@ -91,15 +91,6 @@ public enum StructAction
 public class Structure : Grid
 {
     private unowned MainWindow _main_window;
-    private Gtk.Menu _popup_menu;
-    private Gtk.Action _action_all_menu;
-    private Gtk.Action _action_cut;
-    private Gtk.Action _action_copy;
-    private Gtk.Action _action_delete;
-    private Gtk.Action _action_select;
-    private Gtk.Action _action_comment;
-    private Gtk.Action _action_shift_left;
-    private Gtk.Action _action_shift_right;
 
     private ToggleButton[] _simple_list_buttons = {};
     private Paned _vpaned;
@@ -122,22 +113,14 @@ public class Structure : Grid
     private static string[] _names = null;
     private static string[] _action_names = null;
 
-    public Structure (MainWindow main_window, UIManager ui_manager)
+    public signal void item_selected (StructType type);
+    public signal void show_popup_menu (Gdk.EventButton? event);
+
+    public Structure (MainWindow main_window)
     {
         orientation = Orientation.VERTICAL;
         row_spacing = 3;
         _main_window = main_window;
-
-        _popup_menu = ui_manager.get_widget ("/StructurePopup") as Gtk.Menu;
-        _action_all_menu = ui_manager.get_action ("/MainMenu/Structure");
-        _action_cut = ui_manager.get_action ("/StructurePopup/StructureCut");
-        _action_copy = ui_manager.get_action ("/StructurePopup/StructureCopy");
-        _action_delete = ui_manager.get_action ("/StructurePopup/StructureDelete");
-        _action_select = ui_manager.get_action ("/StructurePopup/StructureSelect");
-        _action_comment = ui_manager.get_action ("/StructurePopup/StructureComment");
-        _action_shift_left = ui_manager.get_action ("/StructurePopup/StructureShiftLeft");
-        _action_shift_right =
-            ui_manager.get_action ("/StructurePopup/StructureShiftRight");
 
         init_toolbar ();
         init_vpaned ();
@@ -147,11 +130,7 @@ public class Structure : Grid
         _list_view_sw.hide ();
 
         show.connect (connect_parsing);
-        hide.connect (() =>
-        {
-            disconnect_parsing ();
-            _action_all_menu.set_sensitive (false);
-        });
+        hide.connect (disconnect_parsing);
     }
 
     private void init_toolbar ()
@@ -338,8 +317,6 @@ public class Structure : Grid
         _tree_view.row_activated.connect ((path) => select_tree_row (path));
 
         // right click
-        _popup_menu.attach_to_widget (_tree_view, null);
-
         _tree_view.button_press_event.connect ((event) =>
         {
             // right click
@@ -436,8 +413,8 @@ public class Structure : Grid
         StructType type;
         _model.get (tree_iter,
             StructColumn.START_MARK, out mark,
-            StructColumn.TYPE, out type,
-            -1);
+            StructColumn.TYPE, out type
+        );
 
         /* go to the location in the document */
         TextBuffer doc = mark.get_buffer ();
@@ -452,14 +429,13 @@ public class Structure : Grid
         _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 1, 0);
 
         /* select the corresponding item in the simple list */
-        set_actions_sensitivity (type);
-
         if (! first_select)
             return true;
 
         select_simple_list_item (tree_iter);
 
         // the row is selected
+        item_selected (type);
         return true;
     }
 
@@ -605,30 +581,6 @@ public class Structure : Grid
 
     /*************************************************************************/
     // Right-click: actions
-
-    private void show_popup_menu (Gdk.EventButton? event)
-    {
-        if (event != null)
-            _popup_menu.popup (null, null, null, event.button, event.time);
-        else
-            _popup_menu.popup (null, null, null, 0, get_current_event_time ());
-    }
-
-    private void set_actions_sensitivity (StructType type)
-    {
-        _action_all_menu.sensitive = true;
-
-        _action_cut.sensitive = true;
-        _action_copy.sensitive = true;
-        _action_delete.sensitive = true;
-        _action_select.sensitive = true;
-        _action_comment.sensitive = true;
-
-        _action_shift_left.sensitive =
-            StructType.PART < type && type <= StructType.SUBPARAGRAPH;
-
-        _action_shift_right.sensitive = type < StructType.SUBPARAGRAPH;
-    }
 
     public void do_action (StructAction action_type)
     {
