@@ -29,16 +29,16 @@ public class MainWindowBuildTools
 
         { "BuildClean", Stock.CLEAR, N_("Cleanup Build _Files"), null,
             N_("Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"),
-            on_build_clean },
+            on_clean },
 
         { "BuildStopExecution", Stock.STOP, N_("_Stop Execution"), null,
-            N_("Stop Execution"), on_build_stop_execution },
+            N_("Stop Execution"), on_stop_execution },
 
         { "BuildViewLog", "view_log", N_("View _Log"), null,
-            N_("View Log"), on_build_view_log },
+            N_("View Log"), on_view_log },
 
         { "BuildToolsPreferences", Stock.PREFERENCES, N_("_Manage Build Tools"), null,
-            N_("Manage Build Tools"), on_build_tools_preferences }
+            N_("Manage Build Tools"), on_preferences }
     };
 
     private const ToggleActionEntry[] _toggle_action_entries =
@@ -391,13 +391,13 @@ public class MainWindowBuildTools
 
     /* Gtk.Action callbacks */
 
-    public void on_build_stop_execution ()
+    public void on_stop_execution ()
     {
         return_if_fail (_build_tool_runner != null);
         _build_tool_runner.abort ();
     }
 
-    public void on_build_clean ()
+    public void on_clean ()
     {
         return_if_fail (_main_window.active_tab != null);
 
@@ -408,7 +408,7 @@ public class MainWindowBuildTools
             _file_browser.refresh_for_document (_main_window.active_document);
     }
 
-    public void on_build_view_log ()
+    public void on_view_log ()
     {
         return_if_fail (_main_window.active_tab != null);
         return_if_fail (_main_window.active_document.is_main_file_a_tex_file ());
@@ -426,7 +426,7 @@ public class MainWindowBuildTools
             tab.document.readonly = true;
     }
 
-    public void on_build_tools_preferences ()
+    public void on_preferences ()
     {
         new BuildToolsPreferences (_main_window);
     }
