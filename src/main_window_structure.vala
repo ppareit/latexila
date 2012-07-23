@@ -50,7 +50,11 @@ public class MainWindowStructure
 
         { "StructureShiftRight", Stock.GO_FORWARD, N_("Shift _Right"), "",
             N_("Shift the selected structure item to the right (e.g. chapter → section)"),
-            on_shift_right }
+            on_shift_right },
+
+        { "StructureOpenFile", Stock.OPEN, N_("_Open File"), "",
+            N_("Open the file referenced by the selected structure item"),
+            on_open_file }
     };
 
     private UIManager _ui_manager;
@@ -101,6 +105,11 @@ public class MainWindowStructure
             _ui_manager.get_action ("/StructurePopup/StructureShiftRight");
 
         shift_right.sensitive = StructType.PART <= type && type < StructType.SUBPARAGRAPH;
+
+        Gtk.Action open_file =
+            _ui_manager.get_action ("/StructurePopup/StructureOpenFile");
+
+        open_file.sensitive = type == StructType.INCLUDE || type == StructType.IMAGE;
     }
 
     /* Gtk.Action callbacks */
@@ -145,5 +154,11 @@ public class MainWindowStructure
     {
         return_if_fail (_structure != null);
         _structure.do_action (StructAction.SHIFT_RIGHT);
+    }
+
+    public void on_open_file ()
+    {
+        return_if_fail (_structure != null);
+        _structure.do_action (StructAction.OPEN_FILE);
     }
 }

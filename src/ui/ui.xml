@@ -377,6 +377,8 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <separator />
       <menuitem action="StructureShiftLeft" />
       <menuitem action="StructureShiftRight" />
+      <separator />
+      <menuitem action="StructureOpenFile" />
     </menu>
 
     <menu action="Help">
@@ -521,5 +523,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <separator />
     <menuitem action="StructureShiftLeft" />
     <menuitem action="StructureShiftRight" />
+    <separator />
+    <menuitem action="StructureOpenFile" />
   </popup>
 </ui>

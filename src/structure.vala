@@ -85,6 +85,7 @@ public enum StructAction
     COMMENT,
     SHIFT_LEFT,
     SHIFT_RIGHT,
+    OPEN_FILE,
     NB_ACTIONS
 }
 
@@ -428,6 +429,8 @@ public class Structure : Grid
         // scroll to cursor, line at the top (no horizontal scroll)
         _main_window.active_view.scroll_to_mark (doc.get_insert (), 0, true, 1, 0);
 
+        item_selected (type);
+
         /* select the corresponding item in the simple list */
         if (! first_select)
             return true;
@@ -435,7 +438,6 @@ public class Structure : Grid
         select_simple_list_item (tree_iter);
 
         // the row is selected
-        item_selected (type);
         return true;
     }
 
@@ -589,6 +591,12 @@ public class Structure : Grid
 
         return_if_fail (selected_row != -1);
 
+        if (action_type == StructAction.OPEN_FILE)
+        {
+            open_referenced_file (selected_iter);
+            return;
+        }
+
         bool refresh_simple_list = false;
 
         try
@@ -621,6 +629,77 @@ public class Structure : Grid
             populate_simple_list ();
     }
 
+    private void open_referenced_file (TreeIter iter)
+    {
+        return_if_fail (_main_window.active_document != null);
+
+        StructType type;
+        string filename;
+
+        _model.get (iter,
+            StructColumn.TYPE, out type,
+            StructColumn.TEXT, out filename
+        );
+
+        File? doc_location = _main_window.active_document.location;
+        if (doc_location == null)
+            return;
+
+        File? parent = doc_location.get_parent ();
+        return_if_fail (parent != null);
+
+        File referenced_file = parent.get_child (filename);
+
+        switch (type)
+        {
+            case StructType.INCLUDE:
+                open_included_file (referenced_file);
+                break;
+
+            case StructType.IMAGE:
+                open_image (referenced_file);
+                break;
+
+            default:
+                return_if_reached ();
+        }
+    }
+
+    private void open_included_file (File referenced_file)
+    {
+        File file_to_open;
+
+        if (referenced_file.query_exists ())
+            file_to_open = referenced_file;
+        else
+        {
+            // LaTeX supports to omit the file's extension. It is most probably .tex.
+            string uri = referenced_file.get_uri ();
+            file_to_open = File.new_for_uri (uri + ".tex");
+
+            if (! file_to_open.query_exists ())
+            {
+                warning ("Structure: the file '%s' doesn't exist.",
+                    file_to_open.get_parse_name ());
+                return;
+            }
+        }
+
+        _main_window.open_document (file_to_open);
+    }
+
+    private void open_image (File referenced_file)
+    {
+        try
+        {
+            show_uri (get_screen (), referenced_file.get_uri (), Gdk.CURRENT_TIME);
+        }
+        catch (Error e)
+        {
+            warning ("Structure: can not open image: %s", e.message);
+        }
+    }
+
     private static string get_action_name (StructAction action_type)
     {
         if (_action_names == null)
@@ -638,6 +717,7 @@ public class Structure : Grid
             _action_names[StructAction.SHIFT_LEFT]  = _("shift left");
             // Translators: it's a verb
             _action_names[StructAction.SHIFT_RIGHT] = _("shift right");
+            _action_names[StructAction.OPEN_FILE]   = _("open file");
         }
 
         return _action_names[action_type];
