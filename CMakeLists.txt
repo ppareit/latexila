@@ -9,7 +9,7 @@ set (VALA_REQUIRED_VERSION		0.17.3.1)
 cmake_minimum_required (VERSION ${CMAKE_REQUIRED_VERSION})
 
 set (APP_NAME "LaTeXila")
-set (APP_VERSION "2.5.2")
+set (APP_VERSION "2.5.3")
 
 message (STATUS "*** Building ${APP_NAME} ${APP_VERSION} ***")
 
