@@ -1,5 +1,38 @@
 LaTeXila NEWS
 
+===============================
+* Release 2.5.2 (July 24, 2012)
+===============================
+
+- Build Tools:
+	- Separate default and personal build tools
+	- To manage build tools, go to Build -> Manage Build Tools
+	- Remove the 'must succeed' option for a build job
+	- Remove the $view placeholder, use gtk_show_uri() instead
+	- Add the 'files to open' option for a build tool
+	- Build View: add the 'show details' button, which replace the
+	  'always show all' option of the latexmk post-processor
+
+- Structure: open an included file or an image. Select an item in the
+  structure of the document, and go to Structure -> Open File, or a
+  right click. (bug #670549)
+- Force to show icons in the menu (for the LaTeX and Math menus)
+- Remove the setting about the number of most used symbols
+- Icon size available in 192x192 (for gnome-shell)
+- CMake: option to change the man page directory (for OpenBSD)
+- CMake: generate README and INSTALL from README.in and INSTALL.in
+- Various code cleanups and refactoring
+
+- UI translations:
+	- Andika Triwidada (id)
+	- Átila Camurça (pt_BR)
+	- Daniel Mustieles (es)
+	- Martin Srebotnjak (sl)
+
+- Doc translations:
+	- Daniel Mustieles (es)
+
+
 ==============================
 * Release 2.5.1 (May 31, 2012)
 ==============================
