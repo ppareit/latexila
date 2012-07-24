@@ -103,6 +103,12 @@ configure_file (
 
 add_definitions (-include config.h)
 
+# Generate README
+configure_file (
+	${latexila_SOURCE_DIR}/README.in
+	${latexila_SOURCE_DIR}/README
+)
+
 # Resources
 find_package (gresources REQUIRED)
 
