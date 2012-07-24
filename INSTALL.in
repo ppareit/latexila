@@ -1,17 +1,17 @@
 Requirements
 ============
 
-GLib >= 2.32
-GTK+ >= 3.4.3
-GtkSourceView >= 3.4.1
-GtkSpell >= 3.0 (not yet released, see note below)
+GLib >= @GLIB_REQUIRED_VERSION@
+GTK+ >= @GTK_REQUIRED_VERSION@
+GtkSourceView >= @GTKSOURCEVIEW_REQUIRED_VERSION@
+GtkSpell >= @GTKSPELL_REQUIRED_VERSION@ (not yet released, see note below)
 libgee
 gettext
 gsettings-desktop-schemas (optional)
 
 And for building the sources:
-CMake >= 2.6.4
-Vala >= 0.17.1 (may be optional)
+CMake >= @CMAKE_REQUIRED_VERSION@
+Vala >= @VALA_REQUIRED_VERSION@ (may be optional)
 ITS Tool
 
 If you are installing LaTeXila from a tarball, you don't have to install Vala

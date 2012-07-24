@@ -1,4 +1,12 @@
-cmake_minimum_required (VERSION 2.6.4)
+# Required versions
+set (CMAKE_REQUIRED_VERSION		2.6.4)
+set (GLIB_REQUIRED_VERSION		2.32)
+set (GTK_REQUIRED_VERSION		3.4.3)
+set (GTKSOURCEVIEW_REQUIRED_VERSION	3.4.1)
+set (GTKSPELL_REQUIRED_VERSION		3.0)
+set (VALA_REQUIRED_VERSION		0.17.3.1)
+
+cmake_minimum_required (VERSION ${CMAKE_REQUIRED_VERSION})
 
 set (APP_NAME "LaTeXila")
 set (APP_VERSION "2.5.2")
@@ -39,7 +47,6 @@ find_package (Itstool REQUIRED)
 # Vala
 if (BUILD_VALA)
 	set (_vala_main_version "0.18")
-	set (_vala_min_version "0.17.3.1")
 
 	if (VALAC)
 		message (STATUS "Use custom valac: ${VALAC}")
@@ -48,19 +55,19 @@ if (BUILD_VALA)
 		find_vala (${_vala_main_version})
 
 		if ((NOT VALA_FOUND) OR
-		    ("${VALA_VERSION}" VERSION_LESS "${_vala_min_version}"))
+		    ("${VALA_VERSION}" VERSION_LESS "${VALA_REQUIRED_VERSION}"))
 			message (FATAL_ERROR
-				"valac-${_vala_main_version} >= ${_vala_min_version} required")
+				"valac-${_vala_main_version} >= ${VALA_REQUIRED_VERSION} required")
 		endif ()
 	endif ()
 endif ()
 
 # Dependencies
 find_package (PkgConfig)
-pkg_check_modules (GTK REQUIRED "gtk+-3.0 >= 3.4.3")
-pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-3.0 >= 3.4.1")
+pkg_check_modules (GTK REQUIRED "gtk+-3.0 >= ${GTK_REQUIRED_VERSION}")
+pkg_check_modules (GTKSOURCEVIEW REQUIRED "gtksourceview-3.0 >= ${GTKSOURCEVIEW_REQUIRED_VERSION}")
 pkg_check_modules (GEE REQUIRED "gee-1.0")
-pkg_check_modules (GIO REQUIRED "gio-2.0 >= 2.32")
+pkg_check_modules (GIO REQUIRED "gio-2.0 >= ${GLIB_REQUIRED_VERSION}")
 pkg_check_modules (GTKSPELL REQUIRED "gtkspell-3.0")
 
 add_definitions (
@@ -103,10 +110,15 @@ configure_file (
 
 add_definitions (-include config.h)
 
-# Generate README
+# Generate README and INSTALL
 configure_file (
 	${latexila_SOURCE_DIR}/README.in
 	${latexila_SOURCE_DIR}/README
+)
+
+configure_file (
+	${latexila_SOURCE_DIR}/INSTALL.in
+	${latexila_SOURCE_DIR}/INSTALL
 )
 
 # Resources
