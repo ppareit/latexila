@@ -71,14 +71,15 @@ public class MainWindowStructure
 
         ui_manager.insert_action_group (action_group, 0);
 
-        structure.hide.connect (() =>
-        {
-            Gtk.Action menu = ui_manager.get_action ("/MainMenu/Structure");
-            menu.sensitive = false;
-        });
-
         structure.show_popup_menu.connect (show_popup_menu);
+        structure.hide.connect (set_menu_insensitive);
+        structure.no_items_selected.connect (set_menu_insensitive);
         structure.item_selected.connect (set_actions_sensitivity);
+    }
+
+    public void save_state ()
+    {
+        _structure.save_state ();
     }
 
     private void show_popup_menu (Gdk.EventButton? event)
@@ -89,6 +90,14 @@ public class MainWindowStructure
             popup_menu.popup (null, null, null, event.button, event.time);
         else
             popup_menu.popup (null, null, null, 0, get_current_event_time ());
+    }
+
+    private void set_menu_insensitive ()
+    {
+        return_if_fail (_ui_manager != null);
+
+        Gtk.Action menu = _ui_manager.get_action ("/MainMenu/Structure");
+        menu.sensitive = false;
     }
 
     private void set_actions_sensitivity (StructType type)

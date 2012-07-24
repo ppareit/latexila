@@ -114,6 +114,7 @@ public class Structure : Grid
     private static string[] _names = null;
     private static string[] _action_names = null;
 
+    public signal void no_items_selected ();
     public signal void item_selected (StructType type);
     public signal void show_popup_menu (Gdk.EventButton? event);
 
@@ -309,7 +310,10 @@ public class Structure : Grid
         {
             // always allow deselect
             if (path_currently_selected)
+            {
+                no_items_selected ();
                 return true;
+            }
 
             return select_tree_row (path);
         });

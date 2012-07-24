@@ -155,7 +155,6 @@ public class MainWindow : Window
     private Toolbar _edit_toolbar;
     private SidePanel _side_panel;
     private SymbolsView _symbols;
-    private Structure _structure;
     private Paned main_hpaned;
     private Paned vpaned;
 
@@ -166,6 +165,7 @@ public class MainWindow : Window
     private uint documents_list_menu_ui_id;
 
     private MainWindowBuildTools _main_window_build_tools;
+    private MainWindowStructure _main_window_structure;
 
     // context id for the statusbar
     private uint tip_message_cid;
@@ -251,8 +251,8 @@ public class MainWindow : Window
         _symbols = new SymbolsView (this);
 
         // Structure
-        _structure = new Structure (this);
-        new MainWindowStructure (ui_manager, _structure);
+        Structure structure = new Structure (this);
+        _main_window_structure = new MainWindowStructure (ui_manager, structure);
 
         // Bottom panel
         BuildView build_view = new BuildView (this);
@@ -277,7 +277,7 @@ public class MainWindow : Window
         _side_panel = new SidePanel ();
         _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
         _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
-        _side_panel.add_component (_("Structure"), Stock.INDEX, _structure);
+        _side_panel.add_component (_("Structure"), Stock.INDEX, structure);
         _side_panel.restore_state ();
 
         // menu and toolbars
@@ -1053,7 +1053,7 @@ public class MainWindow : Window
         settings_window.set_int ("side-panel-size", main_hpaned.get_position ());
         settings_window.set_int ("vertical-paned-position", vpaned.get_position ());
 
-        _structure.save_state ();
+        _main_window_structure.save_state ();
 
         /* ui preferences */
         GLib.Settings settings_ui =
