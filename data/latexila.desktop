@@ -12,3 +12,12 @@ Terminal=false
 Type=Application
 Categories=GTK;GNOME;Office;Publishing;
 MimeType=text/x-tex;
+Actions=Window;Document;
+
+[Desktop Action Window]
+Name=Open a New Window
+Exec=latexila --new-window
+
+[Desktop Action Document]
+Name=Open a New Document
+Exec=latexila --new-document
