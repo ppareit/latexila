@@ -30,6 +30,7 @@ src/latex_post_processor.vala
 src/main.vala
 src/main_window_build_tools.vala
 src/main_window_edit.vala
+src/main_window_file.vala
 src/main_window_structure.vala
 src/main_window.vala
 src/menu_in_toolbar.vala

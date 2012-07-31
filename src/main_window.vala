@@ -25,24 +25,6 @@ public class MainWindow : Window
     // name, stock_id, label, accelerator, tooltip, callback
     private const Gtk.ActionEntry[] action_entries =
     {
-        // File
-        { "File", null, N_("_File") },
-        { "FileNew", Stock.NEW, null, null,
-            N_("New file"), on_file_new },
-        { "FileNewWindow", null, N_("New _Window"), null,
-            N_("Create a new window"), on_new_window },
-        { "FileOpen", Stock.OPEN, null, null,
-            N_("Open a file"), on_file_open },
-        { "FileSave", Stock.SAVE, null, null,
-            N_("Save the current file"), on_file_save },
-        { "FileSaveAs", Stock.SAVE_AS, null, null,
-            N_("Save the current file with a different name"), on_file_save_as },
-        { "FileCreateTemplate", null, N_("Create _Template From Document..."), null,
-            N_("Create a new template from the current document"), on_create_template },
-        { "FileDeleteTemplate", null, N_("_Delete Template..."), null,
-            N_("Delete personal template(s)"), on_delete_template },
-        { "FileClose", Stock.CLOSE, null, null,
-            N_("Close the current file"), on_file_close },
         { "FileQuit", Stock.QUIT, null, null,
             N_("Quit the program"), on_quit },
 
@@ -113,7 +95,7 @@ public class MainWindow : Window
             N_("Show or hide the bottom panel"), null }
     };
 
-    private string file_chooser_current_folder = Environment.get_home_dir ();
+    public string default_location = Environment.get_home_dir ();
     private DocumentsPanel documents_panel;
     private CustomStatusbar statusbar;
     private GotoLine goto_line;
@@ -131,6 +113,7 @@ public class MainWindow : Window
     private Gtk.ActionGroup documents_list_action_group;
     private uint documents_list_menu_ui_id;
 
+    private MainWindowFile _main_window_file;
     private MainWindowEdit _main_window_edit;
     private MainWindowBuildTools _main_window_build_tools;
     private MainWindowStructure _main_window_structure;
@@ -213,6 +196,7 @@ public class MainWindow : Window
         search_and_replace = new SearchAndReplace (this);
 
         _main_window_edit = new MainWindowEdit (this, ui_manager);
+        _main_window_file = new MainWindowFile (this, ui_manager);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
@@ -254,10 +238,12 @@ public class MainWindow : Window
         Widget menu = ui_manager.get_widget ("/MainMenu");
 
         _main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
+        ToolItem open_button = _main_window_file.get_toolbar_open_button ();
+        _main_toolbar.insert (open_button, 1);
+
         _main_toolbar.set_style (ToolbarStyle.ICONS);
         StyleContext main_toolbar_context = _main_toolbar.get_style_context ();
         main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-        setup_toolbar_open_button (_main_toolbar);
 
         _edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
         _edit_toolbar.set_style (ToolbarStyle.ICONS);
@@ -487,15 +473,9 @@ public class MainWindow : Window
 
     private void initialize_menubar_and_toolbar ()
     {
-        // recent documents
-        Gtk.Action recent_action = new RecentAction ("FileOpenRecent", _("Open _Recent"),
-            _("Open recently used files"), "");
-        configure_recent_chooser ((RecentChooser) recent_action);
-
         action_group = new Gtk.ActionGroup ("ActionGroup");
         action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
         action_group.add_actions (action_entries, this);
-        action_group.add_action (recent_action);
         action_group.add_toggle_actions (toggle_action_entries, this);
 
         latex_action_group = new LatexMenu (this);
@@ -834,16 +814,16 @@ public class MainWindow : Window
         FileChooserDialog file_chooser = new FileChooserDialog (_("Save File"), this,
             FileChooserAction.SAVE,
             Stock.CANCEL, ResponseType.CANCEL,
-            Stock.SAVE, ResponseType.ACCEPT,
-            null);
+            Stock.SAVE, ResponseType.ACCEPT
+        );
 
         if (doc.location == null)
             file_chooser.set_current_name (doc.tab.label_text + ".tex");
         else
             file_chooser.set_current_name (doc.tab.label_text);
 
-        if (this.file_chooser_current_folder != null)
-            file_chooser.set_current_folder (this.file_chooser_current_folder);
+        if (this.default_location != null)
+            file_chooser.set_current_folder (this.default_location);
 
         if (doc.location != null)
         {
@@ -888,7 +868,7 @@ public class MainWindow : Window
             break;
         }
 
-        this.file_chooser_current_folder = file_chooser.get_current_folder ();
+        this.default_location = file_chooser.get_current_folder ();
         file_chooser.destroy ();
 
         if (doc.location != null)
@@ -947,39 +927,6 @@ public class MainWindow : Window
         int row = (int) iter.get_line ();
         int col = (int) active_view.get_visual_column (iter);
         statusbar.set_cursor_position (row + 1, col + 1);
-    }
-
-    private void setup_toolbar_open_button (Toolbar toolbar)
-    {
-        RecentManager recent_manager = RecentManager.get_default ();
-        Widget toolbar_recent_menu = new RecentChooserMenu.for_manager (recent_manager);
-        configure_recent_chooser ((RecentChooser) toolbar_recent_menu);
-
-        MenuToolButton open_button = new MenuToolButton.from_stock (Stock.OPEN);
-        open_button.set_menu (toolbar_recent_menu);
-        open_button.set_tooltip_text (_("Open a file"));
-        open_button.set_arrow_tooltip_text (_("Open a recently used file"));
-
-        Gtk.Action action = action_group.get_action ("FileOpen");
-        open_button.set_related_action (action);
-
-        toolbar.insert (open_button, 1);
-    }
-
-    private void configure_recent_chooser (RecentChooser recent_chooser)
-    {
-        recent_chooser.set_local_only (false);
-        recent_chooser.set_sort_type (RecentSortType.MRU);
-
-        RecentFilter filter = new RecentFilter ();
-        filter.add_application (Config.APP_NAME);
-        recent_chooser.set_filter (filter);
-
-        recent_chooser.item_activated.connect ((chooser) =>
-        {
-            string uri = chooser.get_current_uri ();
-            open_document (File.new_for_uri (uri));
-        });
     }
 
     public void save_state ()
@@ -1108,9 +1055,6 @@ public class MainWindow : Window
         // actions that must be insensitive if the notebook is empty
         string[] file_actions =
         {
-            "FileSave",
-            "FileSaveAs",
-            "FileClose",
             "ViewZoomIn",
             "ViewZoomOut",
             "ViewZoomReset",
@@ -1121,8 +1065,7 @@ public class MainWindow : Window
             "SearchFind",
             "SearchReplace",
             "SearchGoToLine",
-            "ProjectsConfigCurrent",
-            "FileCreateTemplate"
+            "ProjectsConfigCurrent"
         };
 
         foreach (string file_action in file_actions)
@@ -1132,6 +1075,7 @@ public class MainWindow : Window
         }
 
         latex_action_group.set_sensitive (sensitive);
+        _main_window_file.update_sensitivity (sensitive);
         _main_window_edit.update_sensitivity ();
         _main_window_build_tools.update_sensitivity ();
     }
@@ -1166,93 +1110,6 @@ public class MainWindow : Window
     /*******************
      *    CALLBACKS
      ******************/
-
-    /* File menu */
-
-    public void on_file_new ()
-    {
-        new OpenTemplateDialog (this);
-    }
-
-    public void on_new_window ()
-    {
-        Latexila.get_instance ().create_window ();
-    }
-
-    public void on_file_open ()
-    {
-        FileChooserDialog file_chooser = new FileChooserDialog (_("Open Files"), this,
-            FileChooserAction.OPEN,
-            Stock.CANCEL, ResponseType.CANCEL,
-            Stock.OPEN, ResponseType.ACCEPT,
-            null);
-
-        if (this.file_chooser_current_folder != null)
-            file_chooser.set_current_folder (this.file_chooser_current_folder);
-
-        file_chooser.select_multiple = true;
-
-        // Filter: by default show only .tex and .bib files
-        FileFilter latex_filter = new FileFilter ();
-        latex_filter.set_filter_name (_("All LaTeX Files"));
-        latex_filter.add_pattern ("*.tex");
-        latex_filter.add_pattern ("*.bib");
-        file_chooser.add_filter (latex_filter);
-
-        // All files filter
-        FileFilter all_files_filter = new FileFilter ();
-        all_files_filter.set_filter_name (_("All Files"));
-        all_files_filter.add_pattern ("*");
-        file_chooser.add_filter (all_files_filter);
-
-        SList<File> files_to_open = null;
-        if (file_chooser.run () == ResponseType.ACCEPT)
-            files_to_open = file_chooser.get_files ();
-
-        this.file_chooser_current_folder = file_chooser.get_current_folder ();
-        file_chooser.destroy ();
-
-        // We open the files after closing the dialog, because open a lot of documents can
-        // take some time (this is not async).
-        bool jump_to = true;
-        foreach (File file in files_to_open)
-        {
-            open_document (file, jump_to);
-            jump_to = false;
-        }
-    }
-
-    public void on_file_save ()
-    {
-        return_if_fail (active_tab != null);
-        save_document (active_document, false);
-    }
-
-    public void on_file_save_as ()
-    {
-        return_if_fail (active_tab != null);
-        save_document (active_document, true);
-    }
-
-    public void on_create_template ()
-    {
-        return_if_fail (active_tab != null);
-
-        CreateTemplateDialog dialog = new CreateTemplateDialog (this);
-        dialog.destroy ();
-    }
-
-    public void on_delete_template ()
-    {
-        DeleteTemplateDialog dialog = new DeleteTemplateDialog (this);
-        dialog.destroy ();
-    }
-
-    public void on_file_close ()
-    {
-        return_if_fail (active_tab != null);
-        close_tab (active_tab);
-    }
 
     public void on_quit ()
     {
