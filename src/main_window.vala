@@ -46,37 +46,6 @@ public class MainWindow : Window
         { "FileQuit", Stock.QUIT, null, null,
             N_("Quit the program"), on_quit },
 
-        // Edit
-        { "Edit", null, N_("_Edit") },
-        { "EditUndo", Stock.UNDO, null, "<Control>Z",
-            N_("Undo the last action"), on_edit_undo },
-        { "EditRedo", Stock.REDO, null, "<Shift><Control>Z",
-            N_("Redo the last undone action"), on_edit_redo },
-        { "EditCut", Stock.CUT, null, null,
-            N_("Cut the selection"), on_edit_cut },
-        { "EditCopy", Stock.COPY, null, null,
-            N_("Copy the selection"), on_edit_copy },
-
-        // No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
-        // the window. In this case Ctrl+V in the search text entry would be broken (the
-        // text is pasted in the document instead of the entry).
-        // Anyway if we press Ctrl+V when the cursor is in the document, no problem.
-        { "EditPaste", Stock.PASTE, null, "",
-            N_("Paste the clipboard"), on_edit_paste },
-
-        { "EditDelete", Stock.DELETE, null, null,
-            N_("Delete the selected text"), on_edit_delete },
-        { "EditSelectAll", Stock.SELECT_ALL, null, "<Control>A",
-            N_("Select the entire document"), on_edit_select_all },
-        { "EditComment", null, N_("_Comment"), "<Control>M",
-            N_("Comment the selected lines (add the character \"%\")"),
-            on_edit_comment },
-        { "EditUncomment", null, N_("_Uncomment"), "<Shift><Control>M",
-            N_("Uncomment the selected lines (remove the character \"%\")"),
-            on_edit_uncomment },
-        { "EditPreferences", Stock.PREFERENCES, null, null,
-            N_("Configure the application"), on_open_preferences },
-
         // View
         { "View", null, N_("_View") },
         { "ViewZoomIn", Stock.ZOOM_IN, N_("Zoom _In"), "<Control>plus",
@@ -133,8 +102,6 @@ public class MainWindow : Window
 
     private const ToggleActionEntry[] toggle_action_entries =
     {
-        { "EditSpellChecking", Stock.SPELL_CHECK, null, "",
-            N_("Activate or disable the spell checking"), on_spell_checking },
         { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
             N_("Show or hide the main toolbar"), null },
         // Translators: "Edit" here is an adjective.
@@ -164,6 +131,7 @@ public class MainWindow : Window
     private Gtk.ActionGroup documents_list_action_group;
     private uint documents_list_menu_ui_id;
 
+    private MainWindowEdit _main_window_edit;
     private MainWindowBuildTools _main_window_build_tools;
     private MainWindowStructure _main_window_structure;
 
@@ -243,6 +211,8 @@ public class MainWindow : Window
         tip_message_cid = statusbar.get_context_id ("tip_message");
         goto_line = new GotoLine (this);
         search_and_replace = new SearchAndReplace (this);
+
+        _main_window_edit = new MainWindowEdit (this, ui_manager);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
@@ -344,8 +314,7 @@ public class MainWindow : Window
 
         documents_panel.switch_page.connect ((pg, page_num) =>
         {
-            set_undo_sensitivity ();
-            set_redo_sensitivity ();
+            _main_window_edit.update_sensitivity ();
             update_next_prev_doc_sensitivity ();
             _main_window_build_tools.update_sensitivity ();
             update_config_project_sensitivity ();
@@ -416,16 +385,6 @@ public class MainWindow : Window
             app.open_documents (files);
             Gtk.drag_finish (dc, true, true, time);
         });
-
-        // spell checking
-        ToggleAction spell_checking_action =
-            action_group.get_action ("EditSpellChecking") as ToggleAction;
-
-        GLib.Settings editor_settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.editor");
-
-        editor_settings.bind ("spell-checking", spell_checking_action, "active",
-            SettingsBindFlags.DEFAULT);
 
         /* packing widgets */
         Grid main_vgrid = new Grid ();
@@ -702,24 +661,21 @@ public class MainWindow : Window
         /* sensitivity of undo and redo */
         tab.document.notify["can-undo"].connect (() =>
         {
-            if (tab != active_tab)
-                return;
-            set_undo_sensitivity ();
+            if (tab == active_tab)
+                _main_window_edit.update_sensitivity ();
         });
 
         tab.document.notify["can-redo"].connect (() =>
         {
-            if (tab != active_tab)
-                return;
-            set_redo_sensitivity ();
+            if (tab == active_tab)
+                _main_window_edit.update_sensitivity ();
         });
 
         /* sensitivity of cut/copy/delete */
         tab.document.notify["has-selection"].connect (() =>
         {
-            if (tab != active_tab)
-                return;
-            selection_changed ();
+            if (tab == active_tab)
+                _main_window_edit.update_sensitivity ();
         });
 
         tab.document.notify["location"].connect (() =>
@@ -743,9 +699,7 @@ public class MainWindow : Window
         // add the tab at the end of the notebook
         documents_panel.add_tab (tab, -1, jump_to);
 
-        set_undo_sensitivity ();
-        set_redo_sensitivity ();
-        selection_changed ();
+        _main_window_edit.update_sensitivity ();
 
         if (! this.get_visible ())
             this.present ();
@@ -1154,12 +1108,21 @@ public class MainWindow : Window
         // actions that must be insensitive if the notebook is empty
         string[] file_actions =
         {
-            "FileSave", "FileSaveAs", "FileClose", "EditUndo", "EditRedo", "EditCut",
-            "EditCopy", "EditPaste", "EditDelete", "EditSelectAll", "EditComment",
-            "EditUncomment", "ViewZoomIn", "ViewZoomOut", "ViewZoomReset",
-            "DocumentsSaveAll", "DocumentsCloseAll", "DocumentsPrevious", "DocumentsNext",
-            "SearchFind", "SearchReplace", "SearchGoToLine",
-            "ProjectsConfigCurrent", "FileCreateTemplate"
+            "FileSave",
+            "FileSaveAs",
+            "FileClose",
+            "ViewZoomIn",
+            "ViewZoomOut",
+            "ViewZoomReset",
+            "DocumentsSaveAll",
+            "DocumentsCloseAll",
+            "DocumentsPrevious",
+            "DocumentsNext",
+            "SearchFind",
+            "SearchReplace",
+            "SearchGoToLine",
+            "ProjectsConfigCurrent",
+            "FileCreateTemplate"
         };
 
         foreach (string file_action in file_actions)
@@ -1169,25 +1132,8 @@ public class MainWindow : Window
         }
 
         latex_action_group.set_sensitive (sensitive);
+        _main_window_edit.update_sensitivity ();
         _main_window_build_tools.update_sensitivity ();
-    }
-
-    private void set_undo_sensitivity ()
-    {
-        if (active_tab != null)
-        {
-            Gtk.Action action = action_group.get_action ("EditUndo");
-            action.set_sensitive (active_document.can_undo);
-        }
-    }
-
-    private void set_redo_sensitivity ()
-    {
-        if (active_tab == null)
-            return;
-
-        Gtk.Action action = action_group.get_action ("EditRedo");
-        action.set_sensitive (active_document.can_redo);
     }
 
     private void set_documents_move_to_new_window_sensitivity (bool sensitive)
@@ -1216,24 +1162,6 @@ public class MainWindow : Window
         Gtk.Action action = action_group.get_action ("ProjectsConfigCurrent");
         action.set_sensitive (active_tab != null && active_document.project_id != -1);
     }
-
-    private void selection_changed ()
-    {
-        if (active_tab != null)
-        {
-            bool has_selection = active_document.has_selection;
-
-            // actions that must be insensitive if there is no selection
-            string[] selection_actions = { "EditCut", "EditCopy", "EditDelete" };
-
-            foreach (string selection_action in selection_actions)
-            {
-                Gtk.Action action = action_group.get_action (selection_action);
-                action.set_sensitive (has_selection);
-            }
-        }
-    }
-
 
     /*******************
      *    CALLBACKS
@@ -1344,90 +1272,6 @@ public class MainWindow : Window
             save_state ();
             destroy ();
         }
-    }
-
-    /* Edit menu */
-
-    public void on_edit_undo ()
-    {
-        return_if_fail (active_tab != null);
-        if (active_document.can_undo)
-        {
-            active_document.undo ();
-            active_view.scroll_to_cursor ();
-            active_view.grab_focus ();
-        }
-    }
-
-    public void on_edit_redo ()
-    {
-        return_if_fail (active_tab != null);
-        if (active_document.can_redo)
-        {
-            active_document.redo ();
-            active_view.scroll_to_cursor ();
-            active_view.grab_focus ();
-        }
-    }
-
-    public void on_edit_cut ()
-    {
-        return_if_fail (active_tab != null);
-        active_view.cut_selection ();
-    }
-
-    public void on_edit_copy ()
-    {
-        return_if_fail (active_tab != null);
-        active_view.copy_selection ();
-    }
-
-    public void on_edit_paste ()
-    {
-        return_if_fail (active_tab != null);
-        active_view.my_paste_clipboard ();
-    }
-
-    public void on_edit_delete ()
-    {
-        return_if_fail (active_tab != null);
-        active_view.delete_selection ();
-    }
-
-    public void on_edit_select_all ()
-    {
-        return_if_fail (active_tab != null);
-        active_view.my_select_all ();
-    }
-
-    public void on_edit_comment ()
-    {
-        return_if_fail (active_tab != null);
-        active_document.comment_selected_lines ();
-    }
-
-    public void on_edit_uncomment ()
-    {
-        return_if_fail (active_tab != null);
-        active_document.uncomment_selected_lines ();
-    }
-
-    public void on_spell_checking (Gtk.Action action)
-    {
-        bool activate = (action as ToggleAction).active;
-
-        foreach (DocumentView view in get_views ())
-        {
-            if (activate)
-                view.activate_spell_checking ();
-            else
-                view.disable_spell_checking ();
-        }
-    }
-
-    public void on_open_preferences ()
-    {
-        PreferencesDialog.show_me (this);
     }
 
     /* View */
