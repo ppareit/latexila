@@ -619,13 +619,13 @@ public class MainWindow : Window
         return process_create_tab (tab, jump_to);
     }
 
-    public DocumentTab? create_tab_from_location (File location, bool jump_to)
+    private DocumentTab? create_tab_from_location (File location, bool jump_to)
     {
         DocumentTab tab = new DocumentTab.from_location (location);
         return process_create_tab (tab, jump_to);
     }
 
-    public void create_tab_with_view (DocumentView view)
+    private void create_tab_with_view (DocumentView view)
     {
         DocumentTab tab = new DocumentTab.with_view (view);
         process_create_tab (tab, true);
@@ -738,18 +738,6 @@ public class MainWindow : Window
 
         documents_panel.remove_tab (tab);
         return true;
-    }
-
-    public DocumentTab? get_tab_from_location (File location)
-    {
-        foreach (Document doc in get_documents ())
-        {
-            if (location.equal (doc.location))
-                return doc.tab;
-        }
-
-        // not found
-        return null;
     }
 
     private void sync_name (DocumentTab tab)
