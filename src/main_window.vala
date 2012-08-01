@@ -217,54 +217,14 @@ public class MainWindow : Window
 
         /* signal handlers */
 
+        connect_documents_panel ();
+
         delete_event.connect (() =>
         {
             on_quit ();
 
             // the destroy signal is not emitted
             return true;
-        });
-
-        _documents_panel.page_added.connect (() =>
-        {
-            int nb_pages = _documents_panel.get_n_pages ();
-
-            // actions for which there must be 1 document minimum
-            if (nb_pages == 1)
-                set_file_actions_sensitivity (true);
-        });
-
-        _documents_panel.page_removed.connect (() =>
-        {
-            int nb_pages = _documents_panel.get_n_pages ();
-
-            // actions for which there must be 1 document minimum
-            if (nb_pages == 0)
-            {
-                _statusbar.set_cursor_position (-1, -1);
-                set_file_actions_sensitivity (false);
-                _goto_line.hide ();
-                _search_and_replace.hide ();
-
-                notify_property ("active-tab");
-                notify_property ("active-document");
-                notify_property ("active-view");
-            }
-
-            my_set_title ();
-        });
-
-        _documents_panel.switch_page.connect ((pg, page_num) =>
-        {
-            _main_window_edit.update_sensitivity ();
-            _main_window_build_tools.update_sensitivity ();
-            update_config_project_sensitivity ();
-            my_set_title ();
-            update_cursor_position_statusbar ();
-
-            notify_property ("active-tab");
-            notify_property ("active-document");
-            notify_property ("active-view");
         });
 
         // hide completion calltip
@@ -391,6 +351,50 @@ public class MainWindow : Window
 
         _main_hpaned.set_position (settings.get_int ("side-panel-size"));
         _vpaned.set_position (settings.get_int ("vertical-paned-position"));
+    }
+
+    private void connect_documents_panel ()
+    {
+        _documents_panel.page_added.connect (() =>
+        {
+            int nb_pages = _documents_panel.get_n_pages ();
+
+            // actions for which there must be 1 document minimum
+            if (nb_pages == 1)
+                set_file_actions_sensitivity (true);
+        });
+
+        _documents_panel.page_removed.connect (() =>
+        {
+            int nb_pages = _documents_panel.get_n_pages ();
+
+            if (nb_pages == 0)
+            {
+                _statusbar.set_cursor_position (-1, -1);
+                set_file_actions_sensitivity (false);
+                _goto_line.hide ();
+                _search_and_replace.hide ();
+
+                notify_property ("active-tab");
+                notify_property ("active-document");
+                notify_property ("active-view");
+            }
+
+            my_set_title ();
+        });
+
+        _documents_panel.switch_page.connect ((pg, page_num) =>
+        {
+            _main_window_edit.update_sensitivity ();
+            _main_window_build_tools.update_sensitivity ();
+            update_config_project_sensitivity ();
+            my_set_title ();
+            update_cursor_position_statusbar ();
+
+            notify_property ("active-tab");
+            notify_property ("active-document");
+            notify_property ("active-view");
+        });
     }
 
     public Gee.List<Document> get_documents ()
