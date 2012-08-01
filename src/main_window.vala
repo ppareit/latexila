@@ -145,24 +145,6 @@ public class MainWindow : Window
     {
         this.title = "LaTeXila";
 
-        /* restore window state */
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-
-        int w, h;
-        settings.get ("size", "(ii)", out w, out h);
-        set_default_size (w, h);
-
-        Gdk.WindowState state = (Gdk.WindowState) settings.get_int ("state");
-        if (Gdk.WindowState.MAXIMIZED in state)
-            maximize ();
-        else
-            unmaximize ();
-
-        if (Gdk.WindowState.STICKY in state)
-            stick ();
-        else
-            unstick ();
-
         /* components */
         initialize_menubar_and_toolbar ();
 
@@ -338,7 +320,6 @@ public class MainWindow : Window
         // left: side panel (symbols, file browser, ...)
         // right: documents panel, search and replace, log zone, ...
         _main_hpaned = new Paned (Orientation.HORIZONTAL);
-        _main_hpaned.set_position (settings.get_int ("side-panel-size"));
         main_vgrid.add (_main_hpaned);
         _main_hpaned.show ();
 
@@ -357,7 +338,6 @@ public class MainWindow : Window
         // top: vbox source view
         // bottom: log zone
         _vpaned = new Paned (Orientation.VERTICAL);
-        _vpaned.set_position (settings.get_int ("vertical-paned-position"));
 
         // when we resize the window, the bottom panel keeps the same height
         _vpaned.pack1 (vgrid_source_view, true, true);
@@ -373,6 +353,8 @@ public class MainWindow : Window
         _statusbar.show_all ();
 
         add (main_vgrid);
+
+        restore_state ();
         show ();
         show_or_hide_widgets ();
 
@@ -381,6 +363,34 @@ public class MainWindow : Window
          */
         unowned Gtk.Settings gtk_settings = menu.get_settings ();
         gtk_settings.gtk_menu_images = true;
+    }
+
+    private void restore_state ()
+    {
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
+
+        /* The window itself */
+
+        int width;
+        int height;
+        settings.get ("size", "(ii)", out width, out height);
+        set_default_size (width, height);
+
+        Gdk.WindowState state = (Gdk.WindowState) settings.get_int ("state");
+        if (Gdk.WindowState.MAXIMIZED in state)
+            maximize ();
+        else
+            unmaximize ();
+
+        if (Gdk.WindowState.STICKY in state)
+            stick ();
+        else
+            unstick ();
+
+        /* Widgets */
+
+        _main_hpaned.set_position (settings.get_int ("side-panel-size"));
+        _vpaned.set_position (settings.get_int ("vertical-paned-position"));
     }
 
     public Gee.List<Document> get_documents ()
