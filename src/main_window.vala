@@ -147,8 +147,14 @@ public class MainWindow : Window
 
         /* components */
         initialize_menubar_and_toolbar ();
+        _main_window_edit = new MainWindowEdit (this, _ui_manager);
+        _main_window_file = new MainWindowFile (this, _ui_manager);
+        _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager);
+        _main_window_documents = new MainWindowDocuments (this, _ui_manager);
 
         _documents_panel = new DocumentsPanel (this);
+        _main_window_documents.set_documents_panel (_documents_panel);
+
         _documents_panel.right_click.connect ((event) =>
         {
             Gtk.Menu popup_menu = _ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
@@ -159,12 +165,6 @@ public class MainWindow : Window
         _tip_message_cid = _statusbar.get_context_id ("tip_message");
         _goto_line = new GotoLine (this);
         _search_and_replace = new SearchAndReplace (this);
-
-        _main_window_edit = new MainWindowEdit (this, _ui_manager);
-        _main_window_file = new MainWindowFile (this, _ui_manager);
-        _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager);
-        _main_window_documents = new MainWindowDocuments (this, _ui_manager,
-            _documents_panel);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);

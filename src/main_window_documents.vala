@@ -55,12 +55,10 @@ public class MainWindowDocuments
     private Gtk.ActionGroup _list_action_group;
     private uint _list_id;
 
-    public MainWindowDocuments (MainWindow main_window, UIManager ui_manager,
-        DocumentsPanel documents_panel)
+    public MainWindowDocuments (MainWindow main_window, UIManager ui_manager)
     {
         _main_window = main_window;
         _ui_manager = ui_manager;
-        _documents_panel = documents_panel;
 
         _static_action_group = new Gtk.ActionGroup ("DocumentsMenuActionGroup");
         _static_action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
@@ -69,13 +67,19 @@ public class MainWindowDocuments
 
         _list_action_group = new Gtk.ActionGroup ("DocumentsListActionGroup");
         ui_manager.insert_action_group (_list_action_group, 0);
+    }
 
+    public void set_documents_panel (DocumentsPanel documents_panel)
+    {
+        _documents_panel = documents_panel;
         connect_signals ();
         update_sensitivity ();
     }
 
     private void connect_signals ()
     {
+        return_if_fail (_documents_panel != null);
+
         _documents_panel.page_reordered.connect (() =>
         {
             update_sensitivity ();
@@ -104,6 +108,7 @@ public class MainWindowDocuments
     private void update_documents_list ()
     {
         return_if_fail (_list_action_group != null);
+        return_if_fail (_documents_panel != null);
 
         if (_list_id != 0)
             _ui_manager.remove_ui (_list_id);
@@ -171,6 +176,8 @@ public class MainWindowDocuments
 
     public void update_document_name (DocumentTab tab)
     {
+        return_if_fail (_documents_panel != null);
+
         int doc_num = _documents_panel.page_num (tab);
         string action_name = get_list_action_name (doc_num);
 
@@ -183,6 +190,8 @@ public class MainWindowDocuments
 
     private void list_action_activate (Gtk.Action action)
     {
+        return_if_fail (_documents_panel != null);
+
         RadioAction radio_action = action as RadioAction;
         if (! radio_action.get_active ())
             return;
@@ -222,6 +231,8 @@ public class MainWindowDocuments
 
     private void update_next_prev_doc_sensitivity ()
     {
+        return_if_fail (_documents_panel != null);
+
         if (_main_window.active_tab == null)
             return;
 
@@ -254,12 +265,14 @@ public class MainWindowDocuments
     public void on_previous ()
     {
         return_if_fail (_main_window.active_tab != null);
+        return_if_fail (_documents_panel != null);
         _documents_panel.prev_page ();
     }
 
     public void on_next ()
     {
         return_if_fail (_main_window.active_tab != null);
+        return_if_fail (_documents_panel != null);
         _documents_panel.next_page ();
     }
 
@@ -267,6 +280,7 @@ public class MainWindowDocuments
     {
         DocumentTab tab = _main_window.active_tab;
         return_if_fail (tab != null);
+        return_if_fail (_documents_panel != null);
 
         MainWindow new_window = Latexila.get_instance ().create_window ();
         DocumentView view = tab.view;
