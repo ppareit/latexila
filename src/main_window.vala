@@ -46,22 +46,6 @@ public class MainWindow : Window
         { "SearchGoToLine", Stock.JUMP_TO, N_("_Go to Line..."), "<Control>G",
             N_("Go to a specific line"), on_search_goto_line },
 
-        // Documents
-        { "Documents", null, N_("_Documents") },
-        { "DocumentsSaveAll", Stock.SAVE, N_("_Save All"), "<Shift><Control>L",
-            N_("Save all open files"), on_documents_save_all },
-        { "DocumentsCloseAll", Stock.CLOSE, N_("_Close All"), "<Shift><Control>W",
-            N_("Close all open files"), on_documents_close_all },
-        { "DocumentsPrevious", Stock.GO_BACK, N_("_Previous Document"),
-            "<Control><Alt>Page_Up", N_("Activate previous document"),
-            on_documents_previous },
-        { "DocumentsNext", Stock.GO_FORWARD, N_("_Next Document"),
-            "<Control><Alt>Page_Down", N_("Activate next document"),
-            on_documents_next },
-        { "DocumentsMoveToNewWindow", null, N_("_Move to New Window"), null,
-            N_("Move the current document to a new window"),
-            on_documents_move_to_new_window },
-
         // Projects
         { "Projects", null, N_("_Projects") },
         { "ProjectsNew", Stock.NEW, N_("_New Project"), null,
@@ -110,13 +94,12 @@ public class MainWindow : Window
     private UIManager ui_manager;
     private Gtk.ActionGroup action_group;
     private Gtk.ActionGroup latex_action_group;
-    private Gtk.ActionGroup documents_list_action_group;
-    private uint documents_list_menu_ui_id;
 
     private MainWindowFile _main_window_file;
     private MainWindowEdit _main_window_edit;
     private MainWindowBuildTools _main_window_build_tools;
     private MainWindowStructure _main_window_structure;
+    private MainWindowDocuments _main_window_documents;
 
     // context id for the statusbar
     private uint tip_message_cid;
@@ -197,6 +180,8 @@ public class MainWindow : Window
 
         _main_window_edit = new MainWindowEdit (this, ui_manager);
         _main_window_file = new MainWindowFile (this, ui_manager);
+        _main_window_documents = new MainWindowDocuments (this, ui_manager,
+            documents_panel);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
@@ -265,12 +250,6 @@ public class MainWindow : Window
             // actions for which there must be 1 document minimum
             if (nb_pages == 1)
                 set_file_actions_sensitivity (true);
-
-            // actions for which there must be 2 documents minimum
-            else if (nb_pages == 2)
-                set_documents_move_to_new_window_sensitivity (true);
-
-            update_documents_list_menu ();
         });
 
         documents_panel.page_removed.connect (() =>
@@ -290,48 +269,20 @@ public class MainWindow : Window
                 notify_property ("active-view");
             }
 
-            // actions for which there must be 2 documents minimum
-            else if (nb_pages == 1)
-                set_documents_move_to_new_window_sensitivity (false);
-
             my_set_title ();
-            update_documents_list_menu ();
         });
 
         documents_panel.switch_page.connect ((pg, page_num) =>
         {
             _main_window_edit.update_sensitivity ();
-            update_next_prev_doc_sensitivity ();
             _main_window_build_tools.update_sensitivity ();
             update_config_project_sensitivity ();
             my_set_title ();
             update_cursor_position_statusbar ();
 
-            /* activate the right item in the documents menu */
-            string action_name = @"Tab_$page_num";
-            RadioAction? action =
-                (RadioAction) documents_list_action_group.get_action (action_name);
-
-            // sometimes the action doesn't exist yet, and the proper action is set
-            // active during the documents list menu creation
-            if (action != null)
-            {
-                // If we don't disconnect the signal, the switch_page signal is called
-                // 2 times.
-                action.activate.disconnect (documents_list_menu_activate);
-                action.set_active (true);
-                action.activate.connect (documents_list_menu_activate);
-            }
-
             notify_property ("active-tab");
             notify_property ("active-document");
             notify_property ("active-view");
-        });
-
-        documents_panel.page_reordered.connect (() =>
-        {
-            update_next_prev_doc_sensitivity ();
-            update_documents_list_menu ();
         });
 
         // hide completion calltip
@@ -352,7 +303,6 @@ public class MainWindow : Window
         });
 
         set_file_actions_sensitivity (false);
-        set_documents_move_to_new_window_sensitivity (false);
 
         // drag-n-drop support of files
         Gtk.drag_dest_set (this, DestDefaults.ALL, {}, Gdk.DragAction.COPY);
@@ -516,10 +466,6 @@ public class MainWindow : Window
                 proxy.deselect.disconnect (on_menu_item_deselect);
             }
         });
-
-        // list of open documents menu
-        documents_list_action_group = new Gtk.ActionGroup ("DocumentsListActions");
-        ui_manager.insert_action_group (documents_list_action_group, 0);
     }
 
     private void on_menu_item_select (Gtk.MenuItem proxy)
@@ -625,7 +571,7 @@ public class MainWindow : Window
         return process_create_tab (tab, jump_to);
     }
 
-    private void create_tab_with_view (DocumentView view)
+    public void create_tab_with_view (DocumentView view)
     {
         DocumentTab tab = new DocumentTab.with_view (view);
         process_create_tab (tab, true);
@@ -745,13 +691,7 @@ public class MainWindow : Window
         if (tab == active_tab)
             my_set_title ();
 
-        // sync the item in the documents list menu
-        int page_num = documents_panel.page_num (tab);
-        string action_name = @"Tab_$page_num";
-        Gtk.Action action = documents_list_action_group.get_action (action_name);
-        return_if_fail (action != null);
-        action.label = tab.get_name ().replace ("_", "__");
-        action.tooltip = tab.get_menu_tip ();
+        _main_window_documents.update_document_name (tab);
     }
 
     private void my_set_title ()
@@ -869,7 +809,7 @@ public class MainWindow : Window
     }
 
     // return true if all the documents are closed
-    private bool close_all_documents ()
+    public bool close_all_documents ()
     {
         Gee.List<Document> unsaved_documents = get_unsaved_documents ();
 
@@ -966,77 +906,8 @@ public class MainWindow : Window
         _main_window_build_tools.save_state ();
     }
 
-    private void move_tab_to_new_window (DocumentTab tab)
-    {
-        MainWindow new_window = Latexila.get_instance ().create_window ();
-        DocumentView view = tab.view;
-        documents_panel.remove_tab (tab);
-
-        // we create a new tab with the same view, so we avoid headache with signals
-        // the user see nothing, muahahaha
-        new_window.create_tab_with_view (view);
-    }
-
-    private void update_documents_list_menu ()
-    {
-        return_if_fail (documents_list_action_group != null);
-
-        if (documents_list_menu_ui_id != 0)
-            ui_manager.remove_ui (documents_list_menu_ui_id);
-
-        foreach (Gtk.Action action in documents_list_action_group.list_actions ())
-        {
-            action.activate.disconnect (documents_list_menu_activate);
-            documents_list_action_group.remove_action (action);
-        }
-
-        int n = documents_panel.get_n_pages ();
-        uint id = n > 0 ? ui_manager.new_merge_id () : 0;
-
-        unowned SList<RadioAction> group = null;
-
-        for (int i = 0 ; i < n ; i++)
-        {
-            DocumentTab tab = (DocumentTab) documents_panel.get_nth_page (i);
-            string action_name = @"Tab_$i";
-            string name = tab.get_name ().replace ("_", "__");
-            string tip = tab.get_menu_tip ();
-            string accel = i < 10 ? "<alt>%d".printf ((i + 1) % 10) : null;
-
-            RadioAction action = new RadioAction (action_name, name, tip, null, i);
-            if (group != null)
-                action.set_group (group);
-
-            /* group changes each time we add an action, so it must be updated */
-            group = action.get_group ();
-
-            documents_list_action_group.add_action_with_accel (action, accel);
-
-            action.activate.connect (documents_list_menu_activate);
-
-            ui_manager.add_ui (id, "/MainMenu/DocumentsMenu/DocumentsListPlaceholder",
-                action_name, action_name, UIManagerItemType.MENUITEM, false);
-
-            if (tab == active_tab)
-                action.set_active (true);
-        }
-
-        documents_list_menu_ui_id = id;
-    }
-
-    private void documents_list_menu_activate (Gtk.Action action)
-    {
-        RadioAction radio_action = (RadioAction) action;
-        if (! radio_action.get_active ())
-            return;
-
-        documents_panel.set_current_page (radio_action.get_current_value ());
-    }
-
-
-    /*****************************
-     *    ACTIONS SENSITIVITY    *
-     *****************************/
+    /*************************************************************************/
+    // Sensitivity
 
     private void set_file_actions_sensitivity (bool sensitive)
     {
@@ -1046,10 +917,6 @@ public class MainWindow : Window
             "ViewZoomIn",
             "ViewZoomOut",
             "ViewZoomReset",
-            "DocumentsSaveAll",
-            "DocumentsCloseAll",
-            "DocumentsPrevious",
-            "DocumentsNext",
             "SearchFind",
             "SearchReplace",
             "SearchGoToLine",
@@ -1068,36 +935,14 @@ public class MainWindow : Window
         _main_window_build_tools.update_sensitivity ();
     }
 
-    private void set_documents_move_to_new_window_sensitivity (bool sensitive)
-    {
-        Gtk.Action action = action_group.get_action ("DocumentsMoveToNewWindow");
-        action.set_sensitive (sensitive);
-    }
-
-    private void update_next_prev_doc_sensitivity ()
-    {
-        if (active_tab == null)
-            return;
-
-        Gtk.Action action_previous = action_group.get_action ("DocumentsPrevious");
-        Gtk.Action action_next = action_group.get_action ("DocumentsNext");
-
-        int current_page = documents_panel.page_num (active_tab);
-        action_previous.set_sensitive (current_page > 0);
-
-        int nb_pages = documents_panel.get_n_pages ();
-        action_next.set_sensitive (current_page < nb_pages - 1);
-    }
-
     public void update_config_project_sensitivity ()
     {
         Gtk.Action action = action_group.get_action ("ProjectsConfigCurrent");
         action.set_sensitive (active_tab != null && active_document.project_id != -1);
     }
 
-    /*******************
-     *    CALLBACKS
-     ******************/
+    /*************************************************************************/
+    // Gtk.Action callbacks
 
     public void on_quit ()
     {
@@ -1157,39 +1002,6 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         goto_line.show ();
-    }
-
-    /* Documents */
-
-    public void on_documents_save_all ()
-    {
-        return_if_fail (active_tab != null);
-        foreach (Document doc in get_unsaved_documents ())
-            doc.save ();
-    }
-
-    public void on_documents_close_all ()
-    {
-        return_if_fail (active_tab != null);
-        close_all_documents ();
-    }
-
-    public void on_documents_previous ()
-    {
-        return_if_fail (active_tab != null);
-        documents_panel.prev_page ();
-    }
-
-    public void on_documents_next ()
-    {
-        return_if_fail (active_tab != null);
-        documents_panel.next_page ();
-    }
-
-    public void on_documents_move_to_new_window ()
-    {
-        return_if_fail (active_tab != null);
-        move_tab_to_new_window (active_tab);
     }
 
     /* Projects */
