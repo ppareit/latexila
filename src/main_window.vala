@@ -23,7 +23,7 @@ public class MainWindow : Window
 {
     // for the menu and the toolbar
     // name, stock_id, label, accelerator, tooltip, callback
-    private const Gtk.ActionEntry[] action_entries =
+    private const Gtk.ActionEntry[] _action_entries =
     {
         { "FileQuit", Stock.QUIT, null, null,
             N_("Quit the program"), on_quit },
@@ -66,7 +66,7 @@ public class MainWindow : Window
             N_("About LaTeXila"), on_about_dialog }
     };
 
-    private const ToggleActionEntry[] toggle_action_entries =
+    private const ToggleActionEntry[] _toggle_action_entries =
     {
         { "ViewMainToolbar", null, N_("_Main Toolbar"), null,
             N_("Show or hide the main toolbar"), null },
@@ -80,20 +80,20 @@ public class MainWindow : Window
     };
 
     public string default_location = Environment.get_home_dir ();
-    private DocumentsPanel documents_panel;
-    private CustomStatusbar statusbar;
-    private GotoLine goto_line;
-    private SearchAndReplace search_and_replace;
+    private DocumentsPanel _documents_panel;
+    private CustomStatusbar _statusbar;
+    private GotoLine _goto_line;
+    private SearchAndReplace _search_and_replace;
     private Toolbar _main_toolbar;
     private Toolbar _edit_toolbar;
     private SidePanel _side_panel;
     private SymbolsView _symbols;
-    private Paned main_hpaned;
-    private Paned vpaned;
+    private Paned _main_hpaned;
+    private Paned _vpaned;
 
-    private UIManager ui_manager;
-    private Gtk.ActionGroup action_group;
-    private Gtk.ActionGroup latex_action_group;
+    private UIManager _ui_manager;
+    private Gtk.ActionGroup _action_group;
+    private Gtk.ActionGroup _latex_action_group;
 
     private MainWindowFile _main_window_file;
     private MainWindowEdit _main_window_edit;
@@ -102,22 +102,22 @@ public class MainWindow : Window
     private MainWindowDocuments _main_window_documents;
 
     // context id for the statusbar
-    private uint tip_message_cid;
+    private uint _tip_message_cid;
 
     public DocumentTab? active_tab
     {
         get
         {
-            if (documents_panel == null || documents_panel.get_n_pages () == 0)
+            if (_documents_panel == null || _documents_panel.get_n_pages () == 0)
                 return null;
-            return documents_panel.active_tab;
+            return _documents_panel.active_tab;
         }
 
         set
         {
-            int n = documents_panel.page_num (value);
+            int n = _documents_panel.page_num (value);
             if (n != -1)
-                documents_panel.set_current_page (n);
+                _documents_panel.set_current_page (n);
         }
     }
 
@@ -166,22 +166,22 @@ public class MainWindow : Window
         /* components */
         initialize_menubar_and_toolbar ();
 
-        documents_panel = new DocumentsPanel (this);
-        documents_panel.right_click.connect ((event) =>
+        _documents_panel = new DocumentsPanel (this);
+        _documents_panel.right_click.connect ((event) =>
         {
-            Gtk.Menu popup_menu = ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
+            Gtk.Menu popup_menu = _ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
             popup_menu.popup (null, null, null, event.button, event.time);
         });
 
-        statusbar = new CustomStatusbar ();
-        tip_message_cid = statusbar.get_context_id ("tip_message");
-        goto_line = new GotoLine (this);
-        search_and_replace = new SearchAndReplace (this);
+        _statusbar = new CustomStatusbar ();
+        _tip_message_cid = _statusbar.get_context_id ("tip_message");
+        _goto_line = new GotoLine (this);
+        _search_and_replace = new SearchAndReplace (this);
 
-        _main_window_edit = new MainWindowEdit (this, ui_manager);
-        _main_window_file = new MainWindowFile (this, ui_manager);
-        _main_window_documents = new MainWindowDocuments (this, ui_manager,
-            documents_panel);
+        _main_window_edit = new MainWindowEdit (this, _ui_manager);
+        _main_window_file = new MainWindowFile (this, _ui_manager);
+        _main_window_documents = new MainWindowDocuments (this, _ui_manager,
+            _documents_panel);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
@@ -191,15 +191,15 @@ public class MainWindow : Window
 
         // Structure
         Structure structure = new Structure (this);
-        _main_window_structure = new MainWindowStructure (ui_manager, structure);
+        _main_window_structure = new MainWindowStructure (_ui_manager, structure);
 
         // Bottom panel
         BuildView build_view = new BuildView (this);
 
-        _main_window_build_tools = new MainWindowBuildTools (this, ui_manager,
+        _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager,
             build_view, file_browser);
 
-        Toolbar build_toolbar = ui_manager.get_widget ("/BuildToolbar") as Toolbar;
+        Toolbar build_toolbar = _ui_manager.get_widget ("/BuildToolbar") as Toolbar;
         build_toolbar.set_style (ToolbarStyle.ICONS);
         build_toolbar.set_icon_size (IconSize.MENU);
         build_toolbar.set_orientation (Orientation.VERTICAL);
@@ -207,7 +207,7 @@ public class MainWindow : Window
         BottomPanel bottom_panel = new BottomPanel (build_view, build_toolbar);
 
         ToggleAction action_bottom_panel =
-            action_group.get_action ("ViewBottomPanel") as ToggleAction;
+            _action_group.get_action ("ViewBottomPanel") as ToggleAction;
 
         bottom_panel.bind_property ("visible", action_bottom_panel, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -220,9 +220,9 @@ public class MainWindow : Window
         _side_panel.restore_state ();
 
         // menu and toolbars
-        Widget menu = ui_manager.get_widget ("/MainMenu");
+        Widget menu = _ui_manager.get_widget ("/MainMenu");
 
-        _main_toolbar = ui_manager.get_widget ("/MainToolbar") as Toolbar;
+        _main_toolbar = _ui_manager.get_widget ("/MainToolbar") as Toolbar;
         ToolItem open_button = _main_window_file.get_toolbar_open_button ();
         _main_toolbar.insert (open_button, 1);
 
@@ -230,7 +230,7 @@ public class MainWindow : Window
         StyleContext main_toolbar_context = _main_toolbar.get_style_context ();
         main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 
-        _edit_toolbar = ui_manager.get_widget ("/EditToolbar") as Toolbar;
+        _edit_toolbar = _ui_manager.get_widget ("/EditToolbar") as Toolbar;
         _edit_toolbar.set_style (ToolbarStyle.ICONS);
 
         /* signal handlers */
@@ -243,26 +243,26 @@ public class MainWindow : Window
             return true;
         });
 
-        documents_panel.page_added.connect (() =>
+        _documents_panel.page_added.connect (() =>
         {
-            int nb_pages = documents_panel.get_n_pages ();
+            int nb_pages = _documents_panel.get_n_pages ();
 
             // actions for which there must be 1 document minimum
             if (nb_pages == 1)
                 set_file_actions_sensitivity (true);
         });
 
-        documents_panel.page_removed.connect (() =>
+        _documents_panel.page_removed.connect (() =>
         {
-            int nb_pages = documents_panel.get_n_pages ();
+            int nb_pages = _documents_panel.get_n_pages ();
 
             // actions for which there must be 1 document minimum
             if (nb_pages == 0)
             {
-                statusbar.set_cursor_position (-1, -1);
+                _statusbar.set_cursor_position (-1, -1);
                 set_file_actions_sensitivity (false);
-                goto_line.hide ();
-                search_and_replace.hide ();
+                _goto_line.hide ();
+                _search_and_replace.hide ();
 
                 notify_property ("active-tab");
                 notify_property ("active-document");
@@ -272,7 +272,7 @@ public class MainWindow : Window
             my_set_title ();
         });
 
-        documents_panel.switch_page.connect ((pg, page_num) =>
+        _documents_panel.switch_page.connect ((pg, page_num) =>
         {
             _main_window_edit.update_sensitivity ();
             _main_window_build_tools.update_sensitivity ();
@@ -337,40 +337,40 @@ public class MainWindow : Window
         // main horizontal pane
         // left: side panel (symbols, file browser, ...)
         // right: documents panel, search and replace, log zone, ...
-        main_hpaned = new Paned (Orientation.HORIZONTAL);
-        main_hpaned.set_position (settings.get_int ("side-panel-size"));
-        main_vgrid.add (main_hpaned);
-        main_hpaned.show ();
+        _main_hpaned = new Paned (Orientation.HORIZONTAL);
+        _main_hpaned.set_position (settings.get_int ("side-panel-size"));
+        main_vgrid.add (_main_hpaned);
+        _main_hpaned.show ();
 
         // vgrid source view: documents panel, goto line, search and replace
         Grid vgrid_source_view = new Grid ();
         vgrid_source_view.orientation = Orientation.VERTICAL;
         vgrid_source_view.set_row_spacing (2);
-        vgrid_source_view.add (documents_panel);
-        vgrid_source_view.add (goto_line);
-        vgrid_source_view.add (search_and_replace.get_widget ());
+        vgrid_source_view.add (_documents_panel);
+        vgrid_source_view.add (_goto_line);
+        vgrid_source_view.add (_search_and_replace.get_widget ());
 
         vgrid_source_view.show ();
-        documents_panel.show_all ();
+        _documents_panel.show_all ();
 
         // vertical pane
         // top: vbox source view
         // bottom: log zone
-        vpaned = new Paned (Orientation.VERTICAL);
-        vpaned.set_position (settings.get_int ("vertical-paned-position"));
+        _vpaned = new Paned (Orientation.VERTICAL);
+        _vpaned.set_position (settings.get_int ("vertical-paned-position"));
 
         // when we resize the window, the bottom panel keeps the same height
-        vpaned.pack1 (vgrid_source_view, true, true);
-        vpaned.pack2 (bottom_panel, false, true);
+        _vpaned.pack1 (vgrid_source_view, true, true);
+        _vpaned.pack2 (bottom_panel, false, true);
 
-        main_hpaned.add1 (_side_panel);
-        main_hpaned.add2 (vpaned);
+        _main_hpaned.add1 (_side_panel);
+        _main_hpaned.add2 (_vpaned);
 
         _side_panel.show ();
-        vpaned.show ();
+        _vpaned.show ();
 
-        main_vgrid.add (statusbar);
-        statusbar.show_all ();
+        main_vgrid.add (_statusbar);
+        _statusbar.show_all ();
 
         add (main_vgrid);
         show ();
@@ -386,10 +386,10 @@ public class MainWindow : Window
     public Gee.List<Document> get_documents ()
     {
         Gee.List<Document> all_documents = new Gee.LinkedList<Document> ();
-        int nb_documents = documents_panel.get_n_pages ();
+        int nb_documents = _documents_panel.get_n_pages ();
         for (int i = 0 ; i < nb_documents ; i++)
         {
-            DocumentTab tab = documents_panel.get_nth_page (i) as DocumentTab;
+            DocumentTab tab = _documents_panel.get_nth_page (i) as DocumentTab;
             all_documents.add (tab.document);
         }
 
@@ -411,10 +411,10 @@ public class MainWindow : Window
     public Gee.List<DocumentView> get_views ()
     {
         Gee.List<DocumentView> all_views = new Gee.LinkedList<Document> ();
-        int nb_documents = documents_panel.get_n_pages ();
+        int nb_documents = _documents_panel.get_n_pages ();
         for (int i = 0 ; i < nb_documents ; i++)
         {
-            DocumentTab tab = documents_panel.get_nth_page (i) as DocumentTab;
+            DocumentTab tab = _documents_panel.get_nth_page (i) as DocumentTab;
             all_views.add (tab.view);
         }
 
@@ -423,31 +423,31 @@ public class MainWindow : Window
 
     private void initialize_menubar_and_toolbar ()
     {
-        action_group = new Gtk.ActionGroup ("ActionGroup");
-        action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
-        action_group.add_actions (action_entries, this);
-        action_group.add_toggle_actions (toggle_action_entries, this);
+        _action_group = new Gtk.ActionGroup ("ActionGroup");
+        _action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
+        _action_group.add_actions (_action_entries, this);
+        _action_group.add_toggle_actions (_toggle_action_entries, this);
 
-        latex_action_group = new LatexMenu (this);
+        _latex_action_group = new LatexMenu (this);
 
-        ui_manager = new UIManager ();
-        ui_manager.insert_action_group (action_group, 0);
-        ui_manager.insert_action_group (latex_action_group, 0);
+        _ui_manager = new UIManager ();
+        _ui_manager.insert_action_group (_action_group, 0);
+        _ui_manager.insert_action_group (_latex_action_group, 0);
 
         try
         {
             string path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
-            ui_manager.add_ui_from_file (path);
+            _ui_manager.add_ui_from_file (path);
         }
         catch (GLib.Error err)
         {
             error ("%s", err.message);
         }
 
-        add_accel_group (ui_manager.get_accel_group ());
+        add_accel_group (_ui_manager.get_accel_group ());
 
         // show tooltips in the statusbar
-        ui_manager.connect_proxy.connect ((action, p) =>
+        _ui_manager.connect_proxy.connect ((action, p) =>
         {
             if (p is Gtk.MenuItem)
             {
@@ -457,7 +457,7 @@ public class MainWindow : Window
             }
         });
 
-        ui_manager.disconnect_proxy.connect ((action, p) =>
+        _ui_manager.disconnect_proxy.connect ((action, p) =>
         {
             if (p is Gtk.MenuItem)
             {
@@ -473,12 +473,12 @@ public class MainWindow : Window
         Gtk.Action action = proxy.get_related_action ();
         return_if_fail (action != null);
         if (action.tooltip != null)
-            statusbar.push (tip_message_cid, action.tooltip);
+            _statusbar.push (_tip_message_cid, action.tooltip);
     }
 
     private void on_menu_item_deselect (Gtk.MenuItem proxy)
     {
-        statusbar.pop (tip_message_cid);
+        _statusbar.pop (_tip_message_cid);
     }
 
     private void show_or_hide_widgets ()
@@ -486,7 +486,7 @@ public class MainWindow : Window
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
         /* main toolbar */
-        ToggleAction action = action_group.get_action ("ViewMainToolbar") as ToggleAction;
+        ToggleAction action = _action_group.get_action ("ViewMainToolbar") as ToggleAction;
 
         _main_toolbar.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -494,7 +494,7 @@ public class MainWindow : Window
         action.active = settings.get_boolean ("main-toolbar-visible");
 
         /* edit toolbar */
-        action = action_group.get_action ("ViewEditToolbar") as ToggleAction;
+        action = _action_group.get_action ("ViewEditToolbar") as ToggleAction;
 
         _edit_toolbar.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -502,7 +502,7 @@ public class MainWindow : Window
         action.active = settings.get_boolean ("edit-toolbar-visible");
 
         /* side panel */
-        action = action_group.get_action ("ViewSidePanel") as ToggleAction;
+        action = _action_group.get_action ("ViewSidePanel") as ToggleAction;
 
         _side_panel.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -510,7 +510,7 @@ public class MainWindow : Window
         action.active = settings.get_boolean ("side-panel-visible");
 
         /* bottom panel */
-        action = action_group.get_action ("ViewBottomPanel") as ToggleAction;
+        action = _action_group.get_action ("ViewBottomPanel") as ToggleAction;
         action.active = settings.get_boolean ("bottom-panel-visible");
     }
 
@@ -623,7 +623,7 @@ public class MainWindow : Window
         tab.show ();
 
         // add the tab at the end of the notebook
-        documents_panel.add_tab (tab, -1, jump_to);
+        _documents_panel.add_tab (tab, -1, jump_to);
 
         _main_window_edit.update_sensitivity ();
 
@@ -682,7 +682,7 @@ public class MainWindow : Window
             dialog.destroy ();
         }
 
-        documents_panel.remove_tab (tab);
+        _documents_panel.remove_tab (tab);
         return true;
     }
 
@@ -816,7 +816,7 @@ public class MainWindow : Window
         /* no unsaved document */
         if (unsaved_documents.size == 0)
         {
-            documents_panel.remove_all_tabs ();
+            _documents_panel.remove_all_tabs ();
             return true;
         }
 
@@ -827,7 +827,7 @@ public class MainWindow : Window
             active_tab = doc.tab;
             if (close_tab (doc.tab))
             {
-                documents_panel.remove_all_tabs ();
+                _documents_panel.remove_all_tabs ();
                 return true;
             }
         }
@@ -836,7 +836,7 @@ public class MainWindow : Window
         else
         {
             Dialogs.close_several_unsaved_documents (this, unsaved_documents);
-            if (documents_panel.get_n_pages () == 0)
+            if (_documents_panel.get_n_pages () == 0)
                 return true;
         }
 
@@ -845,7 +845,7 @@ public class MainWindow : Window
 
     public void remove_all_tabs ()
     {
-        documents_panel.remove_all_tabs ();
+        _documents_panel.remove_all_tabs ();
     }
 
     private void update_cursor_position_statusbar ()
@@ -854,7 +854,7 @@ public class MainWindow : Window
         active_document.get_iter_at_mark (out iter, active_document.get_insert ());
         int row = (int) iter.get_line ();
         int col = (int) active_view.get_visual_column (iter);
-        statusbar.set_cursor_position (row + 1, col + 1);
+        _statusbar.set_cursor_position (row + 1, col + 1);
     }
 
     public void save_state ()
@@ -879,8 +879,8 @@ public class MainWindow : Window
 
         settings_window.set ("size", "(ii)", w, h);
 
-        settings_window.set_int ("side-panel-size", main_hpaned.get_position ());
-        settings_window.set_int ("vertical-paned-position", vpaned.get_position ());
+        settings_window.set_int ("side-panel-size", _main_hpaned.get_position ());
+        settings_window.set_int ("vertical-paned-position", _vpaned.get_position ());
 
         _main_window_structure.save_state ();
 
@@ -891,16 +891,16 @@ public class MainWindow : Window
         // We don't bind this settings to the toggle action because when we change the
         // setting it must be applied only on the current window and not all windows.
 
-        ToggleAction action = (ToggleAction) action_group.get_action ("ViewMainToolbar");
+        ToggleAction action = (ToggleAction) _action_group.get_action ("ViewMainToolbar");
         settings_ui.set_boolean ("main-toolbar-visible", action.active);
 
-        action = (ToggleAction) action_group.get_action ("ViewEditToolbar");
+        action = (ToggleAction) _action_group.get_action ("ViewEditToolbar");
         settings_ui.set_boolean ("edit-toolbar-visible", action.active);
 
-        action = (ToggleAction) action_group.get_action ("ViewSidePanel");
+        action = (ToggleAction) _action_group.get_action ("ViewSidePanel");
         settings_ui.set_boolean ("side-panel-visible", action.active);
 
-        action = (ToggleAction) action_group.get_action ("ViewBottomPanel");
+        action = (ToggleAction) _action_group.get_action ("ViewBottomPanel");
         settings_ui.set_boolean ("bottom-panel-visible", action.active);
 
         _main_window_build_tools.save_state ();
@@ -925,11 +925,11 @@ public class MainWindow : Window
 
         foreach (string file_action in file_actions)
         {
-            Gtk.Action action = action_group.get_action (file_action);
+            Gtk.Action action = _action_group.get_action (file_action);
             action.set_sensitive (sensitive);
         }
 
-        latex_action_group.set_sensitive (sensitive);
+        _latex_action_group.set_sensitive (sensitive);
         _main_window_file.update_sensitivity (sensitive);
         _main_window_edit.update_sensitivity ();
         _main_window_build_tools.update_sensitivity ();
@@ -937,7 +937,7 @@ public class MainWindow : Window
 
     public void update_config_project_sensitivity ()
     {
-        Gtk.Action action = action_group.get_action ("ProjectsConfigCurrent");
+        Gtk.Action action = _action_group.get_action ("ProjectsConfigCurrent");
         action.set_sensitive (active_tab != null && active_document.project_id != -1);
     }
 
@@ -989,19 +989,19 @@ public class MainWindow : Window
     public void on_search_find ()
     {
         return_if_fail (active_tab != null);
-        search_and_replace.show_search ();
+        _search_and_replace.show_search ();
     }
 
     public void on_search_replace ()
     {
         return_if_fail (active_tab != null);
-        search_and_replace.show_search_and_replace ();
+        _search_and_replace.show_search_and_replace ();
     }
 
     public void on_search_goto_line ()
     {
         return_if_fail (active_tab != null);
-        goto_line.show ();
+        _goto_line.show ();
     }
 
     /* Projects */
