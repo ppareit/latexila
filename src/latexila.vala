@@ -72,7 +72,7 @@ public class Latexila : Gtk.Application
         new_document_action.activate.connect (() =>
         {
             hold ();
-            create_document ();
+            active_window.create_tab (true);
             release ();
         });
 
@@ -213,11 +213,6 @@ public class Latexila : Gtk.Application
 
         window.show ();
         return window;
-    }
-
-    public void create_document ()
-    {
-        active_window.create_tab (true);
     }
 
     public void open_documents (File[] files)
