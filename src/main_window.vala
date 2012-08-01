@@ -162,11 +162,13 @@ public class MainWindow : Window
 
         _main_window_edit = new MainWindowEdit (this, _ui_manager);
         _main_window_file = new MainWindowFile (this, _ui_manager);
+        _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager);
         _main_window_documents = new MainWindowDocuments (this, _ui_manager,
             _documents_panel);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
+        _main_window_build_tools.set_file_browser (file_browser);
 
         // Symbols
         _symbols = new SymbolsView (this);
@@ -177,9 +179,7 @@ public class MainWindow : Window
 
         // Bottom panel
         BuildView build_view = new BuildView (this);
-
-        _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager,
-            build_view, file_browser);
+        _main_window_build_tools.set_build_view (build_view);
 
         Toolbar build_toolbar = _ui_manager.get_widget ("/BuildToolbar") as Toolbar;
         build_toolbar.set_style (ToolbarStyle.ICONS);

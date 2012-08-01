@@ -63,15 +63,10 @@ public class MainWindowBuildTools
     private uint _menu_ui_id;
     private BuildToolRunner _build_tool_runner;
 
-    public MainWindowBuildTools (MainWindow main_window, UIManager ui_manager,
-        BuildView build_view, FileBrowser file_browser)
+    public MainWindowBuildTools (MainWindow main_window, UIManager ui_manager)
     {
         _main_window = main_window;
         _ui_manager = ui_manager;
-        _build_view = build_view;
-
-        // TODO It would be better if the file browser could detect file updates.
-        _file_browser = file_browser;
 
         /* Static Gtk.Actions */
         _static_action_group = new Gtk.ActionGroup ("BuildMenuActionGroup");
@@ -81,8 +76,6 @@ public class MainWindowBuildTools
 
         Gtk.Action stop_exec = _static_action_group.get_action ("BuildStopExecution");
         stop_exec.sensitive = false;
-
-        connect_toggle_actions ();
 
         ui_manager.insert_action_group (_static_action_group, 0);
 
@@ -96,6 +89,18 @@ public class MainWindowBuildTools
 
         DefaultBuildTools default_build_tools = DefaultBuildTools.get_default ();
         default_build_tools.modified.connect (() => update_menu ());
+    }
+
+    public void set_build_view (BuildView build_view)
+    {
+        _build_view = build_view;
+        connect_toggle_actions ();
+    }
+
+    public void set_file_browser (FileBrowser file_browser)
+    {
+        // TODO It would be better if the file browser could detect files updates.
+        _file_browser = file_browser;
     }
 
     public void update_sensitivity ()
@@ -294,6 +299,8 @@ public class MainWindowBuildTools
     private void activate_dynamic_action (Gtk.Action action)
     {
         return_if_fail (_main_window.active_tab != null);
+        return_if_fail (_build_view != null);
+        return_if_fail (_file_browser != null);
 
         BuildTool? tool = get_build_tool_from_name (action.name);
         return_if_fail (tool != null);
@@ -353,6 +360,8 @@ public class MainWindowBuildTools
 
     private void connect_toggle_actions ()
     {
+        return_if_fail (_build_view != null);
+
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
 
         /* Show details */
@@ -400,6 +409,7 @@ public class MainWindowBuildTools
     public void on_clean ()
     {
         return_if_fail (_main_window.active_tab != null);
+        return_if_fail (_file_browser != null);
 
         CleanBuildFiles build_files = new CleanBuildFiles (_main_window,
             _main_window.active_document);
