@@ -1132,7 +1132,7 @@ public class MainWindow : Window
 
         string[] authors =
         {
-            "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
+            "Sébastien Wilmet <swilmet@gnome.org>",
             null
         };
 
@@ -1140,7 +1140,7 @@ public class MainWindow : Window
         {
             "Ann Melnichuk <melnichu@qtp.ufl.edu>",
             "Eric Forgeot <e.forgeot@laposte.net>",
-            "Sébastien Wilmet <sebastien.wilmet@gmail.com>",
+            "Sébastien Wilmet <swilmet@gnome.org>",
             "The Kile Team http://kile.sourceforge.net/",
             "Gedit LaTeX Plugin http://live.gnome.org/Gedit/LaTeXPlugin",
             null
@@ -1167,7 +1167,7 @@ public class MainWindow : Window
             "title", _("About LaTeXila"),
             "translator-credits", _("translator-credits"),
             "website", website,
-            "logo", logo,
-            null);
+            "logo", logo
+        );
     }
 }
