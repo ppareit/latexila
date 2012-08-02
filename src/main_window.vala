@@ -104,6 +104,9 @@ public class MainWindow : Window
     // context id for the statusbar
     private uint _tip_message_cid;
 
+    /*************************************************************************/
+    // Properties
+
     public DocumentTab? active_tab
     {
         get
@@ -141,84 +144,107 @@ public class MainWindow : Window
         }
     }
 
+    /*************************************************************************/
+    // Construction
+
     public MainWindow ()
     {
         this.title = "LaTeXila";
 
-        /* components */
-        initialize_menubar_and_toolbar ();
+        initialize_ui_manager ();
+
         _main_window_file = new MainWindowFile (this, _ui_manager);
         _main_window_edit = new MainWindowEdit (this, _ui_manager);
         _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager);
         _main_window_documents = new MainWindowDocuments (this, _ui_manager);
         _main_window_structure = new MainWindowStructure (_ui_manager);
 
-        _documents_panel = new DocumentsPanel (this);
-        _main_window_documents.set_documents_panel (_documents_panel);
+        set_file_actions_sensitivity (false);
 
-        _documents_panel.right_click.connect ((event) =>
-        {
-            Gtk.Menu popup_menu = _ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
-            popup_menu.popup (null, null, null, event.button, event.time);
-        });
+        /* Main vertical grid */
+
+        Grid main_vgrid = new Grid ();
+        main_vgrid.orientation = Orientation.VERTICAL;
+        main_vgrid.show ();
+        add (main_vgrid);
+
+        /* Menu */
+
+        Widget menu = _ui_manager.get_widget ("/MainMenu");
+        menu.show_all ();
+        main_vgrid.add (menu);
+
+        // Force to show icons in the menu.
+        // In the LaTeX and Math menu, icons are needed.
+        unowned Gtk.Settings gtk_settings = menu.get_settings ();
+        gtk_settings.gtk_menu_images = true;
+
+        /* Main and edit toolbars */
+
+        init_toolbars ();
+        main_vgrid.add (_main_toolbar);
+        main_vgrid.add (_edit_toolbar);
+
+        /* Main horizontal paned.
+         * Left: side panel (symbols, file browser, ...)
+         * Right: documents, bottom panel, ...
+         */
+
+        _main_hpaned = new Paned (Orientation.HORIZONTAL);
+        _main_hpaned.show ();
+        main_vgrid.add (_main_hpaned);
+
+        /* Side panel */
+
+        init_side_panel ();
+        _main_hpaned.add1 (_side_panel);
+
+        /* Vertical paned.
+         * Top: documents, search and replace, ...
+         * Bottom: bottom panel
+         */
+
+        _vpaned = new Paned (Orientation.VERTICAL);
+        _vpaned.show ();
+        _main_hpaned.add2 (_vpaned);
+
+        /* Vertical grid: documents, goto line, search and replace */
+
+        Grid docs_vgrid = new Grid ();
+        docs_vgrid.orientation = Orientation.VERTICAL;
+        docs_vgrid.set_row_spacing (2);
+        docs_vgrid.show ();
+
+        // Documents panel
+        init_documents_panel ();
+        docs_vgrid.add (_documents_panel);
+
+        // Goto Line
+        _goto_line = new GotoLine (this);
+        docs_vgrid.add (_goto_line);
+
+        // Search and Replace
+        _search_and_replace = new SearchAndReplace (this);
+        docs_vgrid.add (_search_and_replace.get_widget ());
+
+        /* Bottom panel */
+
+        BottomPanel bottom_panel = get_bottom_panel ();
+
+        // When we resize the window, the bottom panel keeps the same height.
+        _vpaned.pack1 (docs_vgrid, true, true);
+        _vpaned.pack2 (bottom_panel, false, true);
+
+        /* Statusbar */
 
         _statusbar = new CustomStatusbar ();
+        _statusbar.show_all ();
+        main_vgrid.add (_statusbar);
+
         _tip_message_cid = _statusbar.get_context_id ("tip_message");
-        _goto_line = new GotoLine (this);
-        _search_and_replace = new SearchAndReplace (this);
 
-        // File browser
-        FileBrowser file_browser = new FileBrowser (this);
-        _main_window_build_tools.set_file_browser (file_browser);
+        /* Other misc stuff */
 
-        // Symbols
-        _symbols = new SymbolsView (this);
-
-        // Structure
-        Structure structure = new Structure (this);
-        _main_window_structure.set_structure (structure);
-
-        // Bottom panel
-        BuildView build_view = new BuildView (this);
-        _main_window_build_tools.set_build_view (build_view);
-
-        Toolbar build_toolbar = _ui_manager.get_widget ("/BuildToolbar") as Toolbar;
-        build_toolbar.set_style (ToolbarStyle.ICONS);
-        build_toolbar.set_icon_size (IconSize.MENU);
-        build_toolbar.set_orientation (Orientation.VERTICAL);
-
-        BottomPanel bottom_panel = new BottomPanel (build_view, build_toolbar);
-
-        ToggleAction action_bottom_panel =
-            _action_group.get_action ("ViewBottomPanel") as ToggleAction;
-
-        bottom_panel.bind_property ("visible", action_bottom_panel, "active",
-            BindingFlags.BIDIRECTIONAL);
-
-        // Side panel
-        _side_panel = new SidePanel ();
-        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
-        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
-        _side_panel.add_component (_("Structure"), Stock.INDEX, structure);
-        _side_panel.restore_state ();
-
-        // menu and toolbars
-        Widget menu = _ui_manager.get_widget ("/MainMenu");
-
-        _main_toolbar = _ui_manager.get_widget ("/MainToolbar") as Toolbar;
-        ToolItem open_button = _main_window_file.get_toolbar_open_button ();
-        _main_toolbar.insert (open_button, 1);
-
-        _main_toolbar.set_style (ToolbarStyle.ICONS);
-        StyleContext main_toolbar_context = _main_toolbar.get_style_context ();
-        main_toolbar_context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
-
-        _edit_toolbar = _ui_manager.get_widget ("/EditToolbar") as Toolbar;
-        _edit_toolbar.set_style (ToolbarStyle.ICONS);
-
-        /* signal handlers */
-
-        connect_documents_panel ();
         hide_completion_calltip_when_needed ();
         support_drag_and_drop ();
 
@@ -230,99 +256,143 @@ public class MainWindow : Window
             return true;
         });
 
-        set_file_actions_sensitivity (false);
+        restore_state ();
+        show_or_hide_widgets ();
+        show ();
+    }
 
-        /* packing widgets */
-        Grid main_vgrid = new Grid ();
-        main_vgrid.orientation = Orientation.VERTICAL;
+    private void initialize_ui_manager ()
+    {
+        _action_group = new Gtk.ActionGroup ("ActionGroup");
+        _action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
+        _action_group.add_actions (_action_entries, this);
+        _action_group.add_toggle_actions (_toggle_action_entries, this);
 
-        main_vgrid.add (menu);
-        main_vgrid.add (_main_toolbar);
-        main_vgrid.add (_edit_toolbar);
+        _latex_action_group = new LatexMenu (this);
 
-        main_vgrid.show ();
-        menu.show_all ();
+        _ui_manager = new UIManager ();
+        _ui_manager.insert_action_group (_action_group, 0);
+        _ui_manager.insert_action_group (_latex_action_group, 0);
+
+        try
+        {
+            string path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
+            _ui_manager.add_ui_from_file (path);
+        }
+        catch (GLib.Error err)
+        {
+            error ("%s", err.message);
+        }
+
+        add_accel_group (_ui_manager.get_accel_group ());
+
+        /* Show tooltips in the statusbar */
+
+        _ui_manager.connect_proxy.connect ((action, p) =>
+        {
+            if (p is Gtk.MenuItem)
+            {
+                Gtk.MenuItem proxy = p as Gtk.MenuItem;
+                proxy.select.connect (on_menu_item_select);
+                proxy.deselect.connect (on_menu_item_deselect);
+            }
+        });
+
+        _ui_manager.disconnect_proxy.connect ((action, p) =>
+        {
+            if (p is Gtk.MenuItem)
+            {
+                Gtk.MenuItem proxy = p as Gtk.MenuItem;
+                proxy.select.disconnect (on_menu_item_select);
+                proxy.deselect.disconnect (on_menu_item_deselect);
+            }
+        });
+    }
+
+    private void on_menu_item_select (Gtk.MenuItem proxy)
+    {
+        Gtk.Action action = proxy.get_related_action ();
+        return_if_fail (action != null);
+        if (action.tooltip != null)
+            _statusbar.push (_tip_message_cid, action.tooltip);
+    }
+
+    private void on_menu_item_deselect (Gtk.MenuItem proxy)
+    {
+        _statusbar.pop (_tip_message_cid);
+    }
+
+    private void init_toolbars ()
+    {
+        _main_toolbar = _ui_manager.get_widget ("/MainToolbar") as Toolbar;
+        ToolItem open_button = _main_window_file.get_toolbar_open_button ();
+        _main_toolbar.insert (open_button, 1);
+
+        _main_toolbar.set_style (ToolbarStyle.ICONS);
+        StyleContext context = _main_toolbar.get_style_context ();
+        context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
+
+        _edit_toolbar = _ui_manager.get_widget ("/EditToolbar") as Toolbar;
+        _edit_toolbar.set_style (ToolbarStyle.ICONS);
+
         _main_toolbar.show_all ();
+        _edit_toolbar.show_all ();
 
-        // main horizontal pane
-        // left: side panel (symbols, file browser, ...)
-        // right: documents panel, search and replace, log zone, ...
-        _main_hpaned = new Paned (Orientation.HORIZONTAL);
-        main_vgrid.add (_main_hpaned);
-        _main_hpaned.show ();
+        /* Bind the toggle actions to show/hide the toolbars */
 
-        // vgrid source view: documents panel, goto line, search and replace
-        Grid vgrid_source_view = new Grid ();
-        vgrid_source_view.orientation = Orientation.VERTICAL;
-        vgrid_source_view.set_row_spacing (2);
-        vgrid_source_view.add (_documents_panel);
-        vgrid_source_view.add (_goto_line);
-        vgrid_source_view.add (_search_and_replace.get_widget ());
+        ToggleAction action =
+            _action_group.get_action ("ViewMainToolbar") as ToggleAction;
 
-        vgrid_source_view.show ();
+        _main_toolbar.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        action = _action_group.get_action ("ViewEditToolbar") as ToggleAction;
+
+        _edit_toolbar.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
+    }
+
+    private void init_side_panel ()
+    {
+        _side_panel = new SidePanel ();
+        _side_panel.show ();
+
+        // Bind the toggle action to show/hide the side panel
+        ToggleAction action = _action_group.get_action ("ViewSidePanel") as ToggleAction;
+
+        _side_panel.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        // Symbols
+        _symbols = new SymbolsView (this);
+        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
+
+        // File browser
+        FileBrowser file_browser = new FileBrowser (this);
+        _main_window_build_tools.set_file_browser (file_browser);
+        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
+
+        // Structure
+        Structure structure = new Structure (this);
+        _main_window_structure.set_structure (structure);
+        _side_panel.add_component (_("Structure"), Stock.INDEX, structure);
+
+        _side_panel.restore_state ();
+    }
+
+    private void init_documents_panel ()
+    {
+        _documents_panel = new DocumentsPanel (this);
         _documents_panel.show_all ();
 
-        // vertical pane
-        // top: vbox source view
-        // bottom: log zone
-        _vpaned = new Paned (Orientation.VERTICAL);
+        _main_window_documents.set_documents_panel (_documents_panel);
 
-        // when we resize the window, the bottom panel keeps the same height
-        _vpaned.pack1 (vgrid_source_view, true, true);
-        _vpaned.pack2 (bottom_panel, false, true);
+        _documents_panel.right_click.connect ((event) =>
+        {
+            Gtk.Menu popup_menu = _ui_manager.get_widget ("/NotebookPopup") as Gtk.Menu;
+            popup_menu.popup (null, null, null, event.button, event.time);
+        });
 
-        _main_hpaned.add1 (_side_panel);
-        _main_hpaned.add2 (_vpaned);
-
-        _side_panel.show ();
-        _vpaned.show ();
-
-        main_vgrid.add (_statusbar);
-        _statusbar.show_all ();
-
-        add (main_vgrid);
-
-        restore_state ();
-        show ();
-        show_or_hide_widgets ();
-
-        /* Force to show icons in the menu.
-         * In the LaTeX and Math menu, icons are needed.
-         */
-        unowned Gtk.Settings gtk_settings = menu.get_settings ();
-        gtk_settings.gtk_menu_images = true;
-    }
-
-    private void restore_state ()
-    {
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
-
-        /* The window itself */
-
-        int width;
-        int height;
-        settings.get ("size", "(ii)", out width, out height);
-        set_default_size (width, height);
-
-        Gdk.WindowState state = (Gdk.WindowState) settings.get_int ("state");
-        if (Gdk.WindowState.MAXIMIZED in state)
-            maximize ();
-        else
-            unmaximize ();
-
-        if (Gdk.WindowState.STICKY in state)
-            stick ();
-        else
-            unstick ();
-
-        /* Widgets */
-
-        _main_hpaned.set_position (settings.get_int ("side-panel-size"));
-        _vpaned.set_position (settings.get_int ("vertical-paned-position"));
-    }
-
-    private void connect_documents_panel ()
-    {
         _documents_panel.page_added.connect (() =>
         {
             int nb_pages = _documents_panel.get_n_pages ();
@@ -363,6 +433,56 @@ public class MainWindow : Window
             notify_property ("active-document");
             notify_property ("active-view");
         });
+    }
+
+    private BottomPanel get_bottom_panel ()
+    {
+        BuildView build_view = new BuildView (this);
+        _main_window_build_tools.set_build_view (build_view);
+
+        Toolbar build_toolbar = _ui_manager.get_widget ("/BuildToolbar") as Toolbar;
+        build_toolbar.set_style (ToolbarStyle.ICONS);
+        build_toolbar.set_icon_size (IconSize.MENU);
+        build_toolbar.set_orientation (Orientation.VERTICAL);
+
+        BottomPanel bottom_panel = new BottomPanel (build_view, build_toolbar);
+
+        // Bind the toggle action to show/hide the bottom panel
+        ToggleAction action =
+            _action_group.get_action ("ViewBottomPanel") as ToggleAction;
+
+        bottom_panel.bind_property ("visible", action, "active",
+            BindingFlags.BIDIRECTIONAL);
+
+        return bottom_panel;
+    }
+
+    private void restore_state ()
+    {
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
+
+        /* The window itself */
+
+        int width;
+        int height;
+        settings.get ("size", "(ii)", out width, out height);
+        set_default_size (width, height);
+
+        Gdk.WindowState state = (Gdk.WindowState) settings.get_int ("state");
+        if (Gdk.WindowState.MAXIMIZED in state)
+            maximize ();
+        else
+            unmaximize ();
+
+        if (Gdk.WindowState.STICKY in state)
+            stick ();
+        else
+            unstick ();
+
+        /* Widgets */
+
+        _main_hpaned.set_position (settings.get_int ("side-panel-size"));
+        _vpaned.set_position (settings.get_int ("vertical-paned-position"));
     }
 
     private void hide_completion_calltip_when_needed ()
@@ -406,6 +526,27 @@ public class MainWindow : Window
         });
     }
 
+    private void show_or_hide_widgets ()
+    {
+        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
+
+        ToggleAction action =
+            _action_group.get_action ("ViewMainToolbar") as ToggleAction;
+        action.active = settings.get_boolean ("main-toolbar-visible");
+
+        action = _action_group.get_action ("ViewEditToolbar") as ToggleAction;
+        action.active = settings.get_boolean ("edit-toolbar-visible");
+
+        action = _action_group.get_action ("ViewSidePanel") as ToggleAction;
+        action.active = settings.get_boolean ("side-panel-visible");
+
+        action = _action_group.get_action ("ViewBottomPanel") as ToggleAction;
+        action.active = settings.get_boolean ("bottom-panel-visible");
+    }
+
+    /*************************************************************************/
+    // Manage documents: get list of documents, open or save a document, etc.
+
     public Gee.List<Document> get_documents ()
     {
         Gee.List<Document> all_documents = new Gee.LinkedList<Document> ();
@@ -442,99 +583,6 @@ public class MainWindow : Window
         }
 
         return all_views;
-    }
-
-    private void initialize_menubar_and_toolbar ()
-    {
-        _action_group = new Gtk.ActionGroup ("ActionGroup");
-        _action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
-        _action_group.add_actions (_action_entries, this);
-        _action_group.add_toggle_actions (_toggle_action_entries, this);
-
-        _latex_action_group = new LatexMenu (this);
-
-        _ui_manager = new UIManager ();
-        _ui_manager.insert_action_group (_action_group, 0);
-        _ui_manager.insert_action_group (_latex_action_group, 0);
-
-        try
-        {
-            string path = Path.build_filename (Config.DATA_DIR, "ui", "ui.xml");
-            _ui_manager.add_ui_from_file (path);
-        }
-        catch (GLib.Error err)
-        {
-            error ("%s", err.message);
-        }
-
-        add_accel_group (_ui_manager.get_accel_group ());
-
-        // show tooltips in the statusbar
-        _ui_manager.connect_proxy.connect ((action, p) =>
-        {
-            if (p is Gtk.MenuItem)
-            {
-                Gtk.MenuItem proxy = p as Gtk.MenuItem;
-                proxy.select.connect (on_menu_item_select);
-                proxy.deselect.connect (on_menu_item_deselect);
-            }
-        });
-
-        _ui_manager.disconnect_proxy.connect ((action, p) =>
-        {
-            if (p is Gtk.MenuItem)
-            {
-                Gtk.MenuItem proxy = p as Gtk.MenuItem;
-                proxy.select.disconnect (on_menu_item_select);
-                proxy.deselect.disconnect (on_menu_item_deselect);
-            }
-        });
-    }
-
-    private void on_menu_item_select (Gtk.MenuItem proxy)
-    {
-        Gtk.Action action = proxy.get_related_action ();
-        return_if_fail (action != null);
-        if (action.tooltip != null)
-            _statusbar.push (_tip_message_cid, action.tooltip);
-    }
-
-    private void on_menu_item_deselect (Gtk.MenuItem proxy)
-    {
-        _statusbar.pop (_tip_message_cid);
-    }
-
-    private void show_or_hide_widgets ()
-    {
-        GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.preferences.ui");
-
-        /* main toolbar */
-        ToggleAction action = _action_group.get_action ("ViewMainToolbar") as ToggleAction;
-
-        _main_toolbar.bind_property ("visible", action, "active",
-            BindingFlags.BIDIRECTIONAL);
-
-        action.active = settings.get_boolean ("main-toolbar-visible");
-
-        /* edit toolbar */
-        action = _action_group.get_action ("ViewEditToolbar") as ToggleAction;
-
-        _edit_toolbar.bind_property ("visible", action, "active",
-            BindingFlags.BIDIRECTIONAL);
-
-        action.active = settings.get_boolean ("edit-toolbar-visible");
-
-        /* side panel */
-        action = _action_group.get_action ("ViewSidePanel") as ToggleAction;
-
-        _side_panel.bind_property ("visible", action, "active",
-            BindingFlags.BIDIRECTIONAL);
-
-        action.active = settings.get_boolean ("side-panel-visible");
-
-        /* bottom panel */
-        action = _action_group.get_action ("ViewBottomPanel") as ToggleAction;
-        action.active = settings.get_boolean ("bottom-panel-visible");
     }
 
     public DocumentTab? open_document (File location, bool jump_to = true)
