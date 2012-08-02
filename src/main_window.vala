@@ -147,10 +147,11 @@ public class MainWindow : Window
 
         /* components */
         initialize_menubar_and_toolbar ();
-        _main_window_edit = new MainWindowEdit (this, _ui_manager);
         _main_window_file = new MainWindowFile (this, _ui_manager);
+        _main_window_edit = new MainWindowEdit (this, _ui_manager);
         _main_window_build_tools = new MainWindowBuildTools (this, _ui_manager);
         _main_window_documents = new MainWindowDocuments (this, _ui_manager);
+        _main_window_structure = new MainWindowStructure (_ui_manager);
 
         _documents_panel = new DocumentsPanel (this);
         _main_window_documents.set_documents_panel (_documents_panel);
@@ -175,7 +176,7 @@ public class MainWindow : Window
 
         // Structure
         Structure structure = new Structure (this);
-        _main_window_structure = new MainWindowStructure (_ui_manager, structure);
+        _main_window_structure.set_structure (structure);
 
         // Bottom panel
         BuildView build_view = new BuildView (this);

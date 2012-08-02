@@ -60,16 +60,20 @@ public class MainWindowStructure
     private UIManager _ui_manager;
     private Structure _structure;
 
-    public MainWindowStructure (UIManager ui_manager, Structure structure)
+    public MainWindowStructure (UIManager ui_manager)
     {
         _ui_manager = ui_manager;
-        _structure = structure;
 
         Gtk.ActionGroup action_group = new Gtk.ActionGroup ("StructureActionGroup");
         action_group.set_translation_domain (Config.GETTEXT_PACKAGE);
         action_group.add_actions (_action_entries, this);
 
         ui_manager.insert_action_group (action_group, 0);
+    }
+
+    public void set_structure (Structure structure)
+    {
+        _structure = structure;
 
         structure.show_popup_menu.connect (show_popup_menu);
         structure.hide.connect (set_menu_insensitive);
@@ -79,6 +83,7 @@ public class MainWindowStructure
 
     public void save_state ()
     {
+        return_if_fail (_structure != null);
         _structure.save_state ();
     }
 
