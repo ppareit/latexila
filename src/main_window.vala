@@ -84,8 +84,6 @@ public class MainWindow : Window
     private CustomStatusbar _statusbar;
     private GotoLine _goto_line;
     private SearchAndReplace _search_and_replace;
-    private SidePanel _side_panel;
-    private SymbolsView _symbols;
     private Paned _main_hpaned;
     private Paned _vpaned;
 
@@ -195,8 +193,8 @@ public class MainWindow : Window
 
         /* Side panel */
 
-        init_side_panel ();
-        _main_hpaned.add1 (_side_panel);
+        SidePanel side_panel = get_side_panel ();
+        _main_hpaned.add1 (side_panel);
 
         /* Vertical paned.
          * Top: documents, search and replace, ...
@@ -358,32 +356,34 @@ public class MainWindow : Window
         return edit_toolbar;
     }
 
-    private void init_side_panel ()
+    private SidePanel get_side_panel ()
     {
-        _side_panel = new SidePanel ();
-        _side_panel.show ();
+        SidePanel side_panel = new SidePanel ();
+        side_panel.show ();
 
         // Bind the toggle action to show/hide the side panel
         ToggleAction action = _action_group.get_action ("ViewSidePanel") as ToggleAction;
 
-        _side_panel.bind_property ("visible", action, "active",
+        side_panel.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
 
         // Symbols
-        _symbols = new SymbolsView (this);
-        _side_panel.add_component (_("Symbols"), "symbol_greek", _symbols);
+        SymbolsView symbols = new SymbolsView (this);
+        side_panel.add_component (_("Symbols"), "symbol_greek", symbols);
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
         _main_window_build_tools.set_file_browser (file_browser);
-        _side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
+        side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
         // Structure
         Structure structure = new Structure (this);
         _main_window_structure.set_structure (structure);
-        _side_panel.add_component (_("Structure"), Stock.INDEX, structure);
+        side_panel.add_component (_("Structure"), Stock.INDEX, structure);
 
-        _side_panel.restore_state ();
+        side_panel.restore_state ();
+
+        return side_panel;
     }
 
     private void init_documents_panel ()
