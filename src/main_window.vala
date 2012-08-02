@@ -84,8 +84,6 @@ public class MainWindow : Window
     private CustomStatusbar _statusbar;
     private GotoLine _goto_line;
     private SearchAndReplace _search_and_replace;
-    private Toolbar _main_toolbar;
-    private Toolbar _edit_toolbar;
     private SidePanel _side_panel;
     private SymbolsView _symbols;
     private Paned _main_hpaned;
@@ -181,9 +179,10 @@ public class MainWindow : Window
 
         /* Main and edit toolbars */
 
-        init_toolbars ();
-        main_vgrid.add (_main_toolbar);
-        main_vgrid.add (_edit_toolbar);
+        Toolbar main_toolbar = get_main_toolbar ();
+        Toolbar edit_toolbar = get_edit_toolbar ();
+        main_vgrid.add (main_toolbar);
+        main_vgrid.add (edit_toolbar);
 
         /* Main horizontal paned.
          * Left: side panel (symbols, file browser, ...)
@@ -322,34 +321,41 @@ public class MainWindow : Window
         _statusbar.pop (_tip_message_cid);
     }
 
-    private void init_toolbars ()
+    private Toolbar get_main_toolbar ()
     {
-        _main_toolbar = _ui_manager.get_widget ("/MainToolbar") as Toolbar;
+        Toolbar main_toolbar = _ui_manager.get_widget ("/MainToolbar") as Toolbar;
         ToolItem open_button = _main_window_file.get_toolbar_open_button ();
-        _main_toolbar.insert (open_button, 1);
+        main_toolbar.insert (open_button, 1);
 
-        _main_toolbar.set_style (ToolbarStyle.ICONS);
-        StyleContext context = _main_toolbar.get_style_context ();
+        main_toolbar.set_style (ToolbarStyle.ICONS);
+        StyleContext context = main_toolbar.get_style_context ();
         context.add_class (Gtk.STYLE_CLASS_PRIMARY_TOOLBAR);
 
-        _edit_toolbar = _ui_manager.get_widget ("/EditToolbar") as Toolbar;
-        _edit_toolbar.set_style (ToolbarStyle.ICONS);
-
-        _main_toolbar.show_all ();
-        _edit_toolbar.show_all ();
-
-        /* Bind the toggle actions to show/hide the toolbars */
+        main_toolbar.show_all ();
 
         ToggleAction action =
             _action_group.get_action ("ViewMainToolbar") as ToggleAction;
 
-        _main_toolbar.bind_property ("visible", action, "active",
+        main_toolbar.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
 
-        action = _action_group.get_action ("ViewEditToolbar") as ToggleAction;
+        return main_toolbar;
+    }
 
-        _edit_toolbar.bind_property ("visible", action, "active",
+    private Toolbar get_edit_toolbar ()
+    {
+        Toolbar edit_toolbar = _ui_manager.get_widget ("/EditToolbar") as Toolbar;
+        edit_toolbar.set_style (ToolbarStyle.ICONS);
+
+        edit_toolbar.show_all ();
+
+        ToggleAction action =
+            _action_group.get_action ("ViewEditToolbar") as ToggleAction;
+
+        edit_toolbar.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
+
+        return edit_toolbar;
     }
 
     private void init_side_panel ()
