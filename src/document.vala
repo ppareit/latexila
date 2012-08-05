@@ -606,6 +606,30 @@ public class Document : Gtk.SourceBuffer
         /* Set the location as 'tmp.tex' in the temporary directory */
         this.location = File.new_for_path (Path.build_filename (tmp_dir, "tmp.tex"));
 
+        /* Warn the user that the file can be lost */
+
+        TabInfoBar infobar = tab.add_message (
+            _("The file has a temporary location. The data can be lost after rebooting your computer."),
+            _("Do you want to save the file in a safer place?"),
+            MessageType.WARNING);
+
+        infobar.add_button (Stock.SAVE_AS, ResponseType.YES);
+        infobar.add_button (Stock.CANCEL, ResponseType.NO);
+
+        infobar.response.connect ((response_id) =>
+        {
+            if (response_id == ResponseType.YES)
+            {
+                unowned MainWindow? main_window =
+                    Utils.get_toplevel_window (tab) as MainWindow;
+
+                if (main_window != null)
+                    main_window.save_document (this, true);
+            }
+
+            infobar.destroy ();
+        });
+
         return true;
     }
 
