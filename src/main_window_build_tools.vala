@@ -57,6 +57,7 @@ public class MainWindowBuildTools
     private UIManager _ui_manager;
     private BuildView _build_view;
     private FileBrowser _file_browser;
+    private BottomPanel _bottom_panel;
 
     private Gtk.ActionGroup _static_action_group;
     private Gtk.ActionGroup _dynamic_action_group;
@@ -101,6 +102,11 @@ public class MainWindowBuildTools
     {
         // TODO It would be better if the file browser could detect files updates.
         _file_browser = file_browser;
+    }
+
+    public void set_bottom_panel (BottomPanel bottom_panel)
+    {
+        _bottom_panel = bottom_panel;
     }
 
     public void update_sensitivity ()
@@ -301,6 +307,7 @@ public class MainWindowBuildTools
         return_if_fail (_main_window.active_tab != null);
         return_if_fail (_build_view != null);
         return_if_fail (_file_browser != null);
+        return_if_fail (_bottom_panel != null);
 
         BuildTool? tool = get_build_tool_from_name (action.name);
         return_if_fail (tool != null);
@@ -339,7 +346,7 @@ public class MainWindowBuildTools
             Utils.flush_queue ();
         }
 
-        _build_view.show ();
+        _bottom_panel.show ();
 
         Gtk.Action stop_exec = _static_action_group.get_action ("BuildStopExecution");
         stop_exec.sensitive = true;

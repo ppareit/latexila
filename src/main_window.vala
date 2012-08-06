@@ -227,6 +227,7 @@ public class MainWindow : Window
         /* Bottom panel */
 
         BottomPanel bottom_panel = get_bottom_panel ();
+        _main_window_build_tools.set_bottom_panel (bottom_panel);
 
         // When we resize the window, the bottom panel keeps the same height.
         _vpaned.pack1 (docs_vgrid, true, true);
