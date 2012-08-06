@@ -38,10 +38,13 @@ public class FileBrowser : Grid
     }
 
     private unowned MainWindow _main_window;
+
     private ListStore _parent_dir_store;
+    private ComboBox _combo_box;
+
     private ListStore _list_store;
     private TreeView _list_view;
-    private ComboBox _combo_box;
+
     private File _current_directory;
     private Button _parent_button;
     private GLib.Settings _settings;
@@ -61,7 +64,7 @@ public class FileBrowser : Grid
         init_settings ();
         show_all ();
 
-        fill_stores_with_dir (null);
+        set_directory (get_default_directory ());
     }
 
     private void init_settings ()
@@ -70,13 +73,13 @@ public class FileBrowser : Grid
         _settings.changed["show-all-files"].connect (refresh);
         _settings.changed["show-all-files-except"].connect (refresh);
         _settings.changed["show-hidden-files"].connect (refresh);
-        _settings.changed["file-extensions"].connect (on_refresh);
+        _settings.changed["file-extensions"].connect (delayed_refresh);
 
         _latex_settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        _latex_settings.changed["clean-extensions"].connect (on_refresh);
+        _latex_settings.changed["clean-extensions"].connect (delayed_refresh);
     }
 
-    private void on_refresh ()
+    private void delayed_refresh ()
     {
         // Call refresh () only after 2 seconds.
         // If the text has changed before the 2 seconds, we reinitialize the counter.
@@ -116,22 +119,22 @@ public class FileBrowser : Grid
         home_button.clicked.connect (() =>
         {
             File home_dir = File.new_for_path (Environment.get_home_dir ());
-            fill_stores_with_dir (home_dir);
+            set_directory (home_dir);
         });
 
         _parent_button.clicked.connect (() =>
         {
             File? parent = _current_directory.get_parent ();
             return_if_fail (parent != null);
-            fill_stores_with_dir (parent);
+            set_directory (parent);
         });
 
         jump_button.clicked.connect (() =>
         {
-            if (_main_window.active_tab == null
-                || _main_window.active_document.location == null)
-                return;
-            fill_stores_with_dir (_main_window.active_document.location.get_parent ());
+            return_if_fail (_main_window.active_tab != null);
+            return_if_fail (_main_window.active_document.location != null);
+
+            set_directory (_main_window.active_document.location.get_parent ());
         });
 
         // jump button sensitivity
@@ -164,7 +167,8 @@ public class FileBrowser : Grid
         _parent_dir_store = new ListStore (ParentDirColumn.N_COLUMNS,
             typeof (string),    // pixbuf (stock-id)
             typeof (string),    // directory name
-            typeof (File));
+            typeof (File)
+        );
 
         _combo_box = new ComboBox.with_model (_parent_dir_store);
         add (_combo_box);
@@ -173,12 +177,12 @@ public class FileBrowser : Grid
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         _combo_box.pack_start (pixbuf_renderer, false);
         _combo_box.set_attributes (pixbuf_renderer,
-            "stock-id", ParentDirColumn.PIXBUF, null);
+            "stock-id", ParentDirColumn.PIXBUF);
 
         // directory name
         CellRendererText text_renderer = new CellRendererText ();
         _combo_box.pack_start (text_renderer, true);
-        _combo_box.set_attributes (text_renderer, "text", ParentDirColumn.NAME, null);
+        _combo_box.set_attributes (text_renderer, "text", ParentDirColumn.NAME);
         text_renderer.ellipsize_set = true;
         text_renderer.ellipsize = Pango.EllipsizeMode.END;
 
@@ -189,11 +193,9 @@ public class FileBrowser : Grid
             {
                 TreeModel model = _combo_box.get_model ();
                 File file;
-                model.get (iter, ParentDirColumn.FILE, out file, -1);
+                model.get (iter, ParentDirColumn.FILE, out file);
 
-                // avoid infinite loop (this method is called in fill_stores_with_dir ())
-                if (! file.equal (_current_directory))
-                    fill_stores_with_dir (file);
+                set_directory (file);
             }
         });
     }
@@ -205,7 +207,7 @@ public class FileBrowser : Grid
             typeof (string),    // pixbuf (stock-id)
             typeof (string),    // filename
             typeof (bool)       // is directory
-            );
+        );
 
         _list_store.set_sort_func (0, on_sort);
         _list_store.set_sort_column_id (0, SortType.ASCENDING);
@@ -219,12 +221,12 @@ public class FileBrowser : Grid
         // icon
         CellRendererPixbuf pixbuf_renderer = new CellRendererPixbuf ();
         column.pack_start (pixbuf_renderer, false);
-        column.set_attributes (pixbuf_renderer, "stock-id", FileColumn.PIXBUF, null);
+        column.set_attributes (pixbuf_renderer, "stock-id", FileColumn.PIXBUF);
 
         // filename
         CellRendererText text_renderer = new CellRendererText ();
         column.pack_start (text_renderer, true);
-        column.set_attributes (text_renderer, "text", FileColumn.NAME, null);
+        column.set_attributes (text_renderer, "text", FileColumn.NAME);
 
         // with a scrollbar
         Widget sw = Utils.add_scrollbar (_list_view);
@@ -233,7 +235,7 @@ public class FileBrowser : Grid
 
         _list_view.row_activated.connect ((path) =>
         {
-            TreeModel model = (TreeModel) _list_store;
+            TreeModel model = _list_store as TreeModel;
             TreeIter iter;
             if (! model.get_iter (out iter, path))
                 return;
@@ -242,14 +244,14 @@ public class FileBrowser : Grid
             bool is_dir;
             model.get (iter,
                 FileColumn.NAME, out basename,
-                FileColumn.IS_DIR, out is_dir,
-                -1);
+                FileColumn.IS_DIR, out is_dir
+            );
 
             File file = _current_directory.get_child (basename);
 
             if (is_dir)
             {
-                fill_stores_with_dir (file);
+                set_directory (file);
                 return;
             }
 
@@ -274,9 +276,9 @@ public class FileBrowser : Grid
         });
     }
 
-    public void refresh ()
+    private void refresh ()
     {
-        fill_stores_with_dir (_current_directory);
+        set_directory (_current_directory, true);
     }
 
     // Refresh the file browser if the document has a "link" with the directory currently
@@ -308,172 +310,175 @@ public class FileBrowser : Grid
         }
     }
 
-    private void fill_stores_with_dir (File? dir)
+    // Get the previous directory saved in GSettings, or the user home directory as
+    // a fallback.
+    private File get_default_directory ()
     {
-        _list_store.clear ();
+        string? uri = _settings.get_string ("current-directory");
+
+        if (uri != null && uri != "")
+        {
+            File directory = File.new_for_uri (uri);
+
+            if (directory.query_exists ())
+                return directory;
+        }
+
+        return File.new_for_path (Environment.get_home_dir ());
+    }
+
+    private void set_directory (File directory, bool force = false)
+    {
+        if (! force && _current_directory == directory)
+            return;
+
+        _current_directory = directory;
+        _settings.set_string ("current-directory", directory.get_uri ());
+        _parent_button.set_sensitive (directory.get_parent () != null);
+
+        update_parent_directories ();
+        update_list ();
+    }
+
+    private void update_parent_directories ()
+    {
         _parent_dir_store.clear ();
 
-        _list_view.columns_autosize ();
+        Gee.List<File> parent_dirs = new Gee.LinkedList<File> ();
+        parent_dirs.add (_current_directory);
+        File? parent = _current_directory.get_parent ();
 
-        /* files list store */
-
-        File? directory = dir;
-        if (directory == null)
+        while (parent != null)
         {
-            string uri = _settings.get_string ("current-directory");
-
-            if (uri != null && uri.length > 0)
-                directory = File.new_for_uri (uri);
-
-            // if first use, or if the directory doesn't exist, take the home directory
-            if (uri == null || uri.length == 0 || ! directory.query_exists ())
-                directory = File.new_for_path (Environment.get_home_dir ());
+            parent_dirs.insert (0, parent);
+            parent = parent.get_parent ();
         }
 
-        // TODO~ try (haha) to put the minimum code in the try
-        // note: the file browser will be removed when latexila will become a
-        // Gedit plugin...
-        try
-        {
-            FileEnumerator enumerator = directory.enumerate_children (
-                "standard::type,standard::display-name", FileQueryInfoFlags.NONE);
-
-            bool show_all = _settings.get_boolean ("show-all-files");
-            bool show_all_except = _settings.get_boolean ("show-all-files-except");
-            bool show_hidden = show_all && _settings.get_boolean ("show-hidden-files");
-
-            string exts = _settings.get_string ("file-extensions");
-            string[] extensions = exts.split (" ");
-
-            exts = _latex_settings.get_string ("clean-extensions");
-            string[] clean_extensions = exts.split (" ");
-
-            for (FileInfo? info = enumerator.next_file () ;
-                 info != null ;
-                 info = enumerator.next_file ())
-            {
-                string basename = info.get_display_name ();
-                if (basename[0] == '.' && ! show_hidden)
-                    continue;
-
-                FileType type = info.get_file_type ();
-                if (type == FileType.DIRECTORY)
-                {
-                    insert_file (true, Stock.DIRECTORY, basename);
-                    continue;
-                }
-
-                string extension = Utils.get_extension (basename);
-                if ((show_all && ! show_all_except)
-                    || (show_all && ! (extension in clean_extensions))
-                    || extension in extensions)
-                {
-                    string pixbuf;
-                    switch (extension)
-                    {
-                        case ".tex":
-                            pixbuf = Stock.EDIT;
-                            break;
-                        case ".pdf":
-                            pixbuf = "view_pdf";
-                            break;
-                        case ".dvi":
-                            pixbuf = "view_dvi";
-                            break;
-                        case ".ps":
-                        case ".eps":
-                            pixbuf = "view_ps";
-                            break;
-                        case ".png":
-                        case ".jpg":
-                        case ".jpeg":
-                        case ".gif":
-                        case ".bmp":
-                        case ".tif":
-                        case ".tiff":
-                            pixbuf = "image";
-                            break;
-                        default:
-                            pixbuf = Stock.FILE;
-                            break;
-                    }
-
-                    insert_file (false, pixbuf, basename);
-                }
-            }
-
-            _list_store.sort_column_changed ();
-        }
-        catch (Error e)
-        {
-            warning ("%s", e.message);
-
-            // warning dialog
-            MessageDialog dialog = new MessageDialog (_main_window,
-                DialogFlags.DESTROY_WITH_PARENT,
-                MessageType.WARNING,
-                ButtonsType.CLOSE,
-                "%s", _("File Browser"));
-
-            dialog.format_secondary_text ("%s", e.message);
-            dialog.run ();
-            dialog.destroy ();
-            return;
-        }
-
-        /* parent directories store */
-
-        List<File> parent_dirs = null;
-        parent_dirs.prepend (directory);
-        File current_dir = directory;
-
-        while (true)
-        {
-            File? parent = current_dir.get_parent ();
-            if (parent == null)
-                break;
-            parent_dirs.prepend (parent);
-            current_dir = parent;
-        }
-
-        TreeIter iter = {};
-        int i = 0;
-        foreach (File current in parent_dirs)
+        int depth = 0;
+        foreach (File parent_dir in parent_dirs)
         {
             // basename
             string basename;
-            if (i == 0)
+            if (depth == 0)
                 basename = _("File System");
             else
-                basename = current.get_basename ();
+                basename = parent_dir.get_basename ();
 
             // pixbuf
             string pixbuf;
-            if (i == 0)
+            if (depth == 0)
                 pixbuf = Stock.HARDDISK;
-            else if (Environment.get_home_dir () == current.get_path ())
+            else if (Environment.get_home_dir () == parent_dir.get_path ())
                 pixbuf = Stock.HOME;
             else
                 pixbuf = Stock.DIRECTORY;
 
             // insert
+            TreeIter iter;
             _parent_dir_store.append (out iter);
             _parent_dir_store.set (iter,
-                ParentDirColumn.FILE, current,
+                ParentDirColumn.FILE, parent_dir,
                 ParentDirColumn.NAME, basename,
-                ParentDirColumn.PIXBUF, pixbuf,
-                -1);
+                ParentDirColumn.PIXBUF, pixbuf
+            );
 
-            i++;
+            depth++;
         }
 
-        _current_directory = directory;
-        _settings.set_string ("current-directory", directory.get_uri ());
-
         // select the last parent directory
-        _combo_box.set_active_iter (iter);
+        _combo_box.set_active (depth - 1);
+    }
 
-        _parent_button.set_sensitive (directory.get_parent () != null);
+    private void update_list ()
+    {
+        _list_store.clear ();
+        _list_view.columns_autosize ();
+
+        /* Get settings */
+
+        bool show_all = _settings.get_boolean ("show-all-files");
+        bool show_hidden = show_all && _settings.get_boolean ("show-hidden-files");
+        bool show_all_except = show_all &&
+            _settings.get_boolean ("show-all-files-except");
+
+        string exts = _settings.get_string ("file-extensions");
+        string[] extensions = exts.split (" ");
+
+        exts = _latex_settings.get_string ("clean-extensions");
+        string[] clean_extensions = exts.split (" ");
+
+        /* Get the directory enumerator */
+
+        FileEnumerator enumerator;
+        try
+        {
+            enumerator = _current_directory.enumerate_children (
+                "standard::type,standard::display-name", FileQueryInfoFlags.NONE);
+        }
+        catch (Error error)
+        {
+            handle_error (error);
+            return;
+        }
+
+        /* Enumerate the directory */
+
+        while (true)
+        {
+            FileInfo? info;
+            try
+            {
+                info = enumerator.next_file ();
+            }
+            catch (Error error)
+            {
+                handle_error (error);
+                return;
+            }
+
+            if (info == null)
+                break;
+
+            string basename = info.get_display_name ();
+            if (basename[0] == '.' && ! show_hidden)
+                continue;
+
+            FileType type = info.get_file_type ();
+            if (type == FileType.DIRECTORY)
+            {
+                insert_file (true, Stock.DIRECTORY, basename);
+                continue;
+            }
+
+            string extension = Utils.get_extension (basename);
+
+            if (show_all_except && ! (extension in clean_extensions))
+                continue;
+
+            if (! show_all && ! (extension in extensions))
+                continue;
+
+            string stock_id = get_extension_stock_id (extension);
+            insert_file (false, stock_id, basename);
+        }
+
+        _list_store.sort_column_changed ();
+    }
+
+    private void handle_error (Error error)
+    {
+        warning ("File browser: %s", error.message);
+
+        // Warning dialog
+        MessageDialog dialog = new MessageDialog (_main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            MessageType.WARNING,
+            ButtonsType.CLOSE,
+            "%s", _("File Browser"));
+
+        dialog.format_secondary_text ("%s", error.message);
+        dialog.run ();
+        dialog.destroy ();
     }
 
     private void insert_file (bool is_dir, string pixbuf, string basename)
@@ -483,24 +488,55 @@ public class FileBrowser : Grid
         _list_store.set (iter,
             FileColumn.IS_DIR, is_dir,
             FileColumn.PIXBUF, pixbuf,
-            FileColumn.NAME, basename,
-            -1);
+            FileColumn.NAME, basename
+        );
     }
 
     private int on_sort (TreeModel model, TreeIter a, TreeIter b)
     {
         bool a_is_dir, b_is_dir;
-        model.get (a, FileColumn.IS_DIR, out a_is_dir, -1);
-        model.get (b, FileColumn.IS_DIR, out b_is_dir, -1);
+        model.get (a, FileColumn.IS_DIR, out a_is_dir);
+        model.get (b, FileColumn.IS_DIR, out b_is_dir);
 
         if (a_is_dir == b_is_dir)
         {
             string a_name, b_name;
-            model.get (a, FileColumn.NAME, out a_name, -1);
-            model.get (b, FileColumn.NAME, out b_name, -1);
+            model.get (a, FileColumn.NAME, out a_name);
+            model.get (b, FileColumn.NAME, out b_name);
             return a_name.collate (b_name);
         }
 
         return a_is_dir ? -1 : +1;
+    }
+
+    private string get_extension_stock_id (string file_extension)
+    {
+        switch (file_extension)
+        {
+            case ".tex":
+                return Stock.EDIT;
+
+            case ".pdf":
+                return "view_pdf";
+
+            case ".dvi":
+                return "view_dvi";
+
+            case ".ps":
+            case ".eps":
+                return "view_ps";
+
+            case ".png":
+            case ".jpg":
+            case ".jpeg":
+            case ".gif":
+            case ".bmp":
+            case ".tif":
+            case ".tiff":
+                return "image";
+
+            default:
+                return Stock.FILE;
+        }
     }
 }
