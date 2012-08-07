@@ -46,6 +46,8 @@ public class FileBrowser : Grid
     private TreeView _list_view;
 
     private File _current_directory;
+    private FileMonitor _monitor;
+
     private Button _parent_button;
     private GLib.Settings _settings;
     private GLib.Settings _latex_settings;
@@ -408,6 +410,27 @@ public class FileBrowser : Grid
         );
     }
 
+    private void monitor_directory ()
+    {
+        if (_current_directory == null)
+        {
+            _monitor = null;
+            return;
+        }
+
+        try
+        {
+            _monitor = _current_directory.monitor_directory (FileMonitorFlags.NONE);
+        }
+        catch (IOError e)
+        {
+            warning ("Can not refresh automatically the file browser: %s", e.message);
+            return;
+        }
+
+        _monitor.changed.connect (delayed_refresh);
+    }
+
     /*************************************************************************/
     // Misc
 
@@ -418,12 +441,13 @@ public class FileBrowser : Grid
 
     private void delayed_refresh ()
     {
-        // Call refresh () only after 2 seconds.
-        // If the text has changed before the 2 seconds, we reinitialize the counter.
+        // Call refresh () only after one second.
+        // If this function is called a second time during the second, the second is
+        // reinitialized.
         if (_timeout_id != 0)
             Source.remove (_timeout_id);
 
-        _timeout_id = Timeout.add_seconds (2, () =>
+        _timeout_id = Timeout.add_seconds (1, () =>
         {
             _timeout_id = 0;
             refresh ();
@@ -459,6 +483,7 @@ public class FileBrowser : Grid
 
         update_parent_directories ();
         update_list ();
+        monitor_directory ();
     }
 
     private void update_jump_button_sensitivity (Button jump_button)
