@@ -56,7 +56,6 @@ public class MainWindowBuildTools
     private unowned MainWindow _main_window;
     private UIManager _ui_manager;
     private BuildView _build_view;
-    private FileBrowser _file_browser;
     private BottomPanel _bottom_panel;
 
     private Gtk.ActionGroup _static_action_group;
@@ -96,12 +95,6 @@ public class MainWindowBuildTools
     {
         _build_view = build_view;
         connect_toggle_actions ();
-    }
-
-    public void set_file_browser (FileBrowser file_browser)
-    {
-        // TODO It would be better if the file browser could detect files updates.
-        _file_browser = file_browser;
     }
 
     public void set_bottom_panel (BottomPanel bottom_panel)
@@ -306,7 +299,6 @@ public class MainWindowBuildTools
     {
         return_if_fail (_main_window.active_tab != null);
         return_if_fail (_build_view != null);
-        return_if_fail (_file_browser != null);
         return_if_fail (_bottom_panel != null);
 
         BuildTool? tool = get_build_tool_from_name (action.name);
@@ -353,15 +345,7 @@ public class MainWindowBuildTools
 
         File main_file = active_doc.get_main_file ();
         _build_tool_runner = new BuildToolRunner (tool, main_file, _build_view);
-
-        _build_tool_runner.finished.connect (() =>
-        {
-            stop_exec.sensitive = false;
-
-            if (tool.has_jobs ())
-                _file_browser.refresh_for_document (active_doc);
-        });
-
+        _build_tool_runner.finished.connect (() => stop_exec.sensitive = false);
         _build_tool_runner.run ();
     }
 
@@ -416,13 +400,11 @@ public class MainWindowBuildTools
     public void on_clean ()
     {
         return_if_fail (_main_window.active_tab != null);
-        return_if_fail (_file_browser != null);
 
         CleanBuildFiles build_files = new CleanBuildFiles (_main_window,
             _main_window.active_document);
 
-        if (build_files.clean ())
-            _file_browser.refresh_for_document (_main_window.active_document);
+        build_files.clean ();
     }
 
     public void on_view_log ()

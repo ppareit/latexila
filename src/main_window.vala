@@ -374,7 +374,6 @@ public class MainWindow : Window
 
         // File browser
         FileBrowser file_browser = new FileBrowser (this);
-        _main_window_build_tools.set_file_browser (file_browser);
         side_panel.add_component (_("File Browser"), Stock.OPEN, file_browser);
 
         // Structure

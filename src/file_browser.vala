@@ -67,6 +67,9 @@ public class FileBrowser : Grid
         set_directory (get_default_directory ());
     }
 
+    /*************************************************************************/
+    // Init functions
+
     private void init_settings ()
     {
         _settings = new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
@@ -79,21 +82,6 @@ public class FileBrowser : Grid
         _latex_settings.changed["clean-extensions"].connect (delayed_refresh);
     }
 
-    private void delayed_refresh ()
-    {
-        // Call refresh () only after 2 seconds.
-        // If the text has changed before the 2 seconds, we reinitialize the counter.
-        if (_timeout_id != 0)
-            Source.remove (_timeout_id);
-
-        _timeout_id = Timeout.add_seconds (2, () =>
-        {
-            _timeout_id = 0;
-            refresh ();
-            return false;
-        });
-    }
-
     private void init_toolbar ()
     {
         Grid grid = new Grid ();
@@ -104,17 +92,14 @@ public class FileBrowser : Grid
         Button home_button = Utils.get_toolbar_button (Stock.HOME);
         _parent_button = Utils.get_toolbar_button (Stock.GO_UP);
         Button jump_button = Utils.get_toolbar_button (Stock.JUMP_TO);
-        Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
 
         home_button.tooltip_text = _("Go to the home directory");
         _parent_button.tooltip_text = _("Go to the parent directory");
         jump_button.tooltip_text = _("Go to the active document directory");
-        refresh_button.tooltip_text = _("Refresh");
 
         grid.add (home_button);
         grid.add (_parent_button);
         grid.add (jump_button);
-        grid.add (refresh_button);
 
         home_button.clicked.connect (() =>
         {
@@ -151,14 +136,6 @@ public class FileBrowser : Grid
                 });
             }
         });
-
-        refresh_button.clicked.connect (refresh);
-    }
-
-    private void update_jump_button_sensitivity (Button jump_button)
-    {
-        jump_button.sensitive = _main_window.active_tab != null
-            && _main_window.active_document.location != null;
     }
 
     // list of parent directories
@@ -276,69 +253,8 @@ public class FileBrowser : Grid
         });
     }
 
-    private void refresh ()
-    {
-        set_directory (_current_directory, true);
-    }
-
-    // Refresh the file browser if the document has a "link" with the directory currently
-    // displayed.
-    public void refresh_for_document (Document doc)
-    {
-        Project? project = doc.get_project ();
-
-        // If the document is not part of a project, refresh only if the document's
-        // directory is the same as the current directory.
-        if (project == null)
-        {
-            if (doc.location != null
-                && _current_directory.equal (doc.location.get_parent ()))
-            {
-                refresh ();
-            }
-
-            return;
-        }
-
-        // If a project is defined, refresh if the current dir is part of the project.
-        File project_dir = project.directory;
-
-        if (_current_directory.equal (project_dir)
-            || _current_directory.has_prefix (project_dir))
-        {
-            refresh ();
-        }
-    }
-
-    // Get the previous directory saved in GSettings, or the user home directory as
-    // a fallback.
-    private File get_default_directory ()
-    {
-        string? uri = _settings.get_string ("current-directory");
-
-        if (uri != null && uri != "")
-        {
-            File directory = File.new_for_uri (uri);
-
-            if (directory.query_exists ())
-                return directory;
-        }
-
-        return File.new_for_path (Environment.get_home_dir ());
-    }
-
-    private void set_directory (File directory, bool force = false)
-    {
-        if (! force && _current_directory == directory)
-            return;
-
-        _current_directory = directory;
-        _settings.set_string ("current-directory", directory.get_uri ());
-        _parent_button.set_sensitive (directory.get_parent () != null);
-
-        update_parent_directories ();
-        update_list ();
-    }
+    /*************************************************************************/
+    // Update the list of parent directories and the list of files
 
     private void update_parent_directories ()
     {
@@ -490,6 +406,65 @@ public class FileBrowser : Grid
             FileColumn.PIXBUF, pixbuf,
             FileColumn.NAME, basename
         );
+    }
+
+    /*************************************************************************/
+    // Misc
+
+    private void refresh ()
+    {
+        set_directory (_current_directory, true);
+    }
+
+    private void delayed_refresh ()
+    {
+        // Call refresh () only after 2 seconds.
+        // If the text has changed before the 2 seconds, we reinitialize the counter.
+        if (_timeout_id != 0)
+            Source.remove (_timeout_id);
+
+        _timeout_id = Timeout.add_seconds (2, () =>
+        {
+            _timeout_id = 0;
+            refresh ();
+            return false;
+        });
+    }
+
+    // Get the previous directory saved in GSettings, or the user home directory as
+    // a fallback.
+    private File get_default_directory ()
+    {
+        string? uri = _settings.get_string ("current-directory");
+
+        if (uri != null && uri != "")
+        {
+            File directory = File.new_for_uri (uri);
+
+            if (directory.query_exists ())
+                return directory;
+        }
+
+        return File.new_for_path (Environment.get_home_dir ());
+    }
+
+    private void set_directory (File directory, bool force = false)
+    {
+        if (! force && _current_directory == directory)
+            return;
+
+        _current_directory = directory;
+        _settings.set_string ("current-directory", directory.get_uri ());
+        _parent_button.set_sensitive (directory.get_parent () != null);
+
+        update_parent_directories ();
+        update_list ();
+    }
+
+    private void update_jump_button_sensitivity (Button jump_button)
+    {
+        jump_button.sensitive = _main_window.active_tab != null
+            && _main_window.active_document.location != null;
     }
 
     private int on_sort (TreeModel model, TreeIter a, TreeIter b)
