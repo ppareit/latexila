@@ -47,11 +47,10 @@ public class CleanBuildFiles : GLib.Object
         _no_confirm = settings.get_boolean ("no-confirm-clean");
     }
 
-    // return true if some files have been deleted
-    public bool clean ()
+    public void clean ()
     {
         if (! _doc.is_main_file_a_tex_file ())
-            return false;
+            return;
 
         Gee.ArrayList<File> files_to_delete;
         File directory;
@@ -74,7 +73,7 @@ public class CleanBuildFiles : GLib.Object
         {
             if (! _no_confirm)
                 show_info_no_file ();
-            return false;
+            return;
         }
 
         if (_no_confirm)
@@ -82,10 +81,10 @@ public class CleanBuildFiles : GLib.Object
             foreach (File file_to_delete in files_to_delete)
                 Utils.delete_file (file_to_delete);
 
-            return true;
+            return;
         }
 
-        return confirm_cleanup (files_to_delete, directory);
+        confirm_cleanup (files_to_delete, directory);
     }
 
     private Gee.ArrayList<File> get_build_files_simple ()
@@ -165,14 +164,14 @@ public class CleanBuildFiles : GLib.Object
         return files_to_delete;
     }
 
-    private bool confirm_cleanup (Gee.ArrayList<File> files_to_delete, File directory)
+    private void confirm_cleanup (Gee.ArrayList<File> files_to_delete, File directory)
     {
         return_val_if_fail (0 < files_to_delete.size, false);
 
         TreeView list_files = get_list_files (files_to_delete, directory);
         Dialog dialog = get_dialog (list_files);
 
-        return run_dialog (dialog, list_files.get_model ());
+        run_dialog (dialog, list_files.get_model ());
     }
 
     private TreeView get_list_files (Gee.ArrayList<File> files_to_delete, File directory)
@@ -279,9 +278,8 @@ public class CleanBuildFiles : GLib.Object
         return dialog;
     }
 
-    private bool run_dialog (Dialog dialog, TreeModel list_store)
+    private void run_dialog (Dialog dialog, TreeModel list_store)
     {
-        bool ret = false;
         if (dialog.run () == ResponseType.ACCEPT)
         {
             // get files to delete
@@ -295,8 +293,8 @@ public class CleanBuildFiles : GLib.Object
 
                 list_store.get (iter,
                     CleanFileColumn.DELETE, out selected,
-                    CleanFileColumn.FILE, out file_to_delete,
-                    -1);
+                    CleanFileColumn.FILE, out file_to_delete
+                );
 
                 if (selected)
                     selected_files += file_to_delete;
@@ -304,14 +302,11 @@ public class CleanBuildFiles : GLib.Object
                 valid = list_store.iter_next (ref iter);
             }
 
-            ret = 0 < selected_files.length;
-
             foreach (File file_to_delete in selected_files)
                 Utils.delete_file (file_to_delete);
         }
 
         dialog.destroy ();
-        return ret;
     }
 
     private int on_sort_list_files (TreeModel model, TreeIter a, TreeIter b)
