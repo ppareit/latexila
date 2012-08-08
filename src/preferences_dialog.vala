@@ -124,8 +124,7 @@ public class PreferencesDialog : Dialog
         string[] settings_str =
         {
             "org.gnome.latexila.preferences.editor",
-            "org.gnome.latexila.preferences.latex",
-            "org.gnome.latexila.preferences.file-browser"
+            "org.gnome.latexila.preferences.latex"
         };
 
         foreach (string setting_str in settings_str)
@@ -296,8 +295,6 @@ public class PreferencesDialog : Dialog
     {
         GLib.Settings latex_settings =
             new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        GLib.Settings fb_settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
 
         var confirm_clean_up_checkbutton =
             builder.get_object ("confirm_clean_up_checkbutton");
@@ -312,14 +309,6 @@ public class PreferencesDialog : Dialog
 
         var clean_up_entry = builder.get_object ("clean_up_entry");
         latex_settings.bind ("clean-extensions", clean_up_entry, "text",
-            SettingsBindFlags.DEFAULT);
-
-        var file_browser_show_build = builder.get_object ("file_browser_show_build");
-        fb_settings.bind ("show-build-files", file_browser_show_build, "active",
-            SettingsBindFlags.DEFAULT);
-
-        var file_browser_show_hidden = builder.get_object ("file_browser_show_hidden");
-        fb_settings.bind ("show-hidden-files", file_browser_show_hidden, "active",
             SettingsBindFlags.DEFAULT);
     }
 
