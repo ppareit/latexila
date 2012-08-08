@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexila&keywords=I18N+L10N&component=general\n"
 "POT-Creation-Date: 2012-08-06 01:25+0000\n"
-"PO-Revision-Date: 2012-08-07 12:29+0100\n"
+"PO-Revision-Date: 2012-08-08 21:41+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -25,29 +25,29 @@ msgstr ""
 #: C/build_tools.xml:37(tool/label)
 #: ../src/build_tool_dialog.vala:166
 msgid "View PDF"
-msgstr "Pokaži PDF"
+msgstr "Poglej PDF"
 
 #: C/build_tools.xml:38(tool/description)
 msgid "View the PDF file"
-msgstr "Pokaži datoteko PDF"
+msgstr "Poglej datoteko PDF"
 
 #: C/build_tools.xml:43(tool/label)
 #: ../src/build_tool_dialog.vala:165
 msgid "View DVI"
-msgstr "Pokaži DVI"
+msgstr "Poglej DVI"
 
 #: C/build_tools.xml:44(tool/description)
 msgid "View the DVI file"
-msgstr "Pokaži datoteko DVI"
+msgstr "Poglej datoteko DVI"
 
 #: C/build_tools.xml:49(tool/label)
 #: ../src/build_tool_dialog.vala:167
 msgid "View PS"
-msgstr "Pokaži PS"
+msgstr "Poglej PS"
 
 #: C/build_tools.xml:50(tool/description)
 msgid "View the PostScript file"
-msgstr "Pokaži datoteko PostScript"
+msgstr "Poglej datoteko PostScript"
 
 #: C/build_tools.xml:84(tool/description)
 msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
@@ -169,7 +169,7 @@ msgstr "Pretvori"
 
 #: ../src/build_tool_dialog.vala:164
 msgid "View File"
-msgstr "Pokaži datoteko"
+msgstr "Poglej datoteko"
 
 #: ../src/build_tool_dialog.vala:228
 msgid "Commands"
@@ -224,7 +224,7 @@ msgstr "Seznam pripon, ločenih s presledki."
 
 #: ../src/build_tool_dialog.vala:592
 msgid "If it is empty, all extensions are allowed."
-msgstr ""
+msgstr "V kolikor je polje prazno, so dovoljene vse razširitve."
 
 #: ../src/build_tool_dialog.vala:594
 msgid "Extensions"
@@ -240,19 +240,17 @@ msgid "Placeholders:"
 msgstr "Ograde:"
 
 #: ../src/build_tool_dialog.vala:610
-#, fuzzy
 msgid "The active document's filename."
-msgstr "Ime datoteke dejavnega dokumenta"
+msgstr "Ime datoteke dejavnega dokumenta."
 
 #: ../src/build_tool_dialog.vala:611
 #: ../src/build_tool_dialog.vala:616
 msgid "If the active document belongs to a project, the main file is choosen."
-msgstr ""
+msgstr "V kolikor sodi dejavni dokument v projekt, je izbrana glavna datoteka."
 
 #: ../src/build_tool_dialog.vala:615
-#, fuzzy
 msgid "The active document's filename without its extension."
-msgstr "Ime datoteke dejavnega dokumenta brez pripone"
+msgstr "Ime datoteke dejavnega dokumenta brez pripone."
 
 #: ../src/build_tool_dialog.vala:661
 msgid "Jobs"
@@ -260,21 +258,19 @@ msgstr "Posli"
 
 #: ../src/build_tool_dialog.vala:667
 msgid "List of files to open after executing the build jobs."
-msgstr ""
+msgstr "Seznam datotek za odpiranje po izvajanju poslov izgradnje."
 
 #: ../src/build_tool_dialog.vala:668
-#, fuzzy
 msgid "The files are separated by spaces."
-msgstr "Seznam pripon, ločenih s presledki."
+msgstr "Seznam datotek, ločenih s presledki."
 
 #: ../src/build_tool_dialog.vala:669
 msgid "You should use the placeholders to specify the files."
-msgstr ""
+msgstr "Za določevanje datotek je treba uporabiti vsebnike."
 
 #: ../src/build_tool_dialog.vala:672
-#, fuzzy
 msgid "Files to open"
-msgstr "Izberite datoteke, ki jih želite odprti"
+msgstr "Datoteke za odpiranje"
 
 #: ../src/build_tool_runner.vala:187
 #, c-format
@@ -292,23 +288,21 @@ msgid "The file '%s' doesn't exist."
 msgstr "Datoteka '%s' ne obstaja."
 
 #: ../src/build_tool_runner.vala:285
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to open '%s':"
-msgstr "Ni mogoče odpreti \"%s\": %s\n"
+msgstr "Datoteke '%s' ni mogoče odpreti:"
 
 #: ../src/build_tools_preferences.vala:53
 msgid "Build Tools"
 msgstr "Orodja za izgradnjo"
 
 #: ../src/build_tools_preferences.vala:109
-#, fuzzy
 msgid "Default build tools"
-msgstr "Izgradi podporna orodja"
+msgstr "Privzeta orodja za izgradnjo"
 
 #: ../src/build_tools_preferences.vala:129
-#, fuzzy
 msgid "Personal build tools"
-msgstr "Izgradi podporna orodja"
+msgstr "Osebna orodja za izgradnjo"
 
 #: ../src/build_tools_preferences.vala:173
 msgid "Enabled"
@@ -364,7 +358,7 @@ msgstr "Izberite dokumente, ki jih želite shraniti:"
 
 #: ../src/dialogs.vala:129
 msgid "If you don't save, all your changes will be permanently lost."
-msgstr "Če sprememb ne shranite, bodo trajno izgubljene."
+msgstr "V kolikor sprememb ne shranite, bodo trajno izgubljene."
 
 #: ../src/document_structure.vala:720
 msgid "The structure item already contains a sub-paragraph."
@@ -446,7 +440,7 @@ msgstr "Neshranjen dokument"
 
 #: ../src/document.vala:612
 msgid "The file has a temporary location. The data can be lost after rebooting your computer."
-msgstr ""
+msgstr "Datoteka je shranjena na začasno mesto. Podatki so, v primeru ponovnega zagona računalnika, lahko izgubljeni."
 
 #: ../src/document.vala:613
 msgid "Do you want to save the file in a safer place?"
@@ -932,7 +926,7 @@ msgstr "_Matematična okolja"
 
 #: ../src/latex_menu.vala:273
 msgid "_Mathematical Environment - $...$"
-msgstr "_Mathematično okolje - $...$"
+msgstr "_Matematično okolje - $...$"
 
 #: ../src/latex_menu.vala:274
 msgid "Mathematical Environment - $...$"
@@ -1246,14 +1240,12 @@ msgid "View Log"
 msgstr "Pokaži dnevnik"
 
 #: ../src/main_window_build_tools.vala:40
-#, fuzzy
 msgid "_Manage Build Tools"
-msgstr "Izgradi podporna orodja"
+msgstr "_Upravljanje orodij za izgradnjo"
 
 #: ../src/main_window_build_tools.vala:41
-#, fuzzy
 msgid "Manage Build Tools"
-msgstr "Izgradi podporna orodja"
+msgstr "Upravljanje orodij za izgradnjo"
 
 #: ../src/main_window_build_tools.vala:46
 msgid "Show _Details"
@@ -1370,7 +1362,7 @@ msgstr "_Odstrani komentar"
 
 #: ../src/main_window_edit.vala:62
 msgid "Uncomment the selected lines (remove the character \"%\")"
-msgstr "Odkomentiraj izbrane vrstice (odstrani znak \"%\")"
+msgstr "Odstrani komentar izbrane vrstice (odstrani znak \"%\")"
 
 #: ../src/main_window_edit.vala:66
 msgid "Configure the application"
@@ -1503,9 +1495,8 @@ msgid "_Open File"
 msgstr "_Odpri datoteko"
 
 #: ../src/main_window_structure.vala:56
-#, fuzzy
 msgid "Open the file referenced by the selected structure item"
-msgstr "Izbriši izbrani predmet zgradbe"
+msgstr "Odpri datoteko v sklicu izbranega predmeta"
 
 #: ../src/main_window.vala:29
 msgid "Quit the program"
@@ -1725,7 +1716,7 @@ msgstr "Počisti vse nastavitve"
 
 #: ../src/preferences_dialog.vala:118
 msgid "Do you really want to reset all preferences?"
-msgstr "Resnično želite ponastaviti vse nastavitve?"
+msgstr "Ali res želite ponastaviti vse nastavitve?"
 
 #: ../src/preferences_dialog.vala:192
 msgid "minute"
@@ -1905,7 +1896,7 @@ msgstr "Slika"
 
 #: ../src/structure.vala:773
 msgid "File included"
-msgstr "Datoteka vključena"
+msgstr "Vključena datoteka"
 
 #: ../src/symbols.vala:59
 msgid "Greek"
@@ -2050,7 +2041,7 @@ msgstr "_Pisava urejevalnika:"
 
 #: ../src/ui/preferences_dialog.ui.h:15
 msgid "Pick the editor font"
-msgstr "Izberite pisavo urejevalnika"
+msgstr "Izbor pisave urejevalnika"
 
 #: ../src/ui/preferences_dialog.ui.h:16
 msgid "Color Scheme"
