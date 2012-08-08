@@ -202,6 +202,7 @@ public class FileBrowser : Grid
         toolbar.insert (get_home_button (), -1);
         toolbar.insert (get_parent_button (), -1);
         toolbar.insert (get_jump_button (), -1);
+        toolbar.insert (get_properties_button (), -1);
 
         return toolbar;
     }
@@ -267,6 +268,44 @@ public class FileBrowser : Grid
         });
 
         return jump_button;
+    }
+
+    private ToolButton get_properties_button ()
+    {
+        /* Show build files */
+
+        CheckMenuItem show_build_files =
+            new CheckMenuItem.with_label (_("Show build files"));
+
+        _settings.bind ("show-build-files", show_build_files, "active",
+            SettingsBindFlags.DEFAULT);
+
+        /* Show hidden files */
+
+        CheckMenuItem show_hidden_files =
+            new CheckMenuItem.with_label (_("Show hidden files"));
+
+        _settings.bind ("show-hidden-files", show_hidden_files, "active",
+            SettingsBindFlags.DEFAULT);
+
+        /* Menu */
+
+        Gtk.Menu menu = new Gtk.Menu ();
+        menu.append (show_build_files);
+        menu.append (show_hidden_files);
+        menu.show_all ();
+
+        /* Tool button */
+
+        ToolButton button = new ToolButton (null, null);
+        button.set_icon_name ("document-properties-symbolic");
+
+        button.clicked.connect (() =>
+        {
+            menu.popup (null, null, null, 0, get_current_event_time ());
+        });
+
+        return button;
     }
 
     private Grid join_list_and_toolbar (TreeView list, Toolbar toolbar)
