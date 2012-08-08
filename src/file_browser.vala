@@ -48,7 +48,7 @@ public class FileBrowser : Grid
     private File _current_directory;
     private FileMonitor _monitor;
 
-    private Button _parent_button;
+    private ToolButton _parent_button;
     private GLib.Settings _settings;
     private GLib.Settings _latex_settings;
     private uint _timeout_id = 0;
@@ -60,12 +60,15 @@ public class FileBrowser : Grid
         row_spacing = 5;
         orientation = Orientation.VERTICAL;
 
-        init_toolbar ();
+        init_settings ();
         init_combo_box ();
         init_list ();
-        init_settings ();
-        show_all ();
 
+        Toolbar toolbar = get_toolbar ();
+        Grid join = join_list_and_toolbar (_list_view, toolbar);
+        add (join);
+
+        show_all ();
         set_directory (get_default_directory ());
     }
 
@@ -80,62 +83,6 @@ public class FileBrowser : Grid
 
         _latex_settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
         _latex_settings.changed["clean-extensions"].connect (delayed_refresh);
-    }
-
-    private void init_toolbar ()
-    {
-        Grid grid = new Grid ();
-        grid.set_orientation (Orientation.HORIZONTAL);
-        grid.column_homogeneous = true;
-        add (grid);
-
-        Button home_button = Utils.get_toolbar_button (Stock.HOME);
-        _parent_button = Utils.get_toolbar_button (Stock.GO_UP);
-        Button jump_button = Utils.get_toolbar_button (Stock.JUMP_TO);
-
-        home_button.tooltip_text = _("Go to the home directory");
-        _parent_button.tooltip_text = _("Go to the parent directory");
-        jump_button.tooltip_text = _("Go to the active document directory");
-
-        grid.add (home_button);
-        grid.add (_parent_button);
-        grid.add (jump_button);
-
-        home_button.clicked.connect (() =>
-        {
-            File home_dir = File.new_for_path (Environment.get_home_dir ());
-            set_directory (home_dir);
-        });
-
-        _parent_button.clicked.connect (() =>
-        {
-            File? parent = _current_directory.get_parent ();
-            return_if_fail (parent != null);
-            set_directory (parent);
-        });
-
-        jump_button.clicked.connect (() =>
-        {
-            return_if_fail (_main_window.active_tab != null);
-            return_if_fail (_main_window.active_document.location != null);
-
-            set_directory (_main_window.active_document.location.get_parent ());
-        });
-
-        // jump button sensitivity
-        _main_window.notify["active-document"].connect (() =>
-        {
-            update_jump_button_sensitivity (jump_button);
-
-            // update jump button sensitivity when location changes
-            if (_main_window.active_document != null)
-            {
-                _main_window.active_document.notify["location"].connect (() =>
-                {
-                    update_jump_button_sensitivity (jump_button);
-                });
-            }
-        });
     }
 
     // list of parent directories
@@ -205,11 +152,6 @@ public class FileBrowser : Grid
         column.pack_start (text_renderer, true);
         column.set_attributes (text_renderer, "text", FileColumn.NAME);
 
-        // with a scrollbar
-        Widget sw = Utils.add_scrollbar (_list_view);
-        sw.expand = true;
-        add (sw);
-
         _list_view.row_activated.connect ((path) =>
         {
             TreeModel model = _list_store as TreeModel;
@@ -251,6 +193,104 @@ public class FileBrowser : Grid
                     file.get_uri (), e.message);
             }
         });
+    }
+
+    private Toolbar get_toolbar ()
+    {
+        Toolbar toolbar = new Toolbar ();
+
+        toolbar.insert (get_home_button (), -1);
+        toolbar.insert (get_parent_button (), -1);
+        toolbar.insert (get_jump_button (), -1);
+
+        return toolbar;
+    }
+
+    private ToolButton get_home_button ()
+    {
+        ToolButton home_button = new ToolButton (null, null);
+        home_button.set_icon_name ("go-home-symbolic");
+        home_button.tooltip_text = _("Go to the home directory");
+
+        home_button.clicked.connect (() =>
+        {
+            File home_dir = File.new_for_path (Environment.get_home_dir ());
+            set_directory (home_dir);
+        });
+
+        return home_button;
+    }
+
+    private ToolButton get_parent_button ()
+    {
+        _parent_button = new ToolButton (null, null);
+        _parent_button.set_icon_name ("go-up-symbolic");
+        _parent_button.tooltip_text = _("Go to the parent directory");
+
+        _parent_button.clicked.connect (() =>
+        {
+            File? parent = _current_directory.get_parent ();
+            return_if_fail (parent != null);
+            set_directory (parent);
+        });
+
+        return _parent_button;
+    }
+
+    private ToolButton get_jump_button ()
+    {
+        ToolButton jump_button = new ToolButton (null, null);
+        jump_button.set_icon_name ("go-jump-symbolic");
+        jump_button.tooltip_text = _("Go to the active document directory");
+
+        jump_button.clicked.connect (() =>
+        {
+            return_if_fail (_main_window.active_tab != null);
+            return_if_fail (_main_window.active_document.location != null);
+
+            set_directory (_main_window.active_document.location.get_parent ());
+        });
+
+        // sensitivity
+        _main_window.notify["active-document"].connect (() =>
+        {
+            update_jump_button_sensitivity (jump_button);
+
+            // update when location changes
+            if (_main_window.active_document != null)
+            {
+                _main_window.active_document.notify["location"].connect (() =>
+                {
+                    update_jump_button_sensitivity (jump_button);
+                });
+            }
+        });
+
+        return jump_button;
+    }
+
+    private Grid join_list_and_toolbar (TreeView list, Toolbar toolbar)
+    {
+        toolbar.set_icon_size (IconSize.MENU);
+        toolbar.set_style (ToolbarStyle.ICONS);
+
+        StyleContext context = toolbar.get_style_context ();
+        context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
+        context.set_junction_sides (JunctionSides.BOTTOM);
+
+        list.expand = true;
+        ScrolledWindow scrolled_window = Utils.add_scrollbar (list) as ScrolledWindow;
+        scrolled_window.set_shadow_type (ShadowType.IN);
+
+        context = scrolled_window.get_style_context ();
+        context.set_junction_sides (JunctionSides.TOP);
+
+        Grid grid = new Grid ();
+        grid.set_orientation (Orientation.VERTICAL);
+        grid.add (toolbar);
+        grid.add (scrolled_window);
+
+        return grid;
     }
 
     /*************************************************************************/
@@ -476,7 +516,7 @@ public class FileBrowser : Grid
         monitor_directory ();
     }
 
-    private void update_jump_button_sensitivity (Button jump_button)
+    private void update_jump_button_sensitivity (ToolButton jump_button)
     {
         jump_button.sensitive = _main_window.active_tab != null
             && _main_window.active_document.location != null;
