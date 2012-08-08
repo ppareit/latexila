@@ -166,25 +166,15 @@
       <summary>Current directory</summary>
       <description>URI of the file browser current directory</description>
     </key>
-    <key name="show-all-files" type="b">
-      <default>true</default>
-      <summary>Show all files</summary>
-      <description>Show all files except hidden files</description>
-    </key>
-    <key name="show-all-files-except" type="b">
-      <default>true</default>
-      <summary>Show all files except clean-up</summary>
-      <description>Show all files except those for clean-up (see preferences.latex.clean-extensions)</description>
+    <key name="show-build-files" type="b">
+      <default>false</default>
+      <summary>Show build files</summary>
+      <description>Show files with an extension present in preferences.latex.clean-extensions.</description>
     </key>
     <key name="show-hidden-files" type="b">
       <default>false</default>
       <summary>Show hidden files</summary>
-      <description>Show hidden files (beginnig with a dot). show-all-files must be true.</description>
-    </key>
-    <key name="file-extensions" type="s">
-      <default>'.tex .bib .pdf .dvi .ps'</default>
-      <summary>File extensions</summary>
-      <description>Show only files with one of these extensions. show-all-files must be false. The extensions (with the dot) must be separated with one space</description>
+      <description>Show files beginning with a dot.</description>
     </key>
   </schema>
 

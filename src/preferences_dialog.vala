@@ -314,28 +314,13 @@ public class PreferencesDialog : Dialog
         latex_settings.bind ("clean-extensions", clean_up_entry, "text",
             SettingsBindFlags.DEFAULT);
 
-        var file_browser_show_all = builder.get_object ("file_browser_show_all");
-        fb_settings.bind ("show-all-files", file_browser_show_all, "active",
+        var file_browser_show_build = builder.get_object ("file_browser_show_build");
+        fb_settings.bind ("show-build-files", file_browser_show_build, "active",
             SettingsBindFlags.DEFAULT);
 
-        Widget file_browser_except =
-            builder.get_object ("file_browser_except") as Widget;
-        fb_settings.bind ("show-all-files-except", file_browser_except, "active",
-            SettingsBindFlags.DEFAULT);
-
-        Widget file_browser_show_hidden =
-            builder.get_object ("file_browser_show_hidden") as Widget;
+        var file_browser_show_hidden = builder.get_object ("file_browser_show_hidden");
         fb_settings.bind ("show-hidden-files", file_browser_show_hidden, "active",
             SettingsBindFlags.DEFAULT);
-
-        set_sensitivity (fb_settings, "show-all-files", file_browser_except);
-        set_sensitivity (fb_settings, "show-all-files", file_browser_show_hidden);
-
-        Widget file_browser_entry =
-            builder.get_object ("file_browser_entry") as Widget;
-        fb_settings.bind ("file-extensions", file_browser_entry, "text",
-            SettingsBindFlags.DEFAULT);
-        set_sensitivity (fb_settings, "show-all-files", file_browser_entry, false);
     }
 
     private void set_sensitivity (GLib.Settings settings, string key, Widget widget,

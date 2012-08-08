@@ -75,10 +75,8 @@ public class FileBrowser : Grid
     private void init_settings ()
     {
         _settings = new GLib.Settings ("org.gnome.latexila.preferences.file-browser");
-        _settings.changed["show-all-files"].connect (refresh);
-        _settings.changed["show-all-files-except"].connect (refresh);
+        _settings.changed["show-build-files"].connect (refresh);
         _settings.changed["show-hidden-files"].connect (refresh);
-        _settings.changed["file-extensions"].connect (delayed_refresh);
 
         _latex_settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
         _latex_settings.changed["clean-extensions"].connect (delayed_refresh);
@@ -314,15 +312,10 @@ public class FileBrowser : Grid
 
         /* Get settings */
 
-        bool show_all = _settings.get_boolean ("show-all-files");
-        bool show_hidden = show_all && _settings.get_boolean ("show-hidden-files");
-        bool show_all_except = show_all &&
-            _settings.get_boolean ("show-all-files-except");
+        bool show_build_files = _settings.get_boolean ("show-build-files");
+        bool show_hidden_files = _settings.get_boolean ("show-hidden-files");
 
-        string exts = _settings.get_string ("file-extensions");
-        string[] extensions = exts.split (" ");
-
-        exts = _latex_settings.get_string ("clean-extensions");
+        string exts = _latex_settings.get_string ("clean-extensions");
         string[] clean_extensions = exts.split (" ");
 
         /* Get the directory enumerator */
@@ -358,7 +351,7 @@ public class FileBrowser : Grid
                 break;
 
             string basename = info.get_display_name ();
-            if (basename[0] == '.' && ! show_hidden)
+            if (basename[0] == '.' && ! show_hidden_files)
                 continue;
 
             FileType type = info.get_file_type ();
@@ -370,10 +363,7 @@ public class FileBrowser : Grid
 
             string extension = Utils.get_extension (basename);
 
-            if (show_all_except && ! (extension in clean_extensions))
-                continue;
-
-            if (! show_all && ! (extension in extensions))
+            if (! show_build_files && extension in clean_extensions)
                 continue;
 
             string stock_id = get_extension_stock_id (extension);

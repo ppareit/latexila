@@ -553,8 +553,8 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="file_browser_show_all">
-                    <property name="label" translatable="yes">Show all files</property>
+                  <object class="GtkCheckButton" id="file_browser_show_build">
+                    <property name="label" translatable="yes">Show build files</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
@@ -572,32 +572,13 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkCheckButton" id="file_browser_except">
-                    <property name="label" translatable="yes">Except those for clean-up</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="receives_default">False</property>
-                    <property name="margin_left">24</property>
-                    <property name="use_action_appearance">False</property>
-                    <property name="xalign">0</property>
-                    <property name="draw_indicator">True</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">2</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
                   <object class="GtkCheckButton" id="file_browser_show_hidden">
-                    <property name="label" translatable="yes">Show hidden files (beginning with a dot)</property>
+                    <property name="label" translatable="yes">Show hidden files</property>
                     <property name="use_action_appearance">False</property>
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="receives_default">False</property>
-                    <property name="margin_left">24</property>
+                    <property name="margin_left">12</property>
                     <property name="use_action_appearance">False</property>
                     <property name="use_underline">True</property>
                     <property name="xalign">0</property>
@@ -605,28 +586,7 @@
                   </object>
                   <packing>
                     <property name="left_attach">0</property>
-                    <property name="top_attach">3</property>
-                    <property name="width">1</property>
-                    <property name="height">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkEntry" id="file_browser_entry">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="has_tooltip">True</property>
-                    <property name="tooltip_markup" translatable="yes">Show only files with these extensions</property>
-                    <property name="tooltip_text" translatable="yes">Show only files with these extensions</property>
-                    <property name="margin_left">12</property>
-                    <property name="hexpand">True</property>
-                    <property name="invisible_char">●</property>
-                    <property name="invisible_char_set">True</property>
-                    <property name="primary_icon_activatable">False</property>
-                    <property name="secondary_icon_activatable">False</property>
-                  </object>
-                  <packing>
-                    <property name="left_attach">0</property>
-                    <property name="top_attach">4</property>
+                    <property name="top_attach">2</property>
                     <property name="width">1</property>
                     <property name="height">1</property>
                   </packing>
