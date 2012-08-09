@@ -45,7 +45,8 @@ public class SymbolsView : Grid
 
         add (_combo_box);
 
-        Widget sw = Utils.add_scrollbar (_symbol_view);
+        ScrolledWindow sw = Utils.add_scrollbar (_symbol_view) as ScrolledWindow;
+        sw.set_shadow_type (ShadowType.IN);
         add (sw);
 
         add (_clear_button);
