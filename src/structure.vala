@@ -312,7 +312,7 @@ public class Structure : Grid
         _list_view.row_activated.connect ((path) => select_list_row (path));
 
         // with a scrollbar
-        _list_view_sw = Utils.add_scrollbar (_list_view) as ScrolledWindow;
+        _list_view_sw = Utils.add_scrollbar (_list_view);
         _list_view_sw.set_shadow_type (ShadowType.IN);
 
         _vpaned.add1 (_list_view_sw);
@@ -360,7 +360,7 @@ public class Structure : Grid
         });
 
         // with a scrollbar
-        ScrolledWindow sw = Utils.add_scrollbar (_tree_view) as ScrolledWindow;
+        ScrolledWindow sw = Utils.add_scrollbar (_tree_view);
         sw.set_shadow_type (ShadowType.IN);
 
         _vpaned.add2 (sw);

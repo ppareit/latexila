@@ -318,7 +318,7 @@ public class FileBrowser : Grid
         context.set_junction_sides (JunctionSides.BOTTOM);
 
         list.expand = true;
-        ScrolledWindow scrolled_window = Utils.add_scrollbar (list) as ScrolledWindow;
+        ScrolledWindow scrolled_window = Utils.add_scrollbar (list);
         scrolled_window.set_shadow_type (ShadowType.IN);
 
         context = scrolled_window.get_style_context ();

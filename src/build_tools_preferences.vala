@@ -132,7 +132,7 @@ public class BuildToolsPreferences : GLib.Object
     private Grid join_view_and_toolbar (TreeView view, Toolbar toolbar)
     {
         view.expand = true;
-        ScrolledWindow scrolled_window = Utils.add_scrollbar (view) as ScrolledWindow;
+        ScrolledWindow scrolled_window = Utils.add_scrollbar (view);
         scrolled_window.set_shadow_type (ShadowType.IN);
         scrolled_window.set_size_request (350, 200);
 

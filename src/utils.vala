@@ -289,11 +289,11 @@ namespace Utils
     /*************************************************************************/
     // UI stuff
 
-    public Widget add_scrollbar (Widget child)
+    public ScrolledWindow add_scrollbar (Widget child)
     {
-        ScrolledWindow scrollbar = new ScrolledWindow (null, null);
-        scrollbar.add (child);
-        return scrollbar;
+        ScrolledWindow sw = new ScrolledWindow (null, null);
+        sw.add (child);
+        return sw;
     }
 
     public bool tree_model_iter_prev (TreeModel model, ref TreeIter iter)

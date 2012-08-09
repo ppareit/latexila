@@ -27,8 +27,7 @@ public class BottomPanel : Grid
     {
         set_orientation (Orientation.HORIZONTAL);
 
-        ScrolledWindow scrolled_window =
-            Utils.add_scrollbar (build_view) as ScrolledWindow;
+        ScrolledWindow scrolled_window = Utils.add_scrollbar (build_view);
 
         scrolled_window.expand = true;
         scrolled_window.show_all ();

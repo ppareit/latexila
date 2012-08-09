@@ -119,7 +119,7 @@ namespace Dialogs
         treeview.append_column (column);
 
         // with a scrollbar
-        ScrolledWindow sw = (ScrolledWindow) Utils.add_scrollbar (treeview);
+        ScrolledWindow sw = Utils.add_scrollbar (treeview);
         sw.set_shadow_type (ShadowType.IN);
         sw.expand = true;
         grid.attach (sw, 1, 2, 1, 1);

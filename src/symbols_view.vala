@@ -45,7 +45,7 @@ public class SymbolsView : Grid
 
         add (_combo_box);
 
-        ScrolledWindow sw = Utils.add_scrollbar (_symbol_view) as ScrolledWindow;
+        ScrolledWindow sw = Utils.add_scrollbar (_symbol_view);
         sw.set_shadow_type (ShadowType.IN);
         add (sw);
 

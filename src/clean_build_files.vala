@@ -268,7 +268,7 @@ public class CleanBuildFiles : GLib.Object
         grid.attach (select_label, 1, 1, 1, 1);
 
         /* list of files with a scrollbar */
-        ScrolledWindow sw = Utils.add_scrollbar (list_files) as ScrolledWindow;
+        ScrolledWindow sw = Utils.add_scrollbar (list_files);
         sw.set_shadow_type (ShadowType.IN);
         sw.expand = true;
         grid.attach (sw, 1, 2, 1, 1);
