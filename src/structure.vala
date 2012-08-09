@@ -123,12 +123,8 @@ public class Structure : Grid
         orientation = Orientation.VERTICAL;
         _main_window = main_window;
 
-        Toolbar toolbar = get_toolbar ();
-        add (toolbar);
-
+        init_toolbar ();
         init_vpaned ();
-        join_toolbar_and_paned (toolbar, _vpaned);
-
         init_list_view ();
         init_tree_view ();
         show_all ();
@@ -138,9 +134,12 @@ public class Structure : Grid
         hide.connect (disconnect_parsing);
     }
 
-    private Toolbar get_toolbar ()
+    private void init_toolbar ()
     {
         Toolbar toolbar = new Toolbar ();
+        toolbar.set_icon_size (IconSize.MENU);
+        toolbar.set_style (ToolbarStyle.ICONS);
+        add (toolbar);
 
         toolbar.insert (get_refresh_button (), -1);
         toolbar.insert (get_collapse_all_button (), -1);
@@ -151,8 +150,6 @@ public class Structure : Grid
 
         foreach (ToggleToolButton simple_list_button in _simple_list_buttons)
             toolbar.insert (simple_list_button, -1);
-
-        return toolbar;
     }
 
     private ToolButton get_refresh_button ()
@@ -257,25 +254,11 @@ public class Structure : Grid
     private void init_vpaned ()
     {
         _vpaned = new Paned (Orientation.VERTICAL);
+        _vpaned.expand = true;
         add (_vpaned);
 
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
         _vpaned.set_position (settings.get_int ("structure-paned-position"));
-    }
-
-    private void join_toolbar_and_paned (Toolbar toolbar, Paned paned)
-    {
-        toolbar.set_icon_size (IconSize.MENU);
-        toolbar.set_style (ToolbarStyle.ICONS);
-
-        StyleContext context = toolbar.get_style_context ();
-        context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
-        context.set_junction_sides (JunctionSides.BOTTOM);
-
-        paned.expand = true;
-
-        context = paned.get_style_context ();
-        context.set_junction_sides (JunctionSides.TOP);
     }
 
     public void save_state ()
