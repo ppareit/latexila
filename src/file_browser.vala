@@ -57,16 +57,12 @@ public class FileBrowser : Grid
     {
         _main_window = main_window;
 
-        row_spacing = 5;
         orientation = Orientation.VERTICAL;
 
         init_settings ();
         init_combo_box ();
+        init_toolbar ();
         init_list ();
-
-        Toolbar toolbar = get_toolbar ();
-        Grid join = join_list_and_toolbar (_list_view, toolbar);
-        add (join);
 
         show_all ();
         set_directory (get_default_directory ());
@@ -138,6 +134,11 @@ public class FileBrowser : Grid
 
         _list_view = new TreeView.with_model (_list_store);
         _list_view.headers_visible = false;
+        _list_view.expand = true;
+
+        ScrolledWindow scrolled_window = Utils.add_scrollbar (_list_view);
+        scrolled_window.set_shadow_type (ShadowType.IN);
+        add (scrolled_window);
 
         TreeViewColumn column = new TreeViewColumn ();
         _list_view.append_column (column);
@@ -195,22 +196,23 @@ public class FileBrowser : Grid
         });
     }
 
-    private Toolbar get_toolbar ()
+    private void init_toolbar ()
     {
         Toolbar toolbar = new Toolbar ();
+        toolbar.set_icon_size (IconSize.MENU);
+        toolbar.set_style (ToolbarStyle.ICONS);
 
         toolbar.insert (get_home_button (), -1);
         toolbar.insert (get_parent_button (), -1);
         toolbar.insert (get_jump_button (), -1);
         toolbar.insert (get_properties_button (), -1);
 
-        return toolbar;
+        add (toolbar);
     }
 
     private ToolButton get_home_button ()
     {
-        ToolButton home_button = new ToolButton (null, null);
-        home_button.set_icon_name ("go-home-symbolic");
+        ToolButton home_button = new ToolButton.from_stock (Stock.HOME);
         home_button.tooltip_text = _("Go to the home directory");
 
         home_button.clicked.connect (() =>
@@ -224,8 +226,7 @@ public class FileBrowser : Grid
 
     private ToolButton get_parent_button ()
     {
-        _parent_button = new ToolButton (null, null);
-        _parent_button.set_icon_name ("go-up-symbolic");
+        _parent_button = new ToolButton.from_stock (Stock.GO_UP);
         _parent_button.tooltip_text = _("Go to the parent directory");
 
         _parent_button.clicked.connect (() =>
@@ -240,8 +241,7 @@ public class FileBrowser : Grid
 
     private ToolButton get_jump_button ()
     {
-        ToolButton jump_button = new ToolButton (null, null);
-        jump_button.set_icon_name ("go-jump-symbolic");
+        ToolButton jump_button = new ToolButton.from_stock (Stock.JUMP_TO);
         jump_button.tooltip_text = _("Go to the active document directory");
 
         jump_button.clicked.connect (() =>
@@ -297,8 +297,7 @@ public class FileBrowser : Grid
 
         /* Tool button */
 
-        ToolButton button = new ToolButton (null, null);
-        button.set_icon_name ("document-properties-symbolic");
+        ToolButton button = new ToolButton.from_stock (Stock.PROPERTIES);
 
         button.clicked.connect (() =>
         {
@@ -306,30 +305,6 @@ public class FileBrowser : Grid
         });
 
         return button;
-    }
-
-    private Grid join_list_and_toolbar (TreeView list, Toolbar toolbar)
-    {
-        toolbar.set_icon_size (IconSize.MENU);
-        toolbar.set_style (ToolbarStyle.ICONS);
-
-        StyleContext context = toolbar.get_style_context ();
-        context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
-        context.set_junction_sides (JunctionSides.BOTTOM);
-
-        list.expand = true;
-        ScrolledWindow scrolled_window = Utils.add_scrollbar (list);
-        scrolled_window.set_shadow_type (ShadowType.IN);
-
-        context = scrolled_window.get_style_context ();
-        context.set_junction_sides (JunctionSides.TOP);
-
-        Grid grid = new Grid ();
-        grid.set_orientation (Orientation.VERTICAL);
-        grid.add (toolbar);
-        grid.add (scrolled_window);
-
-        return grid;
     }
 
     /*************************************************************************/
