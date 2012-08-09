@@ -181,7 +181,7 @@ public class Structure : Grid
     private void init_simple_list_buttons ()
     {
         create_simple_list_button (StructType.LABEL, _("Show labels"));
-        create_simple_list_button (StructType.INCLUDE, _("Show files included"));
+        create_simple_list_button (StructType.INCLUDE, _("Show included files"));
         create_simple_list_button (StructType.TABLE, _("Show tables"));
         create_simple_list_button (StructType.FIGURE, _("Show figures and images"));
         create_simple_list_button (StructType.TODO, _("Show TODOs and FIXMEs"));
