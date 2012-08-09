@@ -497,7 +497,7 @@ public class FileBrowser : Grid
             return;
         }
 
-        _monitor.changed.connect (delayed_refresh);
+        _monitor.changed.connect (refresh);
     }
 
     /*************************************************************************/
