@@ -650,14 +650,13 @@ public class BuildToolDialog : GLib.Object
 
         /* Pack */
 
-        Grid jobs_grid = new Grid ();
-        jobs_grid.set_orientation (Orientation.VERTICAL);
+        Box jobs_box = new Box (Orientation.VERTICAL, 0);
         placeholders_grid.set_margin_bottom (8);
-        jobs_grid.add (placeholders_grid);
-        jobs_grid.add (scrolled_window);
-        jobs_grid.add (toolbar);
+        jobs_box.pack_start (placeholders_grid, false);
+        jobs_box.pack_start (scrolled_window);
+        jobs_box.pack_start (toolbar, false);
 
-        return Utils.get_dialog_component (_("Jobs"), jobs_grid);
+        return Utils.get_dialog_component (_("Jobs"), jobs_box);
     }
 
     private Grid get_files_to_open_grid ()

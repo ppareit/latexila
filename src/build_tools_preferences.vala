@@ -104,7 +104,7 @@ public class BuildToolsPreferences : GLib.Object
         toolbar.insert (properties_button, -1);
         toolbar.insert (copy_button, -1);
 
-        Grid join = join_view_and_toolbar (_default_view, toolbar);
+        Widget join = join_view_and_toolbar (_default_view, toolbar);
 
         return Utils.get_dialog_component (_("Default build tools"), join);
     }
@@ -124,12 +124,12 @@ public class BuildToolsPreferences : GLib.Object
         toolbar.insert (get_up_button (), -1);
         toolbar.insert (get_down_button (), -1);
 
-        Grid join = join_view_and_toolbar (_personal_view, toolbar);
+        Widget join = join_view_and_toolbar (_personal_view, toolbar);
 
         return Utils.get_dialog_component (_("Personal build tools"), join);
     }
 
-    private Grid join_view_and_toolbar (TreeView view, Toolbar toolbar)
+    private Widget join_view_and_toolbar (TreeView view, Toolbar toolbar)
     {
         view.expand = true;
         ScrolledWindow scrolled_window = Utils.add_scrollbar (view);
@@ -146,12 +146,11 @@ public class BuildToolsPreferences : GLib.Object
         context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
         context.set_junction_sides (JunctionSides.TOP);
 
-        Grid grid = new Grid ();
-        grid.set_orientation (Orientation.VERTICAL);
-        grid.add (scrolled_window);
-        grid.add (toolbar);
+        Box box = new Box (Orientation.VERTICAL, 0);
+        box.pack_start (scrolled_window);
+        box.pack_start (toolbar, false);
 
-        return grid;
+        return box;
     }
 
     private ListStore get_new_store ()
