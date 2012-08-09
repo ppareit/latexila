@@ -93,7 +93,7 @@ public class Structure : Grid
 {
     private unowned MainWindow _main_window;
 
-    private ToggleButton[] _simple_list_buttons = {};
+    private ToggleToolButton[] _simple_list_buttons = {};
     private Paned _vpaned;
 
     private TreeView _tree_view;
@@ -101,7 +101,7 @@ public class Structure : Grid
     private StructureModel? _model = null;
 
     private TreeView _list_view;
-    private Widget _list_view_sw;
+    private ScrolledWindow _list_view_sw;
     private ListStore _list_store;
     // A simple list can contain several types (e.g. TODOs and FIXMEs), but it's easier
     // to store only one type. See get_simple_list_types().
@@ -121,11 +121,14 @@ public class Structure : Grid
     public Structure (MainWindow main_window)
     {
         orientation = Orientation.VERTICAL;
-        row_spacing = 3;
         _main_window = main_window;
 
-        init_toolbar ();
+        Toolbar toolbar = get_toolbar ();
+        add (toolbar);
+
         init_vpaned ();
+        join_toolbar_and_paned (toolbar, _vpaned);
+
         init_list_view ();
         init_tree_view ();
         show_all ();
@@ -135,61 +138,63 @@ public class Structure : Grid
         hide.connect (disconnect_parsing);
     }
 
-    private void init_toolbar ()
+    private Toolbar get_toolbar ()
     {
-        Grid grid = new Grid ();
-        grid.set_orientation (Orientation.HORIZONTAL);
-        add (grid);
+        Toolbar toolbar = new Toolbar ();
 
-        // refresh button
-        Button refresh_button = Utils.get_toolbar_button (Stock.REFRESH);
+        toolbar.insert (get_refresh_button (), -1);
+        toolbar.insert (get_collapse_all_button (), -1);
+
+        toolbar.insert (new SeparatorToolItem (), -1);
+
+        init_simple_list_buttons ();
+
+        foreach (ToggleToolButton simple_list_button in _simple_list_buttons)
+            toolbar.insert (simple_list_button, -1);
+
+        return toolbar;
+    }
+
+    private ToolButton get_refresh_button ()
+    {
+        ToolButton refresh_button = new ToolButton.from_stock (Stock.REFRESH);
         refresh_button.tooltip_text = _("Refresh");
-        grid.add (refresh_button);
 
         refresh_button.clicked.connect (() =>
         {
             show_document (_main_window.active_document, true);
         });
 
-        // collapse all button
-        Button collapse_button = Utils.get_toolbar_button (Stock.ZOOM_OUT);
+        return refresh_button;
+    }
+
+    private ToolButton get_collapse_all_button ()
+    {
+        ToolButton collapse_button = new ToolButton.from_stock (Stock.ZOOM_OUT);
         collapse_button.tooltip_text = _("Collapse All");
-        grid.add (collapse_button);
 
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
 
-        // separator
-        SeparatorToolItem sep = new SeparatorToolItem ();
-        grid.add (sep);
+        return collapse_button;
+    }
 
-        // simple list buttons
-        ToggleButton toggle_button = create_simple_list_button (StructType.LABEL,
-            _("Show labels"));
-        grid.add (toggle_button);
-
-        toggle_button = create_simple_list_button (StructType.INCLUDE,
-            _("Show files included"));
-        grid.add (toggle_button);
-
-        toggle_button = create_simple_list_button (StructType.TABLE,
-            _("Show tables"));
-        grid.add (toggle_button);
-
-        toggle_button = create_simple_list_button (StructType.FIGURE,
-            _("Show figures and images"));
-        grid.add (toggle_button);
-
-        toggle_button = create_simple_list_button (StructType.TODO,
-            _("Show TODOs and FIXMEs"));
-        grid.add (toggle_button);
+    private void init_simple_list_buttons ()
+    {
+        create_simple_list_button (StructType.LABEL, _("Show labels"));
+        create_simple_list_button (StructType.INCLUDE, _("Show files included"));
+        create_simple_list_button (StructType.TABLE, _("Show tables"));
+        create_simple_list_button (StructType.FIGURE, _("Show figures and images"));
+        create_simple_list_button (StructType.TODO, _("Show TODOs and FIXMEs"));
     }
 
     // Only one button can be activated at the same time.
     // If no button is selected, the simple list is hidden.
     // If a button is selected, the simple list contains only items specified by 'types'.
-    private ToggleButton? create_simple_list_button (StructType type, string tooltip)
+    private ToggleToolButton? create_simple_list_button (StructType type, string tooltip)
     {
-        ToggleButton button = Utils.get_toolbar_toggle_button (get_icon_from_type (type));
+        ToggleToolButton button =
+            new ToggleToolButton.from_stock (get_icon_from_type (type));
+
         button.tooltip_text = tooltip;
 
         _simple_list_buttons += button;
@@ -212,7 +217,7 @@ public class Structure : Grid
             populate_simple_list ();
 
             // deselect the other buttons
-            foreach (ToggleButton simple_list_button in _simple_list_buttons)
+            foreach (ToggleToolButton simple_list_button in _simple_list_buttons)
             {
                 if (simple_list_button == button)
                     continue;
@@ -252,11 +257,25 @@ public class Structure : Grid
     private void init_vpaned ()
     {
         _vpaned = new Paned (Orientation.VERTICAL);
-        _vpaned.expand = true;
         add (_vpaned);
 
         GLib.Settings settings = new GLib.Settings ("org.gnome.latexila.state.window");
         _vpaned.set_position (settings.get_int ("structure-paned-position"));
+    }
+
+    private void join_toolbar_and_paned (Toolbar toolbar, Paned paned)
+    {
+        toolbar.set_icon_size (IconSize.MENU);
+        toolbar.set_style (ToolbarStyle.ICONS);
+
+        StyleContext context = toolbar.get_style_context ();
+        context.add_class (STYLE_CLASS_INLINE_TOOLBAR);
+        context.set_junction_sides (JunctionSides.BOTTOM);
+
+        paned.expand = true;
+
+        context = paned.get_style_context ();
+        context.set_junction_sides (JunctionSides.TOP);
     }
 
     public void save_state ()
@@ -293,7 +312,9 @@ public class Structure : Grid
         _list_view.row_activated.connect ((path) => select_list_row (path));
 
         // with a scrollbar
-        _list_view_sw = Utils.add_scrollbar (_list_view);
+        _list_view_sw = Utils.add_scrollbar (_list_view) as ScrolledWindow;
+        _list_view_sw.set_shadow_type (ShadowType.IN);
+
         _vpaned.add1 (_list_view_sw);
     }
 
@@ -339,7 +360,9 @@ public class Structure : Grid
         });
 
         // with a scrollbar
-        Widget sw = Utils.add_scrollbar (_tree_view);
+        ScrolledWindow sw = Utils.add_scrollbar (_tree_view) as ScrolledWindow;
+        sw.set_shadow_type (ShadowType.IN);
+
         _vpaned.add2 (sw);
     }
 

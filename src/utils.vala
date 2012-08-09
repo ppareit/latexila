@@ -328,30 +328,6 @@ namespace Utils
         return pixbuf;
     }
 
-    public Button get_toolbar_button (string stock_id)
-    {
-        return _get_toolbar_button_impl (stock_id, false);
-    }
-
-    public ToggleButton get_toolbar_toggle_button (string stock_id)
-    {
-        return (ToggleButton) _get_toolbar_button_impl (stock_id, true);
-    }
-
-    private Button _get_toolbar_button_impl (string stock_id, bool toggle)
-    {
-        Button button;
-        if (toggle)
-            button = new ToggleButton ();
-        else
-            button = new Button ();
-
-        Image image = new Image.from_stock (stock_id, IconSize.MENU);
-        button.add (image);
-        button.set_relief (ReliefStyle.NONE);
-        return button;
-    }
-
     public Grid get_dialog_component (string title, Widget widget)
     {
         Grid grid = new Grid ();
