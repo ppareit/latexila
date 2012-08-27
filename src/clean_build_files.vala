@@ -166,7 +166,7 @@ public class CleanBuildFiles : GLib.Object
 
     private void confirm_cleanup (Gee.ArrayList<File> files_to_delete, File directory)
     {
-        return_val_if_fail (0 < files_to_delete.size, false);
+        return_if_fail (0 < files_to_delete.size);
 
         TreeView list_files = get_list_files (files_to_delete, directory);
         Dialog dialog = get_dialog (list_files);

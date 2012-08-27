@@ -168,7 +168,7 @@ public class CreateTemplateDialog : Dialog
 {
     public CreateTemplateDialog (MainWindow parent)
     {
-        return_if_fail (parent.active_tab != null);
+        return_val_if_fail (parent.active_tab != null, null);
 
         title = _("New Template...");
         set_transient_for (parent);

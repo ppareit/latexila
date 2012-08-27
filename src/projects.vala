@@ -129,7 +129,7 @@ public class Projects
         if (new_main_file.equal (project.main_file))
             return false;
 
-        return_if_fail (new_main_file.has_prefix (project.directory));
+        return_val_if_fail (new_main_file.has_prefix (project.directory), false);
 
         project.main_file = new_main_file;
         projects[num] = project;
