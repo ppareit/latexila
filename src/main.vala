@@ -103,7 +103,7 @@ private CmdLineData parse_cmd_line_options (string[] args)
 
     if (show_version)
     {
-        stdout.printf ("%s %s\n", Config.APP_NAME, Config.APP_VERSION);
+        stdout.printf ("%s %s\n", Config.PACKAGE_NAME, Config.PACKAGE_VERSION);
         Process.exit (0);
     }
 

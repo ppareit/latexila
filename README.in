@@ -1,7 +1,7 @@
 General Information
 ===================
 
-This is the version @APP_VERSION@ of LaTeXila.
+This is the version @PACKAGE_VERSION@ of LaTeXila.
 LaTeXila is an Integrated LaTeX Environment for the GNOME desktop.
 
 LaTeXila is released under the GNU General Public License (GPL) version 3 or

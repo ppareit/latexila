@@ -97,7 +97,7 @@ public class MainWindowFile
         recent_chooser.set_sort_type (RecentSortType.MRU);
 
         RecentFilter filter = new RecentFilter ();
-        filter.add_application (Config.APP_NAME);
+        filter.add_application (Config.PACKAGE_NAME);
         recent_chooser.set_filter (filter);
 
         recent_chooser.item_activated.connect ((chooser) =>

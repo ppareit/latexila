@@ -97,8 +97,8 @@ public class Templates : GLib.Object
             key_file.load_from_file (_rc_file.get_path (), KeyFileFlags.NONE);
 
             // get the names and the icons
-            names = key_file.get_string_list (Config.APP_NAME, "names");
-            icons = key_file.get_string_list (Config.APP_NAME, "icons");
+            names = key_file.get_string_list (Config.PACKAGE_NAME, "names");
+            icons = key_file.get_string_list (Config.PACKAGE_NAME, "icons");
         }
         catch (Error e)
         {
@@ -266,8 +266,8 @@ public class Templates : GLib.Object
 
         // Contents of the rc file
         KeyFile key_file = new KeyFile ();
-        key_file.set_string_list (Config.APP_NAME, "names", names);
-        key_file.set_string_list (Config.APP_NAME, "icons", icons);
+        key_file.set_string_list (Config.PACKAGE_NAME, "names", names);
+        key_file.set_string_list (Config.PACKAGE_NAME, "icons", icons);
 
         string key_file_data = key_file.to_data ();
 

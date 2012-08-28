@@ -1164,7 +1164,7 @@ public class MainWindow : Window
 
         show_about_dialog (this,
             "program-name", "LaTeXila",
-            "version", Config.APP_VERSION,
+            "version", Config.PACKAGE_VERSION,
             "authors", authors,
             "artists", artists,
             "comments", comments,
