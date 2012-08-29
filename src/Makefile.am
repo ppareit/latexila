@@ -66,5 +66,11 @@ latexila_SOURCES = 			\
 	$(vapidir)/gtkspell-2.0.vapi	\
 	$(vapidir)/menu_tool_action.vapi
 
-latexila_CPPFLAGS = -I$(top_srcdir) $(LATEXILA_CFLAGS)
+latexila_CPPFLAGS =		\
+	-I$(top_srcdir)		\
+	-I$(srcdir)/gedit	\
+	$(LATEXILA_CFLAGS)
+
 latexila_LDFLAGS = $(LATEXILA_LIBS)
+
+INCLUDES = -include config.h

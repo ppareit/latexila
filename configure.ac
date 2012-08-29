@@ -32,6 +32,15 @@ AC_SUBST([GTKSOURCEVIEW_REQUIRED_VERSION])
 AC_SUBST([GTKSPELL_REQUIRED_VERSION])
 AC_SUBST([VALA_REQUIRED_VERSION])
 
+# Some directories
+AC_DEFINE_UNQUOTED([DATA_DIR],
+                   ["${datadir}/latexila"],
+		   [latexila data directory])
+
+AC_DEFINE_UNQUOTED([ICONS_DIR],
+                   ["${datadir}/icons/hicolor"],
+		   [icons directory])
+
 # Checks for programs
 AC_PROG_CC
 AC_PROG_INSTALL
@@ -53,11 +62,24 @@ AC_SUBST([LATEXILA_CFLAGS])
 AC_SUBST([LATEXILA_LIBS])
 
 # Native Language Support
-GETTEXT_PACKAGE="latexila"
-AC_SUBST([GETTEXT_PACKAGE])
+AC_DEFINE_UNQUOTED([LOCALE_DIR],
+                   ["${localedir}"],
+		   [locale directory])
+
+AC_DEFINE([GETTEXT_PACKAGE],
+          ["latexila"],
+	  [gettext package])
 
 # GSettings
 GLIB_GSETTINGS
+
+AC_DEFINE_UNQUOTED([SCHEMA_DIR],
+                   ["${datadir}"],
+		   [GSettings schemas directory])
+
+AC_DEFINE([DESKTOP_SCHEMAS],
+          [1],
+	  [Use desktop GSettings schemas])
 
 # Generate files
 AC_CONFIG_FILES([Makefile
