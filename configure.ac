@@ -19,6 +19,10 @@ AM_INIT_AUTOMAKE([1.11 foreign tar-ustar no-dist-gzip dist-xz])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
+# Init Libtool
+LT_PREREQ([2.2])
+LT_INIT
+
 # Required dependencies versions
 GLIB_REQUIRED_VERSION="2.32"
 GTK_REQUIRED_VERSION="3.4.3"
@@ -84,6 +88,7 @@ AC_DEFINE([DESKTOP_SCHEMAS],
 # Generate files
 AC_CONFIG_FILES([Makefile
                  src/Makefile
+		 src/resources/Makefile
                  README
 		 INSTALL])
 

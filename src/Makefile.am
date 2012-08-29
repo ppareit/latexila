@@ -1,3 +1,5 @@
+SUBDIRS = resources
+
 bin_PROGRAMS = latexila
 
 VALAFLAGS =			\
@@ -69,8 +71,11 @@ latexila_SOURCES = 			\
 latexila_CPPFLAGS =		\
 	-I$(top_srcdir)		\
 	-I$(srcdir)/gedit	\
+	-I$(srcdir)/resources	\
 	$(LATEXILA_CFLAGS)
 
 latexila_LDFLAGS = $(LATEXILA_LIBS)
+
+latexila_LDADD = resources/libresources.la
 
 INCLUDES = -include config.h
