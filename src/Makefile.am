@@ -1,4 +1,4 @@
-SUBDIRS = resources
+SUBDIRS = gedit resources
 
 bin_PROGRAMS = latexila
 
@@ -34,8 +34,6 @@ latexila_SOURCES = 			\
 	encodings.vala			\
 	error_entry.vala		\
 	file_browser.vala		\
-	gedit/gedit-close-button.c	\
-	gedit/gedit-close-button.h	\
 	latexila.vala			\
 	latex_menu.vala			\
 	latex_post_processor.vala	\
@@ -76,6 +74,8 @@ latexila_CPPFLAGS =		\
 
 latexila_LDFLAGS = $(LATEXILA_LIBS)
 
-latexila_LDADD = resources/libresources.la
+latexila_LDADD = 			\
+	gedit/libgedit.la		\
+	resources/libresources.la
 
 INCLUDES = -include config.h
