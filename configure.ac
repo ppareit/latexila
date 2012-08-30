@@ -15,7 +15,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 # Init Automake
-AM_INIT_AUTOMAKE([1.11 foreign tar-ustar no-dist-gzip dist-xz])
+AM_INIT_AUTOMAKE([1.11 foreign tar-ustar no-dist-gzip dist-xz -Wno-portability])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
@@ -48,6 +48,7 @@ AC_DEFINE_UNQUOTED([ICONS_DIR],
 # Checks for programs
 AC_PROG_CC
 AC_PROG_INSTALL
+AM_PROG_CC_C_O
 AM_PROG_VALAC([${VALA_REQUIRED_VERSION}])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
 
@@ -89,8 +90,7 @@ AC_DEFINE([DESKTOP_SCHEMAS],
 AC_CONFIG_FILES([Makefile
                  src/Makefile
 		 src/resources/Makefile
-                 README
-		 INSTALL])
+                 README])
 
 AC_OUTPUT
 

@@ -7,19 +7,52 @@ LaTeXila is an Integrated LaTeX Environment for the GNOME desktop.
 LaTeXila is released under the GNU General Public License (GPL) version 3 or
 later, see the file "COPYING" for more information.
 
-The official web site is:
+The web site:
 
     http://projects.gnome.org/latexila
 
-See also:
 
-    http://github.com/swilmet/latexila
+Requirements
+============
+
+GLib >= @GLIB_REQUIRED_VERSION@
+GTK+ >= @GTK_REQUIRED_VERSION@
+GtkSourceView >= @GTKSOURCEVIEW_REQUIRED_VERSION@
+GtkSpell >= @GTKSPELL_REQUIRED_VERSION@ (not yet released, see note below)
+libgee
+gettext
+gsettings-desktop-schemas
+
+And for building the sources:
+Vala >= @VALA_REQUIRED_VERSION@ (may be optional)
+ITS Tool
+
+If you are installing LaTeXila from a tarball, you don't have to install Vala
+because the C code is already generated.
+
+You also probably want to install Latexmk or Rubber. Latexmk is used by default
+for compiling documents.
+
+GtkSpell 3.0 can be found on the mercurial (hg) repository [1]. The official web
+site is hosted on sourceforge [2]. And there is a Debian package available [3].
+
+[1] http://gtkspell.hg.sourceforge.net/hgweb/gtkspell/gtkspell/
+[2] http://gtkspell.sourceforge.net
+[3] http://packages.debian.org/wheezy/libgtkspell-3-0
 
 
 Installation
 ============
 
-See the file "INSTALL".
+$ ./configure
+$ make
+[ Become root if necessary ]
+$ make install
+
+To uninstall:
+$ make uninstall
+
+See the file "INSTALL" for more details.
 
 
 Where to report bugs
