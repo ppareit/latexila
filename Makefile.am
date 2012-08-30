@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4
 
-SUBDIRS = data src
+SUBDIRS = data man src
 
 EXTRA_DIST =		\
 	HACKING		\
