@@ -1,4 +1,4 @@
-SUBDIRS = icons
+SUBDIRS = icons images
 
 dist_pkgdata_DATA =	\
 	completion.xml	\

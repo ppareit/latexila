@@ -96,6 +96,8 @@ AC_CONFIG_FILES([Makefile
 		 data/icons/32x32/Makefile
 		 data/icons/48x48/Makefile
 		 data/icons/192x192/Makefile
+		 data/images/Makefile
+		 data/images/app/Makefile
                  src/Makefile
 		 src/gedit/Makefile
 		 src/resources/Makefile
