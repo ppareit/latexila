@@ -88,6 +88,7 @@ AC_DEFINE([DESKTOP_SCHEMAS],
 
 # Generate files
 AC_CONFIG_FILES([Makefile
+		 data/Makefile
                  src/Makefile
 		 src/gedit/Makefile
 		 src/resources/Makefile
