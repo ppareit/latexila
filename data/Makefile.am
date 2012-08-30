@@ -4,3 +4,7 @@ dist_pkgdata_DATA =	\
 
 desktopdir = $(datadir)/applications
 dist_desktop_DATA = latexila.desktop
+
+EXTRA_DIST = org.gnome.latexila.gschema.xml
+gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
+@GSETTINGS_RULES@
