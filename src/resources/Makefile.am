@@ -3,6 +3,16 @@ noinst_LTLIBRARIES = libresources.la
 libresources_la_CPPFLAGS = $(LATEXILA_CFLAGS)
 libresources_la_LDFLAGS = $(LATEXILA_LIBS)
 
+EXTRA_DIST =					\
+	stock-icons.gresource.xml		\
+	symbols-arrows.gresource.xml		\
+	symbols-delimiters.gresource.xml	\
+	symbols-greek.gresource.xml		\
+	symbols-misc-math.gresource.xml		\
+	symbols-misc-text.gresource.xml		\
+	symbols-operators.gresource.xml		\
+	symbols-relations.gresource.xml
+
 # Stock icons
 
 res1 = stock-icons-resources.c
