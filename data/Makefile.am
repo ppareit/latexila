@@ -1,3 +1,5 @@
+SUBDIRS = icons
+
 dist_pkgdata_DATA =	\
 	completion.xml	\
 	latexhelp.html

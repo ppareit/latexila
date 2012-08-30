@@ -89,6 +89,13 @@ AC_DEFINE([DESKTOP_SCHEMAS],
 # Generate files
 AC_CONFIG_FILES([Makefile
 		 data/Makefile
+		 data/icons/Makefile
+		 data/icons/16x16/Makefile
+		 data/icons/22x22/Makefile
+		 data/icons/24x24/Makefile
+		 data/icons/32x32/Makefile
+		 data/icons/48x48/Makefile
+		 data/icons/192x192/Makefile
                  src/Makefile
 		 src/gedit/Makefile
 		 src/resources/Makefile
