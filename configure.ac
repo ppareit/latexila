@@ -91,6 +91,7 @@ AC_CONFIG_FILES([Makefile
                  src/Makefile
 		 src/gedit/Makefile
 		 src/resources/Makefile
+		 src/ui/Makefile
                  README])
 
 AC_OUTPUT

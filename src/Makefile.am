@@ -1,4 +1,4 @@
-SUBDIRS = gedit resources
+SUBDIRS = gedit resources ui
 
 bin_PROGRAMS = latexila
 
