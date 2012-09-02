@@ -79,3 +79,5 @@ latexila_LDADD = 			\
 	resources/libresources.la
 
 INCLUDES = -include config.h
+
+-include $(top_srcdir)/git.mk

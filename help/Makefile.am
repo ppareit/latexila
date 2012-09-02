@@ -11,3 +11,5 @@ HELP_FILES = \
 	structure.page
 
 HELP_LINGUAS = cs de es fr gl
+
+-include $(top_srcdir)/git.mk

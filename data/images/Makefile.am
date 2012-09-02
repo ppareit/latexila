@@ -9,3 +9,5 @@ EXTRA_DIST =		\
 	operators	\
 	relations	\
 	stock-icons
+
+-include $(top_srcdir)/git.mk

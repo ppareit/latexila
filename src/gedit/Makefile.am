@@ -6,3 +6,5 @@ libgedit_la_LDFLAGS = $(LATEXILA_LIBS)
 libgedit_la_SOURCES = 		\
 	gedit-close-button.c	\
 	gedit-close-button.h
+
+-include $(top_srcdir)/git.mk

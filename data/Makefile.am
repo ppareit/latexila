@@ -10,3 +10,5 @@ dist_desktop_DATA = latexila.desktop
 EXTRA_DIST = org.gnome.latexila.gschema.xml
 gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
 @GSETTINGS_RULES@
+
+-include $(top_srcdir)/git.mk

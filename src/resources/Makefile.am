@@ -116,3 +116,5 @@ libresources.$(OBJEXT): $(res8)
 
 $(res8): $(xml8) $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(dir8) --generate-dependencies $(xml8))
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(dir8) --generate-source $(xml8)
+
+-include $(top_srcdir)/git.mk
