@@ -67,13 +67,19 @@ AC_SUBST([LATEXILA_CFLAGS])
 AC_SUBST([LATEXILA_LIBS])
 
 # Native Language Support
+IT_PROG_INTLTOOL([0.40.0])
+AM_GNU_GETTEXT_VERSION([0.17])
+AM_GNU_GETTEXT([external])
+
+GETTEXT_PACKAGE=${PACKAGE_TARNAME}
+AC_SUBST([GETTEXT_PACKAGE])
+AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
+                   ["${GETTEXT_PACKAGE}"],
+                   [The domain to use with gettext])
+
 AC_DEFINE_UNQUOTED([LOCALE_DIR],
                    ["${localedir}"],
 		   [locale directory])
-
-AC_DEFINE([GETTEXT_PACKAGE],
-          ["latexila"],
-	  [gettext package])
 
 # GSettings
 GLIB_GSETTINGS
@@ -99,6 +105,7 @@ AC_CONFIG_FILES([Makefile
 		 data/images/Makefile
 		 data/images/app/Makefile
 		 man/Makefile
+		 po/Makefile.in
                  src/Makefile
 		 src/gedit/Makefile
 		 src/resources/Makefile
