@@ -37,12 +37,33 @@ AC_SUBST([GTKSPELL_REQUIRED_VERSION])
 AC_SUBST([VALA_REQUIRED_VERSION])
 
 # Some directories
+
+# adl_RECURSIVE_EVAL(VALUE, RESULT)
+# =================================
+# Interpolate the VALUE in loop until it doesn't change,
+# and set the result to $RESULT.
+# WARNING: It's easy to get an infinite loop with some unsane input.
+# For example ${datadir} becomes ${datarootdir}, and then ${prefix}/share, and
+# finally ${prefix} is replaced by the prefix.
+AC_DEFUN([adl_RECURSIVE_EVAL],
+[_lcl_receval="$1"
+$2=`(test "x$prefix" = xNONE && prefix="$ac_default_prefix"
+     test "x$exec_prefix" = xNONE && exec_prefix="${prefix}"
+     _lcl_receval_old=''
+     while test "[$]_lcl_receval_old" != "[$]_lcl_receval"; do
+       _lcl_receval_old="[$]_lcl_receval"
+       eval _lcl_receval="\"[$]_lcl_receval\""
+     done
+     echo "[$]_lcl_receval")`])
+
+adl_RECURSIVE_EVAL(["${datadir}/latexila"], [DATA_DIR])
 AC_DEFINE_UNQUOTED([DATA_DIR],
-                   ["${datadir}/latexila"],
+                   ["${DATA_DIR}"],
 		   [latexila data directory])
 
+adl_RECURSIVE_EVAL(["${datadir}/icons/hicolor"], [ICONS_DIR])
 AC_DEFINE_UNQUOTED([ICONS_DIR],
-                   ["${datadir}/icons/hicolor"],
+                   ["${ICONS_DIR}"],
 		   [icons directory])
 
 # Checks for programs
@@ -77,15 +98,17 @@ AC_DEFINE_UNQUOTED([GETTEXT_PACKAGE],
                    ["${GETTEXT_PACKAGE}"],
                    [The domain to use with gettext])
 
+adl_RECURSIVE_EVAL(["${localedir}"], [LOCALE_DIR])
 AC_DEFINE_UNQUOTED([LOCALE_DIR],
-                   ["${localedir}"],
+                   ["${LOCALE_DIR}"],
 		   [locale directory])
 
 # GSettings
 GLIB_GSETTINGS
 
+adl_RECURSIVE_EVAL(["${datadir}"], [SCHEMA_DIR])
 AC_DEFINE_UNQUOTED([SCHEMA_DIR],
-                   ["${datadir}"],
+                   ["${SCHEMA_DIR}"],
 		   [GSettings schemas directory])
 
 AC_DEFINE([DESKTOP_SCHEMAS],
