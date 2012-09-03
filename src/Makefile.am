@@ -1,4 +1,4 @@
-SUBDIRS = gedit resources ui
+SUBDIRS = gedit ui
 
 bin_PROGRAMS = latexila
 
@@ -72,19 +72,29 @@ latexila_SOURCES = 			\
 latexila_CPPFLAGS =		\
 	-I$(top_srcdir)		\
 	-I$(srcdir)/gedit	\
-	-I$(srcdir)/resources	\
 	$(LATEXILA_CFLAGS)
 
 latexila_LDFLAGS = $(LATEXILA_LIBS)
 
-latexila_LDADD = 			\
-	gedit/libgedit.la		\
-	resources/libresources.la
+latexila_LDADD = gedit/libgedit.la
 
 CLEANFILES =			\
 	$(vala_files:.vala=.c)	\
 	latexila_vala.stamp
 
 INCLUDES = -include config.h
+
+# GResource
+
+xml = latexila.gresource.xml
+res = latexila-resources.c
+$(res): $(xml) $(shell $(GLIB_COMPILE_RESOURCES) --sourcedir=$(srcdir) --generate-dependencies $(xml))
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(srcdir) --generate-source $(xml)
+
+latexila.$(OBJEXT): $(res)
+
+latexila_SOURCES += $(res)
+EXTRA_DIST = $(xml)
+CLEANFILES += $(res)
 
 -include $(top_srcdir)/git.mk
