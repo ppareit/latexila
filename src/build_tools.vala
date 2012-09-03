@@ -93,10 +93,7 @@ public abstract class BuildTools : GLib.Object
     };
 
     protected Gee.LinkedList<BuildTool?> _build_tools;
-
-    // Possible locations for the XML file, containaing the build tools.
-    // The order is important: the first file is tried, then the second, and so on.
-    protected Gee.List<File> _xml_files = new Gee.LinkedList<File> ();
+    protected File _xml_file = null;
 
     // Used during the XML file parsing to load the build tools.
     private BuildTool _cur_tool;
@@ -162,29 +159,26 @@ public abstract class BuildTools : GLib.Object
     {
         _build_tools = new Gee.LinkedList<BuildTool?> ();
 
-        // Try to load the XML file from the most desirable to least desirable location.
-        foreach (File file in _xml_files)
+        return_if_fail (_xml_file != null);
+
+        if (! _xml_file.query_exists ())
+            return;
+
+        string? contents = Utils.load_file (_xml_file);
+        if (contents == null)
+            return;
+
+        try
         {
-            if (! file.query_exists ())
-                continue;
-
-            string? contents = Utils.load_file (file);
-            if (contents == null)
-                continue;
-
-            try
-            {
-                MarkupParser parser =
-                    { parser_start, parser_end, parser_text, null, null };
-                MarkupParseContext context =
-                    new MarkupParseContext (parser, 0, this, null);
-                context.parse (contents, -1);
-                break;
-            }
-            catch (GLib.Error e)
-            {
-                warning ("Impossible to load build tools: %s", e.message);
-            }
+            MarkupParser parser =
+                { parser_start, parser_end, parser_text, null, null };
+            MarkupParseContext context =
+                new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+        }
+        catch (GLib.Error e)
+        {
+            warning ("Impossible to load build tools: %s", e.message);
         }
     }
 
@@ -242,7 +236,7 @@ public abstract class BuildTools : GLib.Object
                                 attr_values[i]);
                             break;
 
-                        // for compatibility
+                        // for compatibility (no longer used)
                         case "mustSucceed":
                             break;
 
@@ -293,11 +287,11 @@ public abstract class BuildTools : GLib.Object
                 break;
 
             case "label":
-                _cur_tool.label = text.strip ();
+                _cur_tool.label = _(text.strip ());
                 break;
 
             case "description":
-                _cur_tool.set_description (text.strip ());
+                _cur_tool.set_description (_(text.strip ()));
                 break;
 
             case "open":
@@ -313,14 +307,8 @@ public class DefaultBuildTools : BuildTools
 
     private DefaultBuildTools ()
     {
-        unowned string[] language_names = Intl.get_language_names ();
-        foreach (string language_name in language_names)
-        {
-            string path = Path.build_filename (Config.DATA_DIR, "build_tools",
-                language_name, "build_tools.xml");
-
-            _xml_files.add (File.new_for_path (path));
-        }
+        string path = Path.build_filename (Config.DATA_DIR, "build_tools.xml");
+        _xml_file = File.new_for_path (path);
 
         load ();
         load_enable_setting ();
@@ -424,7 +412,7 @@ public class PersonalBuildTools : BuildTools
 
     private PersonalBuildTools ()
     {
-        _xml_files.add (get_user_config_file ());
+        _xml_file = get_user_config_file ();
         load ();
 
         modified.connect (() => _modified = true);
