@@ -1106,7 +1106,7 @@ public class MainWindow : Window
     {
         try
         {
-            show_uri (this.get_screen (), "ghelp:latexila", Gdk.CURRENT_TIME);
+            show_uri (this.get_screen (), "help:latexila", Gdk.CURRENT_TIME);
         }
         catch (Error e)
         {

@@ -103,6 +103,9 @@ AC_DEFINE_UNQUOTED([LOCALE_DIR],
                    ["${LOCALE_DIR}"],
 		   [locale directory])
 
+# Help documentation
+YELP_HELP_INIT
+
 # GSettings
 GLIB_GSETTINGS
 
@@ -127,11 +130,11 @@ AC_CONFIG_FILES([Makefile
 		 data/icons/192x192/Makefile
 		 data/images/Makefile
 		 data/images/app/Makefile
+		 help/Makefile
 		 man/Makefile
 		 po/Makefile.in
                  src/Makefile
 		 src/gedit/Makefile
-		 src/resources/Makefile
 		 src/ui/Makefile
                  README])
 

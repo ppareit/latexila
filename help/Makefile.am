@@ -1,4 +1,4 @@
-# The unique purpose of this file is for GNOME Damned Lies integration
+@YELP_HELP_RULES@
 
 HELP_ID = latexila
 
