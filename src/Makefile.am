@@ -12,7 +12,7 @@ VALAFLAGS =			\
 # directory. If $(top_srcdir) is used, it will be relative to the build directory.
 vapidir = ../vapi
 
-latexila_SOURCES = 			\
+vala_files =				\
 	app_settings.vala		\
 	bottom_panel.vala		\
 	build_command_runner.vala	\
@@ -60,7 +60,10 @@ latexila_SOURCES = 			\
 	tab_info_bar.vala		\
 	templates_dialogs.vala		\
 	templates.vala			\
-	utils.vala			\
+	utils.vala
+
+latexila_SOURCES = 			\
+	$(vala_files)			\
 	$(vapidir)/config.vapi		\
 	$(vapidir)/gedit.vapi		\
 	$(vapidir)/gtkspell-2.0.vapi	\
@@ -77,6 +80,10 @@ latexila_LDFLAGS = $(LATEXILA_LIBS)
 latexila_LDADD = 			\
 	gedit/libgedit.la		\
 	resources/libresources.la
+
+CLEANFILES =			\
+	$(vala_files:.vala=.c)	\
+	latexila_vala.stamp
 
 INCLUDES = -include config.h
 
