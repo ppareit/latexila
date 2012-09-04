@@ -78,7 +78,7 @@ latexila_LDFLAGS = $(LATEXILA_LIBS)
 
 latexila_LDADD = gedit/libgedit.la
 
-CLEANFILES =			\
+MAINTAINERCLEANFILES =		\
 	$(vala_files:.vala=.c)	\
 	latexila_vala.stamp
 
@@ -95,6 +95,6 @@ latexila.$(OBJEXT): $(res)
 
 latexila_SOURCES += $(res)
 EXTRA_DIST = $(xml)
-CLEANFILES += $(res)
+MAINTAINERCLEANFILES += $(res)
 
 -include $(top_srcdir)/git.mk
