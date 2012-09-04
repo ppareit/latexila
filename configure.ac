@@ -131,6 +131,7 @@ AC_CONFIG_FILES([Makefile
 		 data/icons/192x192/Makefile
 		 data/images/Makefile
 		 data/images/app/Makefile
+		 data/templates/Makefile
 		 help/Makefile
 		 man/Makefile
 		 po/Makefile.in

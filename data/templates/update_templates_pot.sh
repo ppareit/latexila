@@ -1,3 +1,3 @@
 #!/bin/sh
 
-itstool -o templates.pot -i templates.its C/*.xml
+itstool -o templates.pot -i templates.its *.xml

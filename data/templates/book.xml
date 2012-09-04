@@ -1,14 +1,14 @@
 <template xmlns:its="http://www.w3.org/2005/11/its">
-<chunk its:translate="no">
-\documentclass[a4paper,11pt]{article}
+<chunk>
+\documentclass[a4paper,11pt]{book}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 </chunk>
-<chunk its:locNote="This must be translated by a usepackage LaTeX command.">
+<babel>
 % babel package or equivalent
-</chunk>
-<chunk its:translate="no">
+</babel>
+<chunk>
 
 \title{}
 \author{}
@@ -18,10 +18,7 @@
 \maketitle
 \tableofcontents
 
-\begin{abstract}
-\end{abstract}
-
-\section{}
+\chapter{}
 
 \end{document}
 </chunk>

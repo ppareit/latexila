@@ -37,6 +37,9 @@ public class Templates : GLib.Object
     private File _data_dir;
     private File _rc_file;
 
+    // Used for the construction of a default template when reading its XML file.
+    private string _default_template;
+
     private enum TemplateColumn
     {
         PIXBUF,  // the theme icon name
@@ -71,11 +74,11 @@ public class Templates : GLib.Object
 
         add_template_from_string (_default_store, _("Empty"), "empty", "");
 
-        add_default_template (_("Article"), "article", "article.tex");
-        add_default_template (_("Report"), "report", "report.tex");
-        add_default_template (_("Book"), "book", "book.tex");
-        add_default_template (_("Letter"), "letter", "letter.tex");
-        add_default_template (_("Presentation"), "beamer", "beamer.tex");
+        add_default_template (_("Article"), "article", "article.xml");
+        add_default_template (_("Report"), "report", "report.xml");
+        add_default_template (_("Book"), "book", "book.xml");
+        add_default_template (_("Letter"), "letter", "letter.xml");
+        add_default_template (_("Presentation"), "beamer", "beamer.xml");
     }
 
     private void init_personal_templates ()
@@ -142,6 +145,82 @@ public class Templates : GLib.Object
 
 
     /*************************************************************************/
+    // Add a default template.
+    //
+    // A default template (or some chunks) can be translated. The templates
+    // are stored in XML files. ITS Tool is used to extract the translatable
+    // strings. Here the XML files are read, the chunks are joint, and the
+    // translatable chunks are translated.
+
+    private void add_default_template (string name, string icon_id, string filename)
+    {
+        string path = Path.build_filename (Config.DATA_DIR, "templates", filename);
+        File file = File.new_for_path (path);
+
+        if (! file.query_exists ())
+        {
+            warning ("The default template '%s' doesn't exist. Path: %s", name, path);
+            return;
+        }
+
+        string? contents = Utils.load_file (file);
+        return_if_fail (contents != null);
+
+        _default_template = "";
+
+        try
+        {
+            MarkupParser parser =
+                { null, null, parser_text, null, null };
+            MarkupParseContext context =
+                new MarkupParseContext (parser, 0, this, null);
+            context.parse (contents, -1);
+        }
+        catch (GLib.Error e)
+        {
+            warning ("Impossible to load the default template '%s': %s",
+                name, e.message);
+            return;
+        }
+
+        add_template_from_string (_default_store, name, icon_id, _default_template);
+    }
+
+    private void parser_text (MarkupParseContext context, string text, size_t text_len)
+        throws MarkupError
+    {
+        string chunk = null;
+
+        switch (context.get_element ())
+        {
+            case "chunk":
+                chunk = text;
+                break;
+
+            case "translatableChunk":
+                chunk = _(text);
+                break;
+
+            case "babel":
+                string translated_text = _(text);
+                if (translated_text != text)
+                    chunk = translated_text;
+                break;
+        }
+
+        if (chunk == null)
+            return;
+
+        // Remove the first '\n'. Without this, the XML files would be less
+        // well presented.
+        if (chunk[0] == '\n')
+            chunk = chunk[1 : chunk.length];
+
+        _default_template += chunk;
+    }
+
+
+    /*************************************************************************/
     // Add and delete templates, save rc file.
 
     private void add_template_from_string (ListStore store, string name,
@@ -167,31 +246,6 @@ public class Templates : GLib.Object
         add_template_from_string (store, name, icon_id, contents);
 
         return true;
-    }
-
-    private void add_default_template (string name, string icon_id, string filename)
-    {
-        // The templates are translated, so we search first a translated template.
-
-        File[] files = {};
-
-        unowned string[] language_names = Intl.get_language_names ();
-        foreach (string language_name in language_names)
-        {
-            files += File.new_for_path (Path.build_filename (Config.DATA_DIR,
-                "templates", language_name, filename));
-        }
-
-        foreach (File file in files)
-        {
-            if (! file.query_exists ())
-                continue;
-
-            add_template_from_file (_default_store, name, icon_id, file);
-            return;
-        }
-
-        warning ("Template '%s' not found.", name);
     }
 
     public void delete_personal_template (TreePath template_path)

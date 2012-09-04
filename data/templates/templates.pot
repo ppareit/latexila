@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2011-08-04 00:52+0200\n"
+"POT-Creation-Date: 2012-09-04 16:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -10,10 +10,10 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #. This must be translated by a usepackage LaTeX command.
-#: C/article.xml:8(template/chunk)
-#: C/beamer.xml:8(template/chunk)
-#: C/book.xml:8(template/chunk)
-#: C/report.xml:8(template/chunk)
+#: article.xml:8(template/babel)
+#: beamer.xml:8(template/babel)
+#: book.xml:8(template/babel)
+#: report.xml:8(template/babel)
 #, no-wrap
 msgid ""
 "\n"
@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 
 #. There is a helper script in data/templates/tex2po.sh
-#: C/letter.xml:2(template/chunk)
+#: letter.xml:2(template/translatableChunk)
 #, no-wrap
 msgid ""
 "\n"
