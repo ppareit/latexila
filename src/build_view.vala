@@ -246,7 +246,18 @@ public class BuildView : TreeView
 
     public void clear ()
     {
+        // No selection allowed when clearing the TreeStore. Else, all the rows are
+        // selected, and if there are warnings or errors, the program jumps to all
+        // warnings/errors one by one. It's fun, but after four or five times, it becomes
+        // less fun because our text cursor moves all the time ;)
+        // Another means would have been to remove and re-add the select function, but I
+        // prefer this hack, shorter :)
+        TreeSelection select = this.get_selection ();
+
+        select.set_mode (SelectionMode.NONE);
         _store.clear ();
+        select.set_mode (SelectionMode.SINGLE);
+
         this.columns_autosize ();
     }
 
