@@ -48,11 +48,9 @@ There are some rules to follow when coding:
       line and then the description
     - same coding style everywhere
 
-How to generate the C code from Vala files?
-    See the file "INSTALL".
-
 How to debug LaTeXila with gdb?
-    Run CMake with this option: -DCMAKE_BUILD_TYPE=Debug
+    Run:
+    $ make CFLAGS="-g"
 
     Here is how you can get the backtrace after a crash:
     $ gdb ./latexila
