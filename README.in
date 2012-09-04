@@ -44,8 +44,16 @@ site is hosted on sourceforge [2]. And there is a Debian package available [3].
 Installation
 ============
 
+From a tarball:
 $ ./configure
+
+From a git repository:
+$ ./autogen.sh
+
+Then build the sources:
 $ make
+
+And install everything:
 [ Become root if necessary ]
 $ make install
 
