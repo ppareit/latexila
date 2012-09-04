@@ -9,12 +9,15 @@ desktop_DATA = latexila.desktop
 @INTLTOOL_DESKTOP_RULE@
 
 gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
+@INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
-EXTRA_DIST =				\
-	latexila.desktop.in		\
-	org.gnome.latexila.gschema.xml
+EXTRA_DIST =					\
+	latexila.desktop.in			\
+	org.gnome.latexila.gschema.xml.in.in
 
-CLEANFILES = latexila.desktop
+CLEANFILES =				\
+	latexila.desktop		\
+	org.gnome.latexila.gschema.xml
 
 -include $(top_srcdir)/git.mk

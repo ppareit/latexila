@@ -128,6 +128,7 @@ AC_CONFIG_FILES([Makefile
 		 data/icons/192x192/Makefile
 		 data/images/Makefile
 		 data/images/app/Makefile
+		 data/org.gnome.latexila.gschema.xml.in
 		 data/templates/Makefile
 		 help/Makefile
 		 man/Makefile

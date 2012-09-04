@@ -1,0 +1,205 @@
+<schemalist>
+  <schema id="org.gnome.latexila" path="/org/gnome/latexila/">
+    <child schema="org.gnome.latexila.preferences" name="preferences" />
+    <child schema="org.gnome.latexila.state" name="state" />
+  </schema>
+
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.latexila.preferences" path="/org/gnome/latexila/preferences/">
+    <child schema="org.gnome.latexila.preferences.editor" name="editor" />
+    <child schema="org.gnome.latexila.preferences.ui" name="ui" />
+    <child schema="org.gnome.latexila.preferences.latex" name="latex" />
+    <child schema="org.gnome.latexila.preferences.file-browser" name="file-browser" />
+  </schema>
+
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.latexila.preferences.editor" path="/org/gnome/latexila/preferences/editor/">
+    <key name="use-default-font" type="b">
+      <default>true</default>
+      <_summary>Use Default Font</_summary>
+      <_description>Whether to use the system's default fixed width font for editing text instead of a font specific to LaTeXila. If this option is turned off, then the font named in the "Editor Font" option will be used instead of the system font.</_description>
+    </key>
+    <key name="editor-font" type="s">
+      <default>'Monospace 10'</default>
+      <_summary>Editor Font</_summary>
+      <_description>A custom font that will be used for the editing area. This will only take effect if the "Use Default Font" option is turned off.</_description>
+    </key>
+    <key name="scheme" type="s">
+      <default>'classic'</default>
+      <_summary>Style Scheme</_summary>
+      <_description>The ID of a GtkSourceView Style Scheme used to color the text.</_description>
+    </key>
+    <key name="create-backup-copy" type="b">
+      <default>true</default>
+      <_summary>Create Backup Copies</_summary>
+      <_description>Whether LaTeXila should create backup copies for the files it saves.</_description>
+    </key>
+    <key name="auto-save" type="b">
+      <default>false</default>
+      <_summary>Autosave</_summary>
+      <_description>Whether LaTeXila should automatically save modified files after a time interval. You can set the time interval with the "Autosave Interval" option.</_description>
+    </key>
+    <key name="auto-save-interval" type="u">
+      <range min="1" max="100" />
+      <default>10</default>
+      <_summary>Autosave Interval</_summary>
+      <_description>Number of minutes after which LaTeXila will automatically save modified files. This will only take effect if the "Autosave" option is turned on.</_description>
+    </key>
+    <key name="reopen-files" type="b">
+      <default>true</default>
+      <_summary>Reopen files on startup</_summary>
+      <_description>Whether LaTeXila should reopen the files that was opened the last time.</_description>
+    </key>
+    <key name="tabs-size" type="u">
+      <range min="1" max="24" />
+      <default>2</default>
+      <_summary>Tab Size</_summary>
+      <_description>Specifies the number of spaces that should be displayed instead of Tab characters.</_description>
+    </key>
+    <key name="insert-spaces" type="b">
+      <default>true</default>
+      <_summary>Insert spaces</_summary>
+      <_description>Whether LaTeXila should insert spaces instead of tabs.</_description>
+    </key>
+    <key name="forget-no-tabs" type="b">
+      <default>true</default>
+      <_summary>Forget no tabulations</_summary>
+      <_description>Forget you are not using tabulations.</_description>
+    </key>
+    <key name="display-line-numbers" type="b">
+      <default>false</default>
+      <_summary>Display Line Numbers</_summary>
+      <_description>Whether LaTeXila should display line numbers in the editing area.</_description>
+    </key>
+    <key name="highlight-current-line" type="b">
+      <default>true</default>
+      <_summary>Highlight Current Line</_summary>
+      <_description>Whether LaTeXila should highlight the current line.</_description>
+    </key>
+    <key name="bracket-matching" type="b">
+      <default>true</default>
+      <_summary>Highlight Matching Brackets</_summary>
+      <_description>Whether LaTeXila should highlight matching brackets.</_description>
+    </key>
+    <key name="spell-checking" type="b">
+      <default>false</default>
+      <_summary>Spell checking</_summary>
+    </key>
+  </schema>
+
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.latexila.preferences.ui" path="/org/gnome/latexila/preferences/ui/">
+    <key name="main-toolbar-visible" type="b">
+      <default>true</default>
+      <_summary>Main toolbar is visible</_summary>
+      <_description>Whether the main toolbar (file open, close, build, ...) should be visible.</_description>
+    </key>
+    <key name="edit-toolbar-visible" type="b">
+      <default>true</default>
+      <_summary>Edit toolbar is visible</_summary>
+      <_description>Whether the edit toolbar (bold, italic, character sizes, ...) should be visible.</_description>
+    </key>
+    <key name="side-panel-visible" type="b">
+      <default>true</default>
+      <_summary>Side panel is Visible</_summary>
+      <_description>Whether the side panel at the left of editing windows should be visible.</_description>
+    </key>
+    <key name="bottom-panel-visible" type="b">
+      <default>true</default>
+      <_summary>Bottom panel is Visible</_summary>
+      <_description>Whether the bottom panel containing the build view should be visible.</_description>
+    </key>
+    <key name="side-panel-component" type="i">
+      <default>0</default>
+      <_summary>Side panel component</_summary>
+      <_description>Side panel active component. 0: Symbols. 1: File browser.</_description>
+    </key>
+    <key name="show-build-warnings" type="b">
+      <default>true</default>
+      <_summary>Show build output warnings</_summary>
+    </key>
+    <key name="show-build-badboxes" type="b">
+      <default>true</default>
+      <_summary>Show build output badboxes</_summary>
+    </key>
+  </schema>
+
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.latexila.preferences.latex" path="/org/gnome/latexila/preferences/latex/">
+    <key name="interactive-completion" type="b">
+      <default>true</default>
+      <_summary>Interactive completion</_summary>
+      <_description>Automatically show commands proposals</_description>
+    </key>
+    <key name="interactive-completion-num" type="u">
+      <range min="0" max="8" />
+      <default>2</default>
+      <_summary>Interactive completion min chars</_summary>
+      <_description>Minimum number of characters after '\' for interactive completion</_description>
+    </key>
+    <key name="no-confirm-clean" type="b">
+      <default>false</default>
+      <_summary>No confirmation clean-up</_summary>
+      <_description>No confirmation when cleaning-up</_description>
+    </key>
+    <key name="automatic-clean" type="b">
+      <default>false</default>
+      <_summary>Automatic clean-up</_summary>
+      <_description>Automatically clean-up files after close. no-confirm-clean must be true.</_description>
+    </key>
+    <key name="clean-extensions" type="s">
+      <default>'.aux .blg .bbl .idx .ilg .ind .log .nav .out .snm .toc .fdb_latexmk'</default>
+      <_summary>File extensions for clean-up</_summary>
+      <_description>The file extensions for the clean-up are separated by spaces</_description>
+    </key>
+    <key name="enabled-default-build-tools" type="ai">
+      <default>[]</default>
+      <_summary>Enabled default build tools</_summary>
+      <_description>The list of the default build tools that are enabled</_description>
+    </key>
+    <key name="disabled-default-build-tools" type="ai">
+      <default>[]</default>
+      <_summary>Disabled default build tools</_summary>
+      <_description>The list of the default build tools that are disabled</_description>
+    </key>
+  </schema>
+
+  <schema gettext-domain="@GETTEXT_PACKAGE@" id="org.gnome.latexila.preferences.file-browser" path="/org/gnome/latexila/preferences/file-browser/">
+    <key name="current-directory" type="s">
+      <default>''</default>
+      <_summary>Current directory</_summary>
+      <_description>URI of the file browser current directory</_description>
+    </key>
+    <key name="show-build-files" type="b">
+      <default>false</default>
+      <_summary>Show build files</_summary>
+      <_description>Show files with an extension present in preferences.latex.clean-extensions.</_description>
+    </key>
+    <key name="show-hidden-files" type="b">
+      <default>false</default>
+      <_summary>Show hidden files</_summary>
+      <_description>Show files beginning with a dot.</_description>
+    </key>
+  </schema>
+
+  <schema id="org.gnome.latexila.state" path="/org/gnome/latexila/state/">
+    <child schema="org.gnome.latexila.state.window" name="window" />
+  </schema>
+
+  <schema id="org.gnome.latexila.state.window" path="/org/gnome/latexila/state/window/">
+    <key name="state" type="i">
+      <default>0</default>
+    </key>
+    <key name="size" type="(ii)">
+      <default>(950, 660)</default>
+    </key>
+    <key name="documents" type="as">
+      <default>['']</default>
+    </key>
+    <key name="side-panel-size" type="i">
+      <default>256</default>
+    </key>
+    <key name="vertical-paned-position" type="i">
+      <default>375</default>
+    </key>
+    <key name="structure-paned-position" type="i">
+      <default>100</default>
+    </key>
+  </schema>
+</schemalist>

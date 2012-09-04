@@ -3,7 +3,7 @@
 [encoding: UTF-8]
 data/build_tools/build_tools.pot
 data/latexila.desktop.in.in
-data/org.gnome.latexila.gschema.xml
+data/org.gnome.latexila.gschema.xml.in.in
 data/templates/templates.pot
 src/app_settings.vala
 src/bottom_panel.vala
