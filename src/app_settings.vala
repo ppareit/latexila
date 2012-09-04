@@ -22,7 +22,6 @@ public class AppSettings : GLib.Settings
     private static AppSettings instance = null;
 
     private Settings editor;
-    private Settings desktop_interface;
 
     public string system_font { get; private set; }
 
@@ -45,21 +44,15 @@ public class AppSettings : GLib.Settings
         Settings prefs = get_child ("preferences");
         editor = prefs.get_child ("editor");
 
-        // the desktop schemas are optional
-        if (! Config.DESKTOP_SCHEMAS)
-            system_font = "Monospace 10";
-        else
-        {
-            desktop_interface = new Settings ("org.gnome.desktop.interface");
-            system_font = desktop_interface.get_string ("monospace-font-name");
+        Settings desktop_interface = new Settings ("org.gnome.desktop.interface");
+        system_font = desktop_interface.get_string ("monospace-font-name");
 
-            desktop_interface.changed["monospace-font-name"].connect ((setting, key) =>
-            {
-                system_font = setting.get_string (key);
-                if (editor.get_boolean ("use-default-font"))
-                    set_font (system_font);
-            });
-        }
+        desktop_interface.changed["monospace-font-name"].connect ((setting, key) =>
+        {
+            system_font = setting.get_string (key);
+            if (editor.get_boolean ("use-default-font"))
+                set_font (system_font);
+        });
 
         editor.changed["use-default-font"].connect ((setting, key) =>
         {

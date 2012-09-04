@@ -114,10 +114,6 @@ AC_DEFINE_UNQUOTED([SCHEMA_DIR],
                    ["${SCHEMA_DIR}"],
 		   [GSettings schemas directory])
 
-AC_DEFINE([DESKTOP_SCHEMAS],
-          [1],
-	  [Use desktop GSettings schemas])
-
 # Generate files
 AC_CONFIG_FILES([Makefile
 		 data/Makefile
