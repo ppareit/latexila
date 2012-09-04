@@ -3,6 +3,7 @@ ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = data man po help src
 
 EXTRA_DIST =			\
+	README			\
 	HACKING			\
 	latexila.doap		\
 	intltool-extract.in	\
