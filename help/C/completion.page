@@ -21,7 +21,7 @@
     <guiseq>
       <gui style="menu">Edit</gui>
       <gui style="menu">Preferences</gui>
-      <gui style="tab">LaTeX</gui>
+      <gui style="tab">Other</gui>
     </guiseq>
   </p>
 </section>
