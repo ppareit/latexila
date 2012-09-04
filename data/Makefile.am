@@ -5,10 +5,16 @@ dist_pkgdata_DATA =	\
 	latexhelp.html
 
 desktopdir = $(datadir)/applications
-dist_desktop_DATA = latexila.desktop
+desktop_DATA = latexila.desktop
+@INTLTOOL_DESKTOP_RULE@
 
-EXTRA_DIST = org.gnome.latexila.gschema.xml
 gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
 @GSETTINGS_RULES@
+
+EXTRA_DIST =				\
+	latexila.desktop.in		\
+	org.gnome.latexila.gschema.xml
+
+CLEANFILES = latexila.desktop
 
 -include $(top_srcdir)/git.mk

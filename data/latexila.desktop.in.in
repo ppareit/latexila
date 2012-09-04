@@ -1,0 +1,24 @@
+[Desktop Entry]
+_Name=LaTeXila
+_GenericName=Integrated LaTeX Environment
+_Comment=Edit LaTeX documents
+Exec=latexila %U
+Icon=latexila
+Terminal=false
+Type=Application
+Categories=GTK;GNOME;Office;Publishing;
+MimeType=text/x-tex;
+Actions=Window;Document;
+
+X-GNOME-Bugzilla-Bugzilla=GNOME
+X-GNOME-Bugzilla-Product=latexila
+X-GNOME-Bugzilla-Component=other
+X-GNOME-Bugzilla-Version=@VERSION@
+
+[Desktop Action Window]
+_Name=Open a New Window
+Exec=latexila --new-window
+
+[Desktop Action Document]
+_Name=Open a New Document
+Exec=latexila --new-document

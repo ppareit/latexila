@@ -118,6 +118,7 @@ AC_DEFINE_UNQUOTED([SCHEMA_DIR],
 AC_CONFIG_FILES([Makefile
 		 data/Makefile
 		 data/build_tools/Makefile
+		 data/latexila.desktop.in
 		 data/icons/Makefile
 		 data/icons/16x16/Makefile
 		 data/icons/22x22/Makefile
