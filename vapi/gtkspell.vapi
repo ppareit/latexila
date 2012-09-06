@@ -1,11 +1,11 @@
-[CCode (cheader_filename = "gtkspell/gtkspell.h")]
+[CCode (cheader_filename = "gtkspell.h")]
 public errordomain GtkspellError
 {
     BACKEND
 }
 
 [Compact]
-[CCode (cprefix = "gtkspell_", cheader_filename = "gtkspell/gtkspell.h", free_function = "")]
+[CCode (cprefix = "gtkspell_", cheader_filename = "gtkspell.h", free_function = "")]
 public class GtkSpell
 {
     public GtkSpell.attach (Gtk.TextView view, string? lang) throws GtkspellError;

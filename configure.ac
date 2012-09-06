@@ -27,13 +27,11 @@ LT_INIT
 GLIB_REQUIRED_VERSION="2.32"
 GTK_REQUIRED_VERSION="3.4.3"
 GTKSOURCEVIEW_REQUIRED_VERSION="3.4.1"
-GTKSPELL_REQUIRED_VERSION="3.0"
 VALA_REQUIRED_VERSION="0.17.3.1"
 
 AC_SUBST([GLIB_REQUIRED_VERSION])
 AC_SUBST([GTK_REQUIRED_VERSION])
 AC_SUBST([GTKSOURCEVIEW_REQUIRED_VERSION])
-AC_SUBST([GTKSPELL_REQUIRED_VERSION])
 AC_SUBST([VALA_REQUIRED_VERSION])
 
 # Some directories
@@ -81,7 +79,7 @@ PKG_CHECK_MODULES([LATEXILA], [
 	gtksourceview-3.0 >= ${GTKSOURCEVIEW_REQUIRED_VERSION}
 	gsettings-desktop-schemas
 	gee-1.0
-	gtkspell-3.0
+	enchant
 ])
 
 AC_SUBST([LATEXILA_CFLAGS])
@@ -135,6 +133,7 @@ AC_CONFIG_FILES([Makefile
 		 po/Makefile.in
                  src/Makefile
 		 src/gedit/Makefile
+		 src/gtkspell/Makefile
 		 src/ui/Makefile
                  README])
 
