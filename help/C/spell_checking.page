@@ -34,10 +34,9 @@
 <section>
   <title>Dictionaries</title>
   <p>
-    <link href="http://gtkspell.sourceforge.net/">GtkSpell</link>
-    is used for the spell checking in LaTeXila. GtkSpell uses
-    <link href="http://www.abisource.com/projects/enchant/">Enchant</link>,
-    which uses one or several backends such as Hunspell or Aspell for the dictionaries.
+    <link href="http://www.abisource.com/projects/enchant/">Enchant</link>
+    is used for the spell checking in LaTeXila. Enchant uses one or several backends
+    such as Hunspell or Aspell for the dictionaries.
   </p>
 
   <p>
