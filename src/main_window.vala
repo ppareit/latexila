@@ -45,6 +45,8 @@ public class MainWindow : Window
             N_("Search for and replace text"), on_search_replace },
         { "SearchGoToLine", Stock.JUMP_TO, N_("_Go to Line..."), "<Control>G",
             N_("Go to a specific line"), on_search_goto_line },
+        { "SearchForward", null, N_("_Search Forward"), "<Control><Alt>F",
+            N_("Jump to the associated position in the PDF file"), on_search_forward },
 
         // Projects
         { "Projects", null, N_("_Projects") },
@@ -1079,6 +1081,21 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
         _goto_line.show ();
+    }
+
+    public void on_search_forward ()
+    {
+        return_if_fail (active_tab != null);
+
+        TextIter iter;
+        TextMark insert = active_document.get_insert ();
+        active_document.get_iter_at_mark (out iter, insert);
+
+        int line = iter.get_line () + 1;
+        int column = iter.get_line_offset ();
+
+        Synctex synctex = new Synctex ();
+        synctex.forward_search (active_document, line, column);
     }
 
     /* Projects */

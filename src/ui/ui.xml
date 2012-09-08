@@ -70,6 +70,8 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
       <menuitem action="SearchReplace" />
       <separator />
       <menuitem action="SearchGoToLine" />
+      <separator />
+      <menuitem action="SearchForward" />
     </menu>
 
     <menu action="Build" name="BuildMenu">
