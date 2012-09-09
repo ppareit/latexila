@@ -999,6 +999,7 @@ public class MainWindow : Window
             "SearchFind",
             "SearchReplace",
             "SearchGoToLine",
+            "SearchForward",
             "ProjectsConfigCurrent"
         };
 
