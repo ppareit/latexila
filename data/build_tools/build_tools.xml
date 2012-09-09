@@ -3,38 +3,48 @@
 
   <tool id="0" show="true" extensions=".tex" icon="compile_pdf">
     <label its:translate="no">LaTeX → PDF (Latexmk)</label>
-    <job postProcessor="latexmk">latexmk -pdf $filename</job>
+    <job postProcessor="latexmk">
+      latexmk -pdf -e &apos;$pdflatex=q/pdflatex %O -synctex=1 %S/&apos; $filename
+    </job>
     <open>$shortname.pdf</open>
   </tool>
 
   <tool id="1" show="true" extensions=".tex" icon="compile_dvi">
     <label its:translate="no">LaTeX → DVI → PDF (Latexmk)</label>
-    <job postProcessor="latexmk">latexmk -pdfdvi $filename</job>
+    <job postProcessor="latexmk">
+      latexmk -pdfdvi -e &apos;$latex=q/latex %O -synctex=1 %S/&apos; $filename
+    </job>
     <open>$shortname.pdf</open>
   </tool>
 
   <tool id="2" show="true" extensions=".tex" icon="compile_ps">
     <label its:translate="no">LaTeX → DVI → PS → PDF (Latexmk)</label>
-    <job postProcessor="latexmk">latexmk -pdfps $filename</job>
+    <job postProcessor="latexmk">
+      latexmk -pdfps -e &apos;$latex=q/latex %O -synctex=1 %S/&apos; $filename
+    </job>
     <open>$shortname.pdf</open>
   </tool>
 
   <tool id="3" show="false" extensions=".tex" icon="compile_dvi">
     <label its:translate="no">LaTeX → DVI (Latexmk)</label>
-    <job postProcessor="latexmk">latexmk $filename</job>
+    <job postProcessor="latexmk">
+      latexmk -e &apos;$latex=q/latex %O -synctex=1 %S/&apos; $filename
+    </job>
     <open>$shortname.dvi</open>
   </tool>
 
   <tool id="4" show="false" extensions=".tex" icon="compile_ps">
     <label its:translate="no">LaTeX → DVI → PS (Latexmk)</label>
-    <job postProcessor="latexmk">latexmk -ps $filename</job>
+    <job postProcessor="latexmk">
+      latexmk -ps -e &apos;$latex=q/latex %O -synctex=1 %S/&apos; $filename
+    </job>
     <open>$shortname.ps</open>
   </tool>
 
   <tool id="5" show="false" extensions=".tex" icon="compile_pdf">
     <label its:translate="no">XeTeX → PDF (Latexmk)</label>
     <job postProcessor="latexmk">
-      latexmk -pdf -e &apos;$pdflatex=q/xelatex %O %S/&apos; $filename
+      latexmk -pdf -e &apos;$pdflatex=q/xelatex %O -synctex=1 %S/&apos; $filename
     </job>
     <open>$shortname.pdf</open>
   </tool>
@@ -90,13 +100,13 @@
   <tool id="12" show="false" extensions=".tex" icon="compile_pdf">
     <label its:translate="no">LaTeX → PDF (pdflatex)</label>
     <description>Create a PDF file from LaTeX sources with the "pdflatex" command</description>
-    <job postProcessor="latex">pdflatex -interaction=nonstopmode $filename</job>
+    <job postProcessor="latex">pdflatex -interaction=nonstopmode -synctex=1 $filename</job>
   </tool>
 
   <tool id="13" show="false" extensions=".tex" icon="compile_dvi">
     <label its:translate="no">LaTeX → DVI (latex)</label>
     <description>Create a DVI file from LaTeX sources with the "latex" command</description>
-    <job postProcessor="latex">latex -interaction=nonstopmode $filename</job>
+    <job postProcessor="latex">latex -interaction=nonstopmode -synctex=1 $filename</job>
   </tool>
 
   <!-- BibTeX, MakeIndex -->
