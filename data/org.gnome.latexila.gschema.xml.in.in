@@ -144,7 +144,7 @@
       <_description>Automatically clean-up files after close. no-confirm-clean must be true.</_description>
     </key>
     <key name="clean-extensions" type="s">
-      <default>'.aux .blg .bbl .fdb_latexmk .fls .idx .ilg .ind .log .nav .out .snm .toc'</default>
+      <default>'.aux .blg .bbl .fdb_latexmk .fls .idx .ilg .ind .log .nav .out .snm .synctex.gz .toc'</default>
       <_summary>File extensions for clean-up</_summary>
       <_description>The file extensions for the clean-up are separated by spaces</_description>
     </key>
