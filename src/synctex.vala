@@ -21,6 +21,8 @@
 
 // SyncTeX: forward and backward search with evince.
 
+using Gtk;
+
 [DBus (name = "org.gnome.evince.Daemon")]
 interface EvinceDaemon : Object
 {
@@ -52,7 +54,7 @@ interface EvinceWindow : Object
 
 public class Synctex : Object
 {
-    public void forward_search (Document doc, int line, int column)
+    public void forward_search (Document doc)
     {
         string? pdf_uri = get_pdf_uri (doc);
         return_if_fail (pdf_uri != null);
@@ -63,7 +65,22 @@ public class Synctex : Object
         return_if_fail (doc.location != null);
         string tex_path = doc.location.get_path ();
 
-        sync_view (ev_window, tex_path, line, column);
+        DocPosition pos = get_doc_position (doc);
+        sync_view (ev_window, tex_path, pos);
+    }
+
+    private DocPosition get_doc_position (Document doc)
+    {
+        TextIter iter;
+        TextMark insert = doc.get_insert ();
+        doc.get_iter_at_mark (out iter, insert);
+
+        DocPosition pos = DocPosition ();
+
+        pos.line = iter.get_line () + 1;
+        pos.column = iter.get_line_offset ();
+
+        return pos;
     }
 
     private string? get_pdf_uri (Document doc)
@@ -151,15 +168,11 @@ public class Synctex : Object
         return window;
     }
 
-    private void sync_view (EvinceWindow window, string tex_path, int line, int column)
+    private void sync_view (EvinceWindow window, string tex_path, DocPosition pos)
     {
-        DocPosition source_point = DocPosition ();
-        source_point.line = line;
-        source_point.column = column;
-
         try
         {
-            window.sync_view (tex_path, source_point, Gdk.CURRENT_TIME);
+            window.sync_view (tex_path, pos, Gdk.CURRENT_TIME);
         }
         catch (IOError e)
         {

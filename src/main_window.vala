@@ -1087,15 +1087,8 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
 
-        TextIter iter;
-        TextMark insert = active_document.get_insert ();
-        active_document.get_iter_at_mark (out iter, insert);
-
-        int line = iter.get_line () + 1;
-        int column = iter.get_line_offset ();
-
         Synctex synctex = new Synctex ();
-        synctex.forward_search (active_document, line, column);
+        synctex.forward_search (active_document);
     }
 
     /* Projects */
