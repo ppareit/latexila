@@ -100,6 +100,9 @@ public class DocumentView : Gtk.SourceView
         // spell checking
         if (_editor_settings.get_boolean ("spell-checking"))
             activate_spell_checking ();
+
+        // forward search
+        button_release_event.connect (on_button_release_event);
     }
 
     public void scroll_to_cursor (double margin = 0.25)
@@ -207,6 +210,20 @@ public class DocumentView : Gtk.SourceView
         GtkSpell? spell = GtkSpell.get_from_text_view (this);
         if (spell != null)
             spell.detach ();
+    }
+
+    private bool on_button_release_event (Gdk.EventButton event)
+    {
+        // Forward search on Ctrl + left click
+        if (event.button == 1 &&
+            Gdk.ModifierType.CONTROL_MASK in event.state)
+        {
+            Synctex synctex = new Synctex ();
+            synctex.forward_search (this.buffer as Document);
+        }
+
+        // propagate the event further
+        return false;
     }
 
     private bool on_backspace (Gdk.EventKey event)
