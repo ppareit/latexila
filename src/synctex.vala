@@ -57,16 +57,56 @@ public class Synctex : Object
     public void forward_search (Document doc)
     {
         string? pdf_uri = get_pdf_uri (doc);
-        return_if_fail (pdf_uri != null);
+
+        if (pdf_uri == null)
+        {
+            show_warning (_("The document is not saved."));
+            return;
+        }
+
+        File pdf_file = File.new_for_uri (pdf_uri);
+        if (! pdf_file.query_exists ())
+        {
+            show_warning (_("The PDF file doesn't exist."));
+            return;
+        }
+
+        string synctex_uri = Utils.get_shortname (pdf_uri) + ".synctex.gz";
+        File synctex_file = File.new_for_uri (synctex_uri);
+        if (! synctex_file.query_exists ())
+        {
+            string synctex_basename = synctex_file.get_basename ();
+            show_warning (_("The file \"%s\" doesn't exist.").printf (synctex_basename));
+            return;
+        }
 
         EvinceWindow? ev_window = get_evince_window (pdf_uri);
-        return_if_fail (ev_window != null);
+        if (ev_window == null)
+        {
+            show_warning (_("Can not communicate with evince."));
+            return;
+        }
 
-        return_if_fail (doc.location != null);
         string tex_path = doc.location.get_path ();
-
         DocPosition pos = get_doc_position (doc);
+
         sync_view (ev_window, tex_path, pos);
+    }
+
+    private void show_warning (string message)
+    {
+        MainWindow main_window = Latexila.get_instance ().active_window;
+
+        MessageDialog dialog = new MessageDialog (main_window,
+            DialogFlags.DESTROY_WITH_PARENT,
+            MessageType.ERROR,
+            ButtonsType.OK,
+            "%s", _("Impossible to do the forward search."));
+
+        dialog.format_secondary_text ("%s", message);
+
+        dialog.run ();
+        dialog.destroy ();
     }
 
     private DocPosition get_doc_position (Document doc)
