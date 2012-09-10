@@ -186,7 +186,7 @@ public class FileBrowser : Grid
 
             try
             {
-                Gtk.show_uri (this.get_screen (), file.get_uri (), Gdk.CURRENT_TIME);
+                Utils.show_uri (this.get_screen (), file.get_uri ());
             }
             catch (Error e)
             {

@@ -985,6 +985,19 @@ public class MainWindow : Window
         _main_window_build_tools.save_state ();
     }
 
+    // start_line and end_line begins at 0.
+    public void jump_to_file_position (File file, int start_line, int end_line)
+    {
+        return_if_fail (start_line >= 0 && end_line >= 0);
+
+        DocumentTab tab = open_document (file);
+
+        // Ensure that the file is fully loaded before selecting the lines.
+        Utils.flush_queue ();
+
+        tab.document.select_lines (start_line, end_line);
+    }
+
     /*************************************************************************/
     // Sensitivity
 
@@ -1088,7 +1101,7 @@ public class MainWindow : Window
     {
         return_if_fail (active_tab != null);
 
-        Synctex synctex = new Synctex ();
+        Synctex synctex = Synctex.get_default ();
         synctex.forward_search (active_document);
     }
 

@@ -285,6 +285,19 @@ namespace Utils
         return relative_path;
     }
 
+    public void show_uri (Gdk.Screen? screen, string uri) throws Error
+    {
+        if (! Gtk.show_uri (screen, uri, Gdk.CURRENT_TIME))
+            return;
+
+        // Backward search for PDF documents.
+        if (get_extension (uri) == ".pdf")
+        {
+            Synctex synctex = Synctex.get_default ();
+            synctex.create_evince_window (uri);
+        }
+    }
+
 
     /*************************************************************************/
     // UI stuff

@@ -233,15 +233,8 @@ public class BuildView : TreeView
 
     private void jump_to_file_lines (File file, int start_line, int end_line)
     {
-        return_if_fail (start_line >= 0 && end_line >= 0);
-
-        DocumentTab tab = _main_window.open_document (file);
-
-        // Ensure that the file is fully loaded before selecting the lines.
-        Utils.flush_queue ();
-
-        // start_line and end_line begins at 1, but select_lines() begins at 0
-        tab.document.select_lines (start_line - 1, end_line - 1);
+        return_if_fail (start_line >= 1 && end_line >= 1);
+        _main_window.jump_to_file_position (file, start_line - 1, end_line - 1);
     }
 
     public void clear ()

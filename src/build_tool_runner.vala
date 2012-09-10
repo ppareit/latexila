@@ -277,7 +277,7 @@ public class BuildToolRunner : GLib.Object
 
         try
         {
-            Gtk.show_uri (_view.get_screen (), uri, Gdk.CURRENT_TIME);
+            Utils.show_uri (_view.get_screen (), uri);
         }
         catch (Error e)
         {

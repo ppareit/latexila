@@ -50,10 +50,31 @@ interface EvinceWindow : Object
 
     public signal void sync_source (string source_file, DocPosition source_point,
         uint32 timestamp);
+
+    public signal void closed ();
 }
 
 public class Synctex : Object
 {
+    private static Synctex _instance = null;
+
+    // PDF uri -> evince window
+    private Gee.HashMap<string, EvinceWindow?> _ev_windows;
+
+    // Singleton
+    private Synctex ()
+    {
+        _ev_windows = new Gee.HashMap<string, EvinceWindow?> ();
+    }
+
+    public static Synctex get_default ()
+    {
+        if (_instance == null)
+            _instance = new Synctex ();
+
+        return _instance;
+    }
+
     public void forward_search (Document doc)
     {
         string? pdf_uri = get_pdf_uri (doc);
@@ -136,6 +157,18 @@ public class Synctex : Object
 
     private EvinceWindow? get_evince_window (string pdf_uri)
     {
+        if (create_evince_window (pdf_uri))
+            return _ev_windows[pdf_uri];
+        else
+            return null;
+    }
+
+    // Returns true on success.
+    public bool create_evince_window (string pdf_uri)
+    {
+        if (_ev_windows.has_key (pdf_uri))
+            return true;
+
         EvinceDaemon daemon = null;
 
         try
@@ -146,7 +179,7 @@ public class Synctex : Object
         catch (IOError e)
         {
             warning ("SyncTeX: can not connect to evince daemon: %s", e.message);
-            return null;
+            return false;
         }
 
         string owner = null;
@@ -158,7 +191,7 @@ public class Synctex : Object
         catch (IOError e)
         {
             warning ("SyncTeX: find document: %s", e.message);
-            return null;
+            return false;
         }
 
         EvinceApplication app = null;
@@ -170,7 +203,7 @@ public class Synctex : Object
         catch (IOError e)
         {
             warning ("SyncTeX: can not connect to evince application: %s", e.message);
-            return null;
+            return false;
         }
 
         string[] window_list = {};
@@ -182,13 +215,13 @@ public class Synctex : Object
         catch (IOError e)
         {
             warning ("SyncTeX: can not get window list: %s", e.message);
-            return null;
+            return false;
         }
 
         if (window_list.length == 0)
         {
             warning ("SyncTeX: the window list is empty.");
-            return null;
+            return false;
         }
 
         // There is normally only one window.
@@ -202,10 +235,35 @@ public class Synctex : Object
         catch (IOError e)
         {
             warning ("SyncTeX: can not connect to evince window: %s", e.message);
-            return null;
+            return false;
         }
 
-        return window;
+        add_evince_window (pdf_uri, window);
+        return true;
+    }
+
+    private void add_evince_window (string pdf_uri, EvinceWindow window)
+    {
+        _ev_windows[pdf_uri] = window;
+
+        window.sync_source.connect ((tex_uri, pos, timestamp) =>
+        {
+            File tex_file = File.new_for_uri (tex_uri);
+            if (! tex_file.query_exists ())
+            {
+                warning (@"Backward search: the file \"$tex_uri\" doesn't exist.");
+                return;
+            }
+
+            MainWindow main_window = Latexila.get_instance ().active_window;
+            main_window.jump_to_file_position (tex_file, pos.line - 1, pos.line);
+            main_window.present_with_time (timestamp);
+        });
+
+        window.closed.connect (() =>
+        {
+            _ev_windows.unset (pdf_uri);
+        });
     }
 
     private void sync_view (EvinceWindow window, string tex_path, DocPosition pos)

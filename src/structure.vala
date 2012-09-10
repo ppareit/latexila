@@ -702,7 +702,7 @@ public class Structure : Grid
     {
         try
         {
-            show_uri (get_screen (), referenced_file.get_uri (), Gdk.CURRENT_TIME);
+            Utils.show_uri (get_screen (), referenced_file.get_uri ());
         }
         catch (Error e)
         {
