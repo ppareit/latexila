@@ -1,0 +1,66 @@
+<page xmlns="http://projectmallard.org/1.0/"
+      xmlns:its="http://www.w3.org/2005/11/its"
+      type="topic"
+      id="synctex">
+
+<info>
+  <link type="guide" xref="index" />
+</info>
+
+<title>Forward and Backward Search</title>
+
+<synopsis>
+  <p>Synchronization between the document's *.tex files and the resulting PDF output,
+  opened with the <app>Evince</app> document viewer.</p>
+</synopsis>
+
+<note>
+<p>For more information, read the
+<link href="help:evince#synctex"><app>Evince</app> documentation</link>.</p>
+</note>
+
+<section id="forward_search">
+  <title>Forward Search: from .tex to PDF</title>
+
+  <p>From a certain position in the .tex source file, jump to the corresponding position
+  in the PDF file.</p>
+
+  <p>There are different ways to do a forward search:</p>
+  <list>
+    <item><p>In the menu:
+      <guiseq>
+        <gui style="menu">Search</gui>
+        <gui style="menu">Search Forward</gui>
+      </guiseq>
+    </p></item>
+    <item><p>By pressing
+      <keyseq>
+        <key>Ctrl</key>
+        <key>left click</key>
+      </keyseq>
+    </p></item>
+  </list>
+
+  <p>If a document is split into several .tex files, create a
+  <link xref="projects">project</link>. There is no need to mention the main file
+  with a LaTeX comment in each secondary .tex file, like it is explained in the
+  <link href="help:evince/synctex-search#forward-search">
+    <app>Evince</app> documentation.
+  </link></p>
+</section>
+
+<section id="backward_search">
+  <title>Backward Search</title>
+
+  <p>In <app>Evince</app>, press
+    <keyseq>
+      <key>Ctrl</key>
+      <key>left click</key>
+    </keyseq>,
+    and the corresponding position in the .tex file will be opened in
+    <app>LaTeXila</app>.</p>
+
+  <p><app>Evince</app> have to be launched by <app>LaTeXila</app>. Else, the backward
+  search will not work.</p>
+</section>
+</page>

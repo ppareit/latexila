@@ -19,7 +19,7 @@
 
   <p>
     All actions related to projects are located in the <gui style="menu">Projects</gui>
-    menu. A project contain only two pieces of information:
+    menu. A project contains only two pieces of information:
   </p>
   <list>
     <item><p>The directory where the project is located.</p></item>
@@ -36,6 +36,8 @@
   <list>
     <item><p>A <link xref="build_tools">build tool</link> is executed on the
     project's main file.</p></item>
+    <item><p>The <link xref="synctex#forward_search">forward search</link>
+    works for a secondary file of a project.</p></item>
   </list>
 </section>
 </page>

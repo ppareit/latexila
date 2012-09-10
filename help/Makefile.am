@@ -8,7 +8,8 @@ HELP_FILES = \
 	index.page		\
 	projects.page		\
 	spell_checking.page	\
-	structure.page
+	structure.page		\
+	synctex.page
 
 HELP_LINGUAS = cs de es fr gl
 
