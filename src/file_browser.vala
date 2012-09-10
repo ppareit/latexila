@@ -415,11 +415,24 @@ public class FileBrowser : Grid
                 continue;
             }
 
+            if (! show_build_files)
+            {
+                bool is_build_file = false;
+
+                foreach (string ext in clean_extensions)
+                {
+                    if (basename.has_suffix (ext))
+                    {
+                        is_build_file = true;
+                        break;
+                    }
+                }
+
+                if (is_build_file)
+                    continue;
+            }
+
             string extension = Utils.get_extension (basename);
-
-            if (! show_build_files && extension in clean_extensions)
-                continue;
-
             string stock_id = get_extension_stock_id (extension);
             insert_file (false, stock_id, basename);
         }
