@@ -1,5 +1,32 @@
 LaTeXila NEWS
 
+====================================
+* Release 2.5.3 (September 10, 2012)
+====================================
+
+- Build system: switch from CMake to the Autotools
+- SyncTeX: forward and backward search
+- Import the GtkSpell source code
+- Launcher: Added desktop actions (aka QuickList) (Matthieu Baerts)
+- Document: warning when temporary location set (bug #681226)
+- Make latexila work in application list (Pieter Pareit)
+- File browser:
+	- automatic updates (remove refresh button)
+	- simplify settings and add a settings button
+- Improve the user interface
+- Add some extensions to the clean-extensions setting
+- Update the documentation
+- Various code cleanups and refactoring
+
+- UI translations:
+	- Christian Kirbach (de)
+	- Daniel Mustieles (es)
+	- Martin Srebotnjak (sl)
+	- Matej Urbančič (sl)
+	- Miguel Rodriguez (es)
+	- Мирослав Николић (sr) (sr@latin)
+
+
 ===============================
 * Release 2.5.2 (July 24, 2012)
 ===============================
