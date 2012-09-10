@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2011 Sébastien Wilmet
+ * Copyright © 2011, 2012 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -30,21 +30,14 @@ public class CleanBuildFiles : GLib.Object
     }
 
     private unowned MainWindow  _main_window;
-    private Document            _doc;
-    private string[]            _extensions;
-    private bool                _no_confirm;
+    private Document _doc;
+    private GLib.Settings _settings;
 
     public CleanBuildFiles (MainWindow main_window, Document doc)
     {
         _main_window = main_window;
         _doc = doc;
-
-        GLib.Settings settings =
-            new GLib.Settings ("org.gnome.latexila.preferences.latex");
-        string exts = settings.get_string ("clean-extensions");
-        _extensions = exts.split (" ");
-
-        _no_confirm = settings.get_boolean ("no-confirm-clean");
+        _settings = new GLib.Settings ("org.gnome.latexila.preferences.latex");
     }
 
     public void clean ()
@@ -69,33 +62,38 @@ public class CleanBuildFiles : GLib.Object
             files_to_delete = get_build_files_simple ();
         }
 
+        bool no_confirm = _settings.get_boolean ("no-confirm-clean");
+
         if (files_to_delete.size == 0)
         {
-            if (! _no_confirm)
+            if (! no_confirm)
                 show_info_no_file ();
             return;
         }
 
-        if (_no_confirm)
+        if (no_confirm)
         {
             foreach (File file_to_delete in files_to_delete)
                 Utils.delete_file (file_to_delete);
-
-            return;
         }
-
-        confirm_cleanup (files_to_delete, directory);
+        else
+            confirm_cleanup (files_to_delete, directory);
     }
 
+    // Get the list of build files for a simple document (not part of a project).
     private Gee.ArrayList<File> get_build_files_simple ()
     {
         File location = _doc.location;
         File directory = location.get_parent ();
+
+        string exts = _settings.get_string ("clean-extensions");
+        string[] extensions = exts.split (" ");
+
         string shortname = Utils.get_shortname (location.get_basename ());
 
         Gee.ArrayList<File> files_to_delete = new Gee.ArrayList<File> ();
 
-        foreach (string extension in _extensions)
+        foreach (string extension in extensions)
         {
             string basename = shortname + extension;
             File file = directory.get_child (basename);
@@ -106,8 +104,12 @@ public class CleanBuildFiles : GLib.Object
         return files_to_delete;
     }
 
+    // Get the list of build files of a project.
     private Gee.ArrayList<File> get_build_files_in_directory (File directory)
     {
+        string exts = _settings.get_string ("clean-extensions");
+        string[] extensions = exts.split (" ");
+
         Gee.ArrayList<File> files_to_delete = new Gee.ArrayList<File> ();
         FileEnumerator enumerator;
 
@@ -156,9 +158,14 @@ public class CleanBuildFiles : GLib.Object
                 continue;
             }
 
-            string extension = Utils.get_extension (name);
-            if (extension in _extensions)
-                files_to_delete.add (file);
+            foreach (string ext in extensions)
+            {
+                if (name.has_suffix (ext))
+                {
+                    files_to_delete.add (file);
+                    break;
+                }
+            }
         }
 
         return files_to_delete;
@@ -197,8 +204,8 @@ public class CleanBuildFiles : GLib.Object
             store.set (iter,
                 CleanFileColumn.DELETE, true,
                 CleanFileColumn.NAME, relative_path,
-                CleanFileColumn.FILE, file_to_delete,
-                -1);
+                CleanFileColumn.FILE, file_to_delete
+            );
         }
 
         treeview.set_model (store);
@@ -210,9 +217,9 @@ public class CleanBuildFiles : GLib.Object
             TreeIter iter;
             bool active;
             store.get_iter (out iter, path);
-            store.get (iter, CleanFileColumn.DELETE, out active, -1);
+            store.get (iter, CleanFileColumn.DELETE, out active);
             // inverse the value
-            store.set (iter, CleanFileColumn.DELETE, ! active, -1);
+            store.set (iter, CleanFileColumn.DELETE, ! active);
         });
 
         TreeViewColumn column = new TreeViewColumn.with_attributes ("Delete?",
@@ -221,7 +228,7 @@ public class CleanBuildFiles : GLib.Object
 
         CellRendererText text_renderer = new CellRendererText ();
         column = new TreeViewColumn.with_attributes ("Name", text_renderer,
-            "text", CleanFileColumn.NAME, null);
+            "text", CleanFileColumn.NAME);
         treeview.append_column (column);
 
         return treeview;
@@ -233,8 +240,8 @@ public class CleanBuildFiles : GLib.Object
             _main_window,
             DialogFlags.DESTROY_WITH_PARENT,
             Stock.CANCEL, ResponseType.CANCEL,
-            Stock.DELETE, ResponseType.ACCEPT,
-            null);
+            Stock.DELETE, ResponseType.ACCEPT
+        );
 
         Grid grid = new Grid ();
         grid.set_column_spacing (12);
@@ -314,8 +321,8 @@ public class CleanBuildFiles : GLib.Object
         string name_a;
         string name_b;
 
-        model.get (a, CleanFileColumn.NAME, out name_a, -1);
-        model.get (b, CleanFileColumn.NAME, out name_b, -1);
+        model.get (a, CleanFileColumn.NAME, out name_a);
+        model.get (b, CleanFileColumn.NAME, out name_b);
 
         return name_a.collate (name_b);
     }
