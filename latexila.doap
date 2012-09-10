@@ -9,19 +9,21 @@
   <shortdesc xml:lang="en">LaTeXila, an Integrated LaTeX Environment</shortdesc>
   <description xml:lang="en">LaTeXila is an Integrated LaTeX Environment for GNOME, written in Vala.
 
-The main features are:
+The main features:
 
-- Customizable buttons to compile, convert and view a document in one click.
-Latexmk is used by default, but Rubber and the "low-level" commands such as
-pdflatex can also be used.
+- Customizable buttons to compile, convert and view a document in one click
 
 - LaTeX commands completion
 
 - Document structure to easily navigate in it
 
-- Symbol tables (Greek letters, arrows, etc)
+- Forward and backward search with SyncTeX
 
-- Template managing: a few default templates, creating personal ones, etc
+- Spell checking
+
+- Lists of symbols (Greek letters, arrows, etc)
+
+- Templates for creating new documents
 
 - Easy projects management
 
