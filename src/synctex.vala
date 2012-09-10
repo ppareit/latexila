@@ -139,7 +139,8 @@ public class Synctex : Object
         DocPosition pos = DocPosition ();
 
         pos.line = iter.get_line () + 1;
-        pos.column = iter.get_line_offset ();
+        // ignore the column, it gives a better result.
+        pos.column = -1;
 
         return pos;
     }
