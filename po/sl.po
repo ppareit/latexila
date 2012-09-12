@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-10 04:43+0000\n"
-"PO-Revision-Date: 2012-09-12 13:02+0100\n"
+"POT-Creation-Date: 2012-09-12 11:26+0000\n"
+"PO-Revision-Date: 2012-09-12 21:01+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: \n"
@@ -251,9 +251,8 @@ msgid "Show build output warnings"
 msgstr "Pokaži opozorila ob gradnji"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
-#, fuzzy
 msgid "Show build output badboxes"
-msgstr "Pokaži opozorila ob gradnji"
+msgstr "Pokaži pojavna okna napak izgradnje"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
 msgid "Interactive completion"
