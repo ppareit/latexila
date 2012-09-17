@@ -166,21 +166,21 @@ public class DocumentView : Gtk.SourceView
     public void set_font_from_string (string font)
     {
         _font_desc = Pango.FontDescription.from_string (font);
-        modify_font (_font_desc);
+        override_font (_font_desc);
     }
 
     public void enlarge_font ()
     {
         // this is not saved in the settings
         _font_desc.set_size (_font_desc.get_size () + Pango.SCALE);
-        modify_font (_font_desc);
+        override_font (_font_desc);
     }
 
     public void shrink_font ()
     {
         // this is not saved in the settings
         _font_desc.set_size (_font_desc.get_size () - Pango.SCALE);
-        modify_font (_font_desc);
+        override_font (_font_desc);
     }
 
     public string get_indentation_style ()
