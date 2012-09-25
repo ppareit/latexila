@@ -305,8 +305,11 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         _calltip_window = new SourceCompletionInfo ();
 
         // HACK: no scrollbars
-        ScrolledWindow scrolled_window = _calltip_window.get_child () as ScrolledWindow;
-        scrolled_window.set_policy (PolicyType.NEVER, PolicyType.NEVER);
+        if (_calltip_window.get_child () is ScrolledWindow)
+        {
+            ScrolledWindow sw = _calltip_window.get_child () as ScrolledWindow;
+            sw.set_policy (PolicyType.NEVER, PolicyType.NEVER);
+        }
 
         _calltip_window_label = new Label (null);
         _calltip_window.set_widget (_calltip_window_label);
