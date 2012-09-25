@@ -23,7 +23,7 @@
       <_description>A custom font that will be used for the editing area. This will only take effect if the "Use Default Font" option is turned off.</_description>
     </key>
     <key name="scheme" type="s">
-      <default>'classic'</default>
+      <default>'tango'</default>
       <_summary>Style Scheme</_summary>
       <_description>The ID of a GtkSourceView Style Scheme used to color the text.</_description>
     </key>
