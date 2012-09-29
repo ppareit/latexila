@@ -1,0 +1,2442 @@
+# Russian translation for latexila.
+# Copyright (C) 2012 latexila's COPYRIGHT HOLDER
+# This file is distributed under the same license as the latexila package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Yuri Myasoedov <omerta13@yandex.ru>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latexila master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=latexila&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2012-09-10 03:36+0000\n"
+"PO-Revision-Date: 2012-09-29 12:20+0400\n"
+"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
+"Language-Team: русский <gnome-cyr@gnome.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
+"X-Poedit-Language: Russian\n"
+"X-Poedit-Country: RUSSIAN FEDERATION\n"
+
+#: build_tools.xml:45(tool/label) ../src/build_tool_dialog.vala:166
+msgid "View PDF"
+msgstr "Просмотреть PDF"
+
+#: build_tools.xml:46(tool/description)
+msgid "View the PDF file"
+msgstr "Просмотр файла PDF"
+
+#: build_tools.xml:51(tool/label) ../src/build_tool_dialog.vala:165
+msgid "View DVI"
+msgstr "Просмотреть DVI"
+
+#: build_tools.xml:52(tool/description)
+msgid "View the DVI file"
+msgstr "Просмотр файла DVI"
+
+#: build_tools.xml:57(tool/label) ../src/build_tool_dialog.vala:167
+msgid "View PS"
+msgstr "Просмотреть PS"
+
+#: build_tools.xml:58(tool/description)
+msgid "View the PostScript file"
+msgstr "Просмотр файла PostScript"
+
+#: build_tools.xml:92(tool/description)
+msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
+msgstr "Создать PDF-файл из LaTeX с помощью команды «pdflatex»"
+
+#: build_tools.xml:98(tool/description)
+msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
+msgstr "Создать DVI-файл из LaTeX с помощью команды «latex»"
+
+#: build_tools.xml:106(tool/description)
+msgid "Run BibTeX (bibliography)"
+msgstr "Запустить BibTeX (библиография)"
+
+#: build_tools.xml:112(tool/description)
+msgid "Run MakeIndex"
+msgstr "Запустить MakeIndex"
+
+#: build_tools.xml:120(tool/description)
+msgid "Convert the DVI document to the PDF format"
+msgstr "Преобразовать документ DVI в формат PDF"
+
+#: build_tools.xml:126(tool/description)
+msgid "Convert the DVI document to the PostScript format"
+msgstr "Преобразовать документ DVI в формат PostScript"
+
+#: build_tools.xml:132(tool/description)
+msgid "Convert the PostScript document to the PDF format"
+msgstr "Преобразовать документ PostScript в формат PDF"
+
+#: ../data/latexila.desktop.in.in.h:1
+#| msgid "About LaTeXila"
+msgid "LaTeXila"
+msgstr "LaTeXila"
+
+#: ../data/latexila.desktop.in.in.h:2
+#| msgid "- Integrated LaTeX Environment for GNOME"
+msgid "Integrated LaTeX Environment"
+msgstr "Интегрированная среда LaTeX"
+
+#: ../data/latexila.desktop.in.in.h:3
+#, fuzzy
+#| msgid "Open the LaTeXila documentation"
+msgid "Edit LaTeX documents"
+msgstr "Открыть документацию LaTeXila"
+
+#: ../data/latexila.desktop.in.in.h:4
+#| msgid "_Move to New Window"
+msgid "Open a New Window"
+msgstr "Открыть новое окно"
+
+#: ../data/latexila.desktop.in.in.h:5
+#| msgid "Unsaved Document"
+msgid "Open a New Document"
+msgstr "Открыть новый документ"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:1
+msgid "Use Default Font"
+msgstr "Использовать шрифт по умолчанию"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:2
+msgid ""
+"Whether to use the system's default fixed width font for editing text "
+"instead of a font specific to LaTeXila. If this option is turned off, then "
+"the font named in the \"Editor Font\" option will be used instead of the "
+"system font."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:3
+#| msgid "Editor _font: "
+msgid "Editor Font"
+msgstr "Шрифт редактора"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:4
+msgid ""
+"A custom font that will be used for the editing area. This will only take "
+"effect if the \"Use Default Font\" option is turned off."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:5
+#, fuzzy
+#| msgid "Color Scheme"
+msgid "Style Scheme"
+msgstr "Цветовая схема"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:6
+msgid "The ID of a GtkSourceView Style Scheme used to color the text."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:7
+msgid "Create Backup Copies"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:8
+msgid "Whether LaTeXila should create backup copies for the files it saves."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:9
+msgid "Autosave"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:10
+msgid ""
+"Whether LaTeXila should automatically save modified files after a time "
+"interval. You can set the time interval with the \"Autosave Interval\" "
+"option."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:11
+msgid "Autosave Interval"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:12
+msgid ""
+"Number of minutes after which LaTeXila will automatically save modified "
+"files. This will only take effect if the \"Autosave\" option is turned on."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:13
+#: ../src/ui/preferences_dialog.ui.h:9
+msgid "Reopen files on startup"
+msgstr "Переоткрывать файлы при запуске"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:14
+msgid "Whether LaTeXila should reopen the files that was opened the last time."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:15
+msgid "Tab Size"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:16
+msgid ""
+"Specifies the number of spaces that should be displayed instead of Tab "
+"characters."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:17
+#, fuzzy
+#| msgid "Insert spaces instead of tabs"
+msgid "Insert spaces"
+msgstr "Вставлять пробелы вместо табуляции"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:18
+#, fuzzy
+#| msgid "Insert spaces instead of tabs"
+msgid "Whether LaTeXila should insert spaces instead of tabs."
+msgstr "Вставлять пробелы вместо табуляции"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:19
+msgid "Forget no tabulations"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:20
+msgid "Forget you are not using tabulations."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:21
+#, fuzzy
+#| msgid "Display line numbers"
+msgid "Display Line Numbers"
+msgstr "Показывать номера строк"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:22
+msgid "Whether LaTeXila should display line numbers in the editing area."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:23
+#, fuzzy
+#| msgid "Highlight current line"
+msgid "Highlight Current Line"
+msgstr "Подсвечивать текущую строку"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:24
+msgid "Whether LaTeXila should highlight the current line."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:25
+#, fuzzy
+#| msgid "Highlight matching brackets"
+msgid "Highlight Matching Brackets"
+msgstr "Подсвечивать парные скобки"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:26
+#, fuzzy
+#| msgid "Highlight matching brackets"
+msgid "Whether LaTeXila should highlight matching brackets."
+msgstr "Подсвечивать парные скобки"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:27
+msgid "Spell checking"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:28
+#, fuzzy
+#| msgid "_Main Toolbar"
+msgid "Main toolbar is visible"
+msgstr "_Главная панель инструментов"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:29
+msgid ""
+"Whether the main toolbar (file open, close, build, ...) should be visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:30
+#, fuzzy
+#| msgid "_Edit Toolbar"
+msgid "Edit toolbar is visible"
+msgstr "Панель инструментов р_едактирования"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:31
+msgid ""
+"Whether the edit toolbar (bold, italic, character sizes, ...) should be "
+"visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:32
+#, fuzzy
+#| msgid "_Side panel"
+msgid "Side panel is Visible"
+msgstr "_Боковая панель"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:33
+msgid ""
+"Whether the side panel at the left of editing windows should be visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:34
+#, fuzzy
+#| msgid "_Bottom panel"
+msgid "Bottom panel is Visible"
+msgstr "Ни_жняя панель"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:35
+msgid "Whether the bottom panel containing the build view should be visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:36
+#, fuzzy
+#| msgid "_Side panel"
+msgid "Side panel component"
+msgstr "_Боковая панель"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
+msgid "Side panel active component. 0: Symbols. 1: File browser."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
+#, fuzzy
+#| msgid "Show Warnings"
+msgid "Show build output warnings"
+msgstr "Показывать предупреждения"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
+msgid "Show build output badboxes"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
+#, fuzzy
+#| msgid "Interactive completion after"
+msgid "Interactive completion"
+msgstr "Интерактивное завершение после"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
+msgid "Automatically show commands proposals"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
+#, fuzzy
+#| msgid "Interactive completion after"
+msgid "Interactive completion min chars"
+msgstr "Интерактивное завершение после"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
+#, fuzzy
+#| msgid "Number of characters after '\\'"
+msgid "Minimum number of characters after '\\' for interactive completion"
+msgstr "Количество символов после '\\'"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
+msgid "No confirmation clean-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
+#: ../src/ui/preferences_dialog.ui.h:19
+msgid "No confirmation when cleaning-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
+msgid "Automatic clean-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
+msgid ""
+"Automatically clean-up files after close. no-confirm-clean must be true."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
+msgid "File extensions for clean-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:49
+#, fuzzy
+#| msgid "The extensions are separated by spaces."
+msgid "The file extensions for the clean-up are separated by spaces"
+msgstr "Расширения разделяются пробелами."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
+msgid "Enabled default build tools"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
+msgid "The list of the default build tools that are enabled"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
+msgid "Disabled default build tools"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
+msgid "The list of the default build tools that are disabled"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
+#, fuzzy
+#| msgid "Go to the parent directory"
+msgid "Current directory"
+msgstr "Перейти в родительский каталог"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
+#, fuzzy
+#| msgid "Go to the active document directory"
+msgid "URI of the file browser current directory"
+msgstr "Перейти в каталог активного документа"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
+#: ../src/file_browser.vala:278
+#, fuzzy
+#| msgid "Show all files"
+msgid "Show build files"
+msgstr "Показывать все файлы"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
+msgid ""
+"Show files with an extension present in preferences.latex.clean-extensions."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
+#: ../src/file_browser.vala:286
+#, fuzzy
+#| msgid "Show all files"
+msgid "Show hidden files"
+msgstr "Показывать все файлы"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:59
+#, fuzzy
+#| msgid "Show hidden files (beginning with a dot)"
+msgid "Show files beginning with a dot."
+msgstr "Показывать скрытые файлы (имя которых начинается с точки)"
+
+#. This must be translated by a usepackage LaTeX command.
+#: article.xml:8(template/babel) beamer.xml:8(template/babel)
+#: book.xml:8(template/babel) report.xml:8(template/babel)
+#, no-wrap
+msgid ""
+"\n"
+"% babel package or equivalent\n"
+msgstr ""
+
+#. There is a helper script in data/templates/tex2po.sh
+#: letter.xml:2(template/translatableChunk)
+#, no-wrap
+msgid ""
+"\n"
+"\\documentclass[a4paper,11pt]{letter}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\n"
+"\\address{Your name\\\\Your address\\\\Your phone number}\n"
+"\\signature{Your name}\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{Destination\\\\Address of the destination\\\\Phone number of the destination}\n"
+"\n"
+"\\opening{Dear Sir,}\n"
+"\n"
+"% corps of the letter\n"
+"\n"
+"\\closing{Yours sincerely,}\n"
+"\n"
+"%\\cc{Other destination}\n"
+"%\\ps{PS: PostScriptum}\n"
+"%\\encl{Enclosures}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
+msgstr ""
+
+#: ../src/bottom_panel.vala:53 ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "Скрыть панель"
+
+#: ../src/build_tool_dialog.vala:81
+msgid "Build Tool (read-only)"
+msgstr "Инструмент сборки (только чтение)"
+
+#: ../src/build_tool_dialog.vala:88
+msgid "Build Tool"
+msgstr "Инструмент сборки"
+
+#: ../src/build_tool_dialog.vala:159
+msgid "Execute"
+msgstr "Выполнить"
+
+#: ../src/build_tool_dialog.vala:163
+msgid "Convert"
+msgstr "Преобразовать"
+
+#: ../src/build_tool_dialog.vala:164
+msgid "View File"
+msgstr "Просмотреть файл"
+
+#: ../src/build_tool_dialog.vala:228
+msgid "Commands"
+msgstr "Команды"
+
+#: ../src/build_tool_dialog.vala:238
+msgid "Post Processor"
+msgstr "Постобработчик"
+
+#: ../src/build_tool_dialog.vala:265 ../src/build_tools_preferences.vala:289
+msgid "Add..."
+msgstr "Добавить..."
+
+#: ../src/build_tool_dialog.vala:282 ../src/build_tools_preferences.vala:306
+msgid "Remove"
+msgstr "Удалить"
+
+#: ../src/build_tool_dialog.vala:312 ../src/build_tools_preferences.vala:346
+msgid "Move up"
+msgstr "Переместить вверх"
+
+#: ../src/build_tool_dialog.vala:363 ../src/build_tools_preferences.vala:398
+msgid "Move down"
+msgstr "Переместить вниз"
+
+#: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
+#: ../src/latex_menu.vala:52 ../src/structure.vala:772
+msgid "Label"
+msgstr "Метка"
+
+#: ../src/build_tool_dialog.vala:568
+msgid "You can select this arrow and copy/paste it!"
+msgstr "Вы можете выбрать эту стрелку и скопировать/вставить её!"
+
+#: ../src/build_tool_dialog.vala:584
+msgid "Description"
+msgstr "Описание"
+
+#: ../src/build_tool_dialog.vala:590
+msgid "File extensions for which the build tool can be executed."
+msgstr "Расширения файлов, для которых можно запускать инструмент сборки."
+
+#: ../src/build_tool_dialog.vala:591
+msgid "The extensions are separated by spaces."
+msgstr "Расширения разделяются пробелами."
+
+#: ../src/build_tool_dialog.vala:592
+msgid "If it is empty, all extensions are allowed."
+msgstr "Если пусто, разрешены все расширения."
+
+#: ../src/build_tool_dialog.vala:594
+msgid "Extensions"
+msgstr "Расширения"
+
+#: ../src/build_tool_dialog.vala:599
+msgid "Icon"
+msgstr "Значок"
+
+#. Placeholders
+#: ../src/build_tool_dialog.vala:606
+msgid "Placeholders:"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:610
+msgid "The active document's filename."
+msgstr "Имя файла активного документа."
+
+#: ../src/build_tool_dialog.vala:611 ../src/build_tool_dialog.vala:616
+msgid "If the active document belongs to a project, the main file is choosen."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:615
+msgid "The active document's filename without its extension."
+msgstr "Имя файла (без расширения) активного документа."
+
+#: ../src/build_tool_dialog.vala:659
+msgid "Jobs"
+msgstr "Задания"
+
+#: ../src/build_tool_dialog.vala:665
+msgid "List of files to open after executing the build jobs."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:666
+msgid "The files are separated by spaces."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:667
+msgid "You should use the placeholders to specify the files."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:670
+msgid "Files to open"
+msgstr ""
+
+#: ../src/build_tool_runner.vala:187
+#, c-format
+msgid "%s doesn't seem to be installed."
+msgstr ""
+
+#: ../src/build_tool_runner.vala:259
+#, c-format
+msgid "Open %s"
+msgstr "Открыть %s"
+
+#: ../src/build_tool_runner.vala:268
+#, c-format
+msgid "The file '%s' doesn't exist."
+msgstr "Файл «%s» не существует."
+
+#: ../src/build_tool_runner.vala:285
+#, c-format
+msgid "Failed to open '%s':"
+msgstr "Не удалось открыть «%s»:"
+
+#: ../src/build_tools_preferences.vala:53
+msgid "Build Tools"
+msgstr "Инструменты сборки"
+
+#: ../src/build_tools_preferences.vala:109
+msgid "Default build tools"
+msgstr "Инструменты сборки по умолчанию"
+
+#: ../src/build_tools_preferences.vala:129
+msgid "Personal build tools"
+msgstr "Личные инструменты сборки"
+
+#: ../src/build_tools_preferences.vala:172
+#| msgid "Table"
+msgid "Enabled"
+msgstr "Включено"
+
+#: ../src/build_tools_preferences.vala:274
+#, c-format
+msgid "%s [copy]"
+msgstr ""
+
+#: ../src/build_tools_preferences.vala:324
+#, c-format
+msgid "Do you really want to delete the build tool \"%s\"?"
+msgstr ""
+
+#: ../src/clean_build_files.vala:267
+msgid "Do you really want to delete these files?"
+msgstr "Действительно удалить эти файлы?"
+
+#. secondary label
+#: ../src/clean_build_files.vala:272
+msgid "Select the files you want to delete:"
+msgstr "Выберите файлы, которые хотите удалить:"
+
+#: ../src/clean_build_files.vala:336
+msgid "No build file to clean up."
+msgstr ""
+
+#: ../src/completion.vala:292
+msgid "No matching proposal"
+msgstr ""
+
+#. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
+#. "Column". Please, use abbreviations if possible.
+#: ../src/custom_statusbar.vala:41
+#, c-format
+msgid "Ln %d, Col %d"
+msgstr "Стр. %d, кол. %d"
+
+#: ../src/dialogs.vala:40 ../src/main_window.vala:730
+msgid "Close without Saving"
+msgstr "Закрыть без сохранения"
+
+#: ../src/dialogs.vala:66
+#, c-format
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+"Открыто %d документов с не сохранёнными изменениями. Сохранить изменения "
+"перед закрытием?"
+
+#: ../src/dialogs.vala:72
+msgid "Select the documents you want to save:"
+msgstr "Выберите документы, которые хотите сохранить:"
+
+#: ../src/dialogs.vala:129
+msgid "If you don't save, all your changes will be permanently lost."
+msgstr ""
+"Если не выполнить сохранение, все изменения будут безвозвратно утеряны."
+
+#: ../src/document_structure.vala:720
+msgid "The structure item already contains a sub-paragraph."
+msgstr "Элемент структуры уже содержит подпараграф"
+
+#: ../src/document_tab.vala:173
+msgid "Close document"
+msgstr "Закрыть документ"
+
+#. main file
+#: ../src/document_tab.vala:233 ../src/project_dialogs.vala:44
+#: ../src/project_dialogs.vala:47 ../src/project_dialogs.vala:139
+#: ../src/project_dialogs.vala:142 ../src/project_dialogs.vala:216
+msgid "Main File"
+msgstr "Главный файл"
+
+#: ../src/document_tab.vala:235
+msgid "Main File:"
+msgstr "Главный файл:"
+
+#: ../src/document_tab.vala:259
+#, c-format
+msgid "Activate '%s'"
+msgstr "Активировать «%s»"
+
+#: ../src/document_tab.vala:278
+#, c-format
+msgid "The file %s changed on disk."
+msgstr "Файл %s изменён на диске."
+
+#: ../src/document_tab.vala:283
+msgid "Do you want to drop your changes and reload the file?"
+msgstr "Отменить ваши изменения и перезагрузить файл?"
+
+#: ../src/document_tab.vala:285
+msgid "Do you want to reload the file?"
+msgstr "Вы хотите перезагрузить файл?"
+
+#: ../src/document_tab.vala:289
+msgid "Reload"
+msgstr "Перезагрузить"
+
+#: ../src/document.vala:144
+#, c-format
+msgid "Impossible to load the file '%s'."
+msgstr "Невозможно загрузить файл «%s»."
+
+#: ../src/document.vala:220
+#, c-format
+msgid "The file %s has been modified since reading it."
+msgstr "В файл %s с момента его чтения были внесены изменения."
+
+#: ../src/document.vala:223
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Если вы сохраните его, все внешние изменения будут потеряны. Всё равно "
+"сохранить?"
+
+#: ../src/document.vala:226
+msgid "Save Anyway"
+msgstr "Всё равно сохранить"
+
+#: ../src/document.vala:228
+msgid "Don't Save"
+msgstr "Не сохранять"
+
+#: ../src/document.vala:240
+msgid "Impossible to save the file."
+msgstr "Не удалось сохранить файл."
+
+#: ../src/document.vala:265
+msgid "Error trying to convert the document to UTF-8"
+msgstr "Ошибка при попытке преобразовать документ в UTF-8"
+
+#: ../src/document.vala:319
+msgid "Unsaved Document"
+msgstr "Несохранённый"
+
+#: ../src/document.vala:612
+msgid ""
+"The file has a temporary location. The data can be lost after rebooting your "
+"computer."
+msgstr ""
+
+#: ../src/document.vala:613
+#| msgid "Do you want to reload the file?"
+msgid "Do you want to save the file in a safer place?"
+msgstr "Сохранить файл в надёжном месте?"
+
+#: ../src/file_browser.vala:216
+msgid "Go to the home directory"
+msgstr "Перейти в домашний каталог"
+
+#: ../src/file_browser.vala:230
+msgid "Go to the parent directory"
+msgstr "Перейти в родительский каталог"
+
+#: ../src/file_browser.vala:245
+msgid "Go to the active document directory"
+msgstr "Перейти в каталог активного документа"
+
+#: ../src/file_browser.vala:333
+msgid "File System"
+msgstr "Файловая система"
+
+#: ../src/file_browser.vala:452 ../src/main_window.vala:379
+msgid "File Browser"
+msgstr "Обозреватель файлов"
+
+#: ../src/gtkspell/gtkspell.c:356
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(нет вариантов)</i>"
+
+#: ../src/gtkspell/gtkspell.c:368
+msgid "More..."
+msgstr ""
+
+#. + Add to Dictionary
+#: ../src/gtkspell/gtkspell.c:388
+#, c-format
+msgid "Add \"%s\" to Dictionary"
+msgstr ""
+
+#. - Ignore All
+#: ../src/gtkspell/gtkspell.c:399
+#| msgid "_Close All"
+msgid "Ignore All"
+msgstr "Игнорировать всё"
+
+#. on top: language selection
+#: ../src/gtkspell/gtkspell.c:494
+msgid "Languages"
+msgstr "Языки"
+
+#: ../src/gtkspell/gtkspell.c:584
+#, c-format
+msgid "enchant error for language: %s"
+msgstr ""
+
+#. LaTeX: Sectioning
+#: ../src/latex_menu.vala:32
+msgid "_Sectioning"
+msgstr "Сек_ционирование"
+
+#: ../src/latex_menu.vala:34 ../src/structure.vala:765
+msgid "Part"
+msgstr "Часть"
+
+#: ../src/latex_menu.vala:36 ../src/structure.vala:766
+msgid "Chapter"
+msgstr "Глава"
+
+#: ../src/latex_menu.vala:38 ../src/structure.vala:767
+msgid "Section"
+msgstr "Раздел"
+
+#: ../src/latex_menu.vala:40 ../src/structure.vala:768
+msgid "Sub-section"
+msgstr "Подраздел"
+
+#: ../src/latex_menu.vala:42 ../src/structure.vala:769
+msgid "Sub-sub-section"
+msgstr "Подподраздел"
+
+#: ../src/latex_menu.vala:44 ../src/structure.vala:770
+msgid "Paragraph"
+msgstr "Параграф"
+
+#: ../src/latex_menu.vala:46 ../src/structure.vala:771
+msgid "Sub-paragraph"
+msgstr "Подпараграф"
+
+#. LaTeX: References
+#: ../src/latex_menu.vala:50
+msgid "_References"
+msgstr "_Ссылки"
+
+#: ../src/latex_menu.vala:54
+msgid "Reference to a label"
+msgstr "Ссылка на метку"
+
+#: ../src/latex_menu.vala:56
+msgid "Page reference to a label"
+msgstr "Ссылка на страницу с меткой"
+
+#: ../src/latex_menu.vala:58
+msgid "Add a word to the index"
+msgstr "Добавить слово в индекс"
+
+#: ../src/latex_menu.vala:60
+msgid "Footnote"
+msgstr "Сноска"
+
+#: ../src/latex_menu.vala:62
+msgid "Reference to a bibliography item"
+msgstr "Ссылка на элемент библиографии"
+
+#: ../src/latex_menu.vala:68
+msgid "Center - \\begin{center}"
+msgstr "По центру — \\begin{center}"
+
+#: ../src/latex_menu.vala:70
+msgid "Align Left - \\begin{flushleft}"
+msgstr "По левому краю — \\begin{flushleft}"
+
+#: ../src/latex_menu.vala:72
+msgid "Align Right - \\begin{flushright}"
+msgstr "По правому краю — \\begin{flushright}"
+
+#: ../src/latex_menu.vala:74
+msgid "Figure - \\begin{figure}"
+msgstr "Фигура — \\begin{figure}"
+
+#: ../src/latex_menu.vala:76
+msgid "Table - \\begin{table}"
+msgstr "Таблица — \\begin{table}"
+
+#: ../src/latex_menu.vala:78
+msgid "Quote - \\begin{quote}"
+msgstr "Короткая цитата — \\begin{quote}"
+
+#: ../src/latex_menu.vala:80
+msgid "Quotation - \\begin{quotation}"
+msgstr "Цитата — \\begin{quotation}"
+
+#: ../src/latex_menu.vala:82
+msgid "Verse - \\begin{verse}"
+msgstr "Стихи — \\begin{verse}"
+
+#: ../src/latex_menu.vala:84
+msgid "Verbatim - \\begin{verbatim}"
+msgstr ""
+
+#: ../src/latex_menu.vala:86
+msgid "Minipage - \\begin{minipage}"
+msgstr ""
+
+#: ../src/latex_menu.vala:88
+msgid "Title page - \\begin{titlepage}"
+msgstr "Титульный лист — \\begin{titlepage}"
+
+#. LaTeX: list environments
+#: ../src/latex_menu.vala:92
+msgid "_List Environments"
+msgstr "С_писки"
+
+#: ../src/latex_menu.vala:94
+msgid "Bulleted List - \\begin{itemize}"
+msgstr "Маркированный список — \\begin{itemize}"
+
+#: ../src/latex_menu.vala:96
+msgid "Enumeration - \\begin{enumerate}"
+msgstr "Нумерованный список — \\begin{enumerate}"
+
+#: ../src/latex_menu.vala:98
+msgid "Description - \\begin{description}"
+msgstr "Описание — \\begin{description}"
+
+#: ../src/latex_menu.vala:100
+msgid "Custom list - \\begin{list}"
+msgstr "Произвольный список — \\begin{list}"
+
+#: ../src/latex_menu.vala:102
+msgid "List item - \\item"
+msgstr "Элемент списка — \\item"
+
+#. LaTeX: character sizes
+#: ../src/latex_menu.vala:106
+msgid "_Characters Sizes"
+msgstr "Раз_меры символов"
+
+#. LaTeX: font styles
+#: ../src/latex_menu.vala:130
+msgid "_Font Styles"
+msgstr "Стили _шрифта"
+
+#: ../src/latex_menu.vala:132
+msgid "Bold - \\textbf"
+msgstr "Жирный — \\textbf"
+
+#: ../src/latex_menu.vala:134
+msgid "Italic - \\textit"
+msgstr "Курсив — \\textit"
+
+#: ../src/latex_menu.vala:136
+msgid "Typewriter - \\texttt"
+msgstr "Машинописный текст — \\texttt"
+
+#: ../src/latex_menu.vala:138
+msgid "Slanted - \\textsl"
+msgstr "Наклонный — \\textsl"
+
+#: ../src/latex_menu.vala:140
+msgid "Small Capitals - \\textsc"
+msgstr "Капитель — \\textsc"
+
+#: ../src/latex_menu.vala:142
+msgid "Sans Serif - \\textsf"
+msgstr "Рубленый шрифт — \\textsf"
+
+#: ../src/latex_menu.vala:144
+msgid "Emphasized - \\emph"
+msgstr "Выделение — \\emph"
+
+#: ../src/latex_menu.vala:146
+msgid "Underline - \\underline"
+msgstr "Подчёркивание — \\underline"
+
+#: ../src/latex_menu.vala:148
+msgid "_Font Family"
+msgstr "Семе_йство шрифтов"
+
+#: ../src/latex_menu.vala:150
+msgid "Roman - \\rmfamily"
+msgstr "Roman — \\rmfamily"
+
+#: ../src/latex_menu.vala:152
+msgid "Sans Serif - \\sffamily"
+msgstr "Sans Serif — \\sffamily"
+
+#: ../src/latex_menu.vala:154
+msgid "Monospace - \\ttfamily"
+msgstr "Моноширинный — \\ttfamily"
+
+#: ../src/latex_menu.vala:156
+msgid "F_ont Series"
+msgstr "Нас_ыщенность шрифта"
+
+#: ../src/latex_menu.vala:158
+msgid "Medium - \\mdseries"
+msgstr "Простой — \\mdseries"
+
+#: ../src/latex_menu.vala:160
+msgid "Bold - \\bfseries"
+msgstr "Полужирный — \\bfseries"
+
+#: ../src/latex_menu.vala:162
+msgid "Fo_nt Shape"
+msgstr "На_чертание шрифта"
+
+#: ../src/latex_menu.vala:164
+msgid "Upright - \\upshape"
+msgstr "Обычное — \\upshape"
+
+#: ../src/latex_menu.vala:166
+msgid "Italic - \\itshape"
+msgstr "Курсив — \\itshape"
+
+#: ../src/latex_menu.vala:168
+msgid "Slanted - \\slshape"
+msgstr "Наклонное — \\slshape"
+
+#: ../src/latex_menu.vala:170
+msgid "Small Capitals - \\scshape"
+msgstr "Капитель — \\scshape"
+
+#. LaTeX: Tabular
+#: ../src/latex_menu.vala:174
+msgid "_Tabular"
+msgstr "_Таблицы"
+
+#: ../src/latex_menu.vala:176
+msgid "Tabbing - \\begin{tabbing}"
+msgstr "Табуляция — \\begin{tabbing}"
+
+#: ../src/latex_menu.vala:178
+msgid "Tabular - \\begin{tabular}"
+msgstr "Таблица — \\begin{tabular}"
+
+#: ../src/latex_menu.vala:180
+msgid "Multicolumn - \\multicolumn"
+msgstr "Объединение ячеек — \\multicolumn"
+
+#: ../src/latex_menu.vala:182
+msgid "Horizontal line - \\hline"
+msgstr "Горизонтальная линия — \\hline"
+
+#: ../src/latex_menu.vala:184
+msgid "Vertical line - \\vline"
+msgstr "Вертикальная линия — \\vline"
+
+#: ../src/latex_menu.vala:186
+msgid "Horizontal line (columns specified) - \\cline"
+msgstr "Горизонтальная линия (в указанных столбцах) — \\cline"
+
+#: ../src/latex_menu.vala:192
+msgid "Frame - \\begin{frame}"
+msgstr "Слайд — \\begin{frame}"
+
+#: ../src/latex_menu.vala:194
+msgid "Block - \\begin{block}"
+msgstr "Структурный блок — \\begin{block}"
+
+#: ../src/latex_menu.vala:196
+msgid "Two columns - \\begin{columns}"
+msgstr "Две колонки — \\begin{columns}"
+
+#. LaTeX: Spacing
+#: ../src/latex_menu.vala:200
+msgid "_Spacing"
+msgstr "_Отступы"
+
+#: ../src/latex_menu.vala:201
+msgid "New _Line"
+msgstr "_Новая строка"
+
+#: ../src/latex_menu.vala:202
+msgid "New Line - \\\\"
+msgstr "Новая строка — \\\\"
+
+#: ../src/latex_menu.vala:204
+msgid "New page - \\newpage"
+msgstr "Новая страница — \\newpage"
+
+#: ../src/latex_menu.vala:206
+msgid "Line break - \\linebreak"
+msgstr "Разрыв строки — \\linebreak"
+
+#: ../src/latex_menu.vala:208
+msgid "Page break - \\pagebreak"
+msgstr "Разрыв страницы — \\pagebreak"
+
+#: ../src/latex_menu.vala:210
+msgid "Big skip - \\bigskip"
+msgstr "Большой промежуток — \\bigskip"
+
+#: ../src/latex_menu.vala:212
+msgid "Medium skip - \\medskip"
+msgstr "Средний промежуток — \\medskip"
+
+#: ../src/latex_menu.vala:214
+msgid "Horizontal space - \\hspace"
+msgstr "Горизонтальный отступ — \\hspace"
+
+#: ../src/latex_menu.vala:216
+msgid "Vertical space - \\vspace"
+msgstr "Вертикальный отступ — \\vspace"
+
+#: ../src/latex_menu.vala:218
+msgid "No paragraph indentation - \\noindent"
+msgstr "Без красной строки — \\noindent"
+
+#. LaTeX: International accents
+#: ../src/latex_menu.vala:222
+msgid "International _Accents"
+msgstr "Ме_ждународные акценты"
+
+#: ../src/latex_menu.vala:223
+msgid "Acute accent - \\'"
+msgstr "Акут — \\'"
+
+#: ../src/latex_menu.vala:224
+msgid "Grave accent - \\`"
+msgstr "Гравис — \\`"
+
+#: ../src/latex_menu.vala:225
+msgid "Circumflex accent - \\^"
+msgstr "Циркумфлекс — \\^"
+
+#: ../src/latex_menu.vala:226
+msgid "Trema - \\\""
+msgstr ""
+
+#: ../src/latex_menu.vala:227
+msgid "Tilde - \\~"
+msgstr "Тильда — \\~"
+
+#: ../src/latex_menu.vala:228
+msgid "Macron - \\="
+msgstr "Знак долготы — \\="
+
+#: ../src/latex_menu.vala:229
+msgid "Dot above - \\."
+msgstr ""
+
+#: ../src/latex_menu.vala:230
+msgid "Caron - \\v"
+msgstr ""
+
+#: ../src/latex_menu.vala:231
+msgid "Breve - \\u"
+msgstr ""
+
+#: ../src/latex_menu.vala:233
+msgid "Double acute accent - \\H"
+msgstr ""
+
+#: ../src/latex_menu.vala:234
+msgid "Cedilla - \\c"
+msgstr "Седиль — \\c"
+
+#: ../src/latex_menu.vala:235
+msgid "Ogonek - \\k"
+msgstr ""
+
+#: ../src/latex_menu.vala:236
+msgid "Dot below - \\d"
+msgstr ""
+
+#: ../src/latex_menu.vala:237
+msgid "Macron below - \\b"
+msgstr ""
+
+#: ../src/latex_menu.vala:238
+msgid "Ring - \\r"
+msgstr ""
+
+#: ../src/latex_menu.vala:239
+msgid "Tie - \\t"
+msgstr ""
+
+#. LaTeX: Others
+#: ../src/latex_menu.vala:243
+msgid "_Misc"
+msgstr "Про_чее"
+
+#: ../src/latex_menu.vala:245
+msgid "Document class - \\documentclass"
+msgstr "Класс документа — \\documentclass"
+
+#: ../src/latex_menu.vala:247
+msgid "Use package - \\usepackage"
+msgstr "Использовать пакет — \\usepackage"
+
+#: ../src/latex_menu.vala:248
+msgid "_AMS packages"
+msgstr "Пакеты _AMS"
+
+#: ../src/latex_menu.vala:249
+msgid "AMS packages"
+msgstr "Пакеты AMS"
+
+#: ../src/latex_menu.vala:250
+msgid "Author - \\author"
+msgstr "Автор — \\author"
+
+#: ../src/latex_menu.vala:251
+msgid "Title - \\title"
+msgstr "Заглавие — \\title"
+
+#: ../src/latex_menu.vala:253
+msgid "Content of the document - \\begin{document}"
+msgstr "Содержимое документа — \\begin{document}"
+
+#: ../src/latex_menu.vala:255
+msgid "Make title - \\maketitle"
+msgstr "Титульный заголовок — \\maketitle"
+
+#: ../src/latex_menu.vala:257
+msgid "Table of contents - \\tableofcontents"
+msgstr "Оглавление — \\tableofcontents"
+
+#: ../src/latex_menu.vala:259
+msgid "Abstract - \\begin{abstract}"
+msgstr "Аннотация — \\begin{abstract}"
+
+#: ../src/latex_menu.vala:261
+msgid "Include an image (graphicx package) - \\includegraphics"
+msgstr "Вставить изображение (пакет graphicx) — \\includegraphics"
+
+#: ../src/latex_menu.vala:264
+msgid "Include a file - \\input"
+msgstr "Вставить файл — \\input"
+
+#. Math
+#: ../src/latex_menu.vala:268
+msgid "_Math"
+msgstr "_Математика"
+
+#. Math Environments
+#: ../src/latex_menu.vala:272
+msgid "_Math Environments"
+msgstr "_Математические окружения"
+
+#: ../src/latex_menu.vala:273
+msgid "_Mathematical Environment - $...$"
+msgstr "_Математическое окружение — $...$"
+
+#: ../src/latex_menu.vala:274
+msgid "Mathematical Environment - $...$"
+msgstr "Математическое окружение — $...$"
+
+#: ../src/latex_menu.vala:275
+msgid "_Centered Formula - \\[...\\]"
+msgstr "_Формула по центру — \\[...\\]"
+
+#: ../src/latex_menu.vala:276
+msgid "Centered Formula - \\[...\\]"
+msgstr "Формула по центру — \\[...\\]"
+
+#: ../src/latex_menu.vala:278
+msgid "_Numbered Equation - \\begin{equation}"
+msgstr "Ф_ормула с нумерацией — \\begin{equation}"
+
+#: ../src/latex_menu.vala:279
+msgid "Numbered Equation - \\begin{equation}"
+msgstr "Формула с нумерацией — \\begin{equation}"
+
+#: ../src/latex_menu.vala:280
+msgid "_Array of Equations - \\begin{align*}"
+msgstr "_Группа формул — \\begin{align*}"
+
+#: ../src/latex_menu.vala:281
+msgid "Array of Equations - \\begin{align*}"
+msgstr "Группа формул — \\begin{align*}"
+
+#: ../src/latex_menu.vala:283
+msgid "Numbered Array of _Equations - \\begin{align}"
+msgstr "Г_руппа формул с нумерацией — \\begin{align}"
+
+#: ../src/latex_menu.vala:284
+msgid "Numbered Array of Equations - \\begin{align}"
+msgstr "Группа формул с нумерацией — \\begin{align}"
+
+#: ../src/latex_menu.vala:287
+msgid "_Superscript - ^{}"
+msgstr "_Верхний индекс — ^{}"
+
+#: ../src/latex_menu.vala:288
+msgid "Superscript - ^{}"
+msgstr "Верхний индекс — ^{}"
+
+#: ../src/latex_menu.vala:289
+msgid "Su_bscript - __{}"
+msgstr "Ни_жний индекс — __{}"
+
+#: ../src/latex_menu.vala:290
+msgid "Subscript - _{}"
+msgstr "Нижний индекс — _{}"
+
+#: ../src/latex_menu.vala:291
+msgid "_Fraction - \\frac{}{}"
+msgstr "_Дробь — \\frac{}{}"
+
+#: ../src/latex_menu.vala:292
+msgid "Fraction - \\frac{}{}"
+msgstr "Дробь — \\frac{}{}"
+
+#: ../src/latex_menu.vala:293
+msgid "Square _Root - \\sqrt{}"
+msgstr "Квадратный _корень — \\sqrt{}"
+
+#: ../src/latex_menu.vala:294
+msgid "Square Root - \\sqrt{}"
+msgstr "Квадратный корень — \\sqrt{}"
+
+#: ../src/latex_menu.vala:295
+msgid "_N-th Root - \\sqrt[]{}"
+msgstr "Корень _N-ой степени — \\sqrt[]{}"
+
+#: ../src/latex_menu.vala:296
+msgid "N-th Root - \\sqrt[]{}"
+msgstr "Корень N-ой степени — \\sqrt[]{}"
+
+#. Math functions
+#: ../src/latex_menu.vala:300
+msgid "Math _Functions"
+msgstr "Математические _функции"
+
+#. Math Font Styles
+#: ../src/latex_menu.vala:334
+msgid "Math Font _Styles"
+msgstr "_Стили математических шрифтов"
+
+#: ../src/latex_menu.vala:336
+msgid "Roman - \\mathrm"
+msgstr "Roman — \\mathrm"
+
+#: ../src/latex_menu.vala:338
+msgid "Italic - \\mathit"
+msgstr "Курсив — \\mathit"
+
+#: ../src/latex_menu.vala:340
+msgid "Bold - \\mathbf"
+msgstr "Жирный — \\mathbf"
+
+#: ../src/latex_menu.vala:342
+msgid "Sans Serif - \\mathsf"
+msgstr "Sans Serif — \\mathsf"
+
+#: ../src/latex_menu.vala:344
+msgid "Typewriter - \\mathtt"
+msgstr "Машинописный — \\mathtt"
+
+#: ../src/latex_menu.vala:346
+msgid "Calligraphic - \\mathcal"
+msgstr "Каллиграфический — \\mathcal"
+
+#: ../src/latex_menu.vala:348
+msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
+msgstr "Ажурный (только заглавные)  — \\mathbb (пакет amsfonts)"
+
+#: ../src/latex_menu.vala:351
+msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
+msgstr "Готический — \\mathfrak (пакет amsfonts)"
+
+#. Math Accents
+#: ../src/latex_menu.vala:356
+msgid "Math _Accents"
+msgstr "М_атематические акценты"
+
+#. Math Spaces
+#: ../src/latex_menu.vala:377
+msgid "Math _Spaces"
+msgstr "Про_белы в формулах"
+
+#: ../src/latex_menu.vala:378
+msgid "_Small"
+msgstr "_Малый"
+
+#: ../src/latex_menu.vala:379
+msgid "Small - \\,"
+msgstr "Малый — \\,"
+
+#: ../src/latex_menu.vala:380
+msgid "_Medium"
+msgstr "_Уменьшенный"
+
+#: ../src/latex_menu.vala:381
+msgid "Medium - \\:"
+msgstr "Уменьшенный — \\:"
+
+#: ../src/latex_menu.vala:382
+msgid "_Large"
+msgstr "_Средний"
+
+#: ../src/latex_menu.vala:383
+msgid "Large - \\;"
+msgstr "Средний — \\;"
+
+#. Math: Left Delimiters
+#: ../src/latex_menu.vala:389
+msgid "_Left Delimiters"
+msgstr "_Левые разделители"
+
+#: ../src/latex_menu.vala:390
+msgid "left ("
+msgstr "левая ("
+
+#: ../src/latex_menu.vala:392
+msgid "left ["
+msgstr "левая ["
+
+#: ../src/latex_menu.vala:394
+msgid "left { "
+msgstr "левая { "
+
+#: ../src/latex_menu.vala:396
+msgid "left <"
+msgstr "левая <"
+
+#: ../src/latex_menu.vala:398
+msgid "left )"
+msgstr "левая )"
+
+#: ../src/latex_menu.vala:400
+msgid "left ]"
+msgstr "левая ]"
+
+#: ../src/latex_menu.vala:402
+msgid "left  }"
+msgstr "левая  }"
+
+#: ../src/latex_menu.vala:404
+msgid "left >"
+msgstr "левая >"
+
+#: ../src/latex_menu.vala:406
+msgid "left ."
+msgstr "левая ."
+
+#. Math: Right Delimiters
+#: ../src/latex_menu.vala:411
+msgid "Right _Delimiters"
+msgstr "_Правые разделители"
+
+#: ../src/latex_menu.vala:412
+msgid "right )"
+msgstr "правая )"
+
+#: ../src/latex_menu.vala:414
+msgid "right ]"
+msgstr "правая ]"
+
+#: ../src/latex_menu.vala:416
+msgid "right  }"
+msgstr "правая }"
+
+#: ../src/latex_menu.vala:418
+msgid "right >"
+msgstr "правая >"
+
+#: ../src/latex_menu.vala:420
+msgid "right ("
+msgstr "правая ("
+
+#: ../src/latex_menu.vala:422
+msgid "right ["
+msgstr "правая ["
+
+#: ../src/latex_menu.vala:424
+msgid "right { "
+msgstr "правая { "
+
+#: ../src/latex_menu.vala:426
+msgid "right <"
+msgstr "правая <"
+
+#: ../src/latex_menu.vala:428
+msgid "right ."
+msgstr "правая ."
+
+#: ../src/latex_menu.vala:443
+msgid "Sectioning"
+msgstr "Секционирование"
+
+#: ../src/latex_menu.vala:446
+msgid "Characters Sizes"
+msgstr "Размеры символов"
+
+#: ../src/latex_menu.vala:449
+msgid "References"
+msgstr "Ссылки"
+
+#: ../src/latex_menu.vala:452
+msgid "Presentation Environments"
+msgstr "Окружения для презентаций"
+
+#: ../src/latex_menu.vala:455
+msgid "Math Environments"
+msgstr "Математические окружения"
+
+#: ../src/latex_menu.vala:458
+msgid "Left Delimiters"
+msgstr "Левые разделители"
+
+#: ../src/latex_menu.vala:461
+msgid "Right Delimiters"
+msgstr "Правые разделители"
+
+#: ../src/main.vala:71
+msgid "Show the application's version"
+msgstr "Показать версию приложения"
+
+#: ../src/main.vala:74
+msgid "Create new document"
+msgstr "Создать новый документ"
+
+#: ../src/main.vala:77
+msgid "Create a new top-level window in an existing instance of LaTeXila"
+msgstr "Создать новое окно поверх других в существующем экземпляре LaTeXila"
+
+#: ../src/main.vala:86
+msgid "- Integrated LaTeX Environment for GNOME"
+msgstr "— интегрированная среда LaTeX для GNOME"
+
+#: ../src/main.vala:98
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"Запустите '%s --help', чтобы увидеть полный список доступных параметров "
+"командной строки.\n"
+
+#: ../src/main_window_build_tools.vala:28
+msgid "_Build"
+msgstr "_Собрать"
+
+#: ../src/main_window_build_tools.vala:30
+msgid "Cleanup Build _Files"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:31
+msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:34
+msgid "_Stop Execution"
+msgstr "О_становить выполнение"
+
+#: ../src/main_window_build_tools.vala:35
+msgid "Stop Execution"
+msgstr "Остановить выполнение"
+
+#: ../src/main_window_build_tools.vala:37
+msgid "View _Log"
+msgstr "Просмотреть _журнал"
+
+#: ../src/main_window_build_tools.vala:38
+msgid "View Log"
+msgstr "Просмотреть журнал"
+
+#: ../src/main_window_build_tools.vala:40
+msgid "_Manage Build Tools"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:41
+msgid "Manage Build Tools"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:46
+#| msgid "Show tables"
+msgid "Show _Details"
+msgstr "_Показать подробности"
+
+#: ../src/main_window_build_tools.vala:47
+#, fuzzy
+#| msgid "Show tables"
+msgid "Show Details"
+msgstr "Показать таблицы"
+
+#: ../src/main_window_build_tools.vala:49
+msgid "Show _Warnings"
+msgstr "Показывать п_редупреждения"
+
+#: ../src/main_window_build_tools.vala:50
+msgid "Show Warnings"
+msgstr "Показывать предупреждения"
+
+#: ../src/main_window_build_tools.vala:52
+msgid "Show _Bad Boxes"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:53
+msgid "Show Bad Boxes"
+msgstr ""
+
+#: ../src/main_window_documents.vala:30
+msgid "_Documents"
+msgstr "До_кументы"
+
+#: ../src/main_window_documents.vala:32
+msgid "_Save All"
+msgstr "Со_хранить все"
+
+#: ../src/main_window_documents.vala:33
+msgid "Save all open files"
+msgstr "Сохранить все открытые файлы"
+
+#: ../src/main_window_documents.vala:35
+msgid "_Close All"
+msgstr "_Закрыть все"
+
+#: ../src/main_window_documents.vala:36
+msgid "Close all open files"
+msgstr "Закрыть все открытые файлы"
+
+#: ../src/main_window_documents.vala:38
+msgid "_Previous Document"
+msgstr "_Предыдущий документ"
+
+#: ../src/main_window_documents.vala:39
+msgid "Activate previous document"
+msgstr "Активировать предыдущий документ"
+
+#: ../src/main_window_documents.vala:41
+msgid "_Next Document"
+msgstr "С_ледующий документ"
+
+#: ../src/main_window_documents.vala:42
+msgid "Activate next document"
+msgstr "Активировать следующий документ"
+
+#: ../src/main_window_documents.vala:44
+msgid "_Move to New Window"
+msgstr "Пере_местить в новое окно"
+
+#: ../src/main_window_documents.vala:45
+msgid "Move the current document to a new window"
+msgstr "Переместить текущий документ в новое окно"
+
+#: ../src/main_window_edit.vala:30
+msgid "_Edit"
+msgstr "_Правка"
+
+#: ../src/main_window_edit.vala:33
+msgid "Undo the last action"
+msgstr "Отменить последнее действие"
+
+#: ../src/main_window_edit.vala:36
+msgid "Redo the last undone action"
+msgstr "Повторить последнее отменённое действие"
+
+#: ../src/main_window_edit.vala:39
+msgid "Cut the selection"
+msgstr "Вырезать выделение"
+
+#: ../src/main_window_edit.vala:42
+msgid "Copy the selection"
+msgstr "Копировать выделение"
+
+#: ../src/main_window_edit.vala:49
+msgid "Paste the clipboard"
+msgstr "Вставить содержимое буфера обмена"
+
+#: ../src/main_window_edit.vala:52
+msgid "Delete the selected text"
+msgstr "Удалить выделенный текст"
+
+#: ../src/main_window_edit.vala:55
+msgid "Select the entire document"
+msgstr "Выделить весь документ"
+
+#: ../src/main_window_edit.vala:57 ../src/main_window_structure.vala:44
+msgid "_Comment"
+msgstr "_Закомментировать"
+
+#: ../src/main_window_edit.vala:58
+msgid "Comment the selected lines (add the character \"%\")"
+msgstr "Закомментировать выделенные строки (добавить символ «%»)"
+
+#: ../src/main_window_edit.vala:61
+msgid "_Uncomment"
+msgstr "_Раскомментировать"
+
+#: ../src/main_window_edit.vala:62
+msgid "Uncomment the selected lines (remove the character \"%\")"
+msgstr "Раскомментировать выделенные строки (убрать символ «%»)"
+
+#: ../src/main_window_edit.vala:66
+msgid "Configure the application"
+msgstr "Настроить приложение"
+
+#: ../src/main_window_edit.vala:72
+msgid "Activate or disable the spell checking"
+msgstr "Включить или отключить проверку правописания"
+
+#: ../src/main_window_file.vala:30
+msgid "_File"
+msgstr "_Файл"
+
+#: ../src/main_window_file.vala:33
+msgid "New file"
+msgstr "Создать файл"
+
+#: ../src/main_window_file.vala:35
+msgid "New _Window"
+msgstr "Созда_ть окно"
+
+#: ../src/main_window_file.vala:36
+msgid "Create a new window"
+msgstr "Создать новое окно"
+
+#: ../src/main_window_file.vala:39 ../src/main_window_file.vala:85
+msgid "Open a file"
+msgstr "Открыть файл"
+
+#: ../src/main_window_file.vala:42
+msgid "Save the current file"
+msgstr "Сохранить текущий файл"
+
+#: ../src/main_window_file.vala:45
+msgid "Save the current file with a different name"
+msgstr "Сохранить текущий файл под новым именем"
+
+#: ../src/main_window_file.vala:47
+msgid "Create _Template From Document..."
+msgstr "Создать _шаблон из документа..."
+
+#: ../src/main_window_file.vala:48
+msgid "Create a new template from the current document"
+msgstr "Создать новый шаблон из текущего документа"
+
+#: ../src/main_window_file.vala:50
+msgid "_Delete Template..."
+msgstr "_Удалить шаблон..."
+
+#: ../src/main_window_file.vala:51
+msgid "Delete personal template(s)"
+msgstr "Удалить личные шаблоны"
+
+#: ../src/main_window_file.vala:54
+msgid "Close the current file"
+msgstr "Закрыть текущий файл"
+
+#. recent documents
+#: ../src/main_window_file.vala:69
+msgid "Open _Recent"
+msgstr "Открыть _недавние"
+
+#: ../src/main_window_file.vala:70
+msgid "Open recently used files"
+msgstr "Открыть недавно использовавшиеся файлы"
+
+#: ../src/main_window_file.vala:86
+msgid "Open a recently used file"
+msgstr "Открыть недавний файл"
+
+#: ../src/main_window_file.vala:143
+msgid "Open Files"
+msgstr "Открыть файлы"
+
+#: ../src/main_window_file.vala:157
+msgid "All LaTeX Files"
+msgstr "Все файлы LaTeX"
+
+#: ../src/main_window_file.vala:164
+msgid "All Files"
+msgstr "Все файлы"
+
+#: ../src/main_window_structure.vala:30
+msgid "S_tructure"
+msgstr "С_труктура"
+
+#: ../src/main_window_structure.vala:33
+msgid "Cut the selected structure item"
+msgstr "Вырезать выбранный элемент структуры"
+
+#: ../src/main_window_structure.vala:36
+msgid "Copy the selected structure item"
+msgstr "Копировать выбранный элемент структуры"
+
+#: ../src/main_window_structure.vala:39
+msgid "Delete the selected structure item"
+msgstr "Удалить выбранный элемент структуры"
+
+#: ../src/main_window_structure.vala:41
+msgid "_Select"
+msgstr ""
+
+#: ../src/main_window_structure.vala:42
+msgid "Select the contents of the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:45
+msgid "Comment the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:47
+msgid "Shift _Left"
+msgstr "Сдвинуть в_лево"
+
+#: ../src/main_window_structure.vala:48
+msgid "Shift the selected structure item to the left (e.g. section → chapter)"
+msgstr ""
+
+#: ../src/main_window_structure.vala:51
+msgid "Shift _Right"
+msgstr "Сдвинуть в_право"
+
+#: ../src/main_window_structure.vala:52
+msgid "Shift the selected structure item to the right (e.g. chapter → section)"
+msgstr ""
+
+#: ../src/main_window_structure.vala:55
+#| msgid "Open Files"
+msgid "_Open File"
+msgstr "_Открыть файл"
+
+#: ../src/main_window_structure.vala:56
+#, fuzzy
+#| msgid "Delete the selected structure item"
+msgid "Open the file referenced by the selected structure item"
+msgstr "Удалить выбранный элемент структуры"
+
+#: ../src/main_window.vala:29
+msgid "Quit the program"
+msgstr "Выйти из программы"
+
+#. View
+#: ../src/main_window.vala:32
+msgid "_View"
+msgstr "_Вид"
+
+#: ../src/main_window.vala:33
+msgid "Zoom _In"
+msgstr "У_величить масштаб"
+
+#: ../src/main_window.vala:34
+msgid "Enlarge the font"
+msgstr "Увеличить шрифт"
+
+#: ../src/main_window.vala:35
+msgid "Zoom _Out"
+msgstr "У_меньшить масштаб"
+
+#: ../src/main_window.vala:36
+msgid "Shrink the font"
+msgstr "Уменьшить шрифт"
+
+#: ../src/main_window.vala:37
+msgid "_Reset Zoom"
+msgstr "_Сбросить масштаб"
+
+#: ../src/main_window.vala:38
+msgid "Reset the size of the font"
+msgstr "Сбросить размер шрифта"
+
+#. Search
+#: ../src/main_window.vala:41
+msgid "_Search"
+msgstr "По_иск"
+
+#: ../src/main_window.vala:43
+msgid "Search for text"
+msgstr "Поиск текста"
+
+#: ../src/main_window.vala:45
+msgid "Search for and replace text"
+msgstr "Поиск и замена текста"
+
+#: ../src/main_window.vala:46
+msgid "_Go to Line..."
+msgstr "_Перейти к строке..."
+
+#: ../src/main_window.vala:47
+msgid "Go to a specific line"
+msgstr "Перейти к указанной строке"
+
+#: ../src/main_window.vala:48
+#, fuzzy
+#| msgid "Search for"
+msgid "_Search Forward"
+msgstr "Найти"
+
+#: ../src/main_window.vala:49
+msgid "Jump to the associated position in the PDF file"
+msgstr ""
+
+#. Projects
+#: ../src/main_window.vala:52
+msgid "_Projects"
+msgstr "Про_екты"
+
+#: ../src/main_window.vala:53
+msgid "_New Project"
+msgstr "_Создать проект"
+
+#: ../src/main_window.vala:54
+msgid "Create a new project"
+msgstr "Создать новый проект"
+
+#: ../src/main_window.vala:55
+msgid "_Configure Current Project"
+msgstr "_Настроить текущий проект"
+
+#: ../src/main_window.vala:56
+msgid "Change the main file of the current project"
+msgstr "Изменить главный файл текущего проекта"
+
+#: ../src/main_window.vala:58
+msgid "_Manage Projects"
+msgstr "_Управление проектами"
+
+#: ../src/main_window.vala:59 ../src/project_dialogs.vala:183
+msgid "Manage Projects"
+msgstr "Управление проектами"
+
+#. Help
+#: ../src/main_window.vala:62
+msgid "_Help"
+msgstr "_Справка"
+
+#: ../src/main_window.vala:63
+msgid "_Contents"
+msgstr "_Содержание"
+
+#: ../src/main_window.vala:64
+msgid "Open the LaTeXila documentation"
+msgstr "Открыть документацию LaTeXila"
+
+#: ../src/main_window.vala:65
+msgid "_LaTeX Reference"
+msgstr "_Руководство по LaTeX"
+
+#: ../src/main_window.vala:66
+msgid "The Kile LaTeX Reference"
+msgstr ""
+
+#: ../src/main_window.vala:68 ../src/main_window.vala:1197
+msgid "About LaTeXila"
+msgstr "О LaTeXila"
+
+#: ../src/main_window.vala:73
+msgid "_Main Toolbar"
+msgstr "_Главная панель инструментов"
+
+#: ../src/main_window.vala:74
+msgid "Show or hide the main toolbar"
+msgstr "Показать или скрыть главную панель инструментов"
+
+#. Translators: "Edit" here is an adjective.
+#: ../src/main_window.vala:76
+msgid "_Edit Toolbar"
+msgstr "Панель инструментов р_едактирования"
+
+#: ../src/main_window.vala:77
+msgid "Show or hide the edit toolbar"
+msgstr "Показать или скрыть панель редактирования"
+
+#: ../src/main_window.vala:78
+msgid "_Side panel"
+msgstr "_Боковая панель"
+
+#: ../src/main_window.vala:79
+msgid "Show or hide the side panel"
+msgstr "Показать или скрыть боковую панель"
+
+#: ../src/main_window.vala:80
+msgid "_Bottom panel"
+msgstr "Ни_жняя панель"
+
+#: ../src/main_window.vala:81
+msgid "Show or hide the bottom panel"
+msgstr "Показать или скрыть нижнюю панель"
+
+#: ../src/main_window.vala:375
+msgid "Symbols"
+msgstr "Символы"
+
+#: ../src/main_window.vala:384
+msgid "Structure"
+msgstr "Структура"
+
+#: ../src/main_window.vala:620
+#, c-format
+msgid "This file (%s) is already opened in another LaTeXila window."
+msgstr "Этот файл (%s) уже открыт в другом окне LaTeXila."
+
+#: ../src/main_window.vala:622
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr ""
+
+#: ../src/main_window.vala:625
+msgid "Edit Anyway"
+msgstr "Всё равно редактировать"
+
+#: ../src/main_window.vala:626
+msgid "Don't Edit"
+msgstr "Не редактировать"
+
+#: ../src/main_window.vala:727
+#, c-format
+msgid "Save changes to document \"%s\" before closing?"
+msgstr "Сохранить изменения в документе «%s» перед закрытием?"
+
+#: ../src/main_window.vala:807
+msgid "Read-Only"
+msgstr "Только для чтения"
+
+#: ../src/main_window.vala:821
+msgid "Save File"
+msgstr "Сохранить файл"
+
+#: ../src/main_window.vala:856
+#, c-format
+msgid "A file named \"%s\" already exists. Do you want to replace it?"
+msgstr "Файл с именем «%s» уже существует. Хотите заменить его?"
+
+#: ../src/main_window.vala:861
+msgid "Replace"
+msgstr "Заменить"
+
+#: ../src/main_window.vala:1158
+msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
+msgstr "LaTeXila — это интегрированная среда LaTeX для рабочего стола GNOME"
+
+#: ../src/main_window.vala:1198
+msgid "translator-credits"
+msgstr "Aleksey Kabanov <ak099@mail.ru>, 2012"
+
+#: ../src/post_processors.vala:260
+msgid "Latexmk messages"
+msgstr "Сообщения Latexmk"
+
+#: ../src/preferences_dialog.vala:31
+msgid "Preferences"
+msgstr "Настройки"
+
+#. reset all button
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:381
+msgid "Reset All"
+msgstr "Сбросить все"
+
+#: ../src/preferences_dialog.vala:39
+msgid "Reset all preferences"
+msgstr "Сбросить все настройки"
+
+#: ../src/preferences_dialog.vala:118
+msgid "Do you really want to reset all preferences?"
+msgstr "Вы действительно хотите сбросить все настройки?"
+
+#: ../src/preferences_dialog.vala:191
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "минута"
+msgstr[1] "минуты"
+msgstr[2] "минут"
+
+#: ../src/preferences_dialog.vala:291
+msgid "character"
+msgid_plural "characters"
+msgstr[0] "символа"
+msgstr[1] "символов"
+msgstr[2] "символов"
+
+#: ../src/preferences_dialog.vala:331
+#, c-format
+msgid "Use the system fixed width font (%s)"
+msgstr "Использовать системный шрифт фиксированной ширины (%s)"
+
+#: ../src/project_dialogs.vala:26
+msgid "New Project"
+msgstr "Создать проект"
+
+#. directory
+#: ../src/project_dialogs.vala:36 ../src/project_dialogs.vala:40
+#: ../src/project_dialogs.vala:203
+msgid "Directory"
+msgstr "Каталог"
+
+#: ../src/project_dialogs.vala:101
+#, c-format
+msgid "There is a conflict with the project \"%s\"."
+msgstr "Конфликт с проектом «%s»."
+
+#: ../src/project_dialogs.vala:116
+msgid "Configure Project"
+msgstr "Настроить проект"
+
+#: ../src/project_dialogs.vala:134
+msgid "Location of the project"
+msgstr "Размещение проекта"
+
+#: ../src/project_dialogs.vala:243 ../src/project_dialogs.vala:300
+msgid "Clear All"
+msgstr "Очистить все"
+
+#: ../src/project_dialogs.vala:275
+#, c-format
+msgid "Do you really want to delete the project \"%s\"?"
+msgstr "Вы действительно хотите удалить проект «%s»?"
+
+#: ../src/project_dialogs.vala:296
+msgid "Do you really want to clear all projects?"
+msgstr "Вы действительно хотите очистить все проекты?"
+
+#: ../src/project_dialogs.vala:328
+msgid "The Main File is not in the directory."
+msgstr "Главный файл не в каталоге."
+
+#: ../src/search.vala:40
+msgid "Go to Line:"
+msgstr "Перейти к строке:"
+
+#: ../src/search.vala:50
+msgid "Line you want to move the cursor to"
+msgstr "Строка, на которую вы хотите переместить курсор"
+
+#: ../src/search.vala:178
+msgid "Replace with"
+msgstr "Заменить на"
+
+#: ../src/search.vala:197
+msgid "All"
+msgstr ""
+
+#: ../src/search.vala:308
+msgid "Search for"
+msgstr "Найти"
+
+#: ../src/search.vala:314
+msgid "Case sensitive"
+msgstr "С учётом регистра"
+
+#: ../src/search.vala:315
+msgid "Entire words only"
+msgstr "Только слова целиком"
+
+#: ../src/structure.vala:158
+msgid "Refresh"
+msgstr "Обновить"
+
+#: ../src/structure.vala:171
+msgid "Collapse All"
+msgstr "Свернуть все"
+
+#: ../src/structure.vala:180
+msgid "Show labels"
+msgstr ""
+
+#: ../src/structure.vala:181
+#, fuzzy
+#| msgid "Show all files"
+msgid "Show included files"
+msgstr "Показывать все файлы"
+
+#: ../src/structure.vala:182
+msgid "Show tables"
+msgstr "Показать таблицы"
+
+#: ../src/structure.vala:183
+msgid "Show figures and images"
+msgstr "Показывать фигуры и изображения"
+
+#: ../src/structure.vala:184
+msgid "Show TODOs and FIXMEs"
+msgstr "Показывать TODO и FIXME"
+
+#: ../src/structure.vala:623
+#, c-format
+msgid "Structure action error: %s"
+msgstr ""
+
+#: ../src/structure.vala:628
+msgid "The structure data seems outdated. Please refresh the structure."
+msgstr "Данные этой структуры, вероятно, устарели. Обновите структуру."
+
+#. Translators: it's a verb
+#: ../src/structure.vala:719
+msgid "cut"
+msgstr "вырезать"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:721
+msgid "copy"
+msgstr "копировать"
+
+#: ../src/structure.vala:722
+msgid "delete"
+msgstr "удалить"
+
+#: ../src/structure.vala:723
+msgid "select"
+msgstr "выбрать"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:725
+msgid "comment"
+msgstr ""
+
+#. Translators: it's a verb
+#: ../src/structure.vala:727
+msgid "shift left"
+msgstr "сдвинуть влево"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:729
+msgid "shift right"
+msgstr "сдвинуть вправо"
+
+#: ../src/structure.vala:730
+#, fuzzy
+#| msgid "Open a file"
+msgid "open file"
+msgstr "Открыть файл"
+
+#: ../src/structure.vala:775
+msgid "Table"
+msgstr "Таблица"
+
+#. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
+#: ../src/structure.vala:777
+msgid "Figure"
+msgstr "Диаграмма"
+
+#: ../src/structure.vala:778
+msgid "Image"
+msgstr "Изображение"
+
+#: ../src/structure.vala:779
+msgid "File included"
+msgstr ""
+
+#: ../src/symbols.vala:59
+msgid "Greek"
+msgstr "Греческие"
+
+#: ../src/symbols.vala:60
+msgid "Arrows"
+msgstr "Стрелки"
+
+#: ../src/symbols.vala:61
+msgid "Relations"
+msgstr "Отношения"
+
+#: ../src/symbols.vala:62
+msgid "Operators"
+msgstr "Операторы"
+
+#: ../src/symbols.vala:63
+msgid "Delimiters"
+msgstr "Разделители"
+
+#: ../src/symbols.vala:64
+msgid "Misc math"
+msgstr "Разные математические"
+
+#: ../src/symbols.vala:65
+msgid "Misc text"
+msgstr "Разные текстовые"
+
+#: ../src/symbols.vala:159
+msgid "Most Used"
+msgstr "Часто используемые"
+
+#: ../src/synctex.vala:84
+#, fuzzy
+#| msgid "The active document's filename."
+msgid "The document is not saved."
+msgstr "Имя файла активного документа."
+
+#: ../src/synctex.vala:91
+#, fuzzy
+#| msgid "The file '%s' doesn't exist."
+msgid "The PDF file doesn't exist."
+msgstr "Файл «%s» не существует."
+
+#: ../src/synctex.vala:100
+#, fuzzy, c-format
+#| msgid "The file '%s' doesn't exist."
+msgid "The file \"%s\" doesn't exist."
+msgstr "Файл «%s» не существует."
+
+#: ../src/synctex.vala:107
+msgid "Can not communicate with evince."
+msgstr ""
+
+#: ../src/synctex.vala:125
+#, fuzzy
+#| msgid "Impossible to load the file '%s'."
+msgid "Impossible to do the forward search."
+msgstr "Невозможно загрузить файл «%s»."
+
+#: ../src/templates_dialogs.vala:34
+msgid "New File..."
+msgstr "Создать файл..."
+
+#: ../src/templates_dialogs.vala:55
+msgid "Default templates"
+msgstr "Шаблоны по умолчанию"
+
+#: ../src/templates_dialogs.vala:64
+msgid "Your personal templates"
+msgstr "Ваши персональные шаблоны"
+
+#: ../src/templates_dialogs.vala:173
+msgid "New Template..."
+msgstr "Создать шаблон..."
+
+#: ../src/templates_dialogs.vala:185
+msgid "Name of the new template"
+msgstr "Имя нового шаблона"
+
+#: ../src/templates_dialogs.vala:198
+msgid "Choose an icon"
+msgstr ""
+
+#: ../src/templates_dialogs.vala:242
+msgid "Delete Template(s)..."
+msgstr "Удалить шаблон(ы)..."
+
+#: ../src/templates_dialogs.vala:259
+msgid "Personal templates"
+msgstr "Персональные шаблоны"
+
+#: ../src/templates.vala:75
+msgid "Empty"
+msgstr "Пустой"
+
+#: ../src/templates.vala:77
+msgid "Article"
+msgstr "Статья"
+
+#: ../src/templates.vala:78
+msgid "Report"
+msgstr "Отчёт"
+
+#: ../src/templates.vala:79
+msgid "Book"
+msgstr "Книга"
+
+#: ../src/templates.vala:80
+msgid "Letter"
+msgstr "Письмо"
+
+#: ../src/templates.vala:81
+msgid "Presentation"
+msgstr "Презентация"
+
+#: ../src/ui/preferences_dialog.ui.h:1
+msgid "Display line numbers"
+msgstr "Показывать номера строк"
+
+#: ../src/ui/preferences_dialog.ui.h:2
+msgid "Tab width:"
+msgstr "Табуляция:"
+
+#: ../src/ui/preferences_dialog.ui.h:3
+msgid "Insert spaces instead of tabs"
+msgstr "Вставлять пробелы вместо табуляции"
+
+#: ../src/ui/preferences_dialog.ui.h:4
+msgid "Forget you are not using tabulations"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:5
+msgid "Highlight current line"
+msgstr "Подсвечивать текущую строку"
+
+#: ../src/ui/preferences_dialog.ui.h:6
+msgid "Highlight matching brackets"
+msgstr "Подсвечивать парные скобки"
+
+#: ../src/ui/preferences_dialog.ui.h:7
+msgid "Create a backup copy of files before saving"
+msgstr "Создавать резервную копию файлов перед сохранением"
+
+#: ../src/ui/preferences_dialog.ui.h:8
+msgid "Autosave files every"
+msgstr "Автосохранение файлов каждые"
+
+#: ../src/ui/preferences_dialog.ui.h:10
+msgid "Editor"
+msgstr "Редактор"
+
+#: ../src/ui/preferences_dialog.ui.h:11
+msgid "Font"
+msgstr "Шрифт"
+
+#: ../src/ui/preferences_dialog.ui.h:13
+#, no-c-format
+msgid "_Use the system fixed width font (%s)"
+msgstr "_Использовать системный шрифт фиксированной ширины (%s)"
+
+#: ../src/ui/preferences_dialog.ui.h:14
+msgid "Editor _font: "
+msgstr "_Шрифт редактора: "
+
+#: ../src/ui/preferences_dialog.ui.h:15
+msgid "Pick the editor font"
+msgstr "Выберите шрифт редактора"
+
+#: ../src/ui/preferences_dialog.ui.h:16
+msgid "Color Scheme"
+msgstr "Цветовая схема"
+
+#: ../src/ui/preferences_dialog.ui.h:17
+msgid "Font & Colors"
+msgstr "Шрифт и цвета"
+
+#: ../src/ui/preferences_dialog.ui.h:18
+msgid "File Clean-Up"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:20
+msgid "Automatically clean-up files after close"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:21
+msgid "Interactive completion after"
+msgstr "Интерактивное завершение после"
+
+#: ../src/ui/preferences_dialog.ui.h:22
+msgid "Number of characters after &apos;\\&apos;"
+msgstr "Количество символов после &apos;\\&apos;"
+
+#: ../src/ui/preferences_dialog.ui.h:23
+msgid "Number of characters after '\\'"
+msgstr "Количество символов после '\\'"
+
+#: ../src/ui/preferences_dialog.ui.h:24
+msgid "Other"
+msgstr ""
+
+#~ msgid "Show files included"
+#~ msgstr "Показывать включённые файлы"
+
+#~ msgid "Show only files with these extensions"
+#~ msgstr "Показывать только файлы с этим расширением"
+
+#~ msgid ""
+#~ "The program for viewing documents.\n"
+#~ "Its value can be changed in the preferences dialog."
+#~ msgstr ""
+#~ "Программа для просмотра документов.\n"
+#~ "Значение можно изменить в диалоге настроек."
+
+#~ msgid "Program for viewing documents:"
+#~ msgstr "Программа для просмотра документов:"
+
+#~ msgid "Reset"
+#~ msgstr "Сбросить"
+
+#~ msgid "Number of most used symbols:"
+#~ msgstr "Количество часто используемых символов:"
