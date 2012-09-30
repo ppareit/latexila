@@ -2,17 +2,19 @@
 # Copyright (C) 2012 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Aleksey Kabanov <ak099@mail.ru>, 2012
 # Yuri Myasoedov <omerta13@yandex.ru>, 2012.
+# Stas Solovey <whats_up@tut.by>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-09-10 03:36+0000\n"
-"PO-Revision-Date: 2012-09-29 12:20+0400\n"
-"Last-Translator: Yuri Myasoedov <omerta13@yandex.ru>\n"
-"Language-Team: русский <gnome-cyr@gnome.org>\n"
+"POT-Creation-Date: 2012-09-30 11:08+0000\n"
+"PO-Revision-Date: 2012-09-30 17:06+0300\n"
+"Last-Translator: Stas Solovey <whats_up@tut.by>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "Language: ru\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,6 +23,7 @@ msgstr ""
 "%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2)\n"
 "X-Poedit-Language: Russian\n"
 "X-Poedit-Country: RUSSIAN FEDERATION\n"
+"X-Generator: Gtranslator 2.91.5\n"
 
 #: build_tools.xml:45(tool/label) ../src/build_tool_dialog.vala:166
 msgid "View PDF"
@@ -75,28 +78,22 @@ msgid "Convert the PostScript document to the PDF format"
 msgstr "Преобразовать документ PostScript в формат PDF"
 
 #: ../data/latexila.desktop.in.in.h:1
-#| msgid "About LaTeXila"
 msgid "LaTeXila"
 msgstr "LaTeXila"
 
 #: ../data/latexila.desktop.in.in.h:2
-#| msgid "- Integrated LaTeX Environment for GNOME"
 msgid "Integrated LaTeX Environment"
 msgstr "Интегрированная среда LaTeX"
 
 #: ../data/latexila.desktop.in.in.h:3
-#, fuzzy
-#| msgid "Open the LaTeXila documentation"
 msgid "Edit LaTeX documents"
-msgstr "Открыть документацию LaTeXila"
+msgstr "Редактировать документы LaTeX"
 
 #: ../data/latexila.desktop.in.in.h:4
-#| msgid "_Move to New Window"
 msgid "Open a New Window"
 msgstr "Открыть новое окно"
 
 #: ../data/latexila.desktop.in.in.h:5
-#| msgid "Unsaved Document"
 msgid "Open a New Document"
 msgstr "Открыть новый документ"
 
@@ -111,9 +108,11 @@ msgid ""
 "the font named in the \"Editor Font\" option will be used instead of the "
 "system font."
 msgstr ""
+"Использовать системный моноширинный шрифт по умолчанию для редактирования "
+"текста, вместо шрифта LaTeXila по умолчанию. Если эта опция выключена, то "
+"будет использован шрифт, указанный в \"Шрифт редактора\"."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:3
-#| msgid "Editor _font: "
 msgid "Editor Font"
 msgstr "Шрифт редактора"
 
@@ -122,20 +121,21 @@ msgid ""
 "A custom font that will be used for the editing area. This will only take "
 "effect if the \"Use Default Font\" option is turned off."
 msgstr ""
+"Пользовательский шрифт, который будет использоваться для области "
+"редактирования. Работает только если опция \"Использовать шрифт по умолчанию"
+"\" выключена."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:5
-#, fuzzy
-#| msgid "Color Scheme"
 msgid "Style Scheme"
-msgstr "Цветовая схема"
+msgstr "Схема стиля"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:6
 msgid "The ID of a GtkSourceView Style Scheme used to color the text."
-msgstr ""
+msgstr "ID схемы стиля GtkSourceView используемой для окраски текста."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:7
 msgid "Create Backup Copies"
-msgstr ""
+msgstr "Создание резервных копий"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:8
 msgid "Whether LaTeXila should create backup copies for the files it saves."
@@ -143,7 +143,7 @@ msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:9
 msgid "Autosave"
-msgstr ""
+msgstr "Автосохранение"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:10
 msgid ""
@@ -154,7 +154,7 @@ msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:11
 msgid "Autosave Interval"
-msgstr ""
+msgstr "Интервал автосохранения"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:12
 msgid ""
@@ -165,7 +165,7 @@ msgstr ""
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:13
 #: ../src/ui/preferences_dialog.ui.h:9
 msgid "Reopen files on startup"
-msgstr "Переоткрывать файлы при запуске"
+msgstr "Повторное открытие файлов при запуске"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:14
 msgid "Whether LaTeXila should reopen the files that was opened the last time."
@@ -173,19 +173,19 @@ msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:15
 msgid "Tab Size"
-msgstr ""
+msgstr "Размер табуляции"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:16
 msgid ""
 "Specifies the number of spaces that should be displayed instead of Tab "
 "characters."
 msgstr ""
+"Определяет количество пространства, которое должно отображаться вместо "
+"символов табуляции."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:17
-#, fuzzy
-#| msgid "Insert spaces instead of tabs"
 msgid "Insert spaces"
-msgstr "Вставлять пробелы вместо табуляции"
+msgstr "Вставлять пробелы"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:18
 #, fuzzy
@@ -202,8 +202,6 @@ msgid "Forget you are not using tabulations."
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:21
-#, fuzzy
-#| msgid "Display line numbers"
 msgid "Display Line Numbers"
 msgstr "Показывать номера строк"
 
@@ -212,8 +210,6 @@ msgid "Whether LaTeXila should display line numbers in the editing area."
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:23
-#, fuzzy
-#| msgid "Highlight current line"
 msgid "Highlight Current Line"
 msgstr "Подсвечивать текущую строку"
 
@@ -222,8 +218,6 @@ msgid "Whether LaTeXila should highlight the current line."
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:25
-#, fuzzy
-#| msgid "Highlight matching brackets"
 msgid "Highlight Matching Brackets"
 msgstr "Подсвечивать парные скобки"
 
@@ -235,7 +229,7 @@ msgstr "Подсвечивать парные скобки"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:27
 msgid "Spell checking"
-msgstr ""
+msgstr "Проверка орфографии"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:28
 #, fuzzy
@@ -282,40 +276,32 @@ msgid "Whether the bottom panel containing the build view should be visible."
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:36
-#, fuzzy
-#| msgid "_Side panel"
 msgid "Side panel component"
-msgstr "_Боковая панель"
+msgstr "Компонент боковой панели"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
 msgid "Side panel active component. 0: Symbols. 1: File browser."
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
-#, fuzzy
-#| msgid "Show Warnings"
 msgid "Show build output warnings"
-msgstr "Показывать предупреждения"
+msgstr "Показывать предупреждения результатов сборки"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
 msgid "Show build output badboxes"
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
-#, fuzzy
-#| msgid "Interactive completion after"
 msgid "Interactive completion"
-msgstr "Интерактивное завершение после"
+msgstr "Интерактивное автодополнение"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
 msgid "Automatically show commands proposals"
 msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
-#, fuzzy
-#| msgid "Interactive completion after"
 msgid "Interactive completion min chars"
-msgstr "Интерактивное завершение после"
+msgstr "Минимальное количество символов для интерактивного автодополнения"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
 #, fuzzy
@@ -325,21 +311,23 @@ msgstr "Количество символов после '\\'"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
 msgid "No confirmation clean-up"
-msgstr ""
+msgstr "Очистка без подтверждения"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
 #: ../src/ui/preferences_dialog.ui.h:19
 msgid "No confirmation when cleaning-up"
-msgstr ""
+msgstr "Без подтверждений при очистке"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
 msgid "Automatic clean-up"
-msgstr ""
+msgstr "Автоматическая очистка"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
 msgid ""
 "Automatically clean-up files after close. no-confirm-clean must be true."
 msgstr ""
+"Автоматическая очистка файлов после закрытия. no-confirm-clean должно быть в "
+"значении true."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
 msgid "File extensions for clean-up"
@@ -353,25 +341,23 @@ msgstr "Расширения разделяются пробелами."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
 msgid "Enabled default build tools"
-msgstr ""
+msgstr "Включенные инструменты сборки по умолчанию"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
 msgid "The list of the default build tools that are enabled"
-msgstr ""
+msgstr "Список инструментов сборки по умолчанию, которые включены"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
 msgid "Disabled default build tools"
-msgstr ""
+msgstr "Выключенные инструменты сборки по умолчанию"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
 msgid "The list of the default build tools that are disabled"
-msgstr ""
+msgstr "Список инструментов сборки по умолчанию, которые выключены"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
-#, fuzzy
-#| msgid "Go to the parent directory"
 msgid "Current directory"
-msgstr "Перейти в родительский каталог"
+msgstr "Текущий каталог"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
 #, fuzzy
@@ -381,10 +367,8 @@ msgstr "Перейти в каталог активного документа"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
 #: ../src/file_browser.vala:278
-#, fuzzy
-#| msgid "Show all files"
 msgid "Show build files"
-msgstr "Показывать все файлы"
+msgstr "Показывать файлы сборки"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
 msgid ""
@@ -393,16 +377,12 @@ msgstr ""
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
 #: ../src/file_browser.vala:286
-#, fuzzy
-#| msgid "Show all files"
 msgid "Show hidden files"
-msgstr "Показывать все файлы"
+msgstr "Показывать скрытые файлы"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:59
-#, fuzzy
-#| msgid "Show hidden files (beginning with a dot)"
 msgid "Show files beginning with a dot."
-msgstr "Показывать скрытые файлы (имя которых начинается с точки)"
+msgstr "Показывать файлы, начинающиеся с точки."
 
 #. This must be translated by a usepackage LaTeX command.
 #: article.xml:8(template/babel) beamer.xml:8(template/babel)
@@ -478,7 +458,7 @@ msgstr "Постобработчик"
 
 #: ../src/build_tool_dialog.vala:265 ../src/build_tools_preferences.vala:289
 msgid "Add..."
-msgstr "Добавить..."
+msgstr "Добавить…"
 
 #: ../src/build_tool_dialog.vala:282 ../src/build_tools_preferences.vala:306
 msgid "Remove"
@@ -528,7 +508,7 @@ msgstr "Значок"
 #. Placeholders
 #: ../src/build_tool_dialog.vala:606
 msgid "Placeholders:"
-msgstr ""
+msgstr "Заполнители:"
 
 #: ../src/build_tool_dialog.vala:610
 msgid "The active document's filename."
@@ -536,7 +516,7 @@ msgstr "Имя файла активного документа."
 
 #: ../src/build_tool_dialog.vala:611 ../src/build_tool_dialog.vala:616
 msgid "If the active document belongs to a project, the main file is choosen."
-msgstr ""
+msgstr "Если активный документ входит в проект, основной файл будет выбран."
 
 #: ../src/build_tool_dialog.vala:615
 msgid "The active document's filename without its extension."
@@ -552,7 +532,7 @@ msgstr ""
 
 #: ../src/build_tool_dialog.vala:666
 msgid "The files are separated by spaces."
-msgstr ""
+msgstr "Файлы, разделённые пробелами."
 
 #: ../src/build_tool_dialog.vala:667
 msgid "You should use the placeholders to specify the files."
@@ -560,12 +540,12 @@ msgstr ""
 
 #: ../src/build_tool_dialog.vala:670
 msgid "Files to open"
-msgstr ""
+msgstr "Файлы для открытия"
 
 #: ../src/build_tool_runner.vala:187
 #, c-format
 msgid "%s doesn't seem to be installed."
-msgstr ""
+msgstr "%s, вероятно, не установлен."
 
 #: ../src/build_tool_runner.vala:259
 #, c-format
@@ -595,19 +575,18 @@ msgid "Personal build tools"
 msgstr "Личные инструменты сборки"
 
 #: ../src/build_tools_preferences.vala:172
-#| msgid "Table"
 msgid "Enabled"
 msgstr "Включено"
 
 #: ../src/build_tools_preferences.vala:274
 #, c-format
 msgid "%s [copy]"
-msgstr ""
+msgstr "%s [копия]"
 
 #: ../src/build_tools_preferences.vala:324
 #, c-format
 msgid "Do you really want to delete the build tool \"%s\"?"
-msgstr ""
+msgstr "Действительно удалить инструмент сборки «%s»?"
 
 #: ../src/clean_build_files.vala:267
 msgid "Do you really want to delete these files?"
@@ -616,15 +595,15 @@ msgstr "Действительно удалить эти файлы?"
 #. secondary label
 #: ../src/clean_build_files.vala:272
 msgid "Select the files you want to delete:"
-msgstr "Выберите файлы, которые хотите удалить:"
+msgstr "Выберите файлы для удаления:"
 
 #: ../src/clean_build_files.vala:336
 msgid "No build file to clean up."
-msgstr ""
+msgstr "Нет файлов сборки для очистки."
 
 #: ../src/completion.vala:292
 msgid "No matching proposal"
-msgstr ""
+msgstr "Нет соответствующих предложений"
 
 #. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
 #. "Column". Please, use abbreviations if possible.
@@ -689,7 +668,7 @@ msgstr "Отменить ваши изменения и перезагрузит
 
 #: ../src/document_tab.vala:285
 msgid "Do you want to reload the file?"
-msgstr "Вы хотите перезагрузить файл?"
+msgstr "Перезагрузить файл?"
 
 #: ../src/document_tab.vala:289
 msgid "Reload"
@@ -721,7 +700,7 @@ msgstr "Не сохранять"
 
 #: ../src/document.vala:240
 msgid "Impossible to save the file."
-msgstr "Не удалось сохранить файл."
+msgstr "Невозможно сохранить файл."
 
 #: ../src/document.vala:265
 msgid "Error trying to convert the document to UTF-8"
@@ -729,16 +708,17 @@ msgstr "Ошибка при попытке преобразовать докум
 
 #: ../src/document.vala:319
 msgid "Unsaved Document"
-msgstr "Несохранённый"
+msgstr "Несохранённый документ"
 
 #: ../src/document.vala:612
 msgid ""
 "The file has a temporary location. The data can be lost after rebooting your "
 "computer."
 msgstr ""
+"Файл находится во временной папке. Данные могут быть утеряны после "
+"перезагрузки компьютера."
 
 #: ../src/document.vala:613
-#| msgid "Do you want to reload the file?"
 msgid "Do you want to save the file in a safer place?"
 msgstr "Сохранить файл в надёжном месте?"
 
@@ -768,17 +748,16 @@ msgstr "<i>(нет вариантов)</i>"
 
 #: ../src/gtkspell/gtkspell.c:368
 msgid "More..."
-msgstr ""
+msgstr "Ещё…"
 
 #. + Add to Dictionary
 #: ../src/gtkspell/gtkspell.c:388
 #, c-format
 msgid "Add \"%s\" to Dictionary"
-msgstr ""
+msgstr "Добавить «%s» в словарь"
 
 #. - Ignore All
 #: ../src/gtkspell/gtkspell.c:399
-#| msgid "_Close All"
 msgid "Ignore All"
 msgstr "Игнорировать всё"
 
@@ -790,7 +769,7 @@ msgstr "Языки"
 #: ../src/gtkspell/gtkspell.c:584
 #, c-format
 msgid "enchant error for language: %s"
-msgstr ""
+msgstr "ошибка enchant для языка: %s"
 
 #. LaTeX: Sectioning
 #: ../src/latex_menu.vala:32
@@ -884,7 +863,7 @@ msgstr "Стихи — \\begin{verse}"
 
 #: ../src/latex_menu.vala:84
 msgid "Verbatim - \\begin{verbatim}"
-msgstr ""
+msgstr "Дословно — \\begin{verbatim}"
 
 #: ../src/latex_menu.vala:86
 msgid "Minipage - \\begin{minipage}"
@@ -897,7 +876,7 @@ msgstr "Титульный лист — \\begin{titlepage}"
 #. LaTeX: list environments
 #: ../src/latex_menu.vala:92
 msgid "_List Environments"
-msgstr "С_писки"
+msgstr "С_писок окружений"
 
 #: ../src/latex_menu.vala:94
 msgid "Bulleted List - \\begin{itemize}"
@@ -1546,22 +1525,19 @@ msgstr "Просмотреть журнал"
 
 #: ../src/main_window_build_tools.vala:40
 msgid "_Manage Build Tools"
-msgstr ""
+msgstr "Управление и_нструментами сборки"
 
 #: ../src/main_window_build_tools.vala:41
 msgid "Manage Build Tools"
-msgstr ""
+msgstr "Управление инструментами сборки"
 
 #: ../src/main_window_build_tools.vala:46
-#| msgid "Show tables"
 msgid "Show _Details"
 msgstr "_Показать подробности"
 
 #: ../src/main_window_build_tools.vala:47
-#, fuzzy
-#| msgid "Show tables"
 msgid "Show Details"
-msgstr "Показать таблицы"
+msgstr "Показать подробности"
 
 #: ../src/main_window_build_tools.vala:49
 msgid "Show _Warnings"
@@ -1770,7 +1746,7 @@ msgstr "Удалить выбранный элемент структуры"
 
 #: ../src/main_window_structure.vala:41
 msgid "_Select"
-msgstr ""
+msgstr "В_ыбрать"
 
 #: ../src/main_window_structure.vala:42
 msgid "Select the contents of the selected structure item"
@@ -1794,18 +1770,15 @@ msgstr "Сдвинуть в_право"
 
 #: ../src/main_window_structure.vala:52
 msgid "Shift the selected structure item to the right (e.g. chapter → section)"
-msgstr ""
+msgstr "Сдвинуть выбранный элемент структуры вправо (например, глава → раздел)"
 
 #: ../src/main_window_structure.vala:55
-#| msgid "Open Files"
 msgid "_Open File"
 msgstr "_Открыть файл"
 
 #: ../src/main_window_structure.vala:56
-#, fuzzy
-#| msgid "Delete the selected structure item"
 msgid "Open the file referenced by the selected structure item"
-msgstr "Удалить выбранный элемент структуры"
+msgstr "Открыть файл связанный с выбранным элементом структуры"
 
 #: ../src/main_window.vala:29
 msgid "Quit the program"
@@ -1862,14 +1835,12 @@ msgid "Go to a specific line"
 msgstr "Перейти к указанной строке"
 
 #: ../src/main_window.vala:48
-#, fuzzy
-#| msgid "Search for"
 msgid "_Search Forward"
-msgstr "Найти"
+msgstr "Прямой поис_к"
 
 #: ../src/main_window.vala:49
 msgid "Jump to the associated position in the PDF file"
-msgstr ""
+msgstr "Перейти к связанной позиции в PDF файле"
 
 #. Projects
 #: ../src/main_window.vala:52
@@ -1915,11 +1886,11 @@ msgstr "Открыть документацию LaTeXila"
 
 #: ../src/main_window.vala:65
 msgid "_LaTeX Reference"
-msgstr "_Руководство по LaTeX"
+msgstr "Сп_равка LaTeX"
 
 #: ../src/main_window.vala:66
 msgid "The Kile LaTeX Reference"
-msgstr ""
+msgstr "Справка Kile LaTeX"
 
 #: ../src/main_window.vala:68 ../src/main_window.vala:1197
 msgid "About LaTeXila"
@@ -1936,7 +1907,7 @@ msgstr "Показать или скрыть главную панель инс�
 #. Translators: "Edit" here is an adjective.
 #: ../src/main_window.vala:76
 msgid "_Edit Toolbar"
-msgstr "Панель инструментов р_едактирования"
+msgstr "Панель р_едактирования"
 
 #: ../src/main_window.vala:77
 msgid "Show or hide the edit toolbar"
@@ -1952,7 +1923,7 @@ msgstr "Показать или скрыть боковую панель"
 
 #: ../src/main_window.vala:80
 msgid "_Bottom panel"
-msgstr "Ни_жняя панель"
+msgstr "Нижняя _панель"
 
 #: ../src/main_window.vala:81
 msgid "Show or hide the bottom panel"
@@ -1969,7 +1940,7 @@ msgstr "Структура"
 #: ../src/main_window.vala:620
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
-msgstr "Этот файл (%s) уже открыт в другом окне LaTeXila."
+msgstr "Файл (%s) уже открыт в другом окне LaTeXila."
 
 #: ../src/main_window.vala:622
 msgid ""
@@ -2001,7 +1972,7 @@ msgstr "Сохранить файл"
 #: ../src/main_window.vala:856
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
-msgstr "Файл с именем «%s» уже существует. Хотите заменить его?"
+msgstr "Файл с именем «%s» уже существует. Заменить его?"
 
 #: ../src/main_window.vala:861
 msgid "Replace"
@@ -2013,7 +1984,9 @@ msgstr "LaTeXila — это интегрированная среда LaTeX дл
 
 #: ../src/main_window.vala:1198
 msgid "translator-credits"
-msgstr "Aleksey Kabanov <ak099@mail.ru>, 2012"
+msgstr ""
+"Aleksey Kabanov <ak099@mail.ru>, 2012\n"
+"Stas Solovey <whats_up@tut.by>, 2012"
 
 #: ../src/post_processors.vala:260
 msgid "Latexmk messages"
@@ -2026,7 +1999,7 @@ msgstr "Настройки"
 #. reset all button
 #: ../src/preferences_dialog.vala:36 ../src/utils.vala:381
 msgid "Reset All"
-msgstr "Сбросить все"
+msgstr "Сбросить всё"
 
 #: ../src/preferences_dialog.vala:39
 msgid "Reset all preferences"
@@ -2034,7 +2007,7 @@ msgstr "Сбросить все настройки"
 
 #: ../src/preferences_dialog.vala:118
 msgid "Do you really want to reset all preferences?"
-msgstr "Вы действительно хотите сбросить все настройки?"
+msgstr "Действительно сбросить все настройки?"
 
 #: ../src/preferences_dialog.vala:191
 msgid "minute"
@@ -2046,8 +2019,8 @@ msgstr[2] "минут"
 #: ../src/preferences_dialog.vala:291
 msgid "character"
 msgid_plural "characters"
-msgstr[0] "символа"
-msgstr[1] "символов"
+msgstr[0] "символ"
+msgstr[1] "символа"
 msgstr[2] "символов"
 
 #: ../src/preferences_dialog.vala:331
@@ -2080,16 +2053,16 @@ msgstr "Размещение проекта"
 
 #: ../src/project_dialogs.vala:243 ../src/project_dialogs.vala:300
 msgid "Clear All"
-msgstr "Очистить все"
+msgstr "Очистить всё"
 
 #: ../src/project_dialogs.vala:275
 #, c-format
 msgid "Do you really want to delete the project \"%s\"?"
-msgstr "Вы действительно хотите удалить проект «%s»?"
+msgstr "Действительно удалить проект «%s»?"
 
 #: ../src/project_dialogs.vala:296
 msgid "Do you really want to clear all projects?"
-msgstr "Вы действительно хотите очистить все проекты?"
+msgstr "Действительно очистить все проекты?"
 
 #: ../src/project_dialogs.vala:328
 msgid "The Main File is not in the directory."
@@ -2101,7 +2074,7 @@ msgstr "Перейти к строке:"
 
 #: ../src/search.vala:50
 msgid "Line you want to move the cursor to"
-msgstr "Строка, на которую вы хотите переместить курсор"
+msgstr "Строка, к которой нужно переместить курсор"
 
 #: ../src/search.vala:178
 msgid "Replace with"
@@ -2109,7 +2082,7 @@ msgstr "Заменить на"
 
 #: ../src/search.vala:197
 msgid "All"
-msgstr ""
+msgstr "Все"
 
 #: ../src/search.vala:308
 msgid "Search for"
@@ -2133,17 +2106,15 @@ msgstr "Свернуть все"
 
 #: ../src/structure.vala:180
 msgid "Show labels"
-msgstr ""
+msgstr "Показывать метки"
 
 #: ../src/structure.vala:181
-#, fuzzy
-#| msgid "Show all files"
 msgid "Show included files"
-msgstr "Показывать все файлы"
+msgstr "Показывать включённые файлы"
 
 #: ../src/structure.vala:182
 msgid "Show tables"
-msgstr "Показать таблицы"
+msgstr "Показывать таблицы"
 
 #: ../src/structure.vala:183
 msgid "Show figures and images"
@@ -2156,7 +2127,7 @@ msgstr "Показывать TODO и FIXME"
 #: ../src/structure.vala:623
 #, c-format
 msgid "Structure action error: %s"
-msgstr ""
+msgstr "Ошибка работы структуры: %s"
 
 #: ../src/structure.vala:628
 msgid "The structure data seems outdated. Please refresh the structure."
@@ -2183,7 +2154,7 @@ msgstr "выбрать"
 #. Translators: it's a verb
 #: ../src/structure.vala:725
 msgid "comment"
-msgstr ""
+msgstr "комментировать"
 
 #. Translators: it's a verb
 #: ../src/structure.vala:727
@@ -2196,10 +2167,8 @@ msgid "shift right"
 msgstr "сдвинуть вправо"
 
 #: ../src/structure.vala:730
-#, fuzzy
-#| msgid "Open a file"
 msgid "open file"
-msgstr "Открыть файл"
+msgstr "открыть файл"
 
 #: ../src/structure.vala:775
 msgid "Table"
@@ -2216,7 +2185,7 @@ msgstr "Изображение"
 
 #: ../src/structure.vala:779
 msgid "File included"
-msgstr ""
+msgstr "Файл включён"
 
 #: ../src/symbols.vala:59
 msgid "Greek"
@@ -2251,32 +2220,25 @@ msgid "Most Used"
 msgstr "Часто используемые"
 
 #: ../src/synctex.vala:84
-#, fuzzy
-#| msgid "The active document's filename."
 msgid "The document is not saved."
-msgstr "Имя файла активного документа."
+msgstr "Документ не сохранён."
 
 #: ../src/synctex.vala:91
-#, fuzzy
-#| msgid "The file '%s' doesn't exist."
 msgid "The PDF file doesn't exist."
-msgstr "Файл «%s» не существует."
+msgstr "Файл PDF не существует."
 
 #: ../src/synctex.vala:100
-#, fuzzy, c-format
-#| msgid "The file '%s' doesn't exist."
+#, c-format
 msgid "The file \"%s\" doesn't exist."
 msgstr "Файл «%s» не существует."
 
 #: ../src/synctex.vala:107
 msgid "Can not communicate with evince."
-msgstr ""
+msgstr "Невозможно связаться с evince."
 
 #: ../src/synctex.vala:125
-#, fuzzy
-#| msgid "Impossible to load the file '%s'."
 msgid "Impossible to do the forward search."
-msgstr "Невозможно загрузить файл «%s»."
+msgstr "Невозможно выполнить прямой поиск."
 
 #: ../src/templates_dialogs.vala:34
 msgid "New File..."
@@ -2300,7 +2262,7 @@ msgstr "Имя нового шаблона"
 
 #: ../src/templates_dialogs.vala:198
 msgid "Choose an icon"
-msgstr ""
+msgstr "Выберите значок"
 
 #: ../src/templates_dialogs.vala:242
 msgid "Delete Template(s)..."
@@ -2377,7 +2339,7 @@ msgstr "Шрифт"
 #: ../src/ui/preferences_dialog.ui.h:13
 #, no-c-format
 msgid "_Use the system fixed width font (%s)"
-msgstr "_Использовать системный шрифт фиксированной ширины (%s)"
+msgstr "_Использовать системный моноширинный шрифт (%s)"
 
 #: ../src/ui/preferences_dialog.ui.h:14
 msgid "Editor _font: "
@@ -2397,11 +2359,11 @@ msgstr "Шрифт и цвета"
 
 #: ../src/ui/preferences_dialog.ui.h:18
 msgid "File Clean-Up"
-msgstr ""
+msgstr "Очистка файлов"
 
 #: ../src/ui/preferences_dialog.ui.h:20
 msgid "Automatically clean-up files after close"
-msgstr ""
+msgstr "Автоматическая очистка файлов после закрытия"
 
 #: ../src/ui/preferences_dialog.ui.h:21
 msgid "Interactive completion after"
@@ -2417,26 +2379,5 @@ msgstr "Количество символов после '\\'"
 
 #: ../src/ui/preferences_dialog.ui.h:24
 msgid "Other"
-msgstr ""
+msgstr "Другой"
 
-#~ msgid "Show files included"
-#~ msgstr "Показывать включённые файлы"
-
-#~ msgid "Show only files with these extensions"
-#~ msgstr "Показывать только файлы с этим расширением"
-
-#~ msgid ""
-#~ "The program for viewing documents.\n"
-#~ "Its value can be changed in the preferences dialog."
-#~ msgstr ""
-#~ "Программа для просмотра документов.\n"
-#~ "Значение можно изменить в диалоге настроек."
-
-#~ msgid "Program for viewing documents:"
-#~ msgstr "Программа для просмотра документов:"
-
-#~ msgid "Reset"
-#~ msgstr "Сбросить"
-
-#~ msgid "Number of most used symbols:"
-#~ msgstr "Количество часто используемых символов:"
