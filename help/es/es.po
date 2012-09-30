@@ -7,10 +7,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2012-07-18 00:03+0000\n"
-"PO-Revision-Date: 2012-07-21 18:21+0200\n"
+"POT-Creation-Date: 2012-09-10 02:40+0000\n"
+"PO-Revision-Date: 2012-09-30 13:00+0200\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -174,12 +174,10 @@ msgid "There are several means to execute a build tool:"
 msgstr "Hay varias maneras de ejecutar una herramienta de construcción:"
 
 #: C/build_tools.page:118(item/p)
-#| msgid "Open the <gui style=\"menu\">Build</gui> menu (first part)."
 msgid "Open the <gui style=\"menu\">Build</gui> menu."
 msgstr "Abrir el menú <gui style=\"menu\">Construir</gui>."
 
 #: C/build_tools.page:119(item/p)
-#| msgid "Use the buttons in the main toolbar (last part)."
 msgid "Use the buttons in the main toolbar."
 msgstr "Usar los botones en la barra de herramientas principal."
 
@@ -216,10 +214,6 @@ msgid "General Configuration"
 msgstr "Configuración general"
 
 #: C/build_tools.page:137(section/p)
-#| msgid ""
-#| "To configure the build tools, open the preferences dialog: <guiseq> <gui "
-#| "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui "
-#| "style=\"tab\">LaTeX</gui> </guiseq>"
 msgid ""
 "To configure the build tools, go to: <guiseq> <gui style=\"menu\">Build</"
 "gui> <gui style=\"menu\">Manage Build Tools</gui> </guiseq>"
@@ -229,11 +223,6 @@ msgstr ""
 "construcción</gui> </guiseq>"
 
 #: C/build_tools.page:145(section/p)
-#| msgid ""
-#| "You will see a list with all the build tools. There are check buttons to "
-#| "show or hide them. When a build tool is hidden, it's not possible to "
-#| "execute it. You can perform some actions, like moving a tool up or down, "
-#| "open its properties, delete or copy it, create a new one, etc."
 msgid ""
 "You will see the list of all the default build tools, and a second list with "
 "your personal build tools. There are check buttons to enable or disable "
@@ -259,10 +248,6 @@ msgid "Jobs of a Build Tool"
 msgstr "Tareas de una herramienta de construcción"
 
 #: C/build_tools.page:159(section/p)
-#| msgid ""
-#| "In the properties of a build tool, the tricky part is to configure the "
-#| "jobs. A build tool can execute several jobs. Each job contains three "
-#| "pieces of information:"
 msgid ""
 "In the properties of a build tool, the tricky part is to configure the jobs. "
 "A build tool can execute several jobs. Each job contains two pieces of "
@@ -359,16 +344,21 @@ msgid "Interactive completion"
 msgstr "Completado interactivo"
 
 #: C/completion.page:18(section/p)
+#| msgid ""
+#| "By default, when a LaTeX command is typed, proposals will be shown after "
+#| "two characters. This can be configured in the preferences dialog: "
+#| "<guiseq> <gui style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</"
+#| "gui> <gui style=\"tab\">LaTeX</gui> </guiseq>"
 msgid ""
 "By default, when a LaTeX command is typed, proposals will be shown after two "
 "characters. This can be configured in the preferences dialog: <guiseq> <gui "
 "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
-"\"tab\">LaTeX</gui> </guiseq>"
+"\"tab\">Other</gui> </guiseq>"
 msgstr ""
 "De manera predeterminada, cuando se escribe un comando de LaTeX, las "
 "propuestas se muestran después de dos caracteres. Esto se puede configurar "
 "en el diálogo de preferencias: <guiseq> <gui style=\"menu\">Editar</gui> "
-"<gui style=\"menu\">Preferencias</gui> <gui style=\"tab\">LaTeX</gui> </"
+"<gui style=\"menu\">Preferencias</gui> <gui style=\"tab\">Otras</gui> </"
 "guiseq>"
 
 #: C/completion.page:30(section/title)
@@ -400,9 +390,12 @@ msgid "Manage projects"
 msgstr "Gestionar proyectos"
 
 #: C/projects.page:20(section/p)
+#| msgid ""
+#| "All actions related to projects are located in the <gui style=\"menu"
+#| "\">Projects</gui> menu. A project contain only two pieces of information:"
 msgid ""
 "All actions related to projects are located in the <gui style=\"menu"
-"\">Projects</gui> menu. A project contain only two pieces of information:"
+"\">Projects</gui> menu. A project contains only two pieces of information:"
 msgstr ""
 "Todas las acciones relacionadas con los proyectos se encuentran en el menú "
 "<gui style=\"menu\">Proyectos</gui>. Un proyecto sólo contiene dos "
@@ -435,6 +428,14 @@ msgid ""
 msgstr ""
 "Se ejecuta una <link xref=\"build_tools\">herramienta de construcción</link> "
 "sobre el archivo principal del proyecto."
+
+#: C/projects.page:39(item/p)
+msgid ""
+"The <link xref=\"synctex#forward_search\">forward search</link> works for a "
+"secondary file of a project."
+msgstr ""
+"La <link xref=\"synctex#forward_search\">búsqueda hacia adelante</link> "
+"funciona para un archivo o proyecto secundario."
 
 #: C/spell_checking.page:10(page/title)
 msgid "Spell Checking"
@@ -475,18 +476,21 @@ msgid "Dictionaries"
 msgstr "Diccionarios"
 
 #: C/spell_checking.page:36(section/p)
+#| msgid ""
+#| "<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> is used "
+#| "for the spell checking in LaTeXila. GtkSpell uses <link href=\"http://www."
+#| "abisource.com/projects/enchant/\">Enchant</link>, which uses one or "
+#| "several backends such as Hunspell or Aspell for the dictionaries."
 msgid ""
-"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> is used for "
-"the spell checking in LaTeXila. GtkSpell uses <link href=\"http://www."
-"abisource.com/projects/enchant/\">Enchant</link>, which uses one or several "
+"<link href=\"http://www.abisource.com/projects/enchant/\">Enchant</link> is "
+"used for the spell checking in LaTeXila. Enchant uses one or several "
 "backends such as Hunspell or Aspell for the dictionaries."
 msgstr ""
-"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> se usa para "
-"comprobar la ortografía en LaTeXila. GtkSpell usa <link href=\"http://www."
-"abisource.com/projects/enchant/\">Enchant</link>, que usa uno de los "
+"<link href=\"http://www.abisource.com/projects/enchant/\">Enchant</link> se "
+"usa para comprobar la ortografía en LaTeXila. Enchant usa uno de los "
 "diversos «backends», tales como Hunspell o Aspell para los diccionarios."
 
-#: C/spell_checking.page:43(section/p)
+#: C/spell_checking.page:42(section/p)
 msgid ""
 "So if there is no dictionary for your language, try to know which backend is "
 "used by Enchant on your system, and install the dictionary for this backend. "
@@ -547,6 +551,97 @@ msgstr ""
 "Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en "
 "una estructura. Se puede hacer pulsando con el botón derecho o mediante el "
 "menú <gui style=\"menu\">Estructura</gui>."
+
+#: C/synctex.page:10(page/title)
+msgid "Forward and Backward Search"
+msgstr "Búsqueda hacia adelanta y hacia atrás"
+
+#: C/synctex.page:13(synopsis/p)
+msgid ""
+"Synchronization between the document's *.tex files and the resulting PDF "
+"output, opened with the <app>Evince</app> document viewer."
+msgstr ""
+"Sincronización entre los archivos del documento .tex y el PDF de resultante, "
+"abierto con el visor de documentos <app>Evince</app>."
+
+#: C/synctex.page:18(note/p)
+msgid ""
+"For more information, read the <link href=\"help:evince#synctex"
+"\"><app>Evince</app> documentation</link>."
+msgstr ""
+"Para obtener más información, consulte la <link href=\"help:evince#synctex"
+"\">documentación de <app>Evince</app></link>."
+
+#: C/synctex.page:23(section/title)
+msgid "Forward Search: from .tex to PDF"
+msgstr "Búsqueda hacia adelante: de .tex a PDF"
+
+#: C/synctex.page:25(section/p)
+msgid ""
+"From a certain position in the .tex source file, jump to the corresponding "
+"position in the PDF file."
+msgstr ""
+"Saltar a la posición correspondiente en un archivo PDF desde un archivo . "
+"tex fuente."
+
+#: C/synctex.page:28(section/p)
+msgid "There are different ways to do a forward search:"
+msgstr "Hay varias maneras de hacer una búsqueda hacia adelante:"
+
+#: C/synctex.page:30(item/p)
+#| msgid ""
+#| "To configure the build tools, go to: <guiseq> <gui style=\"menu\">Build</"
+#| "gui> <gui style=\"menu\">Manage Build Tools</gui> </guiseq>"
+msgid ""
+"In the menu: <guiseq> <gui style=\"menu\">Search</gui> <gui style=\"menu"
+"\">Search Forward</gui> </guiseq>"
+msgstr ""
+"En el menú: <guiseq> <gui style=\"menu\">Buscar</gui> <gui style=\"menu"
+"\">Buscar hacia adelante</gui> </guiseq>"
+
+#: C/synctex.page:36(item/p)
+#| msgid ""
+#| "At any time, press <keyseq> <key>Ctrl</key> <key>Space</key> </keyseq> to "
+#| "show proposals."
+msgid "By pressing <keyseq> <key>Ctrl</key> <key>left click</key> </keyseq>"
+msgstr ""
+"Pulsando <keyseq> <key>Ctrl</key> <key>pulsación izquierda</key> </keyseq>"
+
+#: C/synctex.page:44(section/p)
+msgid ""
+"If a document is split into several .tex files, create a <link xref="
+"\"projects\">project</link>. There is no need to mention the main file with "
+"a LaTeX comment in each secondary .tex file, like it is explained in the "
+"<link href=\"help:evince/synctex-search#forward-search\"> <app>Evince</app> "
+"documentation. </link>"
+msgstr ""
+"Si se divide un documento en varios archivos .tex, cree un <link xref="
+"\"projects\">proyecto</link>. No es necesario mencionar cada archivo "
+"principal con un comentario LaTeX en cada archivo .tex secundario, como se "
+"explica en la documentación de <link href=\"help:evince/synctex-"
+"search#forward-search\"> <app>Evince</app></link>."
+
+#: C/synctex.page:53(section/title)
+msgid "Backward Search"
+msgstr "Búsqueda hacia atrás"
+
+#: C/synctex.page:55(section/p)
+msgid ""
+"In <app>Evince</app>, press <keyseq> <key>Ctrl</key> <key>left click</key> </"
+"keyseq>, and the corresponding position in the .tex file will be opened in "
+"<app>LaTeXila</app>."
+msgstr ""
+"En <app>Evince</app>, pulse <keyseq> <key>Ctrl</key> <key>pulsación "
+"izquierda</key> </keyseq>, y se abrirá la correspondiente posición del "
+"archivo .tex en <app>LaTeXila</app>."
+
+#: C/synctex.page:63(section/p)
+msgid ""
+"<app>Evince</app> have to be launched by <app>LaTeXila</app>. Else, the "
+"backward search will not work."
+msgstr ""
+"<app>Latexila</app> debe lanzar <app>Evince</app>. Si no, la búsqueda hacia "
+"atrás no funcionará."
 
 #~ msgid ""
 #~ "For an explanation of the option about the Latexmk post processor, see "
