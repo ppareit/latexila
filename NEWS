@@ -1,5 +1,23 @@
 LaTeXila NEWS
 
+=================================
+* Release 2.6.0 (October 7, 2012)
+=================================
+
+- Change default style scheme from 'classic' to 'tango'
+
+- UI translations:
+	- Aleksej Kabanov (ru)
+	- Daniel Mustieles (es)
+	- Matej Urbančič (sl)
+	- Rūdolfs Mazurs (lv)
+	- Stas Solovey (ru)
+	- Мирослав Николић (sr) (sr@latin)
+
+- Doc translations:
+	- Daniel Mustieles (es)
+
+
 ====================================
 * Release 2.5.4 (September 10, 2012)
 ====================================
