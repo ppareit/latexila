@@ -68,8 +68,29 @@ AC_DEFINE_UNQUOTED([ICONS_DIR],
 AC_PROG_CC
 AC_PROG_INSTALL
 AM_PROG_CC_C_O
-AM_PROG_VALAC([${VALA_REQUIRED_VERSION}])
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
+
+# Checks Valac
+# (based on vala.m4 from GNU Automake)
+# Modification: only display a warning message if the user doesn't have the
+#  minimal valac version instead of display error and stop the compilation.
+# A bug has been reported upstream.
+AC_DEFUN([AM_PROG_VALAC_CUSTOM],
+[AC_PATH_PROG([VALAC], [valac], [])
+ AS_IF([test -z "$VALAC"],
+   [AC_MSG_WARN([No Vala compiler found.  You will not be able to compile .vala source files.])],
+   [AS_IF([test -n "$1"],
+      [AC_MSG_CHECKING([$VALAC is at least version $1])
+       am__vala_version=`$VALAC --version | sed 's/Vala  *//'`
+       AS_VERSION_COMPARE([$1], ["$am__vala_version"],
+         [AC_MSG_RESULT([yes])],
+         [AC_MSG_RESULT([yes])],
+         [AC_MSG_RESULT([no])
+          AC_MSG_WARN([Vala $1 not found.  You will not be able to compile .vala source files.])
+          unset VALAC])])])
+])
+
+AM_PROG_VALAC_CUSTOM([${VALA_REQUIRED_VERSION}])
 
 # Checks for dependencies
 PKG_CHECK_MODULES([LATEXILA], [
