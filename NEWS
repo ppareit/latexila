@@ -1,5 +1,14 @@
 LaTeXila NEWS
 
+==================================
+* Release 2.6.1 (October 20, 2012)
+==================================
+
+- Autotools: required version of Vala is now optional
+- Comment selected lines: comment empty lines too
+- Misc bug fixes
+
+
 =================================
 * Release 2.6.0 (October 7, 2012)
 =================================
