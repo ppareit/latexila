@@ -336,6 +336,7 @@ public class MainWindow : Window
 
         ToggleAction action =
             _action_group.get_action ("ViewMainToolbar") as ToggleAction;
+        action.active = true;
 
         main_toolbar.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -352,6 +353,7 @@ public class MainWindow : Window
 
         ToggleAction action =
             _action_group.get_action ("ViewEditToolbar") as ToggleAction;
+        action.active = true;
 
         edit_toolbar.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -366,6 +368,7 @@ public class MainWindow : Window
 
         // Bind the toggle action to show/hide the side panel
         ToggleAction action = _action_group.get_action ("ViewSidePanel") as ToggleAction;
+        action.active = true;
 
         side_panel.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
@@ -458,6 +461,7 @@ public class MainWindow : Window
         // Bind the toggle action to show/hide the bottom panel
         ToggleAction action =
             _action_group.get_action ("ViewBottomPanel") as ToggleAction;
+        action.active = false;
 
         bottom_panel.bind_property ("visible", action, "active",
             BindingFlags.BIDIRECTIONAL);
