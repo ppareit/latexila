@@ -160,6 +160,13 @@ AC_CONFIG_FILES([Makefile
 
 AC_OUTPUT
 
+if test -z "$VALAC"
+then
+	vala_compiler="valac >= ${VALA_REQUIRED_VERSION} not found."
+else
+	vala_compiler=${VALAC}
+fi
+
 # Print a summary of the configuration
 echo "
 
@@ -168,5 +175,6 @@ Configuration:
     ${PACKAGE_NAME} version ${PACKAGE_VERSION}
 
     Prefix: ${prefix}
-    Compiler: ${CC} ${CFLAGS} ${CPPFLAGS}
+    C Compiler: ${CC} ${CFLAGS} ${CPPFLAGS}
+    Vala Compiler: ${vala_compiler}
 "
