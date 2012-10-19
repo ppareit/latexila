@@ -408,21 +408,13 @@ public class Document : Gtk.SourceBuffer
         get_iter_at_line (out cur_iter, start_line);
 
         begin_user_action ();
-        for (int i = start_line ; i <= end_line ; i++, cur_iter.forward_line ())
+
+        for (int line_num = start_line ; line_num <= end_line ; line_num++)
         {
-            // do not comment empty lines
-            if (cur_iter.ends_line ())
-                continue;
-
-            TextIter end_line_iter = cur_iter;
-            end_line_iter.forward_to_line_end ();
-
-            string line_contents = get_text (cur_iter, end_line_iter, false);
-
-            // do not comment lines containing only spaces
-            if (line_contents.strip () != "")
-                insert (ref cur_iter, "% ", -1);
+            insert (ref cur_iter, "% ", -1);
+            cur_iter.forward_line ();
         }
+
         end_user_action ();
     }
 
