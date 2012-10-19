@@ -323,7 +323,7 @@ public class BuildView : TreeView
 
         int end_line = msg.end_line;
         if (end_line == -1)
-            end_line = msg.start_line;
+            end_line = msg.start_line + 1;
 
         TreeIter iter;
         _store.append (out iter, parent);
