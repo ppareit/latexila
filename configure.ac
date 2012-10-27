@@ -128,11 +128,6 @@ YELP_HELP_INIT
 # GSettings
 GLIB_GSETTINGS
 
-adl_RECURSIVE_EVAL(["${datadir}"], [SCHEMA_DIR])
-AC_DEFINE_UNQUOTED([SCHEMA_DIR],
-                   ["${SCHEMA_DIR}"],
-		   [GSettings schemas directory])
-
 # Generate files
 AC_CONFIG_FILES([Makefile
 		 data/Makefile

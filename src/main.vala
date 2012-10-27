@@ -28,26 +28,6 @@ private struct CmdLineData
     Variant? files_to_open;
 }
 
-private void check_xdg_data_dirs ()
-{
-    // GSettings looks for compiled schemas in locations specified by the XDG_DATA_DIRS
-    // environment variable.
-
-    // Environment.get_system_data_dirs() is not used because this function store the
-    // value in a cache. If we change the value of the environment variable, the cache is
-    // not modified...
-    string? data_dirs_env = Environment.get_variable ("XDG_DATA_DIRS");
-    if (data_dirs_env == null)
-        data_dirs_env = "/usr/local/share:/usr/share";
-
-    string[] data_dirs = data_dirs_env.split (":");
-    if (! (Config.SCHEMA_DIR in data_dirs))
-    {
-        Environment.set_variable ("XDG_DATA_DIRS",
-            Config.SCHEMA_DIR + ":" + data_dirs_env, true);
-    }
-}
-
 private void init_i18n ()
 {
     Intl.bindtextdomain (Config.GETTEXT_PACKAGE, Config.LOCALE_DIR);
@@ -129,7 +109,6 @@ private CmdLineData parse_cmd_line_options (string[] args)
 
 int main (string[] args)
 {
-    check_xdg_data_dirs ();
     init_i18n ();
 
     CmdLineData data = parse_cmd_line_options (args);
