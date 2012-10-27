@@ -61,7 +61,7 @@
     </key>
     <key name="forget-no-tabs" type="b">
       <default>true</default>
-      <_summary>Forget no tabulations</_summary>
+      <_summary>Forget lack of tabulations</_summary>
       <_description>Forget you are not using tabulations.</_description>
     </key>
     <key name="display-line-numbers" type="b">
@@ -109,7 +109,7 @@
     <key name="side-panel-component" type="i">
       <default>0</default>
       <_summary>Side panel component</_summary>
-      <_description>Side panel active component. 0: Symbols. 1: File browser.</_description>
+      <_description>Side panel's active component. 0: Symbols. 1: File browser. 2: Structure.</_description>
     </key>
     <key name="show-build-warnings" type="b">
       <default>true</default>
@@ -125,18 +125,17 @@
     <key name="interactive-completion" type="b">
       <default>true</default>
       <_summary>Interactive completion</_summary>
-      <_description>Automatically show commands proposals</_description>
+      <_description>Automatically show LaTeX commands proposals</_description>
     </key>
     <key name="interactive-completion-num" type="u">
       <range min="0" max="8" />
       <default>2</default>
-      <_summary>Interactive completion min chars</_summary>
-      <_description>Minimum number of characters after '\' for interactive completion</_description>
+      <_summary>Minimum number of characters for interactive completion</_summary>
+      <_description>Minimum number of characters after "\" for the interactive completion of LaTeX commands</_description>
     </key>
     <key name="no-confirm-clean" type="b">
       <default>false</default>
-      <_summary>No confirmation clean-up</_summary>
-      <_description>No confirmation when cleaning-up</_description>
+      <_summary>No confirmation when cleaning-up</_summary>
     </key>
     <key name="automatic-clean" type="b">
       <default>false</default>
@@ -145,8 +144,8 @@
     </key>
     <key name="clean-extensions" type="s">
       <default>'.aux .blg .bbl .fdb_latexmk .fls .idx .ilg .ind .log .nav .out .snm .synctex.gz .toc'</default>
-      <_summary>File extensions for clean-up</_summary>
-      <_description>The file extensions for the clean-up are separated by spaces</_description>
+      <_summary>File extensions for the clean-up</_summary>
+      <_description>The list of file extensions for the clean-up, separated by spaces</_description>
     </key>
     <key name="enabled-default-build-tools" type="ai">
       <default>[]</default>
