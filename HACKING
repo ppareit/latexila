@@ -18,6 +18,7 @@ Later, to take the new commits you just have to do:
 
     $ git pull
 
+An easy way to build LaTeXila and its dependencies is to use jhbuild.
 
 If you want to contribute to LaTeXila, contact the main developer (see the
 file AUTHORS).
