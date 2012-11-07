@@ -196,7 +196,7 @@ public class MainWindow : Window
         /* Side panel */
 
         SidePanel side_panel = get_side_panel ();
-        _main_hpaned.add1 (side_panel);
+        _main_hpaned.pack1 (side_panel, false, false);
 
         /* Vertical paned.
          * Top: documents, search and replace, ...
@@ -233,7 +233,7 @@ public class MainWindow : Window
 
         // When we resize the window, the bottom panel keeps the same height.
         _vpaned.pack1 (docs_vgrid, true, true);
-        _vpaned.pack2 (bottom_panel, false, true);
+        _vpaned.pack2 (bottom_panel, false, false);
 
         /* Statusbar */
 
