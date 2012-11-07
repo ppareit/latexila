@@ -247,6 +247,7 @@ public class MainWindow : Window
 
         hide_completion_calltip_when_needed ();
         support_drag_and_drop ();
+        shrink_window_when_unmaximized ();
 
         delete_event.connect (() =>
         {
@@ -535,6 +536,30 @@ public class MainWindow : Window
 
             app.open_documents (files);
             Gtk.drag_finish (dc, true, true, time);
+        });
+    }
+
+    private void shrink_window_when_unmaximized ()
+    {
+        window_state_event.connect ((e) =>
+        {
+            Gdk.EventWindowState event = e;
+
+            // The window has been unmaximized.
+            if (Gdk.WindowState.MAXIMIZED in event.changed_mask &&
+                ! (Gdk.WindowState.MAXIMIZED in event.new_window_state))
+            {
+                int width = screen.get_width ();
+                int height = screen.get_height ();
+
+                resize (width - 100, height - 100);
+
+                // Signal handled.
+                return true;
+            }
+
+            // Propagate the event further.
+            return false;
         });
     }
 
@@ -949,18 +974,10 @@ public class MainWindow : Window
         settings_window.set_int ("state", state);
 
         // get width and height of the window
-        int w, h;
-        get_size (out w, out h);
-
-        // If window is maximized, store sizes that are a bit smaller than full screen,
-        // else making window non-maximized the next time will have no effect.
-        if (Gdk.WindowState.MAXIMIZED in state)
-        {
-            w -= 100;
-            h -= 100;
-        }
-
-        settings_window.set ("size", "(ii)", w, h);
+        int width;
+        int height;
+        get_size (out width, out height);
+        settings_window.set ("size", "(ii)", width, height);
 
         settings_window.set_int ("side-panel-size", _main_hpaned.get_position ());
         settings_window.set_int ("vertical-paned-position", _vpaned.get_position ());
