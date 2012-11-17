@@ -196,6 +196,6 @@ Configuration:
     ${PACKAGE_NAME} version ${PACKAGE_VERSION}
 
     Prefix: ${prefix}
-    C Compiler: ${CC} ${CFLAGS} ${CPPFLAGS}
     Vala Compiler: ${vala_compiler}
+    C Compiler: ${CC} ${CFLAGS} ${CPPFLAGS}
 "
