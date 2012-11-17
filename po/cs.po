@@ -748,7 +748,7 @@ msgstr "Přejít do složky aktivního dokumentu"
 
 #: ../src/file_browser.vala:333
 msgid "File System"
-msgstr "Souborový systém"placeholder
+msgstr "Souborový systém"
 
 #: ../src/file_browser.vala:452 ../src/main_window.vala:382
 msgid "File Browser"
