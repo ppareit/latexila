@@ -134,6 +134,14 @@ dependencies="
 CFLAGS="$CFLAGS `pkg-config --cflags ${dependencies}`"
 LIBS="$LIBS `pkg-config --libs ${dependencies}`"
 
+# Disable deprecated stuff
+CFLAGS="$CFLAGS \
+-DGSEAL_ENABLE \
+-DG_DISABLE_DEPRECATED \
+-DGDK_DISABLE_DEPRECATED \
+-DGTK_DISABLE_DEPRECATED \
+-DGDK_PIXBUF_DISABLE_DEPRECATED"
+
 # Native Language Support
 IT_PROG_INTLTOOL([0.40.0])
 AM_GNU_GETTEXT_VERSION([0.17])
