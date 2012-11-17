@@ -73,10 +73,7 @@ latexila_SOURCES = 			\
 latexila_CPPFLAGS =		\
 	-I$(top_srcdir)		\
 	-I$(srcdir)/gedit	\
-	-I$(srcdir)/gtkspell	\
-	$(LATEXILA_CFLAGS)
-
-latexila_LDFLAGS = $(LATEXILA_LIBS)
+	-I$(srcdir)/gtkspell
 
 latexila_LDADD = 		\
 	gedit/libgedit.la	\

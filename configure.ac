@@ -93,18 +93,46 @@ AC_DEFUN([AM_PROG_VALAC_CUSTOM],
 AM_PROG_VALAC_CUSTOM([${VALA_REQUIRED_VERSION}])
 
 # Checks for dependencies
-PKG_CHECK_MODULES([LATEXILA], [
-	glib-2.0 >= ${GLIB_REQUIRED_VERSION}
-	gio-2.0 >= ${GLIB_REQUIRED_VERSION}
-	gtk+-3.0 >= ${GTK_REQUIRED_VERSION}
-	gtksourceview-3.0 >= ${GTKSOURCEVIEW_REQUIRED_VERSION}
+
+if ! pkg-config --atleast-version=${GLIB_REQUIRED_VERSION} glib-2.0; then
+	AC_MSG_ERROR([glib-2.0 >= ${GLIB_REQUIRED_VERSION} required.])
+fi
+
+if ! pkg-config --atleast-version=${GLIB_REQUIRED_VERSION} gio-2.0; then
+	AC_MSG_ERROR([gio-2.0 >= ${GLIB_REQUIRED_VERSION} required.])
+fi
+
+if ! pkg-config --atleast-version=${GTK_REQUIRED_VERSION} gtk+-3.0; then
+	AC_MSG_ERROR([gtk+-3.0 >= ${GTK_REQUIRED_VERSION} required.])
+fi
+
+if ! pkg-config --atleast-version=${GTKSOURCEVIEW_REQUIRED_VERSION} gtksourceview-3.0; then
+	AC_MSG_ERROR([gtksourceview-3.0 >= ${GTKSOURCEVIEW_REQUIRED_VERSION} required.])
+fi
+
+if ! pkg-config gsettings-desktop-schemas; then
+	AC_MSG_ERROR([gsettings-desktop-schemas required.])
+fi
+
+if ! pkg-config gee-1.0; then
+	AC_MSG_ERROR([gee-1.0 required.])
+fi
+
+if ! pkg-config enchant; then
+	AC_MSG_ERROR([enchant required.])
+fi
+
+dependencies="
+	glib-2.0
+	gio-2.0
+	gtk+-3.0
+	gtksourceview-3.0
 	gsettings-desktop-schemas
 	gee-1.0
-	enchant
-])
+	enchant"
 
-AC_SUBST([LATEXILA_CFLAGS])
-AC_SUBST([LATEXILA_LIBS])
+CFLAGS="$CFLAGS `pkg-config --cflags ${dependencies}`"
+LIBS="$LIBS `pkg-config --libs ${dependencies}`"
 
 # Native Language Support
 IT_PROG_INTLTOOL([0.40.0])
@@ -122,10 +150,8 @@ AC_DEFINE_UNQUOTED([LOCALE_DIR],
                    ["${LOCALE_DIR}"],
 		   [locale directory])
 
-# Help documentation
+# Misc
 YELP_HELP_INIT
-
-# GSettings
 GLIB_GSETTINGS
 
 # Generate files
