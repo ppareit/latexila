@@ -152,9 +152,13 @@ public class BuildToolRunner : GLib.Object
             if (_aborted)
                 return;
 
-            BuildState state = success ? BuildState.SUCCEEDED : BuildState.FAILED;
-            _view.set_title_state (_current_job_title, state);
+            if (! success)
+            {
+                failed ();
+                return;
+            }
 
+            _view.set_title_state (_current_job_title, BuildState.SUCCEEDED);
             _job_num++;
             run ();
         });
