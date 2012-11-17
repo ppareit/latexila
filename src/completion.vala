@@ -85,7 +85,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
         // icons
         _icon_cmd = Utils.get_pixbuf_from_stock ("completion_cmd", IconSize.MENU);
-        _icon_choice = Utils.get_pixbuf_from_stock ("completion_choice", IconSize.MENU);
+        _icon_choice = Utils.get_pixbuf_from_stock ("gray-square", IconSize.MENU);
         _icon_package_required = Utils.get_pixbuf_from_stock (Stock.DIALOG_WARNING,
             IconSize.MENU);
 

@@ -29,10 +29,10 @@
     <file alias="compile_dvi.png" preprocess="to-pixdata">../data/images/stock-icons/compile_dvi.png</file>
     <file alias="compile_pdf.png" preprocess="to-pixdata">../data/images/stock-icons/compile_pdf.png</file>
     <file alias="compile_ps.png" preprocess="to-pixdata">../data/images/stock-icons/compile_ps.png</file>
-    <file alias="completion_choice.png" preprocess="to-pixdata">../data/images/stock-icons/completion_choice.png</file>
     <file alias="completion_cmd.png" preprocess="to-pixdata">../data/images/stock-icons/completion_cmd.png</file>
     <file alias="delimiters-left.png" preprocess="to-pixdata">../data/images/stock-icons/delimiters-left.png</file>
     <file alias="delimiters-right.png" preprocess="to-pixdata">../data/images/stock-icons/delimiters-right.png</file>
+    <file alias="gray-square.png" preprocess="to-pixdata">../data/images/stock-icons/gray-square.png</file>
     <file alias="italic.png" preprocess="to-pixdata">../data/images/stock-icons/italic.png</file>
     <file alias="list-description.png" preprocess="to-pixdata">../data/images/stock-icons/list-description.png</file>
     <file alias="list-enumerate.png" preprocess="to-pixdata">../data/images/stock-icons/list-enumerate.png</file>

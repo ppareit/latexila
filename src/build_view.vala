@@ -378,8 +378,7 @@ public class BuildView : TreeView
         switch (type)
         {
             case BuildMsgType.JOB_SUB_COMMAND:
-                // TODO rename the completion_choice stock icon
-                return "completion_choice";
+                return "gray-square";
 
             case BuildMsgType.ERROR:
                 return Stock.DIALOG_ERROR;
