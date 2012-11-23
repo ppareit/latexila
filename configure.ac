@@ -205,5 +205,5 @@ Configuration:
 
     Prefix: ${prefix}
     Vala Compiler: ${vala_compiler}
-    C Compiler: ${CC} ${CFLAGS} ${CPPFLAGS}
+    C Compiler: ${CC}
 "
