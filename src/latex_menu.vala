@@ -670,7 +670,25 @@ public class LatexMenu : Gtk.ActionGroup
 
     public void on_env_table ()
     {
-        text_buffer_insert ("\\begin{table}\n", "\n\\caption{}\n\\end{table}");
+        string indent = get_indentation ();
+
+        string before_cursor =
+            "\\begin{table}\n" +
+            @"$indent\\caption{";
+
+        string after_cursor =
+            "}\n" +
+            @"$indent\\label{tab:}\n" +
+            "\n" +
+            @"$indent\\begin{center}\n" +
+            @"$indent$indent\\begin{tabular}{cc}\n" +
+            @"$indent$indent$indent & \\\\\n" +
+            @"$indent$indent$indent & \\\\\n" +
+            @"$indent$indent\\end{tabular}\n" +
+            @"$indent\\end{center}\n" +
+            "\\end{table}";
+
+        text_buffer_insert (before_cursor, after_cursor);
     }
 
     public void on_env_quote ()
@@ -883,7 +901,18 @@ public class LatexMenu : Gtk.ActionGroup
 
     public void on_tabular_tabular ()
     {
-        text_buffer_insert ("\\begin{tabular}\n", "\n\\end{tabular}");
+        string indent = get_indentation ();
+
+        string before_cursor =
+            "\\begin{tabular}{cc";
+
+        string after_cursor =
+            "}\n" +
+            @"$indent & \\\\\n" +
+            @"$indent & \\\\\n" +
+            "\\end{tabular}";
+
+        text_buffer_insert (before_cursor, after_cursor);
     }
 
     public void on_tabular_multicolumn ()
