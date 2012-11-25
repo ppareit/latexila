@@ -72,7 +72,7 @@ public class LatexMenu : Gtk.ActionGroup
             N_("Align Right - \\begin{flushright}"), on_env_right },
         { "EnvFigure", "insert-image", "\\begin{_figure}", null,
             N_("Figure - \\begin{figure}"), on_env_figure },
-        { "EnvTable", null, "\\begin{_table}", null,
+        { "EnvTable", "table", "\\begin{_table}", null,
             N_("Table - \\begin{table}"), on_env_table },
         { "EnvQuote", null, "\\begin{_quote}", null,
             N_("Quote - \\begin{quote}"), on_env_quote },

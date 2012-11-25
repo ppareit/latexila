@@ -467,6 +467,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <separator />
 
     <toolitem action="EnvFigure" />
+    <toolitem action="EnvTable" />
 
     <separator />
 
