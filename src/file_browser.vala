@@ -214,6 +214,7 @@ public class FileBrowser : Grid
     {
         ToolButton home_button = new ToolButton.from_stock (Stock.HOME);
         home_button.tooltip_text = _("Go to the home directory");
+        home_button.label = home_button.tooltip_text;
 
         home_button.clicked.connect (() =>
         {
@@ -228,6 +229,7 @@ public class FileBrowser : Grid
     {
         _parent_button = new ToolButton.from_stock (Stock.GO_UP);
         _parent_button.tooltip_text = _("Go to the parent directory");
+        _parent_button.label = _parent_button.tooltip_text;
 
         _parent_button.clicked.connect (() =>
         {
@@ -243,6 +245,7 @@ public class FileBrowser : Grid
     {
         ToolButton jump_button = new ToolButton.from_stock (Stock.JUMP_TO);
         jump_button.tooltip_text = _("Go to the active document directory");
+        jump_button.label = jump_button.tooltip_text;
 
         jump_button.clicked.connect (() =>
         {

@@ -156,6 +156,7 @@ public class Structure : Grid
     {
         ToolButton refresh_button = new ToolButton.from_stock (Stock.REFRESH);
         refresh_button.tooltip_text = _("Refresh");
+        refresh_button.label = refresh_button.tooltip_text;
 
         refresh_button.clicked.connect (() =>
         {
@@ -169,6 +170,7 @@ public class Structure : Grid
     {
         ToolButton collapse_button = new ToolButton.from_stock (Stock.ZOOM_OUT);
         collapse_button.tooltip_text = _("Collapse All");
+        collapse_button.label = collapse_button.tooltip_text;
 
         collapse_button.clicked.connect (() => _tree_view.collapse_all ());
 
@@ -193,6 +195,7 @@ public class Structure : Grid
             new ToggleToolButton.from_stock (get_icon_from_type (type));
 
         button.tooltip_text = tooltip;
+        button.label = tooltip;
 
         _simple_list_buttons += button;
 
