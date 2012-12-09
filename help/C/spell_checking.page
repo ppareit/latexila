@@ -40,9 +40,8 @@
   </p>
 
   <p>
-    So if there is no dictionary for your language, try to know which backend is used by
-    Enchant on your system, and install the dictionary for this backend.
-    There are most probably packages available for your Linux distribution.
+    If your language is not listed when doing a right click, install a
+    dictionary for one of the supported backends.
   </p>
 </section>
 </page>
