@@ -404,6 +404,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <toolitem action="SearchFind" />
     <toolitem action="SearchReplace" />
     <separator />
+    <toolitem action="BuildClean" />
     <placeholder name="BuildToolsPlaceholderToolbar" />
   </toolbar>
 
