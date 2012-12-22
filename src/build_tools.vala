@@ -25,7 +25,6 @@ public enum PostProcessorType
     LATEX,
     LATEXMK,
     NO_OUTPUT,
-    RUBBER,
     N_POST_PROCESSORS
 }
 
@@ -88,8 +87,7 @@ public abstract class BuildTools : GLib.Object
         "all-output",
         "latex",
         "latexmk",
-        "no-output",
-        "rubber"
+        "no-output"
     };
 
     protected Gee.LinkedList<BuildTool?> _build_tools;

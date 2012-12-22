@@ -23,7 +23,6 @@ gettext
 gsettings-desktop-schemas
 enchant
 Latexmk >= 4.31 (optional, but strongly recommended)
-Rubber (optional, Latexmk is better)
 
 And for building the sources:
 Vala >= @VALA_REQUIRED_VERSION@ (may be optional)

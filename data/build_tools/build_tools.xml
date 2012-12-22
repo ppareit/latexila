@@ -57,32 +57,6 @@
     <open>$shortname.ps</open>
   </tool>
 
-  <!-- Rubber -->
-
-  <tool id="9" show="false" extensions=".tex" icon="compile_pdf">
-    <label its:translate="no">LaTeX → PDF (Rubber)</label>
-    <job postProcessor="rubber">
-      rubber --maxerr -1 --short --force --warn all --pdf $filename
-    </job>
-    <open>$shortname.pdf</open>
-  </tool>
-
-  <tool id="10" show="false" extensions=".tex" icon="compile_dvi">
-    <label its:translate="no">LaTeX → DVI (Rubber)</label>
-    <job postProcessor="rubber">
-      rubber --maxerr -1 --short --force --warn all $filename
-    </job>
-    <open>$shortname.dvi</open>
-  </tool>
-
-  <tool id="11" show="false" extensions=".tex" icon="compile_ps">
-    <label its:translate="no">LaTeX → DVI → PS (Rubber)</label>
-    <job postProcessor="rubber">
-      rubber --maxerr -1 --short --force --warn all --ps $filename
-    </job>
-    <open>$shortname.ps</open>
-  </tool>
-
   <!-- latex, pdflatex -->
 
   <tool id="12" show="false" extensions=".tex" icon="compile_pdf">

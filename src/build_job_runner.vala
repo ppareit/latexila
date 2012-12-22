@@ -182,10 +182,6 @@ public class BuildJobRunner : GLib.Object
                 _post_processor = new NoOutputPostProcessor ();
                 break;
 
-            case PostProcessorType.RUBBER:
-                _post_processor = new RubberPostProcessor ();
-                break;
-
             default:
                 warning ("Unknown post processor. Use no-output.");
                 _post_processor = new NoOutputPostProcessor ();
