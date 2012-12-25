@@ -7,15 +7,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2012-12-09 22:05+0000\n"
-"PO-Revision-Date: 2012-12-12 11:18+0100\n"
+"POT-Creation-Date: 2012-12-22 13:21+0000\n"
+"PO-Revision-Date: 2012-12-25 11:51+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español <gnome-es-list@gnome.org>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
 #: C/index.page:4(page/title)
@@ -44,12 +44,15 @@ msgid "Introduction"
 msgstr "Introducción"
 
 #: C/build_tools.page:22(section/p)
+#| msgid ""
+#| "Several different tools can be used for a document compilation. There are "
+#| "some low-level commands, and two higher-level tools: Latexmk and Rubber."
 msgid ""
 "Several different tools can be used for a document compilation. There are "
-"some low-level commands, and two higher-level tools: Latexmk and Rubber."
+"some low-level commands, and one higher-level tool: Latexmk."
 msgstr ""
 "Se pueden usar varias herramientas para compilar documentos. Hay algunos "
-"comandos de bajo nivel y dos herramientas de alto nivel: Latexmk y Rubber."
+"comandos de bajo nivel y una herramienta de alto nivel: Latexmk."
 
 #: C/build_tools.page:26(table/title)
 msgid "Low-level commands"
@@ -82,110 +85,46 @@ msgstr ""
 "hay un ejemplo:"
 
 #: C/build_tools.page:78(section/p)
+#| msgid ""
+#| "Using a higher-level tool such as Latexmk or Rubber simplify a lot all "
+#| "this process, since only one command is required. Indeed, these tools can "
+#| "detect how many times the <cmd>latex</cmd> or <cmd>pdflatex</cmd> command "
+#| "must be called, and whether <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is "
+#| "required. By default, LaTeXila uses Latexmk."
 msgid ""
-"Using a higher-level tool such as Latexmk or Rubber simplify a lot all this "
-"process, since only one command is required. Indeed, these tools can detect "
-"how many times the <cmd>latex</cmd> or <cmd>pdflatex</cmd> command must be "
-"called, and whether <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is required. "
-"By default, LaTeXila uses Latexmk."
+"Using a higher-level tool such as Latexmk simplify a lot all this process, "
+"since only one command is required. Indeed, Latexmk can detect how many "
+"times the <cmd>latex</cmd> or <cmd>pdflatex</cmd> command must be called, "
+"and whether <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is required. By "
+"default, LaTeXila uses Latexmk."
 msgstr ""
-"Usar una herramienta de alto nivel como Latexmk o Rubber simplifica mucho "
-"este proceso, ya que sólo se requiere un comando. En realidad, estas "
-"herramientas pueden detectar cuántas veces se deben usar los comandos "
-"<cmd>latex</cmd> o <cmd>pdflatex</cmd>, y si se necesita <cmd>bibtex</cmd> o "
-"<cmd>makeindex</cmd>. De manera predeterminada, LaTeXila usa Latexmk."
+"Usar una herramienta de alto nivel como Latexmk simplifica mucho este "
+"proceso, ya que sólo se requiere un comando. En realidad, Latexmk puede "
+"detectar cuántas veces se deben usar los comandos <cmd>latex</cmd> o "
+"<cmd>pdflatex</cmd>, y si se necesita <cmd>bibtex</cmd> o <cmd>makeindex</"
+"cmd>. De manera predeterminada, LaTeXila usa Latexmk."
 
 #: C/build_tools.page:86(section/title)
-msgid "Differences Between Latexmk and Rubber"
-msgstr "Diferencias entre Latexmk y Rubber"
-
-#: C/build_tools.page:87(section/p)
-msgid ""
-"<link href=\"http://www.phys.psu.edu/~collins/software/latexmk-jcc/"
-"\">Latexmk</link> and <link href=\"https://launchpad.net/rubber/\">Rubber</"
-"link> have the same purpose: simplify the compilation process of a LaTeX "
-"document. Latexmk is written in Perl, while Rubber is written in Python."
-msgstr ""
-"<link href=\"http://www.phys.psu.edu/~collins/software/latexmk-jcc/"
-"\">Latexmk</link> y <link href=\"https://launchpad.net/rubber/\">Rubber</"
-"link> tienen el mismo propósito: simplificar el proceso de compilación de un "
-"documento LaTeX. Latexmk está escrito en Perl, mientras que Rubber está "
-"escrito en Python."
-
-#: C/build_tools.page:92(section/p)
-msgid ""
-"The output of Latexmk contains more information: which commands are "
-"executed, how many times, their output, and the reasons why Latexmk executes "
-"(or doesn't execute) these commands. The output of Rubber, on the other "
-"hand, doesn't contain a lot of information. When an error occurs, it can be "
-"more difficult to diagnose."
-msgstr ""
-"La salida de Latexmk contiene más información: qué comandos se ejecutan, "
-"cuántas veces, su salida y las razones por las que Latexmk ejecuta (o no "
-"ejecuta) estos comandos. Por otro lado, la salida de Rubber no contiene "
-"mucha información. Cuando hay un error, puede más difícil de diagnosticar."
-
-#: C/build_tools.page:97(section/p)
-msgid ""
-"Also, Rubber filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</"
-"cmd> command. As a consequence, when Rubber prints an error, it's more "
-"difficult to know which type of error it is. If you use Latexmk, errors are "
-"categorized into three types: critical errors, simple warnings and bad boxes "
-"(for example when a word exceed the margin). With Rubber, there is no "
-"distinction between critical errors and simple warnings. See <link xref="
-"\"#post-processors\"/> for more information."
-msgstr ""
-"Rubber también filtra la salida de los comandos <cmd>latex</cmd> o "
-"<cmd>pdflatex</cmd>. Es por esto que, cuando Rubber muestra un error, es más "
-"difícil saber que tipo de error es. Si usa Latexmk, los errores se "
-"categorizan en tres tipos: errores críticos, advertencias simples y «bad "
-"boxes» (por ejemplo, cuando una palabra se sale del margen). Con Rubber, no "
-"hay distinción entre errores críticos y advertencias simples. Consulte la "
-"<link xref=\"#post-processors\"/> para obtener más información"
-
-#: C/build_tools.page:104(section/p)
-msgid ""
-"Latexmk is more flexible. Each low-level command can be customized, for "
-"example for adding a parameter, or use a completely other tool. This can be "
-"done both from the command line and in configuration files (see the <cmd>-e</"
-"cmd> and <cmd>-r</cmd> options). Rubber is also configurable, but less than "
-"Latexmk."
-msgstr ""
-"Latexmk es más felxible. Cada comando de bajo nivel se puede personalizar, "
-"por ejemplo, para añadir un parámetro o para usar por completo otra "
-"herramienta. Esto se puede hacer tanto desde la línea de comandos como desde "
-"los archivos de configuración (consulte las opciones <cmd>-e</cmd> y <cmd>-"
-"r</cmd>). Rubber también es configurable, pero menos que Latexmk."
-
-#: C/build_tools.page:109(section/p)
-msgid ""
-"Last, but not least: Rubber seems to have more bugs and is less actively "
-"maintained than Latexmk."
-msgstr ""
-"Por último, pero no menos importante: Rubber parece tener más errores y se "
-"mantiene menos activamente que Latexmk."
-
-#: C/build_tools.page:114(section/title)
 msgid "Execute a Build Tool"
 msgstr "Ejecutar una herramienta de construcción"
 
-#: C/build_tools.page:116(section/p)
+#: C/build_tools.page:88(section/p)
 msgid "There are several means to execute a build tool:"
 msgstr "Hay varias maneras de ejecutar una herramienta de construcción:"
 
-#: C/build_tools.page:118(item/p)
+#: C/build_tools.page:90(item/p)
 msgid "Open the <gui style=\"menu\">Build</gui> menu."
 msgstr "Abrir el menú <gui style=\"menu\">Construir</gui>."
 
-#: C/build_tools.page:119(item/p)
+#: C/build_tools.page:91(item/p)
 msgid "Use the buttons in the main toolbar."
 msgstr "Usar los botones en la barra de herramientas principal."
 
-#: C/build_tools.page:120(item/p)
+#: C/build_tools.page:92(item/p)
 msgid "Use the shortcut: <key>F2</key> → <key>F11</key>."
 msgstr "Use el atajo de teclado: <key>F2</key> → <key>F11</key>."
 
-#: C/build_tools.page:123(section/p)
+#: C/build_tools.page:95(section/p)
 msgid ""
 "The build tool is executed on the currently opened file. If the file belongs "
 "to a <link xref=\"projects\">project</link>, it is executed on the project's "
@@ -195,11 +134,11 @@ msgstr ""
 "actualmente. Si el archivo pertenece a un <link xref=\"projects\">proyecto</"
 "link>, se ejecuta sobre el archivo principal del proyecto."
 
-#: C/build_tools.page:127(note/title)
+#: C/build_tools.page:99(note/title)
 msgid "Hidden Build Tools"
 msgstr "Herramientas de construcción ocultas"
 
-#: C/build_tools.page:128(note/p)
+#: C/build_tools.page:100(note/p)
 msgid ""
 "By default, a lot of build tools are hidden, so they can't be executed. To "
 "view the full list of build tools, activate or configure them, read the "
@@ -209,11 +148,11 @@ msgstr ""
 "Para ver la lista completa de herramientas de construcción, activarlas o "
 "configurarlas, consulte la <link xref=\"#general_configuration\"/>."
 
-#: C/build_tools.page:135(section/title)
+#: C/build_tools.page:107(section/title)
 msgid "General Configuration"
 msgstr "Configuración general"
 
-#: C/build_tools.page:137(section/p)
+#: C/build_tools.page:109(section/p)
 msgid ""
 "To configure the build tools, go to: <guiseq> <gui style=\"menu\">Build</"
 "gui> <gui style=\"menu\">Manage Build Tools</gui> </guiseq>"
@@ -222,7 +161,7 @@ msgstr ""
 "style=\"menu\">Construir</gui> <gui style=\"menu\">Gestionar herramientas de "
 "construcción</gui> </guiseq>"
 
-#: C/build_tools.page:145(section/p)
+#: C/build_tools.page:117(section/p)
 msgid ""
 "You will see the list of all the default build tools, and a second list with "
 "your personal build tools. There are check buttons to enable or disable "
@@ -237,17 +176,17 @@ msgstr ""
 "herramienta, abrir sus propiedades, eliminarla, copiarla, crear una nueva, "
 "etc."
 
-#: C/build_tools.page:152(note/p)
+#: C/build_tools.page:124(note/p)
 msgid "Double-click on a build tool will open its properties."
 msgstr ""
 "Una pulsación doble sobre una herramienta de construcción mostrará sus "
 "propiedades."
 
-#: C/build_tools.page:157(section/title)
+#: C/build_tools.page:129(section/title)
 msgid "Jobs of a Build Tool"
 msgstr "Tareas de una herramienta de construcción"
 
-#: C/build_tools.page:159(section/p)
+#: C/build_tools.page:131(section/p)
 msgid ""
 "In the properties of a build tool, the tricky part is to configure the jobs. "
 "A build tool can execute several jobs. Each job contains two pieces of "
@@ -257,15 +196,15 @@ msgstr ""
 "es configurar las tareas. Una herramienta de construcción puede ejecutar "
 "varias tareas. Cada tarea contiene dos fragmentos de información:"
 
-#: C/build_tools.page:163(item/p)
+#: C/build_tools.page:135(item/p)
 msgid "The command, which can use placeholders."
 msgstr "El comando, que puede usar marcadores de posición."
 
-#: C/build_tools.page:164(item/p)
+#: C/build_tools.page:136(item/p)
 msgid "The post processor (see <link xref=\"#post-processors\"/>)."
 msgstr "El post-procesador (consulte la <link xref=\"#post-processors\"/>)."
 
-#: C/build_tools.page:167(section/p)
+#: C/build_tools.page:139(section/p)
 msgid ""
 "When an error occurs during a job's execution, the execution of the build "
 "tool is aborted, so the next jobs are not launched."
@@ -274,28 +213,31 @@ msgstr ""
 "ejecución de la herramienta de construcción, por lo que los siguientes "
 "trabajos no se lanzan."
 
-#: C/build_tools.page:172(section/title)
+#: C/build_tools.page:144(section/title)
 msgid "Post Processors"
 msgstr "Post-procesadores"
 
-#: C/build_tools.page:173(section/p)
+#: C/build_tools.page:145(section/p)
+#| msgid ""
+#| "The purpose of a post processor is to filter the command output and "
+#| "extract the useful information. Five post processors are available:"
 msgid ""
 "The purpose of a post processor is to filter the command output and extract "
-"the useful information. Five post processors are available:"
+"the useful information. Four post processors are available:"
 msgstr ""
 "El propósito de un post-procesador es filtrar la información de salida del "
-"comando y extraer la información útil. Hay cinco post-procesadores "
+"comando y extraer la información útil. Hay cuatro post-procesadores "
 "disponibles:"
 
-#: C/build_tools.page:179(item/p)
+#: C/build_tools.page:151(item/p)
 msgid "The output is simply not displayed."
 msgstr "La salida simplemente no se muestra."
 
-#: C/build_tools.page:183(item/p)
+#: C/build_tools.page:155(item/p)
 msgid "All the output is displayed, without filter."
 msgstr "Se muestra toda la salida, sin filtrar."
 
-#: C/build_tools.page:187(item/p)
+#: C/build_tools.page:159(item/p)
 msgid ""
 "Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands. "
 "There can be three types of errors: critical errors, warnings, or bad boxes. "
@@ -307,25 +249,13 @@ msgstr ""
 "boxes». También hay alguna información útil: el tamaño del documento, el "
 "número de páginas y el número de errores."
 
-#: C/build_tools.page:194(item/p)
+#: C/build_tools.page:166(item/p)
 msgid ""
 "Used for the <cmd>latexmk</cmd> command. Internally, this post processor "
 "uses other ones: <em>latex</em> and <em>all-output</em>."
 msgstr ""
 "Usado por el comando <cmd>latexmk</cmd>. Internamente, este post-procesador "
 "usa otros: <em>latex</em> y <em>all-output</em>."
-
-#: C/build_tools.page:199(item/p)
-msgid ""
-"This is the post-processor used for the <cmd>rubber</cmd> command. The "
-"errors are categorized into two types: bad boxes, and the others. So, unlike "
-"the <em>latex</em> post processor, there is no distinction between critical "
-"errors and simple warnings."
-msgstr ""
-"Este es el post-procesador usado por el comando <cmd>rubber</cmd>. Los "
-"errores se categorizan en dos tipos: «bad boxes» y los otros. Por lo que, a "
-"diferencia del post-procesador <em>latex</em>, no hay distinción entre "
-"errores críticos y advertencias simples."
 
 #: C/completion.page:10(page/title)
 msgid "Completion of LaTeX commands"
@@ -533,9 +463,9 @@ msgid ""
 "structure's item. Either by a right click, or via the <gui style=\"menu"
 "\">Structure</gui> menu."
 msgstr ""
-"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en una "
-"estructura. Se puede hacer pulsando con el botón derecho o mediante el menú "
-"<gui style=\"menu\">Estructura</gui>."
+"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en "
+"una estructura. Se puede hacer pulsando con el botón derecho o mediante el "
+"menú <gui style=\"menu\">Estructura</gui>."
 
 #: C/synctex.page:10(page/title)
 msgid "Forward and Backward Search"
@@ -621,6 +551,83 @@ msgid ""
 msgstr ""
 "<app>Latexila</app> debe lanzar <app>Evince</app>. Si no, la búsqueda hacia "
 "atrás no funcionará."
+
+#~ msgid "Differences Between Latexmk and Rubber"
+#~ msgstr "Diferencias entre Latexmk y Rubber"
+
+#~ msgid ""
+#~ "<link href=\"http://www.phys.psu.edu/~collins/software/latexmk-jcc/"
+#~ "\">Latexmk</link> and <link href=\"https://launchpad.net/rubber/"
+#~ "\">Rubber</link> have the same purpose: simplify the compilation process "
+#~ "of a LaTeX document. Latexmk is written in Perl, while Rubber is written "
+#~ "in Python."
+#~ msgstr ""
+#~ "<link href=\"http://www.phys.psu.edu/~collins/software/latexmk-jcc/"
+#~ "\">Latexmk</link> y <link href=\"https://launchpad.net/rubber/\">Rubber</"
+#~ "link> tienen el mismo propósito: simplificar el proceso de compilación de "
+#~ "un documento LaTeX. Latexmk está escrito en Perl, mientras que Rubber "
+#~ "está escrito en Python."
+
+#~ msgid ""
+#~ "The output of Latexmk contains more information: which commands are "
+#~ "executed, how many times, their output, and the reasons why Latexmk "
+#~ "executes (or doesn't execute) these commands. The output of Rubber, on "
+#~ "the other hand, doesn't contain a lot of information. When an error "
+#~ "occurs, it can be more difficult to diagnose."
+#~ msgstr ""
+#~ "La salida de Latexmk contiene más información: qué comandos se ejecutan, "
+#~ "cuántas veces, su salida y las razones por las que Latexmk ejecuta (o no "
+#~ "ejecuta) estos comandos. Por otro lado, la salida de Rubber no contiene "
+#~ "mucha información. Cuando hay un error, puede más difícil de diagnosticar."
+
+#~ msgid ""
+#~ "Also, Rubber filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</"
+#~ "cmd> command. As a consequence, when Rubber prints an error, it's more "
+#~ "difficult to know which type of error it is. If you use Latexmk, errors "
+#~ "are categorized into three types: critical errors, simple warnings and "
+#~ "bad boxes (for example when a word exceed the margin). With Rubber, there "
+#~ "is no distinction between critical errors and simple warnings. See <link "
+#~ "xref=\"#post-processors\"/> for more information."
+#~ msgstr ""
+#~ "Rubber también filtra la salida de los comandos <cmd>latex</cmd> o "
+#~ "<cmd>pdflatex</cmd>. Es por esto que, cuando Rubber muestra un error, es "
+#~ "más difícil saber que tipo de error es. Si usa Latexmk, los errores se "
+#~ "categorizan en tres tipos: errores críticos, advertencias simples y «bad "
+#~ "boxes» (por ejemplo, cuando una palabra se sale del margen). Con Rubber, "
+#~ "no hay distinción entre errores críticos y advertencias simples. Consulte "
+#~ "la <link xref=\"#post-processors\"/> para obtener más información"
+
+#~ msgid ""
+#~ "Latexmk is more flexible. Each low-level command can be customized, for "
+#~ "example for adding a parameter, or use a completely other tool. This can "
+#~ "be done both from the command line and in configuration files (see the "
+#~ "<cmd>-e</cmd> and <cmd>-r</cmd> options). Rubber is also configurable, "
+#~ "but less than Latexmk."
+#~ msgstr ""
+#~ "Latexmk es más felxible. Cada comando de bajo nivel se puede "
+#~ "personalizar, por ejemplo, para añadir un parámetro o para usar por "
+#~ "completo otra herramienta. Esto se puede hacer tanto desde la línea de "
+#~ "comandos como desde los archivos de configuración (consulte las opciones "
+#~ "<cmd>-e</cmd> y <cmd>-r</cmd>). Rubber también es configurable, pero "
+#~ "menos que Latexmk."
+
+#~ msgid ""
+#~ "Last, but not least: Rubber seems to have more bugs and is less actively "
+#~ "maintained than Latexmk."
+#~ msgstr ""
+#~ "Por último, pero no menos importante: Rubber parece tener más errores y "
+#~ "se mantiene menos activamente que Latexmk."
+
+#~ msgid ""
+#~ "This is the post-processor used for the <cmd>rubber</cmd> command. The "
+#~ "errors are categorized into two types: bad boxes, and the others. So, "
+#~ "unlike the <em>latex</em> post processor, there is no distinction between "
+#~ "critical errors and simple warnings."
+#~ msgstr ""
+#~ "Este es el post-procesador usado por el comando <cmd>rubber</cmd>. Los "
+#~ "errores se categorizan en dos tipos: «bad boxes» y los otros. Por lo que, "
+#~ "a diferencia del post-procesador <em>latex</em>, no hay distinción entre "
+#~ "errores críticos y advertencias simples."
 
 #~ msgid ""
 #~ "So if there is no dictionary for your language, try to know which backend "
