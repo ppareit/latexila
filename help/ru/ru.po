@@ -1,0 +1,592 @@
+# Russian translation for latexila.
+# Copyright (C) 2012 latexila's COPYRIGHT HOLDER
+# This file is distributed under the same license as the latexila package.
+# Алексей Кабанов <ak099@mail.ru>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latexila master\n"
+"POT-Creation-Date: 2012-12-22 13:21+0000\n"
+"PO-Revision-Date: 2012-11-23 13:02+0400\n"
+"Last-Translator: Aleksej Kabanov <ak099@mail.ru>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
+"Language: ru\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
+"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: C/index.page:4(page/title)
+msgid "LaTeXila Help"
+msgstr "Справка по LaTeXila"
+
+#. Put one translator per line, in the form NAME <EMAIL>, YEAR1, YEAR2
+msgctxt "_"
+msgid "translator-credits"
+msgstr "Алексей Кабанов <ak099@mail.ru>, 2012"
+
+#: C/build_tools.page:10(page/title)
+msgid "Build Tools"
+msgstr "Инструменты сборки"
+
+#: C/build_tools.page:13(synopsis/p)
+msgid ""
+"The purpose of the build tools is to generate a document in the PDF, DVI or "
+"PS format."
+msgstr ""
+"Назначение инструментов сборки — сгенерировать документ в формате PDF, DVI "
+"или PS."
+
+#: C/build_tools.page:20(section/title)
+msgid "Introduction"
+msgstr "Введение"
+
+#: C/build_tools.page:22(section/p)
+#, fuzzy
+#| msgid ""
+#| "Several different tools can be used for a document compilation. There are "
+#| "some low-level commands, and two higher-level tools: Latexmk and Rubber."
+msgid ""
+"Several different tools can be used for a document compilation. There are "
+"some low-level commands, and one higher-level tool: Latexmk."
+msgstr ""
+"Для компиляции документа могут быть использованы несколько различных "
+"инструментов. Это несколько низкоуровневых команд и два высокоуровневых "
+"инструмента: Latexmk и Rubber."
+
+#: C/build_tools.page:26(table/title)
+msgid "Low-level commands"
+msgstr "Низкоуровневые команды"
+
+#: C/build_tools.page:29(td/p)
+msgid "Label"
+msgstr ""
+
+#: C/build_tools.page:30(td/p)
+msgid "Command"
+msgstr "Команда"
+
+#: C/build_tools.page:59(td/p)
+msgid "Bibliography"
+msgstr "Библиография"
+
+#: C/build_tools.page:63(td/p)
+msgid "Index"
+msgstr ""
+
+#: C/build_tools.page:69(section/p)
+msgid ""
+"Compiling a LaTeX document can involve to execute several low-level "
+"commands, in a certain order and a certain number of times. Here is an "
+"example:"
+msgstr ""
+"При компиляции документа LaTeX может быть исполнено несколько низкоуровневых "
+"команд в определённом порядке и определённое число раз. Вот пример:"
+
+#: C/build_tools.page:78(section/p)
+#, fuzzy
+#| msgid ""
+#| "Using a higher-level tool such as Latexmk or Rubber simplify a lot all "
+#| "this process, since only one command is required. Indeed, these tools can "
+#| "detect how many times the <cmd>latex</cmd> or <cmd>pdflatex</cmd> command "
+#| "must be called, and whether <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is "
+#| "required. By default, LaTeXila uses Latexmk."
+msgid ""
+"Using a higher-level tool such as Latexmk simplify a lot all this process, "
+"since only one command is required. Indeed, Latexmk can detect how many "
+"times the <cmd>latex</cmd> or <cmd>pdflatex</cmd> command must be called, "
+"and whether <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is required. By "
+"default, LaTeXila uses Latexmk."
+msgstr ""
+"Использование высокоуровневых инструментов, таких как Latexmk или Rubber, "
+"значительно упрощает этот процесс, поскольку требуется лишь одна команда. "
+"Фактически, эти инструменты могут определить, сколько раз нужно запустить "
+"команду <cmd>latex</cmd> или <cmd>pdflatex</cmd>, и требуется ли команда "
+"<cmd>bibtex</cmd> или <cmd>makeindex</cmd>. По умолчанию LaTeXila использует "
+"Latexmk."
+
+#: C/build_tools.page:86(section/title)
+msgid "Execute a Build Tool"
+msgstr "Запуск инструмента сборки"
+
+#: C/build_tools.page:88(section/p)
+msgid "There are several means to execute a build tool:"
+msgstr "Есть несколько способов запустить инструмент сборки:"
+
+#: C/build_tools.page:90(item/p)
+msgid "Open the <gui style=\"menu\">Build</gui> menu."
+msgstr "Откройте меню <gui style=\"menu\">Собрать</gui>."
+
+#: C/build_tools.page:91(item/p)
+msgid "Use the buttons in the main toolbar."
+msgstr "Использовать кнопки на главной панели инструментов."
+
+#: C/build_tools.page:92(item/p)
+msgid "Use the shortcut: <key>F2</key> → <key>F11</key>."
+msgstr "Воспользоваться комбинацией клавиш: <key>F2</key> → <key>F11</key>."
+
+#: C/build_tools.page:95(section/p)
+msgid ""
+"The build tool is executed on the currently opened file. If the file belongs "
+"to a <link xref=\"projects\">project</link>, it is executed on the project's "
+"main file."
+msgstr ""
+"Инструмент сборки применяется к текущему открытому файлу. Если файл "
+"принадлежит к <link xref=\"projects\">проекту</link>, инструмент применяется "
+"к главному файлу проекта."
+
+#: C/build_tools.page:99(note/title)
+msgid "Hidden Build Tools"
+msgstr "Скрытые инструменты сборки"
+
+#: C/build_tools.page:100(note/p)
+msgid ""
+"By default, a lot of build tools are hidden, so they can't be executed. To "
+"view the full list of build tools, activate or configure them, read the "
+"<link xref=\"#general_configuration\"/> section."
+msgstr ""
+"По умолчанию многие инструменты сборки скрыты, и запустить их нельзя. Чтобы "
+"увидеть полный список инструментов сборки, активировать или настроить их, "
+"прочтите раздел <link xref=\"#general_configuration\"/>."
+
+#: C/build_tools.page:107(section/title)
+msgid "General Configuration"
+msgstr "Общие настройки"
+
+#: C/build_tools.page:109(section/p)
+msgid ""
+"To configure the build tools, go to: <guiseq> <gui style=\"menu\">Build</"
+"gui> <gui style=\"menu\">Manage Build Tools</gui> </guiseq>"
+msgstr ""
+"Для настройки инструментов сборки выберите: <guiseq> <gui style=\"menu"
+"\">Собрать</gui> <gui style=\"menu\">Управление инструментами сборки</gui> </"
+"guiseq>"
+
+#: C/build_tools.page:117(section/p)
+msgid ""
+"You will see the list of all the default build tools, and a second list with "
+"your personal build tools. There are check buttons to enable or disable "
+"them. When a build tool is disabled, it's not possible to execute it. You "
+"can perform some actions, like moving a tool up or down, open its "
+"properties, delete or copy it, create a new one, etc."
+msgstr ""
+"Появится список всех инструментов сборки по умолчанию и второй список с "
+"вашими личными инструментами сборки. Там также есть флажки, позволяющие "
+"включить, или отключить инструменты сборки. Если инструмент сборки отключён, "
+"запустить его невозможно. Со списком можно выполнить некоторые действия, "
+"например, переместить инструмент вверх или вниз, открыть его свойства, "
+"удалить или скопировать его, создать новый инструмент и т.п."
+
+#: C/build_tools.page:124(note/p)
+msgid "Double-click on a build tool will open its properties."
+msgstr ""
+"Выполните двойной щелчок на инструменте сборки, чтобы открыть его свойства."
+
+#: C/build_tools.page:129(section/title)
+msgid "Jobs of a Build Tool"
+msgstr "Задания для инструментов сборки"
+
+#: C/build_tools.page:131(section/p)
+msgid ""
+"In the properties of a build tool, the tricky part is to configure the jobs. "
+"A build tool can execute several jobs. Each job contains two pieces of "
+"information:"
+msgstr ""
+
+#: C/build_tools.page:135(item/p)
+msgid "The command, which can use placeholders."
+msgstr ""
+
+#: C/build_tools.page:136(item/p)
+msgid "The post processor (see <link xref=\"#post-processors\"/>)."
+msgstr "Постобработчик (смотрите <link xref=\"#post-processors\"/>)."
+
+#: C/build_tools.page:139(section/p)
+msgid ""
+"When an error occurs during a job's execution, the execution of the build "
+"tool is aborted, so the next jobs are not launched."
+msgstr ""
+"Если при выполнении задания возникает ошибка, работа инструмента сборки "
+"прерывается, и следующее задание запущено не будет."
+
+#: C/build_tools.page:144(section/title)
+msgid "Post Processors"
+msgstr "Постобработчики"
+
+#: C/build_tools.page:145(section/p)
+#, fuzzy
+#| msgid ""
+#| "The purpose of a post processor is to filter the command output and "
+#| "extract the useful information. Five post processors are available:"
+msgid ""
+"The purpose of a post processor is to filter the command output and extract "
+"the useful information. Four post processors are available:"
+msgstr ""
+"Назначение постобработчика — фильтровать вывод команды и извлекать полезную "
+"информацию. Доступно пять постобработчиков:"
+
+#: C/build_tools.page:151(item/p)
+msgid "The output is simply not displayed."
+msgstr "Вывод просто не отображается."
+
+#: C/build_tools.page:155(item/p)
+msgid "All the output is displayed, without filter."
+msgstr "Весь вывод отображается, без фильтрации."
+
+#: C/build_tools.page:159(item/p)
+msgid ""
+"Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands. "
+"There can be three types of errors: critical errors, warnings, or bad boxes. "
+"There are also some other useful information: the size of the document, the "
+"number of pages, and the number of errors."
+msgstr ""
+
+#: C/build_tools.page:166(item/p)
+msgid ""
+"Used for the <cmd>latexmk</cmd> command. Internally, this post processor "
+"uses other ones: <em>latex</em> and <em>all-output</em>."
+msgstr ""
+
+#: C/completion.page:10(page/title)
+msgid "Completion of LaTeX commands"
+msgstr "Автодополнение команд LaTeX"
+
+#: C/completion.page:13(synopsis/p)
+msgid ""
+"The purpose is to facilitate the writing of LaTeX commands, by showing "
+"proposals."
+msgstr "Цель — упростить набор команд LaTeX, предоставляя подсказки."
+
+#: C/completion.page:17(section/title)
+msgid "Interactive completion"
+msgstr "Интерактивное автодополнение"
+
+#: C/completion.page:18(section/p)
+#, fuzzy
+msgid ""
+"By default, when a LaTeX command is typed, proposals will be shown after two "
+"characters. This can be configured in the preferences dialog: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
+"\"tab\">Other</gui> </guiseq>"
+msgstr ""
+"По умолчанию при наборе команды LaTeX предлагаемые варианты отображаются "
+"после набора двух символов. Это можно изменить в диалоге настройки: <guiseq> "
+"<gui style=\"menu\">Правка</gui> <gui style=\"menu\">Настройки</gui> <gui "
+"style=\"tab\">Другое</gui> </guiseq>"
+
+#: C/completion.page:30(section/title)
+msgid "Manual completion"
+msgstr "Автодополнение вручную"
+
+#: C/completion.page:31(section/p)
+msgid ""
+"At any time, press <keyseq> <key>Ctrl</key> <key>Space</key> </keyseq> to "
+"show proposals."
+msgstr ""
+"В любое время можно нажать <keyseq> <key>Ctrl</key> <key>пробел</key> </"
+"keyseq>, чтобы увидеть предлагаемые варианты команд."
+
+#: C/projects.page:10(page/title)
+msgid "Projects"
+msgstr "Проекты"
+
+#: C/projects.page:13(synopsis/p)
+msgid ""
+"When a LaTeX document is split into several *.tex files, creating a project "
+"is useful."
+msgstr ""
+"Создание проекта полезно, если документ LaTeX разбит на несколько файлов *."
+"tex."
+
+#: C/projects.page:18(section/title)
+msgid "Manage projects"
+msgstr "Управление проектами"
+
+#: C/projects.page:20(section/p)
+msgid ""
+"All actions related to projects are located in the <gui style=\"menu"
+"\">Projects</gui> menu. A project contains only two pieces of information:"
+msgstr ""
+"Все действия, связанные с проектами, раположены в меню <gui style=\"menu"
+"\">Проекты</gui>. Проект содержит только два типа информации:"
+
+#: C/projects.page:25(item/p)
+msgid "The directory where the project is located."
+msgstr "Каталог, в котором размещается проект."
+
+#: C/projects.page:26(item/p)
+msgid "The main *.tex file."
+msgstr "Главный *.tex файл."
+
+#: C/projects.page:29(section/p)
+msgid ""
+"As a consequence, a directory can contain only one project, which is quite "
+"logical."
+msgstr ""
+"Как следствие, каталог может содержать лишь один проект, что вполне логично."
+
+#: C/projects.page:35(section/title)
+msgid "Usefulness of projects"
+msgstr "Польза проектов"
+
+#: C/projects.page:37(item/p)
+msgid ""
+"A <link xref=\"build_tools\">build tool</link> is executed on the project's "
+"main file."
+msgstr ""
+"<link xref=\"build_tools\">Инструмент сборки</link> применяется к главному "
+"файлу проекта."
+
+#: C/projects.page:39(item/p)
+msgid ""
+"The <link xref=\"synctex#forward_search\">forward search</link> works for a "
+"secondary file of a project."
+msgstr ""
+
+#: C/spell_checking.page:10(page/title)
+msgid "Spell Checking"
+msgstr "Проверка правописания"
+
+#: C/spell_checking.page:13(synopsis/p)
+msgid "The purpose is to correct spelling mistakes easily."
+msgstr "Цель — упростить исправление орфографических ошибок"
+
+#: C/spell_checking.page:17(section/title)
+msgid "Use the spell checking"
+msgstr "Использование проверки правописания"
+
+#: C/spell_checking.page:18(section/p)
+msgid ""
+"The spell checking can be activated or disabled via the menu: <guiseq> <gui "
+"style=\"menu\">Edit</gui> <gui style=\"menu\">Spell Check</gui> </guiseq>"
+msgstr ""
+"Проверку правописания можно включить или отключить с помощью меню: <guiseq> "
+"<gui style=\"menu\">Правка</gui> <gui style=\"menu\">Проверка правописания</"
+"gui> </guiseq>"
+
+#: C/spell_checking.page:26(section/p)
+msgid ""
+"Once the spell checking is activated, the misspelled words will be "
+"underlined in red. A right click on a misspelled word will show proposals."
+msgstr ""
+"Когда проверка правописания включена, слова с ошибками будут подчёркиваться "
+"красной линией. Щелчок правой кнопкой на слове с ошибкой покажет варианты "
+"правильного написания."
+
+#: C/spell_checking.page:31(section/p)
+msgid "To change the language, do a right click on the document."
+msgstr "Чтобы изменить язык, щёлкните правой кнопкой на документе."
+
+#: C/spell_checking.page:35(section/title)
+msgid "Dictionaries"
+msgstr "Словари"
+
+#: C/spell_checking.page:36(section/p)
+msgid ""
+"<link href=\"http://www.abisource.com/projects/enchant/\">Enchant</link> is "
+"used for the spell checking in LaTeXila. Enchant uses one or several "
+"backends such as Hunspell or Aspell for the dictionaries."
+msgstr ""
+"Для проверки орфографии в LaTeXila применяется <link href=\"http://www."
+"abisource.com/projects/enchant/\">Enchant</link>. Enchant использует для "
+"работы со словарями один или несколько бэкендов, таких как Hunspell или "
+"Aspell."
+
+#: C/spell_checking.page:42(section/p)
+msgid ""
+"If your language is not listed when doing a right click, install a "
+"dictionary for one of the supported backends."
+msgstr ""
+
+#: C/structure.page:10(page/title)
+msgid "Document's Structure"
+msgstr "Структура документа"
+
+#: C/structure.page:13(synopsis/p)
+msgid ""
+"The list of chapters, sections, sub-sections and other things like tables, "
+"figures, … of a document, to easily navigate in it."
+msgstr ""
+"Список глав, разделов, подразделов документа и других структурных элементов: "
+"таблиц, фигур и т.п., упрощающий навигацию по документу."
+
+#: C/structure.page:18(section/title)
+msgid "Display the structure"
+msgstr "Отображение структуры"
+
+#: C/structure.page:20(section/p)
+msgid ""
+"The structure can be displayed in the side panel. If the side panel is "
+"hidden, go to <guiseq> <gui style=\"menu\">View</gui> <gui style=\"menu"
+"\">Side panel</gui> </guiseq>."
+msgstr ""
+"Можно отобразить структуру в боковой панели. Если панель скрыта, выберите "
+"<guiseq> <gui style=\"menu\">Вид</gui> <gui style=\"menu\">Боковая панель</"
+"gui> </guiseq>."
+
+#: C/structure.page:29(section/p)
+msgid ""
+"The structure's content is not automatically updated. That's why there is a "
+"refresh button. If text is inserted in the document, the position of an item "
+"(e.g. a section) remains correct, as far as the item is still there, and is "
+"not modified."
+msgstr ""
+"Содержимое структуры не обновляется автоматически. Поэтому здесь имеется "
+"кнопка обновления. Если в документ вставляется текст, позиция элемента "
+"(например, раздела) остаётся правильной и не изменяется, поскольку элемент "
+"остался на своём месте."
+
+#: C/structure.page:37(section/title)
+msgid "Actions"
+msgstr "Действия"
+
+#: C/structure.page:39(section/p)
+msgid ""
+"Some actions such as \"cut\", \"copy\" or \"comment\" can be performed on a "
+"structure's item. Either by a right click, or via the <gui style=\"menu"
+"\">Structure</gui> menu."
+msgstr ""
+"С элементом структуры можно выполнить некоторые действия, такие как "
+"«вырезать», «копировать» или «закомментировать». Сделать это можно либо по "
+"правому щелчку, либо через меню <gui style=\"menu\">Структура</gui>."
+
+#: C/synctex.page:10(page/title)
+msgid "Forward and Backward Search"
+msgstr "Прямой и обратный поиск"
+
+#: C/synctex.page:13(synopsis/p)
+msgid ""
+"Synchronization between the document's *.tex files and the resulting PDF "
+"output, opened with the <app>Evince</app> document viewer."
+msgstr ""
+"Синхронизация между *.tex файлами документа и готовым выводом в PDF, "
+"открытым в программе просмотра документов <app>Evince</app>."
+
+#: C/synctex.page:18(note/p)
+msgid ""
+"For more information, read the <link href=\"help:evince#synctex"
+"\"><app>Evince</app> documentation</link>."
+msgstr ""
+"Для дополнительной информации прочтите <link href=\"help:evince#synctex"
+"\">документацию <app>Evince</app></link>."
+
+#: C/synctex.page:23(section/title)
+msgid "Forward Search: from .tex to PDF"
+msgstr "Прямой поиск: из .tex в PDF"
+
+#: C/synctex.page:25(section/p)
+msgid ""
+"From a certain position in the .tex source file, jump to the corresponding "
+"position in the PDF file."
+msgstr ""
+"Переход из определённой позиции в исходном .tex файле в соответствующую "
+"позицию в файле PDF."
+
+#: C/synctex.page:28(section/p)
+msgid "There are different ways to do a forward search:"
+msgstr "Существуют различные способы выполнить прямой поиск:"
+
+#: C/synctex.page:30(item/p)
+msgid ""
+"In the menu: <guiseq> <gui style=\"menu\">Search</gui> <gui style=\"menu"
+"\">Search Forward</gui> </guiseq>"
+msgstr ""
+"С помощью меню: <guiseq> <gui style=\"menu\">Поиск</gui> <gui style=\"menu"
+"\">Прямой поиск</gui> </guiseq>"
+
+#: C/synctex.page:36(item/p)
+msgid "By pressing <keyseq> <key>Ctrl</key> <key>left click</key> </keyseq>"
+msgstr ""
+"Использовать <keyseq> <key>Ctrl</key> <key>щелчок левой кнопкой</key> </"
+"keyseq>"
+
+#: C/synctex.page:44(section/p)
+msgid ""
+"If a document is split into several .tex files, create a <link xref="
+"\"projects\">project</link>. There is no need to mention the main file with "
+"a LaTeX comment in each secondary .tex file, like it is explained in the "
+"<link href=\"help:evince/synctex-search#forward-search\"> <app>Evince</app> "
+"documentation. </link>"
+msgstr ""
+
+#: C/synctex.page:53(section/title)
+msgid "Backward Search"
+msgstr "Обратный поиск"
+
+#: C/synctex.page:55(section/p)
+msgid ""
+"In <app>Evince</app>, press <keyseq> <key>Ctrl</key> <key>left click</key> </"
+"keyseq>, and the corresponding position in the .tex file will be opened in "
+"<app>LaTeXila</app>."
+msgstr ""
+"Нажмите в <app>Evince</app> <keyseq> <key>Ctrl</key> <key>щелчок левой "
+"кнопкой</key> </keyseq> и соответствующая позиция в .tex файле будет открыта "
+"в <app>LaTeXila</app>."
+
+#: C/synctex.page:63(section/p)
+msgid ""
+"<app>Evince</app> have to be launched by <app>LaTeXila</app>. Else, the "
+"backward search will not work."
+msgstr ""
+"<app>Evince</app> должен быть запущен из <app>LaTeXila</app>. Иначе обратный "
+"поиск работать не будет."
+
+#~ msgid "Differences Between Latexmk and Rubber"
+#~ msgstr "Различия между Latexmk и Rubber"
+
+#~ msgid ""
+#~ "<link href=\"http://www.phys.psu.edu/~collins/software/latexmk-jcc/"
+#~ "\">Latexmk</link> and <link href=\"https://launchpad.net/rubber/"
+#~ "\">Rubber</link> have the same purpose: simplify the compilation process "
+#~ "of a LaTeX document. Latexmk is written in Perl, while Rubber is written "
+#~ "in Python."
+#~ msgstr ""
+#~ "<link href=\"http://www.phys.psu.edu/~collins/software/latexmk-jcc/"
+#~ "\">Latexmk</link> и <link href=\"https://launchpad.net/rubber/\">Rubber</"
+#~ "link> имеют одну и ту же цель: упростить процесс компиляции документа "
+#~ "LaTeX. Latexmk написан на Perl, а Rubber написан на Python."
+
+#~ msgid ""
+#~ "The output of Latexmk contains more information: which commands are "
+#~ "executed, how many times, their output, and the reasons why Latexmk "
+#~ "executes (or doesn't execute) these commands. The output of Rubber, on "
+#~ "the other hand, doesn't contain a lot of information. When an error "
+#~ "occurs, it can be more difficult to diagnose."
+#~ msgstr ""
+#~ "Вывод Latexmk содержит больше информации: какие команды выполнялись, "
+#~ "сколько раз, их вывод и причины, по которым  Latexmk выполнил (или не "
+#~ "выполнил) эти команды. Вывод Rubber, с другой стороны, содержит не очень "
+#~ "много информации. Когда случается ошибка, диагностировать её может быть "
+#~ "труднее."
+
+#~ msgid ""
+#~ "Latexmk is more flexible. Each low-level command can be customized, for "
+#~ "example for adding a parameter, or use a completely other tool. This can "
+#~ "be done both from the command line and in configuration files (see the "
+#~ "<cmd>-e</cmd> and <cmd>-r</cmd> options). Rubber is also configurable, "
+#~ "but less than Latexmk."
+#~ msgstr ""
+#~ "Latexmk более гибок. Каждую низкоуровневую команду можно настроить, "
+#~ "например, добавив параметр, или использовать вместо неё совершенно другой "
+#~ "инструмент. Это можно сделать как из командной строки, так и с помощью "
+#~ "конфигурационных файлов (смотрите опции <cmd>-e</cmd> и <cmd>-r</cmd>). "
+#~ "Rubber тоже можно настраивать, но в меньшей степени, чем Latexmk."
+
+#~ msgid ""
+#~ "Last, but not least: Rubber seems to have more bugs and is less actively "
+#~ "maintained than Latexmk."
+#~ msgstr ""
+#~ "И последнее, но не менее важное: в Rubber, похоже, больше ошибок, и он "
+#~ "менее активно поддерживается, чем Latexmk."
+
+#~ msgid ""
+#~ "So if there is no dictionary for your language, try to know which backend "
+#~ "is used by Enchant on your system, and install the dictionary for this "
+#~ "backend. There are most probably packages available for your Linux "
+#~ "distribution."
+#~ msgstr ""
+#~ "Если словарь для вашего языка отсутствует, попробуйте узнать, какой "
+#~ "бэкенд использует Enchant в вашей системе, и установите для него словарь. "
+#~ "Скорее всего, подходящие пакеты доступны в вашем дистрибутиве Linux."

@@ -5,12 +5,12 @@ HELP_ID = latexila
 HELP_FILES = \
 	build_tools.page	\
 	completion.page		\
-	index.page		\
+	index.page		    \
 	projects.page		\
 	spell_checking.page	\
 	structure.page		\
 	synctex.page
 
-HELP_LINGUAS = cs de es fr gl
+HELP_LINGUAS = cs de es fr gl ru
 
 -include $(top_srcdir)/git.mk
