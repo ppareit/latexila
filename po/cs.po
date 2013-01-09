@@ -2111,7 +2111,7 @@ msgstr "Pouze celá slova"
 
 #: ../src/structure.vala:158
 msgid "Refresh"
-msgstr "Občerstvit"
+msgstr "Aktualizovat"
 
 #: ../src/structure.vala:171
 msgid "Collapse All"
@@ -2144,7 +2144,7 @@ msgstr "Chyba akce struktury: %s"
 
 #: ../src/structure.vala:628
 msgid "The structure data seems outdated. Please refresh the structure."
-msgstr "Data struktury vypadají zastaralá. Občerstvěte je prosím."
+msgstr "Data struktury vypadají zastaralá. Aktualizujte je prosím."
 
 #. Translators: it's a verb
 #: ../src/structure.vala:719
