@@ -4,14 +4,15 @@
 #
 # This file is distributed under the same license as the LaTeXila package.
 # Átila Camurça <camurca.home@gmail.com>, 2012.
+# Rafael Ferreira <rafael.f.f1@gmail.com>, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: LaTeXila\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-12-25 11:14+0000\n"
-"PO-Revision-Date: 2012-12-31 01:09-0300\n"
+"POT-Creation-Date: 2012-12-31 04:16+0000\n"
+"PO-Revision-Date: 2013-01-14 01:03-0300\n"
 "Last-Translator: Rafael Ferreira <rafael.f.f1@gmail.com>\n"
 "Language-Team: Brazilian Portuguese <gnome-pt_br-list@gnome.org>\n"
 "Language: pt-BR\n"
@@ -20,60 +21,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 1.5.4\n"
 
-#: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
+#: build_tools.xml:45(tool/label) ../src/build_tool_dialog.vala:166
 msgid "View PDF"
 msgstr "Visualizar PDF"
 
-#: build_tools.xml:44(tool/description)
+#: build_tools.xml:46(tool/description)
 msgid "View the PDF file"
 msgstr "Visualizar o arquivo PDF"
 
-#: build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:165
+#: build_tools.xml:51(tool/label) ../src/build_tool_dialog.vala:165
 msgid "View DVI"
 msgstr "Visualizar DVI"
 
-#: build_tools.xml:50(tool/description)
+#: build_tools.xml:52(tool/description)
 msgid "View the DVI file"
 msgstr "Visualizar o arquivo DVI"
 
-#: build_tools.xml:55(tool/label) ../src/build_tool_dialog.vala:167
+#: build_tools.xml:57(tool/label) ../src/build_tool_dialog.vala:167
 msgid "View PS"
 msgstr "Visualizar PS"
 
-#: build_tools.xml:56(tool/description)
+#: build_tools.xml:58(tool/description)
 msgid "View the PostScript file"
 msgstr "Visualizar o arquivo PostScript"
 
-#: build_tools.xml:64(tool/description)
+#: build_tools.xml:92(tool/description)
 msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
 msgstr ""
 "Criar um arquivo PDF a partir dos arquivos-fonte do LaTeX com o comando "
 "\"pdflatex\""
 
-#: build_tools.xml:70(tool/description)
+#: build_tools.xml:98(tool/description)
 msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
 msgstr ""
 "Criar um arquivo DVI a partir dos arquivos-fonte do LaTeX com o comando "
 "\"latex\""
 
-#: build_tools.xml:78(tool/description)
+#: build_tools.xml:106(tool/description)
 msgid "Run BibTeX (bibliography)"
 msgstr "Executar BibTeX (bibliografia)"
 
-#: build_tools.xml:84(tool/description)
+#: build_tools.xml:112(tool/description)
 msgid "Run MakeIndex"
 msgstr "Executar MakeIndex"
 
-#: build_tools.xml:92(tool/description)
+#: build_tools.xml:120(tool/description)
 msgid "Convert the DVI document to the PDF format"
 msgstr "Converter o documento DVI para o formato PDF"
 
-#: build_tools.xml:98(tool/description)
+#: build_tools.xml:126(tool/description)
 msgid "Convert the DVI document to the PostScript format"
 msgstr "Converter o documento DVI para o formato PostScript"
 
-#: build_tools.xml:104(tool/description)
+#: build_tools.xml:132(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr "Converter o documento PostScript para o formato PDF"
 
@@ -203,7 +205,8 @@ msgid "Whether LaTeXila should insert spaces instead of tabs."
 msgstr "Indica quando o LaTeXila deve inserir espaços em vez de tabulações."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:19
-msgid "Forget lack of tabulations"
+#| msgid "Forget lack of tabulations"
+msgid "Forget no tabulations"
 msgstr "Esqueça a falta de tabulações"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:20
@@ -288,11 +291,11 @@ msgid "Side panel component"
 msgstr "Componente do painel lateral"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
-msgid ""
-"Side panel's active component. 0: Symbols. 1: File browser. 2: Structure."
+#| msgid ""
+#| "Side panel's active component. 0: Symbols. 1: File browser. 2: Structure."
+msgid "Side panel active component. 0: Symbols. 1: File browser."
 msgstr ""
-"Componente ativo do painel lateral. 0: Símbolos. 1: Navegador de arquivos. "
-"2: Estrutura."
+"Componente ativo do painel lateral. 0: Símbolos. 1: Navegador de arquivos."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
 msgid "Show build output warnings"
@@ -307,88 +310,94 @@ msgid "Interactive completion"
 msgstr "Auto-completar interativo"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
-msgid "Automatically show LaTeX commands proposals"
-msgstr "Mostrar automaticamente propostas de comandos LaTeX"
+#| msgid "Automatically show LaTeX commands proposals"
+msgid "Automatically show commands proposals"
+msgstr "Mostrar automaticamente propostas de comandos"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
-msgid "Minimum number of characters for interactive completion"
-msgstr "Número mínimo de caracteres para o auto-completar interativo"
+#| msgid "Interactive completion after"
+msgid "Interactive completion min chars"
+msgstr "Caracteres mínimos para auto-completar"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
-msgid ""
-"Minimum number of characters after \"\\\" for the interactive completion of "
-"LaTeX commands"
+#| msgid "Minimum number of characters for interactive completion"
+msgid "Minimum number of characters after '\\' for interactive completion"
 msgstr ""
-"Número mínimo de caracteres após \"\\\" para o auto-completar interativo de "
-"comandos LaTeX"
+"Número mínimo de caracteres após \"\\\" para o auto-completar interativo"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
+#| msgid "No confirmation when cleaning-up"
+msgid "No confirmation clean-up"
+msgstr "Sem confirmação quando houver remoção"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
 #: ../src/ui/preferences_dialog.ui.h:19
 msgid "No confirmation when cleaning-up"
 msgstr "Sem confirmação quando houver remoção"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
 msgid "Automatic clean-up"
 msgstr "Limpeza automática"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
 msgid ""
 "Automatically clean-up files after close. no-confirm-clean must be true."
 msgstr ""
 "Remover automaticamente arquivos após fechar. limpar-sem-confirmar deve ser "
 "verdadeiro."
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
-msgid "File extensions for the clean-up"
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
+#| msgid "File extensions for the clean-up"
+msgid "File extensions for clean-up"
 msgstr "Extensão dos arquivos para a limpeza"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
-msgid "The list of file extensions for the clean-up, separated by spaces"
-msgstr ""
-"A lista de extensões dos arquivos para a limpeza, separadas por espaços"
-
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:49
+#| msgid "The list of file extensions for the clean-up, separated by spaces"
+msgid "The file extensions for the clean-up are separated by spaces"
+msgstr "As extensões dos arquivos para a limpeza, separadas por espaços"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
 msgid "Enabled default build tools"
 msgstr "Habilitar ferramentas de construção padrão"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
 msgid "The list of the default build tools that are enabled"
 msgstr "A lista de ferramentas de construção padrão que estão habilitadas"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
 msgid "Disabled default build tools"
 msgstr "Desabilitar ferramentas de construção padrão"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
 msgid "The list of the default build tools that are disabled"
 msgstr "A lista de ferramentas de construção padrão que estão desabilitadas"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
 msgid "Current directory"
 msgstr "Diretório atual"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
 msgid "URI of the file browser current directory"
 msgstr "URI do navegador de arquivos do diretório atual"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
 #: ../src/file_browser.vala:281
 msgid "Show build files"
 msgstr "Mostrar arquivos de construção"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
 msgid ""
 "Show files with an extension present in preferences.latex.clean-extensions."
 msgstr ""
 "Mostrar arquivos com as extensões presentes em preferences.latex.clean-"
 "extensions."
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
 #: ../src/file_browser.vala:289
 msgid "Show hidden files"
 msgstr "Mostrar arquivos ocultos"
 
-#: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:59
 msgid "Show files beginning with a dot."
 msgstr "Mostrar arquivos que iniciam com um ponto."
 
@@ -566,7 +575,8 @@ msgstr "Trabalhos"
 
 #: ../src/build_tool_dialog.vala:665
 msgid "List of files to open after executing the build jobs."
-msgstr "Lista os arquivos para abrir depois de executar as tarefas de build."
+msgstr ""
+"Lista os arquivos para abrir depois de executar as tarefas de construção."
 
 #: ../src/build_tool_dialog.vala:666
 msgid "The files are separated by spaces."
@@ -619,7 +629,7 @@ msgstr "Habilitado"
 #: ../src/build_tools_preferences.vala:274
 #, c-format
 msgid "%s [copy]"
-msgstr "%s [copy]"
+msgstr "%s [cópia]"
 
 #: ../src/build_tools_preferences.vala:324
 #, c-format
@@ -693,7 +703,7 @@ msgstr "Arquivo principal:"
 #: ../src/document_tab.vala:259
 #, c-format
 msgid "Activate '%s'"
-msgstr "Ativar '%s'"
+msgstr "Ativar \"%s\""
 
 #: ../src/document_tab.vala:278
 #, c-format
@@ -715,7 +725,7 @@ msgstr "Recarregar"
 #: ../src/document.vala:144
 #, c-format
 msgid "Impossible to load the file '%s'."
-msgstr "Impossível carregar o arquivo '%s'."
+msgstr "Impossível carregar o arquivo \"%s\"."
 
 #: ../src/document.vala:220
 #, c-format
@@ -780,35 +790,36 @@ msgstr "Sistema de arquivos"
 msgid "File Browser"
 msgstr "Navegador de arquivos"
 
-#: ../src/gtkspell/gtkspell.c:355
-msgid "(no suggestions)"
-msgstr "(sem sugestões)"
+#: ../src/gtkspell/gtkspell.c:356
+#| msgid "(no suggestions)"
+msgid "<i>(no suggestions)</i>"
+msgstr "<i>(sem sugestões)</i>"
 
-#: ../src/gtkspell/gtkspell.c:371
+#: ../src/gtkspell/gtkspell.c:368
 msgid "More..."
 msgstr "Mais..."
 
 #. + Add to Dictionary
-#: ../src/gtkspell/gtkspell.c:391
+#: ../src/gtkspell/gtkspell.c:388
 #, c-format
 msgid "Add \"%s\" to Dictionary"
 msgstr "Adicionar \"%s\" ao dicionário"
 
 #. - Ignore All
-#: ../src/gtkspell/gtkspell.c:402
+#: ../src/gtkspell/gtkspell.c:399
 msgid "Ignore All"
 msgstr "Ignorar todos"
 
 #. on top: language selection
-#: ../src/gtkspell/gtkspell.c:497
+#: ../src/gtkspell/gtkspell.c:494
 msgid "Languages"
 msgstr "Idiomas"
 
 # http://translationproject.org/PO-files/pt_BR/gtkspell-2.0.16.pt_BR.po
-#: ../src/gtkspell/gtkspell.c:587
+#: ../src/gtkspell/gtkspell.c:584
 #, c-format
 msgid "enchant error for language: %s"
-msgstr "erro do programa 'enchant' para o idioma: %s"
+msgstr "erro do programa \"enchant\" para o idioma: %s"
 
 #. LaTeX: Sectioning
 #: ../src/latex_menu.vala:32
@@ -964,10 +975,9 @@ msgstr "Máquina de escrever - \\texttt"
 msgid "Slanted - \\textsl"
 msgstr "Inclinado - \\textsl"
 
-# Não sei se devo traduzir ou deixar como está.
 #: ../src/latex_menu.vala:140
 msgid "Small Capitals - \\textsc"
-msgstr "Small capitals - \\textsc"
+msgstr "Caixa alta pequena - \\textsc"
 
 #: ../src/latex_menu.vala:142
 msgid "Sans Serif - \\textsf"
@@ -979,7 +989,7 @@ msgstr "Enfatizado - \\emph"
 
 #: ../src/latex_menu.vala:146
 msgid "Underline - \\underline"
-msgstr "Underline - \\underline"
+msgstr "Sublinhado - \\underline"
 
 #: ../src/latex_menu.vala:148
 msgid "_Font Family"
@@ -997,10 +1007,9 @@ msgstr "Sans serif - \\sffamily"
 msgid "Monospace - \\ttfamily"
 msgstr "Monospace - \\ttfamily"
 
-# não há tradução plausível
 #: ../src/latex_menu.vala:156
 msgid "F_ont Series"
-msgstr "F_ont series"
+msgstr "Séries da f_onte"
 
 #: ../src/latex_menu.vala:158
 msgid "Medium - \\mdseries"
@@ -1010,7 +1019,6 @@ msgstr "Médio - \\mdseries"
 msgid "Bold - \\bfseries"
 msgstr "Negrito - \\bfseries"
 
-# não há tradução plausível
 #: ../src/latex_menu.vala:162
 msgid "Fo_nt Shape"
 msgstr "Forma da fo_nte"
@@ -1027,23 +1035,19 @@ msgstr "Itálico - \\itshape"
 msgid "Slanted - \\slshape"
 msgstr "Inclinado - \\slshape"
 
-# Não sei se devo traduzir ou deixar como está.
 #: ../src/latex_menu.vala:170
 msgid "Small Capitals - \\scshape"
-msgstr "Small capitals - \\scshape"
+msgstr "Caixa alta pequena - \\scshape"
 
-# não há tradução plausível
 #. LaTeX: Tabular
 #: ../src/latex_menu.vala:174
 msgid "_Tabular"
 msgstr "_Tabular"
 
-# Acho que é o mesmo que tabulação.
 #: ../src/latex_menu.vala:176
 msgid "Tabbing - \\begin{tabbing}"
-msgstr "Tabbing - \\begin{tabbing}"
+msgstr "Tabulação - \\begin{tabbing}"
 
-# Acho que não existe tradução coerente.
 #: ../src/latex_menu.vala:178
 msgid "Tabular - \\begin{tabular}"
 msgstr "Tabular - \\begin{tabular}"
@@ -1066,11 +1070,11 @@ msgstr "Linha horizontal (colunas especificadas) - \\cline"
 
 #: ../src/latex_menu.vala:192
 msgid "Frame - \\begin{frame}"
-msgstr "Frame - \\begin{frame}"
+msgstr "Moldura - \\begin{frame}"
 
 #: ../src/latex_menu.vala:194
 msgid "Block - \\begin{block}"
-msgstr "Block - \\begin{block}"
+msgstr "Bloco - \\begin{block}"
 
 #: ../src/latex_menu.vala:196
 msgid "Two columns - \\begin{columns}"
@@ -1191,7 +1195,6 @@ msgstr "Ring - \\r"
 msgid "Tie - \\t"
 msgstr "Tie - \\t"
 
-# não há tradução plausível.
 #. LaTeX: Others
 #: ../src/latex_menu.vala:243
 msgid "_Misc"
@@ -1281,19 +1284,19 @@ msgstr "Equação numerada - \\begin{equation}"
 
 #: ../src/latex_menu.vala:280
 msgid "_Array of Equations - \\begin{align*}"
-msgstr "_Array de equações - \\begin{align*}"
+msgstr "Vetor de equ_ações - \\begin{align*}"
 
 #: ../src/latex_menu.vala:281
 msgid "Array of Equations - \\begin{align*}"
-msgstr "Array de equações - \\begin{align*}"
+msgstr "Vetor de equações - \\begin{align*}"
 
 #: ../src/latex_menu.vala:283
 msgid "Numbered Array of _Equations - \\begin{align}"
-msgstr "Array de equações _numeradas - \\begin{align}"
+msgstr "Vetor de equações _numeradas - \\begin{align}"
 
 #: ../src/latex_menu.vala:284
 msgid "Numbered Array of Equations - \\begin{align}"
-msgstr "Array de equações numeradas - \\begin{align}"
+msgstr "Vetor de equações numeradas - \\begin{align}"
 
 #: ../src/latex_menu.vala:287
 msgid "_Superscript - ^{}"
@@ -1524,23 +1527,23 @@ msgstr "Delimitadores esquerdo"
 msgid "Right Delimiters"
 msgstr "Delimitadores direito"
 
-#: ../src/main.vala:51
+#: ../src/main.vala:71
 msgid "Show the application's version"
 msgstr "Mostrar a versão da aplicação"
 
-#: ../src/main.vala:54
+#: ../src/main.vala:74
 msgid "Create new document"
 msgstr "Criar novo documento"
 
-#: ../src/main.vala:57
+#: ../src/main.vala:77
 msgid "Create a new top-level window in an existing instance of LaTeXila"
 msgstr "Criar uma nova janela em uma instância existente do LaTeXila"
 
-#: ../src/main.vala:66
+#: ../src/main.vala:86
 msgid "- Integrated LaTeX Environment for GNOME"
 msgstr "- Ambiente LaTeX Integrado para GNOME"
 
-#: ../src/main.vala:78
+#: ../src/main.vala:98
 #, c-format
 msgid "Run '%s --help' to see a full list of available command line options.\n"
 msgstr ""
@@ -2044,11 +2047,12 @@ msgstr "LaTeXila é um Ambiente Integrado LaTeX para a Plataforma GNOME"
 msgid "translator-credits"
 msgstr ""
 "Átila Camurça <camurca.home@gmail.com>\n"
-"Darlildo Lima <darlildo.cefetce@gmail.com>"
+"Darlildo Lima <darlildo.cefetce@gmail.com>\n"
+"Rafael Ferreira <rafael.f.f1@gmail.com>"
 
-#: ../src/post_processors.vala:188
+#: ../src/post_processors.vala:260
 msgid "Latexmk messages"
-msgstr "Mensagens latexmk"
+msgstr "Mensagens do latexmk"
 
 #: ../src/preferences_dialog.vala:31
 msgid "Preferences"
@@ -2134,7 +2138,7 @@ msgstr "Linha que deseja mover o curso"
 
 #: ../src/search.vala:178
 msgid "Replace with"
-msgstr "Substituir com"
+msgstr "Substituir por"
 
 #: ../src/search.vala:197
 msgid "All"
@@ -2292,7 +2296,7 @@ msgstr "O arquivo \"%s\" não existe."
 
 #: ../src/synctex.vala:107
 msgid "Can not communicate with evince."
-msgstr "Não foi possível abrir Visualizador de documentos evince."
+msgstr "Não foi possível abrir o visualizador de documentos Evince."
 
 #: ../src/synctex.vala:125
 msgid "Impossible to do the forward search."
@@ -2427,17 +2431,25 @@ msgstr "Remover automaticamente arquivos após fechar"
 msgid "Interactive completion after"
 msgstr "Auto-completar após"
 
+# &quot; = aspas duplas
 #: ../src/ui/preferences_dialog.ui.h:22
 msgid "Number of characters after &apos;\\&apos;"
-msgstr "Número de caracteres após &apos;\\&apos;"
+msgstr "Número de caracteres após &quot;\\&quot;"
 
 #: ../src/ui/preferences_dialog.ui.h:23
 msgid "Number of characters after '\\'"
-msgstr "Número de caracteres após '\\'"
+msgstr "Número de caracteres após \"\\\""
 
 #: ../src/ui/preferences_dialog.ui.h:24
 msgid "Other"
 msgstr "Outro"
+
+#~ msgid ""
+#~ "Minimum number of characters after \"\\\" for the interactive completion "
+#~ "of LaTeX commands"
+#~ msgstr ""
+#~ "Número mínimo de caracteres após \"\\\" para o auto-completar interativo "
+#~ "de comandos LaTeX"
 
 #~ msgid "Do you really want to reset all build tools?"
 #~ msgstr "Você realmente quer repor todas as ferramentas de construção?"
