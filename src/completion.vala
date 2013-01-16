@@ -303,14 +303,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     private void init_calltip_window ()
     {
         _calltip_window = new SourceCompletionInfo ();
-
-        // HACK: no scrollbars
-        if (_calltip_window.get_child () is ScrolledWindow)
-        {
-            ScrolledWindow sw = _calltip_window.get_child () as ScrolledWindow;
-            sw.set_policy (PolicyType.NEVER, PolicyType.NEVER);
-        }
-
         _calltip_window_label = new Label (null);
         _calltip_window.set_widget (_calltip_window_label);
     }
@@ -336,11 +328,6 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
             init_calltip_window ();
 
         _calltip_window_label.set_markup (markup);
-
-        // Set better size
-        Requisition size;
-        _calltip_window_label.get_preferred_size (null, out size);
-        _calltip_window.resize (size.width + 10, size.height + 10);
 
         MainWindow window = Latexila.get_instance ().active_window;
         _calltip_window.set_transient_for (window);

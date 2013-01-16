@@ -69,28 +69,6 @@ public class DocumentView : Gtk.SourceView
             {
                 provider.hide_calltip_window ();
             });
-
-            /* Natural size of the calltip */
-            // When the set_sizing() function is back, this hack can be removed.
-            SourceCompletionInfo info = completion.get_info_window ();
-
-            // This code is highly dependent on the implementation in GtkSourceView.
-            if (info.get_child () is ScrolledWindow)
-            {
-                ScrolledWindow scrolled_window = info.get_child () as ScrolledWindow;
-                scrolled_window.set_policy (PolicyType.NEVER, PolicyType.NEVER);
-            }
-
-            info.draw.connect (() =>
-            {
-                Widget child = info.get_widget ();
-
-                Requisition size;
-                child.get_preferred_size (null, out size);
-                info.resize (size.width + 10, size.height + 10);
-
-                return false;
-            });
         }
         catch (GLib.Error e)
         {
