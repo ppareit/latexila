@@ -1,5 +1,17 @@
 LaTeXila NEWS
 
+==================================
+* Release 2.7.0 (January 22, 2013)
+==================================
+
+- Insert table and tabular: more complete example
+- Changes in the toolbars
+- Build tools: use shorter options with Latexmk
+- Build tools: remove support of Rubber
+- Misc bug fixes
+- Translations updates
+
+
 ===================================
 * Release 2.6.2 (November 24, 2012)
 ===================================
