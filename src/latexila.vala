@@ -21,8 +21,6 @@
 
 public class Latexila : Gtk.Application
 {
-    public MainWindow active_window { get; private set; }
-
     public Latexila ()
     {
         Object (application_id: "org.gnome.latexila");
@@ -51,16 +49,6 @@ public class Latexila : Gtk.Application
             MostUsedSymbols.get_default ().save ();
             release ();
         });
-
-        window_removed.connect (() =>
-        {
-            hold ();
-            unowned List<weak Gtk.Window> windows = get_windows ();
-            if (0 < windows.length ())
-                active_window = windows.data as MainWindow;
-
-            release ();
-        });
     }
 
     private void add_actions ()
@@ -72,7 +60,8 @@ public class Latexila : Gtk.Application
         new_document_action.activate.connect (() =>
         {
             hold ();
-            active_window.create_tab (true);
+            MainWindow window = active_window as MainWindow;
+            window.create_tab (true);
             release ();
         });
 
@@ -199,20 +188,16 @@ public class Latexila : Gtk.Application
     public MainWindow create_window ()
     {
         if (active_window != null)
-            active_window.save_state ();
-
-        MainWindow window = new MainWindow ();
-        add_window (window);
-        active_window = window;
-
-        window.focus_in_event.connect (() =>
         {
-            active_window = window;
-            return false;
-        });
+            MainWindow window = active_window as MainWindow;
+            window.save_state ();
+        }
 
-        window.show ();
-        return window;
+        MainWindow new_window = new MainWindow ();
+        add_window (new_window);
+        new_window.show ();
+
+        return new_window;
     }
 
     public void open_documents (File[] files)
@@ -220,7 +205,8 @@ public class Latexila : Gtk.Application
         bool jump_to = true;
         foreach (File file in files)
         {
-            active_window.open_document (file, jump_to);
+            MainWindow window = active_window as MainWindow;
+            window.open_document (file, jump_to);
             jump_to = false;
         }
     }
