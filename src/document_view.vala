@@ -65,10 +65,7 @@ public class DocumentView : Gtk.SourceView
             completion.remember_info_visibility = true;
             completion.show_headers = false;
 
-            buffer.notify["cursor-position"].connect (() =>
-            {
-                provider.hide_calltip_window ();
-            });
+            hide_completion_calltip_when_needed ();
         }
         catch (GLib.Error e)
         {
@@ -205,6 +202,24 @@ public class DocumentView : Gtk.SourceView
 
         // propagate the event further
         return false;
+    }
+
+    private void hide_completion_calltip_when_needed ()
+    {
+        focus_out_event.connect (() =>
+        {
+            CompletionProvider provider = CompletionProvider.get_default ();
+            provider.hide_calltip_window ();
+
+            // propagate the event further
+            return false;
+        });
+
+        buffer.notify["cursor-position"].connect (() =>
+        {
+            CompletionProvider provider = CompletionProvider.get_default ();
+            provider.hide_calltip_window ();
+        });
     }
 
     private bool on_backspace (Gdk.EventKey event)

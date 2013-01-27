@@ -245,7 +245,6 @@ public class MainWindow : Window
 
         /* Other misc stuff */
 
-        hide_completion_calltip_when_needed ();
         support_drag_and_drop ();
         shrink_window_when_unmaximized ();
 
@@ -496,26 +495,6 @@ public class MainWindow : Window
 
         _main_hpaned.set_position (settings.get_int ("side-panel-size"));
         _vpaned.set_position (settings.get_int ("vertical-paned-position"));
-    }
-
-    private void hide_completion_calltip_when_needed ()
-    {
-        // hide completion calltip
-        notify["active-tab"].connect (() =>
-        {
-            CompletionProvider provider = CompletionProvider.get_default ();
-            provider.hide_calltip_window ();
-        });
-
-        // hide completion calltip
-        focus_out_event.connect (() =>
-        {
-            CompletionProvider provider = CompletionProvider.get_default ();
-            provider.hide_calltip_window ();
-
-            // propagate the event further
-            return false;
-        });
     }
 
     // Drag and drop of a list of files.
