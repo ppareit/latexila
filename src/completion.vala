@@ -304,7 +304,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     {
         _calltip_window = new SourceCompletionInfo ();
         _calltip_window_label = new Label (null);
-        _calltip_window.set_widget (_calltip_window_label);
+        _calltip_window.add (_calltip_window_label);
     }
 
     // Show the LaTeX command prototype, with the current argument in bold.
