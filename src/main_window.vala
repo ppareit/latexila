@@ -169,8 +169,19 @@ public class MainWindow : Window
         /* Menu */
 
         Widget menu = _ui_manager.get_widget ("/MainMenu");
-        menu.show_all ();
-        main_vgrid.add (menu);
+
+        // Allow the menu to shrink below its minimum width
+        Paned menu_paned = new Paned (Orientation.HORIZONTAL);
+        Viewport viewport = new Viewport (null, null);
+        viewport.shadow_type = ShadowType.NONE;
+        Gdk.RGBA transparent = Gdk.RGBA ();
+        transparent.alpha = 0.0;
+        viewport.override_background_color (StateFlags.NORMAL, transparent);
+        viewport.add (menu);
+        menu_paned.add1 (viewport);
+        menu_paned.show_all ();
+
+        main_vgrid.add (menu_paned);
 
         // Force to show icons in the menu.
         // In the LaTeX and Math menu, icons are needed.
