@@ -252,10 +252,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
     // It has the same effect as returning false in match().
     private void show_no_proposals (SourceCompletionContext context)
     {
-        // The second argument can not be null so we use a variable...
-        // The vapi should be fixed.
-        List<SourceCompletionItem> empty_proposals = null;
-        context.add_proposals ((SourceCompletionProvider) this, empty_proposals, true);
+        context.add_proposals ((SourceCompletionProvider) this, null, true);
     }
 
     private void show_all_proposals (SourceCompletionContext context)
