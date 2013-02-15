@@ -47,6 +47,7 @@ public class Latexila : Gtk.Application
             Projects.get_default ().save ();
             PersonalBuildTools.get_default ().save ();
             MostUsedSymbols.get_default ().save ();
+            Gtk.AccelMap.save (get_accel_filename ());
             release ();
         });
     }
@@ -110,6 +111,7 @@ public class Latexila : Gtk.Application
         AppSettings.get_default ();
         create_window ();
         reopen_files ();
+        Gtk.AccelMap.load (get_accel_filename ());
         release ();
     }
 
@@ -209,5 +211,11 @@ public class Latexila : Gtk.Application
             window.open_document (file, jump_to);
             jump_to = false;
         }
+    }
+
+    private string get_accel_filename ()
+    {
+        return Path.build_filename (Environment.get_user_config_dir (),
+            "latexila", "accels");
     }
 }
