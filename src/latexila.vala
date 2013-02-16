@@ -39,7 +39,7 @@ public class Latexila : Gtk.Application
         activate.connect (() =>
         {
             hold ();
-            active_window.present ();
+            create_window ();
             release ();
         });
 
@@ -119,8 +119,6 @@ public class Latexila : Gtk.Application
         new StockIcons ();
 
         AppSettings.get_default ();
-        create_window ();
-        reopen_files ();
         release ();
     }
 
@@ -198,7 +196,9 @@ public class Latexila : Gtk.Application
 
     public MainWindow create_window ()
     {
-        if (active_window != null)
+        bool first_window = active_window == null;
+
+        if (! first_window)
             active_window.save_state ();
 
         MainWindow window = new MainWindow ();
@@ -212,6 +212,10 @@ public class Latexila : Gtk.Application
         });
 
         window.show ();
+
+        if (first_window)
+            reopen_files ();
+
         return window;
     }
 
