@@ -5,7 +5,7 @@ HELP_ID = latexila
 HELP_FILES = \
 	build_tools.page	\
 	completion.page		\
-	index.page		    \
+	index.page		\
 	projects.page		\
 	spell_checking.page	\
 	structure.page		\

@@ -42,4 +42,18 @@
     <gui style="menu">Structure</gui> menu.
   </p>
 </section>
+
+<section its:locNote="Do not translate the words TODO and FIXME. They are special comments
+that can be inserted in LaTeX documents.">
+  <title>TODOs and FIXMEs</title>
+
+  <p>
+    It can be useful to add TODOs and FIXMEs comments in the document. They will be
+    displayed in the structure. Example:
+  </p>
+
+  <code mime="text/x-tex">
+%TODO a remaining task
+%FIXME something is broken</code>
+</section>
 </page>
