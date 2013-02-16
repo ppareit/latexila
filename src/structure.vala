@@ -183,6 +183,8 @@ public class Structure : Grid
         create_simple_list_button (StructType.INCLUDE, _("Show included files"));
         create_simple_list_button (StructType.TABLE, _("Show tables"));
         create_simple_list_button (StructType.FIGURE, _("Show figures and images"));
+        // Translators: do not translate the words TODO and FIXME. They are special
+        // comments that can be inserted in LaTeX documents.
         create_simple_list_button (StructType.TODO, _("Show TODOs and FIXMEs"));
     }
 
