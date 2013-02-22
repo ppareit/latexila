@@ -2,20 +2,20 @@
 # Copyright (C) 2011 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2012-12-22 13:21+0000\n"
-"PO-Revision-Date: 2012-12-25 11:51+0100\n"
+"POT-Creation-Date: 2013-02-16 15:54+0000\n"
+"PO-Revision-Date: 2013-02-22 09:46+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
-"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 "X-Generator: Gtranslator 2.91.5\n"
 
 #: C/index.page:4(page/title)
@@ -44,9 +44,6 @@ msgid "Introduction"
 msgstr "Introducción"
 
 #: C/build_tools.page:22(section/p)
-#| msgid ""
-#| "Several different tools can be used for a document compilation. There are "
-#| "some low-level commands, and two higher-level tools: Latexmk and Rubber."
 msgid ""
 "Several different tools can be used for a document compilation. There are "
 "some low-level commands, and one higher-level tool: Latexmk."
@@ -85,12 +82,6 @@ msgstr ""
 "hay un ejemplo:"
 
 #: C/build_tools.page:78(section/p)
-#| msgid ""
-#| "Using a higher-level tool such as Latexmk or Rubber simplify a lot all "
-#| "this process, since only one command is required. Indeed, these tools can "
-#| "detect how many times the <cmd>latex</cmd> or <cmd>pdflatex</cmd> command "
-#| "must be called, and whether <cmd>bibtex</cmd> or <cmd>makeindex</cmd> is "
-#| "required. By default, LaTeXila uses Latexmk."
 msgid ""
 "Using a higher-level tool such as Latexmk simplify a lot all this process, "
 "since only one command is required. Indeed, Latexmk can detect how many "
@@ -218,9 +209,6 @@ msgid "Post Processors"
 msgstr "Post-procesadores"
 
 #: C/build_tools.page:145(section/p)
-#| msgid ""
-#| "The purpose of a post processor is to filter the command output and "
-#| "extract the useful information. Five post processors are available:"
 msgid ""
 "The purpose of a post processor is to filter the command output and extract "
 "the useful information. Four post processors are available:"
@@ -463,9 +451,32 @@ msgid ""
 "structure's item. Either by a right click, or via the <gui style=\"menu"
 "\">Structure</gui> menu."
 msgstr ""
-"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en "
-"una estructura. Se puede hacer pulsando con el botón derecho o mediante el "
-"menú <gui style=\"menu\">Estructura</gui>."
+"Algunas acciones como «cortar», «copiar» o «comentar» se pueden realizar en una "
+"estructura. Se puede hacer pulsando con el botón derecho o mediante el menú "
+"<gui style=\"menu\">Estructura</gui>."
+
+#: C/structure.page:48(section/title)
+msgid "TODOs and FIXMEs"
+msgstr "Por hacer y por corregir"
+
+#: C/structure.page:50(section/p)
+msgid ""
+"It can be useful to add TODOs and FIXMEs comments in the document. They will "
+"be displayed in the structure. Example:"
+msgstr ""
+"Puede ser útil añadir comentarios POR HACER y CORREGIR al documento. Estos "
+"se mostrarán en la estructura. Ejemplo:"
+
+#: C/structure.page:55(section/code)
+#, no-wrap
+msgid ""
+"\n"
+"%TODO a remaining task\n"
+"%FIXME something is broken"
+msgstr ""
+"\n"
+"%POR HACER una tarea pendiente\n"
+"%CORREGIR algo que no funciona"
 
 #: C/synctex.page:10(page/title)
 msgid "Forward and Backward Search"
