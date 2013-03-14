@@ -1,5 +1,3 @@
-SUBDIRS = 16x16 22x22 24x24 32x32 48x48 192x192
-
-EXTRA_DIST = icon.png
+SUBDIRS = 16x16 22x22 24x24 32x32 48x48 128x128 256x256 scalable
 
 -include $(top_srcdir)/git.mk

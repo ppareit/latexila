@@ -1179,7 +1179,6 @@ public class MainWindow : Window
 
         string[] artists =
         {
-            "Ann Melnichuk <melnichu@qtp.ufl.edu>",
             "Eric Forgeot <e.forgeot@laposte.net>",
             "Sébastien Wilmet <swilmet@gnome.org>",
             "The Kile Team http://kile.sourceforge.net/",

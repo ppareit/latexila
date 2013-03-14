@@ -173,7 +173,9 @@ AC_CONFIG_FILES([Makefile
 		 data/icons/24x24/Makefile
 		 data/icons/32x32/Makefile
 		 data/icons/48x48/Makefile
-		 data/icons/192x192/Makefile
+		 data/icons/128x128/Makefile
+		 data/icons/256x256/Makefile
+		 data/icons/scalable/Makefile
 		 data/images/Makefile
 		 data/images/app/Makefile
 		 data/org.gnome.latexila.gschema.xml.in
