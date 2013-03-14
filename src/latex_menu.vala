@@ -140,7 +140,7 @@ public class LatexMenu : Gtk.ActionGroup
             N_("Small Capitals - \\textsc"), on_text_small_caps },
         { "SansSerif", "sans_serif", "\\texts_f", null,
             N_("Sans Serif - \\textsf"), on_text_sans_serif },
-        { "Emph", null, "\\_emph", null,
+        { "Emph", null, "\\_emph", "<Control>E",
             N_("Emphasized - \\emph"), on_text_emph },
         { "Underline", "underline", "\\_underline", null,
             N_("Underline - \\underline"), on_text_underline },
