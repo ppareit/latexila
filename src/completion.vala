@@ -107,11 +107,12 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
 
     public SourceCompletionActivation get_activation ()
     {
-        // This function is called only once, so if we disable interactive
-        // completion here, there would be a problem because in this case,
-        // if the user enables the option, it will take effect only on restart.
-        return SourceCompletionActivation.USER_REQUESTED
-            | SourceCompletionActivation.INTERACTIVE;
+        var activation = SourceCompletionActivation.USER_REQUESTED;
+
+        if (_settings.get_boolean ("interactive-completion"))
+            activation |= SourceCompletionActivation.INTERACTIVE;
+
+        return activation;
     }
 
     public bool match (SourceCompletionContext context)
@@ -123,11 +124,7 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         if (buf.has_selection)
             return false;
 
-        if (is_user_request (context))
-            return true;
-
-        // Since get_activation() is not dynamic, we do that here.
-        return _settings.get_boolean ("interactive-completion");
+        return true;
     }
 
     /*************************************************************************/
