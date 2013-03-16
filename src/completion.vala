@@ -127,6 +127,28 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         return true;
     }
 
+    public bool get_start_iter (SourceCompletionContext context,
+        SourceCompletionProposal proposal, TextIter iter)
+    {
+        string? cmd = get_latex_command_at_iter (context.iter);
+
+        // In a LaTeX command argument, use the default implementation.
+        if (cmd == null)
+            return false;
+
+        // Custom implementation when in a LaTeX command name.
+        iter = context.iter;
+
+        if (! iter.starts_word ())
+            iter.backward_visible_word_start ();
+
+        TextIter prev = iter;
+        if (prev.backward_char () && prev.get_char () == '\\')
+            iter = prev;
+
+        return true;
+    }
+
     /*************************************************************************/
     // Populate: match() has returned true, now show the matches.
 
