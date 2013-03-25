@@ -1,5 +1,18 @@
 LaTeXila NEWS
 
+================================
+* Release 2.8.0 (March 28, 2013)
+================================
+
+- Allow the menu bar to shrink below its minimum size
+- Load and save accelerator maps (it's now possible to edit the keyboard shortcuts)
+- Change the application icons
+- Add Ctrl+E shortcut for \emph{}
+- Improvements to the completion
+- Misc bugfixes
+- Translations updates
+
+
 ==================================
 * Release 2.7.0 (January 22, 2013)
 ==================================

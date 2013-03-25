@@ -5,7 +5,7 @@
 AC_PREREQ([2.64])
 
 AC_INIT([LaTeXila],
-        [2.7.1],
+        [2.8.0],
         [https://bugzilla.gnome.org/enter_bug.cgi?product=latexila],
 	[latexila],
 	[http://projects.gnome.org/latexila])
@@ -26,8 +26,8 @@ LT_INIT
 # Required dependencies versions
 GLIB_REQUIRED_VERSION="2.32"
 GTK_REQUIRED_VERSION="3.6.0"
-GTKSOURCEVIEW_REQUIRED_VERSION="3.7.92"
-VALA_REQUIRED_VERSION="0.19.0"
+GTKSOURCEVIEW_REQUIRED_VERSION="3.8.0"
+VALA_REQUIRED_VERSION="0.20.0"
 
 AC_SUBST([GLIB_REQUIRED_VERSION])
 AC_SUBST([GTK_REQUIRED_VERSION])
