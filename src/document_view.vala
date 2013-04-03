@@ -207,15 +207,6 @@ public class DocumentView : Gtk.SourceView
 
     private void hide_completion_calltip_when_needed ()
     {
-        focus_out_event.connect (() =>
-        {
-            CompletionProvider provider = CompletionProvider.get_default ();
-            provider.hide_calltip_window ();
-
-            // propagate the event further
-            return false;
-        });
-
         buffer.notify["cursor-position"].connect (() =>
         {
             CompletionProvider provider = CompletionProvider.get_default ();
