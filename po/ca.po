@@ -1,0 +1,2350 @@
+# Catalan translation of latexila.
+# Copyright © 2013 Free Software Foundation, Inc.
+# This file is distributed under the same license as the latexila package.
+# Jordi Mas i Hernàndez <jmas@softcatala.org>, 2013.
+# Gil Forcada <gilforcada@guifi.net>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latexila\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=latexila&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-03-16 21:08+0000\n"
+"PO-Revision-Date: 2013-04-19 23:18+0200\n"
+"Last-Translator: Gil Forcada <gilforcada@guifi.net>\n"
+"Language-Team: Catalan <tradgnome@softcatala.org>\n"
+"Language: ca\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
+msgid "View PDF"
+msgstr "Visualitza el PDF"
+
+#: build_tools.xml:44(tool/description)
+msgid "View the PDF file"
+msgstr "Visualitza el fitxer PDF"
+
+#: build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:165
+msgid "View DVI"
+msgstr "Visualitza el DVI"
+
+#: build_tools.xml:50(tool/description)
+msgid "View the DVI file"
+msgstr "Visualitza el fitxer DVI"
+
+#: build_tools.xml:55(tool/label) ../src/build_tool_dialog.vala:167
+msgid "View PS"
+msgstr "Visualitza el PS"
+
+#: build_tools.xml:56(tool/description)
+msgid "View the PostScript file"
+msgstr "Visualitza el fitxer PostScript"
+
+#: build_tools.xml:64(tool/description)
+msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
+msgstr ""
+
+#: build_tools.xml:70(tool/description)
+msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
+msgstr ""
+
+#: build_tools.xml:78(tool/description)
+msgid "Run BibTeX (bibliography)"
+msgstr ""
+
+#: build_tools.xml:84(tool/description)
+msgid "Run MakeIndex"
+msgstr ""
+
+#: build_tools.xml:92(tool/description)
+msgid "Convert the DVI document to the PDF format"
+msgstr ""
+
+#: build_tools.xml:98(tool/description)
+msgid "Convert the DVI document to the PostScript format"
+msgstr ""
+
+#: build_tools.xml:104(tool/description)
+msgid "Convert the PostScript document to the PDF format"
+msgstr ""
+
+#: ../data/latexila.desktop.in.in.h:1
+msgid "LaTeXila"
+msgstr "LaTeXila"
+
+#: ../data/latexila.desktop.in.in.h:2
+msgid "Integrated LaTeX Environment"
+msgstr "Entorn LaTeX integrat"
+
+#: ../data/latexila.desktop.in.in.h:3
+msgid "Edit LaTeX documents"
+msgstr "Editeu documents LaTeX"
+
+#: ../data/latexila.desktop.in.in.h:4
+msgid "Open a New Window"
+msgstr "Obre una finestra nova"
+
+#: ../data/latexila.desktop.in.in.h:5
+msgid "Open a New Document"
+msgstr "Obre un document nou"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:1
+msgid "Use Default Font"
+msgstr "Utilitza el tipus de lletra per defecte"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:2
+msgid ""
+"Whether to use the system's default fixed width font for editing text "
+"instead of a font specific to LaTeXila. If this option is turned off, then "
+"the font named in the \"Editor Font\" option will be used instead of the "
+"system font."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:3
+msgid "Editor Font"
+msgstr "Tipus de lletra de l'editor"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:4
+msgid ""
+"A custom font that will be used for the editing area. This will only take "
+"effect if the \"Use Default Font\" option is turned off."
+msgstr ""
+"Un tipus de lletra personalitzat que s'utilitzarà en l'àrea d'edició. Només "
+"s'utilitzarà si s'inhabilita l'opció «Utilitza el tipus de lletra per "
+"defecte»."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:5
+msgid "Style Scheme"
+msgstr "Esquema d'estil"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:6
+msgid "The ID of a GtkSourceView Style Scheme used to color the text."
+msgstr ""
+"L'identificador de l'esquema d'estil de la GtkSourceView que s'empra per "
+"acolorir el text."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:7
+msgid "Create Backup Copies"
+msgstr "Crea còpies de seguretat"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:8
+msgid "Whether LaTeXila should create backup copies for the files it saves."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:9
+msgid "Autosave"
+msgstr "Desa automàticament"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:10
+msgid ""
+"Whether LaTeXila should automatically save modified files after a time "
+"interval. You can set the time interval with the \"Autosave Interval\" "
+"option."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:11
+msgid "Autosave Interval"
+msgstr "Interval del desat automàtic"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:12
+msgid ""
+"Number of minutes after which LaTeXila will automatically save modified "
+"files. This will only take effect if the \"Autosave\" option is turned on."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:13
+#: ../src/ui/preferences_dialog.ui.h:9
+msgid "Reopen files on startup"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:14
+msgid "Whether LaTeXila should reopen the files that was opened the last time."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:15
+msgid "Tab Size"
+msgstr "Mida de la tabulació"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:16
+msgid ""
+"Specifies the number of spaces that should be displayed instead of Tab "
+"characters."
+msgstr ""
+"Especifica el número d'espais que s'haurien de mostrar en comptes de "
+"caràcters de tabulació."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:17
+msgid "Insert spaces"
+msgstr "Insereix espais"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:18
+msgid "Whether LaTeXila should insert spaces instead of tabs."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:19
+msgid "Forget lack of tabulations"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:20
+msgid "Forget you are not using tabulations."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:21
+msgid "Display Line Numbers"
+msgstr "Mostra els números de línia"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:22
+msgid "Whether LaTeXila should display line numbers in the editing area."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:23
+msgid "Highlight Current Line"
+msgstr "Ressalta la línia actual"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:24
+msgid "Whether LaTeXila should highlight the current line."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:25
+msgid "Highlight Matching Brackets"
+msgstr "Ressalta els claudàtors coincidents"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:26
+msgid "Whether LaTeXila should highlight matching brackets."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:27
+msgid "Spell checking"
+msgstr "Verificació de l'ortografia"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:28
+msgid "Main toolbar is visible"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:29
+msgid ""
+"Whether the main toolbar (file open, close, build, ...) should be visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:30
+msgid "Edit toolbar is visible"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:31
+msgid ""
+"Whether the edit toolbar (bold, italic, character sizes, ...) should be "
+"visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:32
+msgid "Side panel is Visible"
+msgstr "El quadre lateral és visible"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:33
+msgid ""
+"Whether the side panel at the left of editing windows should be visible."
+msgstr ""
+"Si s'hauria de mostrar el quadre lateral de l'esquerra de la finestra "
+"d'edició."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:34
+msgid "Bottom panel is Visible"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:35
+msgid "Whether the bottom panel containing the build view should be visible."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:36
+msgid "Side panel component"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
+msgid ""
+"Side panel's active component. 0: Symbols. 1: File browser. 2: Structure."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
+msgid "Show build output warnings"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
+msgid "Show build output badboxes"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
+msgid "Interactive completion"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
+msgid "Automatically show LaTeX commands proposals"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
+msgid "Minimum number of characters for interactive completion"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
+msgid ""
+"Minimum number of characters after \"\\\" for the interactive completion of "
+"LaTeX commands"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
+#: ../src/ui/preferences_dialog.ui.h:19
+msgid "No confirmation when cleaning-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
+msgid "Automatic clean-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
+msgid ""
+"Automatically clean-up files after close. no-confirm-clean must be true."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
+msgid "File extensions for the clean-up"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
+msgid "The list of file extensions for the clean-up, separated by spaces"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:49
+msgid "Enabled default build tools"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
+msgid "The list of the default build tools that are enabled"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
+msgid "Disabled default build tools"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
+msgid "The list of the default build tools that are disabled"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
+msgid "Current directory"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
+msgid "URI of the file browser current directory"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
+#: ../src/file_browser.vala:281
+msgid "Show build files"
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
+msgid ""
+"Show files with an extension present in preferences.latex.clean-extensions."
+msgstr ""
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
+#: ../src/file_browser.vala:289
+msgid "Show hidden files"
+msgstr "Mostra els fitxers ocults"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
+msgid "Show files beginning with a dot."
+msgstr ""
+
+#. This must be translated by a usepackage LaTeX command.
+#: article.xml:8(template/babel) beamer.xml:8(template/babel)
+#: book.xml:8(template/babel) report.xml:8(template/babel)
+#, no-wrap
+msgid ""
+"\n"
+"% babel package or equivalent\n"
+msgstr ""
+
+#. There is a helper script in data/templates/tex2po.sh
+#: letter.xml:2(template/translatableChunk)
+#, no-wrap
+msgid ""
+"\n"
+"\\documentclass[a4paper,11pt]{letter}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\n"
+"\\address{Your name\\\\Your address\\\\Your phone number}\n"
+"\\signature{Your name}\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{Destination\\\\Address of the destination\\\\Phone number of the destination}\n"
+"\n"
+"\\opening{Dear Sir,}\n"
+"\n"
+"% corps of the letter\n"
+"\n"
+"\\closing{Yours sincerely,}\n"
+"\n"
+"%\\cc{Other destination}\n"
+"%\\ps{PS: PostScriptum}\n"
+"%\\encl{Enclosures}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
+msgstr ""
+
+#: ../src/bottom_panel.vala:53 ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "Amaga el quadre"
+
+#: ../src/build_tool_dialog.vala:81
+msgid "Build Tool (read-only)"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:88
+msgid "Build Tool"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:159
+msgid "Execute"
+msgstr "Executa"
+
+#: ../src/build_tool_dialog.vala:163
+msgid "Convert"
+msgstr "Converteix"
+
+#: ../src/build_tool_dialog.vala:164
+msgid "View File"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:228
+msgid "Commands"
+msgstr "Ordres"
+
+#: ../src/build_tool_dialog.vala:238
+msgid "Post Processor"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:265 ../src/build_tools_preferences.vala:289
+msgid "Add..."
+msgstr "Afegeix..."
+
+#: ../src/build_tool_dialog.vala:282 ../src/build_tools_preferences.vala:306
+msgid "Remove"
+msgstr "Suprimeix"
+
+#: ../src/build_tool_dialog.vala:312 ../src/build_tools_preferences.vala:346
+msgid "Move up"
+msgstr "Vés amunt"
+
+#: ../src/build_tool_dialog.vala:363 ../src/build_tools_preferences.vala:398
+msgid "Move down"
+msgstr "Vés avall"
+
+#: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
+#: ../src/latex_menu.vala:52 ../src/structure.vala:777
+msgid "Label"
+msgstr "Etiqueta"
+
+#: ../src/build_tool_dialog.vala:568
+msgid "You can select this arrow and copy/paste it!"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:584
+msgid "Description"
+msgstr "Descripció"
+
+#: ../src/build_tool_dialog.vala:590
+msgid "File extensions for which the build tool can be executed."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:591
+msgid "The extensions are separated by spaces."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:592
+msgid "If it is empty, all extensions are allowed."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:594
+msgid "Extensions"
+msgstr "Extensions"
+
+#: ../src/build_tool_dialog.vala:599
+msgid "Icon"
+msgstr "Icona"
+
+#. Placeholders
+#: ../src/build_tool_dialog.vala:606
+msgid "Placeholders:"
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:610
+msgid "The active document's filename."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:611 ../src/build_tool_dialog.vala:616
+msgid "If the active document belongs to a project, the main file is choosen."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:615
+msgid "The active document's filename without its extension."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:659
+msgid "Jobs"
+msgstr "Tasques"
+
+#: ../src/build_tool_dialog.vala:665
+msgid "List of files to open after executing the build jobs."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:666
+msgid "The files are separated by spaces."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:667
+msgid "You should use the placeholders to specify the files."
+msgstr ""
+
+#: ../src/build_tool_dialog.vala:670
+msgid "Files to open"
+msgstr ""
+
+#: ../src/build_tool_runner.vala:191
+#, c-format
+msgid "%s doesn't seem to be installed."
+msgstr ""
+
+#: ../src/build_tool_runner.vala:263
+#, c-format
+msgid "Open %s"
+msgstr "Obre %s"
+
+#: ../src/build_tool_runner.vala:272
+#, c-format
+msgid "The file '%s' doesn't exist."
+msgstr ""
+
+#: ../src/build_tool_runner.vala:289
+#, c-format
+msgid "Failed to open '%s':"
+msgstr ""
+
+#: ../src/build_tools_preferences.vala:53
+msgid "Build Tools"
+msgstr ""
+
+#: ../src/build_tools_preferences.vala:109
+msgid "Default build tools"
+msgstr ""
+
+#: ../src/build_tools_preferences.vala:129
+msgid "Personal build tools"
+msgstr ""
+
+#: ../src/build_tools_preferences.vala:172
+msgid "Enabled"
+msgstr "Habilitat"
+
+#: ../src/build_tools_preferences.vala:274
+#, c-format
+msgid "%s [copy]"
+msgstr ""
+
+#: ../src/build_tools_preferences.vala:324
+#, c-format
+msgid "Do you really want to delete the build tool \"%s\"?"
+msgstr ""
+
+#: ../src/clean_build_files.vala:267
+msgid "Do you really want to delete these files?"
+msgstr ""
+
+#. secondary label
+#: ../src/clean_build_files.vala:272
+msgid "Select the files you want to delete:"
+msgstr ""
+
+#: ../src/clean_build_files.vala:336
+msgid "No build file to clean up."
+msgstr ""
+
+#: ../src/completion.vala:308
+msgid "No matching proposal"
+msgstr ""
+
+#. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
+#. "Column". Please, use abbreviations if possible.
+#: ../src/custom_statusbar.vala:41
+#, c-format
+msgid "Ln %d, Col %d"
+msgstr ""
+
+#: ../src/dialogs.vala:40 ../src/main_window.vala:749
+msgid "Close without Saving"
+msgstr "Tanca sense desar"
+
+#: ../src/dialogs.vala:66
+#, c-format
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+
+#: ../src/dialogs.vala:72
+msgid "Select the documents you want to save:"
+msgstr ""
+
+#: ../src/dialogs.vala:129
+msgid "If you don't save, all your changes will be permanently lost."
+msgstr "Si no ho deseu es perdran permanentment tots els canvis."
+
+#: ../src/document_structure.vala:720
+msgid "The structure item already contains a sub-paragraph."
+msgstr ""
+
+#: ../src/document_tab.vala:173
+msgid "Close document"
+msgstr "Tanca el document"
+
+#. main file
+#: ../src/document_tab.vala:233 ../src/project_dialogs.vala:44
+#: ../src/project_dialogs.vala:47 ../src/project_dialogs.vala:139
+#: ../src/project_dialogs.vala:142 ../src/project_dialogs.vala:216
+msgid "Main File"
+msgstr "Fitxer principal"
+
+#: ../src/document_tab.vala:235
+msgid "Main File:"
+msgstr "Fitxer principal:"
+
+#: ../src/document_tab.vala:259
+#, c-format
+msgid "Activate '%s'"
+msgstr "Activa «%s»"
+
+#: ../src/document_tab.vala:278
+#, c-format
+msgid "The file %s changed on disk."
+msgstr "El fitxer %s ha canviat al disc."
+
+#: ../src/document_tab.vala:283
+msgid "Do you want to drop your changes and reload the file?"
+msgstr "Voleu descartar els canvis i carregar de nou el fitxer?"
+
+#: ../src/document_tab.vala:285
+msgid "Do you want to reload the file?"
+msgstr "Voleu carregar el fitxer de nou?"
+
+#: ../src/document_tab.vala:289
+msgid "Reload"
+msgstr "Actualitza"
+
+#: ../src/document.vala:144
+#, c-format
+msgid "Impossible to load the file '%s'."
+msgstr ""
+
+#: ../src/document.vala:220
+#, c-format
+msgid "The file %s has been modified since reading it."
+msgstr "S'ha modificat el fitxer %s des que s'ha llegit."
+
+#: ../src/document.vala:223
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr "Si el deseu, es perdran tots els canvis externs. Voleu fer-ho?"
+
+#: ../src/document.vala:226
+msgid "Save Anyway"
+msgstr "Desa igualment"
+
+#: ../src/document.vala:228
+msgid "Don't Save"
+msgstr "No desis"
+
+#: ../src/document.vala:240
+msgid "Impossible to save the file."
+msgstr ""
+
+#: ../src/document.vala:265
+msgid "Error trying to convert the document to UTF-8"
+msgstr ""
+
+#: ../src/document.vala:319
+msgid "Unsaved Document"
+msgstr "Document sense desar"
+
+#: ../src/document.vala:604
+msgid ""
+"The file has a temporary location. The data can be lost after rebooting your "
+"computer."
+msgstr ""
+
+#: ../src/document.vala:605
+msgid "Do you want to save the file in a safer place?"
+msgstr ""
+
+#: ../src/file_browser.vala:216
+msgid "Go to the home directory"
+msgstr ""
+
+#: ../src/file_browser.vala:231
+msgid "Go to the parent directory"
+msgstr ""
+
+#: ../src/file_browser.vala:247
+msgid "Go to the active document directory"
+msgstr ""
+
+#: ../src/file_browser.vala:336
+msgid "File System"
+msgstr "Sistema de fitxers"
+
+#: ../src/file_browser.vala:455 ../src/main_window.vala:393
+msgid "File Browser"
+msgstr "Navegador de fitxers"
+
+#: ../src/gtkspell/gtkspell.c:355
+msgid "(no suggestions)"
+msgstr "(cap suggeriment)"
+
+#: ../src/gtkspell/gtkspell.c:371
+msgid "More..."
+msgstr "Més..."
+
+#. + Add to Dictionary
+#: ../src/gtkspell/gtkspell.c:391
+#, c-format
+msgid "Add \"%s\" to Dictionary"
+msgstr "Afegeix «%s» al diccionari"
+
+#. - Ignore All
+#: ../src/gtkspell/gtkspell.c:402
+msgid "Ignore All"
+msgstr "Ignora-ho tot"
+
+#. on top: language selection
+#: ../src/gtkspell/gtkspell.c:497
+msgid "Languages"
+msgstr "Llengües"
+
+#: ../src/gtkspell/gtkspell.c:587
+#, c-format
+msgid "enchant error for language: %s"
+msgstr ""
+
+#. LaTeX: Sectioning
+#: ../src/latex_menu.vala:32
+msgid "_Sectioning"
+msgstr ""
+
+#: ../src/latex_menu.vala:34 ../src/structure.vala:770
+msgid "Part"
+msgstr "Part"
+
+#: ../src/latex_menu.vala:36 ../src/structure.vala:771
+msgid "Chapter"
+msgstr "Capítol"
+
+#: ../src/latex_menu.vala:38 ../src/structure.vala:772
+msgid "Section"
+msgstr "Secció"
+
+#: ../src/latex_menu.vala:40 ../src/structure.vala:773
+msgid "Sub-section"
+msgstr "Sub-secció"
+
+#: ../src/latex_menu.vala:42 ../src/structure.vala:774
+msgid "Sub-sub-section"
+msgstr "Sub-sub-secció"
+
+#: ../src/latex_menu.vala:44 ../src/structure.vala:775
+msgid "Paragraph"
+msgstr "Paràgraf"
+
+#: ../src/latex_menu.vala:46 ../src/structure.vala:776
+msgid "Sub-paragraph"
+msgstr "Sub-paràgraf"
+
+#. LaTeX: References
+#: ../src/latex_menu.vala:50
+msgid "_References"
+msgstr "_Referències"
+
+#: ../src/latex_menu.vala:54
+msgid "Reference to a label"
+msgstr ""
+
+#: ../src/latex_menu.vala:56
+msgid "Page reference to a label"
+msgstr ""
+
+#: ../src/latex_menu.vala:58
+msgid "Add a word to the index"
+msgstr ""
+
+#: ../src/latex_menu.vala:60
+msgid "Footnote"
+msgstr "Nota al peu"
+
+#: ../src/latex_menu.vala:62
+msgid "Reference to a bibliography item"
+msgstr ""
+
+#: ../src/latex_menu.vala:68
+msgid "Center - \\begin{center}"
+msgstr ""
+
+#: ../src/latex_menu.vala:70
+msgid "Align Left - \\begin{flushleft}"
+msgstr ""
+
+#: ../src/latex_menu.vala:72
+msgid "Align Right - \\begin{flushright}"
+msgstr ""
+
+#: ../src/latex_menu.vala:74
+msgid "Figure - \\begin{figure}"
+msgstr ""
+
+#: ../src/latex_menu.vala:76
+msgid "Table - \\begin{table}"
+msgstr ""
+
+#: ../src/latex_menu.vala:78
+msgid "Quote - \\begin{quote}"
+msgstr ""
+
+#: ../src/latex_menu.vala:80
+msgid "Quotation - \\begin{quotation}"
+msgstr ""
+
+#: ../src/latex_menu.vala:82
+msgid "Verse - \\begin{verse}"
+msgstr ""
+
+#: ../src/latex_menu.vala:84
+msgid "Verbatim - \\begin{verbatim}"
+msgstr ""
+
+#: ../src/latex_menu.vala:86
+msgid "Minipage - \\begin{minipage}"
+msgstr ""
+
+#: ../src/latex_menu.vala:88
+msgid "Title page - \\begin{titlepage}"
+msgstr ""
+
+#. LaTeX: list environments
+#: ../src/latex_menu.vala:92
+msgid "_List Environments"
+msgstr ""
+
+#: ../src/latex_menu.vala:94
+msgid "Bulleted List - \\begin{itemize}"
+msgstr ""
+
+#: ../src/latex_menu.vala:96
+msgid "Enumeration - \\begin{enumerate}"
+msgstr ""
+
+#: ../src/latex_menu.vala:98
+msgid "Description - \\begin{description}"
+msgstr ""
+
+#: ../src/latex_menu.vala:100
+msgid "Custom list - \\begin{list}"
+msgstr ""
+
+#: ../src/latex_menu.vala:102
+msgid "List item - \\item"
+msgstr ""
+
+#. LaTeX: character sizes
+#: ../src/latex_menu.vala:106
+msgid "_Characters Sizes"
+msgstr ""
+
+#. LaTeX: font styles
+#: ../src/latex_menu.vala:130
+msgid "_Font Styles"
+msgstr ""
+
+#: ../src/latex_menu.vala:132
+msgid "Bold - \\textbf"
+msgstr ""
+
+#: ../src/latex_menu.vala:134
+msgid "Italic - \\textit"
+msgstr ""
+
+#: ../src/latex_menu.vala:136
+msgid "Typewriter - \\texttt"
+msgstr ""
+
+#: ../src/latex_menu.vala:138
+msgid "Slanted - \\textsl"
+msgstr ""
+
+#: ../src/latex_menu.vala:140
+msgid "Small Capitals - \\textsc"
+msgstr ""
+
+#: ../src/latex_menu.vala:142
+msgid "Sans Serif - \\textsf"
+msgstr ""
+
+#: ../src/latex_menu.vala:144
+msgid "Emphasized - \\emph"
+msgstr ""
+
+#: ../src/latex_menu.vala:146
+msgid "Underline - \\underline"
+msgstr ""
+
+#: ../src/latex_menu.vala:148
+msgid "_Font Family"
+msgstr ""
+
+#: ../src/latex_menu.vala:150
+msgid "Roman - \\rmfamily"
+msgstr ""
+
+#: ../src/latex_menu.vala:152
+msgid "Sans Serif - \\sffamily"
+msgstr ""
+
+#: ../src/latex_menu.vala:154
+msgid "Monospace - \\ttfamily"
+msgstr ""
+
+#: ../src/latex_menu.vala:156
+msgid "F_ont Series"
+msgstr ""
+
+#: ../src/latex_menu.vala:158
+msgid "Medium - \\mdseries"
+msgstr ""
+
+#: ../src/latex_menu.vala:160
+msgid "Bold - \\bfseries"
+msgstr ""
+
+#: ../src/latex_menu.vala:162
+msgid "Fo_nt Shape"
+msgstr ""
+
+#: ../src/latex_menu.vala:164
+msgid "Upright - \\upshape"
+msgstr ""
+
+#: ../src/latex_menu.vala:166
+msgid "Italic - \\itshape"
+msgstr ""
+
+#: ../src/latex_menu.vala:168
+msgid "Slanted - \\slshape"
+msgstr ""
+
+#: ../src/latex_menu.vala:170
+msgid "Small Capitals - \\scshape"
+msgstr ""
+
+#. LaTeX: Tabular
+#: ../src/latex_menu.vala:174
+msgid "_Tabular"
+msgstr ""
+
+#: ../src/latex_menu.vala:176
+msgid "Tabbing - \\begin{tabbing}"
+msgstr ""
+
+#: ../src/latex_menu.vala:178
+msgid "Tabular - \\begin{tabular}"
+msgstr ""
+
+#: ../src/latex_menu.vala:180
+msgid "Multicolumn - \\multicolumn"
+msgstr ""
+
+#: ../src/latex_menu.vala:182
+msgid "Horizontal line - \\hline"
+msgstr ""
+
+#: ../src/latex_menu.vala:184
+msgid "Vertical line - \\vline"
+msgstr ""
+
+#: ../src/latex_menu.vala:186
+msgid "Horizontal line (columns specified) - \\cline"
+msgstr ""
+
+#: ../src/latex_menu.vala:192
+msgid "Frame - \\begin{frame}"
+msgstr ""
+
+#: ../src/latex_menu.vala:194
+msgid "Block - \\begin{block}"
+msgstr ""
+
+#: ../src/latex_menu.vala:196
+msgid "Two columns - \\begin{columns}"
+msgstr ""
+
+#. LaTeX: Spacing
+#: ../src/latex_menu.vala:200
+msgid "_Spacing"
+msgstr ""
+
+#: ../src/latex_menu.vala:201
+msgid "New _Line"
+msgstr ""
+
+#: ../src/latex_menu.vala:202
+msgid "New Line - \\\\"
+msgstr ""
+
+#: ../src/latex_menu.vala:204
+msgid "New page - \\newpage"
+msgstr ""
+
+#: ../src/latex_menu.vala:206
+msgid "Line break - \\linebreak"
+msgstr ""
+
+#: ../src/latex_menu.vala:208
+msgid "Page break - \\pagebreak"
+msgstr ""
+
+#: ../src/latex_menu.vala:210
+msgid "Big skip - \\bigskip"
+msgstr ""
+
+#: ../src/latex_menu.vala:212
+msgid "Medium skip - \\medskip"
+msgstr ""
+
+#: ../src/latex_menu.vala:214
+msgid "Horizontal space - \\hspace"
+msgstr ""
+
+#: ../src/latex_menu.vala:216
+msgid "Vertical space - \\vspace"
+msgstr ""
+
+#: ../src/latex_menu.vala:218
+msgid "No paragraph indentation - \\noindent"
+msgstr ""
+
+#. LaTeX: International accents
+#: ../src/latex_menu.vala:222
+msgid "International _Accents"
+msgstr ""
+
+#: ../src/latex_menu.vala:223
+msgid "Acute accent - \\'"
+msgstr ""
+
+#: ../src/latex_menu.vala:224
+msgid "Grave accent - \\`"
+msgstr ""
+
+#: ../src/latex_menu.vala:225
+msgid "Circumflex accent - \\^"
+msgstr ""
+
+#: ../src/latex_menu.vala:226
+msgid "Trema - \\\""
+msgstr ""
+
+#: ../src/latex_menu.vala:227
+msgid "Tilde - \\~"
+msgstr ""
+
+#: ../src/latex_menu.vala:228
+msgid "Macron - \\="
+msgstr ""
+
+#: ../src/latex_menu.vala:229
+msgid "Dot above - \\."
+msgstr ""
+
+#: ../src/latex_menu.vala:230
+msgid "Caron - \\v"
+msgstr ""
+
+#: ../src/latex_menu.vala:231
+msgid "Breve - \\u"
+msgstr ""
+
+#: ../src/latex_menu.vala:233
+msgid "Double acute accent - \\H"
+msgstr ""
+
+#: ../src/latex_menu.vala:234
+msgid "Cedilla - \\c"
+msgstr ""
+
+#: ../src/latex_menu.vala:235
+msgid "Ogonek - \\k"
+msgstr ""
+
+#: ../src/latex_menu.vala:236
+msgid "Dot below - \\d"
+msgstr ""
+
+#: ../src/latex_menu.vala:237
+msgid "Macron below - \\b"
+msgstr ""
+
+#: ../src/latex_menu.vala:238
+msgid "Ring - \\r"
+msgstr ""
+
+#: ../src/latex_menu.vala:239
+msgid "Tie - \\t"
+msgstr ""
+
+#. LaTeX: Others
+#: ../src/latex_menu.vala:243
+msgid "_Misc"
+msgstr "_Varis"
+
+#: ../src/latex_menu.vala:245
+msgid "Document class - \\documentclass"
+msgstr ""
+
+#: ../src/latex_menu.vala:247
+msgid "Use package - \\usepackage"
+msgstr ""
+
+#: ../src/latex_menu.vala:248
+msgid "_AMS packages"
+msgstr ""
+
+#: ../src/latex_menu.vala:249
+msgid "AMS packages"
+msgstr ""
+
+#: ../src/latex_menu.vala:250
+msgid "Author - \\author"
+msgstr ""
+
+#: ../src/latex_menu.vala:251
+msgid "Title - \\title"
+msgstr ""
+
+#: ../src/latex_menu.vala:253
+msgid "Content of the document - \\begin{document}"
+msgstr ""
+
+#: ../src/latex_menu.vala:255
+msgid "Make title - \\maketitle"
+msgstr ""
+
+#: ../src/latex_menu.vala:257
+msgid "Table of contents - \\tableofcontents"
+msgstr ""
+
+#: ../src/latex_menu.vala:259
+msgid "Abstract - \\begin{abstract}"
+msgstr ""
+
+#: ../src/latex_menu.vala:261
+msgid "Include an image (graphicx package) - \\includegraphics"
+msgstr ""
+
+#: ../src/latex_menu.vala:264
+msgid "Include a file - \\input"
+msgstr ""
+
+#. Math
+#: ../src/latex_menu.vala:268
+msgid "_Math"
+msgstr ""
+
+#. Math Environments
+#: ../src/latex_menu.vala:272
+msgid "_Math Environments"
+msgstr ""
+
+#: ../src/latex_menu.vala:273
+msgid "_Mathematical Environment - $...$"
+msgstr ""
+
+#: ../src/latex_menu.vala:274
+msgid "Mathematical Environment - $...$"
+msgstr ""
+
+#: ../src/latex_menu.vala:275
+msgid "_Centered Formula - \\[...\\]"
+msgstr ""
+
+#: ../src/latex_menu.vala:276
+msgid "Centered Formula - \\[...\\]"
+msgstr ""
+
+#: ../src/latex_menu.vala:278
+msgid "_Numbered Equation - \\begin{equation}"
+msgstr ""
+
+#: ../src/latex_menu.vala:279
+msgid "Numbered Equation - \\begin{equation}"
+msgstr ""
+
+#: ../src/latex_menu.vala:280
+msgid "_Array of Equations - \\begin{align*}"
+msgstr ""
+
+#: ../src/latex_menu.vala:281
+msgid "Array of Equations - \\begin{align*}"
+msgstr ""
+
+#: ../src/latex_menu.vala:283
+msgid "Numbered Array of _Equations - \\begin{align}"
+msgstr ""
+
+#: ../src/latex_menu.vala:284
+msgid "Numbered Array of Equations - \\begin{align}"
+msgstr ""
+
+#: ../src/latex_menu.vala:287
+msgid "_Superscript - ^{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:288
+msgid "Superscript - ^{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:289
+msgid "Su_bscript - __{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:290
+msgid "Subscript - _{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:291
+msgid "_Fraction - \\frac{}{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:292
+msgid "Fraction - \\frac{}{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:293
+msgid "Square _Root - \\sqrt{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:294
+msgid "Square Root - \\sqrt{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:295
+msgid "_N-th Root - \\sqrt[]{}"
+msgstr ""
+
+#: ../src/latex_menu.vala:296
+msgid "N-th Root - \\sqrt[]{}"
+msgstr ""
+
+#. Math functions
+#: ../src/latex_menu.vala:300
+msgid "Math _Functions"
+msgstr ""
+
+#. Math Font Styles
+#: ../src/latex_menu.vala:334
+msgid "Math Font _Styles"
+msgstr ""
+
+#: ../src/latex_menu.vala:336
+msgid "Roman - \\mathrm"
+msgstr ""
+
+#: ../src/latex_menu.vala:338
+msgid "Italic - \\mathit"
+msgstr ""
+
+#: ../src/latex_menu.vala:340
+msgid "Bold - \\mathbf"
+msgstr ""
+
+#: ../src/latex_menu.vala:342
+msgid "Sans Serif - \\mathsf"
+msgstr ""
+
+#: ../src/latex_menu.vala:344
+msgid "Typewriter - \\mathtt"
+msgstr ""
+
+#: ../src/latex_menu.vala:346
+msgid "Calligraphic - \\mathcal"
+msgstr ""
+
+#: ../src/latex_menu.vala:348
+msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
+msgstr ""
+
+#: ../src/latex_menu.vala:351
+msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
+msgstr ""
+
+#. Math Accents
+#: ../src/latex_menu.vala:356
+msgid "Math _Accents"
+msgstr ""
+
+#. Math Spaces
+#: ../src/latex_menu.vala:377
+msgid "Math _Spaces"
+msgstr ""
+
+#: ../src/latex_menu.vala:378
+msgid "_Small"
+msgstr "_Petit"
+
+#: ../src/latex_menu.vala:379
+msgid "Small - \\,"
+msgstr ""
+
+#: ../src/latex_menu.vala:380
+msgid "_Medium"
+msgstr "_Mitjà"
+
+#: ../src/latex_menu.vala:381
+msgid "Medium - \\:"
+msgstr ""
+
+#: ../src/latex_menu.vala:382
+msgid "_Large"
+msgstr "_Gran"
+
+#: ../src/latex_menu.vala:383
+msgid "Large - \\;"
+msgstr ""
+
+#. Math: Left Delimiters
+#: ../src/latex_menu.vala:389
+msgid "_Left Delimiters"
+msgstr ""
+
+#: ../src/latex_menu.vala:390
+msgid "left ("
+msgstr ""
+
+#: ../src/latex_menu.vala:392
+msgid "left ["
+msgstr ""
+
+#: ../src/latex_menu.vala:394
+msgid "left { "
+msgstr ""
+
+#: ../src/latex_menu.vala:396
+msgid "left <"
+msgstr ""
+
+#: ../src/latex_menu.vala:398
+msgid "left )"
+msgstr ""
+
+#: ../src/latex_menu.vala:400
+msgid "left ]"
+msgstr ""
+
+#: ../src/latex_menu.vala:402
+msgid "left  }"
+msgstr ""
+
+#: ../src/latex_menu.vala:404
+msgid "left >"
+msgstr ""
+
+#: ../src/latex_menu.vala:406
+msgid "left ."
+msgstr ""
+
+#. Math: Right Delimiters
+#: ../src/latex_menu.vala:411
+msgid "Right _Delimiters"
+msgstr ""
+
+#: ../src/latex_menu.vala:412
+msgid "right )"
+msgstr ""
+
+#: ../src/latex_menu.vala:414
+msgid "right ]"
+msgstr ""
+
+#: ../src/latex_menu.vala:416
+msgid "right  }"
+msgstr ""
+
+#: ../src/latex_menu.vala:418
+msgid "right >"
+msgstr ""
+
+#: ../src/latex_menu.vala:420
+msgid "right ("
+msgstr ""
+
+#: ../src/latex_menu.vala:422
+msgid "right ["
+msgstr ""
+
+#: ../src/latex_menu.vala:424
+msgid "right { "
+msgstr ""
+
+#: ../src/latex_menu.vala:426
+msgid "right <"
+msgstr ""
+
+#: ../src/latex_menu.vala:428
+msgid "right ."
+msgstr ""
+
+#: ../src/latex_menu.vala:443
+msgid "Sectioning"
+msgstr ""
+
+#: ../src/latex_menu.vala:446
+msgid "Characters Sizes"
+msgstr ""
+
+#: ../src/latex_menu.vala:449
+msgid "References"
+msgstr "Referències"
+
+#: ../src/latex_menu.vala:452
+msgid "Presentation Environments"
+msgstr ""
+
+#: ../src/latex_menu.vala:455
+msgid "Math Environments"
+msgstr ""
+
+#: ../src/latex_menu.vala:458
+msgid "Left Delimiters"
+msgstr ""
+
+#: ../src/latex_menu.vala:461
+msgid "Right Delimiters"
+msgstr ""
+
+#: ../src/main.vala:51
+msgid "Show the application's version"
+msgstr "Mostra la versió de l'aplicació"
+
+#: ../src/main.vala:54
+msgid "Create new document"
+msgstr "Crea un document nou"
+
+#: ../src/main.vala:57
+msgid "Create a new top-level window in an existing instance of LaTeXila"
+msgstr ""
+
+#: ../src/main.vala:66
+msgid "- Integrated LaTeX Environment for GNOME"
+msgstr ""
+
+#: ../src/main.vala:78
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options.\n"
+msgstr ""
+"Executeu «%s --help» per veure tota la llista d'opcions de la línia d'ordres "
+"disponibles.\n"
+
+#: ../src/main_window_build_tools.vala:28
+msgid "_Build"
+msgstr "_Munta"
+
+#: ../src/main_window_build_tools.vala:30
+msgid "Cleanup Build _Files"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:31
+msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:34
+msgid "_Stop Execution"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:35
+msgid "Stop Execution"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:37
+msgid "View _Log"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:38
+msgid "View Log"
+msgstr "Visualitza el registre"
+
+#: ../src/main_window_build_tools.vala:40
+msgid "_Manage Build Tools"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:41
+msgid "Manage Build Tools"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:46
+msgid "Show _Details"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:47
+msgid "Show Details"
+msgstr "Mostra els detalls"
+
+#: ../src/main_window_build_tools.vala:49
+msgid "Show _Warnings"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:50
+msgid "Show Warnings"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:52
+msgid "Show _Bad Boxes"
+msgstr ""
+
+#: ../src/main_window_build_tools.vala:53
+msgid "Show Bad Boxes"
+msgstr ""
+
+#: ../src/main_window_documents.vala:30
+msgid "_Documents"
+msgstr "_Documents"
+
+#: ../src/main_window_documents.vala:32
+msgid "_Save All"
+msgstr "De_sa-ho tot"
+
+#: ../src/main_window_documents.vala:33
+msgid "Save all open files"
+msgstr "Desa tots els fitxers oberts"
+
+#: ../src/main_window_documents.vala:35
+msgid "_Close All"
+msgstr "Tan_ca-ho tot"
+
+#: ../src/main_window_documents.vala:36
+msgid "Close all open files"
+msgstr "Tanca tots els fitxers oberts"
+
+#: ../src/main_window_documents.vala:38
+msgid "_Previous Document"
+msgstr "Document _anterior"
+
+#: ../src/main_window_documents.vala:39
+msgid "Activate previous document"
+msgstr "Activa el document anterior"
+
+#: ../src/main_window_documents.vala:41
+msgid "_Next Document"
+msgstr "Document _següent"
+
+#: ../src/main_window_documents.vala:42
+msgid "Activate next document"
+msgstr "Activa el document següent"
+
+#: ../src/main_window_documents.vala:44
+msgid "_Move to New Window"
+msgstr "_Mou a una finestra nova"
+
+#: ../src/main_window_documents.vala:45
+msgid "Move the current document to a new window"
+msgstr "Mou el document actual a una finestra nova"
+
+#: ../src/main_window_edit.vala:30
+msgid "_Edit"
+msgstr "_Edita"
+
+#: ../src/main_window_edit.vala:33
+msgid "Undo the last action"
+msgstr "Desfés l'última acció"
+
+#: ../src/main_window_edit.vala:36
+msgid "Redo the last undone action"
+msgstr "Refés l'últim canvi desfet"
+
+#: ../src/main_window_edit.vala:39
+msgid "Cut the selection"
+msgstr "Talla la selecció"
+
+#: ../src/main_window_edit.vala:42
+msgid "Copy the selection"
+msgstr "Copia la selecció"
+
+#: ../src/main_window_edit.vala:49
+msgid "Paste the clipboard"
+msgstr "Enganxa el porta-retalls"
+
+#: ../src/main_window_edit.vala:52
+msgid "Delete the selected text"
+msgstr "Suprimeix el text seleccionat"
+
+#: ../src/main_window_edit.vala:55
+msgid "Select the entire document"
+msgstr "Selecciona tot el document"
+
+#: ../src/main_window_edit.vala:57 ../src/main_window_structure.vala:44
+msgid "_Comment"
+msgstr "_Comenta"
+
+#: ../src/main_window_edit.vala:58
+msgid "Comment the selected lines (add the character \"%\")"
+msgstr ""
+
+#: ../src/main_window_edit.vala:61
+msgid "_Uncomment"
+msgstr ""
+
+#: ../src/main_window_edit.vala:62
+msgid "Uncomment the selected lines (remove the character \"%\")"
+msgstr ""
+
+#: ../src/main_window_edit.vala:66
+msgid "Configure the application"
+msgstr "Configura l'aplicació"
+
+#: ../src/main_window_edit.vala:72
+msgid "Activate or disable the spell checking"
+msgstr ""
+
+#: ../src/main_window_file.vala:30
+msgid "_File"
+msgstr "_Fitxer"
+
+#: ../src/main_window_file.vala:33
+msgid "New file"
+msgstr "Fitxer nou"
+
+#: ../src/main_window_file.vala:35
+msgid "New _Window"
+msgstr "_Finestra nova"
+
+#: ../src/main_window_file.vala:36
+msgid "Create a new window"
+msgstr ""
+
+#: ../src/main_window_file.vala:39 ../src/main_window_file.vala:85
+msgid "Open a file"
+msgstr "Obre un fitxer"
+
+#: ../src/main_window_file.vala:42
+msgid "Save the current file"
+msgstr "Desa el fitxer actual"
+
+#: ../src/main_window_file.vala:45
+msgid "Save the current file with a different name"
+msgstr "Desa el fitxer actual amb un nom diferent"
+
+#: ../src/main_window_file.vala:47
+msgid "Create _Template From Document..."
+msgstr ""
+
+#: ../src/main_window_file.vala:48
+msgid "Create a new template from the current document"
+msgstr ""
+
+#: ../src/main_window_file.vala:50
+msgid "_Delete Template..."
+msgstr ""
+
+#: ../src/main_window_file.vala:51
+msgid "Delete personal template(s)"
+msgstr ""
+
+#: ../src/main_window_file.vala:54
+msgid "Close the current file"
+msgstr "Tanca el fitxer actual"
+
+#. recent documents
+#: ../src/main_window_file.vala:69
+msgid "Open _Recent"
+msgstr "Obre un _recent"
+
+#: ../src/main_window_file.vala:70
+msgid "Open recently used files"
+msgstr ""
+
+#: ../src/main_window_file.vala:86
+msgid "Open a recently used file"
+msgstr "Obre un fitxer utilitzat recentment"
+
+#: ../src/main_window_file.vala:143
+msgid "Open Files"
+msgstr ""
+
+#: ../src/main_window_file.vala:157
+msgid "All LaTeX Files"
+msgstr ""
+
+#: ../src/main_window_file.vala:164
+msgid "All Files"
+msgstr "Tots els fitxers"
+
+#: ../src/main_window_structure.vala:30
+msgid "S_tructure"
+msgstr ""
+
+#: ../src/main_window_structure.vala:33
+msgid "Cut the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:36
+msgid "Copy the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:39
+msgid "Delete the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:41
+msgid "_Select"
+msgstr "_Selecciona"
+
+#: ../src/main_window_structure.vala:42
+msgid "Select the contents of the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:45
+msgid "Comment the selected structure item"
+msgstr ""
+
+#: ../src/main_window_structure.vala:47
+msgid "Shift _Left"
+msgstr ""
+
+#: ../src/main_window_structure.vala:48
+msgid "Shift the selected structure item to the left (e.g. section → chapter)"
+msgstr ""
+
+#: ../src/main_window_structure.vala:51
+msgid "Shift _Right"
+msgstr ""
+
+#: ../src/main_window_structure.vala:52
+msgid "Shift the selected structure item to the right (e.g. chapter → section)"
+msgstr ""
+
+#: ../src/main_window_structure.vala:55
+msgid "_Open File"
+msgstr ""
+
+#: ../src/main_window_structure.vala:56
+msgid "Open the file referenced by the selected structure item"
+msgstr ""
+
+#: ../src/main_window.vala:29
+msgid "Quit the program"
+msgstr "Surt del programa"
+
+#. View
+#: ../src/main_window.vala:32
+msgid "_View"
+msgstr "_Visualitza"
+
+#: ../src/main_window.vala:33
+msgid "Zoom _In"
+msgstr "_Augmenta"
+
+#: ../src/main_window.vala:34
+msgid "Enlarge the font"
+msgstr ""
+
+#: ../src/main_window.vala:35
+msgid "Zoom _Out"
+msgstr "_Redueix"
+
+#: ../src/main_window.vala:36
+msgid "Shrink the font"
+msgstr ""
+
+#: ../src/main_window.vala:37
+msgid "_Reset Zoom"
+msgstr ""
+
+#: ../src/main_window.vala:38
+msgid "Reset the size of the font"
+msgstr ""
+
+#. Search
+#: ../src/main_window.vala:41
+msgid "_Search"
+msgstr "_Cerca"
+
+#: ../src/main_window.vala:43
+msgid "Search for text"
+msgstr "Cerca text"
+
+#: ../src/main_window.vala:45
+msgid "Search for and replace text"
+msgstr "Cerca i reemplaça text"
+
+#: ../src/main_window.vala:46
+msgid "_Go to Line..."
+msgstr ""
+
+#: ../src/main_window.vala:47
+msgid "Go to a specific line"
+msgstr "Vés a una línia específica"
+
+#: ../src/main_window.vala:48
+msgid "_Search Forward"
+msgstr ""
+
+#: ../src/main_window.vala:49
+msgid "Jump to the associated position in the PDF file"
+msgstr ""
+
+#. Projects
+#: ../src/main_window.vala:52
+msgid "_Projects"
+msgstr "_Projectes"
+
+#: ../src/main_window.vala:53
+msgid "_New Project"
+msgstr "Projecte _nou"
+
+#: ../src/main_window.vala:54
+msgid "Create a new project"
+msgstr "Crea un projecte nou"
+
+#: ../src/main_window.vala:55
+msgid "_Configure Current Project"
+msgstr ""
+
+#: ../src/main_window.vala:56
+msgid "Change the main file of the current project"
+msgstr ""
+
+#: ../src/main_window.vala:58
+msgid "_Manage Projects"
+msgstr ""
+
+#: ../src/main_window.vala:59 ../src/project_dialogs.vala:183
+msgid "Manage Projects"
+msgstr ""
+
+#. Help
+#: ../src/main_window.vala:62
+msgid "_Help"
+msgstr "A_juda"
+
+#: ../src/main_window.vala:63
+msgid "_Contents"
+msgstr "_Contingut"
+
+#: ../src/main_window.vala:64
+msgid "Open the LaTeXila documentation"
+msgstr ""
+
+#: ../src/main_window.vala:65
+msgid "_LaTeX Reference"
+msgstr ""
+
+#: ../src/main_window.vala:66
+msgid "The Kile LaTeX Reference"
+msgstr ""
+
+#: ../src/main_window.vala:68 ../src/main_window.vala:1207
+msgid "About LaTeXila"
+msgstr ""
+
+#: ../src/main_window.vala:73
+msgid "_Main Toolbar"
+msgstr ""
+
+#: ../src/main_window.vala:74
+msgid "Show or hide the main toolbar"
+msgstr ""
+
+#. Translators: "Edit" here is an adjective.
+#: ../src/main_window.vala:76
+msgid "_Edit Toolbar"
+msgstr ""
+
+#: ../src/main_window.vala:77
+msgid "Show or hide the edit toolbar"
+msgstr ""
+
+#: ../src/main_window.vala:78
+msgid "_Side panel"
+msgstr ""
+
+#: ../src/main_window.vala:79
+msgid "Show or hide the side panel"
+msgstr ""
+
+#: ../src/main_window.vala:80
+msgid "_Bottom panel"
+msgstr ""
+
+#: ../src/main_window.vala:81
+msgid "Show or hide the bottom panel"
+msgstr ""
+
+#: ../src/main_window.vala:389
+msgid "Symbols"
+msgstr "Símbols"
+
+#: ../src/main_window.vala:398
+msgid "Structure"
+msgstr "Estructura"
+
+#: ../src/main_window.vala:639
+#, c-format
+msgid "This file (%s) is already opened in another LaTeXila window."
+msgstr ""
+
+#: ../src/main_window.vala:641
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr ""
+
+#: ../src/main_window.vala:644
+msgid "Edit Anyway"
+msgstr ""
+
+#: ../src/main_window.vala:645
+msgid "Don't Edit"
+msgstr ""
+
+#: ../src/main_window.vala:746
+#, c-format
+msgid "Save changes to document \"%s\" before closing?"
+msgstr "Voleu desar els canvis del document «%s» abans de tancar?"
+
+#: ../src/main_window.vala:826
+msgid "Read-Only"
+msgstr "Només lectura"
+
+#: ../src/main_window.vala:840
+msgid "Save File"
+msgstr "Desa el fitxer"
+
+#: ../src/main_window.vala:875
+#, c-format
+msgid "A file named \"%s\" already exists. Do you want to replace it?"
+msgstr "Ja existeix un fitxer anomenat «%s». Voleu sobreescriure'l?"
+
+#: ../src/main_window.vala:880
+msgid "Replace"
+msgstr "Reemplaça"
+
+#: ../src/main_window.vala:1169
+msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
+msgstr ""
+
+#: ../src/main_window.vala:1208
+msgid "translator-credits"
+msgstr ""
+"Jordi Mas i Hernàndez <jmas@softcatala.org>\n"
+"Gil Forcada <gilforcada@guifi.net>"
+
+#: ../src/post_processors.vala:188
+msgid "Latexmk messages"
+msgstr ""
+
+#: ../src/preferences_dialog.vala:31
+msgid "Preferences"
+msgstr "Preferències"
+
+#. reset all button
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:381
+msgid "Reset All"
+msgstr ""
+
+#: ../src/preferences_dialog.vala:39
+msgid "Reset all preferences"
+msgstr ""
+
+#: ../src/preferences_dialog.vala:118
+msgid "Do you really want to reset all preferences?"
+msgstr ""
+
+#: ../src/preferences_dialog.vala:191
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/preferences_dialog.vala:291
+msgid "character"
+msgid_plural "characters"
+msgstr[0] ""
+msgstr[1] ""
+
+#: ../src/preferences_dialog.vala:331
+#, c-format
+msgid "Use the system fixed width font (%s)"
+msgstr ""
+
+#: ../src/project_dialogs.vala:26
+msgid "New Project"
+msgstr "Projecte nou"
+
+#. directory
+#: ../src/project_dialogs.vala:36 ../src/project_dialogs.vala:40
+#: ../src/project_dialogs.vala:203
+msgid "Directory"
+msgstr "Directori"
+
+#: ../src/project_dialogs.vala:101
+#, c-format
+msgid "There is a conflict with the project \"%s\"."
+msgstr ""
+
+#: ../src/project_dialogs.vala:116
+msgid "Configure Project"
+msgstr "Configura el projecte"
+
+#: ../src/project_dialogs.vala:134
+msgid "Location of the project"
+msgstr ""
+
+#: ../src/project_dialogs.vala:243 ../src/project_dialogs.vala:300
+msgid "Clear All"
+msgstr "Neteja-ho tot"
+
+#: ../src/project_dialogs.vala:275
+#, c-format
+msgid "Do you really want to delete the project \"%s\"?"
+msgstr ""
+
+#: ../src/project_dialogs.vala:296
+msgid "Do you really want to clear all projects?"
+msgstr ""
+
+#: ../src/project_dialogs.vala:328
+msgid "The Main File is not in the directory."
+msgstr ""
+
+#: ../src/search.vala:40
+msgid "Go to Line:"
+msgstr ""
+
+#: ../src/search.vala:50
+msgid "Line you want to move the cursor to"
+msgstr "Línia on voleu moure el cursor"
+
+#: ../src/search.vala:178
+msgid "Replace with"
+msgstr "Reemplaça amb"
+
+#: ../src/search.vala:197
+msgid "All"
+msgstr "Tot"
+
+#: ../src/search.vala:308
+msgid "Search for"
+msgstr "Recerca"
+
+#: ../src/search.vala:314
+msgid "Case sensitive"
+msgstr "Distingeix entre majúscules i minúscules"
+
+#: ../src/search.vala:315
+msgid "Entire words only"
+msgstr ""
+
+#: ../src/structure.vala:158
+msgid "Refresh"
+msgstr "Refresca"
+
+#: ../src/structure.vala:172
+msgid "Collapse All"
+msgstr ""
+
+#: ../src/structure.vala:182
+msgid "Show labels"
+msgstr ""
+
+#: ../src/structure.vala:183
+msgid "Show included files"
+msgstr ""
+
+#: ../src/structure.vala:184
+msgid "Show tables"
+msgstr ""
+
+#: ../src/structure.vala:185
+msgid "Show figures and images"
+msgstr ""
+
+#. Translators: do not translate the words TODO and FIXME. They are special
+#. comments that can be inserted in LaTeX documents.
+#: ../src/structure.vala:188
+msgid "Show TODOs and FIXMEs"
+msgstr ""
+
+#: ../src/structure.vala:628
+#, c-format
+msgid "Structure action error: %s"
+msgstr ""
+
+#: ../src/structure.vala:633
+msgid "The structure data seems outdated. Please refresh the structure."
+msgstr ""
+
+#. Translators: it's a verb
+#: ../src/structure.vala:724
+msgid "cut"
+msgstr ""
+
+#. Translators: it's a verb
+#: ../src/structure.vala:726
+msgid "copy"
+msgstr "copia"
+
+#: ../src/structure.vala:727
+msgid "delete"
+msgstr "suprimeix"
+
+#: ../src/structure.vala:728
+msgid "select"
+msgstr "selecciona"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:730
+msgid "comment"
+msgstr "comenta"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:732
+msgid "shift left"
+msgstr ""
+
+#. Translators: it's a verb
+#: ../src/structure.vala:734
+msgid "shift right"
+msgstr ""
+
+#: ../src/structure.vala:735
+msgid "open file"
+msgstr ""
+
+#: ../src/structure.vala:780
+msgid "Table"
+msgstr "Taula"
+
+#. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
+#: ../src/structure.vala:782
+msgid "Figure"
+msgstr ""
+
+#: ../src/structure.vala:783
+msgid "Image"
+msgstr "Imatge"
+
+#: ../src/structure.vala:784
+msgid "File included"
+msgstr ""
+
+#: ../src/symbols.vala:59
+msgid "Greek"
+msgstr "Grec"
+
+#: ../src/symbols.vala:60
+msgid "Arrows"
+msgstr "Fletxes"
+
+#: ../src/symbols.vala:61
+msgid "Relations"
+msgstr "Relacions"
+
+#: ../src/symbols.vala:62
+msgid "Operators"
+msgstr "Operadors"
+
+#: ../src/symbols.vala:63
+msgid "Delimiters"
+msgstr ""
+
+#: ../src/symbols.vala:64
+msgid "Misc math"
+msgstr ""
+
+#: ../src/symbols.vala:65
+msgid "Misc text"
+msgstr ""
+
+#: ../src/symbols.vala:159
+msgid "Most Used"
+msgstr ""
+
+#: ../src/synctex.vala:84
+msgid "The document is not saved."
+msgstr ""
+
+#: ../src/synctex.vala:91
+msgid "The PDF file doesn't exist."
+msgstr ""
+
+#: ../src/synctex.vala:100
+#, c-format
+msgid "The file \"%s\" doesn't exist."
+msgstr ""
+
+#: ../src/synctex.vala:107
+msgid "Can not communicate with evince."
+msgstr ""
+
+#: ../src/synctex.vala:125
+msgid "Impossible to do the forward search."
+msgstr ""
+
+#: ../src/templates_dialogs.vala:34
+msgid "New File..."
+msgstr ""
+
+#: ../src/templates_dialogs.vala:55
+msgid "Default templates"
+msgstr ""
+
+#: ../src/templates_dialogs.vala:64
+msgid "Your personal templates"
+msgstr ""
+
+#: ../src/templates_dialogs.vala:173
+msgid "New Template..."
+msgstr ""
+
+#: ../src/templates_dialogs.vala:185
+msgid "Name of the new template"
+msgstr ""
+
+#: ../src/templates_dialogs.vala:198
+msgid "Choose an icon"
+msgstr "Seleccioneu una icona"
+
+#: ../src/templates_dialogs.vala:242
+msgid "Delete Template(s)..."
+msgstr ""
+
+#: ../src/templates_dialogs.vala:259
+msgid "Personal templates"
+msgstr ""
+
+#: ../src/templates.vala:75
+msgid "Empty"
+msgstr "Buida"
+
+#: ../src/templates.vala:77
+msgid "Article"
+msgstr ""
+
+#: ../src/templates.vala:78
+msgid "Report"
+msgstr "Informe"
+
+#: ../src/templates.vala:79
+msgid "Book"
+msgstr ""
+
+#: ../src/templates.vala:80
+msgid "Letter"
+msgstr ""
+
+#: ../src/templates.vala:81
+msgid "Presentation"
+msgstr "Presentació"
+
+#: ../src/ui/preferences_dialog.ui.h:1
+msgid "Display line numbers"
+msgstr "Mostra els números de línia"
+
+#: ../src/ui/preferences_dialog.ui.h:2
+msgid "Tab width:"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:3
+msgid "Insert spaces instead of tabs"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:4
+msgid "Forget you are not using tabulations"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:5
+msgid "Highlight current line"
+msgstr "Ressalta la línia actual"
+
+#: ../src/ui/preferences_dialog.ui.h:6
+msgid "Highlight matching brackets"
+msgstr "Ressalta les claus i els parèntesis concordants"
+
+#: ../src/ui/preferences_dialog.ui.h:7
+msgid "Create a backup copy of files before saving"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:8
+msgid "Autosave files every"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:10
+msgid "Editor"
+msgstr "Editor"
+
+#: ../src/ui/preferences_dialog.ui.h:11
+msgid "Font"
+msgstr "Tipus de lletra"
+
+#: ../src/ui/preferences_dialog.ui.h:13
+#, no-c-format
+msgid "_Use the system fixed width font (%s)"
+msgstr "_Empra el tipus de lletra d'amplada fixa del sistema (%s)"
+
+#: ../src/ui/preferences_dialog.ui.h:14
+msgid "Editor _font: "
+msgstr "Tipus de lletra de l'_editor: "
+
+#: ../src/ui/preferences_dialog.ui.h:15
+msgid "Pick the editor font"
+msgstr "Trieu el tipus de lletra de l'editor"
+
+#: ../src/ui/preferences_dialog.ui.h:16
+msgid "Color Scheme"
+msgstr "Esquema de colors"
+
+#: ../src/ui/preferences_dialog.ui.h:17
+msgid "Font & Colors"
+msgstr "Tipus de lletra i colors"
+
+#: ../src/ui/preferences_dialog.ui.h:18
+msgid "File Clean-Up"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:20
+msgid "Automatically clean-up files after close"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:21
+msgid "Interactive completion after"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:22
+msgid "Number of characters after &apos;\\&apos;"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:23
+msgid "Number of characters after '\\'"
+msgstr ""
+
+#: ../src/ui/preferences_dialog.ui.h:24
+msgid "Other"
+msgstr "Altres"
