@@ -1,16 +1,18 @@
 # French translation for latexila.
-# Copyright (C) 2011-12 latexila's COPYRIGHT HOLDER
+# Copyright (C) 2011-2013 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
-# Sébastien Wilmet <swilmet@src.gnome.org>, 2011.
+# Sébastien Wilmet <swilmet@gnome.org>, 2011, 2013.
 # Bruno Brouard <annoa.b@gmail.com>, 2011-12
+# Julien hardelin <jhardlin@orange.fr>, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
-"POT-Creation-Date: 2012-02-26 16:16+0000\n"
-"PO-Revision-Date: 2012-02-28 17:58+0100\n"
-"Last-Translator: Bruno Brouard <annoa.b@gmail.com>\n"
+"POT-Creation-Date: 2013-03-29 09:59+0000\n"
+"PO-Revision-Date: 2013-04-22 15:46+0200\n"
+"Last-Translator: Sébastien Wilmet <swilmet@gnome.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -92,10 +94,11 @@ msgid ""
 "By default, LaTeXila uses Latexmk."
 msgstr ""
 "Utiliser un outil de plus haut niveau comme Latexmk ou Rubber simplifie "
-"beaucoup ce procédé, puisqu'une seule commande est nécessaire. En effet, ces "
-"outils détectent combien de fois la commande <cmd>latex</cmd> ou "
-"<cmd>pdflatex</cmd> doit être appelée, et si <cmd>bibtex</cmd> ou "
-"<cmd>makeindex</cmd> est requis. Par défaut, LaTeXila utilise Latexmk."
+"beaucoup ce "
+"procédé, puisqu'une seule commande est nécessaire. En effet, Latexmk détecte "
+"combien de fois la commande <cmd>latex</cmd> ou <cmd>pdflatex</cmd> doit "
+"être appelée, et si <cmd>bibtex</cmd> ou <cmd>makeindex</cmd> est requis. "
+"Par défaut, LaTeXila utilise Latexmk."
 
 #: C/build_tools.page:86(section/title)
 msgid "Differences Between Latexmk and Rubber"
@@ -179,14 +182,12 @@ msgid "There are several means to execute a build tool:"
 msgstr "Il y a plusieurs façons de lancer un outil de construction :"
 
 #: C/build_tools.page:118(item/p)
-msgid "Open the <gui style=\"menu\">Build</gui> menu (first part)."
-msgstr ""
-"Ouvrir le menu <gui style=\"menu\">Construction</gui> (première partie)."
+msgid "Open the <gui style=\"menu\">Build</gui> menu."
+msgstr "Ouvrir le menu <gui style=\"menu\">Construction</gui>."
 
 #: C/build_tools.page:119(item/p)
-msgid "Use the buttons in the main toolbar (last part)."
-msgstr ""
-"Utiliser les boutons de la barre d'outils principale (dernière partie)."
+msgid "Use the buttons in the main toolbar."
+msgstr "Utiliser les boutons de la barre d'outils principale."
 
 #: C/build_tools.page:120(item/p)
 msgid "Use the shortcut: <key>F2</key> → <key>F11</key>."
@@ -223,78 +224,71 @@ msgstr "Configuration générale"
 
 #: C/build_tools.page:137(section/p)
 msgid ""
-"To configure the build tools, open the preferences dialog: <guiseq> <gui "
-"style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
-"\"tab\">LaTeX</gui> </guiseq>"
+"To configure the build tools, go to: <guiseq> <gui style=\"menu\">Build</"
+"gui> <gui style=\"menu\">Manage Build Tools</gui> </guiseq>"
 msgstr ""
-"Pour configurer les outils de construction, ouvrez la boîte de dialogue des "
-"préférences : <guiseq><gui style=\"menu\">Édition</gui> <gui style=\"menu"
-"\">Préférences</gui> <gui style=\"tab\">LaTeX</gui></guiseq>"
+"Pour configurer les outils de construction, allez dans : <guiseq> <gui style="
+"\"menu\">Construction</gui> <gui style=\"menu\">Gérer les outils de "
+"construction</gui> </guiseq>"
 
-#: C/build_tools.page:146(section/p)
+#: C/build_tools.page:145(section/p)
 msgid ""
-"You will see a list with all the build tools. There are check buttons to "
-"show or hide them. When a build tool is hidden, it's not possible to execute "
-"it. You can perform some actions, like moving a tool up or down, open its "
+"You will see the list of all the default build tools, and a second list with "
+"your personal build tools. There are check buttons to enable or disable "
+"them. When a build tool is disabled, it's not possible to execute it. You "
+"can perform some actions, like moving a tool up or down, open its "
 "properties, delete or copy it, create a new one, etc."
 msgstr ""
-"Vous y trouverez une liste contenant tous les outils de construction. Il y a "
-"des cases à cocher pour les afficher ou les masquer. Quand un outil de "
-"construction est masqué, il n'est pas possible de l'exécuter. Vous pouvez "
-"réaliser certaines actions, comme déplacer un outil vers le haut ou le bas, "
-"ouvrir ses propriétés, le supprimer ou en faire une copie, en créer un "
-"nouveau, etc."
+"Vous y trouverez une liste contenant tous les outils de construction par "
+"défaut, ainsi qu'une seconde liste contenant vos outils de construction "
+"personnels. Il y a des cases à cocher pour les activer ou les désactiver. "
+"Quand un outil de construction est désactivé, il n'est pas possible de "
+"l'exécuter. Vous pouvez réaliser certaines actions, comme déplacer un outil "
+"vers le haut ou le bas, ouvrir ses propriétés, le supprimer ou en faire une "
+"copie, en créer un nouveau, etc."
 
 #: C/build_tools.page:152(note/p)
 msgid "Double-click on a build tool will open its properties."
 msgstr ""
 "Un double clic sur un outil de construction permet d'ouvrir ses propriétés."
 
-#: C/build_tools.page:155(section/p)
-msgid ""
-"For an explanation of the option about the Latexmk post processor, see <link "
-"xref=\"#post-processors\"/>."
-msgstr ""
-"Pour une explication de l'option à propos du post-processeur Latexmk, "
-"consultez la section <link xref=\"#post-processors\"/>."
-
-#: C/build_tools.page:160(section/title)
+#: C/build_tools.page:157(section/title)
 msgid "Jobs of a Build Tool"
 msgstr "Tâches d'un outil de construction"
 
-#: C/build_tools.page:162(section/p)
+#: C/build_tools.page:159(section/p)
 msgid ""
 "In the properties of a build tool, the tricky part is to configure the jobs. "
-"A build tool can execute several jobs. Each job contains three pieces of "
+"A build tool can execute several jobs. Each job contains two pieces of "
 "information:"
 msgstr ""
 "Dans les propriétés d'un outil de construction, la partie difficile est de "
 "configurer les tâches. Un outil de construction peut exécuter plusieurs "
-"tâches. Chaque tâche contient trois informations :"
+"tâches. Chaque tâche contient deux informations :"
 
-#: C/build_tools.page:166(item/p)
+#: C/build_tools.page:163(item/p)
 msgid "The command, which can use placeholders."
-msgstr "La commande, qui peut utiliser des variables."
+msgstr "La commande, qui peut utiliser des marques substitutives."
 
-#: C/build_tools.page:167(item/p)
-msgid ""
-"Whether the job must succeed. If this option is enabled, when an error "
-"occurs during the job execution, the next job is not executed."
-msgstr ""
-"Si la tâche doit réussir. Si cette option est activée, quand une erreur "
-"survient durant l'exécution de la tâche, la tâche suivante n'est pas "
-"exécutée."
-
-#: C/build_tools.page:169(item/p)
+#: C/build_tools.page:164(item/p)
 msgid "The post processor (see <link xref=\"#post-processors\"/>)."
 msgstr ""
 "Le post-processeur (consultez la section <link xref=\"#post-processors\"/>)."
 
-#: C/build_tools.page:174(section/title)
+#: C/build_tools.page:167(section/p)
+msgid ""
+"When an error occurs during a job's execution, the execution of the build "
+"tool is aborted, so the next jobs are not launched."
+msgstr ""
+"Si une erreur survient lors de l'exécution d'une tâche, l'exécution de "
+"l'outil de construction est interrompue, et les nouvelles tâches ne sont pas "
+"lancées."
+
+#: C/build_tools.page:172(section/title)
 msgid "Post Processors"
 msgstr "Post-processeurs"
 
-#: C/build_tools.page:175(section/p)
+#: C/build_tools.page:173(section/p)
 msgid ""
 "The purpose of a post processor is to filter the command output and extract "
 "the useful information. Five post processors are available:"
@@ -302,15 +296,15 @@ msgstr ""
 "Le but d'un post-processeur est de filtrer la sortie de la commande et d'en "
 "extraire les informations utiles. Cinq post-processeurs sont disponibles :"
 
-#: C/build_tools.page:181(item/p)
+#: C/build_tools.page:179(item/p)
 msgid "The output is simply not displayed."
 msgstr "La sortie n'est simplement pas affichée."
 
-#: C/build_tools.page:185(item/p)
+#: C/build_tools.page:183(item/p)
 msgid "All the output is displayed, without filter."
 msgstr "Toutes les sorties sont affichées, sans aucun filtrage."
 
-#: C/build_tools.page:189(item/p)
+#: C/build_tools.page:187(item/p)
 msgid ""
 "Filter the output of the <cmd>latex</cmd> or <cmd>pdflatex</cmd> commands. "
 "There can be three types of errors: critical errors, warnings, or bad boxes. "
@@ -322,7 +316,7 @@ msgstr ""
 "avertissements ou des « bad box ». Il y a aussi quelques autres informations "
 "utiles : la taille du document, le nombre de pages et le nombre d'erreurs."
 
-#: C/build_tools.page:196(item/p)
+#: C/build_tools.page:194(item/p)
 msgid ""
 "Used for the <cmd>latexmk</cmd> command. Internally, this post processor "
 "uses other ones: <em>latex</em> and <em>all-output</em>."
@@ -331,25 +325,6 @@ msgstr ""
 "en utilise d'autres : <em>latex</em> et <em>all-output</em>."
 
 #: C/build_tools.page:199(item/p)
-msgid ""
-"In the <link xref=\"#general_configuration\"/>, there is an option for "
-"always showing all information of this post processor. If this option is "
-"disabled (which is the case by default), only the output of the last "
-"<cmd>latex</cmd> or <cmd>pdflatex</cmd> command is displayed, if no error "
-"occurred in another command. This allows to reduce the output showed in the "
-"bottom panel. But even if there are no errors, it can be useful to see "
-"exactly which commands are executed, with their output."
-msgstr ""
-"Dans la section <link xref=\"#general_configuration\"/>, il y a une option "
-"pour toujours afficher toutes les informations de ce post-processeur. Si "
-"cette option est désactivée (ce qui est le cas par défaut), seule la sortie "
-"de la dernière commande <cmd>latex</cmd> ou <cmd>pdflatex</cmd> est "
-"affichée, si aucune erreur ne s'est produite dans une autre commande. Ceci "
-"permet de réduire la sortie affichée dans le panneau inférieur. Mais même "
-"s'il n'y a pas d'erreurs, cela peut être utile de voir exactement quelles "
-"commandes ont été exécutées, ainsi que leur sortie."
-
-#: C/build_tools.page:209(item/p)
 msgid ""
 "This is the post-processor used for the <cmd>rubber</cmd> command. The "
 "errors are categorized into two types: bad boxes, and the others. So, unlike "
@@ -370,7 +345,7 @@ msgid ""
 "The purpose is to facilitate the writing of LaTeX commands, by showing "
 "proposals."
 msgstr ""
-"L'objectif est de faciliter l'écritures de commandes LaTeX en affichant des "
+"L'objectif est de faciliter l'écriture de commandes LaTeX en affichant des "
 "propositions."
 
 #: C/completion.page:17(section/title)
@@ -382,13 +357,13 @@ msgid ""
 "By default, when a LaTeX command is typed, proposals will be shown after two "
 "characters. This can be configured in the preferences dialog: <guiseq> <gui "
 "style=\"menu\">Edit</gui> <gui style=\"menu\">Preferences</gui> <gui style="
-"\"tab\">LaTeX</gui> </guiseq>"
+"\"tab\">Other</gui> </guiseq>"
 msgstr ""
 "Par défaut, quand vous saisissez une commande LaTeX, des propositions "
-"s'affichent après la saisi de deux caractères. Pour configurer cette "
+"s'affichent après la saisie de deux caractères. Pour configurer cette "
 "fonction, ouvrez la boîte de dialogue des préférences : <guiseq><gui style="
 "\"menu\">Édition</gui> <gui style=\"menu\">Préférences</gui> <gui style=\"tab"
-"\">LaTeX</gui></guiseq>"
+"\">Autre</gui></guiseq>"
 
 #: C/completion.page:30(section/title)
 msgid "Manual completion"
@@ -421,7 +396,7 @@ msgstr "Gestion des projets"
 #: C/projects.page:20(section/p)
 msgid ""
 "All actions related to projects are located in the <gui style=\"menu"
-"\">Projects</gui> menu. A project contain only two pieces of information:"
+"\">Projects</gui> menu. A project contains only two pieces of information:"
 msgstr ""
 "Toutes les actions relatives aux projets sont dans le menu <gui style=\"menu"
 "\">Projets</gui>. Un projet ne contient que deux informations :"
@@ -453,6 +428,14 @@ msgid ""
 msgstr ""
 "Un <link xref=\"build_tools\">outil de construction</link> est exécuté sur "
 "le fichier principal du projet."
+
+#: C/projects.page:39(item/p)
+msgid ""
+"The <link xref=\"synctex#forward_search\">forward search</link> works for a "
+"secondary file of a project."
+msgstr ""
+"La <link xref=\"synctex#forward_search\">recherche descendante</link> "
+"fonctionne pour un fichier secondaire d'un projet."
 
 #: C/spell_checking.page:10(page/title)
 msgid "Spell Checking"
@@ -494,18 +477,15 @@ msgstr "Dictionnaires"
 
 #: C/spell_checking.page:36(section/p)
 msgid ""
-"<link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</link> is used for "
-"the spell checking in LaTeXila. GtkSpell uses <link href=\"http://www."
-"abisource.com/projects/enchant/\">Enchant</link>, which uses one or several "
+"<link href=\"http://www.abisource.com/projects/enchant/\">Enchant</link> is "
+"used for the spell checking in LaTeXila. Enchant uses one or several "
 "backends such as Hunspell or Aspell for the dictionaries."
 msgstr ""
-"LaTeXila utilise <link href=\"http://gtkspell.sourceforge.net/\">GtkSpell</"
-"link> pour le contrôle orthographique. GtkSpell se sert de <link href="
-"\"http://www.abisource.com/projects/enchant/\">Enchant</link>, qui actionne "
-"un ou plusieurs moteurs de recherche de dictionnaires tels que Aspell ou "
-"Hunspell."
+"<link href=\"http://www.abisource.com/projects/enchant/\">Enchant</link> est "
+"utilisé pour le contrôle orthographique dans LaTeXila. Enchant actionne un "
+"ou plusieurs moteurs de dictionnaires tels que Aspell ou Hunspell."
 
-#: C/spell_checking.page:43(section/p)
+#: C/spell_checking.page:42(section/p)
 msgid ""
 "So if there is no dictionary for your language, try to know which backend is "
 "used by Enchant on your system, and install the dictionary for this backend. "
@@ -567,3 +547,148 @@ msgstr ""
 "Vous pouvez effectuer certaines actions comme « couper », « copier » ou "
 "« commenter » sur un élément de la structure par un clic droit, ou à partir "
 "du menu <gui style=\"menu\">Structure</gui>."
+
+#: C/synctex.page:10(page/title)
+msgid "Forward and Backward Search"
+msgstr "Recherche ascendante et descendante"
+
+#: C/synctex.page:13(synopsis/p)
+msgid ""
+"Synchronization between the document's *.tex files and the resulting PDF "
+"output, opened with the <app>Evince</app> document viewer."
+msgstr ""
+"La synchronisation entre les fichiers *.tex du document et la sortie PDF "
+"résultante, ouverte avec le visionneur de documents <app>Evince</app>."
+
+#: C/synctex.page:18(note/p)
+msgid ""
+"For more information, read the <link href=\"help:evince#synctex"
+"\"><app>Evince</app> documentation</link>."
+msgstr ""
+"Pour plus d'informations, lisez la <link href=\"help:evince#synctex"
+"\">documentation d'<app>Evince</app></link>."
+
+#: C/synctex.page:23(section/title)
+msgid "Forward Search: from .tex to PDF"
+msgstr "Recherche descendante : du .tex au PDF"
+
+#: C/synctex.page:25(section/p)
+msgid ""
+"From a certain position in the .tex source file, jump to the corresponding "
+"position in the PDF file."
+msgstr ""
+"Depuis une certaine position dans le fichier source .tex, sauter à la "
+"position correspondante dans le fichier PDF."
+
+#: C/synctex.page:28(section/p)
+msgid "There are different ways to do a forward search:"
+msgstr "Il y a différents moyens de faire une recherche descendante :"
+
+#: C/synctex.page:30(item/p)
+msgid ""
+"In the menu: <guiseq> <gui style=\"menu\">Search</gui> <gui style=\"menu"
+"\">Search Forward</gui> </guiseq>"
+msgstr ""
+"Dans le menu : <guiseq> <gui style=\"menu\">Rechercher</gui> <gui style="
+"\"menu\">Recherche descendante</gui> </guiseq>"
+
+#: C/synctex.page:36(item/p)
+msgid "By pressing <keyseq> <key>Ctrl</key> <key>left click</key> </keyseq>"
+msgstr ""
+"En appuyant sur <keyseq> <key>Ctrl</key> <key>clic gauche</key> </keyseq>"
+
+#: C/synctex.page:44(section/p)
+msgid ""
+"If a document is split into several .tex files, create a <link xref="
+"\"projects\">project</link>. There is no need to mention the main file with "
+"a LaTeX comment in each secondary .tex file, like it is explained in the "
+"<link href=\"help:evince/synctex-search#forward-search\"> <app>Evince</app> "
+"documentation. </link>"
+msgstr ""
+"Si un document est séparé en plusieurs fichiers .tex, créez un <link xref="
+"\"projects\">projet</link>. Il n'y a pas besoin de mentionner le fichier "
+"principal grâce à un commentaire LaTeX dans chaque fichier .tex secondaire, "
+"tel qu'expliqué dans la <link href=\"help:evince/synctex-search#forward-"
+"search\">documentation d'<app>Evince</app></link>."
+
+#: C/synctex.page:53(section/title)
+msgid "Backward Search"
+msgstr "Recherche ascendante"
+
+#: C/synctex.page:55(section/p)
+msgid ""
+"In <app>Evince</app>, press <keyseq> <key>Ctrl</key> <key>left click</key> </"
+"keyseq>, and the corresponding position in the .tex file will be opened in "
+"<app>LaTeXila</app>."
+msgstr ""
+"Dans <app>Evince</app>, appuyez sur <keyseq> <key>Ctrl</key> <key>clic "
+"gauche</key> </keyseq>, et la position correspondante dans le fichier .tex "
+"sera ouvert dans <app>LaTeXila</app>."
+
+#: C/synctex.page:63(section/p)
+msgid ""
+"<app>Evince</app> have to be launched by <app>LaTeXila</app>. Else, the "
+"backward search will not work."
+msgstr ""
+"<app>Evince</app> doit être lancé par <app>LaTeXila</app>. Autrement, la "
+"recherche ascendante ne fonctionnera pas."
+
+#~ msgid ""
+#~ "If your language is not listed when doing a right click, install a "
+#~ "dictionary for one of the supported backends."
+#~ msgstr ""
+#~ "Si votre langue n'est pas listée en faisant un clic droit, installez un "
+#~ "dictionnaire pour l'un des moteurs supportés."
+
+#~ msgid "TODOs and FIXMEs"
+#~ msgstr "Les TODO et FIXME"
+
+#~ msgid ""
+#~ "It can be useful to add TODOs and FIXMEs comments in the document. They "
+#~ "will be displayed in the structure. Example:"
+#~ msgstr ""
+#~ "Il peut être utile d'ajouter des commentaires TODO ou FIXME dans le "
+#~ "document. Ils seront affichés dans la structure. Exemple :"
+
+#~ msgid ""
+#~ "\n"
+#~ "%TODO a remaining task\n"
+#~ "%FIXME something is broken"
+#~ msgstr ""
+#~ "\n"
+#~ "%TODO une tâche restante\n"
+#~ "%FIXME quelque chose est cassé"
+
+#~ msgid ""
+#~ "For an explanation of the option about the Latexmk post processor, see "
+#~ "<link xref=\"#post-processors\"/>."
+#~ msgstr ""
+#~ "Pour une explication de l'option à propos du post-processeur Latexmk, "
+#~ "consultez la section <link xref=\"#post-processors\"/>."
+
+#~ msgid ""
+#~ "In the <link xref=\"#general_configuration\"/>, there is an option for "
+#~ "always showing all information of this post processor. If this option is "
+#~ "disabled (which is the case by default), only the output of the last "
+#~ "<cmd>latex</cmd> or <cmd>pdflatex</cmd> command is displayed, if no error "
+#~ "occurred in another command. This allows to reduce the output showed in "
+#~ "the bottom panel. But even if there are no errors, it can be useful to "
+#~ "see exactly which commands are executed, with their output."
+#~ msgstr ""
+#~ "Dans la section <link xref=\"#general_configuration\"/>, il y a une "
+#~ "option pour toujours afficher toutes les informations de ce post-"
+#~ "processeur. Si cette option est désactivée (ce qui est le cas par "
+#~ "défaut), seule la sortie de la dernière commande <cmd>latex</cmd> ou "
+#~ "<cmd>pdflatex</cmd> est affichée, si aucune erreur ne s'est produite dans "
+#~ "une autre commande. Ceci permet de réduire la sortie affichée dans le "
+#~ "panneau inférieur. Mais même si aucune erreur n'est survenue, il peut "
+#~ "être utile de voir exactement quelles commandes ont été exécutées, ainsi "
+#~ "que leur sortie."
+
+#~ msgid ""
+#~ "Whether the job must succeed. If this option is enabled, when an error "
+#~ "occurs during the job execution, the next job is not executed."
+#~ msgstr ""
+#~ "Si la tâche doit réussir. Si cette option est activée, quand une erreur "
+#~ "survient durant l'exécution de la tâche, la tâche suivante n'est pas "
+#~ "exécutée."
