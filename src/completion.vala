@@ -139,10 +139,17 @@ public class CompletionProvider : GLib.Object, SourceCompletionProvider
         // Custom implementation when in a LaTeX command name.
         iter = context.iter;
 
+        TextIter prev = iter;
+        if (prev.backward_char () && prev.get_char () == '\\')
+        {
+            iter = prev;
+            return true;
+        }
+
         if (! iter.starts_word ())
             iter.backward_visible_word_start ();
 
-        TextIter prev = iter;
+        prev = iter;
         if (prev.backward_char () && prev.get_char () == '\\')
             iter = prev;
 
