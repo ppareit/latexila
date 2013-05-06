@@ -336,9 +336,8 @@ namespace Utils
 
     public Gdk.Pixbuf get_pixbuf_from_stock (string stock_id, Gtk.IconSize size)
     {
-        Gtk.Invisible w = new Gtk.Invisible ();
-        Gdk.Pixbuf pixbuf = w.render_icon (stock_id, size, "vala");
-        return pixbuf;
+        Gtk.Invisible widget = new Gtk.Invisible ();
+        return widget.render_icon_pixbuf (stock_id, size);
     }
 
     public Grid get_dialog_component (string title, Widget widget)
