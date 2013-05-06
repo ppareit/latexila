@@ -24,7 +24,8 @@ LT_PREREQ([2.2])
 LT_INIT
 
 # Required dependencies versions
-GLIB_REQUIRED_VERSION="2.32"
+# Update also the --target-glib option in src/Makefile.am.
+GLIB_REQUIRED_VERSION="2.36"
 GTK_REQUIRED_VERSION="3.6.0"
 GTKSOURCEVIEW_REQUIRED_VERSION="3.8.0"
 VALA_REQUIRED_VERSION="0.20.0"

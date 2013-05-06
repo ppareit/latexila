@@ -6,7 +6,8 @@ VALAFLAGS =			\
 	--pkg gtk+-3.0		\
 	--pkg gtksourceview-3.0	\
 	--pkg gee-1.0		\
-	--pkg posix
+	--pkg posix		\
+	--target-glib=2.36
 
 # The valac command is always executed in the sources directory, not the build
 # directory. If $(top_srcdir) is used, it will be relative to the build directory.
