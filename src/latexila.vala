@@ -21,6 +21,8 @@
 
 public class Latexila : Gtk.Application
 {
+    private bool _first_activate = true;
+
     public Latexila ()
     {
         Object (application_id: "org.gnome.latexila");
@@ -37,7 +39,12 @@ public class Latexila : Gtk.Application
         activate.connect (() =>
         {
             hold ();
-            create_window ();
+
+            if (_first_activate)
+                _first_activate = false;
+            else
+                create_window ();
+
             release ();
         });
 
@@ -110,6 +117,7 @@ public class Latexila : Gtk.Application
 
         AppSettings.get_default ();
         Gtk.AccelMap.load (get_accel_filename ());
+        create_window ();
         release ();
     }
 
