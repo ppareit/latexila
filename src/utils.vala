@@ -291,11 +291,31 @@ namespace Utils
             return;
 
         // Backward search for PDF documents.
-        if (get_extension (uri) == ".pdf")
+        if (get_extension (uri) == ".pdf" &&
+            default_document_viewer_is_evince (uri))
         {
             Synctex synctex = Synctex.get_default ();
             synctex.create_evince_window (uri);
         }
+    }
+
+    private bool default_document_viewer_is_evince (string uri)
+    {
+        File file = File.new_for_uri (uri);
+        AppInfo app;
+
+        try
+        {
+            app = file.query_default_handler ();
+        }
+        catch (Error e)
+        {
+            warning ("Impossible to know if evince is the default document viewer: %s",
+                e.message);
+            return false;
+        }
+
+        return app.get_executable ().contains ("evince");
     }
 
 
