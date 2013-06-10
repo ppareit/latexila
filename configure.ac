@@ -15,7 +15,7 @@ AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_MACRO_DIR([m4])
 
 # Init Automake
-AM_INIT_AUTOMAKE([1.11 foreign tar-ustar no-dist-gzip dist-xz -Wno-portability])
+AM_INIT_AUTOMAKE([1.12.5 foreign tar-ustar no-dist-gzip dist-xz -Wno-portability])
 AM_MAINTAINER_MODE([enable])
 AM_SILENT_RULES([yes])
 
@@ -70,28 +70,9 @@ AC_PROG_CC
 AC_PROG_INSTALL
 AM_PROG_CC_C_O
 AC_PATH_PROG([GLIB_COMPILE_RESOURCES], [glib-compile-resources])
-
-# Checks Valac
-# (based on vala.m4 from GNU Automake)
-# Modification: only display a warning message if the user doesn't have the
-#  minimal valac version instead of display error and stop the compilation.
-# A bug has been reported upstream.
-AC_DEFUN([AM_PROG_VALAC_CUSTOM],
-[AC_PATH_PROG([VALAC], [valac], [])
- AS_IF([test -z "$VALAC"],
-   [AC_MSG_WARN([No Vala compiler found.  You will not be able to compile .vala source files.])],
-   [AS_IF([test -n "$1"],
-      [AC_MSG_CHECKING([$VALAC is at least version $1])
-       am__vala_version=`$VALAC --version | sed 's/Vala  *//'`
-       AS_VERSION_COMPARE([$1], ["$am__vala_version"],
-         [AC_MSG_RESULT([yes])],
-         [AC_MSG_RESULT([yes])],
-         [AC_MSG_RESULT([no])
-          AC_MSG_WARN([Vala $1 not found.  You will not be able to compile .vala source files.])
-          unset VALAC])])])
-])
-
-AM_PROG_VALAC_CUSTOM([${VALA_REQUIRED_VERSION}])
+AM_PROG_VALAC([${VALA_REQUIRED_VERSION}],
+              [found_vala=true]
+	      [found_vala=false])
 
 # Checks for dependencies
 
@@ -184,7 +165,7 @@ AC_CONFIG_FILES([Makefile
 
 AC_OUTPUT
 
-if test -z "$VALAC"
+if ${found_vala}
 then
 	vala_compiler="valac >= ${VALA_REQUIRED_VERSION} not found."
 else
