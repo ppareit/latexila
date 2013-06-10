@@ -74,7 +74,8 @@ latexila_SOURCES = 			\
 latexila_CPPFLAGS =		\
 	-I$(top_srcdir)		\
 	-I$(srcdir)/gedit	\
-	-I$(srcdir)/gtkspell
+	-I$(srcdir)/gtkspell	\
+	-include config.h
 
 latexila_LDADD = 		\
 	gedit/libgedit.la	\
@@ -83,8 +84,6 @@ latexila_LDADD = 		\
 MAINTAINERCLEANFILES =		\
 	$(vala_files:.vala=.c)	\
 	latexila_vala.stamp
-
-INCLUDES = -include config.h
 
 # GResource
 
