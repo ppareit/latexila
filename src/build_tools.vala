@@ -138,7 +138,7 @@ public abstract class BuildTools : GLib.Object
                 return (PostProcessorType) type;
         }
 
-        return_val_if_reached (null);
+        return null;
     }
 
     public static string? get_post_processor_name_from_type (PostProcessorType type)
@@ -230,8 +230,14 @@ public abstract class BuildTools : GLib.Object
                     switch (attr_names[i])
                     {
                         case "postProcessor":
-                            _cur_job.post_processor = get_post_processor_type_from_name (
-                                attr_values[i]);
+                            PostProcessorType? post_processor_type =
+                                get_post_processor_type_from_name (attr_values[i]);
+
+                            if (post_processor_type == null)
+                                throw new MarkupError.INVALID_CONTENT (
+                                    "unknown post processor \"" + attr_values[i] + "\"");
+
+                            _cur_job.post_processor = post_processor_type;
                             break;
 
                         // for compatibility (no longer used)
