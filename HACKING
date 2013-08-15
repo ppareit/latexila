@@ -27,10 +27,9 @@ To create a patch, make first one or several commits (in another branch) and
 then use the 'git format-patch' command. You can submit your patch to the
 GNOME bugzilla.
 
-Alternatively, if you have a GitHub account, you can make a pull request.
 A GitHub repository is available, so you can fork it easily:
 
-    https://github.com/swilmet/latexila
+    https://github.com/GNOME/latexila
 
 There are some rules to follow when coding:
     - indentation: 4 spaces
