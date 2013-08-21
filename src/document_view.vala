@@ -65,6 +65,7 @@ public class DocumentView : Gtk.SourceView
             completion.remember_info_visibility = true;
             completion.show_headers = false;
             completion.auto_complete_delay = 0;
+            completion.accelerators = 0;
 
             hide_completion_calltip_when_needed ();
         }
