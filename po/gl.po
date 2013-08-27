@@ -1,74 +1,72 @@
 # Galician translation for latexila.
 # Copyright (C) 2011 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# Fran Dieguez <frandieguez@gnome.org>, 2011.
+# Fran Dieguez <frandieguez@gnome.org>, 2011, 2013.
 # Oscar Blanco <dev.4m1g0@gmail.com>, 2012.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-11 18:39+0100\n"
-"PO-Revision-Date: 2012-11-10 15:48+0100\n"
-"Last-Translator: Oscar Blanco <dev.4m1g0@gmail.com>\n"
-"Language-Team: Galician <gnome-l10n-gl@gnome.org>\n"
+"POT-Creation-Date: 2013-08-28 01:16+0200\n"
+"PO-Revision-Date: 2013-08-28 01:19+0200\n"
+"Last-Translator: Fran Dieguez <frandieguez@gnome.org>\n"
+"Language-Team: gnome-l10n-gl@gnome.org\n"
 "Language: gl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Gtranslator 2.91.5\n"
+"X-Generator: Virtaal 0.7.1\n"
 
-#: build_tools.xml:45(tool/label) ../src/build_tool_dialog.vala:166
+#: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
 msgid "View PDF"
 msgstr "Ver PDF"
 
-#: build_tools.xml:46(tool/description)
+#: build_tools.xml:44(tool/description)
 msgid "View the PDF file"
 msgstr "Ver o ficheiro PDF"
 
-#: build_tools.xml:51(tool/label) ../src/build_tool_dialog.vala:165
+#: build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:165
 msgid "View DVI"
 msgstr "Ver DVI"
 
-#: build_tools.xml:52(tool/description)
+#: build_tools.xml:50(tool/description)
 msgid "View the DVI file"
 msgstr "Ver o ficheiro DVI"
 
-#: build_tools.xml:57(tool/label) ../src/build_tool_dialog.vala:167
+#: build_tools.xml:55(tool/label) ../src/build_tool_dialog.vala:167
 msgid "View PS"
 msgstr "Ver PS"
 
-#: build_tools.xml:58(tool/description)
+#: build_tools.xml:56(tool/description)
 msgid "View the PostScript file"
 msgstr "Ver o ficheiro PostScript"
 
-#: build_tools.xml:92(tool/description)
+#: build_tools.xml:64(tool/description)
 msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
 msgstr "Crea un ficheiro PDf desde orixes LaTeX coa orde «pdflatex»"
 
-#: build_tools.xml:98(tool/description)
+#: build_tools.xml:70(tool/description)
 msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
 msgstr "Crea un ficheiro DVI desde orixes LaTeX coa orde «latex»"
 
-#: build_tools.xml:106(tool/description)
+#: build_tools.xml:78(tool/description)
 msgid "Run BibTeX (bibliography)"
 msgstr "Executar BibTeX (bibliografía)"
 
-#: build_tools.xml:112(tool/description)
+#: build_tools.xml:84(tool/description)
 msgid "Run MakeIndex"
 msgstr "Executar MakeIndex"
 
-#: build_tools.xml:120(tool/description)
+#: build_tools.xml:92(tool/description)
 msgid "Convert the DVI document to the PDF format"
 msgstr "Converter o documento DVI ao formato PDF"
 
-#: build_tools.xml:126(tool/description)
+#: build_tools.xml:98(tool/description)
 msgid "Convert the DVI document to the PostScript format"
 msgstr "Converter o documento DVI ao formato PostScript"
 
-#: build_tools.xml:132(tool/description)
+#: build_tools.xml:104(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr "Converter o documento PostScript ao formato PDF"
 
@@ -193,9 +191,8 @@ msgid "Whether LaTeXila should insert spaces instead of tabs."
 msgstr "Inserir espazos en lugar de tabulacións."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:19
-#, fuzzy
 msgid "Forget lack of tabulations"
-msgstr "Esquecer que non se están a usar tabulacións."
+msgstr "Esquecer a falta de tabulacións."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:20
 msgid "Forget you are not using tabulations."
@@ -274,10 +271,11 @@ msgid "Side panel component"
 msgstr "Panel lateral"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
-#, fuzzy
 msgid ""
 "Side panel's active component. 0: Symbols. 1: File browser. 2: Structure."
-msgstr "Panel lateral activo. 0: Símbolos. 1: Navegador de ficheiros."
+msgstr ""
+"Compoñente do panel lateral activo. 0: Símbolos. 1: Navegador de ficheiros. "
+"2: Estrutura."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
 msgid "Show build output warnings"
@@ -285,30 +283,27 @@ msgstr "Mostrar advertencias de construción"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
 msgid "Show build output badboxes"
-msgstr ""
+msgstr "Mostrar as caixas incorrectas de saída da compilación"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
 msgid "Interactive completion"
 msgstr "Completado interactivo"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
-#, fuzzy
 msgid "Automatically show LaTeX commands proposals"
-msgstr "Mostrar suxestións de ordes automaticamente"
+msgstr "Mostrar suxestións de ordes de LaTeX automaticamente"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
-#, fuzzy
 msgid "Minimum number of characters for interactive completion"
-msgstr ""
-"Número mínimo de caracteres despois de «\\» para o completado interactivo"
+msgstr "Número mínimo de caracteres despois para o completado interactivo"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
-#, fuzzy
 msgid ""
 "Minimum number of characters after \"\\\" for the interactive completion of "
 "LaTeX commands"
 msgstr ""
-"Número mínimo de caracteres despois de «\\» para o completado interactivo"
+"Número mínimo de caracteres despois de «\\» para o completado interactivo de "
+"ordes LaTeX"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
 #: ../src/ui/preferences_dialog.ui.h:19
@@ -327,14 +322,12 @@ msgstr ""
 "debe ser certo."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
-#, fuzzy
 msgid "File extensions for the clean-up"
 msgstr "Extensións de ficheiro que limpar"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
-#, fuzzy
 msgid "The list of file extensions for the clean-up, separated by spaces"
-msgstr "As extensións de ficheiro que limpar, separadas por espazos"
+msgstr "A lista de extensións de ficheiro que limpar, separadas por espazos"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:49
 msgid "Enabled default build tools"
@@ -362,7 +355,7 @@ msgid "URI of the file browser current directory"
 msgstr "URI do directorio actual no navegador de ficheiros."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
-#: ../src/file_browser.vala:278
+#: ../src/file_browser.vala:281
 msgid "Show build files"
 msgstr "Mostrar ficheiros de construción"
 
@@ -374,7 +367,7 @@ msgstr ""
 "extensions»"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
-#: ../src/file_browser.vala:286
+#: ../src/file_browser.vala:289
 msgid "Show hidden files"
 msgstr "Mostrar ficheiros ocultos"
 
@@ -498,7 +491,7 @@ msgid "Move down"
 msgstr "Baixar"
 
 #: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
-#: ../src/latex_menu.vala:52 ../src/structure.vala:772
+#: ../src/latex_menu.vala:52 ../src/structure.vala:777
 msgid "Label"
 msgstr "Etiqueta"
 
@@ -571,22 +564,22 @@ msgstr "Debe usar os marcadores de posición para especificar os ficheiros."
 msgid "Files to open"
 msgstr "Ficheiros que abrir"
 
-#: ../src/build_tool_runner.vala:187
+#: ../src/build_tool_runner.vala:191
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "%s non semella estar instalado."
 
-#: ../src/build_tool_runner.vala:259
+#: ../src/build_tool_runner.vala:263
 #, c-format
 msgid "Open %s"
 msgstr "Abrir %s"
 
-#: ../src/build_tool_runner.vala:268
+#: ../src/build_tool_runner.vala:272
 #, c-format
 msgid "The file '%s' doesn't exist."
 msgstr "O ficheiro «%s» non existe."
 
-#: ../src/build_tool_runner.vala:285
+#: ../src/build_tool_runner.vala:289
 #, c-format
 msgid "Failed to open '%s':"
 msgstr "Non foi posíbel abrir «%s»:"
@@ -630,7 +623,7 @@ msgstr "Seleccione os ficheiros que quere eliminar:"
 msgid "No build file to clean up."
 msgstr "Non hai ningún ficheiro construído para limpar."
 
-#: ../src/completion.vala:292
+#: ../src/completion.vala:315
 msgid "No matching proposal"
 msgstr "Non hai ningunha proposición coincidente"
 
@@ -641,7 +634,7 @@ msgstr "Non hai ningunha proposición coincidente"
 msgid "Ln %d, Col %d"
 msgstr "Ln %d, Col %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:759
+#: ../src/dialogs.vala:40 ../src/main_window.vala:749
 msgid "Close without Saving"
 msgstr "Pechar sen gardar"
 
@@ -754,26 +747,25 @@ msgstr "Quere gardar o ficheiro nun lugar máis seguro?"
 msgid "Go to the home directory"
 msgstr "Ir ao cartafol persoal"
 
-#: ../src/file_browser.vala:230
+#: ../src/file_browser.vala:231
 msgid "Go to the parent directory"
 msgstr "Ir ao cartafol superior"
 
-#: ../src/file_browser.vala:245
+#: ../src/file_browser.vala:247
 msgid "Go to the active document directory"
 msgstr "Ir ao cartafol do documento activo"
 
-#: ../src/file_browser.vala:333
+#: ../src/file_browser.vala:336
 msgid "File System"
 msgstr "Sistema de ficheiros"
 
-#: ../src/file_browser.vala:452 ../src/main_window.vala:383
+#: ../src/file_browser.vala:455 ../src/main_window.vala:393
 msgid "File Browser"
 msgstr "Explorador de ficheiros"
 
 #: ../src/gtkspell/gtkspell.c:355
-#, fuzzy
 msgid "(no suggestions)"
-msgstr "<i>(sen suxerencias)</i>"
+msgstr "(sen suxerencias)"
 
 #: ../src/gtkspell/gtkspell.c:371
 msgid "More..."
@@ -798,38 +790,38 @@ msgstr "Idiomas"
 #: ../src/gtkspell/gtkspell.c:587
 #, c-format
 msgid "enchant error for language: %s"
-msgstr ""
+msgstr "erro de enchant para o idioma: %s"
 
 #. LaTeX: Sectioning
 #: ../src/latex_menu.vala:32
 msgid "_Sectioning"
 msgstr "_Seccionado"
 
-#: ../src/latex_menu.vala:34 ../src/structure.vala:765
+#: ../src/latex_menu.vala:34 ../src/structure.vala:770
 msgid "Part"
 msgstr "Parte"
 
-#: ../src/latex_menu.vala:36 ../src/structure.vala:766
+#: ../src/latex_menu.vala:36 ../src/structure.vala:771
 msgid "Chapter"
 msgstr "Capítulo"
 
-#: ../src/latex_menu.vala:38 ../src/structure.vala:767
+#: ../src/latex_menu.vala:38 ../src/structure.vala:772
 msgid "Section"
 msgstr "Sección"
 
-#: ../src/latex_menu.vala:40 ../src/structure.vala:768
+#: ../src/latex_menu.vala:40 ../src/structure.vala:773
 msgid "Sub-section"
 msgstr "Subsección"
 
-#: ../src/latex_menu.vala:42 ../src/structure.vala:769
+#: ../src/latex_menu.vala:42 ../src/structure.vala:774
 msgid "Sub-sub-section"
 msgstr "Subsubsección"
 
-#: ../src/latex_menu.vala:44 ../src/structure.vala:770
+#: ../src/latex_menu.vala:44 ../src/structure.vala:775
 msgid "Paragraph"
 msgstr "Parágrafo"
 
-#: ../src/latex_menu.vala:46 ../src/structure.vala:771
+#: ../src/latex_menu.vala:46 ../src/structure.vala:776
 msgid "Sub-paragraph"
 msgstr "Subparágrafo"
 
@@ -1003,7 +995,7 @@ msgstr "_Forma do tipo de letra"
 
 #: ../src/latex_menu.vala:164
 msgid "Upright - \\upshape"
-msgstr ""
+msgstr "Elevado - \\upshape"
 
 #: ../src/latex_menu.vala:166
 msgid "Italic - \\itshape"
@@ -1134,15 +1126,15 @@ msgstr "Macron - \\="
 
 #: ../src/latex_menu.vala:229
 msgid "Dot above - \\."
-msgstr ""
+msgstr "Punto arriba - \\."
 
 #: ../src/latex_menu.vala:230
 msgid "Caron - \\v"
-msgstr ""
+msgstr "Caron - \\v"
 
 #: ../src/latex_menu.vala:231
 msgid "Breve - \\u"
-msgstr ""
+msgstr "Breve - \\u"
 
 #: ../src/latex_menu.vala:233
 msgid "Double acute accent - \\H"
@@ -1327,7 +1319,7 @@ msgstr "E_stilos de tipografía matemática"
 
 #: ../src/latex_menu.vala:336
 msgid "Roman - \\mathrm"
-msgstr ""
+msgstr "Romano - \\mathrm"
 
 #: ../src/latex_menu.vala:338
 msgid "Italic - \\mathit"
@@ -1347,7 +1339,7 @@ msgstr "Máquina de escribir - \\mathtt"
 
 #: ../src/latex_menu.vala:346
 msgid "Calligraphic - \\mathcal"
-msgstr ""
+msgstr "Caligráfico - \\mathcal"
 
 #: ../src/latex_menu.vala:348
 msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
@@ -1925,7 +1917,7 @@ msgstr "Referencia de _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "A referencia de LaTeX de Kile"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1218
+#: ../src/main_window.vala:68 ../src/main_window.vala:1207
 msgid "About LaTeXila"
 msgstr "Acerca de LaTeXila"
 
@@ -1962,20 +1954,20 @@ msgstr "Panel inferior"
 msgid "Show or hide the bottom panel"
 msgstr "Mostrar ou ocultar o panel inferior"
 
-#: ../src/main_window.vala:379
+#: ../src/main_window.vala:389
 msgid "Symbols"
 msgstr "Símbolos"
 
-#: ../src/main_window.vala:388
+#: ../src/main_window.vala:398
 msgid "Structure"
 msgstr "Estructura"
 
-#: ../src/main_window.vala:649
+#: ../src/main_window.vala:639
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Este ficheiro (%s) xa esta aberto noutra xanela de LaTeXila"
 
-#: ../src/main_window.vala:651
+#: ../src/main_window.vala:641
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1983,47 +1975,47 @@ msgstr ""
 "LaTeXila abríu esta instancia do ficheiro como non editabel. Desexa editalo "
 "de todas formas?"
 
-#: ../src/main_window.vala:654
+#: ../src/main_window.vala:644
 msgid "Edit Anyway"
 msgstr "Editar de todas forma"
 
-#: ../src/main_window.vala:655
+#: ../src/main_window.vala:645
 msgid "Don't Edit"
 msgstr "Non editar"
 
-#: ../src/main_window.vala:756
+#: ../src/main_window.vala:746
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Gardar os cambios do documento «%s» antes de pechar?"
 
-#: ../src/main_window.vala:836
+#: ../src/main_window.vala:826
 msgid "Read-Only"
 msgstr "Só lectura"
 
-#: ../src/main_window.vala:850
+#: ../src/main_window.vala:840
 msgid "Save File"
 msgstr "Gardar ficheiro"
 
-#: ../src/main_window.vala:885
+#: ../src/main_window.vala:875
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Xa existe un ficheiro chamado «%s». Quere substituilo?"
 
-#: ../src/main_window.vala:890
+#: ../src/main_window.vala:880
 msgid "Replace"
 msgstr "Substituír"
 
-#: ../src/main_window.vala:1179
+#: ../src/main_window.vala:1169
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila é un ambiente integrado para o escritorio GNOME"
 
-#: ../src/main_window.vala:1219
+#: ../src/main_window.vala:1208
 msgid "translator-credits"
 msgstr ""
 "Fran Dieguez <frandieguez@gnome.org>, 2011.\n"
 "Oscar Blanco <dev.4m1g0@gmail.com>, 2012."
 
-#: ../src/post_processors.vala:260
+#: ../src/post_processors.vala:188
 msgid "Latexmk messages"
 msgstr "Mensaxes de Latexmk"
 
@@ -2032,7 +2024,7 @@ msgid "Preferences"
 msgstr "Preferencias"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:36 ../src/utils.vala:381
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:400
 msgid "Reset All"
 msgstr "Restablecer todo"
 
@@ -2133,90 +2125,92 @@ msgstr "Só palabras enteiras"
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/structure.vala:171
+#: ../src/structure.vala:172
 msgid "Collapse All"
 msgstr "Contraer todo"
 
-#: ../src/structure.vala:180
+#: ../src/structure.vala:182
 msgid "Show labels"
 msgstr "Mostrar etiquetas"
 
-#: ../src/structure.vala:181
+#: ../src/structure.vala:183
 msgid "Show included files"
 msgstr "Mostrar ficheiros incluidos"
 
-#: ../src/structure.vala:182
+#: ../src/structure.vala:184
 msgid "Show tables"
 msgstr "Mostrar táboas"
 
-#: ../src/structure.vala:183
+#: ../src/structure.vala:185
 msgid "Show figures and images"
 msgstr "Mostrar figuras e imaxes"
 
-#: ../src/structure.vala:184
+#. Translators: do not translate the words TODO and FIXME. They are special
+#. comments that can be inserted in LaTeX documents.
+#: ../src/structure.vala:188
 msgid "Show TODOs and FIXMEs"
 msgstr "Mostrar TODOs e FIXMEs"
 
-#: ../src/structure.vala:623
+#: ../src/structure.vala:628
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Erro de acción da estructura: %s"
 
-#: ../src/structure.vala:628
+#: ../src/structure.vala:633
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "A estructura de datos está obsoleta. Actualícea."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:719
+#: ../src/structure.vala:724
 msgid "cut"
 msgstr "Cortar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:721
+#: ../src/structure.vala:726
 msgid "copy"
 msgstr "Copiar"
 
-#: ../src/structure.vala:722
+#: ../src/structure.vala:727
 msgid "delete"
 msgstr "Eliminar"
 
-#: ../src/structure.vala:723
+#: ../src/structure.vala:728
 msgid "select"
 msgstr "Seleccionar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:725
+#: ../src/structure.vala:730
 msgid "comment"
 msgstr "Comentar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:727
+#: ../src/structure.vala:732
 msgid "shift left"
 msgstr "desprazar a esquerda"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:729
+#: ../src/structure.vala:734
 msgid "shift right"
 msgstr "desprazar a dereita"
 
-#: ../src/structure.vala:730
+#: ../src/structure.vala:735
 msgid "open file"
 msgstr "abrir ficheiro"
 
-#: ../src/structure.vala:775
+#: ../src/structure.vala:780
 msgid "Table"
 msgstr "Táboa"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:777
+#: ../src/structure.vala:782
 msgid "Figure"
 msgstr "Fugura"
 
-#: ../src/structure.vala:778
+#: ../src/structure.vala:783
 msgid "Image"
 msgstr "Imaxen"
 
-#: ../src/structure.vala:779
+#: ../src/structure.vala:784
 msgid "File included"
 msgstr "Ficheiro incluido"
 
