@@ -8,6 +8,9 @@ desktopdir = $(datadir)/applications
 desktop_DATA = latexila.desktop
 @INTLTOOL_DESKTOP_RULE@
 
+appdatadir = $(datadir)/appdata
+dist_appdata_DATA = latexila.appdata.xml
+
 gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
 @INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
