@@ -91,21 +91,17 @@ public class GotoLine : Grid
 public class SearchAndReplace : GLib.Object
 {
     private unowned MainWindow _main_window;
-    private Document _working_document;
 
     private Grid _main_grid;
     private Grid _replace_grid;
 
-    private Button _button_arrow;
     private Arrow _arrow;
 
     private ErrorEntry _entry_find;
     private Entry _entry_replace;
 
-    private CheckMenuItem _check_case_sensitive;
-    private CheckMenuItem _check_entire_word;
-
-    private int min_nb_chars_for_inc_search = 3;
+    private SourceSearchSettings _search_settings;
+    private SourceSearchContext? _search_context = null;
 
     private enum Mode
     {
@@ -115,34 +111,25 @@ public class SearchAndReplace : GLib.Object
 
     private Mode get_mode ()
     {
-        if (_arrow.arrow_type == ArrowType.UP)
-            return Mode.SEARCH_AND_REPLACE;
-
-        return Mode.SEARCH;
-    }
-
-    private bool case_sensitive
-    {
-        get { return _check_case_sensitive.get_active (); }
-    }
-
-    private bool entire_word
-    {
-        get { return _check_entire_word.get_active (); }
+        return _arrow.arrow_type == ArrowType.UP ? Mode.SEARCH_AND_REPLACE : Mode.SEARCH;
     }
 
     public SearchAndReplace (MainWindow main_window)
     {
         _main_window = main_window;
+
+        _search_settings = new SourceSearchSettings ();
+        _search_settings.set_wrap_around (true);
+
         _main_grid = new Grid ();
         _main_grid.set_column_spacing (3);
         _main_grid.set_row_spacing (3);
 
         /* Arrow */
-        _button_arrow = new Button ();
+        Button button_arrow = new Button ();
         _arrow = new Arrow (ArrowType.DOWN, ShadowType.OUT);
-        _button_arrow.add (_arrow);
-        _main_grid.attach (_button_arrow, 0, 0, 1, 1);
+        button_arrow.add (_arrow);
+        _main_grid.attach (button_arrow, 0, 0, 1, 1);
 
         /* Find entry */
         Grid find_grid = new Grid ();
@@ -154,17 +141,14 @@ public class SearchAndReplace : GLib.Object
         find_grid.add (_entry_find);
 
         /* Buttons at the right of the find entry */
-        Button button_clear_find = get_button (Stock.CLEAR);
         Button button_previous = get_button (Stock.GO_UP);
         Button button_next = get_button (Stock.GO_DOWN);
         Button button_close = get_button (Stock.CLOSE);
 
-        find_grid.add (button_clear_find);
         find_grid.add (button_previous);
         find_grid.add (button_next);
         find_grid.add (button_close);
 
-        button_clear_find.sensitive = false;
         button_previous.sensitive = false;
         button_next.sensitive = false;
 
@@ -181,7 +165,6 @@ public class SearchAndReplace : GLib.Object
         _replace_grid.add (_entry_replace);
 
         /* Buttons at the right of the replace entry */
-        Button button_clear_replace = get_button (Stock.CLEAR);
         Button button_replace = get_button (Stock.FIND_AND_REPLACE);
 
         // replace all: image + label
@@ -198,17 +181,15 @@ public class SearchAndReplace : GLib.Object
         replace_all_grid.add (label);
         button_replace_all.add (replace_all_grid);
 
-        _replace_grid.add (button_clear_replace);
         _replace_grid.add (button_replace);
         _replace_grid.add (button_replace_all);
 
-        button_clear_replace.sensitive = false;
         button_replace.sensitive = false;
         button_replace_all.sensitive = false;
 
         /* signal handlers */
 
-        _button_arrow.clicked.connect (() =>
+        button_arrow.clicked.connect (() =>
         {
             // search and replace -> search
             if (get_mode () == Mode.SEARCH_AND_REPLACE)
@@ -227,14 +208,23 @@ public class SearchAndReplace : GLib.Object
 
         button_close.clicked.connect (hide);
 
-        button_clear_find.clicked.connect (() => _entry_find.text = "");
-        button_clear_replace.clicked.connect (() => _entry_replace.text = "");
-
         button_previous.clicked.connect (() =>
         {
-            set_search_text (false);
-            return_if_fail (_working_document != null);
-            _working_document.search_backward ();
+            if (_search_context == null)
+                return;
+
+            TextIter iter;
+            TextIter match_start;
+            TextIter match_end;
+
+            Document doc = _search_context.get_buffer () as Document;
+            doc.get_selection_bounds (out iter, null);
+
+            if (_search_context.backward (iter, out match_start, out match_end))
+            {
+                doc.select_range (match_start, match_end);
+                doc.tab.view.scroll_to_cursor ();
+            }
         });
 
         button_next.clicked.connect (search_forward);
@@ -243,34 +233,28 @@ public class SearchAndReplace : GLib.Object
         _entry_find.changed.connect (() =>
         {
             bool sensitive = _entry_find.text_length > 0;
-            button_clear_find.sensitive = sensitive;
             button_previous.sensitive = sensitive;
             button_next.sensitive = sensitive;
             button_replace.sensitive = sensitive;
             button_replace_all.sensitive = sensitive;
-
-            if (_entry_find.text_length == 0)
-                clear_search ();
-            else if (_entry_find.text_length >= min_nb_chars_for_inc_search)
-                set_search_text ();
         });
-
-        _entry_replace.changed.connect (() =>
-        {
-            button_clear_replace.sensitive = _entry_replace.text_length > 0;
-        });
-
-        _check_case_sensitive.toggled.connect (() => set_search_text ());
-        _check_entire_word.toggled.connect (() => set_search_text ());
 
         button_replace.clicked.connect (replace);
         _entry_replace.activate.connect (replace);
 
         button_replace_all.clicked.connect (() =>
         {
-            return_if_fail (_entry_find.text_length != 0);
-            set_search_text ();
-            _working_document.replace_all (_entry_replace.text);
+            if (_search_context != null)
+            {
+                try
+                {
+                    _search_context.replace_all (_entry_replace.text, -1);
+                }
+                catch (Error e)
+                {
+                    /* Do nothing. An error can occur only for a regex search. */
+                }
+            }
         });
 
         _entry_find.key_press_event.connect ((event) =>
@@ -284,8 +268,6 @@ public class SearchAndReplace : GLib.Object
                     return true;
 
                 case Gdk.Key.Escape:
-                    // Escape in find => select text and hide search
-                    select_current_match ();
                     hide ();
                     return true;
 
@@ -298,7 +280,6 @@ public class SearchAndReplace : GLib.Object
         _main_grid.hide ();
     }
 
-    /* Find entry */
     private void init_find_entry ()
     {
         _entry_find = new ErrorEntry ();
@@ -309,13 +290,29 @@ public class SearchAndReplace : GLib.Object
         _entry_find.can_focus = true;
         _entry_find.set_width_chars (25);
 
+        _entry_find.bind_property ("text", _search_settings, "search-text",
+            BindingFlags.DEFAULT);
+
         /* Options menu */
         Gtk.Menu menu = new Gtk.Menu ();
-        _check_case_sensitive = new CheckMenuItem.with_label (_("Case sensitive"));
-        _check_entire_word = new CheckMenuItem.with_label (_("Entire words only"));
-        menu.append (_check_case_sensitive);
-        menu.append (_check_entire_word);
+
+        CheckMenuItem check_case_sensitive =
+            new CheckMenuItem.with_label (_("Case sensitive"));
+
+        CheckMenuItem check_entire_word =
+            new CheckMenuItem.with_label (_("Entire words only"));
+
+        menu.append (check_case_sensitive);
+        menu.append (check_entire_word);
         menu.show_all ();
+
+        check_case_sensitive.bind_property ("active",
+            _search_settings, "case-sensitive",
+            BindingFlags.DEFAULT);
+
+        check_entire_word.bind_property ("active",
+            _search_settings, "at-word-boundaries",
+            BindingFlags.DEFAULT);
 
         _entry_find.icon_press.connect ((icon_pos, event) =>
         {
@@ -357,7 +354,6 @@ public class SearchAndReplace : GLib.Object
 
         _main_grid.show_all ();
         _entry_find.grab_focus ();
-        set_replace_sensitivity ();
 
         // if text is selected in the active document, and if this text contains no \n,
         // search this text
@@ -369,78 +365,75 @@ public class SearchAndReplace : GLib.Object
             _entry_find.text = doc.get_text (start, end, false);
         }
 
-        _main_window.notify["active-document"].connect (set_replace_sensitivity);
+        _main_window.notify["active-document"].connect (connect_active_document);
+        connect_active_document ();
     }
 
     public void hide ()
     {
+        _main_window.notify["active-document"].disconnect (connect_active_document);
+        _search_context = null;
+
         _main_grid.hide ();
-        if (_working_document != null)
-            clear_search ();
 
         if (_main_window.active_view != null)
             _main_window.active_view.grab_focus ();
-
-        _main_window.notify["active-document"].disconnect (set_replace_sensitivity);
     }
 
-    private void set_search_text (bool select = true)
+    private void connect_active_document ()
     {
-        return_if_fail (_main_window.active_document != null);
-
-        if (_entry_find.text_length == 0)
-            return;
-
-        if (_main_window.active_document != _working_document)
+        if (_main_window.active_document == null)
         {
-            if (_working_document != null)
-                clear_search ();
-
-            _working_document = _main_window.active_document;
+            _search_context = null;
         }
+        else
+        {
+            _search_context = new SourceSearchContext (_main_window.active_document,
+                _search_settings);
 
-        uint nb_matches;
-
-        _working_document.set_search_text (_entry_find.text, case_sensitive,
-            entire_word, out nb_matches, null, select);
-
-        _entry_find.error = nb_matches == 0;
-    }
-
-    private void select_current_match ()
-    {
-        return_if_fail (_main_window.active_document != null);
-
-        if (_working_document != null);
-            _working_document.select_current_match ();
+            bool readonly = _main_window.active_document.readonly;
+            _replace_grid.set_sensitive (! readonly);
+        }
     }
 
     private void search_forward ()
     {
-        set_search_text (false);
-        return_if_fail (_working_document != null);
-        _working_document.search_forward ();
-    }
+        if (_search_context == null)
+            return;
 
-    private void clear_search ()
-    {
-        if (_working_document != null)
+        TextIter iter;
+        TextIter match_start;
+        TextIter match_end;
+
+        Document doc = _search_context.get_buffer () as Document;
+        doc.get_selection_bounds (null, out iter);
+
+        if (_search_context.forward (iter, out match_start, out match_end))
         {
-            _working_document.clear_search ();
-            _working_document = null;
+            doc.select_range (match_start, match_end);
+            doc.tab.view.scroll_to_cursor ();
         }
-    }
-
-    private void set_replace_sensitivity ()
-    {
-        bool readonly = _main_window.active_document.readonly;
-        _replace_grid.set_sensitive (! readonly);
     }
 
     private void replace ()
     {
-        return_if_fail (_entry_find.text_length != 0);
-        set_search_text ();
-        _working_document.replace (_entry_replace.text);
+        if (_search_context == null)
+            return;
+
+        TextIter match_start;
+        TextIter match_end;
+        SourceBuffer buffer = _search_context.get_buffer ();
+        buffer.get_selection_bounds (out match_start, out match_end);
+
+        try
+        {
+            _search_context.replace (match_start, match_end, _entry_replace.text, -1);
+        }
+        catch (Error e)
+        {
+            /* Do nothing. An error can occur only for a regex search. */
+        }
+
+        search_forward ();
     }
 }
