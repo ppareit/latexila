@@ -157,6 +157,7 @@ public class MainWindow : Window
         _main_window_documents = new MainWindowDocuments (this, _ui_manager);
         _main_window_structure = new MainWindowStructure (_ui_manager);
 
+        show_images_in_menu ();
         set_file_actions_sensitivity (false);
 
         /* Main vertical grid */
@@ -180,13 +181,7 @@ public class MainWindow : Window
         viewport.add (menu);
         menu_paned.add1 (viewport);
         menu_paned.show_all ();
-
         main_vgrid.add (menu_paned);
-
-        // Force to show icons in the menu.
-        // In the LaTeX and Math menu, icons are needed.
-        unowned Gtk.Settings gtk_settings = menu.get_settings ();
-        gtk_settings.gtk_menu_images = true;
 
         /* Main and edit toolbars */
 
@@ -270,6 +265,19 @@ public class MainWindow : Window
         restore_state ();
         show_or_hide_widgets ();
         show ();
+    }
+
+    // Force to show icons in the menu.
+    // In the LaTeX and Math menu, icons are needed.
+    private void show_images_in_menu ()
+    {
+        foreach (Gtk.ActionGroup action_group in _ui_manager.get_action_groups ())
+        {
+            foreach (Gtk.Action action in action_group.list_actions ())
+            {
+                action.set_always_show_image (true);
+            }
+        }
     }
 
     private void initialize_ui_manager ()
