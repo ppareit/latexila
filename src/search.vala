@@ -97,8 +97,8 @@ public class SearchAndReplace : GLib.Object
 
     private Arrow _arrow;
 
-    private ErrorEntry _entry_find;
-    private Entry _entry_replace;
+    private SearchEntry _entry_find;
+    private SearchEntry _entry_replace;
 
     private SourceSearchSettings _search_settings;
     private SourceSearchContext? _search_context = null;
@@ -158,10 +158,11 @@ public class SearchAndReplace : GLib.Object
         _replace_grid.set_column_spacing (2);
         _main_grid.attach (_replace_grid, 1, 1, 1, 1);
 
-        _entry_replace = new Entry ();
+        _entry_replace = new SearchEntry ();
         _entry_replace.set_tooltip_text (_("Replace with"));
         _entry_replace.can_focus = true;
         _entry_replace.set_width_chars (25);
+        _entry_replace.primary_icon_gicon = null;
         _replace_grid.add (_entry_replace);
 
         /* Buttons at the right of the replace entry */
@@ -282,10 +283,11 @@ public class SearchAndReplace : GLib.Object
 
     private void init_find_entry ()
     {
-        _entry_find = new ErrorEntry ();
+        _entry_find = new SearchEntry ();
         _entry_find.primary_icon_gicon =
             new ThemedIcon.with_default_fallbacks ("document-properties-symbolic");
         _entry_find.primary_icon_activatable = true;
+        _entry_find.primary_icon_sensitive = true;
         _entry_find.set_tooltip_text (_("Search for"));
         _entry_find.can_focus = true;
         _entry_find.set_width_chars (25);
