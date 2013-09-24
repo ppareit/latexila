@@ -18,10 +18,10 @@ Requirements
 GLib >= @GLIB_REQUIRED_VERSION@
 GTK+ >= @GTK_REQUIRED_VERSION@
 GtkSourceView >= @GTKSOURCEVIEW_REQUIRED_VERSION@
-libgee
+GtkSpell >= @GTKSPELL_REQUIRED_VERSION@
+gee-1.0
 gettext
 gsettings-desktop-schemas
-enchant
 Latexmk >= 4.31 (optional, but strongly recommended)
 
 And for building the sources:

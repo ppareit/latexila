@@ -174,22 +174,26 @@ public class DocumentView : Gtk.SourceView
     {
         disable_spell_checking ();
 
+        GtkSpell.Checker checker = new GtkSpell.Checker ();
+        checker.attach (this);
+
         try
         {
             // Will try the best language depending on the LANG environment variable.
-            new GtkSpell.attach (this, null);
+            checker.set_language (null);
         }
-        catch (GtkspellError e)
+        catch (Error e)
         {
-            warning ("Spell error: %s", e.message);
+            warning ("GtkSpell error: %s", e.message);
         }
     }
 
     public void disable_spell_checking ()
     {
-        GtkSpell? spell = GtkSpell.get_from_text_view (this);
-        if (spell != null)
-            spell.detach ();
+        unowned GtkSpell.Checker checker = GtkSpell.Checker.get_from_text_view (this);
+
+        if (checker != null)
+            checker.detach ();
     }
 
     private bool on_button_release_event (Gdk.EventButton event)

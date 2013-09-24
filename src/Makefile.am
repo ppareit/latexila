@@ -1,10 +1,11 @@
-SUBDIRS = gedit gtkspell ui
+SUBDIRS = gedit ui
 
 bin_PROGRAMS = latexila
 
 VALAFLAGS =			\
 	--pkg gtk+-3.0		\
 	--pkg gtksourceview-3.0	\
+	--pkg gtkspell3-3.0	\
 	--pkg gee-1.0		\
 	--pkg posix		\
 	--target-glib=2.36
@@ -68,18 +69,15 @@ latexila_SOURCES = 			\
 	$(vala_files)			\
 	$(vapidir)/config.vapi		\
 	$(vapidir)/gedit.vapi		\
-	$(vapidir)/gtkspell.vapi	\
 	$(vapidir)/menu_tool_action.vapi
 
 latexila_CPPFLAGS =		\
 	-I$(top_srcdir)		\
 	-I$(srcdir)/gedit	\
-	-I$(srcdir)/gtkspell	\
 	-include config.h
 
 latexila_LDADD = 		\
-	gedit/libgedit.la	\
-	gtkspell/libgtkspell.la
+	gedit/libgedit.la
 
 MAINTAINERCLEANFILES =		\
 	$(vala_files:.vala=.c)	\

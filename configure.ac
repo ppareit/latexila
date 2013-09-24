@@ -28,11 +28,13 @@ LT_INIT
 GLIB_REQUIRED_VERSION="2.36"
 GTK_REQUIRED_VERSION="3.6"
 GTKSOURCEVIEW_REQUIRED_VERSION="3.10"
+GTKSPELL_REQUIRED_VERSION="3.0.3"
 VALA_REQUIRED_VERSION="0.20.0"
 
 AC_SUBST([GLIB_REQUIRED_VERSION])
 AC_SUBST([GTK_REQUIRED_VERSION])
 AC_SUBST([GTKSOURCEVIEW_REQUIRED_VERSION])
+AC_SUBST([GTKSPELL_REQUIRED_VERSION])
 AC_SUBST([VALA_REQUIRED_VERSION])
 
 # Some directories
@@ -92,6 +94,10 @@ if ! pkg-config --atleast-version=${GTKSOURCEVIEW_REQUIRED_VERSION} gtksourcevie
 	AC_MSG_ERROR([gtksourceview-3.0 >= ${GTKSOURCEVIEW_REQUIRED_VERSION} required.])
 fi
 
+if ! pkg-config --atleast-version=${GTKSPELL_REQUIRED_VERSION} gtkspell3-3.0; then
+	AC_MSG_ERROR([gtkspell3-3.0 >= ${GTKSPELL_REQUIRED_VERSION} required.])
+fi
+
 if ! pkg-config gsettings-desktop-schemas; then
 	AC_MSG_ERROR([gsettings-desktop-schemas required.])
 fi
@@ -100,18 +106,14 @@ if ! pkg-config gee-1.0; then
 	AC_MSG_ERROR([gee-1.0 required.])
 fi
 
-if ! pkg-config enchant; then
-	AC_MSG_ERROR([enchant required.])
-fi
-
 dependencies="
 	glib-2.0
 	gio-2.0
 	gtk+-3.0
 	gtksourceview-3.0
+	gtkspell3-3.0
 	gsettings-desktop-schemas
-	gee-1.0
-	enchant"
+	gee-1.0"
 
 CFLAGS="$CFLAGS `pkg-config --cflags ${dependencies}`"
 LIBS="$LIBS `pkg-config --libs ${dependencies}`"
@@ -159,7 +161,6 @@ AC_CONFIG_FILES([Makefile
 		 po/Makefile.in
                  src/Makefile
 		 src/gedit/Makefile
-		 src/gtkspell/Makefile
 		 src/ui/Makefile
                  README])
 
