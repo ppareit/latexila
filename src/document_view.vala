@@ -176,6 +176,7 @@ public class DocumentView : Gtk.SourceView
 
         GtkSpell.Checker checker = new GtkSpell.Checker ();
         checker.attach (this);
+        checker.decode_language_codes = true;
 
         try
         {

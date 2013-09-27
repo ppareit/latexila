@@ -602,7 +602,12 @@ public class MainWindow : Window
     public Gee.List<DocumentView> get_views ()
     {
         Gee.List<DocumentView> all_views = new Gee.LinkedList<Document> ();
+
+        if (_documents_panel == null)
+            return all_views;
+
         int nb_documents = _documents_panel.get_n_pages ();
+
         for (int i = 0 ; i < nb_documents ; i++)
         {
             DocumentTab tab = _documents_panel.get_nth_page (i) as DocumentTab;
