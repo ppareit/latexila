@@ -167,9 +167,11 @@ public class SearchAndReplace : GLib.Object
 
         /* Buttons at the right of the replace entry */
         Button button_replace = get_button (Stock.FIND_AND_REPLACE);
+        button_replace.set_tooltip_text (_("Replace"));
 
         // replace all: image + label
         Button button_replace_all = new Button ();
+        button_replace_all.set_tooltip_text (_("Replace All"));
         button_replace_all.set_relief (ReliefStyle.NONE);
         Grid replace_all_grid = new Grid ();
         replace_all_grid.set_orientation (Orientation.HORIZONTAL);
