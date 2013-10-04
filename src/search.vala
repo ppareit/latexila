@@ -446,13 +446,13 @@ public class SearchAndReplace : GLib.Object
 
         try
         {
-            _search_context.replace (match_start, match_end, _entry_replace.text, -1);
+            if (! _search_context.replace (match_start, match_end,
+                _entry_replace.text, -1))
+                search_forward ();
         }
         catch (Error e)
         {
             /* Do nothing. An error can occur only for a regex search. */
         }
-
-        search_forward ();
     }
 }
