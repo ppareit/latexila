@@ -1,7 +1,7 @@
 /*
  * This file is part of LaTeXila.
  *
- * Copyright © 2012 Sébastien Wilmet
+ * Copyright © 2012, 2013 Sébastien Wilmet
  *
  * LaTeXila is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,17 @@
 
 using Gtk;
 
-// A simple text entry for which we can set visually that there is an error.
-public class ErrorEntry : Entry
+// Add and remove a style for errors (e.g. text not found) in a GtkEntry.
+// The style is: red background, white foreground.
+public class ErrorEntry : Object
 {
-    public bool error { get; set; default = false; }
+    private static CssProvider _provider = null;
 
-    public ErrorEntry ()
+    private static void init_provider ()
     {
+        if (_provider != null)
+            return;
+
         string style = """
         GtkEntry {
             color: white;
@@ -34,26 +38,35 @@ public class ErrorEntry : Entry
         }
         """;
 
-        CssProvider provider = new CssProvider ();
+        _provider = new CssProvider ();
 
         try
         {
-            provider.load_from_data (style, -1);
+            _provider.load_from_data (style, -1);
         }
         catch (Error e)
         {
             warning ("Impossible to load CSS style for the error entry: %s", e.message);
-            return;
         }
+    }
 
-        notify["error"].connect (() =>
-        {
-            StyleContext context = get_style_context ();
+    public static void add_error (Widget widget)
+    {
+        StyleContext context = widget.get_style_context ();
 
-            if (error)
-                context.add_provider (provider, STYLE_PROVIDER_PRIORITY_APPLICATION);
-            else
-                context.remove_provider (provider);
-        });
+        init_provider ();
+
+        if (_provider != null)
+            context.add_provider (_provider, STYLE_PROVIDER_PRIORITY_APPLICATION);
+    }
+
+    public static void remove_error (Widget widget)
+    {
+        StyleContext context = widget.get_style_context ();
+
+        init_provider ();
+
+        if (_provider != null)
+            context.remove_provider (_provider);
     }
 }

@@ -22,7 +22,7 @@ using Gtk;
 public class GotoLine : Grid
 {
     private unowned MainWindow main_window;
-    private ErrorEntry entry;
+    private Entry entry;
 
     public GotoLine (MainWindow main_window)
     {
@@ -42,7 +42,7 @@ public class GotoLine : Grid
         label.margin_right = 2;
         add (label);
 
-        entry = new ErrorEntry ();
+        entry = new Entry ();
         add (entry);
         Icon icon = new ThemedIcon.with_default_fallbacks ("go-jump-symbolic");
         entry.set_icon_from_gicon (EntryIconPosition.SECONDARY, icon);
@@ -65,7 +65,7 @@ public class GotoLine : Grid
     {
         if (entry.text_length == 0)
         {
-            entry.error = false;
+            ErrorEntry.remove_error (entry);
             return;
         }
 
@@ -77,13 +77,18 @@ public class GotoLine : Grid
             unichar c = text[i];
             if (! c.isdigit ())
             {
-                entry.error = true;
+                ErrorEntry.add_error (entry);
                 return;
             }
         }
 
-        int line = int.parse (text);
-        entry.error = ! main_window.active_document.goto_line (--line);
+        int line = int.parse (text) - 1;
+
+        if (main_window.active_document.goto_line (line))
+            ErrorEntry.remove_error (entry);
+        else
+            ErrorEntry.add_error (entry);
+
         main_window.active_view.scroll_to_cursor ();
     }
 }
