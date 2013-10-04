@@ -28,9 +28,9 @@ public class ErrorEntry : Entry
     {
         string style = """
         GtkEntry {
-            color: @error_fg_color;
+            color: white;
             background-image: none;
-            background-color: @error_bg_color;
+            background-color: rgb (237, 54, 54);
         }
         """;
 
