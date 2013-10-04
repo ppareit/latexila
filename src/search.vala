@@ -400,6 +400,16 @@ public class SearchAndReplace : GLib.Object
             _search_context = new SourceSearchContext (_main_window.active_document,
                 _search_settings);
 
+            _search_context.notify["occurrences-count"].connect (() =>
+            {
+                if (_search_context.occurrences_count == 0 &&
+                    _search_settings.get_search_text () != null)
+                    ErrorEntry.add_error (_entry_find);
+
+                else if (_search_context.occurrences_count >= 0)
+                    ErrorEntry.remove_error (_entry_find);
+            });
+
             bool readonly = _main_window.active_document.readonly;
             _replace_grid.set_sensitive (! readonly);
         }
