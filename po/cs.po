@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2012-10-27 20:44+0000\n"
-"PO-Revision-Date: 2012-11-17 07:19+0200\n"
+"POT-Creation-Date: 2013-10-04 14:40+0000\n"
+"PO-Revision-Date: 2013-10-07 18:42+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -19,56 +19,56 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
-#: build_tools.xml:45(tool/label) ../src/build_tool_dialog.vala:166
+#: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
 msgid "View PDF"
 msgstr "Zobrazit PDF"
 
-#: build_tools.xml:46(tool/description)
+#: build_tools.xml:44(tool/description)
 msgid "View the PDF file"
 msgstr "Zobrazit soubor PDF"
 
-#: build_tools.xml:51(tool/label) ../src/build_tool_dialog.vala:165
+#: build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:165
 msgid "View DVI"
 msgstr "Zobrazit DVI"
 
-#: build_tools.xml:52(tool/description)
+#: build_tools.xml:50(tool/description)
 msgid "View the DVI file"
 msgstr "Zobrazit soubor DVI"
 
-#: build_tools.xml:57(tool/label) ../src/build_tool_dialog.vala:167
+#: build_tools.xml:55(tool/label) ../src/build_tool_dialog.vala:167
 msgid "View PS"
 msgstr "Zobrazit PS"
 
-#: build_tools.xml:58(tool/description)
+#: build_tools.xml:56(tool/description)
 msgid "View the PostScript file"
 msgstr "Zobrazit postskriptový soubor"
 
-#: build_tools.xml:92(tool/description)
+#: build_tools.xml:64(tool/description)
 msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
 msgstr ""
 "Vytvořit soubor PDF ze zdrojového souboru LaTeX pomocí příkazu „pdflatex“"
 
-#: build_tools.xml:98(tool/description)
+#: build_tools.xml:70(tool/description)
 msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
 msgstr "Vytvořit soubor DVI ze zdrojového souboru LaTeX pomocí příkazu „latex“"
 
-#: build_tools.xml:106(tool/description)
+#: build_tools.xml:78(tool/description)
 msgid "Run BibTeX (bibliography)"
 msgstr "Spustit BibTeX (bibliografie)"
 
-#: build_tools.xml:112(tool/description)
+#: build_tools.xml:84(tool/description)
 msgid "Run MakeIndex"
 msgstr "Spustit MakeIndex"
 
-#: build_tools.xml:120(tool/description)
+#: build_tools.xml:92(tool/description)
 msgid "Convert the DVI document to the PDF format"
 msgstr "Převést dokument DVI do formátu PDF"
 
-#: build_tools.xml:126(tool/description)
+#: build_tools.xml:98(tool/description)
 msgid "Convert the DVI document to the PostScript format"
 msgstr "Převést dokument DVI do postskriptového formátu"
 
-#: build_tools.xml:132(tool/description)
+#: build_tools.xml:104(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr "Převést postskriptový dokument do formátu PDF"
 
@@ -103,9 +103,9 @@ msgid ""
 "the font named in the \"Editor Font\" option will be used instead of the "
 "system font."
 msgstr ""
-"Zda pro úpravy textu používat výchozí systémové písmo s pevnou šířkou namísto "
-"písma určeného pro LaTeXilu. Když je tato volby vypnutá, použije se namísto "
-"systémového písma písmo s názvem uvedeným ve volbě „Písmo editoru“."
+"Zda pro úpravy textu používat výchozí systémové písmo s pevnou šířkou "
+"namísto písma určeného pro LaTeXilu. Když je tato volby vypnutá, použije se "
+"namísto systémového písma písmo s názvem uvedeným ve volbě „Písmo editoru“."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:3
 msgid "Editor Font"
@@ -116,8 +116,8 @@ msgid ""
 "A custom font that will be used for the editing area. This will only take "
 "effect if the \"Use Default Font\" option is turned off."
 msgstr ""
-"Vlastní písmo, které bude použito pro oblast úprav. Má vliv jen v případě, že "
-"je vypnuta volba „Používat výchozí písmo“."
+"Vlastní písmo, které bude použito pro oblast úprav. Má vliv jen v případě, "
+"že je vypnuta volba „Používat výchozí písmo“."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:5
 msgid "Style Scheme"
@@ -146,8 +146,8 @@ msgid ""
 "option."
 msgstr ""
 "Zda by měla LaTeXila automaticky po určitém časovém úseku ukládat změněné "
-"soubory. Časový interval můžete nastavit pomocí volby „Interval automatického "
-"ukládání“."
+"soubory. Časový interval můžete nastavit pomocí volby „Interval "
+"automatického ukládání“."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:11
 msgid "Autosave Interval"
@@ -179,8 +179,7 @@ msgstr "Velikost tabulátoru"
 msgid ""
 "Specifies the number of spaces that should be displayed instead of Tab "
 "characters."
-msgstr ""
-"Určuje počet mezer, které by měly být zobrazeny místo znaku tabulátor."
+msgstr "Určuje počet mezer, které by měly být zobrazeny místo znaku tabulátor."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:17
 msgid "Insert spaces"
@@ -234,8 +233,8 @@ msgstr "Hlavní nástrojová lišta je viditelná"
 msgid ""
 "Whether the main toolbar (file open, close, build, ...) should be visible."
 msgstr ""
-"Zda by hlavní nástrojová lišta (otevřít soubor, zavřít, sestavit, …) měla být "
-"viditelná."
+"Zda by hlavní nástrojová lišta (otevřít soubor, zavřít, sestavit, …) měla "
+"být viditelná."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:30
 msgid "Edit toolbar is visible"
@@ -263,7 +262,8 @@ msgstr "Spodní panel je viditelný"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:35
 msgid "Whether the bottom panel containing the build view should be visible."
-msgstr "Zda by spodní panel obsahující informace o sestavení měl být viditelný."
+msgstr ""
+"Zda by spodní panel obsahující informace o sestavení měl být viditelný."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:36
 msgid "Side panel component"
@@ -316,8 +316,8 @@ msgstr "Automaticky mazat nepotřebné"
 msgid ""
 "Automatically clean-up files after close. no-confirm-clean must be true."
 msgstr ""
-"Po zavření automaticky vymazat nepotřebné soubory. Musí být zapnuta volba "
-"no-confirm-clean."
+"Po zavření automaticky vymazat nepotřebné soubory. Musí být zapnuta volba no-"
+"confirm-clean."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
 msgid "File extensions for the clean-up"
@@ -352,7 +352,7 @@ msgid "URI of the file browser current directory"
 msgstr "Adresa URI aktuální složky v prohlížeči souborů"
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
-#: ../src/file_browser.vala:278
+#: ../src/file_browser.vala:281
 msgid "Show build files"
 msgstr "Zobrazovat soubory ze sestavování"
 
@@ -360,10 +360,11 @@ msgstr "Zobrazovat soubory ze sestavování"
 msgid ""
 "Show files with an extension present in preferences.latex.clean-extensions."
 msgstr ""
-"Zobrazovat soubory s příponami uvedenými v preferences.latex.clean-extensions."
+"Zobrazovat soubory s příponami uvedenými v preferences.latex.clean-"
+"extensions."
 
 #: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
-#: ../src/file_browser.vala:286
+#: ../src/file_browser.vala:289
 msgid "Show hidden files"
 msgstr "Zobrazovat skryté soubory"
 
@@ -453,6 +454,8 @@ msgstr "Nástroj pro sestavení (jen ke čtení)"
 msgid "Build Tool"
 msgstr "Nástroj pro sestavení"
 
+#. icon stock-id
+#. label
 #: ../src/build_tool_dialog.vala:159
 msgid "Execute"
 msgstr "Zpracovat"
@@ -490,7 +493,7 @@ msgid "Move down"
 msgstr "Posunout níž"
 
 #: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
-#: ../src/latex_menu.vala:52 ../src/structure.vala:772
+#: ../src/latex_menu.vala:52 ../src/structure.vala:777
 msgid "Label"
 msgstr "Návěští"
 
@@ -559,22 +562,22 @@ msgstr "K určení souborů můžete použít zástupné proměnné."
 msgid "Files to open"
 msgstr "Soubory k otevření"
 
-#: ../src/build_tool_runner.vala:187
+#: ../src/build_tool_runner.vala:191
 #, c-format
 msgid "%s doesn't seem to be installed."
 msgstr "Vypadá to, že %s není nainstalován."
 
-#: ../src/build_tool_runner.vala:259
+#: ../src/build_tool_runner.vala:263
 #, c-format
 msgid "Open %s"
 msgstr "Otevřít %s"
 
-#: ../src/build_tool_runner.vala:268
+#: ../src/build_tool_runner.vala:272
 #, c-format
 msgid "The file '%s' doesn't exist."
 msgstr "Soubor „%s“ neexistuje."
 
-#: ../src/build_tool_runner.vala:285
+#: ../src/build_tool_runner.vala:289
 #, c-format
 msgid "Failed to open '%s':"
 msgstr "Selhalo otevření „%s“:"
@@ -620,7 +623,7 @@ msgstr ""
 "Nenalezeny žádné nepotřebné soubory použité při sestavení, které by bylo "
 "možno smazat."
 
-#: ../src/completion.vala:292
+#: ../src/completion.vala:315
 msgid "No matching proposal"
 msgstr "Žádný odpovídající návrh"
 
@@ -631,7 +634,7 @@ msgstr "Žádný odpovídající návrh"
 msgid "Ln %d, Col %d"
 msgstr "Řá %d, Sl %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:734
+#: ../src/dialogs.vala:40 ../src/main_window.vala:754
 msgid "Close without Saving"
 msgstr "Zavřít bez ukládání"
 
@@ -690,49 +693,49 @@ msgstr "Chcete soubor znovu načíst?"
 msgid "Reload"
 msgstr "Znovu načíst"
 
-#: ../src/document.vala:144
+#: ../src/document.vala:121
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Soubor „%s“ není možné načíst."
 
-#: ../src/document.vala:220
+#: ../src/document.vala:197
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Soubor „%s“ byl od svého načtení změněn."
 
-#: ../src/document.vala:223
+#: ../src/document.vala:200
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Pokud jej uložíte, budou externě provedené změny ztraceny. Přesto uložit?"
 
-#: ../src/document.vala:226
+#: ../src/document.vala:203
 msgid "Save Anyway"
 msgstr "Přesto uložit"
 
-#: ../src/document.vala:228
+#: ../src/document.vala:205
 msgid "Don't Save"
 msgstr "Neukládat"
 
-#: ../src/document.vala:240
+#: ../src/document.vala:217
 msgid "Impossible to save the file."
 msgstr "Soubor není možné uložit."
 
-#: ../src/document.vala:265
+#: ../src/document.vala:242
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Chyba při pokusu o převod dokumentu do UTF-8"
 
-#: ../src/document.vala:319
+#: ../src/document.vala:296
 msgid "Unsaved Document"
 msgstr "Neuložený dokument"
 
-#: ../src/document.vala:604
+#: ../src/document.vala:575
 msgid ""
 "The file has a temporary location. The data can be lost after rebooting your "
 "computer."
 msgstr ""
 "Soubor má dočasné umístění. Při restartu počítače mohou být data ztracena."
 
-#: ../src/document.vala:605
+#: ../src/document.vala:576
 msgid "Do you want to save the file in a safer place?"
 msgstr "Chcete soubor uložit na bezpečnější místo?"
 
@@ -740,81 +743,53 @@ msgstr "Chcete soubor uložit na bezpečnější místo?"
 msgid "Go to the home directory"
 msgstr "Přejít do domovské složky"
 
-#: ../src/file_browser.vala:230
+#: ../src/file_browser.vala:231
 msgid "Go to the parent directory"
 msgstr "Přejít do rodičovské složky"
 
-#: ../src/file_browser.vala:245
+#: ../src/file_browser.vala:247
 msgid "Go to the active document directory"
 msgstr "Přejít do složky aktivního dokumentu"
 
-#: ../src/file_browser.vala:333
+#: ../src/file_browser.vala:336
 msgid "File System"
 msgstr "Souborový systém"
 
-#: ../src/file_browser.vala:452 ../src/main_window.vala:382
+#. File browser
+#: ../src/file_browser.vala:455 ../src/main_window.vala:393
 msgid "File Browser"
 msgstr "Procházení souborů"
-
-#: ../src/gtkspell/gtkspell.c:355
-msgid "(no suggestions)"
-msgstr "(žádné návrhy)"
-
-#: ../src/gtkspell/gtkspell.c:371
-msgid "More..."
-msgstr "Další…"
-
-#. + Add to Dictionary
-#: ../src/gtkspell/gtkspell.c:391
-#, c-format
-msgid "Add \"%s\" to Dictionary"
-msgstr "Přidat „%s“ do slovníku"
-
-#. - Ignore All
-#: ../src/gtkspell/gtkspell.c:402
-msgid "Ignore All"
-msgstr "Ignorovat vše"
-
-#. on top: language selection
-#: ../src/gtkspell/gtkspell.c:497
-msgid "Languages"
-msgstr "Jazyky"
-
-#: ../src/gtkspell/gtkspell.c:587
-#, c-format
-msgid "enchant error for language: %s"
-msgstr "Chyba nastavení pravopisného slovníku pro jazyk: %s"
 
 #. LaTeX: Sectioning
 #: ../src/latex_menu.vala:32
 msgid "_Sectioning"
 msgstr "Č_lenění"
 
-#: ../src/latex_menu.vala:34 ../src/structure.vala:765
+#: ../src/latex_menu.vala:34 ../src/structure.vala:770
 msgid "Part"
 msgstr "Část"
 
-#: ../src/latex_menu.vala:36 ../src/structure.vala:766
+#: ../src/latex_menu.vala:36 ../src/structure.vala:771
 msgid "Chapter"
 msgstr "Kapitola"
 
-#: ../src/latex_menu.vala:38 ../src/structure.vala:767
+#: ../src/latex_menu.vala:38 ../src/structure.vala:772
 msgid "Section"
 msgstr "Oddíl"
 
-#: ../src/latex_menu.vala:40 ../src/structure.vala:768
+#: ../src/latex_menu.vala:40 ../src/structure.vala:773
 msgid "Sub-section"
 msgstr "Pododdíl"
 
-#: ../src/latex_menu.vala:42 ../src/structure.vala:769
+#: ../src/latex_menu.vala:42 ../src/structure.vala:774
 msgid "Sub-sub-section"
 msgstr "Podpododdíl"
 
-#: ../src/latex_menu.vala:44 ../src/structure.vala:770
+#: ../src/latex_menu.vala:44 ../src/structure.vala:775
 msgid "Paragraph"
 msgstr "Odstavec"
 
-#: ../src/latex_menu.vala:46 ../src/structure.vala:771
+#: ../src/latex_menu.vala:46 ../src/structure.vala:776
 msgid "Sub-paragraph"
 msgstr "Podřízený odstavec"
 
@@ -1458,6 +1433,7 @@ msgstr "pravá <"
 msgid "right ."
 msgstr "pravá ."
 
+#. menus under toolitems
 #: ../src/latex_menu.vala:443
 msgid "Sectioning"
 msgstr "Členění"
@@ -1632,6 +1608,10 @@ msgstr "Vyjmout výběr"
 msgid "Copy the selection"
 msgstr "Kopírovat výběr"
 
+#. No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+#. the window. In this case Ctrl+V in the search text entry would be broken (the
+#. text is pasted in the document instead of the entry).
+#. Anyway if we press Ctrl+V when the cursor is in the document, no problem.
 #: ../src/main_window_edit.vala:49
 msgid "Paste the clipboard"
 msgstr "Vložit obsah schránky"
@@ -1733,10 +1713,12 @@ msgstr "Otevřít nedávno použité soubory"
 msgid "Open Files"
 msgstr "Otvírání souborů"
 
+#. Filter: by default show only .tex and .bib files
 #: ../src/main_window_file.vala:157
 msgid "All LaTeX Files"
 msgstr "Všechny soubory LaTeX"
 
+#. All files filter
 #: ../src/main_window_file.vala:164
 msgid "All Files"
 msgstr "Všechny soubory"
@@ -1905,7 +1887,7 @@ msgstr "Příručka _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "Příručka Kile LaTeX"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1201
+#: ../src/main_window.vala:68 ../src/main_window.vala:1212
 msgid "About LaTeXila"
 msgstr "O aplikaci LaTeXila"
 
@@ -1942,20 +1924,21 @@ msgstr "S_podní panel"
 msgid "Show or hide the bottom panel"
 msgstr "Zobrazit nebo skrýt spodní panel"
 
-#: ../src/main_window.vala:378
+#. Symbols
+#: ../src/main_window.vala:389
 msgid "Symbols"
 msgstr "Symboly"
 
-#: ../src/main_window.vala:387
+#: ../src/main_window.vala:398
 msgid "Structure"
 msgstr "Struktura"
 
-#: ../src/main_window.vala:624
+#: ../src/main_window.vala:644
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Tento soubor (%s) je již otevřen v jiném okně aplikace LaTeXila."
 
-#: ../src/main_window.vala:626
+#: ../src/main_window.vala:646
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1963,45 +1946,45 @@ msgstr ""
 "Aplikace LaTeXila otevřela tento soubor bez umožnění úprav. Přesto jej "
 "chcete upravit?"
 
-#: ../src/main_window.vala:629
+#: ../src/main_window.vala:649
 msgid "Edit Anyway"
 msgstr "Přesto upravit"
 
-#: ../src/main_window.vala:630
+#: ../src/main_window.vala:650
 msgid "Don't Edit"
 msgstr "Neupravovat"
 
-#: ../src/main_window.vala:731
+#: ../src/main_window.vala:751
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Uložit před zavřením změny v dokumentu „%s“?"
 
-#: ../src/main_window.vala:811
+#: ../src/main_window.vala:831
 msgid "Read-Only"
 msgstr "Jen ke čtení"
 
-#: ../src/main_window.vala:825
+#: ../src/main_window.vala:845
 msgid "Save File"
 msgstr "Uložení souboru"
 
-#: ../src/main_window.vala:860
+#: ../src/main_window.vala:880
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Soubor s názvem „%s“ již existuje. Chcete jej nahradit?"
 
-#: ../src/main_window.vala:865
+#: ../src/main_window.vala:885 ../src/search.vala:175
 msgid "Replace"
 msgstr "Nahradit"
 
-#: ../src/main_window.vala:1162
+#: ../src/main_window.vala:1174
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je integrované prostředí LaTeX pro GNOME"
 
-#: ../src/main_window.vala:1202
+#: ../src/main_window.vala:1213
 msgid "translator-credits"
 msgstr "Marek Černocký <marek@manet.cz>"
 
-#: ../src/post_processors.vala:260
+#: ../src/post_processors.vala:188
 msgid "Latexmk messages"
 msgstr "Zprávy Latexmk"
 
@@ -2010,7 +1993,7 @@ msgid "Preferences"
 msgstr "Předvolby"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:36 ../src/utils.vala:381
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:400
 msgid "Reset All"
 msgstr "Vše na výchozí"
 
@@ -2089,23 +2072,28 @@ msgstr "Přejít na řádek:"
 msgid "Line you want to move the cursor to"
 msgstr "Řádek, na který chcete přesunout kurzor"
 
-#: ../src/search.vala:178
+#: ../src/search.vala:167
 msgid "Replace with"
 msgstr "Nahradit za"
 
-#: ../src/search.vala:197
+#. replace all: image + label
+#: ../src/search.vala:179
+msgid "Replace All"
+msgstr "Nahradit vše"
+
+#: ../src/search.vala:188
 msgid "All"
 msgstr "vše"
 
-#: ../src/search.vala:308
+#: ../src/search.vala:298
 msgid "Search for"
 msgstr "Hledat"
 
-#: ../src/search.vala:314
+#: ../src/search.vala:309
 msgid "Case sensitive"
 msgstr "Rozlišovat velikost písmen"
 
-#: ../src/search.vala:315
+#: ../src/search.vala:312
 msgid "Entire words only"
 msgstr "Pouze celá slova"
 
@@ -2113,90 +2101,92 @@ msgstr "Pouze celá slova"
 msgid "Refresh"
 msgstr "Aktualizovat"
 
-#: ../src/structure.vala:171
+#: ../src/structure.vala:172
 msgid "Collapse All"
 msgstr "Sbalit vše"
 
-#: ../src/structure.vala:180
+#: ../src/structure.vala:182
 msgid "Show labels"
 msgstr "Zobrazovat návěští"
 
-#: ../src/structure.vala:181
+#: ../src/structure.vala:183
 msgid "Show included files"
 msgstr "Zobrazovat vložené soubory"
 
-#: ../src/structure.vala:182
+#: ../src/structure.vala:184
 msgid "Show tables"
 msgstr "Zobrazovat tabulky"
 
-#: ../src/structure.vala:183
+#: ../src/structure.vala:185
 msgid "Show figures and images"
 msgstr "Zobrazovat kresby a obrázky"
 
-#: ../src/structure.vala:184
+#. Translators: do not translate the words TODO and FIXME. They are special
+#. comments that can be inserted in LaTeX documents.
+#: ../src/structure.vala:188
 msgid "Show TODOs and FIXMEs"
 msgstr "Zobrazovat „k dodělání“ a „k opravě“"
 
-#: ../src/structure.vala:623
+#: ../src/structure.vala:628
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Chyba akce struktury: %s"
 
-#: ../src/structure.vala:628
+#: ../src/structure.vala:633
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "Data struktury vypadají zastaralá. Aktualizujte je prosím."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:719
+#: ../src/structure.vala:724
 msgid "cut"
 msgstr "vyjmout"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:721
+#: ../src/structure.vala:726
 msgid "copy"
 msgstr "kopírovat"
 
-#: ../src/structure.vala:722
+#: ../src/structure.vala:727
 msgid "delete"
 msgstr "smazat"
 
-#: ../src/structure.vala:723
+#: ../src/structure.vala:728
 msgid "select"
 msgstr "vybrat"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:725
+#: ../src/structure.vala:730
 msgid "comment"
 msgstr "zakomentovat"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:727
+#: ../src/structure.vala:732
 msgid "shift left"
 msgstr "posunout vlevo"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:729
+#: ../src/structure.vala:734
 msgid "shift right"
 msgstr "posunout vpravo"
 
-#: ../src/structure.vala:730
+#: ../src/structure.vala:735
 msgid "open file"
 msgstr "otevřít soubor"
 
-#: ../src/structure.vala:775
+#: ../src/structure.vala:780
 msgid "Table"
 msgstr "Tabulka"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:777
+#: ../src/structure.vala:782
 msgid "Figure"
 msgstr "Kresba"
 
-#: ../src/structure.vala:778
+#: ../src/structure.vala:783
 msgid "Image"
 msgstr "Obrázek"
 
-#: ../src/structure.vala:779
+#: ../src/structure.vala:784
 msgid "File included"
 msgstr "Vložený soubor"
 
