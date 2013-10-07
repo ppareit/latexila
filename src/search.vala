@@ -261,6 +261,8 @@ public class SearchAndReplace : GLib.Object
         {
             if (_search_context != null)
             {
+                _main_window.active_view.completion.block_interactive ();
+
                 try
                 {
                     _search_context.replace_all (_entry_replace.text, -1);
@@ -269,6 +271,8 @@ public class SearchAndReplace : GLib.Object
                 {
                     /* Do nothing. An error can occur only for a regex search. */
                 }
+
+                _main_window.active_view.completion.unblock_interactive ();
             }
         });
 
@@ -518,6 +522,8 @@ public class SearchAndReplace : GLib.Object
         SourceBuffer buffer = _search_context.get_buffer ();
         buffer.get_selection_bounds (out match_start, out match_end);
 
+        _main_window.active_view.completion.block_interactive ();
+
         try
         {
             if (! _search_context.replace (match_start, match_end,
@@ -528,5 +534,7 @@ public class SearchAndReplace : GLib.Object
         {
             /* Do nothing. An error can occur only for a regex search. */
         }
+
+        _main_window.active_view.completion.unblock_interactive ();
     }
 }
