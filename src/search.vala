@@ -105,6 +105,8 @@ public class SearchAndReplace : GLib.Object
     private SearchEntry _entry_find;
     private SearchEntry _entry_replace;
 
+    private Label _info_label;
+
     private SourceSearchSettings _search_settings;
     private SourceSearchContext? _search_context = null;
 
@@ -156,6 +158,11 @@ public class SearchAndReplace : GLib.Object
 
         button_previous.sensitive = false;
         button_next.sensitive = false;
+
+        /* Information label at the right of the close button */
+        _info_label = new Label (null);
+        _info_label.set_margin_left (12);
+        find_grid.add (_info_label);
 
         /* Replace entry */
         _replace_grid = new Grid ();
@@ -381,7 +388,7 @@ public class SearchAndReplace : GLib.Object
     public void hide ()
     {
         _main_window.notify["active-document"].disconnect (connect_active_document);
-        _search_context = null;
+        destroy_search_context ();
 
         _main_grid.hide ();
 
@@ -389,29 +396,96 @@ public class SearchAndReplace : GLib.Object
             _main_window.active_view.grab_focus ();
     }
 
+    private void destroy_search_context ()
+    {
+        if (_search_context == null)
+            return;
+
+        SourceBuffer buffer = _search_context.get_buffer ();
+        buffer.mark_set.disconnect (mark_set_cb);
+
+        _search_context = null;
+    }
+
     private void connect_active_document ()
     {
-        if (_main_window.active_document == null)
+        destroy_search_context ();
+
+        Document doc = _main_window.active_document;
+
+        if (doc == null)
+            return;
+
+        _search_context = new SourceSearchContext (doc, _search_settings);
+
+        _search_context.notify["occurrences-count"].connect (() =>
         {
-            _search_context = null;
+            if (_search_context.occurrences_count == 0 &&
+                _search_settings.get_search_text () != null)
+                ErrorEntry.add_error (_entry_find);
+
+            else if (_search_context.occurrences_count >= 0)
+                ErrorEntry.remove_error (_entry_find);
+
+            update_info_label ();
+        });
+
+        bool readonly = _main_window.active_document.readonly;
+        _replace_grid.set_sensitive (! readonly);
+
+        doc.mark_set.connect (mark_set_cb);
+    }
+
+    private void mark_set_cb (TextBuffer buffer, TextIter location, TextMark mark)
+    {
+        if (mark == buffer.get_insert () || mark == buffer.get_selection_bound ())
+        {
+            update_info_label ();
+        }
+    }
+
+    private void update_info_label ()
+    {
+        if (_search_context == null ||
+            _search_settings.get_search_text () == null)
+        {
+            _info_label.set_text ("");
+            return;
+        }
+
+        int count = _search_context.occurrences_count;
+
+        if (count == -1)
+        {
+            return;
+        }
+
+        if (count == 0)
+        {
+            _info_label.set_text (_("Not found"));
+            return;
+        }
+
+        TextBuffer buffer = _search_context.get_buffer ();
+        TextIter start;
+        TextIter end;
+
+        buffer.get_selection_bounds (out start, out end);
+
+        int pos = _search_context.get_occurrence_position (start, end);
+
+        if (pos > 0)
+        {
+            /* Translators: the first %d is the position of the current search occurrence,
+             * and the second %d is the total number of search occurrences.
+             */
+            _info_label.set_text (_("Match %d of %d").printf (pos, count));
         }
         else
         {
-            _search_context = new SourceSearchContext (_main_window.active_document,
-                _search_settings);
-
-            _search_context.notify["occurrences-count"].connect (() =>
-            {
-                if (_search_context.occurrences_count == 0 &&
-                    _search_settings.get_search_text () != null)
-                    ErrorEntry.add_error (_entry_find);
-
-                else if (_search_context.occurrences_count >= 0)
-                    ErrorEntry.remove_error (_entry_find);
-            });
-
-            bool readonly = _main_window.active_document.readonly;
-            _replace_grid.set_sensitive (! readonly);
+            /* Translators: %d is the total number of search occurrences. */
+            string text = ngettext ("%d match", "%d matches", count).printf (count);
+            _info_label.set_text (text);
         }
     }
 
