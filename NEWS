@@ -1,5 +1,16 @@
 LaTeXila NEWS
 
+==================================
+* Release 2.9.0 (October 11, 2013)
+==================================
+
+- Search and replace: use the new API from GtkSourceView
+- Use upstream GtkSpell (LaTeXila depends on GtkSpell now, instead of Enchant)
+- Improvements to the completion
+- AppData file
+- Translations updates
+
+
 =================================
 * Release 2.8.3 (August 31, 2013)
 =================================
