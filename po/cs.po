@@ -1,16 +1,15 @@
 # Czech translation for latexila.
 # Copyright (C) 2011 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
-#
-# Marek Černocký <marek@manet.cz>, 2011, 2012.
+# Marek Černocký <marek@manet.cz>, 2011, 2012, 2013.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-04 14:40+0000\n"
-"PO-Revision-Date: 2013-10-07 18:42+0200\n"
+"POT-Creation-Date: 2013-10-07 22:26+0000\n"
+"PO-Revision-Date: 2013-10-11 18:38+0200\n"
 "Last-Translator: Marek Černocký <marek@manet.cz>\n"
 "Language-Team: Czech <gnome-cs-list@gnome.org>\n"
 "Language: cs\n"
@@ -18,6 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Gtranslator 2.91.6\n"
 
 #: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
 msgid "View PDF"
@@ -1972,7 +1972,7 @@ msgstr "Uložení souboru"
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Soubor s názvem „%s“ již existuje. Chcete jej nahradit?"
 
-#: ../src/main_window.vala:885 ../src/search.vala:175
+#: ../src/main_window.vala:885 ../src/search.vala:182
 msgid "Replace"
 msgstr "Nahradit"
 
@@ -2072,30 +2072,51 @@ msgstr "Přejít na řádek:"
 msgid "Line you want to move the cursor to"
 msgstr "Řádek, na který chcete přesunout kurzor"
 
-#: ../src/search.vala:167
+#: ../src/search.vala:174
 msgid "Replace with"
 msgstr "Nahradit za"
 
 #. replace all: image + label
-#: ../src/search.vala:179
+#: ../src/search.vala:186
 msgid "Replace All"
 msgstr "Nahradit vše"
 
-#: ../src/search.vala:188
+#: ../src/search.vala:195
 msgid "All"
 msgstr "vše"
 
-#: ../src/search.vala:298
+#: ../src/search.vala:305
 msgid "Search for"
 msgstr "Hledat"
 
-#: ../src/search.vala:309
+#: ../src/search.vala:316
 msgid "Case sensitive"
 msgstr "Rozlišovat velikost písmen"
 
-#: ../src/search.vala:312
+#: ../src/search.vala:319
 msgid "Entire words only"
 msgstr "Pouze celá slova"
+
+#: ../src/search.vala:465
+msgid "Not found"
+msgstr "Nenalezeno"
+
+#. Translators: the first %d is the position of the current search occurrence,
+#. * and the second %d is the total number of search occurrences.
+#.
+#: ../src/search.vala:482
+#, c-format
+msgid "Match %d of %d"
+msgstr "Shoda %d z %d"
+
+#. Translators: %d is the total number of search occurrences.
+#: ../src/search.vala:487
+#, c-format
+msgid "%d match"
+msgid_plural "%d matches"
+msgstr[0] "%d shoda"
+msgstr[1] "%d shody"
+msgstr[2] "%d shod"
 
 #: ../src/structure.vala:158
 msgid "Refresh"
