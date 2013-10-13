@@ -10,8 +10,8 @@ msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-05 10:02+0000\n"
-"PO-Revision-Date: 2013-10-06 18:51+0100\n"
+"POT-Creation-Date: 2013-10-13 19:43+0000\n"
+"PO-Revision-Date: 2013-10-13 23:58+0100\n"
 "Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
 "Language-Team: Slovenščina <gnome-si@googlegroups.com>\n"
 "Language: sl_SI\n"
@@ -632,7 +632,7 @@ msgstr "Ni skladnih predlogov"
 msgid "Ln %d, Col %d"
 msgstr "Vr. %d, st. %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:754
+#: ../src/dialogs.vala:40 ../src/main_window.vala:762
 msgid "Close without Saving"
 msgstr "Zapri brez shranjevanja"
 
@@ -758,7 +758,7 @@ msgid "File System"
 msgstr "Datotečni sistem"
 
 #. File browser
-#: ../src/file_browser.vala:455 ../src/main_window.vala:393
+#: ../src/file_browser.vala:455 ../src/main_window.vala:401
 msgid "File Browser"
 msgstr "Brskalnik datotek"
 
@@ -1889,7 +1889,7 @@ msgstr "Sklic _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "Sklicni Kile LaTeX"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1212
+#: ../src/main_window.vala:68 ../src/main_window.vala:1220
 msgid "About LaTeXila"
 msgstr "O programu LaTeXila"
 
@@ -1927,20 +1927,20 @@ msgid "Show or hide the bottom panel"
 msgstr "Pokaži ali skrij spodnji pult"
 
 #. Symbols
-#: ../src/main_window.vala:389
+#: ../src/main_window.vala:397
 msgid "Symbols"
 msgstr "Simboli"
 
-#: ../src/main_window.vala:398
+#: ../src/main_window.vala:406
 msgid "Structure"
 msgstr "Zgradba"
 
-#: ../src/main_window.vala:644
+#: ../src/main_window.vala:652
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ta datoteka (%s) je že odprta v drugem oknu programa LaTeXila."
 
-#: ../src/main_window.vala:646
+#: ../src/main_window.vala:654
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1948,41 +1948,41 @@ msgstr ""
 "S programom LaTeXila je odprt ta primerek datoteke v načinu, ki ne dopušča "
 "urejanja. Ali jo želite vseeno urejati?"
 
-#: ../src/main_window.vala:649
+#: ../src/main_window.vala:657
 msgid "Edit Anyway"
 msgstr "Vseeno uredi"
 
-#: ../src/main_window.vala:650
+#: ../src/main_window.vala:658
 msgid "Don't Edit"
 msgstr "Ne urejaj"
 
-#: ../src/main_window.vala:751
+#: ../src/main_window.vala:759
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Ali želite shraniti spremembe v dokumentu \"%s\", preden ga zaprete?"
 
-#: ../src/main_window.vala:831
+#: ../src/main_window.vala:839
 msgid "Read-Only"
 msgstr "Samo za branje"
 
-#: ../src/main_window.vala:845
+#: ../src/main_window.vala:853
 msgid "Save File"
 msgstr "Shrani datoteko"
 
-#: ../src/main_window.vala:880
+#: ../src/main_window.vala:888
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Datoteka z imenom \"%s\" že obstaja. Ali jo želite zamenjati?"
 
-#: ../src/main_window.vala:885 ../src/search.vala:175
+#: ../src/main_window.vala:893 ../src/search.vala:182
 msgid "Replace"
 msgstr "Zamenjaj"
 
-#: ../src/main_window.vala:1174
+#: ../src/main_window.vala:1182
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila je okolje LaTeX s podporo za namizje GNOME"
 
-#: ../src/main_window.vala:1213
+#: ../src/main_window.vala:1221
 msgid "translator-credits"
 msgstr "Matej Urbančič, Martin Srebotnjak"
 
@@ -2076,30 +2076,52 @@ msgstr "Pojdi v vrstico:"
 msgid "Line you want to move the cursor to"
 msgstr "Vrstica, v katero želite premakniti kazalko"
 
-#: ../src/search.vala:167
+#: ../src/search.vala:174
 msgid "Replace with"
 msgstr "Zamenjaj z"
 
 #. replace all: image + label
-#: ../src/search.vala:179
+#: ../src/search.vala:186
 msgid "Replace All"
 msgstr "Zamenjaj vse"
 
-#: ../src/search.vala:188
+#: ../src/search.vala:195
 msgid "All"
 msgstr "Vse"
 
-#: ../src/search.vala:298
+#: ../src/search.vala:309
 msgid "Search for"
 msgstr "Poišči"
 
-#: ../src/search.vala:309
+#: ../src/search.vala:320
 msgid "Case sensitive"
 msgstr "Razlikovanje velikosti črk"
 
-#: ../src/search.vala:312
+#: ../src/search.vala:323
 msgid "Entire words only"
 msgstr "Le cele besede"
+
+#: ../src/search.vala:469
+msgid "Not found"
+msgstr "Ni zadetkov"
+
+#. Translators: the first %d is the position of the current search occurrence,
+#. * and the second %d is the total number of search occurrences.
+#.
+#: ../src/search.vala:486
+#, c-format
+msgid "Match %d of %d"
+msgstr "Zadetek %d od %d"
+
+#. Translators: %d is the total number of search occurrences.
+#: ../src/search.vala:491
+#, c-format
+msgid "%d match"
+msgid_plural "%d matches"
+msgstr[0] "%d zadetkov"
+msgstr[1] "%d zadetek"
+msgstr[2] "%d zadetka"
+msgstr[3] "%d zadetki"
 
 #: ../src/structure.vala:158
 msgid "Refresh"
