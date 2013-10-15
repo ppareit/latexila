@@ -1,0 +1,2405 @@
+# Lithuanian translation for latexila.
+# Copyright (C) 2013 latexila's COPYRIGHT HOLDER
+# This file is distributed under the same license as the latexila package.
+# Aurimas Černius <aurisc4@gmail.com>, 2013.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latexila master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=latexila&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2013-10-13 10:40+0000\n"
+"PO-Revision-Date: 2013-10-15 23:08+0300\n"
+"Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
+"Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
+"Language: lt\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n"
+"%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
+msgid "View PDF"
+msgstr "Rodyti PDF"
+
+#: build_tools.xml:44(tool/description)
+msgid "View the PDF file"
+msgstr "Rodyti PDF failą"
+
+#: build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:165
+msgid "View DVI"
+msgstr "Rodyti DVI"
+
+#: build_tools.xml:50(tool/description)
+msgid "View the DVI file"
+msgstr "Rodyti DVI failą"
+
+#: build_tools.xml:55(tool/label) ../src/build_tool_dialog.vala:167
+msgid "View PS"
+msgstr "Rodyti PS"
+
+#: build_tools.xml:56(tool/description)
+msgid "View the PostScript file"
+msgstr "Rodyti PostScript failą"
+
+#: build_tools.xml:64(tool/description)
+msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
+msgstr "Sukurti PDF failą iš LaTeX teksto su komanda „pdflatex“"
+
+#: build_tools.xml:70(tool/description)
+msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
+msgstr "Sukurti DVI failą iš LaTeX teksto su komanda „latex“"
+
+#: build_tools.xml:78(tool/description)
+msgid "Run BibTeX (bibliography)"
+msgstr "Vykdyti BibTeX (bibliografija)"
+
+#: build_tools.xml:84(tool/description)
+msgid "Run MakeIndex"
+msgstr "Vykdyti MakeIndex"
+
+#: build_tools.xml:92(tool/description)
+msgid "Convert the DVI document to the PDF format"
+msgstr "Konvertuoti DVI dokumentą į PDF formatą"
+
+#: build_tools.xml:98(tool/description)
+msgid "Convert the DVI document to the PostScript format"
+msgstr "Konvertuoti DVI dokumentą į PistScript formatą"
+
+#: build_tools.xml:104(tool/description)
+msgid "Convert the PostScript document to the PDF format"
+msgstr "Konvertuoti PostScript dokumentą į PDF formatą"
+
+#: ../data/latexila.desktop.in.in.h:1
+msgid "LaTeXila"
+msgstr "LaTeXila"
+
+#: ../data/latexila.desktop.in.in.h:2
+msgid "Integrated LaTeX Environment"
+msgstr "Integruota LaTeX aplinka"
+
+#: ../data/latexila.desktop.in.in.h:3
+msgid "Edit LaTeX documents"
+msgstr "Redaguoti LaTeX dokumentus"
+
+#: ../data/latexila.desktop.in.in.h:4
+msgid "Open a New Window"
+msgstr "Atverti naują langą"
+
+#: ../data/latexila.desktop.in.in.h:5
+msgid "Open a New Document"
+msgstr "Atverti naują dokumentą"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:1
+msgid "Use Default Font"
+msgstr "Naudoti numatytąjį šriftą"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:2
+msgid ""
+"Whether to use the system's default fixed width font for editing text "
+"instead of a font specific to LaTeXila. If this option is turned off, then "
+"the font named in the \"Editor Font\" option will be used instead of the "
+"system font."
+msgstr ""
+"Ar naudoti sistemos numatytąjį fiksuoto pločio šriftą teksto redagavimui "
+"vietoj atskiro LaTeXila šrifto. Jei šis nustatymas yra išjungta, tuomet "
+"vietoj sisteminio šrifto bus naudojamas šriftas, nurodytas parametre "
+"„Redaktoriaus šriftas“."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:3
+msgid "Editor Font"
+msgstr "Redaktoriaus šriftas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:4
+msgid ""
+"A custom font that will be used for the editing area. This will only take "
+"effect if the \"Use Default Font\" option is turned off."
+msgstr ""
+"Pasirinktinis šriftas, kuris bus naudojamas redagavimui. Turi prasmę tik jei "
+"nustatymas „Naudoti numatytąjį šriftą“ yra išjungtas."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:5
+msgid "Style Scheme"
+msgstr "Stiliaus schema"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:6
+msgid "The ID of a GtkSourceView Style Scheme used to color the text."
+msgstr "GtkSourceView stiliaus schemos ID, naudojamas teksto spalvinimui."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:7
+msgid "Create Backup Copies"
+msgstr "Kurti atsargines kopijas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:8
+msgid "Whether LaTeXila should create backup copies for the files it saves."
+msgstr "Ar LaTeXila turėtų kurti atsargines kopijas įrašomiems failams."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:9
+msgid "Autosave"
+msgstr "Automatinis įrašymas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:10
+msgid ""
+"Whether LaTeXila should automatically save modified files after a time "
+"interval. You can set the time interval with the \"Autosave Interval\" "
+"option."
+msgstr ""
+"Ar LaTeXila turėtų periodiškai automatiškai įrašyti pakeistus failus. Laiko "
+"intervalą galite nurodyti nustatymu „Automatinio įrašymo intervalas“."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:11
+msgid "Autosave Interval"
+msgstr "Automatinio įrašymo intervalas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:12
+msgid ""
+"Number of minutes after which LaTeXila will automatically save modified "
+"files. This will only take effect if the \"Autosave\" option is turned on."
+msgstr ""
+"Minučių skaičius, po kurio LaTeXila automatiškai įrašys pakeistus failus. "
+"Turi prasmę tik jei nustatymas „Automatiškai įrašyti“ yra įjungtas."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:13
+#: ../src/ui/preferences_dialog.ui.h:9
+msgid "Reopen files on startup"
+msgstr "Paleidžiant atverti failus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:14
+msgid "Whether LaTeXila should reopen the files that was opened the last time."
+msgstr "Ar LaTeXila turėtų atverti failus, kurie buvo atverti praeitą kartą."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:15
+msgid "Tab Size"
+msgstr "Tab dydis"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:16
+msgid ""
+"Specifies the number of spaces that should be displayed instead of Tab "
+"characters."
+msgstr "Nurodo tarpų skaičių, kuris turėtų būti rodomas vietoj Tab simbolių."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:17
+msgid "Insert spaces"
+msgstr "Įterpti tarpus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:18
+msgid "Whether LaTeXila should insert spaces instead of tabs."
+msgstr "Ar LaTeXila turėtų įterpti tarpus vietoj tabuliacijos."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:19
+msgid "Forget lack of tabulations"
+msgstr "Pamiršti tabuliacijos trūkumą"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:20
+msgid "Forget you are not using tabulations."
+msgstr "Pamiršti, jei nenaudojate tabuliacijos."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:21
+msgid "Display Line Numbers"
+msgstr "Rodyti eilučių numerius"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:22
+msgid "Whether LaTeXila should display line numbers in the editing area."
+msgstr "Ar LaTeXila turėtų rodyti eilučių numerius redagavimo vietoje."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:23
+msgid "Highlight Current Line"
+msgstr "Paryškinti dabartinę eilutę"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:24
+msgid "Whether LaTeXila should highlight the current line."
+msgstr "Ar LaTeXila turėtų paryškinti dabartinę eilutę."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:25
+msgid "Highlight Matching Brackets"
+msgstr "Paryškinti porinius skliaustus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:26
+msgid "Whether LaTeXila should highlight matching brackets."
+msgstr "Ar LaTeXila turėtų paryškinti porinius skliaustus."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:27
+msgid "Spell checking"
+msgstr "Rašybos tikrinimas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:28
+msgid "Main toolbar is visible"
+msgstr "Pagrindinė įrankinė yra matoma"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:29
+msgid ""
+"Whether the main toolbar (file open, close, build, ...) should be visible."
+msgstr ""
+"Ar pagrindinė įrankinė (failo atvėrimas, užvėrimas, kūrimas, ...) turėtų "
+"būti matoma."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:30
+msgid "Edit toolbar is visible"
+msgstr "Redagavimo įrankinė yra matoma"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:31
+msgid ""
+"Whether the edit toolbar (bold, italic, character sizes, ...) should be "
+"visible."
+msgstr ""
+"Ar redagavimo įrankinė (pusjuodis, kursyvas, simbolių dydžiai, ...) turėtų "
+"būti matomi."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:32
+msgid "Side panel is Visible"
+msgstr "Šoninis polangis yra matomas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:33
+msgid ""
+"Whether the side panel at the left of editing windows should be visible."
+msgstr "Ar šoninis polangis redagavimo langų kairėje turi būti matomas."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:34
+msgid "Bottom panel is Visible"
+msgstr "Apatinis polangis yra matomas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:35
+msgid "Whether the bottom panel containing the build view should be visible."
+msgstr "Ar apatinis polangis su kūrimo vaizdu turi būti matomas."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:36
+msgid "Side panel component"
+msgstr "Šoninio polangio komponentas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
+msgid ""
+"Side panel's active component. 0: Symbols. 1: File browser. 2: Structure."
+msgstr ""
+"Šoninio polangio aktyvusis komponentas. 0: simboliai, 1: failų naršyklė, 2: "
+"struktūra."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
+msgid "Show build output warnings"
+msgstr "Rodyti kūrimo išvesties įspėjimus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
+msgid "Show build output badboxes"
+msgstr "Rodyti kūrimo išvesties blogus elementus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
+msgid "Interactive completion"
+msgstr "Interaktyvus užbaigimas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
+msgid "Automatically show LaTeX commands proposals"
+msgstr "Automatiškai rodyti LaTeX komandų siūlymus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
+msgid "Minimum number of characters for interactive completion"
+msgstr "Mažiausias simbolių skaičius interaktyviam užbaigimui"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
+msgid ""
+"Minimum number of characters after \"\\\" for the interactive completion of "
+"LaTeX commands"
+msgstr ""
+"Mažiausias simbolių skaičius po „\\“ interaktyviam LaTeX komandų užbaigimui"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
+#: ../src/ui/preferences_dialog.ui.h:19
+msgid "No confirmation when cleaning-up"
+msgstr "Neklausti patvirtinimo išvalant"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
+msgid "Automatic clean-up"
+msgstr "Automatinis išvalymas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
+msgid ""
+"Automatically clean-up files after close. no-confirm-clean must be true."
+msgstr ""
+"Automatiškai išvalyti failus po užvėrimo. no-confirm-clean turi būti "
+"teigiamas."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
+msgid "File extensions for the clean-up"
+msgstr "Failų plėtiniai išvalymui"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
+msgid "The list of file extensions for the clean-up, separated by spaces"
+msgstr "Failų plėtinių sąrašas išvalymui, skiriama tarpais"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:49
+msgid "Enabled default build tools"
+msgstr "Įjungti numatytieji kūrimo įrankiai"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
+msgid "The list of the default build tools that are enabled"
+msgstr "Numatytųjų įjungtų kūrimo įrankių sąrašas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
+msgid "Disabled default build tools"
+msgstr "Išjungti numatytieji kūrimo įrankiai"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
+msgid "The list of the default build tools that are disabled"
+msgstr "Numatytųjų išjungtų kūrimo įrankių sąrašas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
+msgid "Current directory"
+msgstr "Dabartinis aplankas"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
+msgid "URI of the file browser current directory"
+msgstr "Failų naršyklės dabartinio aplanko URI"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
+#: ../src/file_browser.vala:281
+msgid "Show build files"
+msgstr "Rodyti kūrimo failus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
+msgid ""
+"Show files with an extension present in preferences.latex.clean-extensions."
+msgstr "Rodyti failus su plėtiniu iš preferences.latex.clean-extensions."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
+#: ../src/file_browser.vala:289
+msgid "Show hidden files"
+msgstr "Rodyti paslėptus failus"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
+msgid "Show files beginning with a dot."
+msgstr "Rodyti failus, prasidedančius tašku."
+
+#. This must be translated by a usepackage LaTeX command.
+#: article.xml:8(template/babel) beamer.xml:8(template/babel)
+#: book.xml:8(template/babel) report.xml:8(template/babel)
+#, no-wrap
+msgid ""
+"\n"
+"% babel package or equivalent\n"
+msgstr ""
+"\n"
+"% babel paketas ar jo atitikmuo\n"
+
+#. There is a helper script in data/templates/tex2po.sh
+#: letter.xml:2(template/translatableChunk)
+#, no-wrap
+msgid ""
+"\n"
+"\\documentclass[a4paper,11pt]{letter}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\n"
+"\\address{Your name\\\\Your address\\\\Your phone number}\n"
+"\\signature{Your name}\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{Destination\\\\Address of the destination\\\\Phone number of the destination}\n"
+"\n"
+"\\opening{Dear Sir,}\n"
+"\n"
+"% corps of the letter\n"
+"\n"
+"\\closing{Yours sincerely,}\n"
+"\n"
+"%\\cc{Other destination}\n"
+"%\\ps{PS: PostScriptum}\n"
+"%\\encl{Enclosures}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
+msgstr ""
+"\n"
+"\\documentclass[a4paper,11pt]{letter}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\n"
+"\\address{Jūsų vardas\\\\Jūsų adresas\\\\Jūsų telefono numeris}\n"
+"\\signature{Jūsų vardas}\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{Paskirtis\\\\Paskirties adresas\\\\Paskirties telefono numeris}\n"
+"\n"
+"\\opening{Gerbiamasis,}\n"
+"\n"
+"% laiško tekstas\n"
+"\n"
+"\\closing{Pagarbiai,}\n"
+"\n"
+"%\\cc{Kita paskirtis}\n"
+"%\\ps{PS: PostScriptum}\n"
+"%\\encl{Enclosures}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
+
+#: ../src/bottom_panel.vala:53 ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "Slėpti polangį"
+
+#: ../src/build_tool_dialog.vala:81
+msgid "Build Tool (read-only)"
+msgstr "Kūrimo įrankis (tik skaitymui)"
+
+#: ../src/build_tool_dialog.vala:88
+msgid "Build Tool"
+msgstr "Kūrimo įrankis"
+
+#. icon stock-id
+#. label
+#: ../src/build_tool_dialog.vala:159
+msgid "Execute"
+msgstr "Vykdyti"
+
+#: ../src/build_tool_dialog.vala:163
+msgid "Convert"
+msgstr "Konvertuoti"
+
+#: ../src/build_tool_dialog.vala:164
+msgid "View File"
+msgstr "Rodyti failą"
+
+#: ../src/build_tool_dialog.vala:228
+msgid "Commands"
+msgstr "Komandos"
+
+#: ../src/build_tool_dialog.vala:238
+msgid "Post Processor"
+msgstr "Baigiamasis apdorojimas"
+
+#: ../src/build_tool_dialog.vala:265 ../src/build_tools_preferences.vala:289
+msgid "Add..."
+msgstr "Pridėti..."
+
+#: ../src/build_tool_dialog.vala:282 ../src/build_tools_preferences.vala:306
+msgid "Remove"
+msgstr "Pašalinti"
+
+#: ../src/build_tool_dialog.vala:312 ../src/build_tools_preferences.vala:346
+msgid "Move up"
+msgstr "Perkelti aukštyn"
+
+#: ../src/build_tool_dialog.vala:363 ../src/build_tools_preferences.vala:398
+msgid "Move down"
+msgstr "Nuleisti žemyn"
+
+#: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
+#: ../src/latex_menu.vala:52 ../src/structure.vala:777
+msgid "Label"
+msgstr "Etiketė"
+
+#: ../src/build_tool_dialog.vala:568
+msgid "You can select this arrow and copy/paste it!"
+msgstr "Galite pasirinkti šią rodyklę ir ją kopijuoti!"
+
+#: ../src/build_tool_dialog.vala:584
+msgid "Description"
+msgstr "Aprašymas"
+
+#: ../src/build_tool_dialog.vala:590
+msgid "File extensions for which the build tool can be executed."
+msgstr "Failų plėtiniai, kuriems galima vykdyti kūrimo įrankį."
+
+#: ../src/build_tool_dialog.vala:591
+msgid "The extensions are separated by spaces."
+msgstr "Plėtiniai yra skiriami tarpais."
+
+#: ../src/build_tool_dialog.vala:592
+msgid "If it is empty, all extensions are allowed."
+msgstr "Jei tuščia, leidžiami visi plėtiniai."
+
+#: ../src/build_tool_dialog.vala:594
+msgid "Extensions"
+msgstr "Plėtiniai"
+
+#: ../src/build_tool_dialog.vala:599
+msgid "Icon"
+msgstr "Piktograma"
+
+#. Placeholders
+#: ../src/build_tool_dialog.vala:606
+msgid "Placeholders:"
+msgstr "Vietaženkliai:"
+
+#: ../src/build_tool_dialog.vala:610
+msgid "The active document's filename."
+msgstr "Aktyvaus dokumento failo pavadinimas."
+
+#: ../src/build_tool_dialog.vala:611 ../src/build_tool_dialog.vala:616
+msgid "If the active document belongs to a project, the main file is choosen."
+msgstr ""
+"Jei aktyvus dokumentas yra projekto dalis, pasirenkamas pagrindinis failas."
+
+#: ../src/build_tool_dialog.vala:615
+msgid "The active document's filename without its extension."
+msgstr "Aktyvaus dokumento failo pavadinimas be plėtinio."
+
+#: ../src/build_tool_dialog.vala:659
+msgid "Jobs"
+msgstr "Darbai"
+
+#: ../src/build_tool_dialog.vala:665
+msgid "List of files to open after executing the build jobs."
+msgstr "Failų sąrašas atidarymui po kūrimo darbų vykdymo."
+
+#: ../src/build_tool_dialog.vala:666
+msgid "The files are separated by spaces."
+msgstr "Failai skiriami tarpais."
+
+#: ../src/build_tool_dialog.vala:667
+msgid "You should use the placeholders to specify the files."
+msgstr "Turėtumėt naudoti vietaženklius failams nurodyti."
+
+#: ../src/build_tool_dialog.vala:670
+msgid "Files to open"
+msgstr "Atveriami failai"
+
+#: ../src/build_tool_runner.vala:191
+#, c-format
+msgid "%s doesn't seem to be installed."
+msgstr "Atrodo %s neįdiegtas."
+
+#: ../src/build_tool_runner.vala:263
+#, c-format
+msgid "Open %s"
+msgstr "Atverti %s"
+
+#: ../src/build_tool_runner.vala:272
+#, c-format
+msgid "The file '%s' doesn't exist."
+msgstr "Failo „%s“ nėra."
+
+#: ../src/build_tool_runner.vala:289
+#, c-format
+msgid "Failed to open '%s':"
+msgstr "Nepavyko atverti „%s“:"
+
+#: ../src/build_tools_preferences.vala:53
+msgid "Build Tools"
+msgstr "Kūrimo įrankiai"
+
+#: ../src/build_tools_preferences.vala:109
+msgid "Default build tools"
+msgstr "Numatytieji kūrimo įrankiai"
+
+#: ../src/build_tools_preferences.vala:129
+msgid "Personal build tools"
+msgstr "Asmeniniai kūrimo įrankiai"
+
+#: ../src/build_tools_preferences.vala:172
+msgid "Enabled"
+msgstr "Įjungta"
+
+#: ../src/build_tools_preferences.vala:274
+#, c-format
+msgid "%s [copy]"
+msgstr "%s [kopija]"
+
+#: ../src/build_tools_preferences.vala:324
+#, c-format
+msgid "Do you really want to delete the build tool \"%s\"?"
+msgstr "Ar tikrai norite ištrinti kūrimo įrankį „%s“?"
+
+#: ../src/clean_build_files.vala:267
+msgid "Do you really want to delete these files?"
+msgstr "Ar tikrai norite ištrinti šiuos failus?"
+
+#. secondary label
+#: ../src/clean_build_files.vala:272
+msgid "Select the files you want to delete:"
+msgstr "Pasirinkite failus, kuriuos norite ištrinti:"
+
+#: ../src/clean_build_files.vala:336
+msgid "No build file to clean up."
+msgstr "Nėra kūrimo failo išvalymui."
+
+#: ../src/completion.vala:315
+msgid "No matching proposal"
+msgstr "Nėra atitinkančio siūlymo"
+
+#. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
+#. "Column". Please, use abbreviations if possible.
+#: ../src/custom_statusbar.vala:41
+#, c-format
+msgid "Ln %d, Col %d"
+msgstr "Eil %d, Stlp %d"
+
+#: ../src/dialogs.vala:40 ../src/main_window.vala:762
+msgid "Close without Saving"
+msgstr "Užverti neįrašant"
+
+#: ../src/dialogs.vala:66
+#, c-format
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+"Yra %d dokumentų su neįrašytais pakeitimais. Įrašyti pakeitimus prieš "
+"užveriant?"
+
+#: ../src/dialogs.vala:72
+msgid "Select the documents you want to save:"
+msgstr "Pasirinkite dokumentus, kuriuos norite įrašyti:"
+
+#: ../src/dialogs.vala:129
+msgid "If you don't save, all your changes will be permanently lost."
+msgstr "Jei neįrašysite, visi jūsų pakeitimai bus negrįžtamai prarasti."
+
+#: ../src/document_structure.vala:720
+msgid "The structure item already contains a sub-paragraph."
+msgstr "Struktūros elementas jau turi po-paragrafą."
+
+#: ../src/document_tab.vala:173
+msgid "Close document"
+msgstr "Užverti dokumentą"
+
+#. main file
+#: ../src/document_tab.vala:233 ../src/project_dialogs.vala:44
+#: ../src/project_dialogs.vala:47 ../src/project_dialogs.vala:139
+#: ../src/project_dialogs.vala:142 ../src/project_dialogs.vala:216
+msgid "Main File"
+msgstr "Pagrindinis failas"
+
+#: ../src/document_tab.vala:235
+msgid "Main File:"
+msgstr "Pagrindinis failas:"
+
+#: ../src/document_tab.vala:259
+#, c-format
+msgid "Activate '%s'"
+msgstr "Aktyvinti „%s“"
+
+#: ../src/document_tab.vala:278
+#, c-format
+msgid "The file %s changed on disk."
+msgstr "Failas %s pakeistas diske."
+
+#: ../src/document_tab.vala:283
+msgid "Do you want to drop your changes and reload the file?"
+msgstr "Ar norite atsisakyti savo pakeitimų ir iš naujo įkelti failą?"
+
+#: ../src/document_tab.vala:285
+msgid "Do you want to reload the file?"
+msgstr "Ar norite iš naujo įkelti failą?"
+
+#: ../src/document_tab.vala:289
+msgid "Reload"
+msgstr "Įkelti iš naujo"
+
+#: ../src/document.vala:121
+#, c-format
+msgid "Impossible to load the file '%s'."
+msgstr "Neįmanoma iš naujo įkelti failo „%s“."
+
+#: ../src/document.vala:197
+#, c-format
+msgid "The file %s has been modified since reading it."
+msgstr "Failas %s buvo pakeistas nuo jo perskaitymo."
+
+#: ../src/document.vala:200
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"Jei jį įrašysite, visi išoriniai pakeitimai gali būti prarasti. Vis tiek "
+"įrašyti?"
+
+#: ../src/document.vala:203
+msgid "Save Anyway"
+msgstr "Vistiek įrašyti"
+
+#: ../src/document.vala:205
+msgid "Don't Save"
+msgstr "Neįrašyti"
+
+#: ../src/document.vala:217
+msgid "Impossible to save the file."
+msgstr "Neįmanoma įrašyti failo."
+
+#: ../src/document.vala:242
+msgid "Error trying to convert the document to UTF-8"
+msgstr "Klaida bandant konvertuoti dokumentą į UTF-8"
+
+#: ../src/document.vala:296
+msgid "Unsaved Document"
+msgstr "Neįrašytas dokumentas"
+
+#: ../src/document.vala:575
+msgid ""
+"The file has a temporary location. The data can be lost after rebooting your "
+"computer."
+msgstr ""
+"Failas turi laikinąją vietą. Duomenys gali būti prarasti iš naujo paleidus "
+"kompiuterį."
+
+#: ../src/document.vala:576
+msgid "Do you want to save the file in a safer place?"
+msgstr "Ar norite įrašyti failą į saugesnę vietą?"
+
+#: ../src/file_browser.vala:216
+msgid "Go to the home directory"
+msgstr "Eiti į namų aplanką"
+
+#: ../src/file_browser.vala:231
+msgid "Go to the parent directory"
+msgstr "Eiti į tėvinį aplanką"
+
+#: ../src/file_browser.vala:247
+msgid "Go to the active document directory"
+msgstr "Eiti į aktyvaus dokumento aplanką"
+
+#: ../src/file_browser.vala:336
+msgid "File System"
+msgstr "Failų sistema"
+
+#. File browser
+#: ../src/file_browser.vala:455 ../src/main_window.vala:401
+msgid "File Browser"
+msgstr "Failų naršyklė"
+
+#. LaTeX: Sectioning
+#: ../src/latex_menu.vala:32
+msgid "_Sectioning"
+msgstr "_Skiltys"
+
+#: ../src/latex_menu.vala:34 ../src/structure.vala:770
+msgid "Part"
+msgstr "Dalis"
+
+#: ../src/latex_menu.vala:36 ../src/structure.vala:771
+msgid "Chapter"
+msgstr "Skyrius"
+
+#: ../src/latex_menu.vala:38 ../src/structure.vala:772
+msgid "Section"
+msgstr "Skiltis"
+
+#: ../src/latex_menu.vala:40 ../src/structure.vala:773
+msgid "Sub-section"
+msgstr "Po-skiltis"
+
+#: ../src/latex_menu.vala:42 ../src/structure.vala:774
+msgid "Sub-sub-section"
+msgstr "Po-po-skiltis"
+
+#: ../src/latex_menu.vala:44 ../src/structure.vala:775
+msgid "Paragraph"
+msgstr "Pastraipa"
+
+#: ../src/latex_menu.vala:46 ../src/structure.vala:776
+msgid "Sub-paragraph"
+msgstr "Po-pastraipa"
+
+#. LaTeX: References
+#: ../src/latex_menu.vala:50
+msgid "_References"
+msgstr "_Rodyklė"
+
+#: ../src/latex_menu.vala:54
+msgid "Reference to a label"
+msgstr "Rodyklė į etiketę"
+
+#: ../src/latex_menu.vala:56
+msgid "Page reference to a label"
+msgstr "Puslapio rodyklė į etiketę"
+
+#: ../src/latex_menu.vala:58
+msgid "Add a word to the index"
+msgstr "Pridėti žodį į indeksą"
+
+#: ../src/latex_menu.vala:60
+msgid "Footnote"
+msgstr "Išnaša"
+
+#: ../src/latex_menu.vala:62
+msgid "Reference to a bibliography item"
+msgstr "Rodyklė į bibliografijos elementą"
+
+#: ../src/latex_menu.vala:68
+msgid "Center - \\begin{center}"
+msgstr "Centruota - \\begin{center}"
+
+#: ../src/latex_menu.vala:70
+msgid "Align Left - \\begin{flushleft}"
+msgstr "Kairė lygiuotė - \\begin{flushleft}"
+
+#: ../src/latex_menu.vala:72
+msgid "Align Right - \\begin{flushright}"
+msgstr "Dešinė lygiuotė - \\begin{flushright}"
+
+#: ../src/latex_menu.vala:74
+msgid "Figure - \\begin{figure}"
+msgstr "Paveikslėlis - \\begin{figure}"
+
+#: ../src/latex_menu.vala:76
+msgid "Table - \\begin{table}"
+msgstr "Lentelė - \\begin{table}"
+
+#: ../src/latex_menu.vala:78
+msgid "Quote - \\begin{quote}"
+msgstr "Kabutė - \\begin{quote}"
+
+#: ../src/latex_menu.vala:80
+msgid "Quotation - \\begin{quotation}"
+msgstr "Citata - \\begin{quotation}"
+
+#: ../src/latex_menu.vala:82
+msgid "Verse - \\begin{verse}"
+msgstr "Strofa - \\begin{verse}"
+
+#: ../src/latex_menu.vala:84
+msgid "Verbatim - \\begin{verbatim}"
+msgstr "Tiesioginis - \\begin{verbatim}"
+
+#: ../src/latex_menu.vala:86
+msgid "Minipage - \\begin{minipage}"
+msgstr "Mini-puslapis - \\begin{minipage}"
+
+#: ../src/latex_menu.vala:88
+msgid "Title page - \\begin{titlepage}"
+msgstr "Titulinis puslapis - \\begin{titlepage}"
+
+#. LaTeX: list environments
+#: ../src/latex_menu.vala:92
+msgid "_List Environments"
+msgstr "Iš_vardinti aplinkos kintamuosius"
+
+#: ../src/latex_menu.vala:94
+msgid "Bulleted List - \\begin{itemize}"
+msgstr "Punktų sąrašas - \\begin{itemize}"
+
+#: ../src/latex_menu.vala:96
+msgid "Enumeration - \\begin{enumerate}"
+msgstr "Išvardinimas - \\begin{enumerate}"
+
+#: ../src/latex_menu.vala:98
+msgid "Description - \\begin{description}"
+msgstr "Aprašymas - \\begin{description}"
+
+#: ../src/latex_menu.vala:100
+msgid "Custom list - \\begin{list}"
+msgstr "Pasirinktinis sąrašas - \\begin{list}"
+
+#: ../src/latex_menu.vala:102
+msgid "List item - \\item"
+msgstr "Sąrašo elementas - \\item"
+
+#. LaTeX: character sizes
+#: ../src/latex_menu.vala:106
+msgid "_Characters Sizes"
+msgstr "_Simbolių dydžiai"
+
+#. LaTeX: font styles
+#: ../src/latex_menu.vala:130
+msgid "_Font Styles"
+msgstr "Šri_ftų stiliai"
+
+#: ../src/latex_menu.vala:132
+msgid "Bold - \\textbf"
+msgstr "Pusjuodis - \\textbf"
+
+#: ../src/latex_menu.vala:134
+msgid "Italic - \\textit"
+msgstr "Kursyvas - \\textit"
+
+#: ../src/latex_menu.vala:136
+msgid "Typewriter - \\texttt"
+msgstr "Spausdinimo mašinėlės - \\texttt"
+
+#: ../src/latex_menu.vala:138
+msgid "Slanted - \\textsl"
+msgstr "Nuožulnus - \\textsl"
+
+#: ../src/latex_menu.vala:140
+msgid "Small Capitals - \\textsc"
+msgstr "Mažos didžiosios - \\textsc"
+
+#: ../src/latex_menu.vala:142
+msgid "Sans Serif - \\textsf"
+msgstr "Be užraitų - \\textsf"
+
+#: ../src/latex_menu.vala:144
+msgid "Emphasized - \\emph"
+msgstr "Akcentuotas - \\emph"
+
+#: ../src/latex_menu.vala:146
+msgid "Underline - \\underline"
+msgstr "Pabrauktas - \\underline"
+
+#: ../src/latex_menu.vala:148
+msgid "_Font Family"
+msgstr "Šri_ftų šeima"
+
+#: ../src/latex_menu.vala:150
+msgid "Roman - \\rmfamily"
+msgstr "Roman - \\rmfamily"
+
+#: ../src/latex_menu.vala:152
+msgid "Sans Serif - \\sffamily"
+msgstr "Be užraitų - \\sffamily"
+
+#: ../src/latex_menu.vala:154
+msgid "Monospace - \\ttfamily"
+msgstr "Lygiapločiai - \\ttfamily"
+
+#: ../src/latex_menu.vala:156
+msgid "F_ont Series"
+msgstr "Š_riftų sekos"
+
+#: ../src/latex_menu.vala:158
+msgid "Medium - \\mdseries"
+msgstr "Vidutiniai - \\mdseries"
+
+#: ../src/latex_menu.vala:160
+msgid "Bold - \\bfseries"
+msgstr "Pusjuodžiai - \\bfseries"
+
+#: ../src/latex_menu.vala:162
+msgid "Fo_nt Shape"
+msgstr "Šr_ifto forma"
+
+#: ../src/latex_menu.vala:164
+msgid "Upright - \\upshape"
+msgstr "Vertikalus - \\upshape"
+
+#: ../src/latex_menu.vala:166
+msgid "Italic - \\itshape"
+msgstr "Kursyvas - \\itshape"
+
+#: ../src/latex_menu.vala:168
+msgid "Slanted - \\slshape"
+msgstr "Nuožulnus - \\slshape"
+
+#: ../src/latex_menu.vala:170
+msgid "Small Capitals - \\scshape"
+msgstr "Mažos didžiosios - \\scshape"
+
+#. LaTeX: Tabular
+#: ../src/latex_menu.vala:174
+msgid "_Tabular"
+msgstr "_Tabuliacinis"
+
+#: ../src/latex_menu.vala:176
+msgid "Tabbing - \\begin{tabbing}"
+msgstr "Tabuliacija - \\begin{tabbing}"
+
+#: ../src/latex_menu.vala:178
+msgid "Tabular - \\begin{tabular}"
+msgstr "Tabuliacinis - \\begin{tabular}"
+
+#: ../src/latex_menu.vala:180
+msgid "Multicolumn - \\multicolumn"
+msgstr "Daugelio stulpelių - \\multicolumn"
+
+#: ../src/latex_menu.vala:182
+msgid "Horizontal line - \\hline"
+msgstr "Horizontali linija - \\hline"
+
+#: ../src/latex_menu.vala:184
+msgid "Vertical line - \\vline"
+msgstr "Vertikali linija - \\vline"
+
+#: ../src/latex_menu.vala:186
+msgid "Horizontal line (columns specified) - \\cline"
+msgstr "Horizontali linija (nurodyti stulpeliai) - \\cline"
+
+#: ../src/latex_menu.vala:192
+msgid "Frame - \\begin{frame}"
+msgstr "Rėmelis - \\begin{frame}"
+
+#: ../src/latex_menu.vala:194
+msgid "Block - \\begin{block}"
+msgstr "Blokas - \\begin{block}"
+
+#: ../src/latex_menu.vala:196
+msgid "Two columns - \\begin{columns}"
+msgstr "Du stulpeliai - \\begin{columns}"
+
+#. LaTeX: Spacing
+#: ../src/latex_menu.vala:200
+msgid "_Spacing"
+msgstr "_Tarpai"
+
+#: ../src/latex_menu.vala:201
+msgid "New _Line"
+msgstr "Nauja ei_lutė"
+
+#: ../src/latex_menu.vala:202
+msgid "New Line - \\\\"
+msgstr "Nauja eilutė - \\\\"
+
+#: ../src/latex_menu.vala:204
+msgid "New page - \\newpage"
+msgstr "Naujas puslapis - \\newpage"
+
+#: ../src/latex_menu.vala:206
+msgid "Line break - \\linebreak"
+msgstr "Eilutės laužtė - \\linebreak"
+
+#: ../src/latex_menu.vala:208
+msgid "Page break - \\pagebreak"
+msgstr "Puslapio laužtė - \\pagebreak"
+
+#: ../src/latex_menu.vala:210
+msgid "Big skip - \\bigskip"
+msgstr "Didelis tarpas - \\bigskip"
+
+#: ../src/latex_menu.vala:212
+msgid "Medium skip - \\medskip"
+msgstr "Vidutinis tarpas - \\medskip"
+
+#: ../src/latex_menu.vala:214
+msgid "Horizontal space - \\hspace"
+msgstr "Horizontalus tarpas - \\hspace"
+
+#: ../src/latex_menu.vala:216
+msgid "Vertical space - \\vspace"
+msgstr "Vertikalus tarpas - \\vspace"
+
+#: ../src/latex_menu.vala:218
+msgid "No paragraph indentation - \\noindent"
+msgstr "Nėra pastraipos įtraukos - \\noindent"
+
+#. LaTeX: International accents
+#: ../src/latex_menu.vala:222
+msgid "International _Accents"
+msgstr "_Diakritiniai ženklai"
+
+#: ../src/latex_menu.vala:223
+msgid "Acute accent - \\'"
+msgstr "Dešininis kirtis - \\'"
+
+#: ../src/latex_menu.vala:224
+msgid "Grave accent - \\`"
+msgstr "Kairinis kirtis - \\`"
+
+#: ../src/latex_menu.vala:225
+msgid "Circumflex accent - \\^"
+msgstr "Stogelis - \\^"
+
+#: ../src/latex_menu.vala:226
+msgid "Trema - \\\""
+msgstr "Dvitaškis diakritas - \\\""
+
+#: ../src/latex_menu.vala:227
+msgid "Tilde - \\~"
+msgstr "Riestinis kirtis - \\~"
+
+#: ../src/latex_menu.vala:228
+msgid "Macron - \\="
+msgstr "Brūkšnys - \\="
+
+#: ../src/latex_menu.vala:229
+msgid "Dot above - \\."
+msgstr "Taškas viršuje - \\."
+
+#: ../src/latex_menu.vala:230
+msgid "Caron - \\v"
+msgstr "Varnelė - \\v"
+
+#: ../src/latex_menu.vala:231
+msgid "Breve - \\u"
+msgstr "Lankelis - \\u"
+
+#: ../src/latex_menu.vala:233
+msgid "Double acute accent - \\H"
+msgstr "Dvigubas dešininis kirtis - \\H"
+
+#: ../src/latex_menu.vala:234
+msgid "Cedilla - \\c"
+msgstr "Nosinė atgal - \\c"
+
+#: ../src/latex_menu.vala:235
+msgid "Ogonek - \\k"
+msgstr "Nosinė pirmyn - \\k"
+
+#: ../src/latex_menu.vala:236
+msgid "Dot below - \\d"
+msgstr "Taškas apačioje - \\d"
+
+#: ../src/latex_menu.vala:237
+msgid "Macron below - \\b"
+msgstr "Brūkšnys apačioje - \\b"
+
+#: ../src/latex_menu.vala:238
+msgid "Ring - \\r"
+msgstr "Žiedas - \\r"
+
+#: ../src/latex_menu.vala:239
+msgid "Tie - \\t"
+msgstr "Apjungimas - \\t"
+
+#. LaTeX: Others
+#: ../src/latex_menu.vala:243
+msgid "_Misc"
+msgstr "Į_vairūs"
+
+#: ../src/latex_menu.vala:245
+msgid "Document class - \\documentclass"
+msgstr "Dokumento klasė - \\documentclass"
+
+#: ../src/latex_menu.vala:247
+msgid "Use package - \\usepackage"
+msgstr "Naudoti paketą - \\usepackage"
+
+#: ../src/latex_menu.vala:248
+msgid "_AMS packages"
+msgstr "_AMS paketai"
+
+#: ../src/latex_menu.vala:249
+msgid "AMS packages"
+msgstr "AMS paketai"
+
+#: ../src/latex_menu.vala:250
+msgid "Author - \\author"
+msgstr "Autorius - \\author"
+
+#: ../src/latex_menu.vala:251
+msgid "Title - \\title"
+msgstr "Pavadinimas - \\title"
+
+#: ../src/latex_menu.vala:253
+msgid "Content of the document - \\begin{document}"
+msgstr "Dokumento turinys - \\begin{document}"
+
+#: ../src/latex_menu.vala:255
+msgid "Make title - \\maketitle"
+msgstr "Sukurti pavadinimą - \\maketitle"
+
+#: ../src/latex_menu.vala:257
+msgid "Table of contents - \\tableofcontents"
+msgstr "Turinys - \\tableofcontents"
+
+#: ../src/latex_menu.vala:259
+msgid "Abstract - \\begin{abstract}"
+msgstr "Įžanga - \\begin{abstract}"
+
+#: ../src/latex_menu.vala:261
+msgid "Include an image (graphicx package) - \\includegraphics"
+msgstr "Įterpti paveikslėlį (graphicx paketas) - \\includegraphics"
+
+#: ../src/latex_menu.vala:264
+msgid "Include a file - \\input"
+msgstr "Įterpti failą - \\input"
+
+#. Math
+#: ../src/latex_menu.vala:268
+msgid "_Math"
+msgstr "_Matematika"
+
+#. Math Environments
+#: ../src/latex_menu.vala:272
+msgid "_Math Environments"
+msgstr "_Matematikos aplinkos"
+
+#: ../src/latex_menu.vala:273
+msgid "_Mathematical Environment - $...$"
+msgstr "_Matematinė aplinka - $...$"
+
+#: ../src/latex_menu.vala:274
+msgid "Mathematical Environment - $...$"
+msgstr "Matematinė aplinka - $...$"
+
+#: ../src/latex_menu.vala:275
+msgid "_Centered Formula - \\[...\\]"
+msgstr "_Centruota formlė - \\[...\\]"
+
+#: ../src/latex_menu.vala:276
+msgid "Centered Formula - \\[...\\]"
+msgstr "Centruota formlė - \\[...\\]"
+
+#: ../src/latex_menu.vala:278
+msgid "_Numbered Equation - \\begin{equation}"
+msgstr "_Numeruota lygtis - \\begin{equation}"
+
+#: ../src/latex_menu.vala:279
+msgid "Numbered Equation - \\begin{equation}"
+msgstr "Numeruota lygtis - \\begin{equation}"
+
+#: ../src/latex_menu.vala:280
+msgid "_Array of Equations - \\begin{align*}"
+msgstr "_Lygčių sistema - \\begin{align*}"
+
+#: ../src/latex_menu.vala:281
+msgid "Array of Equations - \\begin{align*}"
+msgstr "Lygčių sistema - \\begin{align*}"
+
+#: ../src/latex_menu.vala:283
+msgid "Numbered Array of _Equations - \\begin{align}"
+msgstr "Num_eruota lygčių sistema - \\begin{align}"
+
+#: ../src/latex_menu.vala:284
+msgid "Numbered Array of Equations - \\begin{align}"
+msgstr "Numeruota lygčių sistema - \\begin{align}"
+
+#: ../src/latex_menu.vala:287
+msgid "_Superscript - ^{}"
+msgstr "_Viršutinis indeksas - ^{}"
+
+#: ../src/latex_menu.vala:288
+msgid "Superscript - ^{}"
+msgstr "Viršutinis indeksas - ^{}"
+
+#: ../src/latex_menu.vala:289
+msgid "Su_bscript - __{}"
+msgstr "_Apatinis indeksas - __{}"
+
+#: ../src/latex_menu.vala:290
+msgid "Subscript - _{}"
+msgstr "Apatinis indeksas - __{}"
+
+#: ../src/latex_menu.vala:291
+msgid "_Fraction - \\frac{}{}"
+msgstr "_Trupmena - \\frac{}{}"
+
+#: ../src/latex_menu.vala:292
+msgid "Fraction - \\frac{}{}"
+msgstr "Trupmena - \\frac{}{}"
+
+#: ../src/latex_menu.vala:293
+msgid "Square _Root - \\sqrt{}"
+msgstr "_Kvadratinė šaknis - \\sqrt{}"
+
+#: ../src/latex_menu.vala:294
+msgid "Square Root - \\sqrt{}"
+msgstr "Kvadratinė šaknis - \\sqrt{}"
+
+#: ../src/latex_menu.vala:295
+msgid "_N-th Root - \\sqrt[]{}"
+msgstr "_N-tojo laipsnio šaknis - \\sqrt[]{}"
+
+#: ../src/latex_menu.vala:296
+msgid "N-th Root - \\sqrt[]{}"
+msgstr "N-tojo laipsnio šaknis - \\sqrt[]{}"
+
+#. Math functions
+#: ../src/latex_menu.vala:300
+msgid "Math _Functions"
+msgstr "Matematikos _funkcijos"
+
+#. Math Font Styles
+#: ../src/latex_menu.vala:334
+msgid "Math Font _Styles"
+msgstr "Matematikos šriftų _stiliai"
+
+#: ../src/latex_menu.vala:336
+msgid "Roman - \\mathrm"
+msgstr "Roman - \\mathrm"
+
+#: ../src/latex_menu.vala:338
+msgid "Italic - \\mathit"
+msgstr "Kursyvas - \\mathit"
+
+#: ../src/latex_menu.vala:340
+msgid "Bold - \\mathbf"
+msgstr "Pusjuodis - \\mathbf"
+
+#: ../src/latex_menu.vala:342
+msgid "Sans Serif - \\mathsf"
+msgstr "Be užraitų - \\mathsf"
+
+#: ../src/latex_menu.vala:344
+msgid "Typewriter - \\mathtt"
+msgstr "Spausdinimo mašinėlės - \\mathtt"
+
+#: ../src/latex_menu.vala:346
+msgid "Calligraphic - \\mathcal"
+msgstr "Kaligrafinis - \\mathcal"
+
+#: ../src/latex_menu.vala:348
+msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
+msgstr "Lentos (tik didžiosiomis)  - \\mathbb (amsfonts paketas)"
+
+#: ../src/latex_menu.vala:351
+msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
+msgstr "Euler Fraktur - \\mathfrak (amsfonts paketas)"
+
+#. Math Accents
+#: ../src/latex_menu.vala:356
+msgid "Math _Accents"
+msgstr "Matematikos _diakritiniai ženklai"
+
+#. Math Spaces
+#: ../src/latex_menu.vala:377
+msgid "Math _Spaces"
+msgstr "Matematikos _tarpai"
+
+#: ../src/latex_menu.vala:378
+msgid "_Small"
+msgstr "_Mažas"
+
+#: ../src/latex_menu.vala:379
+msgid "Small - \\,"
+msgstr "Mažas - \\,"
+
+#: ../src/latex_menu.vala:380
+msgid "_Medium"
+msgstr "_Vidutinis"
+
+#: ../src/latex_menu.vala:381
+msgid "Medium - \\:"
+msgstr "Vidutinis - \\:"
+
+#: ../src/latex_menu.vala:382
+msgid "_Large"
+msgstr "_Didelis"
+
+#: ../src/latex_menu.vala:383
+msgid "Large - \\;"
+msgstr "Didelis - \\;"
+
+#. Math: Left Delimiters
+#: ../src/latex_menu.vala:389
+msgid "_Left Delimiters"
+msgstr "_Kairieji riboženkliai"
+
+#: ../src/latex_menu.vala:390
+msgid "left ("
+msgstr "kairysis ("
+
+#: ../src/latex_menu.vala:392
+msgid "left ["
+msgstr "kairysis ["
+
+#: ../src/latex_menu.vala:394
+msgid "left { "
+msgstr "kairysis {"
+
+#: ../src/latex_menu.vala:396
+msgid "left <"
+msgstr "kairysis <"
+
+#: ../src/latex_menu.vala:398
+msgid "left )"
+msgstr "kairysis )"
+
+#: ../src/latex_menu.vala:400
+msgid "left ]"
+msgstr "kairysis ]"
+
+#: ../src/latex_menu.vala:402
+msgid "left  }"
+msgstr "kairysis }"
+
+#: ../src/latex_menu.vala:404
+msgid "left >"
+msgstr "kairysis >"
+
+#: ../src/latex_menu.vala:406
+msgid "left ."
+msgstr "kairysis ."
+
+#. Math: Right Delimiters
+#: ../src/latex_menu.vala:411
+msgid "Right _Delimiters"
+msgstr "Dešinieji _riboženkliai"
+
+#: ../src/latex_menu.vala:412
+msgid "right )"
+msgstr "dešinysis )"
+
+#: ../src/latex_menu.vala:414
+msgid "right ]"
+msgstr "dešinysis ]"
+
+#: ../src/latex_menu.vala:416
+msgid "right  }"
+msgstr "dešinysis }"
+
+#: ../src/latex_menu.vala:418
+msgid "right >"
+msgstr "dešinysis >"
+
+#: ../src/latex_menu.vala:420
+msgid "right ("
+msgstr "dešinysis ("
+
+#: ../src/latex_menu.vala:422
+msgid "right ["
+msgstr "dešinysis ["
+
+#: ../src/latex_menu.vala:424
+msgid "right { "
+msgstr "dešinysis {"
+
+#: ../src/latex_menu.vala:426
+msgid "right <"
+msgstr "dešinysis <"
+
+#: ../src/latex_menu.vala:428
+msgid "right ."
+msgstr "dešinysis ."
+
+#. menus under toolitems
+#: ../src/latex_menu.vala:443
+msgid "Sectioning"
+msgstr "Skiltys"
+
+#: ../src/latex_menu.vala:446
+msgid "Characters Sizes"
+msgstr "Simbolių dydžiai"
+
+#: ../src/latex_menu.vala:449
+msgid "References"
+msgstr "Rodyklės"
+
+#: ../src/latex_menu.vala:452
+msgid "Presentation Environments"
+msgstr "Pateikčių aplinkos"
+
+#: ../src/latex_menu.vala:455
+msgid "Math Environments"
+msgstr "Matematikos aplinkos"
+
+#: ../src/latex_menu.vala:458
+msgid "Left Delimiters"
+msgstr "Kairieji riboženkliai"
+
+#: ../src/latex_menu.vala:461
+msgid "Right Delimiters"
+msgstr "Dešinieji riboženkliai"
+
+#: ../src/main.vala:51
+msgid "Show the application's version"
+msgstr "Rodyti programos versiją"
+
+#: ../src/main.vala:54
+msgid "Create new document"
+msgstr "Sukurti naują dokumentą"
+
+#: ../src/main.vala:57
+msgid "Create a new top-level window in an existing instance of LaTeXila"
+msgstr "Sukurti naują aukščiausio lygio langą veikiančioje LaTeXila"
+
+#: ../src/main.vala:66
+msgid "- Integrated LaTeX Environment for GNOME"
+msgstr "- integruota LaTeX aplinka GNOME darbastaliui"
+
+#: ../src/main.vala:78
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options.\n"
+msgstr "Paleiskite „%s --help“ visam komandų eilutės komandų sąrašui gauti.\n"
+
+#: ../src/main_window_build_tools.vala:28
+msgid "_Build"
+msgstr "_Kurti"
+
+#: ../src/main_window_build_tools.vala:30
+msgid "Cleanup Build _Files"
+msgstr "Išvalyti kūrimo _failus"
+
+#: ../src/main_window_build_tools.vala:31
+msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
+msgstr "Išvalyti kūrimo failus (*.aux, *.log, *.out, *.toc, ir t.t.)"
+
+#: ../src/main_window_build_tools.vala:34
+msgid "_Stop Execution"
+msgstr "_Stabdyti vykdymą"
+
+#: ../src/main_window_build_tools.vala:35
+msgid "Stop Execution"
+msgstr "Stabdyti vykdymą"
+
+#: ../src/main_window_build_tools.vala:37
+msgid "View _Log"
+msgstr "Rodyti žurna_lą"
+
+#: ../src/main_window_build_tools.vala:38
+msgid "View Log"
+msgstr "Rodyti žurnalą"
+
+#: ../src/main_window_build_tools.vala:40
+msgid "_Manage Build Tools"
+msgstr "_Tvarkyti kūrimo įrankius"
+
+#: ../src/main_window_build_tools.vala:41
+msgid "Manage Build Tools"
+msgstr "Tvarkyti kūrimo įrankius"
+
+#: ../src/main_window_build_tools.vala:46
+msgid "Show _Details"
+msgstr "Rodyti _išsamiau"
+
+#: ../src/main_window_build_tools.vala:47
+msgid "Show Details"
+msgstr "Rodyti išsamiau"
+
+#: ../src/main_window_build_tools.vala:49
+msgid "Show _Warnings"
+msgstr "Rodyti įspė_jimus"
+
+#: ../src/main_window_build_tools.vala:50
+msgid "Show Warnings"
+msgstr "Rodyti įspėjimus"
+
+#: ../src/main_window_build_tools.vala:52
+msgid "Show _Bad Boxes"
+msgstr "Rodyti _blogas dalis"
+
+#: ../src/main_window_build_tools.vala:53
+msgid "Show Bad Boxes"
+msgstr "Rodyti blogas dalis"
+
+#: ../src/main_window_documents.vala:30
+msgid "_Documents"
+msgstr "_Dokumentai"
+
+#: ../src/main_window_documents.vala:32
+msgid "_Save All"
+msgstr "Į_rašyti visus"
+
+#: ../src/main_window_documents.vala:33
+msgid "Save all open files"
+msgstr "Įrašyti visus atvertus failus"
+
+#: ../src/main_window_documents.vala:35
+msgid "_Close All"
+msgstr "_Užverti visus"
+
+#: ../src/main_window_documents.vala:36
+msgid "Close all open files"
+msgstr "Užverti visus atvertus failus"
+
+#: ../src/main_window_documents.vala:38
+msgid "_Previous Document"
+msgstr "_Ankstesnis dokumentas"
+
+#: ../src/main_window_documents.vala:39
+msgid "Activate previous document"
+msgstr "Aktyvuoti ankstesnį dokumentą"
+
+#: ../src/main_window_documents.vala:41
+msgid "_Next Document"
+msgstr "_Kitas dokumentas"
+
+#: ../src/main_window_documents.vala:42
+msgid "Activate next document"
+msgstr "Aktyvuoti kitą dokumentą"
+
+#: ../src/main_window_documents.vala:44
+msgid "_Move to New Window"
+msgstr "_Perkelti į naują langą"
+
+#: ../src/main_window_documents.vala:45
+msgid "Move the current document to a new window"
+msgstr "Perkelti dabartinį dokumentą į naują langą"
+
+#: ../src/main_window_edit.vala:30
+msgid "_Edit"
+msgstr "_Keisti"
+
+#: ../src/main_window_edit.vala:33
+msgid "Undo the last action"
+msgstr "Atšaukti paskutinį veiksmą"
+
+#: ../src/main_window_edit.vala:36
+msgid "Redo the last undone action"
+msgstr "Pakartoti paskutinį veiksmą"
+
+#: ../src/main_window_edit.vala:39
+msgid "Cut the selection"
+msgstr "Iškirpti žymėjimą"
+
+#: ../src/main_window_edit.vala:42
+msgid "Copy the selection"
+msgstr "Kopijuoti žymėjimą"
+
+#. No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+#. the window. In this case Ctrl+V in the search text entry would be broken (the
+#. text is pasted in the document instead of the entry).
+#. Anyway if we press Ctrl+V when the cursor is in the document, no problem.
+#: ../src/main_window_edit.vala:49
+msgid "Paste the clipboard"
+msgstr "Įdėti iškarpinės turinį"
+
+#: ../src/main_window_edit.vala:52
+msgid "Delete the selected text"
+msgstr "Ištrinti pažymėtą tekstą"
+
+#: ../src/main_window_edit.vala:55
+msgid "Select the entire document"
+msgstr "Pažymėti visą dokumentą"
+
+#: ../src/main_window_edit.vala:57 ../src/main_window_structure.vala:44
+msgid "_Comment"
+msgstr "_Komentaras"
+
+#: ../src/main_window_edit.vala:58
+msgid "Comment the selected lines (add the character \"%\")"
+msgstr "Komentuoti pažymėtas eilutes (pridėti simbolį „%“)"
+
+#: ../src/main_window_edit.vala:61
+msgid "_Uncomment"
+msgstr "Atkoment_uoti"
+
+#: ../src/main_window_edit.vala:62
+msgid "Uncomment the selected lines (remove the character \"%\")"
+msgstr "Atkomentuoti pažymėtas eilutes (pašalinti „%“ simbolį)"
+
+#: ../src/main_window_edit.vala:66
+msgid "Configure the application"
+msgstr "Konfigūruoti programą"
+
+#: ../src/main_window_edit.vala:72
+msgid "Activate or disable the spell checking"
+msgstr "Įjungti ar išjungti rašybos tikrinimą"
+
+#: ../src/main_window_file.vala:30
+msgid "_File"
+msgstr "_Failas"
+
+#: ../src/main_window_file.vala:33
+msgid "New file"
+msgstr "Naujas failas"
+
+#: ../src/main_window_file.vala:35
+msgid "New _Window"
+msgstr "Naujas _langas"
+
+#: ../src/main_window_file.vala:36
+msgid "Create a new window"
+msgstr "Sukurti naują langą"
+
+#: ../src/main_window_file.vala:39 ../src/main_window_file.vala:85
+msgid "Open a file"
+msgstr "Atverti failą"
+
+#: ../src/main_window_file.vala:42
+msgid "Save the current file"
+msgstr "Įrašyti dabartinį failą"
+
+#: ../src/main_window_file.vala:45
+msgid "Save the current file with a different name"
+msgstr "Įrašyti dabartinį failą kitu pavadinimu"
+
+#: ../src/main_window_file.vala:47
+msgid "Create _Template From Document..."
+msgstr "Sukurti ša_bloną pagal dokumentą..."
+
+#: ../src/main_window_file.vala:48
+msgid "Create a new template from the current document"
+msgstr "Sukurti naują šabloną pagal dabartinį dokumentą"
+
+#: ../src/main_window_file.vala:50
+msgid "_Delete Template..."
+msgstr "Iš_trinti šabloną..."
+
+#: ../src/main_window_file.vala:51
+msgid "Delete personal template(s)"
+msgstr "Ištrinti asmeninį šabloną (-us)"
+
+#: ../src/main_window_file.vala:54
+msgid "Close the current file"
+msgstr "Užverti dabartinį failą"
+
+#. recent documents
+#: ../src/main_window_file.vala:69
+msgid "Open _Recent"
+msgstr "Atverti _neseniai naudotus"
+
+#: ../src/main_window_file.vala:70
+msgid "Open recently used files"
+msgstr "Atverti neseniai naudotus failus"
+
+#: ../src/main_window_file.vala:86
+msgid "Open a recently used file"
+msgstr "Atverti neseniai naudotą failą"
+
+#: ../src/main_window_file.vala:143
+msgid "Open Files"
+msgstr "Atverti failus"
+
+#. Filter: by default show only .tex and .bib files
+#: ../src/main_window_file.vala:157
+msgid "All LaTeX Files"
+msgstr "Visi LaTeX failai"
+
+#. All files filter
+#: ../src/main_window_file.vala:164
+msgid "All Files"
+msgstr "Visi failai"
+
+#: ../src/main_window_structure.vala:30
+msgid "S_tructure"
+msgstr "S_truktūra"
+
+#: ../src/main_window_structure.vala:33
+msgid "Cut the selected structure item"
+msgstr "Iškirpti pažymėtą struktūros elementą"
+
+#: ../src/main_window_structure.vala:36
+msgid "Copy the selected structure item"
+msgstr "Kopijuoti pažymėtą struktūros elementą"
+
+#: ../src/main_window_structure.vala:39
+msgid "Delete the selected structure item"
+msgstr "Ištrinti pažymėtą struktūros elementą"
+
+#: ../src/main_window_structure.vala:41
+msgid "_Select"
+msgstr "Paž_ymėti"
+
+#: ../src/main_window_structure.vala:42
+msgid "Select the contents of the selected structure item"
+msgstr "Pažymėti pasirinkto struktūros elemento turinį"
+
+#: ../src/main_window_structure.vala:45
+msgid "Comment the selected structure item"
+msgstr "Komentuoti pasirinktą struktūros elementą"
+
+#: ../src/main_window_structure.vala:47
+msgid "Shift _Left"
+msgstr "Pastumti _kairėn"
+
+#: ../src/main_window_structure.vala:48
+msgid "Shift the selected structure item to the left (e.g. section → chapter)"
+msgstr ""
+"Pastumti pasirinktą struktūros elementą kairėn (pvz. skiltis → skyrius)"
+
+#: ../src/main_window_structure.vala:51
+msgid "Shift _Right"
+msgstr "Pastumti _dešinėn"
+
+#: ../src/main_window_structure.vala:52
+msgid "Shift the selected structure item to the right (e.g. chapter → section)"
+msgstr ""
+"Pastumti pasirinktą struktūros elementą dešinėn (pvz. skyrius → skiltis)"
+
+#: ../src/main_window_structure.vala:55
+msgid "_Open File"
+msgstr "_Atverti failą"
+
+#: ../src/main_window_structure.vala:56
+msgid "Open the file referenced by the selected structure item"
+msgstr "Atverti struktūros elemento nurodomą failą"
+
+#: ../src/main_window.vala:29
+msgid "Quit the program"
+msgstr "Išeiti iš programos"
+
+#. View
+#: ../src/main_window.vala:32
+msgid "_View"
+msgstr "_Rodyti"
+
+#: ../src/main_window.vala:33
+msgid "Zoom _In"
+msgstr "_Pritraukti"
+
+#: ../src/main_window.vala:34
+msgid "Enlarge the font"
+msgstr "Padidinti šriftą"
+
+#: ../src/main_window.vala:35
+msgid "Zoom _Out"
+msgstr "_Atitolinti"
+
+#: ../src/main_window.vala:36
+msgid "Shrink the font"
+msgstr "Sumažinti šriftą"
+
+#: ../src/main_window.vala:37
+msgid "_Reset Zoom"
+msgstr "At_statyti mastelį"
+
+#: ../src/main_window.vala:38
+msgid "Reset the size of the font"
+msgstr "Atstatyti šrifto dydį"
+
+#. Search
+#: ../src/main_window.vala:41
+msgid "_Search"
+msgstr "_Ieškoti"
+
+#: ../src/main_window.vala:43
+msgid "Search for text"
+msgstr "Ieškoti teksto"
+
+#: ../src/main_window.vala:45
+msgid "Search for and replace text"
+msgstr "Ieškoti ir pakeisti tekstą"
+
+#: ../src/main_window.vala:46
+msgid "_Go to Line..."
+msgstr "_Eiti į eilutę..."
+
+#: ../src/main_window.vala:47
+msgid "Go to a specific line"
+msgstr "Pereiti į tam tikrą eilutę"
+
+#: ../src/main_window.vala:48
+msgid "_Search Forward"
+msgstr "_Ieškoti pirmyn"
+
+#: ../src/main_window.vala:49
+msgid "Jump to the associated position in the PDF file"
+msgstr "Peršokti į susijusią vietą PDF faile"
+
+#. Projects
+#: ../src/main_window.vala:52
+msgid "_Projects"
+msgstr "_Projektai"
+
+#: ../src/main_window.vala:53
+msgid "_New Project"
+msgstr "_Naujas projektas"
+
+#: ../src/main_window.vala:54
+msgid "Create a new project"
+msgstr "Sukurti naują projektą"
+
+#: ../src/main_window.vala:55
+msgid "_Configure Current Project"
+msgstr "_Konfigūruoti dabartinį projektą"
+
+#: ../src/main_window.vala:56
+msgid "Change the main file of the current project"
+msgstr "Keisti dabartinio projekto pagrindinį failą"
+
+#: ../src/main_window.vala:58
+msgid "_Manage Projects"
+msgstr "_Tvarkyti projektus"
+
+#: ../src/main_window.vala:59 ../src/project_dialogs.vala:183
+msgid "Manage Projects"
+msgstr "Tvarkyti projektus"
+
+#. Help
+#: ../src/main_window.vala:62
+msgid "_Help"
+msgstr "_Žinynas"
+
+#: ../src/main_window.vala:63
+msgid "_Contents"
+msgstr "_Turinys"
+
+#: ../src/main_window.vala:64
+msgid "Open the LaTeXila documentation"
+msgstr "Atverti LaTeXila dokumentaciją"
+
+#: ../src/main_window.vala:65
+msgid "_LaTeX Reference"
+msgstr "_LaTeX žinynas"
+
+#: ../src/main_window.vala:66
+msgid "The Kile LaTeX Reference"
+msgstr "Kile LaTeX žinynas"
+
+#: ../src/main_window.vala:68 ../src/main_window.vala:1220
+msgid "About LaTeXila"
+msgstr "Apie LaTeXila"
+
+#: ../src/main_window.vala:73
+msgid "_Main Toolbar"
+msgstr "_Pagrindinė įrankinė"
+
+#: ../src/main_window.vala:74
+msgid "Show or hide the main toolbar"
+msgstr "Rodyti arba slėpti pagrindinę įrankinę"
+
+#. Translators: "Edit" here is an adjective.
+#: ../src/main_window.vala:76
+msgid "_Edit Toolbar"
+msgstr "R_edagavimo įrankinė"
+
+#: ../src/main_window.vala:77
+msgid "Show or hide the edit toolbar"
+msgstr "Rodyti arba slėpti redagavimo įrankinę"
+
+#: ../src/main_window.vala:78
+msgid "_Side panel"
+msgstr "Š_oninis polangis"
+
+#: ../src/main_window.vala:79
+msgid "Show or hide the side panel"
+msgstr "Rodyti arba slėpti šoninį polangį"
+
+#: ../src/main_window.vala:80
+msgid "_Bottom panel"
+msgstr "_Apatinis skydelis"
+
+#: ../src/main_window.vala:81
+msgid "Show or hide the bottom panel"
+msgstr "Rodyti arba slėpti apatinį skydelį"
+
+#. Symbols
+#: ../src/main_window.vala:397
+msgid "Symbols"
+msgstr "Simboliai"
+
+#: ../src/main_window.vala:406
+msgid "Structure"
+msgstr "Struktūra"
+
+#: ../src/main_window.vala:652
+#, c-format
+msgid "This file (%s) is already opened in another LaTeXila window."
+msgstr "Failas (%s) jau atvertas kitame LaTeXila lange."
+
+#: ../src/main_window.vala:654
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr ""
+"LaTeXila atvėrė šį failą ne redagavimui. Ar vistiek norite jį redaguoti?"
+
+#: ../src/main_window.vala:657
+msgid "Edit Anyway"
+msgstr "Vistiek redaguoti"
+
+#: ../src/main_window.vala:658
+msgid "Don't Edit"
+msgstr "Neredaguoti"
+
+#: ../src/main_window.vala:759
+#, c-format
+msgid "Save changes to document \"%s\" before closing?"
+msgstr "Įrašyti dokumento „%s“ pakeitimus prieš užveriant?"
+
+#: ../src/main_window.vala:839
+msgid "Read-Only"
+msgstr "Tik skaitymui"
+
+#: ../src/main_window.vala:853
+msgid "Save File"
+msgstr "Įrašyti failą"
+
+#: ../src/main_window.vala:888
+#, c-format
+msgid "A file named \"%s\" already exists. Do you want to replace it?"
+msgstr "Failas „%s“ jau yra. Ar norite jį pakeisti?"
+
+#: ../src/main_window.vala:893 ../src/search.vala:182
+msgid "Replace"
+msgstr "Pakeisti"
+
+#: ../src/main_window.vala:1182
+msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
+msgstr "LaTeXila yra integruota LaTeX aplinka GNOME darbastaliui"
+
+#: ../src/main_window.vala:1221
+msgid "translator-credits"
+msgstr ""
+"Išvertė:\n"
+"Aurimas Černius <aurisc4@gmail.com>"
+
+#: ../src/post_processors.vala:188
+msgid "Latexmk messages"
+msgstr "Latexmk pranešimai"
+
+#: ../src/preferences_dialog.vala:31
+msgid "Preferences"
+msgstr "Nustatymai"
+
+#. reset all button
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:400
+msgid "Reset All"
+msgstr "Atstatyti visus"
+
+#: ../src/preferences_dialog.vala:39
+msgid "Reset all preferences"
+msgstr "Atstatyti visus nustatymus"
+
+#: ../src/preferences_dialog.vala:118
+msgid "Do you really want to reset all preferences?"
+msgstr "Ar tikrai norite atstatyti visus nustatymus?"
+
+#: ../src/preferences_dialog.vala:191
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "minutė"
+msgstr[1] "minutės"
+msgstr[2] "minučių"
+
+#: ../src/preferences_dialog.vala:291
+msgid "character"
+msgid_plural "characters"
+msgstr[0] "simbolis"
+msgstr[1] "simboliai"
+msgstr[2] "simbolių"
+
+#: ../src/preferences_dialog.vala:331
+#, c-format
+msgid "Use the system fixed width font (%s)"
+msgstr "Naudoti sistemos fiksuoto pločio šriftą (%s)"
+
+#: ../src/project_dialogs.vala:26
+msgid "New Project"
+msgstr "Naujas projektas"
+
+#. directory
+#: ../src/project_dialogs.vala:36 ../src/project_dialogs.vala:40
+#: ../src/project_dialogs.vala:203
+msgid "Directory"
+msgstr "Aplankas"
+
+#: ../src/project_dialogs.vala:101
+#, c-format
+msgid "There is a conflict with the project \"%s\"."
+msgstr "Yra konfliktas su projektu „%s“."
+
+#: ../src/project_dialogs.vala:116
+msgid "Configure Project"
+msgstr "Konfigūruoti projektą"
+
+#: ../src/project_dialogs.vala:134
+msgid "Location of the project"
+msgstr "Projekto vieta"
+
+#: ../src/project_dialogs.vala:243 ../src/project_dialogs.vala:300
+msgid "Clear All"
+msgstr "Išvalyti viską"
+
+#: ../src/project_dialogs.vala:275
+#, c-format
+msgid "Do you really want to delete the project \"%s\"?"
+msgstr "Ar tikrai norite ištrinti projektą „%s“?"
+
+#: ../src/project_dialogs.vala:296
+msgid "Do you really want to clear all projects?"
+msgstr "Ar tikrai norite išvalyti visus projektus?"
+
+#: ../src/project_dialogs.vala:328
+msgid "The Main File is not in the directory."
+msgstr "Pagrindinis failas nėra aplankas."
+
+#: ../src/search.vala:40
+msgid "Go to Line:"
+msgstr "Pereiti į eilutę:"
+
+#: ../src/search.vala:50
+msgid "Line you want to move the cursor to"
+msgstr "Eilutė į kurią norite perkelti žymiklį"
+
+#: ../src/search.vala:174
+msgid "Replace with"
+msgstr "Kuo pakeisti"
+
+#. replace all: image + label
+#: ../src/search.vala:186
+msgid "Replace All"
+msgstr "Pakeisti visus"
+
+#: ../src/search.vala:195
+msgid "All"
+msgstr "Visi"
+
+#: ../src/search.vala:309
+msgid "Search for"
+msgstr "Ko ieškoti"
+
+#: ../src/search.vala:320
+msgid "Case sensitive"
+msgstr "Skirti raidžių registrą"
+
+#: ../src/search.vala:323
+msgid "Entire words only"
+msgstr "Tik visus žodžius"
+
+#: ../src/search.vala:469
+msgid "Not found"
+msgstr "Nerasta"
+
+#. Translators: the first %d is the position of the current search occurrence,
+#. * and the second %d is the total number of search occurrences.
+#.
+#: ../src/search.vala:486
+#, c-format
+msgid "Match %d of %d"
+msgstr "Atitikmuo %d iš %d"
+
+#. Translators: %d is the total number of search occurrences.
+#: ../src/search.vala:491
+#, c-format
+msgid "%d match"
+msgid_plural "%d matches"
+msgstr[0] "%d atitikmuo"
+msgstr[1] "%d atitikmenys"
+msgstr[2] "%d atitikmenų"
+
+#: ../src/structure.vala:158
+msgid "Refresh"
+msgstr "Atnaujinti"
+
+#: ../src/structure.vala:172
+msgid "Collapse All"
+msgstr "Suskleisti visus"
+
+#: ../src/structure.vala:182
+msgid "Show labels"
+msgstr "Rodyti etiketes"
+
+#: ../src/structure.vala:183
+msgid "Show included files"
+msgstr "Rodyti įterptus failus"
+
+#: ../src/structure.vala:184
+msgid "Show tables"
+msgstr "Rodyti lenteles"
+
+#: ../src/structure.vala:185
+msgid "Show figures and images"
+msgstr "Rodyti diagramas ir paveikslėlius"
+
+#. Translators: do not translate the words TODO and FIXME. They are special
+#. comments that can be inserted in LaTeX documents.
+#: ../src/structure.vala:188
+msgid "Show TODOs and FIXMEs"
+msgstr "Rodyti neatlikimus ir taisymus"
+
+#: ../src/structure.vala:628
+#, c-format
+msgid "Structure action error: %s"
+msgstr "Struktūros veiksmo klaida: %s"
+
+#: ../src/structure.vala:633
+msgid "The structure data seems outdated. Please refresh the structure."
+msgstr "Struktūros duomenys atrodo yra pasenę. Atnaujinkite struktūrą."
+
+#. Translators: it's a verb
+#: ../src/structure.vala:724
+msgid "cut"
+msgstr "iškirpti"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:726
+msgid "copy"
+msgstr "kopijuoti"
+
+#: ../src/structure.vala:727
+msgid "delete"
+msgstr "trinti"
+
+#: ../src/structure.vala:728
+msgid "select"
+msgstr "žymėti"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:730
+msgid "comment"
+msgstr "komentuoti"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:732
+msgid "shift left"
+msgstr "pastumti kairėn"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:734
+msgid "shift right"
+msgstr "pastumti dešinėn"
+
+#: ../src/structure.vala:735
+msgid "open file"
+msgstr "atverti failą"
+
+#: ../src/structure.vala:780
+msgid "Table"
+msgstr "Lentelė"
+
+#. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
+#: ../src/structure.vala:782
+msgid "Figure"
+msgstr "Diagrama"
+
+#: ../src/structure.vala:783
+msgid "Image"
+msgstr "Paveikslėlis"
+
+#: ../src/structure.vala:784
+msgid "File included"
+msgstr "Įterptas failas"
+
+#: ../src/symbols.vala:59
+msgid "Greek"
+msgstr "Graikiška"
+
+#: ../src/symbols.vala:60
+msgid "Arrows"
+msgstr "Rodyklės"
+
+#: ../src/symbols.vala:61
+msgid "Relations"
+msgstr "Ryšiai"
+
+#: ../src/symbols.vala:62
+msgid "Operators"
+msgstr "Operatoriai"
+
+#: ../src/symbols.vala:63
+msgid "Delimiters"
+msgstr "Riboženkliai"
+
+#: ../src/symbols.vala:64
+msgid "Misc math"
+msgstr "Įvairi matematika"
+
+#: ../src/symbols.vala:65
+msgid "Misc text"
+msgstr "Įvairus tekstas"
+
+#: ../src/symbols.vala:159
+msgid "Most Used"
+msgstr "Dažniausiai naudojami"
+
+#: ../src/synctex.vala:84
+msgid "The document is not saved."
+msgstr "Dokumentas neįrašytas."
+
+#: ../src/synctex.vala:91
+msgid "The PDF file doesn't exist."
+msgstr "PDF failo nėra."
+
+#: ../src/synctex.vala:100
+#, c-format
+msgid "The file \"%s\" doesn't exist."
+msgstr "Failo „%s“ nėra."
+
+#: ../src/synctex.vala:107
+msgid "Can not communicate with evince."
+msgstr "Nepavyksta komunikuoti su evince."
+
+#: ../src/synctex.vala:125
+msgid "Impossible to do the forward search."
+msgstr "Neįmanoma atlikti paieškos pirmyn."
+
+#: ../src/templates_dialogs.vala:34
+msgid "New File..."
+msgstr "Naujas failas..."
+
+#: ../src/templates_dialogs.vala:55
+msgid "Default templates"
+msgstr "Numatytieji šablonai"
+
+#: ../src/templates_dialogs.vala:64
+msgid "Your personal templates"
+msgstr "Jūsų asmeniniai šablonai"
+
+#: ../src/templates_dialogs.vala:173
+msgid "New Template..."
+msgstr "Naujas šablonas..."
+
+#: ../src/templates_dialogs.vala:185
+msgid "Name of the new template"
+msgstr "Naujo šablono pavadinimas"
+
+#: ../src/templates_dialogs.vala:198
+msgid "Choose an icon"
+msgstr "Pasirinkite piktogramą"
+
+#: ../src/templates_dialogs.vala:242
+msgid "Delete Template(s)..."
+msgstr "Ištrinti šablonas(-us)..."
+
+#: ../src/templates_dialogs.vala:259
+msgid "Personal templates"
+msgstr "Asmeniniai šablonai"
+
+#: ../src/templates.vala:75
+msgid "Empty"
+msgstr "Tuščias"
+
+#: ../src/templates.vala:77
+msgid "Article"
+msgstr "Straipsnis"
+
+#: ../src/templates.vala:78
+msgid "Report"
+msgstr "Ataskaita"
+
+#: ../src/templates.vala:79
+msgid "Book"
+msgstr "Knyga"
+
+#: ../src/templates.vala:80
+msgid "Letter"
+msgstr "Laiškas"
+
+#: ../src/templates.vala:81
+msgid "Presentation"
+msgstr "Pateiktis"
+
+#: ../src/ui/preferences_dialog.ui.h:1
+msgid "Display line numbers"
+msgstr "Rodyti eilučių numerius"
+
+#: ../src/ui/preferences_dialog.ui.h:2
+msgid "Tab width:"
+msgstr "Tabuliacijos plotis:"
+
+#: ../src/ui/preferences_dialog.ui.h:3
+msgid "Insert spaces instead of tabs"
+msgstr "Įterpti tarpus vietoj tabuliacijos simbolių"
+
+#: ../src/ui/preferences_dialog.ui.h:4
+msgid "Forget you are not using tabulations"
+msgstr "Pamiršti, kad nenaudojama tabuliacija"
+
+#: ../src/ui/preferences_dialog.ui.h:5
+msgid "Highlight current line"
+msgstr "Paryškinti redaguojamą eilutę"
+
+#: ../src/ui/preferences_dialog.ui.h:6
+msgid "Highlight matching brackets"
+msgstr "Paryškinti porinius skliaustus"
+
+#: ../src/ui/preferences_dialog.ui.h:7
+msgid "Create a backup copy of files before saving"
+msgstr "Sukurti atsarginę failų kopiją prieš įrašant"
+
+#: ../src/ui/preferences_dialog.ui.h:8
+msgid "Autosave files every"
+msgstr "Automatiškai įrašyti failus kas"
+
+#: ../src/ui/preferences_dialog.ui.h:10
+msgid "Editor"
+msgstr "Redaktorius"
+
+#: ../src/ui/preferences_dialog.ui.h:11
+msgid "Font"
+msgstr "Šriftas"
+
+#: ../src/ui/preferences_dialog.ui.h:13
+#, no-c-format
+msgid "_Use the system fixed width font (%s)"
+msgstr "Na_udoti sistemos fiksuoto pločio šriftą (%s)"
+
+#: ../src/ui/preferences_dialog.ui.h:14
+msgid "Editor _font: "
+msgstr "Redaktoriaus šri_ftas:"
+
+#: ../src/ui/preferences_dialog.ui.h:15
+msgid "Pick the editor font"
+msgstr "Pasirinkite redaktoriaus šriftą"
+
+#: ../src/ui/preferences_dialog.ui.h:16
+msgid "Color Scheme"
+msgstr "Spalvų schema"
+
+#: ../src/ui/preferences_dialog.ui.h:17
+msgid "Font & Colors"
+msgstr "Šriftai ir spalvos"
+
+#: ../src/ui/preferences_dialog.ui.h:18
+msgid "File Clean-Up"
+msgstr "Failų išvalymas"
+
+#: ../src/ui/preferences_dialog.ui.h:20
+msgid "Automatically clean-up files after close"
+msgstr "Automatiškai išvalyti failus po užvėrimo"
+
+#: ../src/ui/preferences_dialog.ui.h:21
+msgid "Interactive completion after"
+msgstr "Interaktyvus užbaigimas po"
+
+#: ../src/ui/preferences_dialog.ui.h:22
+msgid "Number of characters after &apos;\\&apos;"
+msgstr "Simbolių skaičius po &apos;\\&apos;"
+
+#: ../src/ui/preferences_dialog.ui.h:23
+msgid "Number of characters after '\\'"
+msgstr "Simbolių skaičius po „\\“"
+
+#: ../src/ui/preferences_dialog.ui.h:24
+msgid "Other"
+msgstr "Kita"
