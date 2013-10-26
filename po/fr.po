@@ -9,8 +9,8 @@ msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-04-19 21:20+0000\n"
-"PO-Revision-Date: 2013-04-20 17:04+0200\n"
+"POT-Creation-Date: 2013-10-10 02:23+0000\n"
+"PO-Revision-Date: 2013-10-10 18:46+0100\n"
 "Last-Translator: Sébastien Wilmet <swilmet@gnome.org>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "Language: \n"
@@ -494,6 +494,8 @@ msgstr "Outil de construction (lecture seule)"
 msgid "Build Tool"
 msgstr "Outil de construction"
 
+#. icon stock-id
+#. label
 #: ../src/build_tool_dialog.vala:159
 msgid "Execute"
 msgstr "Exécuter"
@@ -665,7 +667,7 @@ msgstr "Sélectionnez les fichiers que vous voulez supprimer :"
 msgid "No build file to clean up."
 msgstr "Aucun fichier de construction à nettoyer."
 
-#: ../src/completion.vala:308
+#: ../src/completion.vala:315
 msgid "No matching proposal"
 msgstr "Pas de proposition correspondante"
 
@@ -676,7 +678,7 @@ msgstr "Pas de proposition correspondante"
 msgid "Ln %d, Col %d"
 msgstr "Lig. %d, Col. %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:749
+#: ../src/dialogs.vala:40 ../src/main_window.vala:762
 msgid "Close without Saving"
 msgstr "Fermer sans enregistrer"
 
@@ -738,43 +740,43 @@ msgstr "Voulez-vous recharger le fichier ?"
 msgid "Reload"
 msgstr "Recharger"
 
-#: ../src/document.vala:144
+#: ../src/document.vala:121
 #, c-format
 msgid "Impossible to load the file '%s'."
 msgstr "Impossible de charger le fichier « %s »."
 
-#: ../src/document.vala:220
+#: ../src/document.vala:197
 #, c-format
 msgid "The file %s has been modified since reading it."
 msgstr "Le fichier %s a été modifié depuis sa dernière lecture."
 
-#: ../src/document.vala:223
+#: ../src/document.vala:200
 msgid "If you save it, all the external changes could be lost. Save it anyway?"
 msgstr ""
 "Si vous l'enregistrez, il se peut que toutes vos modifications externes "
 "soient perdues. Enregistrez malgré tout ?"
 
-#: ../src/document.vala:226
+#: ../src/document.vala:203
 msgid "Save Anyway"
 msgstr "Enregistrer malgré tout"
 
-#: ../src/document.vala:228
+#: ../src/document.vala:205
 msgid "Don't Save"
 msgstr "Ne pas enregistrer"
 
-#: ../src/document.vala:240
+#: ../src/document.vala:217
 msgid "Impossible to save the file."
 msgstr "Impossible d'enregistrer le fichier."
 
-#: ../src/document.vala:265
+#: ../src/document.vala:242
 msgid "Error trying to convert the document to UTF-8"
 msgstr "Erreur lors de la tentative de conversion du document en UTF-8"
 
-#: ../src/document.vala:319
+#: ../src/document.vala:296
 msgid "Unsaved Document"
 msgstr "Document non enregistré"
 
-#: ../src/document.vala:604
+#: ../src/document.vala:575
 msgid ""
 "The file has a temporary location. The data can be lost after rebooting your "
 "computer."
@@ -782,7 +784,7 @@ msgstr ""
 "Le fichier a un emplacement temporaire. Les données peuvent être perdues "
 "après avoir redémarré votre ordinateur."
 
-#: ../src/document.vala:605
+#: ../src/document.vala:576
 msgid "Do you want to save the file in a safer place?"
 msgstr "Voulez-vous enregistrer le fichier dans un endroit plus sûr ?"
 
@@ -802,39 +804,10 @@ msgstr "Aller au répertoire du document actif"
 msgid "File System"
 msgstr "Système de fichiers"
 
-#: ../src/file_browser.vala:455 ../src/main_window.vala:393
+#. File browser
+#: ../src/file_browser.vala:455 ../src/main_window.vala:401
 msgid "File Browser"
 msgstr "Navigateur de fichiers"
-
-#: ../src/gtkspell/gtkspell.c:355
-msgid "(no suggestions)"
-msgstr "(pas de suggestions)"
-
-#: ../src/gtkspell/gtkspell.c:371
-msgid "More..."
-msgstr "Plus..."
-
-#. + Add to Dictionary
-#: ../src/gtkspell/gtkspell.c:391
-#, c-format
-msgid "Add \"%s\" to Dictionary"
-msgstr "Ajouter « %s » au dictionnaire"
-
-#. - Ignore All
-#: ../src/gtkspell/gtkspell.c:402
-msgid "Ignore All"
-msgstr "Ignorer tout"
-
-#. on top: language selection
-#: ../src/gtkspell/gtkspell.c:497
-msgid "Languages"
-msgstr "Langues"
-
-# enchant est une bibliothèque logicielle.
-#: ../src/gtkspell/gtkspell.c:587
-#, c-format
-msgid "enchant error for language: %s"
-msgstr "Error de enchant pour la langue : %s"
 
 #. LaTeX: Sectioning
 #: ../src/latex_menu.vala:32
@@ -1510,6 +1483,7 @@ msgstr "< à droite"
 msgid "right ."
 msgstr ". à droite"
 
+#. menus under toolitems
 #: ../src/latex_menu.vala:443
 msgid "Sectioning"
 msgstr "Sections"
@@ -1686,6 +1660,10 @@ msgstr "Coupe la sélection"
 msgid "Copy the selection"
 msgstr "Copie la sélection"
 
+#. No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+#. the window. In this case Ctrl+V in the search text entry would be broken (the
+#. text is pasted in the document instead of the entry).
+#. Anyway if we press Ctrl+V when the cursor is in the document, no problem.
 #: ../src/main_window_edit.vala:49
 msgid "Paste the clipboard"
 msgstr "Colle le contenu du presse-papiers"
@@ -1788,10 +1766,12 @@ msgstr "Ouvrir un fichier récemment utilisé"
 msgid "Open Files"
 msgstr "Ouvrir des fichiers"
 
+#. Filter: by default show only .tex and .bib files
 #: ../src/main_window_file.vala:157
 msgid "All LaTeX Files"
 msgstr "Tous les fichiers LaTeX"
 
+#. All files filter
 #: ../src/main_window_file.vala:164
 msgid "All Files"
 msgstr "Tous les fichiers"
@@ -1964,7 +1944,7 @@ msgstr "_Référence LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "La référence LaTeX de Kile"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1207
+#: ../src/main_window.vala:68 ../src/main_window.vala:1220
 msgid "About LaTeXila"
 msgstr "À propos de LaTeXila"
 
@@ -2001,20 +1981,21 @@ msgstr "Panneau _inférieur"
 msgid "Show or hide the bottom panel"
 msgstr "Affiche ou cache le panneau inférieur"
 
-#: ../src/main_window.vala:389
+#. Symbols
+#: ../src/main_window.vala:397
 msgid "Symbols"
 msgstr "Symboles"
 
-#: ../src/main_window.vala:398
+#: ../src/main_window.vala:406
 msgid "Structure"
 msgstr "Structure"
 
-#: ../src/main_window.vala:639
+#: ../src/main_window.vala:652
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ce fichier (%s) est déjà ouvert dans une autre fenêtre de LaTeXila."
 
-#: ../src/main_window.vala:641
+#: ../src/main_window.vala:654
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -2022,42 +2003,42 @@ msgstr ""
 "LaTeXila a ouvert cette instance du fichier en lecture seule. Voulez-vous le "
 "modifier malgré tout ?"
 
-#: ../src/main_window.vala:644
+#: ../src/main_window.vala:657
 msgid "Edit Anyway"
 msgstr "Modifier malgré tout"
 
-#: ../src/main_window.vala:645
+#: ../src/main_window.vala:658
 msgid "Don't Edit"
 msgstr "Ne pas modifier"
 
-#: ../src/main_window.vala:746
+#: ../src/main_window.vala:759
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr ""
 "Voulez-vous enregistrez les modifications de « %s » avant de le fermer ?"
 
-#: ../src/main_window.vala:826
+#: ../src/main_window.vala:839
 msgid "Read-Only"
 msgstr "Lecture seule"
 
-#: ../src/main_window.vala:840
+#: ../src/main_window.vala:853
 msgid "Save File"
 msgstr "Enregistrer le fichier"
 
-#: ../src/main_window.vala:875
+#: ../src/main_window.vala:888
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Un fichier nommé « %s » existe déjà. Voulez-vous le remplacer ?"
 
-#: ../src/main_window.vala:880
+#: ../src/main_window.vala:893 ../src/search.vala:182
 msgid "Replace"
 msgstr "Remplacer"
 
-#: ../src/main_window.vala:1169
+#: ../src/main_window.vala:1182
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila est un environnement LaTeX intégré pour le bureau GNOME."
 
-#: ../src/main_window.vala:1208
+#: ../src/main_window.vala:1221
 msgid "translator-credits"
 msgstr ""
 "Sébastien Wilmet <sebastien.wilmet@gmail.com>\n"
@@ -2072,7 +2053,7 @@ msgid "Preferences"
 msgstr "Préférences"
 
 #. reset all button
-#: ../src/preferences_dialog.vala:36 ../src/utils.vala:381
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:400
 msgid "Reset All"
 msgstr "Tout réinitialiser"
 
@@ -2149,25 +2130,50 @@ msgstr "Aller à la ligne :"
 msgid "Line you want to move the cursor to"
 msgstr "La ligne vers laquelle vous souhaitez déplacer le curseur"
 
-#: ../src/search.vala:178
+#: ../src/search.vala:174
 msgid "Replace with"
 msgstr "Remplacer par"
 
-#: ../src/search.vala:197
+#. replace all: image + label
+#: ../src/search.vala:186
+msgid "Replace All"
+msgstr "Tout Remplacer"
+
+#: ../src/search.vala:195
 msgid "All"
 msgstr "Tout"
 
-#: ../src/search.vala:308
+#: ../src/search.vala:309
 msgid "Search for"
 msgstr "Rechercher"
 
-#: ../src/search.vala:314
+#: ../src/search.vala:320
 msgid "Case sensitive"
 msgstr "Respecter la casse"
 
-#: ../src/search.vala:315
+#: ../src/search.vala:323
 msgid "Entire words only"
 msgstr "Mots entiers seulement"
+
+#: ../src/search.vala:469
+msgid "Not found"
+msgstr "Pas trouvé"
+
+#. Translators: the first %d is the position of the current search occurrence,
+#. * and the second %d is the total number of search occurrences.
+#.
+#: ../src/search.vala:486
+#, c-format
+msgid "Match %d of %d"
+msgstr "Occurrence %d sur %d"
+
+#. Translators: %d is the total number of search occurrences.
+#: ../src/search.vala:491
+#, c-format
+msgid "%d match"
+msgid_plural "%d matches"
+msgstr[0] "%d occurrence"
+msgstr[1] "%d occurrences"
 
 #: ../src/structure.vala:158
 msgid "Refresh"
@@ -2458,55 +2464,17 @@ msgstr "Nombre de caractères après '\\'"
 msgid "Other"
 msgstr "Autre"
 
-#~ msgid "Interactive completion min chars"
-#~ msgstr "Nombre minimum de caractères pour la complétion interactive"
+#~ msgid "(no suggestions)"
+#~ msgstr "(pas de suggestions)"
 
-#~ msgid "No confirmation clean-up"
-#~ msgstr "Pas de confirmation lors du nettoyage"
+#~ msgid "More..."
+#~ msgstr "Plus..."
 
-#~ msgid ""
-#~ "The program for viewing documents.\n"
-#~ "Its value can be changed in the preferences dialog."
-#~ msgstr ""
-#~ "Le programme pour afficher des documents.\n"
-#~ "Sa valeur peut être modifiée dans la boîte de dialogue des préférences."
+#~ msgid "Add \"%s\" to Dictionary"
+#~ msgstr "Ajouter « %s » au dictionnaire"
 
-#~ msgid "New command"
-#~ msgstr "Nouvelle commande"
+#~ msgid "Ignore All"
+#~ msgstr "Ignorer tout"
 
-#~ msgid "Must Succeed"
-#~ msgstr "Doit réussir"
-
-#~ msgid "Rubber may not support filenames with spaces (even in a directory)"
-#~ msgstr ""
-#~ "Il se peut que Rubber ne prenne pas en charge des noms de fichiers avec "
-#~ "des espaces (même dans un répertoire)"
-
-#~ msgid "Do you really want to reset all build tools?"
-#~ msgstr ""
-#~ "Êtes-vous sûr de vouloir réinitialiser tous les outils de construction ?"
-
-#~ msgid "Active"
-#~ msgstr "Actif"
-
-#~ msgid "Show files included"
-#~ msgstr "Afficher les inclusions de fichiers"
-
-#~ msgid "Always show all information for the Latexmk post processor"
-#~ msgstr ""
-#~ "Toujours afficher toutes les informations du post processeur Latexmk"
-
-#~ msgid "Program for viewing documents:"
-#~ msgstr "Programme pour afficher les documents :"
-
-#~ msgid "Delete one build tool"
-#~ msgstr "Supprimer un outil de construction"
-
-#~ msgid "Reset"
-#~ msgstr "Réinitialiser"
-
-#~ msgid "Number of most used symbols:"
-#~ msgstr "Nombre de symboles les plus utilisés :"
-
-#~ msgid "Show only files with these extensions"
-#~ msgstr "N'afficher que les fichiers avec ces extensions"
+#~ msgid "Languages"
+#~ msgstr "Langues"
