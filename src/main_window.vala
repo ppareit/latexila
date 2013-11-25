@@ -1182,7 +1182,7 @@ public class MainWindow : Window
             _("LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop");
         string copyright = "Copyright (C) 2009-2013 Sébastien Wilmet";
 
-        string website = "http://projects.gnome.org/latexila/";
+        string website = "https://wiki.gnome.org/Apps/LaTeXila";
 
         string[] authors =
         {

@@ -8,7 +8,7 @@ AC_INIT([LaTeXila],
         [2.10.0],
         [https://bugzilla.gnome.org/enter_bug.cgi?product=latexila],
 	[latexila],
-	[http://projects.gnome.org/latexila])
+	[https://wiki.gnome.org/Apps/LaTeXila])
 
 AC_CONFIG_SRCDIR([src/latexila.vala])
 AC_CONFIG_HEADERS([config.h])

@@ -20,10 +20,10 @@
     </ul>
   </description>
   <screenshots>
-    <screenshot type="default">https://projects.gnome.org/latexila/images/screenshot-build-tools.png</screenshot>
-    <screenshot>https://projects.gnome.org/latexila/images/screenshot-completion.png</screenshot>
-    <screenshot>https://projects.gnome.org/latexila/images/screenshot-structure.png</screenshot>
+    <screenshot type="default">https://git.gnome.org/browse/latexila/plain/data/images/app/screenshot-completion.png</screenshot>
+    <screenshot>https://git.gnome.org/browse/latexila/plain/data/images/app/screenshot-build-tools.png</screenshot>
+    <screenshot>https://git.gnome.org/browse/latexila/plain/data/images/app/screenshot-structure.png</screenshot>
   </screenshots>
-  <url type="homepage">https://projects.gnome.org/latexila/</url>
+  <url type="homepage">https://wiki.gnome.org/Apps/LaTeXila</url>
   <updatecontact>swilmet@gnome.org</updatecontact>
 </application>
