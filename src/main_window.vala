@@ -847,6 +847,10 @@ public class MainWindow : Window
         if (! force_save_as && doc.location != null)
         {
             doc.save ();
+
+            if (doc == active_document)
+                _main_window_structure.refresh ();
+
             return true;
         }
 
@@ -914,6 +918,10 @@ public class MainWindow : Window
         {
             // force saving
             doc.save (false, true);
+
+            if (doc == active_document)
+                _main_window_structure.refresh ();
+
             return true;
         }
         return false;

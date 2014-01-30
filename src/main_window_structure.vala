@@ -87,6 +87,12 @@ public class MainWindowStructure
         _structure.save_state ();
     }
 
+    public void refresh ()
+    {
+        return_if_fail (_structure != null)
+        _structure.refresh ();
+    }
+
     private void show_popup_menu (Gdk.EventButton? event)
     {
         Gtk.Menu popup_menu = _ui_manager.get_widget ("/StructurePopup") as Gtk.Menu;

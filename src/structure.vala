@@ -134,6 +134,11 @@ public class Structure : Grid
         hide.connect (disconnect_parsing);
     }
 
+    public void refresh ()
+    {
+        show_document (_main_window.active_document, true);
+    }
+
     private void init_toolbar ()
     {
         Toolbar toolbar = new Toolbar ();
@@ -160,7 +165,7 @@ public class Structure : Grid
 
         refresh_button.clicked.connect (() =>
         {
-            show_document (_main_window.active_document, true);
+            refresh ();
         });
 
         return refresh_button;
