@@ -89,7 +89,7 @@ public class MainWindowStructure
 
     public void refresh ()
     {
-        return_if_fail (_structure != null)
+        return_if_fail (_structure != null);
         _structure.refresh ();
     }
 
