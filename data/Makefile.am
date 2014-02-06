@@ -8,19 +8,22 @@ desktopdir = $(datadir)/applications
 desktop_DATA = latexila.desktop
 @INTLTOOL_DESKTOP_RULE@
 
+@INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/appdata
-dist_appdata_DATA = latexila.appdata.xml
+appdata_in_files = latexila.appdata.xml.in
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 
 gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
-@INTLTOOL_XML_NOMERGE_RULE@
 @GSETTINGS_RULES@
 
 EXTRA_DIST =					\
 	latexila.desktop.in			\
-	org.gnome.latexila.gschema.xml.in.in
+	org.gnome.latexila.gschema.xml.in.in	\
+	$(appdata_in_files)
 
 CLEANFILES =				\
 	latexila.desktop		\
-	org.gnome.latexila.gschema.xml
+	org.gnome.latexila.gschema.xml	\
+	$(appdata_DATA)
 
 -include $(top_srcdir)/git.mk

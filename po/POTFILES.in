@@ -2,6 +2,7 @@
 # Please keep this file sorted alphabetically.
 [encoding: UTF-8]
 data/build_tools/build_tools.pot
+data/latexila.appdata.xml.in
 data/latexila.desktop.in.in
 data/org.gnome.latexila.gschema.xml.in.in
 data/templates/templates.pot

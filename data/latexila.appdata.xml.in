@@ -3,20 +3,20 @@
   <id type="desktop">latexila.desktop</id>
   <licence>CC0</licence>
   <description>
-    <p>
+    <_p>
       LaTeXila is an integrated LaTeX environment for the GNOME desktop.
       The main features:
-    </p>
+    </_p>
     <ul>
-      <li>Compile, convert and view a document in one click;</li>
-      <li>LaTeX commands completion;</li>
-      <li>Document structure to easily navigate in it;</li>
-      <li>Forward and backward search to switch between the .tex and the PDF;</li>
-      <li>Spell checking;</li>
-      <li>Lists of symbols (Greek letters, arrows, ...);</li>
-      <li>Templates for creating new documents;</li>
-      <li>Easy projects management;</li>
-      <li>Menus and toolbars with the principal LaTeX commands.</li>
+      <_li>Compile, convert and view a document in one click;</_li>
+      <_li>LaTeX commands completion;</_li>
+      <_li>Document structure to easily navigate in it;</_li>
+      <_li>Forward and backward search to switch between the .tex and the PDF;</_li>
+      <_li>Spell checking;</_li>
+      <_li>Lists of symbols (Greek letters, arrows, ...);</_li>
+      <_li>Templates for creating new documents;</_li>
+      <_li>Easy projects management;</_li>
+      <_li>Menus and toolbars with the principal LaTeX commands.</_li>
     </ul>
   </description>
   <screenshots>
