@@ -64,6 +64,9 @@ public class MainWindow : Window
             N_("Open the LaTeXila documentation"), on_help_contents },
         { "HelpLatexReference", null, N_("_LaTeX Reference"), null,
             N_("The Kile LaTeX Reference"), on_help_latex_reference },
+        { "HelpDonate", null, N_("_Donate"), null,
+            N_("Donate to demonstrate your appreciation of LaTeXila and help its future development"),
+            on_help_donate },
         { "HelpAbout", Stock.ABOUT, null, null,
             N_("About LaTeXila"), on_about_dialog }
     };
@@ -1181,6 +1184,19 @@ public class MainWindow : Window
         catch (Error e)
         {
             warning ("Impossible to open the LaTeX reference: %s", e.message);
+        }
+    }
+
+    public void on_help_donate ()
+    {
+        try
+        {
+            string uri = "https://wiki.gnome.org/Apps/LaTeXila/donate";
+            show_uri (this.get_screen (), uri, Gdk.CURRENT_TIME);
+        }
+        catch (Error e)
+        {
+            warning ("Impossible to open the donate page: %s", e.message);
         }
     }
 

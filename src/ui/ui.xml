@@ -386,6 +386,7 @@ along with LaTeXila.  If not, see <http://www.gnu.org/licenses/>.
     <menu action="Help">
       <menuitem action="HelpContents" />
       <menuitem action="HelpLatexReference" />
+      <menuitem action="HelpDonate" />
       <menuitem action="HelpAbout" />
     </menu>
   </menubar>
