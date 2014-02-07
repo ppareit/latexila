@@ -1204,7 +1204,7 @@ public class MainWindow : Window
     {
         string comments =
             _("LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop");
-        string copyright = "Copyright (C) 2009-2013 Sébastien Wilmet";
+        string copyright = "Copyright © 2009-2014 - Sébastien Wilmet";
 
         string website = "https://wiki.gnome.org/Apps/LaTeXila";
 
