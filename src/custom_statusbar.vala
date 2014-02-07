@@ -27,7 +27,11 @@ public class CustomStatusbar : Statusbar
     {
         cursor_position = new Statusbar ();
         cursor_position.set_size_request (150, -1);
+        cursor_position.margin = 0;
         pack_end (cursor_position, false, true, 0);
+
+        margin_top = 2;
+        margin_bottom = 2;
     }
 
     public void set_cursor_position (int line, int col)
