@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the latexila package.
 # Jorge González <jorgegonz@svn.gnome.org>, 2011.
 # miguel <bokerones.fritos@gmail.com>, 2012.
-# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2011, 2012, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila 2.0\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-07 22:26+0000\n"
-"PO-Revision-Date: 2013-10-08 10:38+0200\n"
+"POT-Creation-Date: 2014-02-09 22:15+0000\n"
+"PO-Revision-Date: 2014-02-10 11:57+0100\n"
 "Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
 "Language-Team: Español <gnome-es-list@gnome.org>\n"
 "Language: es\n"
@@ -72,6 +72,54 @@ msgstr "Convertir el documento DVI a formato PostScript"
 #: build_tools.xml:104(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr "Mover el documento PostScript a una formato PDF"
+
+#: ../data/latexila.appdata.xml.in.h:1
+msgid ""
+"LaTeXila is an integrated LaTeX environment for the GNOME desktop. The idea "
+"of LaTeXila is to always deal directly with the LaTeX code, while "
+"simplifying as most as possible the writing of this LaTeX code."
+msgstr ""
+"LaTeXila es un entorno de LaTeX integrado para el escritorio GNOME. La idea "
+"de LaTeXila es tratar directamente con el código LaTeX, simplificando en "
+"todo lo posible su escritura."
+
+#: ../data/latexila.appdata.xml.in.h:2
+msgid ""
+"There are menus and toolbars with the principal LaTeX commands. To help the "
+"writing of the LaTeX markup, there is also LaTeX commands completion."
+msgstr ""
+"Hay menús y barras de herramientas con los principales comandos de LateX. "
+"Para ayudarle a escribir el marcado de LateX, también está el completado de "
+"comandos LaTeX."
+
+#: ../data/latexila.appdata.xml.in.h:3
+msgid ""
+"New documents are created from templates. There are buttons to compile, "
+"convert and view a document in one click. And projects containing several ."
+"tex files are managed easily."
+msgstr ""
+"Los documentos nuevos se crean a partir de plantillas. Hay botones para "
+"compilar, convertir y ver un documento con una sola pulsación. Y los "
+"proyectos que contengan varios archivos .tex se gestionan fácilmente."
+
+#: ../data/latexila.appdata.xml.in.h:4
+msgid ""
+"There is a side panel with three components: the document structure to "
+"easily navigate in it; lists of symbols to insert them in a document; and an "
+"integrated file browser."
+msgstr ""
+"Hay un panel lateral con tres componentes: la estructura del documento, para "
+"navega fácilmente por ella; una lista de símbolos para insertarlos en el "
+"documento; y un explorador de archivos integrado."
+
+#: ../data/latexila.appdata.xml.in.h:5
+msgid ""
+"LaTeXila has also other features like the spell checking, or the forward and "
+"backward search to switch between the .tex and the PDF."
+msgstr ""
+"LaTeXila tiene otras características como la comprobación de la ortografía, "
+"o la búsqueda hacia adelante o hacia atrás para cambiar entre el archivo ."
+"tex y el PDF."
 
 #: ../data/latexila.desktop.in.in.h:1
 msgid "LaTeXila"
@@ -501,7 +549,7 @@ msgid "Move down"
 msgstr "Bajar"
 
 #: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
-#: ../src/latex_menu.vala:52 ../src/structure.vala:777
+#: ../src/latex_menu.vala:52 ../src/structure.vala:782
 msgid "Label"
 msgstr "Etiqueta"
 
@@ -641,12 +689,12 @@ msgstr "No hay propuesta equivalente"
 
 #. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
 #. "Column". Please, use abbreviations if possible.
-#: ../src/custom_statusbar.vala:41
+#: ../src/custom_statusbar.vala:45
 #, c-format
 msgid "Ln %d, Col %d"
 msgstr "Ln %d, Col %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:754
+#: ../src/dialogs.vala:40 ../src/main_window.vala:765
 msgid "Close without Saving"
 msgstr "Cerrar sin guardar"
 
@@ -772,7 +820,7 @@ msgid "File System"
 msgstr "Sistema de archivos"
 
 #. File browser
-#: ../src/file_browser.vala:455 ../src/main_window.vala:393
+#: ../src/file_browser.vala:455 ../src/main_window.vala:404
 msgid "File Browser"
 msgstr "Explorador de archivos"
 
@@ -781,31 +829,31 @@ msgstr "Explorador de archivos"
 msgid "_Sectioning"
 msgstr "_Seccionamiento"
 
-#: ../src/latex_menu.vala:34 ../src/structure.vala:770
+#: ../src/latex_menu.vala:34 ../src/structure.vala:775
 msgid "Part"
 msgstr "Parte"
 
-#: ../src/latex_menu.vala:36 ../src/structure.vala:771
+#: ../src/latex_menu.vala:36 ../src/structure.vala:776
 msgid "Chapter"
 msgstr "Capítulo"
 
-#: ../src/latex_menu.vala:38 ../src/structure.vala:772
+#: ../src/latex_menu.vala:38 ../src/structure.vala:777
 msgid "Section"
 msgstr "Sección"
 
-#: ../src/latex_menu.vala:40 ../src/structure.vala:773
+#: ../src/latex_menu.vala:40 ../src/structure.vala:778
 msgid "Sub-section"
 msgstr "Subsección"
 
-#: ../src/latex_menu.vala:42 ../src/structure.vala:774
+#: ../src/latex_menu.vala:42 ../src/structure.vala:779
 msgid "Sub-sub-section"
 msgstr "Subsubsección"
 
-#: ../src/latex_menu.vala:44 ../src/structure.vala:775
+#: ../src/latex_menu.vala:44 ../src/structure.vala:780
 msgid "Paragraph"
 msgstr "Párrafo"
 
-#: ../src/latex_menu.vala:46 ../src/structure.vala:776
+#: ../src/latex_menu.vala:46 ../src/structure.vala:781
 msgid "Sub-paragraph"
 msgstr "Subpárrafo"
 
@@ -1911,58 +1959,70 @@ msgstr "Referencia de _LaTeX"
 msgid "The Kile LaTeX Reference"
 msgstr "La referencia de LaTeX de Kile"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1212
+#: ../src/main_window.vala:67
+msgid "_Donate"
+msgstr "_Donar"
+
+#: ../src/main_window.vala:68
+msgid ""
+"Donate to demonstrate your appreciation of LaTeXila and help its future "
+"development"
+msgstr ""
+"Done para demostrar su aprecio a LaTeXila y para ayudar a su futuro "
+"desarrollo"
+
+#: ../src/main_window.vala:71 ../src/main_window.vala:1244
 msgid "About LaTeXila"
 msgstr "Acerca de LaTeXila"
 
-#: ../src/main_window.vala:73
+#: ../src/main_window.vala:76
 msgid "_Main Toolbar"
 msgstr "Barra de _herramientas principal"
 
-#: ../src/main_window.vala:74
+#: ../src/main_window.vala:77
 msgid "Show or hide the main toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas principal"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:76
+#: ../src/main_window.vala:79
 msgid "_Edit Toolbar"
 msgstr "_Editar la barra de herramientas"
 
-#: ../src/main_window.vala:77
+#: ../src/main_window.vala:80
 msgid "Show or hide the edit toolbar"
 msgstr "Mostrar u ocultar la barra de herramientas de edición"
 
-#: ../src/main_window.vala:78
+#: ../src/main_window.vala:81
 msgid "_Side panel"
 msgstr "Panel _lateral"
 
-#: ../src/main_window.vala:79
+#: ../src/main_window.vala:82
 msgid "Show or hide the side panel"
 msgstr "Mostrar u ocultar el panel lateral"
 
-#: ../src/main_window.vala:80
+#: ../src/main_window.vala:83
 msgid "_Bottom panel"
 msgstr "Panel _inferior"
 
-#: ../src/main_window.vala:81
+#: ../src/main_window.vala:84
 msgid "Show or hide the bottom panel"
 msgstr "Mostrar u ocultar el panel inferior"
 
 #. Symbols
-#: ../src/main_window.vala:389
+#: ../src/main_window.vala:400
 msgid "Symbols"
 msgstr "Símbolos"
 
-#: ../src/main_window.vala:398
+#: ../src/main_window.vala:409
 msgid "Structure"
 msgstr "Estructura"
 
-#: ../src/main_window.vala:644
+#: ../src/main_window.vala:655
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Este archivo (%s) ya esta abierto en otra ventana de LaTeXila."
 
-#: ../src/main_window.vala:646
+#: ../src/main_window.vala:657
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1970,41 +2030,41 @@ msgstr ""
 "LaTeXila abrió esta instancia del archivo en una forma no editable.¿Quiere "
 "editarlo de todas formas?"
 
-#: ../src/main_window.vala:649
+#: ../src/main_window.vala:660
 msgid "Edit Anyway"
 msgstr "Editar de todas formas"
 
-#: ../src/main_window.vala:650
+#: ../src/main_window.vala:661
 msgid "Don't Edit"
 msgstr "No editar"
 
-#: ../src/main_window.vala:751
+#: ../src/main_window.vala:762
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "¿Guardar los cambios del documento «%s» antes de cerrar?"
 
-#: ../src/main_window.vala:831
+#: ../src/main_window.vala:842
 msgid "Read-Only"
 msgstr "Sólo lectura"
 
-#: ../src/main_window.vala:845
+#: ../src/main_window.vala:860
 msgid "Save File"
 msgstr "Guardar Archivo"
 
-#: ../src/main_window.vala:880
+#: ../src/main_window.vala:895
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Ya existe un archivo llamado «%s». ¿Quiere reemplazarlo?"
 
-#: ../src/main_window.vala:885 ../src/search.vala:182
+#: ../src/main_window.vala:900 ../src/search.vala:182
 msgid "Replace"
 msgstr "Reemplazar"
 
-#: ../src/main_window.vala:1174
+#: ../src/main_window.vala:1206
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila es un entorno LaTeX Integrado para el escritorio GNOME"
 
-#: ../src/main_window.vala:1213
+#: ../src/main_window.vala:1245
 msgid "translator-credits"
 msgstr ""
 "Daniel Mustieles García <daniel.mustieles@gmail.com>, 2011\n"
@@ -2109,129 +2169,128 @@ msgstr "Reemplazar todo"
 msgid "All"
 msgstr "Todo"
 
-#: ../src/search.vala:305
+#: ../src/search.vala:309
 msgid "Search for"
 msgstr "Buscar"
 
-#: ../src/search.vala:316
+#: ../src/search.vala:320
 msgid "Case sensitive"
 msgstr "Sensible a capitalización"
 
-#: ../src/search.vala:319
+#: ../src/search.vala:323
 msgid "Entire words only"
 msgstr "Solo palabras completas"
 
-#: ../src/search.vala:465
+#: ../src/search.vala:469
 msgid "Not found"
 msgstr "No encontrado"
 
 #. Translators: the first %d is the position of the current search occurrence,
 #. * and the second %d is the total number of search occurrences.
 #.
-#: ../src/search.vala:482
+#: ../src/search.vala:486
 #, c-format
 msgid "Match %d of %d"
 msgstr "%d de %d coincidencias"
 
 #. Translators: %d is the total number of search occurrences.
-#: ../src/search.vala:487
+#: ../src/search.vala:491
 #, c-format
-#| msgid "%u matches"
 msgid "%d match"
 msgid_plural "%d matches"
 msgstr[0] "%d coincidencia"
 msgstr[1] "%d coincidencias"
 
-#: ../src/structure.vala:158
+#: ../src/structure.vala:163
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/structure.vala:172
+#: ../src/structure.vala:177
 msgid "Collapse All"
 msgstr "Contraer todo"
 
-#: ../src/structure.vala:182
+#: ../src/structure.vala:187
 msgid "Show labels"
 msgstr "Mostrar etiquetas"
 
-#: ../src/structure.vala:183
+#: ../src/structure.vala:188
 msgid "Show included files"
 msgstr "Mostrar archivos incluidos"
 
-#: ../src/structure.vala:184
+#: ../src/structure.vala:189
 msgid "Show tables"
 msgstr "Mostrar tablas"
 
-#: ../src/structure.vala:185
+#: ../src/structure.vala:190
 msgid "Show figures and images"
 msgstr "Mostrar figuras e imágenes"
 
 #. Translators: do not translate the words TODO and FIXME. They are special
 #. comments that can be inserted in LaTeX documents.
-#: ../src/structure.vala:188
+#: ../src/structure.vala:193
 msgid "Show TODOs and FIXMEs"
 msgstr "Mostrar TODO y FIXME"
 
-#: ../src/structure.vala:628
+#: ../src/structure.vala:633
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Error de acción de la estructura: %s"
 
-#: ../src/structure.vala:633
+#: ../src/structure.vala:638
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "La estructura de datos está obsoleta. Actualice la estructura."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:724
+#: ../src/structure.vala:729
 msgid "cut"
 msgstr "cortar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:726
+#: ../src/structure.vala:731
 msgid "copy"
 msgstr "copiar"
 
-#: ../src/structure.vala:727
+#: ../src/structure.vala:732
 msgid "delete"
 msgstr "eliminar"
 
-#: ../src/structure.vala:728
+#: ../src/structure.vala:733
 msgid "select"
 msgstr "seleccionar"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:730
+#: ../src/structure.vala:735
 msgid "comment"
 msgstr "comentario"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:732
+#: ../src/structure.vala:737
 msgid "shift left"
 msgstr "desplazar a la izquierda"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:734
+#: ../src/structure.vala:739
 msgid "shift right"
 msgstr "desplazar a la derecha"
 
-#: ../src/structure.vala:735
+#: ../src/structure.vala:740
 msgid "open file"
 msgstr "abrir archivo"
 
-#: ../src/structure.vala:780
+#: ../src/structure.vala:785
 msgid "Table"
 msgstr "Tabla"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:782
+#: ../src/structure.vala:787
 msgid "Figure"
 msgstr "Figura"
 
-#: ../src/structure.vala:783
+#: ../src/structure.vala:788
 msgid "Image"
 msgstr "Imagen"
 
-#: ../src/structure.vala:784
+#: ../src/structure.vala:789
 msgid "File included"
 msgstr "Archivo incluido"
 
