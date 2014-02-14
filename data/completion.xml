@@ -1001,7 +1001,6 @@ Example:
 			<choice name="gchords" />
 			<choice name="geometry" />
 			<choice name="graphicx" />
-			<choice name="graphics" />
 			<choice name="hyperref" />
 			<choice name="inputenc" />
 			<choice name="latexsym" />
