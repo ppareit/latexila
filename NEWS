@@ -1,148 +1,93 @@
 LaTeXila NEWS
 
-===================================
-* Release 2.10.0 (November 1, 2013)
-===================================
+Release 2.10.0
+--------------
+* Added Lithuanian translation
+* Translations updates
 
-- Added Lithuanian translation
-- Translations updates
+Release 2.9.0
+-------------
+* Search and replace: use the new API from GtkSourceView
+* Use upstream GtkSpell (LaTeXila depends on GtkSpell now, instead of Enchant)
+* Improvements to the completion
+* AppData file
+* Translations updates
 
+Release 2.8.3
+-------------
+* Build tools: fix crash on unknown post processor
+* Updated Galician translations
 
-==================================
-* Release 2.9.0 (October 11, 2013)
-==================================
+Release 2.8.2
+-------------
+* Misc bugfixes
 
-- Search and replace: use the new API from GtkSourceView
-- Use upstream GtkSpell (LaTeXila depends on GtkSpell now, instead of Enchant)
-- Improvements to the completion
-- AppData file
-- Translations updates
+Release 2.8.1
+-------------
+* Bump required version of GLib to 2.36
+* Add Catalan and Greek translations
+* Translations updates
+* Misc bugfixes
 
+Release 2.8.0
+-------------
+* Allow the menu bar to shrink below its minimum size
+* Load and save accelerator maps (it's now possible to edit the keyboard shortcuts)
+* Change the application icons
+* Add Ctrl+E shortcut for \emph{}
+* Improvements to the completion
+* Misc bugfixes
+* Translations updates
 
-=================================
-* Release 2.8.3 (August 31, 2013)
-=================================
+Release 2.7.0
+-------------
+* Insert table and tabular: more complete example
+* Changes in the toolbars
+* Build tools: use shorter options with Latexmk
+* Build tools: remove support of Rubber
+* Misc bug fixes
+* Translations updates
 
-- Build tools: fix crash on unknown post processor
-- Updated Galician translations
+Release 2.6.2
+-------------
+* Misc bug fixes
+* Translations updates
 
+Release 2.6.1
+-------------
+* Autotools: required version of Vala is now optional
+* Comment selected lines: comment empty lines too
+* Misc bug fixes
 
-==============================
-* Release 2.8.2 (June 7, 2013)
-==============================
+Release 2.6.0
+-------------
+* Change default style scheme from 'classic' to 'tango'
+* Translations updates
 
-- Misc bugfixes
+Release 2.5.4
+-------------
+* Fix build issue
 
-
-=============================
-* Release 2.8.1 (May 6, 2013)
-=============================
-
-- Bump required version of GLib to 2.36
-- Add Catalan and Greek translations
-- Translations updates
-- Misc bugfixes
-
-
-================================
-* Release 2.8.0 (March 28, 2013)
-================================
-
-- Allow the menu bar to shrink below its minimum size
-- Load and save accelerator maps (it's now possible to edit the keyboard shortcuts)
-- Change the application icons
-- Add Ctrl+E shortcut for \emph{}
-- Improvements to the completion
-- Misc bugfixes
-- Translations updates
-
-
-==================================
-* Release 2.7.0 (January 22, 2013)
-==================================
-
-- Insert table and tabular: more complete example
-- Changes in the toolbars
-- Build tools: use shorter options with Latexmk
-- Build tools: remove support of Rubber
-- Misc bug fixes
-- Translations updates
-
-
-===================================
-* Release 2.6.2 (November 24, 2012)
-===================================
-
-- Misc bug fixes
-- Translations updates
-
-
-==================================
-* Release 2.6.1 (October 20, 2012)
-==================================
-
-- Autotools: required version of Vala is now optional
-- Comment selected lines: comment empty lines too
-- Misc bug fixes
-
-
-=================================
-* Release 2.6.0 (October 7, 2012)
-=================================
-
-- Change default style scheme from 'classic' to 'tango'
-
-- UI translations:
-	- Aleksej Kabanov (ru)
-	- Daniel Mustieles (es)
-	- Matej Urbančič (sl)
-	- Rūdolfs Mazurs (lv)
-	- Stas Solovey (ru)
-	- Мирослав Николић (sr) (sr@latin)
-
-- Doc translations:
-	- Daniel Mustieles (es)
-
-
-====================================
-* Release 2.5.4 (September 10, 2012)
-====================================
-
-- Fix build issue
-
-
-====================================
-* Release 2.5.3 (September 10, 2012)
-====================================
-
-- Build system: switch from CMake to the Autotools
-- SyncTeX: forward and backward search
-- Import the GtkSpell source code
-- Launcher: Added desktop actions (aka QuickList) (Matthieu Baerts)
-- Document: warning when temporary location set (bug #681226)
-- Make latexila work in application list (Pieter Pareit)
-- File browser:
+Release 2.5.3
+-------------
+* Build system: switch from CMake to the Autotools
+* SyncTeX: forward and backward search
+* Import the GtkSpell source code
+* Launcher: Added desktop actions (aka QuickList) (Matthieu Baerts)
+* Document: warning when temporary location set (bug #681226)
+* Make latexila work in application list (Pieter Pareit)
+* File browser:
 	- automatic updates (remove refresh button)
 	- simplify settings and add a settings button
-- Improve the user interface
-- Add some extensions to the clean-extensions setting
-- Update the documentation
-- Various code cleanups and refactoring
+* Improve the user interface
+* Add some extensions to the clean-extensions setting
+* Update the documentation
+* Various code cleanups and refactoring
+* Translations updates
 
-- UI translations:
-	- Christian Kirbach (de)
-	- Daniel Mustieles (es)
-	- Martin Srebotnjak (sl)
-	- Matej Urbančič (sl)
-	- Miguel Rodriguez (es)
-	- Мирослав Николић (sr) (sr@latin)
-
-
-===============================
-* Release 2.5.2 (July 24, 2012)
-===============================
-
-- Build Tools:
+Release 2.5.2
+-------------
+* Build Tools:
 	- Separate default and personal build tools
 	- To manage build tools, go to Build -> Manage Build Tools
 	- Remove the 'must succeed' option for a build job
@@ -151,321 +96,216 @@ LaTeXila NEWS
 	- Build View: add the 'show details' button, which replace the
 	  'always show all' option of the latexmk post-processor
 
-- Structure: open an included file or an image. Select an item in the
+* Structure: open an included file or an image. Select an item in the
   structure of the document, and go to Structure -> Open File, or a
   right click. (bug #670549)
-- Force to show icons in the menu (for the LaTeX and Math menus)
-- Remove the setting about the number of most used symbols
-- Icon size available in 192x192 (for gnome-shell)
-- CMake: option to change the man page directory (for OpenBSD)
-- CMake: generate README and INSTALL from README.in and INSTALL.in
-- Various code cleanups and refactoring
+* Force to show icons in the menu (for the LaTeX and Math menus)
+* Remove the setting about the number of most used symbols
+* Icon size available in 192x192 (for gnome-shell)
+* CMake: option to change the man page directory (for OpenBSD)
+* CMake: generate README and INSTALL from README.in and INSTALL.in
+* Various code cleanups and refactoring
 
-- UI translations:
-	- Andika Triwidada (id)
-	- Átila Camurça (pt_BR)
-	- Daniel Mustieles (es)
-	- Martin Srebotnjak (sl)
+Release 2.5.1
+-------------
+* Figure insertion: swap \label and \caption
+* Use GResource for icons and symbols
+* Code refactoring for the symbols (in the side panel)
+* Fixes and improvements of the compilation with CMake
+* Updated Brazilian Portuguese, Czech, Serbian and Latvian translations
 
-- Doc translations:
-	- Daniel Mustieles (es)
+Release 2.5.0
+-------------
+* Port to GTK+ 3
+* Migrate from libunique to GtkApplication
+* Updated Spanish, Slovenian and French translations
 
+Release 2.4.1
+-------------
+* Figure insertion: swap \label and \caption
+* Updated French, Czech translations
+* Added Indonesian translation
 
-==============================
-* Release 2.5.1 (May 31, 2012)
-==============================
-
-- Figure insertion: swap \label and \caption
-- Use GResource for icons and symbols
-- Code refactoring for the symbols (in the side panel)
-- Fixes and improvements of the compilation with CMake
-- Updated Brazilian Portuguese, Czech, Serbian and Latvian translations
-
-Thanks to:
-Átila Camurça, Marek Černocký, Rūdolfs Mazurs, Мирослав Николић
-
-
-================================
-* Release 2.5.0 (April 21, 2012)
-================================
-
-- Port to GTK+ 3
-- Migrate from libunique to GtkApplication
-- Updated Spanish, Slovenian and French translations
-
-Thanks to:
-Bruno Brouard, Daniel Mustieles, Matej Urbančič, Piotr Drąg
-
-
-==============================
-* Release 2.4.1 (June 5, 2012)
-==============================
-
-- Figure insertion: swap \label and \caption
-- Updated French, Czech translations
-- Added Indonesian translation
-
-Thanks to:
-Andika Triwidada, Bruno Brouard, Marek Černocký
-
-
-================================
-* Release 2.4.0 (March 28, 2012)
-================================
-
-Release name: Welcome Spring
-
-- Document compilation: set temporary location if file not saved
-- More documentation
-- Structure: bug fix for the display of simple lists
-- Build View: remove button "show critical errors"
-- Templates: code clean-up
-- More LaTeX commands for the completion
-- F12 shortcut to show/hide the side panel
-- TODO file removed (now in the wiki)
-- Updated Spanish, Slovenian, Serbian, French, German, Latvian,
+Release 2.4.0
+-------------
+* Document compilation: set temporary location if file not saved
+* More documentation
+* Structure: bug fix for the display of simple lists
+* Build View: remove button "show critical errors"
+* Templates: code clean-up
+* More LaTeX commands for the completion
+* F12 shortcut to show/hide the side panel
+* TODO file removed (now in the wiki)
+* Updated Spanish, Slovenian, Serbian, French, German, Latvian,
   Norwegian bokmål and Czech translations
 
-Thanks to:
-Bruno Brouard, Daniel Mustieles, Kjartan Maraas, Marek Černocký,
-Mario Blättermann, Matej Urbančič, Matthieu Baerts, Rudolfs Mazurs,
-Мирослав Николић
-
-
-=============================
-* Release 2.3.1 (Feb 5, 2012)
-=============================
-
-- More completion data
-- Support drag and drop of a list of files
-- Completion: code clean-up
-- Beamer environments: frame, block, columns, column
+Release 2.3.1
+-------------
+* More completion data
+* Support drag and drop of a list of files
+* Completion: code clean-up
+* Beamer environments: frame, block, columns, column
   (in the LaTeX menu and in the edit toolbar)
-- Fix bug for structure actions 'delete' and 'cut'
-- Add Simplified Chinese, Norwegian bokmål translations
-- Updated Spanish translation
+* Fix bug for structure actions 'delete' and 'cut'
+* Add Simplified Chinese, Norwegian bokmål translations
+* Updated Spanish translation
 
-Thanks to:
-Aron Xu, Daniel Mustieles, Erwan Bousse, Kjartan Maraas, Pieter Pareit,
-Piotr Drąg
+Release 2.3.0
+-------------
+* Spell checking with GtkSpell
+* Build Tools: add XeTeX -> PDF with Latexmk
+* Improve figure environment insertion
+* Templates: better icons
+* Added Esperanto translation
+* Updated Swedish, French and German translations
+* New CMake option: VALAC
+* Switch to Vala 0.14
 
+Release 2.2.3
+-------------
+* Added Esperanto and Norwegian bokmål translations
+* Updated Swedish, German and Spanish translations
 
-==============================
-* Release 2.3.0 (Nov 26, 2011)
-==============================
+Release 2.2.2
+-------------
+* Avoid critical messages about a GtkAction
+* Fix the right math delimiters
+* Added Galician translation
+* Updated Slovenian, Czech, Spanish translations
 
-- Spell checking with GtkSpell
-- Build Tools: add XeTeX -> PDF with Latexmk
-- Improve figure environment insertion
-- Templates: better icons
-- Added Esperanto translation
-- Updated Swedish, French and German translations
-- New CMake option: VALAC
-- Switch to Vala 0.14
-
-
-=============================
-* Release 2.2.3 (Feb 5, 2012)
-=============================
-
-- Added Esperanto and Norwegian bokmål translations
-- Updated Swedish, German and Spanish translations
-
-Thanks to:
-Daniel Mustieles, Daniel Nylander, Kjartan Maraas, Kristjan SCHMIDT,
-Mario Blättermann
-
-
-=============================
-* Release 2.2.2 (Oct 8, 2011)
-=============================
-
-- Avoid critical messages about a GtkAction
-- Fix the right math delimiters
-- Added Galician translation
-- Updated Slovenian, Czech, Spanish translations
-
-
-==============================
-* Release 2.2.1 (Sep 17, 2011)
-==============================
-
-- Completion data: add some environments
-- Added Slovenian, Czech, Swedish and Serbian translations
-- Requirements fix: GLib >= 2.28 (instead of 2.26)
-- Compilation: call "valac-0.12" instead of "valac"
-- Bugs fixed:
+Release 2.2.1
+-------------
+* Completion data: add some environments
+* Added Slovenian, Czech, Swedish and Serbian translations
+* Requirements fix: GLib >= 2.28 (instead of 2.26)
+* Compilation: call "valac-0.12" instead of "valac"
+* Bugs fixed:
   659129: space alone triggers completion with the fr-oss keyboard layout
   659290: avoid GCC error messages when using -Werror=format-security
 
+Release 2.2.0
+-------------
+* Integration with GNOME Damned Lies (use ITS Tool, …)
+* Structure: more robust, and more optimized
+* Latexmk post processor: extract Latexmk messages
+* BibTeX and MakeIndex: fix problems for writing *.blg or *.ind files
+* Some UI improvements
+* New CMake options: WITH_GNOME and COMPILE_SCHEMA
+* Open File: filter to show only .tex and .bib files
+* Translation updates: French, German and Spanish
+* Some other little improvements and bug fixes
 
-==============================
-* Release 2.2.0 (Aug 26, 2011)
-==============================
-
-- Integration with GNOME Damned Lies (use ITS Tool, …)
-- Structure: more robust, and more optimized
-- Latexmk post processor: extract Latexmk messages
-- BibTeX and MakeIndex: fix problems for writing *.blg or *.ind files
-- Some UI improvements
-- New CMake options: WITH_GNOME and COMPILE_SCHEMA
-- Open File: filter to show only .tex and .bib files
-- Translation updates: French, German and Spanish
-- Some other little improvements and bug fixes
-
-
-======================================
-* Release 2.1.1 (July 15, 2011) [beta]
-======================================
-
-- Structure:
+Release 2.1.1
+-------------
+* Structure:
 	- better implemenation (custom Gtk.TreeModel)
 	- better performances (line-by-line parsing)
 	- simple lists of items, to find more quickly one element
 	- some actions: cut, copy, delete, select, comment, shift left/right
 
-- Build Tools: copy button to duplicate a build tool
-- Mallard documentation about the build tools
-- Build View: text is selectable, so we can copy/paste it
-- Cleanup Build Files: take into account projects
-- Show/hide the main toolbar
-- Fix: Build Tools not available on a .bib project file
-- dconf: scripts for migrating latexila 2.0.x -> 2.2.x
-- Some other little improvements and bug fixes
+* Build Tools: copy button to duplicate a build tool
+* Mallard documentation about the build tools
+* Build View: text is selectable, so we can copy/paste it
+* Cleanup Build Files: take into account projects
+* Show/hide the main toolbar
+* Fix: Build Tools not available on a .bib project file
+* dconf: scripts for migrating latexila 2.0.x -> 2.2.x
+* Some other little improvements and bug fixes
 
+Release 2.1.0
+-------------
+* Build Tools: Latexmk by default instead of Rubber (Rubber is still available)
+* New build tools: "low level" commands (latex, pdflatex, dvipdf, etc.)
+* Show/hide a build tool
+* Build View: show/hide errors/warnings/badboxes
+* File Browser: new icon for images
+* Structure of a document to easily navigate in it
+* Some code clean-up and little fixes
 
-====================================
-* Release 2.1.0 (May 6, 2011) [beta]
-====================================
+Release 2.0.8
+-------------
+* Fix a segmentation fault on search
+* Change behavior of HOME and END buttons
+* More completion data (Pieter Pareit)
+* Completion: insert \item for list environments (Pieter Pareit)
+* German translation: some fixes (Max Schillinger)
+* Some other little improvements and bug fixes
 
-- Build Tools: Latexmk by default instead of Rubber (Rubber is still available)
-- New build tools: "low level" commands (latex, pdflatex, dvipdf, etc.)
-- Show/hide a build tool
-- Build View: show/hide errors/warnings/badboxes
-- File Browser: new icon for images
-- Structure of a document to easily navigate in it
-- Some code clean-up and little fixes
+Release 2.0.7
+-------------
+* Projects: avoid infinite loop at startup
+* Some other little fixes
 
+Release 2.0.6
+-------------
+* More robust save and load of build tools
+* Italian translation
+* Some little improvements and bug fixes
 
-===============================
-* Release 2.0.8 (June 14, 2011)
-===============================
+Release 2.0.5
+-------------
+* German translation
+* GSettings desktop schemas are now optional
+* New post processor for build tools: 'all-output'
+* Rename 'generic' post processor to 'no-output'
+* Bug fixes in build tools
 
-- Fix a segmentation fault on search
-- Change behavior of HOME and END buttons
-- More completion data (Pieter Pareit)
-- Completion: insert \item for list environments (Pieter Pareit)
-- German translation: some fixes (Max Schillinger)
-- Some other little improvements and bug fixes
+Release 2.0.4
+-------------
+* Bug fix: slowness at the end of long lines
+* Bug fix: "save all" modifies which tab is active
 
+Release 2.0.3
+-------------
+* Fix path issues in RubberPostProcessor
+* C code generated (Vala is no longer required)
 
-==============================
-* Release 2.0.7 (Mar 25, 2011)
-==============================
+Release 2.0.2
+-------------
+* Brazilian Portuguese translation
+* New application icon
 
-- Projects: avoid infinite loop at startup
-- Some other little fixes
+Release 2.0.1
+-------------
+* Editor setting: forget you're not using tabs
+* File browser: show all files except clean-up
+* Centered Formula: \[...\] instead of $$...$$
+* Some other little improvements and bug fixes
 
+Release 2.0.0
+-------------
+* LaTeX commands auto-completion
+* Manage build tools with a GUI
+* Most used symbols
+* Manage projects easily
+* More items in LaTeX menu
+* A new Math menu
+* Some symbols and icons regenerated (with a new script)
+* Reset all preferences button
+* French and Spanish translations updated
+* Some other little improvements and bug fixes
 
-=============================
-* Release 2.0.6 (Mar 4, 2011)
-=============================
+Release 1.99.1
+--------------
+* Bug fix: critical messages with several windows
+* Bug fix: save a new document on disk
+* ChangeLog updated
 
-- More robust save and load of build tools
-- Italian translation
-- Some little improvements and bug fixes
-
-
-==============================
-* Release 2.0.5 (Feb 13, 2011)
-==============================
-
-- German translation
-- GSettings desktop schemas are now optional
-- New post processor for build tools: 'all-output'
-- Rename 'generic' post processor to 'no-output'
-- Bug fixes in build tools
-
-
-==============================
-* Release 2.0.4 (Jan 28, 2011)
-==============================
-
-- Bug fix: slowness at the end of long lines
-- Bug fix: "save all" modifies which tab is active
-
-
-==============================
-* Release 2.0.3 (Jan 15, 2011)
-==============================
-
-- Fix path issues in RubberPostProcessor
-- C code generated (Vala is no longer required)
-
-
-==============================
-* Release 2.0.2 (Dec 25, 2010)
-==============================
-
-- Brazilian Portuguese translation
-- New application icon
-
-
-==============================
-* Release 2.0.1 (Nov 21, 2010)
-==============================
-
-- Editor setting: forget you're not using tabs
-- File browser: show all files except clean-up
-- Centered Formula: \[...\] instead of $$...$$
-- Some other little improvements and bug fixes
-
-
-==============================
-* Release 2.0.0 (Nov 13, 2010)
-==============================
-
-- LaTeX commands auto-completion
-- Manage build tools with a GUI
-- Most used symbols
-- Manage projects easily
-- More items in LaTeX menu
-- A new Math menu
-- Some symbols and icons regenerated (with a new script)
-- Reset all preferences button
-- French and Spanish translations updated
-- Some other little improvements and bug fixes
-
-
-==============================
-* Release 1.99.1 (Sep 2, 2010)
-==============================
-
-- Bug fix: critical messages with several windows
-- Bug fix: save a new document on disk
-- ChangeLog updated
-
-
-===============================
-* Release 1.99.0 (Aug 25, 2010)
-===============================
-
-- Rewrite in Vala
-- One instance of LaTeXila can manage several windows
-- Thanks to unique, a new file is opened in an existing window if it's in the
+Release 1.99.0
+--------------
+* Rewrite in Vala
+* One instance of LaTeXila can manage several windows
+* Thanks to unique, a new file is opened in an existing window if it's in the
 same workspace
-- Better search and replace, inspired by MonoDevelop
-- Build Tools: Rubber is used for documents compilation
-- French translation updated
-- Spanish translation added
+* Better search and replace, inspired by MonoDevelop
+* Build Tools: Rubber is used for documents compilation
+* French translation updated
+* Spanish translation added
 
-
-============================
-* Release 0.2 (Feb 20, 2010)
-============================
-
-- New logo and icon (Eric Forgeot)
-- User-friendly output for the compilation:
+Release 0.2
+-----------
+* New logo and icon (Eric Forgeot)
+* User-friendly output for the compilation:
 	* The output is filtered: only errors, warnings and badboxes are
 	showed.
 	* For a message, the file and the line is extracted, so the user can
@@ -475,32 +315,29 @@ same workspace
 	* Options in the preferences: show all output,
 	-interaction=nonstopmode
 
-- Stop the execution of an external command
-- Clean-up build files
-- File browser: combobox with all parent directories
-- Create a backup copy of files before saving (e.g. filename~)
-- Autosave files every X minutes
-- New default template: beamer presentation
-- Create personnal templates: choose an icon
-- French translation updated
+* Stop the execution of an external command
+* Clean-up build files
+* File browser: combobox with all parent directories
+* Create a backup copy of files before saving (e.g. filename~)
+* Autosave files every X minutes
+* New default template: beamer presentation
+* Create personnal templates: choose an icon
+* French translation updated
 
-
-============================
-* Release 0.1 (Dec 28, 2009)
-============================
-
-- File browser integrated
-- BibTeX and MakeIndex support
-- Templates:
+Release 0.1
+-----------
+* File browser integrated
+* BibTeX and MakeIndex support
+* Templates:
 	* 4 default templates (article, report, book and letter)
 	* possibility to create and delete personnal templates
 
-- Tools: Indent/Unindent, Comment/Uncomment selected lines
-- Search: Goto Line
-- Documents menu: Save/Close all, Previous/Next document
-- Documentation: LaTeX reference from Kile
-- Edit toolbar and the LaTeX menu: math stuff
-- More preferences:
+* Tools: Indent/Unindent, Comment/Uncomment selected lines
+* Search: Goto Line
+* Documents menu: Save/Close all, Previous/Next document
+* Documentation: LaTeX reference from Kile
+* Edit toolbar and the LaTeX menu: math stuff
+* More preferences:
 	* Style scheme support (GtkSourceView)
 	* Remember the files opened at exit and reopen them on startup
 	* Clean-up auxiliaries files after close
@@ -508,35 +345,29 @@ same workspace
 	* Highlighting (current line; brackets matching)
 	* Show the two toolbars on the same line
 
-- Undo/redo: check if the buffer is saved
-- Find/Replace: under the source view instead of a dialog
-- Some icons updated
-- French translation updated
+* Undo/redo: check if the buffer is saved
+* Find/Replace: under the source view instead of a dialog
+* Some icons updated
+* French translation updated
 
-
-==============================
-* Release 0.0.2 (Oct 17, 2009)
-==============================
-
-- Symbol tables: Greek letters, arrows, relations, operators,
+Release 0.0.2
+-------------
+* Symbol tables: Greek letters, arrows, relations, operators,
 delimiters, misc math, misc text (661 symbols)
-- Edit toolbar and the LaTeX menu: sectioning, references,
+* Edit toolbar and the LaTeX menu: sectioning, references,
 environments, list environments, characters sizes and font styles
-- Possibility to reorder the document tabs
-- Command line options: --new-document, --version and --help
-- A lot of little improvements
-- Bug fixes
-- Nicer display of output commands when compiling or converting a
+* Possibility to reorder the document tabs
+* Command line options: --new-document, --version and --help
+* A lot of little improvements
+* Bug fixes
+* Nicer display of output commands when compiling or converting a
 document (the output is showed progressivly line per line)
-- Log zone: keep only the five last actions
-- French translation updated
+* Log zone: keep only the five last actions
+* French translation updated
 
-
-==============================
-* Release 0.0.1 (Sept 2, 2009)
-==============================
-
-- Syntaxic color
-- Buttons to compile, convert and view the document
-- All common things found in a text editor...
-- French translation
+Release 0.0.1
+-------------
+* Syntaxic color
+* Buttons to compile, convert and view the document
+* All common things found in a text editor...
+* French translation
