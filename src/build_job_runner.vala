@@ -61,7 +61,7 @@ public class BuildJobRunner : GLib.Object
     public void run () throws ShellError, Error
     {
         string[] command_args = get_command_args ();
-        string working_directory = _on_file.get_parent ().get_parse_name ();
+        string working_directory = _on_file.get_parent ().get_path ();
 
         _command_runner = new BuildCommandRunner (command_args, working_directory);
 
