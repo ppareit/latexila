@@ -1,15 +1,15 @@
 # Lithuanian translation for latexila.
 # Copyright (C) 2013 latexila's COPYRIGHT HOLDER
 # This file is distributed under the same license as the latexila package.
-# Aurimas Černius <aurisc4@gmail.com>, 2013.
+# Aurimas Černius <aurisc4@gmail.com>, 2013, 2014.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: latexila master\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
 "product=latexila&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-13 10:40+0000\n"
-"PO-Revision-Date: 2013-10-15 23:08+0300\n"
+"POT-Creation-Date: 2014-03-02 10:16+0000\n"
+"PO-Revision-Date: 2014-03-02 22:44+0200\n"
 "Last-Translator: Aurimas Černius <aurisc4@gmail.com>\n"
 "Language-Team: Lietuvių <gnome-lt@lists.akl.lt>\n"
 "Language: lt\n"
@@ -71,6 +71,52 @@ msgstr "Konvertuoti DVI dokumentą į PistScript formatą"
 #: build_tools.xml:104(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr "Konvertuoti PostScript dokumentą į PDF formatą"
+
+#: ../data/latexila.appdata.xml.in.h:1
+msgid ""
+"LaTeXila is an integrated LaTeX environment for the GNOME desktop. The idea "
+"of LaTeXila is to always deal directly with the LaTeX code, while "
+"simplifying as most as possible the writing of this LaTeX code."
+msgstr ""
+"LaTeXila yra integruota LaTeX aplinka GNOME darbastaliui. LaTeXila siekia "
+"tiesiosiai dirbti su LaTeX kodu, tuo pat metu kiek galima supaprastinant "
+"LaTeX kodo rašymą."
+
+#: ../data/latexila.appdata.xml.in.h:2
+msgid ""
+"There are menus and toolbars with the principal LaTeX commands. To help the "
+"writing of the LaTeX markup, there is also LaTeX commands completion."
+msgstr ""
+"Yra meniu ir įrankinės su pagrindinėmis LaTeX komandomis. LaTeX ženklinimo "
+"rašymo supaprastinimui taip pat yra komandų užbaigimas."
+
+#: ../data/latexila.appdata.xml.in.h:3
+msgid ""
+"New documents are created from templates. There are buttons to compile, "
+"convert and view a document in one click. And projects containing several ."
+"tex files are managed easily."
+msgstr ""
+"Nauji dokumentai yra kuriami pagal šablonus. Yra mygtukai kompiliavimui, "
+"konvertavimui ir dokumento peržiūrai vienu paspaudimu. Projektai iš keleto ."
+"tex failų yra lengvai valdomi."
+
+#: ../data/latexila.appdata.xml.in.h:4
+msgid ""
+"There is a side panel with three components: the document structure to "
+"easily navigate in it; lists of symbols to insert them in a document; and an "
+"integrated file browser."
+msgstr ""
+"Taip pat yra šoninis skydelis su trim komponentais: dokumento struktūra "
+"lengvai navigacijai jame; simbolių sąrašas įterpimui į dokumentą; integruota "
+"failų naršyklė."
+
+#: ../data/latexila.appdata.xml.in.h:5
+msgid ""
+"LaTeXila has also other features like the spell checking, or the forward and "
+"backward search to switch between the .tex and the PDF."
+msgstr ""
+"LaTeXila taip pat turi kitų savybių, tokių kaip rašybos tikrinimas bei "
+"paieška pirmyn ir atgal persijungimui tarp .tex ir PDF."
 
 #: ../data/latexila.desktop.in.in.h:1
 msgid "LaTeXila"
@@ -487,7 +533,7 @@ msgid "Move down"
 msgstr "Nuleisti žemyn"
 
 #: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
-#: ../src/latex_menu.vala:52 ../src/structure.vala:777
+#: ../src/latex_menu.vala:52 ../src/structure.vala:782
 msgid "Label"
 msgstr "Etiketė"
 
@@ -622,12 +668,12 @@ msgstr "Nėra atitinkančio siūlymo"
 
 #. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
 #. "Column". Please, use abbreviations if possible.
-#: ../src/custom_statusbar.vala:41
+#: ../src/custom_statusbar.vala:45
 #, c-format
 msgid "Ln %d, Col %d"
 msgstr "Eil %d, Stlp %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:762
+#: ../src/dialogs.vala:40 ../src/main_window.vala:765
 msgid "Close without Saving"
 msgstr "Užverti neįrašant"
 
@@ -753,7 +799,7 @@ msgid "File System"
 msgstr "Failų sistema"
 
 #. File browser
-#: ../src/file_browser.vala:455 ../src/main_window.vala:401
+#: ../src/file_browser.vala:455 ../src/main_window.vala:404
 msgid "File Browser"
 msgstr "Failų naršyklė"
 
@@ -762,31 +808,31 @@ msgstr "Failų naršyklė"
 msgid "_Sectioning"
 msgstr "_Skiltys"
 
-#: ../src/latex_menu.vala:34 ../src/structure.vala:770
+#: ../src/latex_menu.vala:34 ../src/structure.vala:775
 msgid "Part"
 msgstr "Dalis"
 
-#: ../src/latex_menu.vala:36 ../src/structure.vala:771
+#: ../src/latex_menu.vala:36 ../src/structure.vala:776
 msgid "Chapter"
 msgstr "Skyrius"
 
-#: ../src/latex_menu.vala:38 ../src/structure.vala:772
+#: ../src/latex_menu.vala:38 ../src/structure.vala:777
 msgid "Section"
 msgstr "Skiltis"
 
-#: ../src/latex_menu.vala:40 ../src/structure.vala:773
+#: ../src/latex_menu.vala:40 ../src/structure.vala:778
 msgid "Sub-section"
 msgstr "Po-skiltis"
 
-#: ../src/latex_menu.vala:42 ../src/structure.vala:774
+#: ../src/latex_menu.vala:42 ../src/structure.vala:779
 msgid "Sub-sub-section"
 msgstr "Po-po-skiltis"
 
-#: ../src/latex_menu.vala:44 ../src/structure.vala:775
+#: ../src/latex_menu.vala:44 ../src/structure.vala:780
 msgid "Paragraph"
 msgstr "Pastraipa"
 
-#: ../src/latex_menu.vala:46 ../src/structure.vala:776
+#: ../src/latex_menu.vala:46 ../src/structure.vala:781
 msgid "Sub-paragraph"
 msgstr "Po-pastraipa"
 
@@ -1885,99 +1931,111 @@ msgstr "_LaTeX žinynas"
 msgid "The Kile LaTeX Reference"
 msgstr "Kile LaTeX žinynas"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1220
+#: ../src/main_window.vala:67
+msgid "_Donate"
+msgstr "_Aukoti"
+
+#: ../src/main_window.vala:68
+msgid ""
+"Donate to demonstrate your appreciation of LaTeXila and help its future "
+"development"
+msgstr ""
+"Paaukokite, taip parodydami, kad vertinate LaTeXila bei padėdami jos "
+"tolesniam kūrimui"
+
+#: ../src/main_window.vala:71 ../src/main_window.vala:1244
 msgid "About LaTeXila"
 msgstr "Apie LaTeXila"
 
-#: ../src/main_window.vala:73
+#: ../src/main_window.vala:76
 msgid "_Main Toolbar"
 msgstr "_Pagrindinė įrankinė"
 
-#: ../src/main_window.vala:74
+#: ../src/main_window.vala:77
 msgid "Show or hide the main toolbar"
 msgstr "Rodyti arba slėpti pagrindinę įrankinę"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:76
+#: ../src/main_window.vala:79
 msgid "_Edit Toolbar"
 msgstr "R_edagavimo įrankinė"
 
-#: ../src/main_window.vala:77
+#: ../src/main_window.vala:80
 msgid "Show or hide the edit toolbar"
 msgstr "Rodyti arba slėpti redagavimo įrankinę"
 
-#: ../src/main_window.vala:78
+#: ../src/main_window.vala:81
 msgid "_Side panel"
 msgstr "Š_oninis polangis"
 
-#: ../src/main_window.vala:79
+#: ../src/main_window.vala:82
 msgid "Show or hide the side panel"
 msgstr "Rodyti arba slėpti šoninį polangį"
 
-#: ../src/main_window.vala:80
+#: ../src/main_window.vala:83
 msgid "_Bottom panel"
 msgstr "_Apatinis skydelis"
 
-#: ../src/main_window.vala:81
+#: ../src/main_window.vala:84
 msgid "Show or hide the bottom panel"
 msgstr "Rodyti arba slėpti apatinį skydelį"
 
 #. Symbols
-#: ../src/main_window.vala:397
+#: ../src/main_window.vala:400
 msgid "Symbols"
 msgstr "Simboliai"
 
-#: ../src/main_window.vala:406
+#: ../src/main_window.vala:409
 msgid "Structure"
 msgstr "Struktūra"
 
-#: ../src/main_window.vala:652
+#: ../src/main_window.vala:655
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Failas (%s) jau atvertas kitame LaTeXila lange."
 
-#: ../src/main_window.vala:654
+#: ../src/main_window.vala:657
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
 msgstr ""
 "LaTeXila atvėrė šį failą ne redagavimui. Ar vistiek norite jį redaguoti?"
 
-#: ../src/main_window.vala:657
+#: ../src/main_window.vala:660
 msgid "Edit Anyway"
 msgstr "Vistiek redaguoti"
 
-#: ../src/main_window.vala:658
+#: ../src/main_window.vala:661
 msgid "Don't Edit"
 msgstr "Neredaguoti"
 
-#: ../src/main_window.vala:759
+#: ../src/main_window.vala:762
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Įrašyti dokumento „%s“ pakeitimus prieš užveriant?"
 
-#: ../src/main_window.vala:839
+#: ../src/main_window.vala:842
 msgid "Read-Only"
 msgstr "Tik skaitymui"
 
-#: ../src/main_window.vala:853
+#: ../src/main_window.vala:860
 msgid "Save File"
 msgstr "Įrašyti failą"
 
-#: ../src/main_window.vala:888
+#: ../src/main_window.vala:895
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Failas „%s“ jau yra. Ar norite jį pakeisti?"
 
-#: ../src/main_window.vala:893 ../src/search.vala:182
+#: ../src/main_window.vala:900 ../src/search.vala:182
 msgid "Replace"
 msgstr "Pakeisti"
 
-#: ../src/main_window.vala:1182
+#: ../src/main_window.vala:1206
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "LaTeXila yra integruota LaTeX aplinka GNOME darbastaliui"
 
-#: ../src/main_window.vala:1221
+#: ../src/main_window.vala:1245
 msgid "translator-credits"
 msgstr ""
 "Išvertė:\n"
@@ -2117,96 +2175,96 @@ msgstr[0] "%d atitikmuo"
 msgstr[1] "%d atitikmenys"
 msgstr[2] "%d atitikmenų"
 
-#: ../src/structure.vala:158
+#: ../src/structure.vala:163
 msgid "Refresh"
 msgstr "Atnaujinti"
 
-#: ../src/structure.vala:172
+#: ../src/structure.vala:177
 msgid "Collapse All"
 msgstr "Suskleisti visus"
 
-#: ../src/structure.vala:182
+#: ../src/structure.vala:187
 msgid "Show labels"
 msgstr "Rodyti etiketes"
 
-#: ../src/structure.vala:183
+#: ../src/structure.vala:188
 msgid "Show included files"
 msgstr "Rodyti įterptus failus"
 
-#: ../src/structure.vala:184
+#: ../src/structure.vala:189
 msgid "Show tables"
 msgstr "Rodyti lenteles"
 
-#: ../src/structure.vala:185
+#: ../src/structure.vala:190
 msgid "Show figures and images"
 msgstr "Rodyti diagramas ir paveikslėlius"
 
 #. Translators: do not translate the words TODO and FIXME. They are special
 #. comments that can be inserted in LaTeX documents.
-#: ../src/structure.vala:188
+#: ../src/structure.vala:193
 msgid "Show TODOs and FIXMEs"
 msgstr "Rodyti neatlikimus ir taisymus"
 
-#: ../src/structure.vala:628
+#: ../src/structure.vala:633
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Struktūros veiksmo klaida: %s"
 
-#: ../src/structure.vala:633
+#: ../src/structure.vala:638
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "Struktūros duomenys atrodo yra pasenę. Atnaujinkite struktūrą."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:724
+#: ../src/structure.vala:729
 msgid "cut"
 msgstr "iškirpti"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:726
+#: ../src/structure.vala:731
 msgid "copy"
 msgstr "kopijuoti"
 
-#: ../src/structure.vala:727
+#: ../src/structure.vala:732
 msgid "delete"
 msgstr "trinti"
 
-#: ../src/structure.vala:728
+#: ../src/structure.vala:733
 msgid "select"
 msgstr "žymėti"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:730
+#: ../src/structure.vala:735
 msgid "comment"
 msgstr "komentuoti"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:732
+#: ../src/structure.vala:737
 msgid "shift left"
 msgstr "pastumti kairėn"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:734
+#: ../src/structure.vala:739
 msgid "shift right"
 msgstr "pastumti dešinėn"
 
-#: ../src/structure.vala:735
+#: ../src/structure.vala:740
 msgid "open file"
 msgstr "atverti failą"
 
-#: ../src/structure.vala:780
+#: ../src/structure.vala:785
 msgid "Table"
 msgstr "Lentelė"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:782
+#: ../src/structure.vala:787
 msgid "Figure"
 msgstr "Diagrama"
 
-#: ../src/structure.vala:783
+#: ../src/structure.vala:788
 msgid "Image"
 msgstr "Paveikslėlis"
 
-#: ../src/structure.vala:784
+#: ../src/structure.vala:789
 msgid "File included"
 msgstr "Įterptas failas"
 
