@@ -1,14 +1,15 @@
-# Language latexila translations for F package.
+# Serbian language latexila translations for F package.
+# Courtesy of Prevod.org team (http://prevod.org/) -- 2011—2014.
 # Copyright (C) 2011 THE F'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the F package.
-# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011, 2012, 2013.
+# Мирослав Николић <miroslavnikolic@rocketmail.com>, 2011—2014.
 msgid ""
 msgstr ""
 "Project-Id-Version: F 677-CF0E\n"
 "Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?product=latexi"
 "la&keywords=I18N+L10N&component=general\n"
-"POT-Creation-Date: 2013-10-07 22:26+0000\n"
-"PO-Revision-Date: 2013-10-13 21:38+0200\n"
+"POT-Creation-Date: 2014-03-24 10:32+0000\n"
+"PO-Revision-Date: 2014-03-24 22:09+0200\n"
 "Last-Translator: Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
 "Language-Team: Serbian <gnom@prevod.org>\n"
 "Language: sr\n"
@@ -70,6 +71,52 @@ msgstr "Претворите ДВИ документ у Пост-скрипт ф
 #: build_tools.xml:104(tool/description)
 msgid "Convert the PostScript document to the PDF format"
 msgstr "Претворите Пост-скрипт документ у ПДФ формат"
+
+#: ../data/latexila.appdata.xml.in.h:1
+msgid ""
+"LaTeXila is an integrated LaTeX environment for the GNOME desktop. The idea "
+"of LaTeXila is to always deal directly with the LaTeX code, while "
+"simplifying as most as possible the writing of this LaTeX code."
+msgstr ""
+"ЛаТеКсила је обједињено ЛаТеКс окружење за Гномову радну површ. Замисао "
+"ЛаТеКсиле је да увек непосредно ради са кодом ЛаТеКс-а, док што је више "
+"могуће поједностављује писање тог кода ЛаТеКс-а."
+
+#: ../data/latexila.appdata.xml.in.h:2
+msgid ""
+"There are menus and toolbars with the principal LaTeX commands. To help the "
+"writing of the LaTeX markup, there is also LaTeX commands completion."
+msgstr ""
+"Ту су изборници и траке алата са главним наредбама ЛаТеКс-а. Као испомоћ "
+"писању означавања ЛаТеКс-а, ту је такође и довршавање наредби ЛаТеКс-а."
+
+#: ../data/latexila.appdata.xml.in.h:3
+msgid ""
+"New documents are created from templates. There are buttons to compile, "
+"convert and view a document in one click. And projects containing several ."
+"tex files are managed easily."
+msgstr ""
+"Нови документи се стварају из шаблона. Имамо дугмад за превођење, претварање "
+"и прегледање документа на један клик. А и пројектима који садрже неколико "
+"„.tex“ датотека лако се управља."
+
+#: ../data/latexila.appdata.xml.in.h:4
+msgid ""
+"There is a side panel with three components: the document structure to "
+"easily navigate in it; lists of symbols to insert them in a document; and an "
+"integrated file browser."
+msgstr ""
+"Имамо бочну површ која садржи три дела: структуру документа за лако кретање "
+"кроз исту; списак симбола за уметање у документ; и обједињеног прегледника "
+"датотека."
+
+#: ../data/latexila.appdata.xml.in.h:5
+msgid ""
+"LaTeXila has also other features like the spell checking, or the forward and "
+"backward search to switch between the .tex and the PDF."
+msgstr ""
+"ЛаТеКсила поседује и друге функције као што је провера писања, или претрага "
+"унапред и уназад за пребацивање између „.tex“-а и ПДФ-а."
 
 #: ../data/latexila.desktop.in.in.h:1
 msgid "LaTeXila"
@@ -496,7 +543,7 @@ msgid "Move down"
 msgstr "Помери доле"
 
 #: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
-#: ../src/latex_menu.vala:52 ../src/structure.vala:777
+#: ../src/latex_menu.vala:52 ../src/structure.vala:782
 msgid "Label"
 msgstr "Натпис"
 
@@ -630,12 +677,12 @@ msgstr "Нема предлога поклапања"
 
 #. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
 #. "Column". Please, use abbreviations if possible.
-#: ../src/custom_statusbar.vala:41
+#: ../src/custom_statusbar.vala:45
 #, c-format
 msgid "Ln %d, Col %d"
 msgstr "Ред %d, колона %d"
 
-#: ../src/dialogs.vala:40 ../src/main_window.vala:754
+#: ../src/dialogs.vala:40 ../src/main_window.vala:765
 msgid "Close without Saving"
 msgstr "Затвори без чувања"
 
@@ -759,7 +806,7 @@ msgid "File System"
 msgstr "Систем датотека"
 
 #. File browser
-#: ../src/file_browser.vala:455 ../src/main_window.vala:393
+#: ../src/file_browser.vala:455 ../src/main_window.vala:404
 msgid "File Browser"
 msgstr "Прегледник датотека"
 
@@ -768,31 +815,31 @@ msgstr "Прегледник датотека"
 msgid "_Sectioning"
 msgstr "_Одељци"
 
-#: ../src/latex_menu.vala:34 ../src/structure.vala:770
+#: ../src/latex_menu.vala:34 ../src/structure.vala:775
 msgid "Part"
 msgstr "Део"
 
-#: ../src/latex_menu.vala:36 ../src/structure.vala:771
+#: ../src/latex_menu.vala:36 ../src/structure.vala:776
 msgid "Chapter"
 msgstr "Поглавље"
 
-#: ../src/latex_menu.vala:38 ../src/structure.vala:772
+#: ../src/latex_menu.vala:38 ../src/structure.vala:777
 msgid "Section"
 msgstr "Одељак"
 
-#: ../src/latex_menu.vala:40 ../src/structure.vala:773
+#: ../src/latex_menu.vala:40 ../src/structure.vala:778
 msgid "Sub-section"
 msgstr "Под-одељак"
 
-#: ../src/latex_menu.vala:42 ../src/structure.vala:774
+#: ../src/latex_menu.vala:42 ../src/structure.vala:779
 msgid "Sub-sub-section"
 msgstr "Под-под-одељак"
 
-#: ../src/latex_menu.vala:44 ../src/structure.vala:775
+#: ../src/latex_menu.vala:44 ../src/structure.vala:780
 msgid "Paragraph"
 msgstr "Пасус"
 
-#: ../src/latex_menu.vala:46 ../src/structure.vala:776
+#: ../src/latex_menu.vala:46 ../src/structure.vala:781
 msgid "Sub-paragraph"
 msgstr "Под-пасус"
 
@@ -1891,58 +1938,71 @@ msgstr "_ЛаТеКс подсетник"
 msgid "The Kile LaTeX Reference"
 msgstr "Киле ЛаТеКс подсетник"
 
-#: ../src/main_window.vala:68 ../src/main_window.vala:1212
+#: ../src/main_window.vala:67
+msgid "_Donate"
+msgstr "_Приложите"
+
+#: ../src/main_window.vala:68
+msgid ""
+"Donate to demonstrate your appreciation of LaTeXila and help its future "
+"development"
+msgstr ""
+"Ако сте у могућности приложите извесну новчану суму као добровољан прилог "
+"чиме бисте показали да цените ЛаТеКсилу и чиме бисте помогли њен будући "
+"развој"
+
+#: ../src/main_window.vala:71 ../src/main_window.vala:1244
 msgid "About LaTeXila"
 msgstr "О ЛаТеКсили"
 
-#: ../src/main_window.vala:73
+#: ../src/main_window.vala:76
 msgid "_Main Toolbar"
 msgstr "_Главна линија алата"
 
-#: ../src/main_window.vala:74
+#: ../src/main_window.vala:77
 msgid "Show or hide the main toolbar"
 msgstr "Прикажите или сакријте главну линију алата"
 
 #. Translators: "Edit" here is an adjective.
-#: ../src/main_window.vala:76
+#: ../src/main_window.vala:79
 msgid "_Edit Toolbar"
 msgstr "Линија _алата уређивања"
 
-#: ../src/main_window.vala:77
+#: ../src/main_window.vala:80
 msgid "Show or hide the edit toolbar"
 msgstr "Прикажите или сакријте линију алата уређивања"
 
-#: ../src/main_window.vala:78
+#: ../src/main_window.vala:81
 msgid "_Side panel"
 msgstr "_Бочна површ"
 
-#: ../src/main_window.vala:79
+#: ../src/main_window.vala:82
 msgid "Show or hide the side panel"
 msgstr "Прикажите или сакријте бочну површ"
 
-#: ../src/main_window.vala:80
+#: ../src/main_window.vala:83
 msgid "_Bottom panel"
 msgstr "_Доња површ"
 
-#: ../src/main_window.vala:81
+#: ../src/main_window.vala:84
 msgid "Show or hide the bottom panel"
 msgstr "Прикажите или сакријте доњу површ"
 
 #. Symbols
-#: ../src/main_window.vala:389
+#: ../src/main_window.vala:400
 msgid "Symbols"
 msgstr "Симболи"
 
-#: ../src/main_window.vala:398
+#: ../src/main_window.vala:409
 msgid "Structure"
 msgstr "Структура"
 
-#: ../src/main_window.vala:644
+#: ../src/main_window.vala:655
 #, c-format
 msgid "This file (%s) is already opened in another LaTeXila window."
 msgstr "Ова датотека (%s) је већ отворена у другом прозору ЛаТеКсиле."
 
-#: ../src/main_window.vala:646
+#: ../src/main_window.vala:657
 msgid ""
 "LaTeXila opened this instance of the file in a non-editable way. Do you want "
 "to edit it anyway?"
@@ -1950,41 +2010,41 @@ msgstr ""
 "ЛаТеКсила је отворио овај примерак документа на начин у коме мењање садржаја "
 "није могуће. Да ли и поред тога желите да мењате садржај?"
 
-#: ../src/main_window.vala:649
+#: ../src/main_window.vala:660
 msgid "Edit Anyway"
 msgstr "Ипак уреди"
 
-#: ../src/main_window.vala:650
+#: ../src/main_window.vala:661
 msgid "Don't Edit"
 msgstr "Не уређуј"
 
-#: ../src/main_window.vala:751
+#: ../src/main_window.vala:762
 #, c-format
 msgid "Save changes to document \"%s\" before closing?"
 msgstr "Да сачувам измене у документу „%s“ пре затварања?"
 
-#: ../src/main_window.vala:831
+#: ../src/main_window.vala:842
 msgid "Read-Only"
 msgstr "Само читање"
 
-#: ../src/main_window.vala:845
+#: ../src/main_window.vala:860
 msgid "Save File"
 msgstr "Сачувајте датотеку"
 
-#: ../src/main_window.vala:880
+#: ../src/main_window.vala:895
 #, c-format
 msgid "A file named \"%s\" already exists. Do you want to replace it?"
 msgstr "Датотека „%s“ већ постоји. Да ли желите да је замените?"
 
-#: ../src/main_window.vala:885 ../src/search.vala:182
+#: ../src/main_window.vala:900 ../src/search.vala:182
 msgid "Replace"
 msgstr "Замени"
 
-#: ../src/main_window.vala:1174
+#: ../src/main_window.vala:1206
 msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
 msgstr "ЛаТеКсила је интегрисано ЛаТеКс окружење за радну површ Гнома"
 
-#: ../src/main_window.vala:1213
+#: ../src/main_window.vala:1245
 msgid "translator-credits"
 msgstr ""
 "Мирослав Николић <miroslavnikolic@rocketmail.com>\n"
@@ -2094,34 +2154,33 @@ msgstr "Замените све"
 msgid "All"
 msgstr "Све"
 
-#: ../src/search.vala:305
+#: ../src/search.vala:309
 msgid "Search for"
 msgstr "Упишите израз за претрагу"
 
-#: ../src/search.vala:316
+#: ../src/search.vala:320
 msgid "Case sensitive"
 msgstr "Разликуј величину слова"
 
-#: ../src/search.vala:319
+#: ../src/search.vala:323
 msgid "Entire words only"
 msgstr "Само целе речи"
 
-#: ../src/search.vala:465
+#: ../src/search.vala:469
 msgid "Not found"
 msgstr "Нисам пронашао"
 
 #. Translators: the first %d is the position of the current search occurrence,
 #. * and the second %d is the total number of search occurrences.
 #.
-#: ../src/search.vala:482
+#: ../src/search.vala:486
 #, c-format
 msgid "Match %d of %d"
 msgstr "%d. поклапање од %d"
 
 #. Translators: %d is the total number of search occurrences.
-#: ../src/search.vala:487
+#: ../src/search.vala:491
 #, c-format
-#| msgid "%u matches"
 msgid "%d match"
 msgid_plural "%d matches"
 msgstr[0] "%d поклапање"
@@ -2129,96 +2188,96 @@ msgstr[1] "%d поклапања"
 msgstr[2] "%d поклапања"
 msgstr[3] "%d поклапање"
 
-#: ../src/structure.vala:158
+#: ../src/structure.vala:163
 msgid "Refresh"
 msgstr "Освежите списак"
 
-#: ../src/structure.vala:172
+#: ../src/structure.vala:177
 msgid "Collapse All"
 msgstr "Скупи све"
 
-#: ../src/structure.vala:182
+#: ../src/structure.vala:187
 msgid "Show labels"
 msgstr "Прикажи натписе"
 
-#: ../src/structure.vala:183
+#: ../src/structure.vala:188
 msgid "Show included files"
 msgstr "Прикажи укључене датотеке"
 
-#: ../src/structure.vala:184
+#: ../src/structure.vala:189
 msgid "Show tables"
 msgstr "Прикажи табеле"
 
-#: ../src/structure.vala:185
+#: ../src/structure.vala:190
 msgid "Show figures and images"
 msgstr "Прикажи фигуре и слике"
 
 #. Translators: do not translate the words TODO and FIXME. They are special
 #. comments that can be inserted in LaTeX documents.
-#: ../src/structure.vala:188
+#: ../src/structure.vala:193
 msgid "Show TODOs and FIXMEs"
 msgstr "Прикажи ДА_СЕ_УРАДИ и ПОПРАВИ_МЕ"
 
-#: ../src/structure.vala:628
+#: ../src/structure.vala:633
 #, c-format
 msgid "Structure action error: %s"
 msgstr "Грешка радње структуре: %s"
 
-#: ../src/structure.vala:633
+#: ../src/structure.vala:638
 msgid "The structure data seems outdated. Please refresh the structure."
 msgstr "Изгледа да су подаци структуре застарели. Молим освежите структуру."
 
 #. Translators: it's a verb
-#: ../src/structure.vala:724
+#: ../src/structure.vala:729
 msgid "cut"
 msgstr "исеци"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:726
+#: ../src/structure.vala:731
 msgid "copy"
 msgstr "умножи"
 
-#: ../src/structure.vala:727
+#: ../src/structure.vala:732
 msgid "delete"
 msgstr "обриши"
 
-#: ../src/structure.vala:728
+#: ../src/structure.vala:733
 msgid "select"
 msgstr "изабери"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:730
+#: ../src/structure.vala:735
 msgid "comment"
 msgstr "коментариши"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:732
+#: ../src/structure.vala:737
 msgid "shift left"
 msgstr "помери лево"
 
 #. Translators: it's a verb
-#: ../src/structure.vala:734
+#: ../src/structure.vala:739
 msgid "shift right"
 msgstr "помери десно"
 
-#: ../src/structure.vala:735
+#: ../src/structure.vala:740
 msgid "open file"
 msgstr "отвори датотеку"
 
-#: ../src/structure.vala:780
+#: ../src/structure.vala:785
 msgid "Table"
 msgstr "Табела"
 
 #. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
-#: ../src/structure.vala:782
+#: ../src/structure.vala:787
 msgid "Figure"
 msgstr "Фигура"
 
-#: ../src/structure.vala:783
+#: ../src/structure.vala:788
 msgid "Image"
 msgstr "Слика"
 
-#: ../src/structure.vala:784
+#: ../src/structure.vala:789
 msgid "File included"
 msgstr "Укључена датотека"
 
