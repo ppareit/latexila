@@ -9,8 +9,8 @@
       simplifying as most as possible the writing of this LaTeX code.
     </_p>
     <_p>
-      There are menus and toolbars with the principal LaTeX commands. To help
-      the writing of the LaTeX markup, there is also LaTeX commands completion.
+      To help the writing of the LaTeX markup, auto-completion is available as
+      well as menus and toolbars with the principal commands.
     </_p>
     <_p>
       New documents are created from templates. There are buttons to compile,
@@ -18,9 +18,9 @@
       .tex files are managed easily.
     </_p>
     <_p>
-      There is a side panel with three components: the document structure to
-      easily navigate in it; lists of symbols to insert them in a document; and
-      an integrated file browser.
+      A side panel contains three components: the document structure to easily
+      navigate in it; lists of symbols to insert them in a document; and an
+      integrated file browser.
     </_p>
     <_p>
       LaTeXila has also other features like the spell checking, or the forward
