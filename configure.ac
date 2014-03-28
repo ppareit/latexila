@@ -119,7 +119,7 @@ CFLAGS="$CFLAGS `pkg-config --cflags ${dependencies}`"
 LIBS="$LIBS `pkg-config --libs ${dependencies}`"
 
 # Native Language Support
-IT_PROG_INTLTOOL([0.40.0])
+IT_PROG_INTLTOOL([0.50.1])
 AM_GNU_GETTEXT_VERSION([0.17])
 AM_GNU_GETTEXT([external])
 
@@ -154,7 +154,7 @@ AC_CONFIG_FILES([Makefile
 		 data/icons/scalable/Makefile
 		 data/images/Makefile
 		 data/images/app/Makefile
-		 data/org.gnome.latexila.gschema.xml.in
+		 data/org.gnome.latexila.gschema.xml
 		 data/templates/Makefile
 		 help/Makefile
 		 man/Makefile

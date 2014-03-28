@@ -18,7 +18,7 @@ gsettings_SCHEMAS = org.gnome.latexila.gschema.xml
 
 EXTRA_DIST =					\
 	latexila.desktop.in			\
-	org.gnome.latexila.gschema.xml.in.in	\
+	org.gnome.latexila.gschema.xml.in	\
 	$(appdata_in_files)
 
 CLEANFILES =				\
