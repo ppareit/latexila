@@ -30,12 +30,14 @@ GTK_REQUIRED_VERSION="3.6"
 GTKSOURCEVIEW_REQUIRED_VERSION="3.10"
 GTKSPELL_REQUIRED_VERSION="3.0.4"
 VALA_REQUIRED_VERSION="0.20.0"
+GEE_REQUIRED_VERSION="0.14"
 
 AC_SUBST([GLIB_REQUIRED_VERSION])
 AC_SUBST([GTK_REQUIRED_VERSION])
 AC_SUBST([GTKSOURCEVIEW_REQUIRED_VERSION])
 AC_SUBST([GTKSPELL_REQUIRED_VERSION])
 AC_SUBST([VALA_REQUIRED_VERSION])
+AC_SUBST([GEE_REQUIRED_VERSION])
 
 # Some directories
 
@@ -102,8 +104,8 @@ if ! pkg-config gsettings-desktop-schemas; then
 	AC_MSG_ERROR([gsettings-desktop-schemas required.])
 fi
 
-if ! pkg-config gee-1.0; then
-	AC_MSG_ERROR([gee-1.0 required.])
+if ! pkg-config --atleast-version=${GEE_REQUIRED_VERSION} gee-0.8; then
+	AC_MSG_ERROR([gee-0.8 >= ${GEE_REQUIRED_VERSION} required.])
 fi
 
 dependencies="
@@ -113,7 +115,7 @@ dependencies="
 	gtksourceview-3.0
 	gtkspell3-3.0
 	gsettings-desktop-schemas
-	gee-1.0"
+	gee-0.8"
 
 CFLAGS="$CFLAGS `pkg-config --cflags ${dependencies}`"
 LIBS="$LIBS `pkg-config --libs ${dependencies}`"

@@ -6,7 +6,7 @@ VALAFLAGS =			\
 	--pkg gtk+-3.0		\
 	--pkg gtksourceview-3.0	\
 	--pkg gtkspell3-3.0	\
-	--pkg gee-1.0		\
+	--pkg gee-0.8		\
 	--pkg posix		\
 	--target-glib=2.36
 
