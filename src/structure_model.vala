@@ -23,6 +23,18 @@ using Gtk;
 // View: structure.vala
 // Controller: document_structure.vala
 
+// A custom GtkTreeModel based on GNode (N-ary tree) is used instead of GtkTreeStore for
+// several reasons:
+// - The tree must be traversed to know where to insert a new item. Traversing a
+//   GtkTreeStore is not convenient and is slower than traversing a GNode.
+// - For the right click actions (cut, comment, shift left/right, etc), some items must be
+//   moved or removed in the middle of the tree. It is not easily feasible with
+//   GtkTreeStore to move a node with all its children, the items must be removed and
+//   reinserted one by one. On the other hand we can do that easily with GNode.
+// - For the future, if we want to implement the update on the fly of the structure when
+//   the document is modified, some items must also be moved, removed, inserted in the
+//   middle, etc.
+
 public struct StructData
 {
     StructType type;
