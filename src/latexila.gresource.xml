@@ -37,7 +37,8 @@
     <file alias="list-description.png" preprocess="to-pixdata">../data/images/stock-icons/list-description.png</file>
     <file alias="list-enumerate.png" preprocess="to-pixdata">../data/images/stock-icons/list-enumerate.png</file>
     <file alias="list-item.png" preprocess="to-pixdata">../data/images/stock-icons/list-item.png</file>
-    <file alias="list-itemize.png" preprocess="to-pixdata">../data/images/stock-icons/list-itemize.png</file>
+    <file alias="list-itemize-size16.png" preprocess="to-pixdata">../data/images/stock-icons/list-itemize-size16.png</file>
+    <file alias="list-itemize-size24.png" preprocess="to-pixdata">../data/images/stock-icons/list-itemize-size24.png</file>
     <file alias="math-frac.png" preprocess="to-pixdata">../data/images/stock-icons/math-frac.png</file>
     <file alias="math-nth-root.png" preprocess="to-pixdata">../data/images/stock-icons/math-nth-root.png</file>
     <file alias="math-square-root.png" preprocess="to-pixdata">../data/images/stock-icons/math-square-root.png</file>

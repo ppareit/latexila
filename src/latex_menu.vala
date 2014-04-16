@@ -89,8 +89,8 @@ public class LatexMenu : Gtk.ActionGroup
 
         // LaTeX: list environments
 
-        { "ListEnvironments", "list-enumerate", N_("_List Environments") },
-        { "ListEnvItemize", "list-itemize", "\\begin{_itemize}", null,
+        { "ListEnvironments", "list-itemize-size16", N_("_List Environments") },
+        { "ListEnvItemize", "list-itemize-size24", "\\begin{_itemize}", null,
             N_("Bulleted List - \\begin{itemize}"), on_list_env_itemize },
         { "ListEnvEnumerate", "list-enumerate", "\\begin{_enumerate}", null,
             N_("Enumeration - \\begin{enumerate}"), on_list_env_enumerate },
