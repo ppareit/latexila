@@ -64,12 +64,7 @@
     <file alias="references.png" preprocess="to-pixdata">../data/images/stock-icons/references.png</file>
     <file alias="roman.png" preprocess="to-pixdata">../data/images/stock-icons/roman.png</file>
     <file alias="sans_serif.png" preprocess="to-pixdata">../data/images/stock-icons/sans_serif.png</file>
-    <file alias="sectioning-chapter.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-chapter.png</file>
-    <file alias="sectioning-paragraph.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-paragraph.png</file>
-    <file alias="sectioning-part.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-part.png</file>
-    <file alias="sectioning-section.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-section.png</file>
-    <file alias="sectioning-subsection.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-subsection.png</file>
-    <file alias="sectioning-subsubsection.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-subsubsection.png</file>
+    <file alias="sectioning.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning.png</file>
     <file alias="slanted.png" preprocess="to-pixdata">../data/images/stock-icons/slanted.png</file>
     <file alias="small_caps.png" preprocess="to-pixdata">../data/images/stock-icons/small_caps.png</file>
     <file alias="symbol_arrows.png" preprocess="to-pixdata">../data/images/stock-icons/symbol_arrows.png</file>

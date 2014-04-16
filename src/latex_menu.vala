@@ -29,20 +29,20 @@ public class LatexMenu : Gtk.ActionGroup
 
         // LaTeX: Sectioning
 
-        { "Sectioning", "sectioning-section", N_("_Sectioning") },
-        { "SectioningPart", "sectioning-part", "\\_part", null,
+        { "Sectioning", "sectioning", N_("_Sectioning") },
+        { "SectioningPart", null, "\\_part", null,
             N_("Part"), on_sectioning_part },
-        { "SectioningChapter", "sectioning-chapter", "\\_chapter", null,
+        { "SectioningChapter", null, "\\_chapter", null,
             N_("Chapter"), on_sectioning_chapter },
-        { "SectioningSection", "sectioning-section", "\\_section", null,
+        { "SectioningSection", null, "\\_section", null,
             N_("Section"), on_sectioning_section },
-        { "SectioningSubsection", "sectioning-subsection", "\\s_ubsection", null,
+        { "SectioningSubsection", null, "\\s_ubsection", null,
             N_("Sub-section"), on_sectioning_subsection },
-        { "SectioningSubsubsection", "sectioning-subsubsection", "\\su_bsubsection",
+        { "SectioningSubsubsection", null, "\\su_bsubsection",
             null, N_("Sub-sub-section"), on_sectioning_subsubsection },
-        { "SectioningParagraph", "sectioning-paragraph", "\\p_aragraph", null,
+        { "SectioningParagraph", null, "\\p_aragraph", null,
             N_("Paragraph"), on_sectioning_paragraph },
-        { "SectioningSubparagraph", "sectioning-paragraph", "\\subpa_ragraph", null,
+        { "SectioningSubparagraph", null, "\\subpa_ragraph", null,
             N_("Sub-paragraph"), on_sectioning_subparagraph },
 
         // LaTeX: References
@@ -440,7 +440,7 @@ public class LatexMenu : Gtk.ActionGroup
 
         // menus under toolitems
         Gtk.Action sectioning = get_menu_tool_action ("SectioningToolItem",
-            _("Sectioning"), "sectioning-section");
+            _("Sectioning"), "sectioning");
 
         Gtk.Action sizes = get_menu_tool_action ("CharacterSizeToolItem",
             _("Characters Sizes"), "character-size");
