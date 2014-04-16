@@ -1,0 +1,2413 @@
+# Hebrew translation for latexila.
+# Copyright (C) 2014 latexila's COPYRIGHT HOLDER
+# This file is distributed under the same license as the latexila package.
+# fr33domlover <fr33domlover@riseup.net>, 2014.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: latexila master\n"
+"Report-Msgid-Bugs-To: http://bugzilla.gnome.org/enter_bug.cgi?"
+"product=latexila&keywords=I18N+L10N&component=general\n"
+"POT-Creation-Date: 2014-04-13 21:50+0000\n"
+"PO-Revision-Date: 2014-04-17 02:02+0300\n"
+"Last-Translator: fr33domlover <fr33domlover@riseup.net>\n"
+"Language-Team: עברית <>\n"
+"Language: he\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: build_tools.xml:43(tool/label) ../src/build_tool_dialog.vala:166
+msgid "View PDF"
+msgstr "הצגת PDF"
+
+#: build_tools.xml:44(tool/description)
+msgid "View the PDF file"
+msgstr "הצגת קובץ ה־PDF"
+
+#: build_tools.xml:49(tool/label) ../src/build_tool_dialog.vala:165
+msgid "View DVI"
+msgstr "הצגת DVI"
+
+#: build_tools.xml:50(tool/description)
+msgid "View the DVI file"
+msgstr "הצגת קובץ ה־DVI"
+
+#: build_tools.xml:55(tool/label) ../src/build_tool_dialog.vala:167
+msgid "View PS"
+msgstr "הצגת PS"
+
+#: build_tools.xml:56(tool/description)
+msgid "View the PostScript file"
+msgstr "הצגת קובץ ה־PostScript"
+
+#: build_tools.xml:64(tool/description)
+msgid "Create a PDF file from LaTeX sources with the \"pdflatex\" command"
+msgstr "יצירת קובץ PDF מתוך מקור לאטך על־ידי הפקודה \"pdflatex\""
+
+#: build_tools.xml:70(tool/description)
+msgid "Create a DVI file from LaTeX sources with the \"latex\" command"
+msgstr "יצירת קובץ DVI מתוך מקור לאטך על־ידי הפקודה \"latex\""
+
+#: build_tools.xml:78(tool/description)
+msgid "Run BibTeX (bibliography)"
+msgstr "הרצת BibTeX (רשימת מקורות)"
+
+#: build_tools.xml:84(tool/description)
+msgid "Run MakeIndex"
+msgstr "הרצת MakeIndex (מפתח)"
+
+#: build_tools.xml:92(tool/description)
+msgid "Convert the DVI document to the PDF format"
+msgstr "המרת מסמך ה־DVI לתסדיר PDF"
+
+#: build_tools.xml:98(tool/description)
+msgid "Convert the DVI document to the PostScript format"
+msgstr "המרת מסמך ה־DVI לתסדיר PostScript"
+
+#: build_tools.xml:104(tool/description)
+msgid "Convert the PostScript document to the PDF format"
+msgstr "המרת מסמך ה־PostScript לתסדיר PDF"
+
+#: ../data/latexila.appdata.xml.in.h:1
+msgid ""
+"LaTeXila is an integrated LaTeX environment for the GNOME desktop. The idea "
+"of LaTeXila is to always deal directly with the LaTeX code, while "
+"simplifying as most as possible the writing of this LaTeX code."
+msgstr ""
+"‏LaTeXila היא סביבת לאטך משולבת לשולחן העבודה GNOME. הרעיון של LaTeXila הוא "
+"תמיד לעבוד ישירות עם קוד הלאטך, אך לפשט ככל הניתן את תהליך כתיבת הקוד."
+
+#: ../data/latexila.appdata.xml.in.h:2
+msgid ""
+"There are menus and toolbars with the principal LaTeX commands. To help the "
+"writing of the LaTeX markup, there is also LaTeX commands completion."
+msgstr ""
+"ישנם תפריטים וסרגלי כלים המכילים את פקודות הלאטך הבסיסיות. כדי להקל על כתיבת "
+"קוד הלאטך, יש יכולת השלמת פקודות."
+
+#: ../data/latexila.appdata.xml.in.h:3
+msgid ""
+"New documents are created from templates. There are buttons to compile, "
+"convert and view a document in one click. And projects containing several ."
+"tex files are managed easily."
+msgstr ""
+"מסמכים חדשים נוצרים מתוך תבניות. ישנם כפתורים להידור, להמרה ולהצגה של מסמך "
+"בלחיצה אחת. כמו־כן ניתן לנהל בקלות פרויקטים המכילים מספר קובצי '‎'.tex."
+
+#: ../data/latexila.appdata.xml.in.h:4
+msgid ""
+"There is a side panel with three components: the document structure to "
+"easily navigate in it; lists of symbols to insert them in a document; and an "
+"integrated file browser."
+msgstr ""
+"יש חלונית צד בעלת שלושה חלקים: סייר מבנה המסמך המאפשר ניווט במסמך בקלות, "
+"רשימות סמלים שניתן להכניס למסמך וסייר קבצים."
+
+#: ../data/latexila.appdata.xml.in.h:5
+msgid ""
+"LaTeXila has also other features like the spell checking, or the forward and "
+"backward search to switch between the .tex and the PDF."
+msgstr ""
+"ל־LaTexila יש יכולות נוספות, כגון בדיקת איות וחיפוש דו־כיווני המאפשר מעבר "
+"בין קובץ ה־tex וקובץ ה־PDF."
+
+#: ../data/latexila.desktop.in.in.h:1
+msgid "LaTeXila"
+msgstr "‏LaTeXila"
+
+#: ../data/latexila.desktop.in.in.h:2
+msgid "Integrated LaTeX Environment"
+msgstr "סביבת לאטך משולבת"
+
+#: ../data/latexila.desktop.in.in.h:3
+msgid "Edit LaTeX documents"
+msgstr "עריכת מסמכי לאטך"
+
+#: ../data/latexila.desktop.in.in.h:4
+msgid "Open a New Window"
+msgstr "פתיחת חלון חדש"
+
+#: ../data/latexila.desktop.in.in.h:5
+msgid "Open a New Document"
+msgstr "פתיחת מסמך חדש"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:1
+msgid "Use Default Font"
+msgstr "שימוש בגופן ברירת המחדל"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:2
+msgid ""
+"Whether to use the system's default fixed width font for editing text "
+"instead of a font specific to LaTeXila. If this option is turned off, then "
+"the font named in the \"Editor Font\" option will be used instead of the "
+"system font."
+msgstr ""
+"האם להשתמש בגופן ברירת המחדל עם רוחב קבוע לעריכת טקסט במקום בגופן נפרד ל־"
+"LaTeXila. אם אפשרות זו מבוטלת, ייעשה שימוש בגופן שנבחר באפשרות \"גופן העורך"
+"\", במקום בגופן במערכת."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:3
+msgid "Editor Font"
+msgstr "גופן העורך"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:4
+msgid ""
+"A custom font that will be used for the editing area. This will only take "
+"effect if the \"Use Default Font\" option is turned off."
+msgstr ""
+"גופן מותאם עבור אזור העריכה. הגדרה זו תילקח בחשבון רק אם האפשרות \"שימוש "
+"בגופן ברירת המחדל\" מבוטלת."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:5
+msgid "Style Scheme"
+msgstr "ערכת סגנון"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:6
+msgid "The ID of a GtkSourceView Style Scheme used to color the text."
+msgstr "מזהה של ערכת סגנון של GtkSourceView לקביעת צבעי הטקסט."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:7
+msgid "Create Backup Copies"
+msgstr "יצירת עותקי גיבוי"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:8
+msgid "Whether LaTeXila should create backup copies for the files it saves."
+msgstr "האם ליצור עותקי גיבוי בעת שמירת קבצים."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:9
+msgid "Autosave"
+msgstr "שמירה אוטומטית"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:10
+msgid ""
+"Whether LaTeXila should automatically save modified files after a time "
+"interval. You can set the time interval with the \"Autosave Interval\" "
+"option."
+msgstr ""
+"האם לשמור קבצים שנערכו אוטומטית לאחר פרק זמן כלשהו. ניתן לבחור את פרק הזמן "
+"באפשרות \"מרווח זמן לשמירה אוטומטית\"."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:11
+msgid "Autosave Interval"
+msgstr "מרווח זמן לשמירה אוטומטית"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:12
+msgid ""
+"Number of minutes after which LaTeXila will automatically save modified "
+"files. This will only take effect if the \"Autosave\" option is turned on."
+msgstr ""
+"מספר הדקות שאחריהן תבוצע שמירה אוטומטית של קבצים שנערכו. הגדרה זו תילקח "
+"בחשבון רק אם האפשרות \"שמירה אוטומטית\" מאופשרת."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:13
+#: ../src/ui/preferences_dialog.ui.h:9
+msgid "Reopen files on startup"
+msgstr "פתיחת קבצים מחדש בעת ההפעלה"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:14
+msgid "Whether LaTeXila should reopen the files that was opened the last time."
+msgstr "האם לפתוח בעת ההפעלה את הקבצים שהיו פתוחים בפעם הקודמת."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:15
+msgid "Tab Size"
+msgstr "רוחב טאב"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:16
+msgid ""
+"Specifies the number of spaces that should be displayed instead of Tab "
+"characters."
+msgstr "מציין את מספר הרווחים שיש להציג במקום תווי טאב."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:17
+msgid "Insert spaces"
+msgstr "הכנסת רווחים במקום טאבים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:18
+msgid "Whether LaTeXila should insert spaces instead of tabs."
+msgstr "האם להכניס רווחים במקום טאבים."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:19
+msgid "Forget lack of tabulations"
+msgstr "שכח שאין לך טאבים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:20
+msgid "Forget you are not using tabulations."
+msgstr "שכח שאינך משתמש בטאבים."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:21
+msgid "Display Line Numbers"
+msgstr "הצגת מספרי השורות"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:22
+msgid "Whether LaTeXila should display line numbers in the editing area."
+msgstr "האם להציג מספרי שורות באזור העריכה."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:23
+msgid "Highlight Current Line"
+msgstr "הדגשת השורה הנוכחית"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:24
+msgid "Whether LaTeXila should highlight the current line."
+msgstr "האם להדגיש את השורה הנוכחית."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:25
+msgid "Highlight Matching Brackets"
+msgstr "הדגשת הסוגר התואם"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:26
+msgid "Whether LaTeXila should highlight matching brackets."
+msgstr "האם להדגיש סוגריים תואמים."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:27
+msgid "Spell checking"
+msgstr "בדיקת איות"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:28
+msgid "Main toolbar is visible"
+msgstr "הצגת סרגל כלים ראשי"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:29
+msgid ""
+"Whether the main toolbar (file open, close, build, ...) should be visible."
+msgstr "האם להציג את סרגל הכלים הראשי (פתיחה וסגירה של קבצים, בניה וכו')."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:30
+msgid "Edit toolbar is visible"
+msgstr "הצגת סרגל כלי עריכה"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:31
+msgid ""
+"Whether the edit toolbar (bold, italic, character sizes, ...) should be "
+"visible."
+msgstr "האם להציג את סרגל כלי העריכה (מובלט, נטוי, גודל טקסט וכו')."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:32
+msgid "Side panel is Visible"
+msgstr "הצגת סרגל הצד"
+
+# "‏left" מתורגם כ"ימין" כי המנשק אמור להיות הפוך ב־locale עברי, כלומר רכיבי החלון מסודרים מימין לשמאל. בגרסת התוכנה שאצלי זה לא כך (וגם אין תרגום עברי בכלל), אבל אני מקווה שזה יהיה כך ואז התרגום יהיה נכון.
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:33
+msgid ""
+"Whether the side panel at the left of editing windows should be visible."
+msgstr "האם להציג את חלונית הצד מימין לאזור העריכה."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:34
+msgid "Bottom panel is Visible"
+msgstr "הצגת החלונית התחתונה"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:35
+msgid "Whether the bottom panel containing the build view should be visible."
+msgstr "האם להציג את החלונית התחתונה, המכילה את נתוני הבניה."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:36
+msgid "Side panel component"
+msgstr "מצב חלונית הצד"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:37
+msgid ""
+"Side panel's active component. 0: Symbols. 1: File browser. 2: Structure."
+msgstr "מה להציג בחלונית הצד. 0: סמלים. 1: סייר קבצים. 2: מבנה המסמך."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:38
+msgid "Show build output warnings"
+msgstr "הצגת אזהרות בפלט הבנייה"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:39
+msgid "Show build output badboxes"
+msgstr "הצגת אזהרות יישור בפלט הבנייה"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:40
+msgid "Interactive completion"
+msgstr "השלמה אינטראקטיבית"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:41
+msgid "Automatically show LaTeX commands proposals"
+msgstr "הצגה אוטומטית של הצעות לפקודות לאטך"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:42
+msgid "Minimum number of characters for interactive completion"
+msgstr "מספר תווים מזערי להשלמה אינטראקטיבית"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:43
+msgid ""
+"Minimum number of characters after \"\\\" for the interactive completion of "
+"LaTeX commands"
+msgstr "מספר תווים מזערי אחרי \"\\\" להשלמה אינטראקטיבית של פקודות לאטך"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:44
+#: ../src/ui/preferences_dialog.ui.h:19
+msgid "No confirmation when cleaning-up"
+msgstr "ניקוי ללא בקשת אישור"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:45
+msgid "Automatic clean-up"
+msgstr "ניקוי אוטומטי"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:46
+msgid ""
+"Automatically clean-up files after close. no-confirm-clean must be true."
+msgstr ""
+"ניקוי קבצים אוטומטי לאחר הסגירה. אפשרות זו תילקח בחשבון רק אם האפשרות "
+"\"ניקוי ללא בקשת אישור\" מאופשרת."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:47
+msgid "File extensions for the clean-up"
+msgstr "סיומות קבצים לניקוי"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:48
+msgid "The list of file extensions for the clean-up, separated by spaces"
+msgstr "רשימת סיומות קבצים שיש לנקות, מופרדות על־ידי רווחים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:49
+msgid "Enabled default build tools"
+msgstr "כלי בנייה מאופשרים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:50
+msgid "The list of the default build tools that are enabled"
+msgstr "רשימה של כלי בנייה מאופשרים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:51
+msgid "Disabled default build tools"
+msgstr "כלי בנייה מבוטלים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:52
+msgid "The list of the default build tools that are disabled"
+msgstr "רשימה של כלי בנייה מבוטלים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:53
+msgid "Current directory"
+msgstr "התיקייה הנוכחית"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:54
+msgid "URI of the file browser current directory"
+msgstr "כתובת התיקייה נוכחית סייר הקבצים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:55
+#: ../src/file_browser.vala:281
+msgid "Show build files"
+msgstr "הצגת קבצי בנייה"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:56
+msgid ""
+"Show files with an extension present in preferences.latex.clean-extensions."
+msgstr "הצגת קבצים בעלי סיומת המוגדרת לניקיון לאחר בנייה."
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:57
+#: ../src/file_browser.vala:289
+msgid "Show hidden files"
+msgstr "הצגת קבצים נסתרים"
+
+#: ../data/org.gnome.latexila.gschema.xml.in.in.h:58
+msgid "Show files beginning with a dot."
+msgstr "הצגת קבצים ששמותיהם מתחילים בנקודה."
+
+#. This must be translated by a usepackage LaTeX command.
+#: article.xml:8(template/babel) beamer.xml:8(template/babel)
+#: book.xml:8(template/babel) report.xml:8(template/babel)
+#, no-wrap
+msgid ""
+"\n"
+"% babel package or equivalent\n"
+msgstr ""
+"\n"
+"\\usepackage{babel}\n"
+
+#. There is a helper script in data/templates/tex2po.sh
+#: letter.xml:2(template/translatableChunk)
+#, no-wrap
+msgid ""
+"\n"
+"\\documentclass[a4paper,11pt]{letter}\n"
+"\\usepackage[T1]{fontenc}\n"
+"\\usepackage[utf8]{inputenc}\n"
+"\\usepackage{lmodern}\n"
+"\n"
+"\\address{Your name\\\\Your address\\\\Your phone number}\n"
+"\\signature{Your name}\n"
+"\n"
+"\\begin{document}\n"
+"\n"
+"\\begin{letter}{Destination\\\\Address of the destination\\\\Phone number of the destination}\n"
+"\n"
+"\\opening{Dear Sir,}\n"
+"\n"
+"% corps of the letter\n"
+"\n"
+"\\closing{Yours sincerely,}\n"
+"\n"
+"%\\cc{Other destination}\n"
+"%\\ps{PS: PostScriptum}\n"
+"%\\encl{Enclosures}\n"
+"\n"
+"\\end{letter}\n"
+"\\end{document}\n"
+msgstr ""
+
+#: ../src/bottom_panel.vala:53 ../src/side_panel.vala:85
+msgid "Hide panel"
+msgstr "הסתרת החלונית"
+
+#: ../src/build_tool_dialog.vala:81
+msgid "Build Tool (read-only)"
+msgstr "כלי בנייה (קריאה בלבד)"
+
+#: ../src/build_tool_dialog.vala:88
+msgid "Build Tool"
+msgstr "כלי בנייה"
+
+#. icon stock-id
+#. label
+#: ../src/build_tool_dialog.vala:159
+msgid "Execute"
+msgstr "הפעלה"
+
+#: ../src/build_tool_dialog.vala:163
+msgid "Convert"
+msgstr "המרה"
+
+#: ../src/build_tool_dialog.vala:164
+msgid "View File"
+msgstr "הצגת הקובץ"
+
+#: ../src/build_tool_dialog.vala:228
+msgid "Commands"
+msgstr "פקודות"
+
+#: ../src/build_tool_dialog.vala:238
+msgid "Post Processor"
+msgstr "בתר־מעבד (Post Processor)"
+
+#: ../src/build_tool_dialog.vala:265 ../src/build_tools_preferences.vala:289
+msgid "Add..."
+msgstr "הוספה..."
+
+#: ../src/build_tool_dialog.vala:282 ../src/build_tools_preferences.vala:306
+msgid "Remove"
+msgstr "הסרה"
+
+#: ../src/build_tool_dialog.vala:312 ../src/build_tools_preferences.vala:346
+msgid "Move up"
+msgstr "הזזה מעלה"
+
+#: ../src/build_tool_dialog.vala:363 ../src/build_tools_preferences.vala:398
+msgid "Move down"
+msgstr "הזזה מטה"
+
+#: ../src/build_tool_dialog.vala:563 ../src/build_tools_preferences.vala:181
+#: ../src/latex_menu.vala:52 ../src/structure.vala:782
+msgid "Label"
+msgstr "תווית"
+
+#: ../src/build_tool_dialog.vala:568
+msgid "You can select this arrow and copy/paste it!"
+msgstr "ניתן לבחור חץ זה ולהעתיק/להדביק אותו!"
+
+#: ../src/build_tool_dialog.vala:584
+msgid "Description"
+msgstr "תיאור"
+
+#: ../src/build_tool_dialog.vala:590
+msgid "File extensions for which the build tool can be executed."
+msgstr "סיומות קבצים עבורן ניתן להפעיל את כלי הבנייה."
+
+#: ../src/build_tool_dialog.vala:591
+msgid "The extensions are separated by spaces."
+msgstr "הסיומות מופרדות על־ידי רווחים."
+
+#: ../src/build_tool_dialog.vala:592
+msgid "If it is empty, all extensions are allowed."
+msgstr "אם השדה ריק, כל הסיומות מותרות."
+
+#: ../src/build_tool_dialog.vala:594
+msgid "Extensions"
+msgstr "סיומות"
+
+#: ../src/build_tool_dialog.vala:599
+msgid "Icon"
+msgstr "צלמית"
+
+#. Placeholders
+#: ../src/build_tool_dialog.vala:606
+msgid "Placeholders:"
+msgstr "ממלאי מקום:"
+
+#: ../src/build_tool_dialog.vala:610
+msgid "The active document's filename."
+msgstr "שם המסמך הפעיל."
+
+#: ../src/build_tool_dialog.vala:611 ../src/build_tool_dialog.vala:616
+msgid "If the active document belongs to a project, the main file is choosen."
+msgstr "אם המסמך הפעיל שייך לפרויקט, הקובץ הראשי ייבחר."
+
+#: ../src/build_tool_dialog.vala:615
+msgid "The active document's filename without its extension."
+msgstr "שם המסמך הראשי ללא הסיומת."
+
+#: ../src/build_tool_dialog.vala:659
+msgid "Jobs"
+msgstr "תהליכים"
+
+#: ../src/build_tool_dialog.vala:665
+msgid "List of files to open after executing the build jobs."
+msgstr "רשימת קבצים שיש לפתוח לאחר הרצת תהליכי הבנייה."
+
+#: ../src/build_tool_dialog.vala:666
+msgid "The files are separated by spaces."
+msgstr "הקבצים מופרדים על־ידי רווחים."
+
+#: ../src/build_tool_dialog.vala:667
+msgid "You should use the placeholders to specify the files."
+msgstr "יש להשתמש בממלאי המקום לציון הקבצים."
+
+#: ../src/build_tool_dialog.vala:670
+msgid "Files to open"
+msgstr "קבצים שיש לפתוח"
+
+#: ../src/build_tool_runner.vala:191
+#, c-format
+msgid "%s doesn't seem to be installed."
+msgstr "‏%s אינה מותקנת."
+
+#: ../src/build_tool_runner.vala:263
+#, c-format
+msgid "Open %s"
+msgstr "פתיחת %s"
+
+#: ../src/build_tool_runner.vala:272
+#, c-format
+msgid "The file '%s' doesn't exist."
+msgstr "הקובץ '%s' אינו קיים."
+
+#: ../src/build_tool_runner.vala:289
+#, c-format
+msgid "Failed to open '%s':"
+msgstr "פתיחת '%s' נכשלה:"
+
+#: ../src/build_tools_preferences.vala:53
+msgid "Build Tools"
+msgstr "כלי בנייה"
+
+#: ../src/build_tools_preferences.vala:109
+msgid "Default build tools"
+msgstr "כלי בנייה ברירת מחדל"
+
+#: ../src/build_tools_preferences.vala:129
+msgid "Personal build tools"
+msgstr "כלי בנייה אישיים"
+
+#: ../src/build_tools_preferences.vala:172
+msgid "Enabled"
+msgstr "מאופשר"
+
+#: ../src/build_tools_preferences.vala:274
+#, c-format
+msgid "%s [copy]"
+msgstr "‏%s [עותק]"
+
+#: ../src/build_tools_preferences.vala:324
+#, c-format
+msgid "Do you really want to delete the build tool \"%s\"?"
+msgstr "האם באמת למחוק את כלי הבנייה \"%s\"?"
+
+#: ../src/clean_build_files.vala:267
+msgid "Do you really want to delete these files?"
+msgstr "האם באמת למחוק קבצים אלה?"
+
+#. secondary label
+#: ../src/clean_build_files.vala:272
+msgid "Select the files you want to delete:"
+msgstr "יש לבחור קבצים למחיקה:"
+
+#: ../src/clean_build_files.vala:336
+msgid "No build file to clean up."
+msgstr "אין קובץ בנייה לנקות."
+
+#: ../src/completion.vala:315
+msgid "No matching proposal"
+msgstr "אין הצעות תואמות"
+
+#. Translators: "Ln" is an abbreviation for "Line", Col is an abbreviation for
+#. "Column". Please, use abbreviations if possible.
+#: ../src/custom_statusbar.vala:45
+#, c-format
+msgid "Ln %d, Col %d"
+msgstr "שורה %d, עמודה %dּ"
+
+#: ../src/dialogs.vala:40 ../src/main_window.vala:765
+msgid "Close without Saving"
+msgstr "סגירה ללא שמירה"
+
+#: ../src/dialogs.vala:66
+#, c-format
+msgid ""
+"There are %d documents with unsaved changes. Save changes before closing?"
+msgstr ""
+"ישנם %d מסמכים המכילים שינויים לא שמורים. האם לשמור את השינויים לפני הסגירה?"
+
+#: ../src/dialogs.vala:72
+msgid "Select the documents you want to save:"
+msgstr "יש לבחור את המסמכים לשמירה:"
+
+#: ../src/dialogs.vala:129
+msgid "If you don't save, all your changes will be permanently lost."
+msgstr "אם לא תתבצע שמירה, כל השינויים יאבדו לתמיד."
+
+#: ../src/document_structure.vala:720
+msgid "The structure item already contains a sub-paragraph."
+msgstr "פריט המבנה כבר מכיל תת־פסקה."
+
+#: ../src/document_tab.vala:173
+msgid "Close document"
+msgstr "סגירת המסמך"
+
+#. main file
+#: ../src/document_tab.vala:233 ../src/project_dialogs.vala:44
+#: ../src/project_dialogs.vala:47 ../src/project_dialogs.vala:139
+#: ../src/project_dialogs.vala:142 ../src/project_dialogs.vala:216
+msgid "Main File"
+msgstr "קובץ ראשי"
+
+#: ../src/document_tab.vala:235
+msgid "Main File:"
+msgstr "קובץ ראשי:"
+
+#: ../src/document_tab.vala:259
+#, c-format
+msgid "Activate '%s'"
+msgstr "אפשור '%s'"
+
+#: ../src/document_tab.vala:278
+#, c-format
+msgid "The file %s changed on disk."
+msgstr "הקובץ %s השתנה בכונן."
+
+#: ../src/document_tab.vala:283
+msgid "Do you want to drop your changes and reload the file?"
+msgstr "האם ברצונך לזרוק את השינויים ולטעון את הקובץ מחדש?"
+
+#: ../src/document_tab.vala:285
+msgid "Do you want to reload the file?"
+msgstr "האם ברצונך לטעון את הקובץ מחדש?"
+
+#: ../src/document_tab.vala:289
+msgid "Reload"
+msgstr "טעינה מחדש"
+
+#: ../src/document.vala:121
+#, c-format
+msgid "Impossible to load the file '%s'."
+msgstr "לא ניתן לטעון את הקובץ '%s'."
+
+#: ../src/document.vala:197
+#, c-format
+msgid "The file %s has been modified since reading it."
+msgstr "הקובץ %s שונה מאז הפעם האחרונה שהוא נקרא."
+
+#: ../src/document.vala:200
+msgid "If you save it, all the external changes could be lost. Save it anyway?"
+msgstr ""
+"אם הקובץ יישמר כעת, ייתכן שכל השינויים החיצוניים יאבדו. האם לשמור בכל זאת?"
+
+#: ../src/document.vala:203
+msgid "Save Anyway"
+msgstr "שמירה בכל זאת"
+
+#: ../src/document.vala:205
+msgid "Don't Save"
+msgstr "אין לשמור"
+
+#: ../src/document.vala:217
+msgid "Impossible to save the file."
+msgstr "לא ניתן לשמור את הקובץ."
+
+#: ../src/document.vala:242
+msgid "Error trying to convert the document to UTF-8"
+msgstr "אירעה שגיאה בעת ניסיון להמיר את המסמך ל־UTF-8"
+
+#: ../src/document.vala:296
+msgid "Unsaved Document"
+msgstr "מסמך שלא נשמר"
+
+#: ../src/document.vala:575
+msgid ""
+"The file has a temporary location. The data can be lost after rebooting your "
+"computer."
+msgstr "מיקום הקובץ זמני. ייתכן שהנתונים יאבדו לאחר הפעלה מחדש של המחשב."
+
+#: ../src/document.vala:576
+msgid "Do you want to save the file in a safer place?"
+msgstr "האם לשמור את הקובץ במקום בטוח יותר?"
+
+#: ../src/file_browser.vala:216
+msgid "Go to the home directory"
+msgstr "פתיחת תיקיית הבית"
+
+#: ../src/file_browser.vala:231
+msgid "Go to the parent directory"
+msgstr "פתיחת תיקיית ההורה"
+
+#: ../src/file_browser.vala:247
+msgid "Go to the active document directory"
+msgstr "פתיחת תיקיית המסמך הפעיל"
+
+#: ../src/file_browser.vala:336
+msgid "File System"
+msgstr "מערכת הקבצים"
+
+#. File browser
+#: ../src/file_browser.vala:455 ../src/main_window.vala:404
+msgid "File Browser"
+msgstr "סייר הקבצים"
+
+#. LaTeX: Sectioning
+#: ../src/latex_menu.vala:32
+msgid "_Sectioning"
+msgstr "חלוקה ל_קטעים"
+
+#: ../src/latex_menu.vala:34 ../src/structure.vala:775
+msgid "Part"
+msgstr "חלק"
+
+#: ../src/latex_menu.vala:36 ../src/structure.vala:776
+msgid "Chapter"
+msgstr "פרק"
+
+#: ../src/latex_menu.vala:38 ../src/structure.vala:777
+msgid "Section"
+msgstr "קטע"
+
+#: ../src/latex_menu.vala:40 ../src/structure.vala:778
+msgid "Sub-section"
+msgstr "תת־קטע"
+
+#: ../src/latex_menu.vala:42 ../src/structure.vala:779
+msgid "Sub-sub-section"
+msgstr "תת־תת־קטע"
+
+#: ../src/latex_menu.vala:44 ../src/structure.vala:780
+msgid "Paragraph"
+msgstr "פסקה"
+
+#: ../src/latex_menu.vala:46 ../src/structure.vala:781
+msgid "Sub-paragraph"
+msgstr "תת־פסקה"
+
+#. LaTeX: References
+#: ../src/latex_menu.vala:50
+msgid "_References"
+msgstr "_הפניות"
+
+#: ../src/latex_menu.vala:54
+msgid "Reference to a label"
+msgstr "הפניה לתווית"
+
+#: ../src/latex_menu.vala:56
+msgid "Page reference to a label"
+msgstr "הפניית עמוד לתווית"
+
+#: ../src/latex_menu.vala:58
+msgid "Add a word to the index"
+msgstr "הוספת מילה למפתח"
+
+#: ../src/latex_menu.vala:60
+msgid "Footnote"
+msgstr "הערה תחתית"
+
+#: ../src/latex_menu.vala:62
+msgid "Reference to a bibliography item"
+msgstr "הפניה לפריט מקור (ביבליוגרפיה)"
+
+#: ../src/latex_menu.vala:68
+msgid "Center - \\begin{center}"
+msgstr "מרכוז - ‎\\begin{center}‎"
+
+#: ../src/latex_menu.vala:70
+msgid "Align Left - \\begin{flushleft}"
+msgstr "יישור לשמאל - ‎\\begin{flushleft}‎"
+
+#: ../src/latex_menu.vala:72
+msgid "Align Right - \\begin{flushright}"
+msgstr "יישור לימין - ‎\\begin{flushright}‎"
+
+#: ../src/latex_menu.vala:74
+msgid "Figure - \\begin{figure}"
+msgstr "תרשים - ‎\\begin{figure}‎"
+
+#: ../src/latex_menu.vala:76
+msgid "Table - \\begin{table}"
+msgstr "טבלה - ‎\\begin{table}‎"
+
+#: ../src/latex_menu.vala:78
+msgid "Quote - \\begin{quote}"
+msgstr "ציטוט - ‎\\begin{quote}‎"
+
+#: ../src/latex_menu.vala:80
+msgid "Quotation - \\begin{quotation}"
+msgstr "מובאה - ‎\\begin{quotation}‎"
+
+#: ../src/latex_menu.vala:82
+msgid "Verse - \\begin{verse}"
+msgstr "בית - ‎\\begin{verse}‎"
+
+#: ../src/latex_menu.vala:84
+msgid "Verbatim - \\begin{verbatim}"
+msgstr "מילה במילה - ‎\\begin{verbatim}‎"
+
+#: ../src/latex_menu.vala:86
+msgid "Minipage - \\begin{minipage}"
+msgstr "תת־עמוד - ‎\\begin{minipage}‎"
+
+#: ../src/latex_menu.vala:88
+msgid "Title page - \\begin{titlepage}"
+msgstr "עמוד כותרת - ‎\\begin{titlepage}‎"
+
+#. LaTeX: list environments
+#: ../src/latex_menu.vala:92
+msgid "_List Environments"
+msgstr "סביבות _רשימה"
+
+#: ../src/latex_menu.vala:94
+msgid "Bulleted List - \\begin{itemize}"
+msgstr "רשימת תבליטים - ‎\\begin{itemize}‎"
+
+#: ../src/latex_menu.vala:96
+msgid "Enumeration - \\begin{enumerate}"
+msgstr "רשימת פריטים - ‎\\begin{enumerate}‎"
+
+#: ../src/latex_menu.vala:98
+msgid "Description - \\begin{description}"
+msgstr "תיאור - ‎\\begin{description}‎"
+
+#: ../src/latex_menu.vala:100
+msgid "Custom list - \\begin{list}"
+msgstr "רשימה מותאמת - ‎\\begin{list}‎"
+
+#: ../src/latex_menu.vala:102
+msgid "List item - \\item"
+msgstr "פריט רשימה - ‎\\item"
+
+#. LaTeX: character sizes
+#: ../src/latex_menu.vala:106
+msgid "_Characters Sizes"
+msgstr "גדלי _אות"
+
+#. LaTeX: font styles
+#: ../src/latex_menu.vala:130
+msgid "_Font Styles"
+msgstr "_סגנונות גופן"
+
+#: ../src/latex_menu.vala:132
+msgid "Bold - \\textbf"
+msgstr "מובלט - ‎\\textbf"
+
+#: ../src/latex_menu.vala:134
+msgid "Italic - \\textit"
+msgstr "נטוי - ‎\\textit"
+
+#: ../src/latex_menu.vala:136
+msgid "Typewriter - \\texttt"
+msgstr "מכונת כתיבה - ‎\\texttt"
+
+#: ../src/latex_menu.vala:138
+msgid "Slanted - \\textsl"
+msgstr "אלכסוני - ‎\\textsl"
+
+#: ../src/latex_menu.vala:140
+msgid "Small Capitals - \\textsc"
+msgstr "רישיות קטנות - ‎\\textsc"
+
+#: ../src/latex_menu.vala:142
+msgid "Sans Serif - \\textsf"
+msgstr "ללא תגים - ‎\\textsf"
+
+#: ../src/latex_menu.vala:144
+msgid "Emphasized - \\emph"
+msgstr "מודגש - ‎\\emph"
+
+#: ../src/latex_menu.vala:146
+msgid "Underline - \\underline"
+msgstr "קו תחתי - ‎\\underline"
+
+#: ../src/latex_menu.vala:148
+msgid "_Font Family"
+msgstr "משפחת _גופנים"
+
+#: ../src/latex_menu.vala:150
+msgid "Roman - \\rmfamily"
+msgstr "רומי - ‎\\rmfamily"
+
+#: ../src/latex_menu.vala:152
+msgid "Sans Serif - \\sffamily"
+msgstr "ללא תגים - ‎\\sffamily"
+
+#: ../src/latex_menu.vala:154
+msgid "Monospace - \\ttfamily"
+msgstr "רוחב קבוע - ‎\\ttfamily"
+
+#: ../src/latex_menu.vala:156
+msgid "F_ont Series"
+msgstr "ס_דרות גופנים"
+
+#: ../src/latex_menu.vala:158
+msgid "Medium - \\mdseries"
+msgstr "בינוני - ‎\\mdseries"
+
+#: ../src/latex_menu.vala:160
+msgid "Bold - \\bfseries"
+msgstr "מובלט - ‎\\bfseries"
+
+#: ../src/latex_menu.vala:162
+msgid "Fo_nt Shape"
+msgstr "_צורת גופן"
+
+#: ../src/latex_menu.vala:164
+msgid "Upright - \\upshape"
+msgstr "ישר - ‎\\upshape"
+
+#: ../src/latex_menu.vala:166
+msgid "Italic - \\itshape"
+msgstr "נטוי - ‎\\itshape"
+
+#: ../src/latex_menu.vala:168
+msgid "Slanted - \\slshape"
+msgstr "אלכסוני - ‎\\slshape"
+
+#: ../src/latex_menu.vala:170
+msgid "Small Capitals - \\scshape"
+msgstr "רישיות קטנות - ‎\\scshape"
+
+#. LaTeX: Tabular
+#: ../src/latex_menu.vala:174
+msgid "_Tabular"
+msgstr "_טבלאותּ"
+
+#: ../src/latex_menu.vala:176
+msgid "Tabbing - \\begin{tabbing}"
+msgstr "הזחה - ‎\\begin{tabbing}‎"
+
+#: ../src/latex_menu.vala:178
+msgid "Tabular - \\begin{tabular}"
+msgstr "טבלה - ‎\\begin{tabular}‎"
+
+#: ../src/latex_menu.vala:180
+msgid "Multicolumn - \\multicolumn"
+msgstr "ריבוי טורים - ‎\\multicolumn"
+
+#: ../src/latex_menu.vala:182
+msgid "Horizontal line - \\hline"
+msgstr "קו אופקי - ‎\\hline"
+
+#: ../src/latex_menu.vala:184
+msgid "Vertical line - \\vline"
+msgstr "קו אנכי - ‎\\vline"
+
+#: ../src/latex_menu.vala:186
+msgid "Horizontal line (columns specified) - \\cline"
+msgstr "קו אופקי (עם ציון עמודות) - ‎\\cline"
+
+#: ../src/latex_menu.vala:192
+msgid "Frame - \\begin{frame}"
+msgstr "מסגרת - ‎\\begin{frame}‎"
+
+#: ../src/latex_menu.vala:194
+msgid "Block - \\begin{block}"
+msgstr "בלוק - ‎\\begin{block}‎"
+
+#: ../src/latex_menu.vala:196
+msgid "Two columns - \\begin{columns}"
+msgstr "שני טורים - ‎\\begin{columns}‎"
+
+#. LaTeX: Spacing
+#: ../src/latex_menu.vala:200
+msgid "_Spacing"
+msgstr "_ריווח"
+
+#: ../src/latex_menu.vala:201
+msgid "New _Line"
+msgstr "_שורה חדשה"
+
+#: ../src/latex_menu.vala:202
+msgid "New Line - \\\\"
+msgstr "שורה חדשה - \\\\"
+
+#: ../src/latex_menu.vala:204
+msgid "New page - \\newpage"
+msgstr "עמוד חדש - ‎\\newpage"
+
+#: ../src/latex_menu.vala:206
+msgid "Line break - \\linebreak"
+msgstr "שבירת שורה - ‎\\linebreak"
+
+#: ../src/latex_menu.vala:208
+msgid "Page break - \\pagebreak"
+msgstr "שבירת עמוד - ‎\\pagebreak"
+
+#: ../src/latex_menu.vala:210
+msgid "Big skip - \\bigskip"
+msgstr "דילוג גדול - ‎\\bigskip"
+
+#: ../src/latex_menu.vala:212
+msgid "Medium skip - \\medskip"
+msgstr "דילוג בינוני - ‎\\medskip"
+
+#: ../src/latex_menu.vala:214
+msgid "Horizontal space - \\hspace"
+msgstr "רווח אופקי - ‎\\hspace"
+
+#: ../src/latex_menu.vala:216
+msgid "Vertical space - \\vspace"
+msgstr "רווח אנכי - ‎\\vspace"
+
+#: ../src/latex_menu.vala:218
+msgid "No paragraph indentation - \\noindent"
+msgstr "ללא הזחת פסקה - ‎\\noindent"
+
+#. LaTeX: International accents
+#: ../src/latex_menu.vala:222
+msgid "International _Accents"
+msgstr "סימני _הבחן"
+
+#: ../src/latex_menu.vala:223
+msgid "Acute accent - \\'"
+msgstr "סימן הטעמה עילי - ‎‎\\'‎"
+
+#: ../src/latex_menu.vala:224
+msgid "Grave accent - \\`"
+msgstr "סימן הטעמה משני - ‎\\`‎"
+
+#: ../src/latex_menu.vala:225
+msgid "Circumflex accent - \\^"
+msgstr "גג - ‎\\^‎"
+
+#: ../src/latex_menu.vala:226
+msgid "Trema - \\\""
+msgstr "צירי עילי - ‎\\\"‎"
+
+#: ../src/latex_menu.vala:227
+msgid "Tilde - \\~"
+msgstr "גל - ‎\\~‎"
+
+#: ../src/latex_menu.vala:228
+msgid "Macron - \\="
+msgstr "קו עילי - ‎\\=‎"
+
+#: ../src/latex_menu.vala:229
+msgid "Dot above - \\."
+msgstr "נקודה עילית - ‎\\.‎"
+
+#: ../src/latex_menu.vala:230
+msgid "Caron - \\v"
+msgstr "וי קטן - ‎\\v"
+
+#: ../src/latex_menu.vala:231
+msgid "Breve - \\u"
+msgstr "ברווה - ‎\\u"
+
+#: ../src/latex_menu.vala:233
+msgid "Double acute accent - \\H"
+msgstr "סימן הטעמה עילי כפול - ‎\\H"
+
+#: ../src/latex_menu.vala:234
+msgid "Cedilla - \\c"
+msgstr "סדיליה - ‎\\c"
+
+#: ../src/latex_menu.vala:235
+msgid "Ogonek - \\k"
+msgstr "זנבון - ‎\\k"
+
+#: ../src/latex_menu.vala:236
+msgid "Dot below - \\d"
+msgstr "נקודה תחתית - ‎\\d"
+
+#: ../src/latex_menu.vala:237
+msgid "Macron below - \\b"
+msgstr "קו תחתי - ‎\\b"
+
+#: ../src/latex_menu.vala:238
+msgid "Ring - \\r"
+msgstr "טבעת - ‎\\r"
+
+#: ../src/latex_menu.vala:239
+msgid "Tie - \\t"
+msgstr "קשת - ‎\\t"
+
+#. LaTeX: Others
+#: ../src/latex_menu.vala:243
+msgid "_Misc"
+msgstr "_שונות"
+
+#: ../src/latex_menu.vala:245
+msgid "Document class - \\documentclass"
+msgstr "מחלקת מסמך - ‎\\documentclass"
+
+#: ../src/latex_menu.vala:247
+msgid "Use package - \\usepackage"
+msgstr "שימוש בחבילה - ‎\\usepackage"
+
+#: ../src/latex_menu.vala:248
+msgid "_AMS packages"
+msgstr "_חבילות האגודה האמריקאית למתמטיקה"
+
+#: ../src/latex_menu.vala:249
+msgid "AMS packages"
+msgstr "חבילות האגודה האמריקאית למתמטיקה"
+
+#: ../src/latex_menu.vala:250
+msgid "Author - \\author"
+msgstr "מחבר - ‎\\author"
+
+#: ../src/latex_menu.vala:251
+msgid "Title - \\title"
+msgstr "כותרת - ‎\\title"
+
+#: ../src/latex_menu.vala:253
+msgid "Content of the document - \\begin{document}"
+msgstr "תוכן המסמך - ‎\\begin{document}‎"
+
+#: ../src/latex_menu.vala:255
+msgid "Make title - \\maketitle"
+msgstr "יצירת כותרת - ‎\\maketitle"
+
+#: ../src/latex_menu.vala:257
+msgid "Table of contents - \\tableofcontents"
+msgstr "תוכן עניינים - ‎\\tableofcontents"
+
+#: ../src/latex_menu.vala:259
+msgid "Abstract - \\begin{abstract}"
+msgstr "תקציר - ‎\\begin{abstract}‎"
+
+#: ../src/latex_menu.vala:261
+msgid "Include an image (graphicx package) - \\includegraphics"
+msgstr "הכנסת תמונה (חבילת graphicx) - ‏‏‎\\includegraphics"
+
+#: ../src/latex_menu.vala:264
+msgid "Include a file - \\input"
+msgstr "שימוש בקובץ חיצוני - ‎\\input"
+
+#. Math
+#: ../src/latex_menu.vala:268
+msgid "_Math"
+msgstr "_מתמטיקה"
+
+#. Math Environments
+#: ../src/latex_menu.vala:272
+msgid "_Math Environments"
+msgstr "סביבות _מתמטיות"
+
+#: ../src/latex_menu.vala:273
+msgid "_Mathematical Environment - $...$"
+msgstr "סביבה _מתמטית - $...$"
+
+#: ../src/latex_menu.vala:274
+msgid "Mathematical Environment - $...$"
+msgstr "סביבה מתמטית - $...$"
+
+#: ../src/latex_menu.vala:275
+msgid "_Centered Formula - \\[...\\]"
+msgstr "_נוסחה ממורכזת - ‎\\[...\\]‎"
+
+#: ../src/latex_menu.vala:276
+msgid "Centered Formula - \\[...\\]"
+msgstr "נוסחה ממורכזת - ‎\\[...\\]‎"
+
+#: ../src/latex_menu.vala:278
+msgid "_Numbered Equation - \\begin{equation}"
+msgstr "מ_שוואה ממוספרת - ‎\\begin{equation}‎"
+
+#: ../src/latex_menu.vala:279
+msgid "Numbered Equation - \\begin{equation}"
+msgstr "משוואה ממוספרת - ‎\\begin{equation}‎"
+
+#: ../src/latex_menu.vala:280
+msgid "_Array of Equations - \\begin{align*}"
+msgstr "מע_רך משוואות - ‎\\begin{align*}‎"
+
+#: ../src/latex_menu.vala:281
+msgid "Array of Equations - \\begin{align*}"
+msgstr "מערך משוואות - ‎\\begin{align*}‎"
+
+#: ../src/latex_menu.vala:283
+msgid "Numbered Array of _Equations - \\begin{align}"
+msgstr "מער_ך משוואות ממוספר - ‎\\begin{align}‎"
+
+#: ../src/latex_menu.vala:284
+msgid "Numbered Array of Equations - \\begin{align}"
+msgstr "מערך משוואות ממוספר - ‎\\begin{align}‎"
+
+#: ../src/latex_menu.vala:287
+msgid "_Superscript - ^{}"
+msgstr "כתב _עילי - ‎^{}‎"
+
+#: ../src/latex_menu.vala:288
+msgid "Superscript - ^{}"
+msgstr "כתב עילי - ‎^{}‎"
+
+#: ../src/latex_menu.vala:289
+msgid "Su_bscript - __{}"
+msgstr "כתב _תחתי - ‎_{}‎"
+
+#: ../src/latex_menu.vala:290
+msgid "Subscript - _{}"
+msgstr "כתב תחתי - ‎_{}‎"
+
+#: ../src/latex_menu.vala:291
+msgid "_Fraction - \\frac{}{}"
+msgstr "ש_בר - ‎\\frac{}{}‎"
+
+#: ../src/latex_menu.vala:292
+msgid "Fraction - \\frac{}{}"
+msgstr "שבר - ‎\\frac{}{}‎"
+
+#: ../src/latex_menu.vala:293
+msgid "Square _Root - \\sqrt{}"
+msgstr "שורש ריב_ועי - ‎\\sqrt{}‎"
+
+#: ../src/latex_menu.vala:294
+msgid "Square Root - \\sqrt{}"
+msgstr "שורש ריבועי - ‎\\sqrt{}‎"
+
+#: ../src/latex_menu.vala:295
+msgid "_N-th Root - \\sqrt[]{}"
+msgstr "שורש מ_סדר נתון - ‎\\sqrt[]{}‎"
+
+#: ../src/latex_menu.vala:296
+msgid "N-th Root - \\sqrt[]{}"
+msgstr "שורש מסדר נתון - ‎\\sqrt[]{}‎"
+
+#. Math functions
+#: ../src/latex_menu.vala:300
+msgid "Math _Functions"
+msgstr "_פונקציות מתמטיות"
+
+#. Math Font Styles
+#: ../src/latex_menu.vala:334
+msgid "Math Font _Styles"
+msgstr "סגנונות _גופנים מתמטיים"
+
+#: ../src/latex_menu.vala:336
+msgid "Roman - \\mathrm"
+msgstr "רומי - ‎\\mathrm"
+
+#: ../src/latex_menu.vala:338
+msgid "Italic - \\mathit"
+msgstr "נטוי - ‎\\mathit"
+
+#: ../src/latex_menu.vala:340
+msgid "Bold - \\mathbf"
+msgstr "מובלט - ‎\\mathbf"
+
+#: ../src/latex_menu.vala:342
+msgid "Sans Serif - \\mathsf"
+msgstr "ללא תגים - ‎\\mathsf"
+
+#: ../src/latex_menu.vala:344
+msgid "Typewriter - \\mathtt"
+msgstr "מכונת כתיבה - ‎\\mathtt"
+
+#: ../src/latex_menu.vala:346
+msgid "Calligraphic - \\mathcal"
+msgstr "כתיבה תמה - ‎\\mathcal"
+
+#: ../src/latex_menu.vala:348
+msgid "Blackboard (uppercase only)  - \\mathbb (amsfonts package)"
+msgstr "כתב לוח (רישיות בלבד) - ‎\\mathbb (חבילת amsfonts)"
+
+#: ../src/latex_menu.vala:351
+msgid "Euler Fraktur - \\mathfrak (amsfonts package)"
+msgstr "כתב שבור - ‎\\mathfrak (חבילת amsfonts)"
+
+#. Math Accents
+#: ../src/latex_menu.vala:356
+msgid "Math _Accents"
+msgstr "סימ_נים מתמטיים"
+
+#. Math Spaces
+#: ../src/latex_menu.vala:377
+msgid "Math _Spaces"
+msgstr "_רווחים מתמטיים"
+
+#: ../src/latex_menu.vala:378
+msgid "_Small"
+msgstr "_קטן"
+
+#: ../src/latex_menu.vala:379
+msgid "Small - \\,"
+msgstr "קטן - ‎\\,‎"
+
+#: ../src/latex_menu.vala:380
+msgid "_Medium"
+msgstr "_בינוני"
+
+#: ../src/latex_menu.vala:381
+msgid "Medium - \\:"
+msgstr "בינוני - ‎\\:‎"
+
+#: ../src/latex_menu.vala:382
+msgid "_Large"
+msgstr "_גדול"
+
+#: ../src/latex_menu.vala:383
+msgid "Large - \\;"
+msgstr "גדול - ‎\\;‎"
+
+#. Math: Left Delimiters
+#: ../src/latex_menu.vala:389
+msgid "_Left Delimiters"
+msgstr "מפרידים _שמאליים"
+
+#: ../src/latex_menu.vala:390
+msgid "left ("
+msgstr ") שמאלי"
+
+#: ../src/latex_menu.vala:392
+msgid "left ["
+msgstr "] שמאלי"
+
+#: ../src/latex_menu.vala:394
+msgid "left { "
+msgstr "} שמאלי"
+
+#: ../src/latex_menu.vala:396
+msgid "left <"
+msgstr "> שמאלי"
+
+#: ../src/latex_menu.vala:398
+msgid "left )"
+msgstr "( שמאלי"
+
+#: ../src/latex_menu.vala:400
+msgid "left ]"
+msgstr "[ שמאלי"
+
+#: ../src/latex_menu.vala:402
+msgid "left  }"
+msgstr "{ שמאלי"
+
+#: ../src/latex_menu.vala:404
+msgid "left >"
+msgstr "< שמאלי"
+
+#: ../src/latex_menu.vala:406
+msgid "left ."
+msgstr ". שמאלי"
+
+#. Math: Right Delimiters
+#: ../src/latex_menu.vala:411
+msgid "Right _Delimiters"
+msgstr "מפרידים _ימניים"
+
+#: ../src/latex_menu.vala:412
+msgid "right )"
+msgstr "( ימני"
+
+#: ../src/latex_menu.vala:414
+msgid "right ]"
+msgstr "[ ימני"
+
+#: ../src/latex_menu.vala:416
+msgid "right  }"
+msgstr "{ ימני"
+
+#: ../src/latex_menu.vala:418
+msgid "right >"
+msgstr "< ימני"
+
+#: ../src/latex_menu.vala:420
+msgid "right ("
+msgstr ") ימני"
+
+#: ../src/latex_menu.vala:422
+msgid "right ["
+msgstr "] ימני"
+
+#: ../src/latex_menu.vala:424
+msgid "right { "
+msgstr "} ימני"
+
+#: ../src/latex_menu.vala:426
+msgid "right <"
+msgstr "> ימני"
+
+#: ../src/latex_menu.vala:428
+msgid "right ."
+msgstr ". ימני"
+
+#. menus under toolitems
+#: ../src/latex_menu.vala:443
+msgid "Sectioning"
+msgstr "חלוקה לקטעים"
+
+#: ../src/latex_menu.vala:446
+msgid "Characters Sizes"
+msgstr "גדלי אות"
+
+#: ../src/latex_menu.vala:449
+msgid "References"
+msgstr "העדפות"
+
+#: ../src/latex_menu.vala:452
+msgid "Presentation Environments"
+msgstr "סביבות מצגת"
+
+#: ../src/latex_menu.vala:455
+msgid "Math Environments"
+msgstr "סביבות מתמטיות"
+
+#: ../src/latex_menu.vala:458
+msgid "Left Delimiters"
+msgstr "מפרידים שמאליים"
+
+#: ../src/latex_menu.vala:461
+msgid "Right Delimiters"
+msgstr "מפרידים ימניים"
+
+#: ../src/main.vala:51
+msgid "Show the application's version"
+msgstr "הצגת גרסת היישום"
+
+#: ../src/main.vala:54
+msgid "Create new document"
+msgstr "יצירת מסמך חדש"
+
+#: ../src/main.vala:57
+msgid "Create a new top-level window in an existing instance of LaTeXila"
+msgstr "יצירת חלון עליון חדש ביישום הנוכחי"
+
+#: ../src/main.vala:66
+msgid "- Integrated LaTeX Environment for GNOME"
+msgstr "- סביבת לאטך משולבת עבור GNOME"
+
+#: ../src/main.vala:78
+#, c-format
+msgid "Run '%s --help' to see a full list of available command line options.\n"
+msgstr "יש להריץ ‎'%s --help'‎ על־מנת לראות רשימת אפשרויות מלאה.\n"
+
+#: ../src/main_window_build_tools.vala:28
+msgid "_Build"
+msgstr "_בנייה"
+
+#: ../src/main_window_build_tools.vala:30
+msgid "Cleanup Build _Files"
+msgstr "ניקוי _קבצי בנייה"
+
+#: ../src/main_window_build_tools.vala:31
+msgid "Clean-up build files (*.aux, *.log, *.out, *.toc, etc)"
+msgstr "ניקוי קבצי בנייה (‎*.aux‏, ‎*.log‏, ‎*.out‏, ‎*.toc‏ וכו')"
+
+#: ../src/main_window_build_tools.vala:34
+msgid "_Stop Execution"
+msgstr "_עצירת ההרצה"
+
+#: ../src/main_window_build_tools.vala:35
+msgid "Stop Execution"
+msgstr "עצירת ההרצה"
+
+#: ../src/main_window_build_tools.vala:37
+msgid "View _Log"
+msgstr "הצגת יומן"
+
+#: ../src/main_window_build_tools.vala:38
+msgid "View Log"
+msgstr "הצגת _יומן"
+
+#: ../src/main_window_build_tools.vala:40
+msgid "_Manage Build Tools"
+msgstr "_ניהול כלי בנייה"
+
+#: ../src/main_window_build_tools.vala:41
+msgid "Manage Build Tools"
+msgstr "ניהול כלי בנייה"
+
+#: ../src/main_window_build_tools.vala:46
+msgid "Show _Details"
+msgstr "הצגת _פרטים"
+
+#: ../src/main_window_build_tools.vala:47
+msgid "Show Details"
+msgstr "הצגת פרטים"
+
+#: ../src/main_window_build_tools.vala:49
+msgid "Show _Warnings"
+msgstr "הצגת _אזהרות"
+
+#: ../src/main_window_build_tools.vala:50
+msgid "Show Warnings"
+msgstr "הצגת אזהרות"
+
+#: ../src/main_window_build_tools.vala:52
+msgid "Show _Bad Boxes"
+msgstr "הצגת אזהרות יי_שור"
+
+#: ../src/main_window_build_tools.vala:53
+msgid "Show Bad Boxes"
+msgstr "הצגת אזהרות יישור"
+
+#: ../src/main_window_documents.vala:30
+msgid "_Documents"
+msgstr "_מסמכים"
+
+#: ../src/main_window_documents.vala:32
+msgid "_Save All"
+msgstr "_שמירת הכל"
+
+#: ../src/main_window_documents.vala:33
+msgid "Save all open files"
+msgstr "שמירת כל הקבצים הפתוחים"
+
+#: ../src/main_window_documents.vala:35
+msgid "_Close All"
+msgstr "_סגירת הכל"
+
+#: ../src/main_window_documents.vala:36
+msgid "Close all open files"
+msgstr "סגירת כל הקבצים הפתוחים"
+
+#: ../src/main_window_documents.vala:38
+msgid "_Previous Document"
+msgstr "המסמך ה_קודם"
+
+#: ../src/main_window_documents.vala:39
+msgid "Activate previous document"
+msgstr "מעבר למסמך הקודם"
+
+#: ../src/main_window_documents.vala:41
+msgid "_Next Document"
+msgstr "המסמך ה_בא"
+
+#: ../src/main_window_documents.vala:42
+msgid "Activate next document"
+msgstr "מעבר למסמך הבא"
+
+#: ../src/main_window_documents.vala:44
+msgid "_Move to New Window"
+msgstr "_העברה לחלון חדש"
+
+#: ../src/main_window_documents.vala:45
+msgid "Move the current document to a new window"
+msgstr "העברת המסמך הנוכחי לחלון חדש"
+
+#: ../src/main_window_edit.vala:30
+msgid "_Edit"
+msgstr "_עריכה"
+
+#: ../src/main_window_edit.vala:33
+msgid "Undo the last action"
+msgstr "ביטול הפעולה האחרונה"
+
+#: ../src/main_window_edit.vala:36
+msgid "Redo the last undone action"
+msgstr "ביצוע מחדש של הפעולה האחרונה שבוטלה"
+
+#: ../src/main_window_edit.vala:39
+msgid "Cut the selection"
+msgstr "גזירת הבחירה"
+
+#: ../src/main_window_edit.vala:42
+msgid "Copy the selection"
+msgstr "העתקת הבחירה"
+
+#. No shortcut here because if the shortcut is null, Ctrl+V is used for the _all_
+#. the window. In this case Ctrl+V in the search text entry would be broken (the
+#. text is pasted in the document instead of the entry).
+#. Anyway if we press Ctrl+V when the cursor is in the document, no problem.
+#: ../src/main_window_edit.vala:49
+msgid "Paste the clipboard"
+msgstr "הדבקה מלוח הגזירים"
+
+#: ../src/main_window_edit.vala:52
+msgid "Delete the selected text"
+msgstr "מחיקת הטקסט הנבחר"
+
+#: ../src/main_window_edit.vala:55
+msgid "Select the entire document"
+msgstr "מחיקת המסמך כולו"
+
+#: ../src/main_window_edit.vala:57 ../src/main_window_structure.vala:44
+msgid "_Comment"
+msgstr "הפיכה ל_הערה"
+
+#: ../src/main_window_edit.vala:58
+msgid "Comment the selected lines (add the character \"%\")"
+msgstr "הפיכת השורות הנבחרות להערה (הוספת התו %)"
+
+#: ../src/main_window_edit.vala:61
+msgid "_Uncomment"
+msgstr "_ביטול הערה"
+
+#: ../src/main_window_edit.vala:62
+msgid "Uncomment the selected lines (remove the character \"%\")"
+msgstr "ביטול הערה בשורות הנבחרות (הסרת התו %)"
+
+#: ../src/main_window_edit.vala:66
+msgid "Configure the application"
+msgstr "הגדרת תצורה"
+
+#: ../src/main_window_edit.vala:72
+msgid "Activate or disable the spell checking"
+msgstr "הפעלה או ביטול של בדיקת איות"
+
+#: ../src/main_window_file.vala:30
+msgid "_File"
+msgstr "_קובץ"
+
+#: ../src/main_window_file.vala:33
+msgid "New file"
+msgstr "קובץ חדש"
+
+#: ../src/main_window_file.vala:35
+msgid "New _Window"
+msgstr "_חלון חדש"
+
+#: ../src/main_window_file.vala:36
+msgid "Create a new window"
+msgstr "יצירת חלון חדש"
+
+#: ../src/main_window_file.vala:39 ../src/main_window_file.vala:85
+msgid "Open a file"
+msgstr "פתיחת קובץ"
+
+#: ../src/main_window_file.vala:42
+msgid "Save the current file"
+msgstr "שמירת הקובץ הנוכחי"
+
+#: ../src/main_window_file.vala:45
+msgid "Save the current file with a different name"
+msgstr "שמירת הקובץ הנוכחי בשם אחר"
+
+#: ../src/main_window_file.vala:47
+msgid "Create _Template From Document..."
+msgstr "יצירת _תבנית מהמסמך..."
+
+#: ../src/main_window_file.vala:48
+msgid "Create a new template from the current document"
+msgstr "יצירת תבנית חדשה מתוך המסמך הנוכחי"
+
+#: ../src/main_window_file.vala:50
+msgid "_Delete Template..."
+msgstr "_מחיקת תבנית..."
+
+#: ../src/main_window_file.vala:51
+msgid "Delete personal template(s)"
+msgstr "מחיקת תבניות אישיות"
+
+#: ../src/main_window_file.vala:54
+msgid "Close the current file"
+msgstr "סגירת הקובץ הנוכחי"
+
+#. recent documents
+#: ../src/main_window_file.vala:69
+msgid "Open _Recent"
+msgstr "מסמכים _אחרונים"
+
+#: ../src/main_window_file.vala:70
+msgid "Open recently used files"
+msgstr "פתיחת קבצים שהיו בשימוש לאחרונה"
+
+#: ../src/main_window_file.vala:86
+msgid "Open a recently used file"
+msgstr "פתיחת קובץ שהיה בשימוש לאחרונה"
+
+#: ../src/main_window_file.vala:143
+msgid "Open Files"
+msgstr "פתיחת קבצים"
+
+#. Filter: by default show only .tex and .bib files
+#: ../src/main_window_file.vala:157
+msgid "All LaTeX Files"
+msgstr "כל קבצי הלאטך"
+
+#. All files filter
+#: ../src/main_window_file.vala:164
+msgid "All Files"
+msgstr "כל הקבצים"
+
+#: ../src/main_window_structure.vala:30
+msgid "S_tructure"
+msgstr "_מבנה"
+
+#: ../src/main_window_structure.vala:33
+msgid "Cut the selected structure item"
+msgstr "גזירת פריט המבנה הנבחר"
+
+#: ../src/main_window_structure.vala:36
+msgid "Copy the selected structure item"
+msgstr "העתקת פריט המבנה הנבחר"
+
+#: ../src/main_window_structure.vala:39
+msgid "Delete the selected structure item"
+msgstr "מחיקת פריט המבנה הנבחר"
+
+#: ../src/main_window_structure.vala:41
+msgid "_Select"
+msgstr "_בחירה"
+
+#: ../src/main_window_structure.vala:42
+msgid "Select the contents of the selected structure item"
+msgstr "בחירת תוכן פריט המבנה הנבחר"
+
+#: ../src/main_window_structure.vala:45
+msgid "Comment the selected structure item"
+msgstr "הפיכת פריט המבנה הנבחר להערה"
+
+# הפכתי בין שמאל לימין בתקווה שהמנשק בשפות RTL יופיע כמו שצריך והתרגום יהיה נכון. אם לא, אפשר בינתיים להפוך חזרה כדי למנוע בלבול.
+#: ../src/main_window_structure.vala:47
+msgid "Shift _Left"
+msgstr "הסטה _ימינה"
+
+#: ../src/main_window_structure.vala:48
+msgid "Shift the selected structure item to the left (e.g. section → chapter)"
+msgstr "הסטת פריט המבנה הנבחר ימינה (למשל חלק ← פרק)"
+
+#: ../src/main_window_structure.vala:51
+msgid "Shift _Right"
+msgstr "הסטה _שמאלה"
+
+#: ../src/main_window_structure.vala:52
+msgid "Shift the selected structure item to the right (e.g. chapter → section)"
+msgstr "הסטת פריט המבנה הנבחר שמאלה (למשל פרק ← חלק)"
+
+#: ../src/main_window_structure.vala:55
+msgid "_Open File"
+msgstr "_פתיחת קובץ"
+
+#: ../src/main_window_structure.vala:56
+msgid "Open the file referenced by the selected structure item"
+msgstr "פתיחת הקובץ המופנה על־ידי פריט המבנה הנבחר"
+
+#: ../src/main_window.vala:29
+msgid "Quit the program"
+msgstr "סגירת היישום"
+
+#. View
+#: ../src/main_window.vala:32
+msgid "_View"
+msgstr "_תצוגה"
+
+#: ../src/main_window.vala:33
+msgid "Zoom _In"
+msgstr "הת_קרבות"
+
+#: ../src/main_window.vala:34
+msgid "Enlarge the font"
+msgstr "הגדלת הגופן"
+
+#: ../src/main_window.vala:35
+msgid "Zoom _Out"
+msgstr "הת_רחקות"
+
+#: ../src/main_window.vala:36
+msgid "Shrink the font"
+msgstr "הקטנת הגופן"
+
+#: ../src/main_window.vala:37
+msgid "_Reset Zoom"
+msgstr "גודל _ברירת מחדל"
+
+#: ../src/main_window.vala:38
+msgid "Reset the size of the font"
+msgstr "איפוס גודל הגופן לברירת המחדל"
+
+#. Search
+#: ../src/main_window.vala:41
+msgid "_Search"
+msgstr "_חיפוש"
+
+#: ../src/main_window.vala:43
+msgid "Search for text"
+msgstr "חיפוש טקסט"
+
+#: ../src/main_window.vala:45
+msgid "Search for and replace text"
+msgstr "חיפוש והחלפה"
+
+#: ../src/main_window.vala:46
+msgid "_Go to Line..."
+msgstr "_מעבר לשורה..."
+
+#: ../src/main_window.vala:47
+msgid "Go to a specific line"
+msgstr "מעבר לשורה נבחרת"
+
+#: ../src/main_window.vala:48
+msgid "_Search Forward"
+msgstr "_חיפוש קדימה"
+
+#: ../src/main_window.vala:49
+msgid "Jump to the associated position in the PDF file"
+msgstr "קפיצה למיקום המקביל בקובץ ה־PDF"
+
+#. Projects
+#: ../src/main_window.vala:52
+msgid "_Projects"
+msgstr "_פרויקטים"
+
+#: ../src/main_window.vala:53
+msgid "_New Project"
+msgstr "פרויקט _חדש"
+
+#: ../src/main_window.vala:54
+msgid "Create a new project"
+msgstr "יצירת פרויקט חדש"
+
+#: ../src/main_window.vala:55
+msgid "_Configure Current Project"
+msgstr "_הגדרת תצורת הפרויקט הנוכחי"
+
+#: ../src/main_window.vala:56
+msgid "Change the main file of the current project"
+msgstr "שינוי הקובץ הראשי של הפרויקט הנוכחי"
+
+#: ../src/main_window.vala:58
+msgid "_Manage Projects"
+msgstr "_ניהול פרויקטים"
+
+#: ../src/main_window.vala:59 ../src/project_dialogs.vala:183
+msgid "Manage Projects"
+msgstr "ניהול פרויקטים"
+
+#. Help
+#: ../src/main_window.vala:62
+msgid "_Help"
+msgstr "_עזרה"
+
+#: ../src/main_window.vala:63
+msgid "_Contents"
+msgstr "_תוכן"
+
+#: ../src/main_window.vala:64
+msgid "Open the LaTeXila documentation"
+msgstr "פתיחת תיעוד התכנה"
+
+#: ../src/main_window.vala:65
+msgid "_LaTeX Reference"
+msgstr "תיעוד _לאטך"
+
+#: ../src/main_window.vala:66
+msgid "The Kile LaTeX Reference"
+msgstr "תיעוד הלאטך של Kile"
+
+#: ../src/main_window.vala:67
+msgid "_Donate"
+msgstr "_תרומה"
+
+#: ../src/main_window.vala:68
+msgid ""
+"Donate to demonstrate your appreciation of LaTeXila and help its future "
+"development"
+msgstr "תרום לאות הערכה ל־LaTexila וסייע להמשך הפיתוח"
+
+#: ../src/main_window.vala:71 ../src/main_window.vala:1244
+msgid "About LaTeXila"
+msgstr "אודות"
+
+#: ../src/main_window.vala:76
+msgid "_Main Toolbar"
+msgstr "סרגל כלים _ראשי"
+
+#: ../src/main_window.vala:77
+msgid "Show or hide the main toolbar"
+msgstr "הצגה או הסתרה של סרגל הכלים הראשי"
+
+#. Translators: "Edit" here is an adjective.
+#: ../src/main_window.vala:79
+msgid "_Edit Toolbar"
+msgstr "סרגל כלי _עריכה"
+
+#: ../src/main_window.vala:80
+msgid "Show or hide the edit toolbar"
+msgstr "הצגה או הסתרה של סרגל כלי העריכה"
+
+#: ../src/main_window.vala:81
+msgid "_Side panel"
+msgstr "חלונית _צד"
+
+#: ../src/main_window.vala:82
+msgid "Show or hide the side panel"
+msgstr "הצגה או הסתרה של חלונית הצד"
+
+#: ../src/main_window.vala:83
+msgid "_Bottom panel"
+msgstr "חלונית _תחתונה"
+
+#: ../src/main_window.vala:84
+msgid "Show or hide the bottom panel"
+msgstr "הצגה או הסתרה של החלונית התחתונה"
+
+#. Symbols
+#: ../src/main_window.vala:400
+msgid "Symbols"
+msgstr "סמלים"
+
+#: ../src/main_window.vala:409
+msgid "Structure"
+msgstr "מבנה"
+
+#: ../src/main_window.vala:655
+#, c-format
+msgid "This file (%s) is already opened in another LaTeXila window."
+msgstr "קובץ זה (%s) כבר פתוח בחלון אחר של היישום."
+
+#: ../src/main_window.vala:657
+msgid ""
+"LaTeXila opened this instance of the file in a non-editable way. Do you want "
+"to edit it anyway?"
+msgstr "מופע זה של הקובץ נפתח עבור קריאה בלבד. האם להמשיך בעריכה למרות זאת?"
+
+#: ../src/main_window.vala:660
+msgid "Edit Anyway"
+msgstr "עריכה בכל זאת"
+
+#: ../src/main_window.vala:661
+msgid "Don't Edit"
+msgstr "אין לערוך"
+
+#: ../src/main_window.vala:762
+#, c-format
+msgid "Save changes to document \"%s\" before closing?"
+msgstr "האם לשמור את השינויים למסמך \"%s\" לפני הסגירה?"
+
+#: ../src/main_window.vala:842
+msgid "Read-Only"
+msgstr "קריאה בלבד"
+
+#: ../src/main_window.vala:860
+msgid "Save File"
+msgstr "שמירת הקובץ"
+
+#: ../src/main_window.vala:895
+#, c-format
+msgid "A file named \"%s\" already exists. Do you want to replace it?"
+msgstr "קובץ בשם \"%s\" כבר קיים. האם ברצונך להחליפו?"
+
+#: ../src/main_window.vala:900 ../src/search.vala:182
+msgid "Replace"
+msgstr "החלפה"
+
+#: ../src/main_window.vala:1206
+msgid "LaTeXila is an Integrated LaTeX Environment for the GNOME Desktop"
+msgstr "‏LaTeXila היא סביבת לאטך משולבת עבור שולחן העבודה GNOME"
+
+#: ../src/main_window.vala:1245
+msgid "translator-credits"
+msgstr "תודות למתרגמים"
+
+#: ../src/post_processors.vala:188
+msgid "Latexmk messages"
+msgstr "הודעות latexmk"
+
+#: ../src/preferences_dialog.vala:31
+msgid "Preferences"
+msgstr "העדפות"
+
+#. reset all button
+#: ../src/preferences_dialog.vala:36 ../src/utils.vala:400
+msgid "Reset All"
+msgstr "איפוס הכל"
+
+#: ../src/preferences_dialog.vala:39
+msgid "Reset all preferences"
+msgstr "איפוס כל ההעדפות"
+
+#: ../src/preferences_dialog.vala:118
+msgid "Do you really want to reset all preferences?"
+msgstr "האם באמת לאפס את כל ההעדפות?"
+
+#: ../src/preferences_dialog.vala:191
+msgid "minute"
+msgid_plural "minutes"
+msgstr[0] "דקה"
+msgstr[1] "דקות"
+
+#: ../src/preferences_dialog.vala:291
+msgid "character"
+msgid_plural "characters"
+msgstr[0] "תו"
+msgstr[1] "תווים"
+
+#: ../src/preferences_dialog.vala:331
+#, c-format
+msgid "Use the system fixed width font (%s)"
+msgstr "שימוש בגופן המערכת בעל רוחב קבוע (%s)"
+
+#: ../src/project_dialogs.vala:26
+msgid "New Project"
+msgstr "פרויקט חדש"
+
+#. directory
+#: ../src/project_dialogs.vala:36 ../src/project_dialogs.vala:40
+#: ../src/project_dialogs.vala:203
+msgid "Directory"
+msgstr "תיקייה"
+
+#: ../src/project_dialogs.vala:101
+#, c-format
+msgid "There is a conflict with the project \"%s\"."
+msgstr "קיימת התנגשות עם הפרויקט \"%s\"."
+
+#: ../src/project_dialogs.vala:116
+msgid "Configure Project"
+msgstr "הגדרת תצורת פרויקט"
+
+#: ../src/project_dialogs.vala:134
+msgid "Location of the project"
+msgstr "מיקום הפרויקט"
+
+#: ../src/project_dialogs.vala:243 ../src/project_dialogs.vala:300
+msgid "Clear All"
+msgstr "ניקוי הכל"
+
+#: ../src/project_dialogs.vala:275
+#, c-format
+msgid "Do you really want to delete the project \"%s\"?"
+msgstr "האם באמת למחוק את הפרויקט \"%s\"?"
+
+#: ../src/project_dialogs.vala:296
+msgid "Do you really want to clear all projects?"
+msgstr "האם באמת לנקות את כל הפרויקטים?"
+
+#: ../src/project_dialogs.vala:328
+msgid "The Main File is not in the directory."
+msgstr "הקובץ הראשי אינו נמצא בתיקייה."
+
+#: ../src/search.vala:40
+msgid "Go to Line:"
+msgstr "מעבר לשורה:"
+
+#: ../src/search.vala:50
+msgid "Line you want to move the cursor to"
+msgstr "השורה אליה יש להעביר את המצביע"
+
+#: ../src/search.vala:174
+msgid "Replace with"
+msgstr "החלפה עם"
+
+#. replace all: image + label
+#: ../src/search.vala:186
+msgid "Replace All"
+msgstr "החלפת הכל"
+
+#: ../src/search.vala:195
+msgid "All"
+msgstr "הכל"
+
+#: ../src/search.vala:309
+msgid "Search for"
+msgstr "חיפוש אחר"
+
+#: ../src/search.vala:320
+msgid "Case sensitive"
+msgstr "התאמת רישיות"
+
+#: ../src/search.vala:323
+msgid "Entire words only"
+msgstr "התאמת מילים שלמות בלבד"
+
+#: ../src/search.vala:469
+msgid "Not found"
+msgstr "לא נמצא"
+
+#. Translators: the first %d is the position of the current search occurrence,
+#. * and the second %d is the total number of search occurrences.
+#.
+#: ../src/search.vala:486
+#, c-format
+msgid "Match %d of %d"
+msgstr "התאמה %d מתוך %d"
+
+#. Translators: %d is the total number of search occurrences.
+#: ../src/search.vala:491
+#, c-format
+msgid "%d match"
+msgid_plural "%d matches"
+msgstr[0] "התאמה %d"
+msgstr[1] "%d התאמות"
+
+#: ../src/structure.vala:163
+msgid "Refresh"
+msgstr "רענון"
+
+#: ../src/structure.vala:177
+msgid "Collapse All"
+msgstr "פרישת הכל"
+
+#: ../src/structure.vala:187
+msgid "Show labels"
+msgstr "הצגת תוויות"
+
+#: ../src/structure.vala:188
+msgid "Show included files"
+msgstr "הצגת קבצים כלולים"
+
+#: ../src/structure.vala:189
+msgid "Show tables"
+msgstr "הצגת טבלאות"
+
+#: ../src/structure.vala:190
+msgid "Show figures and images"
+msgstr "הצגת תרשימים ותמונות"
+
+#. Translators: do not translate the words TODO and FIXME. They are special
+#. comments that can be inserted in LaTeX documents.
+#: ../src/structure.vala:193
+msgid "Show TODOs and FIXMEs"
+msgstr "הצגת הערות TODO ו־FIXME"
+
+#: ../src/structure.vala:633
+#, c-format
+msgid "Structure action error: %s"
+msgstr "שגיאת פעולת מבנה: %s"
+
+#: ../src/structure.vala:638
+msgid "The structure data seems outdated. Please refresh the structure."
+msgstr "נראה שנתוני המבנה אינם עדכניים. נא לרענן את המבנה."
+
+#. Translators: it's a verb
+#: ../src/structure.vala:729
+msgid "cut"
+msgstr "גזירה"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:731
+msgid "copy"
+msgstr "העתקה"
+
+#: ../src/structure.vala:732
+msgid "delete"
+msgstr "מחיקה"
+
+#: ../src/structure.vala:733
+msgid "select"
+msgstr "בחירה"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:735
+msgid "comment"
+msgstr "הפיכה להערה"
+
+# הפכתי כיוונים כאמור, כדי להתאים למנשק RTL.
+#. Translators: it's a verb
+#: ../src/structure.vala:737
+msgid "shift left"
+msgstr "הסטה ימינה"
+
+#. Translators: it's a verb
+#: ../src/structure.vala:739
+msgid "shift right"
+msgstr "הסטה שמאלה"
+
+#: ../src/structure.vala:740
+msgid "open file"
+msgstr "פתיחת קובץ"
+
+#: ../src/structure.vala:785
+msgid "Table"
+msgstr "טבלה"
+
+#. Translators: "Figure" here means a diagram (\begin{figure}...\end{figure})
+#: ../src/structure.vala:787
+msgid "Figure"
+msgstr "תרשים"
+
+#: ../src/structure.vala:788
+msgid "Image"
+msgstr "תמונה"
+
+#: ../src/structure.vala:789
+msgid "File included"
+msgstr "קובץ כלול"
+
+#: ../src/symbols.vala:59
+msgid "Greek"
+msgstr "יוונית"
+
+#: ../src/symbols.vala:60
+msgid "Arrows"
+msgstr "חצים"
+
+#: ../src/symbols.vala:61
+msgid "Relations"
+msgstr "יחסים"
+
+#: ../src/symbols.vala:62
+msgid "Operators"
+msgstr "פעולות"
+
+#: ../src/symbols.vala:63
+msgid "Delimiters"
+msgstr "מפרידים"
+
+#: ../src/symbols.vala:64
+msgid "Misc math"
+msgstr "שונות מתמטיקה"
+
+#: ../src/symbols.vala:65
+msgid "Misc text"
+msgstr "שונות טקסט"
+
+#: ../src/symbols.vala:159
+msgid "Most Used"
+msgstr "בשימוש תדיר"
+
+#: ../src/synctex.vala:84
+msgid "The document is not saved."
+msgstr "המסמך אינו שמור."
+
+#: ../src/synctex.vala:91
+msgid "The PDF file doesn't exist."
+msgstr "קובץ ה־PDF אינו קיים."
+
+#: ../src/synctex.vala:100
+#, c-format
+msgid "The file \"%s\" doesn't exist."
+msgstr "הקובץ \"%s\" אינו קיים."
+
+#: ../src/synctex.vala:107
+msgid "Can not communicate with evince."
+msgstr "לא ניתן לתקשר עם מציג המסמכים."
+
+#: ../src/synctex.vala:125
+msgid "Impossible to do the forward search."
+msgstr "לא ניתן לבצע את החיפוש קדימה."
+
+#: ../src/templates_dialogs.vala:34
+msgid "New File..."
+msgstr "קובץ חדש..."
+
+#: ../src/templates_dialogs.vala:55
+msgid "Default templates"
+msgstr "תבניות ברירת מחדל"
+
+#: ../src/templates_dialogs.vala:64
+msgid "Your personal templates"
+msgstr "תבניות אישיות"
+
+#: ../src/templates_dialogs.vala:173
+msgid "New Template..."
+msgstr "תבנית חדשה..."
+
+#: ../src/templates_dialogs.vala:185
+msgid "Name of the new template"
+msgstr "שם לתבנית החדשה"
+
+#: ../src/templates_dialogs.vala:198
+msgid "Choose an icon"
+msgstr "בחירת צלמית"
+
+#: ../src/templates_dialogs.vala:242
+msgid "Delete Template(s)..."
+msgstr "מחיקת תבניות..."
+
+#: ../src/templates_dialogs.vala:259
+msgid "Personal templates"
+msgstr "תבניות אישיות"
+
+#: ../src/templates.vala:75
+msgid "Empty"
+msgstr "ריק"
+
+#: ../src/templates.vala:77
+msgid "Article"
+msgstr "כתבה"
+
+#: ../src/templates.vala:78
+msgid "Report"
+msgstr "דוח"
+
+#: ../src/templates.vala:79
+msgid "Book"
+msgstr "ספר"
+
+#: ../src/templates.vala:80
+msgid "Letter"
+msgstr "מכתב"
+
+#: ../src/templates.vala:81
+msgid "Presentation"
+msgstr "מצגת"
+
+#: ../src/ui/preferences_dialog.ui.h:1
+msgid "Display line numbers"
+msgstr "הצגת מספרי שורות"
+
+#: ../src/ui/preferences_dialog.ui.h:2
+msgid "Tab width:"
+msgstr "רוחב טאב:"
+
+#: ../src/ui/preferences_dialog.ui.h:3
+msgid "Insert spaces instead of tabs"
+msgstr "הוספת רווחים במקום טאבים"
+
+#: ../src/ui/preferences_dialog.ui.h:4
+msgid "Forget you are not using tabulations"
+msgstr "שכח שאינך משתמש בטאבים"
+
+#: ../src/ui/preferences_dialog.ui.h:5
+msgid "Highlight current line"
+msgstr "הדגשת השורה הנוכחית"
+
+#: ../src/ui/preferences_dialog.ui.h:6
+msgid "Highlight matching brackets"
+msgstr "הדגשת הסוגר התואם"
+
+#: ../src/ui/preferences_dialog.ui.h:7
+msgid "Create a backup copy of files before saving"
+msgstr "יש ליצור עותק גיבוי של הקבצים לפני השמירה"
+
+#: ../src/ui/preferences_dialog.ui.h:8
+msgid "Autosave files every"
+msgstr "שמירה אוטומטית בכל"
+
+#: ../src/ui/preferences_dialog.ui.h:10
+msgid "Editor"
+msgstr "עורך"
+
+#: ../src/ui/preferences_dialog.ui.h:11
+msgid "Font"
+msgstr "גופן"
+
+#: ../src/ui/preferences_dialog.ui.h:13
+#, no-c-format
+msgid "_Use the system fixed width font (%s)"
+msgstr "_יש להשתמש בגופן המערכת בעל רוחב קבוע (%s)"
+
+#: ../src/ui/preferences_dialog.ui.h:14
+msgid "Editor _font: "
+msgstr "_גופן העורך: "
+
+#: ../src/ui/preferences_dialog.ui.h:15
+msgid "Pick the editor font"
+msgstr "בחירת גופן העורך"
+
+#: ../src/ui/preferences_dialog.ui.h:16
+msgid "Color Scheme"
+msgstr "ערכת צבעים"
+
+#: ../src/ui/preferences_dialog.ui.h:17
+msgid "Font & Colors"
+msgstr "גופנים וצבעים"
+
+#: ../src/ui/preferences_dialog.ui.h:18
+msgid "File Clean-Up"
+msgstr "ניקוי קבצים"
+
+#: ../src/ui/preferences_dialog.ui.h:20
+msgid "Automatically clean-up files after close"
+msgstr "ניקוי קבצים אוטומטי לאחר הסגירה"
+
+#: ../src/ui/preferences_dialog.ui.h:21
+msgid "Interactive completion after"
+msgstr "השלמה אינטראקטיבית לאחר"
+
+#: ../src/ui/preferences_dialog.ui.h:22
+msgid "Number of characters after &apos;\\&apos;"
+msgstr "מספר התווים לאחר &apos;\\&apos;"
+
+#: ../src/ui/preferences_dialog.ui.h:23
+msgid "Number of characters after '\\'"
+msgstr "מספר התווים לאחר '\\'"
+
+#: ../src/ui/preferences_dialog.ui.h:24
+msgid "Other"
+msgstr "אחר"
