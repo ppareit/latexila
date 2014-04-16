@@ -64,7 +64,8 @@
     <file alias="references.png" preprocess="to-pixdata">../data/images/stock-icons/references.png</file>
     <file alias="roman.png" preprocess="to-pixdata">../data/images/stock-icons/roman.png</file>
     <file alias="sans_serif.png" preprocess="to-pixdata">../data/images/stock-icons/sans_serif.png</file>
-    <file alias="sectioning.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning.png</file>
+    <file alias="sectioning-size16.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-size16.png</file>
+    <file alias="sectioning-size24.png" preprocess="to-pixdata">../data/images/stock-icons/sectioning-size24.png</file>
     <file alias="slanted.png" preprocess="to-pixdata">../data/images/stock-icons/slanted.png</file>
     <file alias="small_caps.png" preprocess="to-pixdata">../data/images/stock-icons/small_caps.png</file>
     <file alias="symbol_arrows.png" preprocess="to-pixdata">../data/images/stock-icons/symbol_arrows.png</file>

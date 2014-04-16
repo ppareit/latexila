@@ -29,7 +29,7 @@ public class LatexMenu : Gtk.ActionGroup
 
         // LaTeX: Sectioning
 
-        { "Sectioning", "sectioning", N_("_Sectioning") },
+        { "Sectioning", "sectioning-size16", N_("_Sectioning") },
         { "SectioningPart", null, "\\_part", null,
             N_("Part"), on_sectioning_part },
         { "SectioningChapter", null, "\\_chapter", null,
@@ -440,7 +440,7 @@ public class LatexMenu : Gtk.ActionGroup
 
         // menus under toolitems
         Gtk.Action sectioning = get_menu_tool_action ("SectioningToolItem",
-            _("Sectioning"), "sectioning");
+            _("Sectioning"), "sectioning-size24");
 
         Gtk.Action sizes = get_menu_tool_action ("CharacterSizeToolItem",
             _("Characters Sizes"), "character-size");
