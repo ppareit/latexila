@@ -38,7 +38,7 @@
     <file alias="list-description-size24.png" preprocess="to-pixdata">../data/images/stock-icons/list-description-size24.png</file>
     <file alias="list-enumerate-size16.png" preprocess="to-pixdata">../data/images/stock-icons/list-enumerate-size16.png</file>
     <file alias="list-enumerate-size24.png" preprocess="to-pixdata">../data/images/stock-icons/list-enumerate-size24.png</file>
-    <file alias="list-item.png" preprocess="to-pixdata">../data/images/stock-icons/list-item.png</file>
+    <file alias="list-item-size16.png" preprocess="to-pixdata">../data/images/stock-icons/list-item-size16.png</file>
     <file alias="list-itemize-size16.png" preprocess="to-pixdata">../data/images/stock-icons/list-itemize-size16.png</file>
     <file alias="list-itemize-size24.png" preprocess="to-pixdata">../data/images/stock-icons/list-itemize-size24.png</file>
     <file alias="math-frac.png" preprocess="to-pixdata">../data/images/stock-icons/math-frac.png</file>

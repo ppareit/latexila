@@ -104,7 +104,7 @@ public class LatexMenu : Gtk.ActionGroup
             N_("Description - \\begin{description}"), on_list_env_description },
         { "ListEnvList", null, "\\begin{_list}", null,
             N_("Custom list - \\begin{list}"), on_list_env_list },
-        { "ListEnvItem", "list-item", "\\i_tem", "<Alt><Shift>H",
+        { "ListEnvItem", "list-item-size16", "\\i_tem", "<Alt><Shift>H",
             N_("List item - \\item"), on_list_env_item },
 
         // LaTeX: character sizes
