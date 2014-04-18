@@ -74,7 +74,8 @@
     <file alias="symbol_misc_text.png" preprocess="to-pixdata">../data/images/stock-icons/symbol_misc_text.png</file>
     <file alias="symbol_operators.png" preprocess="to-pixdata">../data/images/stock-icons/symbol_operators.png</file>
     <file alias="symbol_relations.png" preprocess="to-pixdata">../data/images/stock-icons/symbol_relations.png</file>
-    <file alias="table.png" preprocess="to-pixdata">../data/images/stock-icons/table.png</file>
+    <file alias="table-size16.png" preprocess="to-pixdata">../data/images/stock-icons/table-size16.png</file>
+    <file alias="table-size24.png" preprocess="to-pixdata">../data/images/stock-icons/table-size24.png</file>
     <file alias="tree_chapter.png" preprocess="to-pixdata">../data/images/stock-icons/tree_chapter.png</file>
     <file alias="tree_label.png" preprocess="to-pixdata">../data/images/stock-icons/tree_label.png</file>
     <file alias="tree_paragraph.png" preprocess="to-pixdata">../data/images/stock-icons/tree_paragraph.png</file>

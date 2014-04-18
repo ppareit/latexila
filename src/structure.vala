@@ -758,7 +758,7 @@ public class Structure : Grid
             _icons[StructType.LABEL]        = "tree_label";
             _icons[StructType.TODO]         = "tree_todo";
             _icons[StructType.FIXME]        = "tree_todo";
-            _icons[StructType.TABLE]        = "table";
+            _icons[StructType.TABLE]        = "table-size16";
             _icons[StructType.FIGURE]       = "image";
             _icons[StructType.IMAGE]        = "image";
             _icons[StructType.INCLUDE]      = Stock.FILE;

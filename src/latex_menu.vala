@@ -72,7 +72,9 @@ public class LatexMenu : Gtk.ActionGroup
             N_("Align Right - \\begin{flushright}"), on_env_right },
         { "EnvFigure", "image", "\\begin{_figure}", null,
             N_("Figure - \\begin{figure}"), on_env_figure },
-        { "EnvTable", "table", "\\begin{_table}", null,
+        { "EnvTable", "table-size16", "\\begin{_table}", null,
+            N_("Table - \\begin{table}"), on_env_table },
+        { "EnvTableToolitem", "table-size24", "\\begin{_table}", null,
             N_("Table - \\begin{table}"), on_env_table },
         { "EnvQuote", null, "\\begin{_quote}", null,
             N_("Quote - \\begin{quote}"), on_env_quote },
@@ -177,7 +179,7 @@ public class LatexMenu : Gtk.ActionGroup
 
         // LaTeX: Tabular
 
-        { "Tabular", "table", N_("_Tabular") },
+        { "Tabular", "table-size16", N_("_Tabular") },
         { "TabularTabbing", null, "\\begin{ta_bbing}", null,
             N_("Tabbing - \\begin{tabbing}"), on_tabular_tabbing },
         { "TabularTabular", null, "\\begin{_tabular}", null,
