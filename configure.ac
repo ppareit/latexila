@@ -163,6 +163,7 @@ AC_CONFIG_FILES([Makefile
 		 po/Makefile.in
                  src/Makefile
 		 src/gedit/Makefile
+		 src/liblatexila/Makefile
 		 src/ui/Makefile
                  README])
 
