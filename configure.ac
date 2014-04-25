@@ -141,6 +141,7 @@ YELP_HELP_INIT
 GLIB_GSETTINGS
 GNOME_COMPILE_WARNINGS([maximum])
 GOBJECT_INTROSPECTION_CHECK([1.30.0])
+VAPIGEN_CHECK
 
 # Generate files
 AC_CONFIG_FILES([Makefile
@@ -189,4 +190,5 @@ Configuration:
     Vala Compiler: ${vala_compiler}
     C Compiler: ${CC}
     GObject introspection: ${found_introspection}
+    Generate latexila.vapi: ${enable_vala}
 "
