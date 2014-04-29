@@ -8,7 +8,7 @@ VALAFLAGS =			\
 	--pkg gtkspell3-3.0	\
 	--pkg gee-1.0		\
 	--pkg posix		\
-	--target-glib=2.36
+	--target-glib=2.40
 
 # The valac command is always executed in the sources directory, not the build
 # directory. If $(top_srcdir) is used, it will be relative to the build directory.
