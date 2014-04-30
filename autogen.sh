@@ -7,6 +7,9 @@ test -n "$srcdir" || srcdir=.
 olddir=`pwd`
 cd "$srcdir"
 
+mkdir -p m4
+gtkdocize || exit 1
+
 INTLTOOLIZE=`which intltoolize`
 if test -z $INTLTOOLIZE; then
         echo "*** No intltoolize found, please install the intltool package ***"
