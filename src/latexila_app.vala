@@ -19,9 +19,9 @@
  * Author: Sébastien Wilmet
  */
 
-public class Latexila : Gtk.Application
+public class LatexilaApp : Gtk.Application
 {
-    public Latexila ()
+    public LatexilaApp ()
     {
         Object (application_id: "org.gnome.latexila");
         Environment.set_application_name (Config.PACKAGE_NAME);
@@ -45,7 +45,7 @@ public class Latexila : Gtk.Application
         {
             hold ();
             Projects.get_default ().save ();
-            PersonalBuildTools.get_default ().save ();
+            Latexila.BuildToolsPersonal.get_instance ().save ();
             MostUsedSymbols.get_default ().save ();
             Gtk.AccelMap.save (get_accel_filename ());
             release ();
@@ -97,9 +97,9 @@ public class Latexila : Gtk.Application
         });
     }
 
-    public static Latexila get_instance ()
+    public static LatexilaApp get_instance ()
     {
-        return GLib.Application.get_default () as Latexila;
+        return GLib.Application.get_default () as LatexilaApp;
     }
 
     private void init_primary_instance ()
