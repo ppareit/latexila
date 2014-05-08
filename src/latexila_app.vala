@@ -106,6 +106,7 @@ public class LatexilaApp : Gtk.Application
         hold ();
         set_application_icons ();
         new StockIcons ();
+        Latexila.utils_register_icons ();
 
         AppSettings.get_default ();
         create_window ();
