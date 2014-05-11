@@ -1,5 +1,12 @@
 LaTeXila NEWS
 
+Release 2.12.1
+--------------
+* Fix regex in latex post-processor
+* GLib 2.40 is required
+* Added Polish translation
+* Translation updates
+
 Release 2.12.0
 --------------
 * Refresh structure when saving
