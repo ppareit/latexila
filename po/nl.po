@@ -1944,7 +1944,7 @@ msgstr "Beheer projecten"
 #. Help
 #: ../src/main_window.vala:62
 msgid "_Help"
-msgstr "Projecten beheren"
+msgstr "_Help"
 
 #: ../src/main_window.vala:63
 msgid "_Contents"
